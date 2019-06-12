@@ -244,7 +244,7 @@
                return Views::ChangeEmailFromVerificationScreen("",$loginid,"","");
             }
             
-            return "<script>location.href='';</script>";
+            return "<script>location.href='http://nahami.online/sl/Dashboard/Profile/CreateProfile';</script>";
         }
     }
     
@@ -282,7 +282,7 @@
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
+                                    <h4 style="text-align:center;color:#6c6969;padding-top: 10%;">Please verify your mobile number</h4>
                                 </div>
                                 <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/images/smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumber()">Change</h4>
@@ -328,25 +328,24 @@
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
                            <div class="form-group">
                                 <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;">Change Mobile Number</h4>
+                                    <h4 style="text-align:center;color:#6c6969;padding-top: 15%;">Change Mobile Number</h4>
                                 </div>
                             </div> 
                             <div class="form-group"> 
                                 <div class="input-group">
                                     <div class="col-sm-12">
-                                        <select name="CountryCode" id="CountryCode" style="padding-top: 12px;padding-bottom: 7px;padding-top: 4px;padding-bottom: 4px;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 5px;font-family: Roboto;"> 
+                                        <select name="CountryCode" id="CountryCode" style="padding-top: 12px;padding-bottom: 7px;padding-top: 4px;padding-bottom: 4px;text-align: center;font-family: Roboto;"> 
                                            <option value="+91">+91</option>
                                         </select>
-                                        <input type="text" value="'.$scode.'" id="new_mobile_number" name="new_mobile_number"  maxlength="10" style="width: 73%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 7px;font-family:Roboto;"></div>
+                                        <input type="text" value="'.$scode.'" id="new_mobile_number" name="new_mobile_number"  maxlength="10" style="width: 73%;height: 27px;text-align: center;font-family:Roboto;"></div>
                                     </div>  
                                 </div>
                             </div> 
                             <div class="col-sm-12" id="errormsg">'.$error.'</div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12" style="text-align:center"><button type="button" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Save and Verify</button></div>
+                            <div class="col-sm-12" style="text-align:center">
+                                    <button type="button" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Save and verify</button>&nbsp;&nbsp;
+                                    <a  href="javascript:void(0)" onclick="CheckVerification()">back</a></div>
                                 </div>
-                            </div>
                            </div>
                         </form>                                                                                                       
                         </div>'; 
@@ -415,7 +414,7 @@
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
                                 </div>
                                 <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/images/smallmobile.png" width="10%"></p>
-                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'</h4>
+                                <h5 style="text-align:center;color:#ada9a9;font-size: 18px;">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'</h4>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
@@ -482,7 +481,7 @@
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
+                                    <h4 style="text-align:center;color:#6c6969;padding-top: 12%;">Please verify your email</h4>
                                 </div>
                                 <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/images/smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'&nbsp;&#65372&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>
@@ -514,7 +513,7 @@
             $memberdata = $mysql->select("select * from _tbl_members where MemberID='".$login[0]['MemberID']."'");
             
             if ($memberdata[0]['IsEmailVerified']==1) {
-                return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                return '<div style="background:white;width:100%;padding:20px;">
                             <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
@@ -522,13 +521,13 @@
             } else {
             $formid = "frmChangeEmail_".rand(30,3000);
                 
-                return '<div id="otpfrm" style="width:100%;padding-bottom: 0px;padding-top:20px;padding-right:20px;padding-left:20px;height:100%;">
+                return '<div id="otpfrm" style="width:100%;padding-bottom: 0px;padding-top:20px;padding-right:20px;padding-left:20px;">
                         <form method="POST" id="'.$formid.'">
                         <input type="hidden" value="'.$loginid.'" name="loginId">
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
                            <div class="form-group">
                                  <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;">Change Email ID</h4>
+                                    <h4 style="text-align:center;color:#6c6969;padding-top: 15%;">Change Email ID</h4>
                                 </div>
                             </div> 
                             <div class="form-group"> 
@@ -539,11 +538,10 @@
                                 </div>
                             </div> 
                             <div class="col-sm-12" id="errormsg">'.$error.'</div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12" style="text-align:center"><button type="button" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Save and Verify</button></div>
+                            <div class="col-sm-12" style="text-align:center">
+                                    <div class="col-sm-12" style="text-align:center"><button type="button" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Save and Verify</button>&nbsp;&nbsp;
+                                    <a  href="javascript:void(0)" onclick="CheckVerification()">back</a></div>
                                 </div>
-                            </div>
                            </div>
                         </form>                                                                                                       
                         </div>'; 

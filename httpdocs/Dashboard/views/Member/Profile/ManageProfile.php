@@ -74,7 +74,6 @@ $Profiles = $mysql->select("select * from _tbl_Profile_Draft where ReferBy = '".
                 <img src="http://nahami.online/sl/Dashboard/images/noprofile.jpg"><Br>
                <div style="padding:30px;padding-top:10px;font-size:20px;color:#ccc;font-family:'Roboto'">There are no profiles</div> 
                 
-                
                 <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a>
                 <!-- <?php echo GetUrl("Profile/CreateProfile");?>-->
             </div>
@@ -83,11 +82,11 @@ $Profiles = $mysql->select("select * from _tbl_Profile_Draft where ReferBy = '".
 
 <?php } ?>
                                             
-<div class="modal fade" id="myModal" role="dialog" data-backdrop="static" style="padding-top:350px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+<div class="modal fade" id="myModal" role="dialog" data-backdrop="static" style="padding-top:200px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
     <div class="modal-dialog" style="width: 367px;">
         <div class="modal-content">
             <div class="modal-body">
-                    <div id="Mobile_VerificationBody">
+                    <div id="Mobile_VerificationBody" style="height: 315px;">
                   <img src='../../images/loader.gif'> Loading ....
                 </div>
             </div>
@@ -122,7 +121,7 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
         
         var param = $( "#"+frmid1).serialize();
         
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
         $('#myModal').modal('show'); 
         
         $.post(API_URL + "m=Views&a=MobileNumberVerificationForm", 
@@ -133,7 +132,7 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
                     );
     }
     function ChangeMobileNumber() {
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Views&a=ChangeMobileNumber", 
@@ -147,7 +146,7 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
         
         var param = $( "#"+frmid1).serialize();
         
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
         $('#myModal').modal('show'); 
         
         $.post(API_URL + "m=Views&a=EmailVerificationForm", 
@@ -158,7 +157,7 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
                     );
     }
     function ChangeEmailID() {
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Views&a=ChangeEmailID", 
@@ -169,7 +168,7 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
                     });
     } 
     function CheckVerification() {
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Member&a=CheckVerification", 
@@ -181,7 +180,7 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
     }
      function MobileNumberOTPVerification(frmid) {
          var param = $( "#"+frmid).serialize();
-         $('#Mobile_VerificationBody').html("<div style='text-align:center;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
+         $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
                     $.post("http://nahami.online/sl/Dashboard/Webservice/webservice.php?m=Views&a=MobileNumberOTPVerification", 
                             param,
                             function(result2) {
@@ -212,7 +211,7 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
     }*/
     function EmailOTPVerification(frmid1) {
          var param = $( "#"+frmid1).serialize();
-         $('#Mobile_VerificationBody').html("<div style='text-align:center;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
+         $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
                     $.post("http://nahami.online/sl/Dashboard/Webservice/webservice.php?m=Views&a=EmailOTPVerification", 
                             param,
                             function(result2) {

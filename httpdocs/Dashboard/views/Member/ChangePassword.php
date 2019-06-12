@@ -1,4 +1,5 @@
 <?php
+$page="ChangePassword";
     if (isset($_POST['BtnUpdatePassword'])) {
         
         $getpassword = $mysql->select("select * from  _tbl_members where   MemberID='".$_SESSION['MemberDetails']['MemberID']."'");
@@ -80,6 +81,14 @@ $("#CurrentPassword").blur(function () {
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+            <div class="form-group-row">
+            <div class="col-sm-12">
+            <div class="col-sm-3">
+            <div class="sidemenu" style="width: 200px;margin-left: -58px;margin-top: -30px;border-right: 1px solid #eee;">
+                <?php include_once("Settings/sidemenu.php");?>
+            </div>
+            </div>
+            <div class="col-sm-9">
               <h4 class="card-title">Change Password</h4>
              <form class="forms-sample">
                 <div class="form-group">
@@ -97,10 +106,12 @@ $("#CurrentPassword").blur(function () {
                <button type="submit" name="BtnUpdatePassword" class="btn btn-success mr-2">Change Password</button>
                 </form>
               </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
    </div>
+  </div>
 </form>                
                 

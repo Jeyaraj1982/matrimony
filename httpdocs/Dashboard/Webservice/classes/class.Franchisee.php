@@ -151,10 +151,9 @@
                                 </div>
                             </div> 
                             <div class="col-sm-12" id="errormsg">'.$error.'</div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-4" style="text-align:center"><button type="button" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Save and verify</button></div>
-                                    <div class="col-sm-6" style="text-align:center;line-height: 30px;"><a  href="javascript:void(0)" onclick="FCheckVerification()">back</a></div>
+                            <div class="col-sm-12" style="text-align:center">
+                                    <button type="button" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Save and verify</button>&nbsp;&nbsp;
+                                    <a  href="javascript:void(0)" onclick="FCheckVerification()">back</a></div>
                                 </div>
                             </div>
                            </div>
@@ -351,9 +350,9 @@
                                 </div>
                             </div> 
                             <div class="col-sm-12" id="errormsg">'.$error.'</div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12" style="text-align:center"><button type="button" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Save and Verify</button></div>
+                            <div class="col-sm-12" style="text-align:center">
+                                    <div class="col-sm-12" style="text-align:center"><button type="button" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Save and Verify</button>&nbsp;&nbsp;
+                                    <a  href="javascript:void(0)" onclick="FCheckVerification()">back</a></div>
                                 </div>
                             </div>
                            </div>
@@ -446,7 +445,7 @@
                                                 <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
                                             </div>
                                             <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/images/emailicon.png" width="10%"></p>
-                                            <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
+                                            <h5 style="text-align:center;color:#ada9a9;font-size: 18px;">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
                                         </div>
                                         <div class="form-group">
                                             <div class="input-group">
@@ -475,7 +474,6 @@
                                     <input type="hidden" value="'.$securitycode.'" name="reqId">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                             <h4 style="text-align:center;color:#ada9a9">Please verify your email</h4>
                                         </div>
                                         <p style="text-align:center;padding: 20px;"><img src="'.ImagePath.'emailicon.png" width="10%"></p>

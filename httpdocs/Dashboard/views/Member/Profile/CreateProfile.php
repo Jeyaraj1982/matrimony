@@ -85,7 +85,7 @@
             <div class="card-body">
                 <h4 class="card-title">Profile Information</h4>  
                 <div class="form-group row">
-                    <label for="Community" class="col-sm-3 col-form-label"><small>Profile For<span id="star">*</span></small></label>
+                    <label for="Community" class="col-sm-2 col-form-label">Profile For<span id="star">*</span></label>
                     <div class="col-sm-3">
                         <select class="form-control" id="ProfileFor" name="ProfileFor">
                             <option value="0">Choose Profile Sign In</option>
@@ -95,18 +95,22 @@
                         </select>
                         <span class="errorstring" id="ErrProfileFor"><?php echo isset($ErrProfileFor)? $ErrProfileFor : "";?></span>
                     </div>
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-3"><img src="<?php echo SiteUrl?>images/userimage.jpg" style="height:100px;max-width:203%;padding-left: 74px;"></div>
                 </div>
                 <div class="form-group row">
-                    <label for="Name" class="col-sm-3 col-form-label"><small>Name<span id="star">*</span></small></label>
-                    <div class="col-sm-9"><input type="text" class="form-control" id="ProfileName" name="ProfileName"  value="<?php echo (isset($_POST['ProfileName']) ? $_POST['ProfileName'] : "");?>" placeholder="Name">
+                    <label for="Name" class="col-sm-2 col-form-label">Name<span id="star">*</span></label>
+                    <div class="col-sm-3"><input type="text" class="form-control" id="ProfileName" name="ProfileName"  value="<?php echo (isset($_POST['ProfileName']) ? $_POST['ProfileName'] : "");?>" placeholder="Name">
                     <span class="errorstring" id="ErrProfileName"><?php echo isset($ErrProfileName)? $ErrProfileName : "";?></span></div>
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-3"><input type="file"></div>
                 </div>
                 <div class="form-group row">
-                     <label for="Date of birth" class="col-sm-3 col-form-label"><small>Date of birth<span id="star">*</span></small></label>
+                     <label for="Date of birth" class="col-sm-2 col-form-label">Date of birth<span id="star">*</span></label>
                      <div class="col-sm-3">
                           <input type="date" class="form-control" id="DateofBirth" name="DateofBirth"  value="<?php echo (isset($_POST['DateofBirth']) ? $_POST['DateofBirth'] : "");?>" style="line-height:15px !important" placeholder="Date of Birth"><span class="glyphicon glyphicon-calendar"></span>
                           <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth : "";?></span></div>
-                     <label for="Sex" class="col-sm-3 col-form-label"><small>Sex<span id="star">*</span></small></label>
+                     <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
                      <div class="col-sm-3">
                         <select class="form-control" id="Sex"  name="Sex">
                             <option value="0">Choose Sex</option>
@@ -118,7 +122,7 @@
                      </div>
                 </div>
                 <div class="form-group row">
-                     <label for="MaritalStatus" class="col-sm-3 col-form-label"><small>Marital Status<span id="star">*</span></small></label>
+                     <label for="MaritalStatus" class="col-sm-2 col-form-label">Marital Status<span id="star">*</span></label>
                      <div class="col-sm-3">
                         <select class="form-control" id="MaritalStatus"  name="MaritalStatus">
                             <option value="0">Choose Marital Status</option>
@@ -128,7 +132,7 @@
                         </select>
                         <span class="errorstring" id="ErrMaritalStatus"><?php echo isset($ErrMaritalStatus)? $ErrMaritalStatus : "";?></span>
                      </div>
-                     <label for="Caste" class="col-sm-3 col-form-label"><small>Mother Tongue<span id="star">*</span></small></label>
+                     <label for="Caste" class="col-sm-2 col-form-label">Mother Tongue<span id="star">*</span></label>
                      <div class="col-sm-3">
                         <select class="form-control" id="Language"  name="Language">
                             <option value="0">Choose Mother Tongue</option>
@@ -140,7 +144,7 @@
                      </div>
                 </div>
                 <div class="form-group row">
-                     <label for="Religion" class="col-sm-3 col-form-label"><small>Religion<span id="star">*</span></small></label>
+                     <label for="Religion" class="col-sm-2 col-form-label">Religion<span id="star">*</span></label>
                      <div class="col-sm-3">
                         <select class="form-control" id="Religion"  name="Religion">
                             <option value="0">Choose Religion</option>
@@ -150,7 +154,7 @@
                         </select>
                         <span class="errorstring" id="ErrReligion"><?php echo isset($ErrReligion)? $ErrReligion : "";?></span>
                      </div>
-                     <label for="Caste" class="col-sm-3 col-form-label"><small>Caste<span id="star">*</span></small></label>
+                     <label for="Caste" class="col-sm-2 col-form-label">Caste<span id="star">*</span></label>
                      <div class="col-sm-3">
                         <select class="form-control" id="Caste"  name="Caste">
                             <option value="0">Choose Caste</option>
@@ -162,7 +166,7 @@
                      </div>
                 </div>
                 <div class="form-group row">
-                    <label for="Community" class="col-sm-3 col-form-label"><small>Community<span id="star">*</span></small></label>
+                    <label for="Community" class="col-sm-2 col-form-label">Community<span id="star">*</span></label>
                     <div class="col-sm-3">
                         <select class="form-control" id="Community"  name="Community"> 
                             <option value="0">Choose Community</option>
@@ -172,7 +176,7 @@
                         </select>
                         <span class="errorstring" id="ErrCommunity"><?php echo isset($ErrCommunity)? $ErrCommunity : "";?></span>
                     </div>
-                    <label for="Nationality" class="col-sm-3 col-form-label"><small>Nationality<span id="star">*</span></small></label>
+                    <label for="Nationality" class="col-sm-2 col-form-label">Nationality<span id="star">*</span></label>
                     <div class="col-sm-3">
                         <select class="form-control" id="Nationality"  name="Nationality">
                             <option value="0">Choose Nationality</option>

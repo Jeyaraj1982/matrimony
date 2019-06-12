@@ -4,6 +4,14 @@ div, label,a,ul,li,p,h1,h2,h3,h4,h5,h6,span,i,b,u {font-family:'Roboto' !importa
 
 <nav class="sidebar sidebar-offcanvas bshadow" id="sidebar">
         <ul class="nav">
+          <li class="nav-item" style="text-align: center;margin-top:25px;margin-bottom:10px;height:150px;">
+            <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>images/userimage.jpg" alt="Profile image" style="margin-bottom: 10px;width: 35%;height: 60%;"><br>
+            <?php $memberdata = $mysql->select("select * from _tbl_members where MemberID='".$_Member['MemberID']."'");
+                if ($memberdata[0]['IsMobileVerified']==1) {
+                    echo '<span style="font-size:14px">Mobile Number Verified</span>';} echo'<br>'; ?>
+            <?php if ($memberdata[0]['IsEmailVerified']==1) {
+                    echo '<span style="font-size:14px">Email Verified</span>';} echo'<br>'; ?>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="<?php echo SiteUrl;?>">
               <i class="menu-icon mdi mdi-television"></i>
