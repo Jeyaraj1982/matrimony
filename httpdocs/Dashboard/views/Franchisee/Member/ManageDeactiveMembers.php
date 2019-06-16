@@ -15,7 +15,7 @@
                 </div>
               <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                         <a href="ManageMembers" ><small >All</small></a>&nbsp;|&nbsp;
-                        <a href="ManageActiveMembers"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
+                        <a href="ManageActiveMembers"><small style="font-weight:bold;">Active</small></a>&nbsp;|&nbsp;
                         <a href="ManageDeactiveMembers"><small>Deactive</small></a>
                     </div>
                 </div>
@@ -30,8 +30,11 @@
                         </tr>  
                     </thead>
                      <tbody>  
-                        <?php $Members = $mysql->select("select * from _tbl_members where IsActive='0'"); ?>
-                        <?php foreach($Members as $Member) { ?>
+                        <?php 
+                         $response = $webservice->GetMyDeactiveMembers(); 
+                         if (sizeof($response['data'])>0) {
+                    ?>
+                        <?php foreach($response['data'] as $Member) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberName'];?></td>
                                 <td><?php echo putDateTime($Member['CreatedOn']);?></td>
@@ -39,7 +42,9 @@
                                 <td style="text-align:right"><a href="<?php echo GetUrl("Member/EditMember/". $Member['MemberID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Member/ViewMember/". $Member['MemberID'].".html"); ?>"><span>View</span></a></td>
                                 </tr>
-                        <?php } ?>            
+                         <?php } } else {?>            
+                        
+                        <?php } ?>                 
                       </tbody>                        
                      </table>
                   </div>

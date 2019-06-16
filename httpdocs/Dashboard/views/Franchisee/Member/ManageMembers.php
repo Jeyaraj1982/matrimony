@@ -30,8 +30,11 @@
                         </tr>  
                     </thead>
                      <tbody>  
-                        <?php $Members = $mysql->select("select * from _tbl_members"); ?>
-                        <?php foreach($Members as $Member) { ?>
+                     <?php 
+                         $response = $webservice->GetMyMembers(); 
+                         if (sizeof($response['data'])>0) {
+                    ?>
+                        <?php foreach($response['data'] as $Member) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberName'];?></td>
                                 <td><?php echo putDateTime($Member['CreatedOn']);?></td>
@@ -39,7 +42,9 @@
                                 <td style="text-align:right"><a href="<?php echo GetUrl("Member/EditMember/". $Member['MemberID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Member/ViewMember/". $Member['MemberID'].".html"); ?>"><span>View</span></a></td>
                                 </tr>
-                        <?php } ?>            
+                        <?php } } else {?>            
+                        
+                        <?php } ?>
                       </tbody>                        
                      </table>
                   </div>

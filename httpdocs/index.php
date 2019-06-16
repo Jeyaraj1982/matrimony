@@ -385,9 +385,9 @@ $rand=substr(rand(),0,4);//only show 4 numbers
         <div class="kvline-3"></div>
         <div class="col-sm-12" style="margin-top:50px">
             <div class="col-sm-1" style="width: 11.333%;"></div>
-            <div class="col-sm-3" class="Reg" style="text-align: center;"><div class="memberinner"><img src="Dashboard/images/bt-icon-free-to-reg.png"><br><h3>Sign up</h3><p>Register for free <br>&amp; Create Unlimited Profiles</p></div></div>
-            <div class="col-sm-3" class="Reg" style="text-align: center;"><div class="memberinner"><img src="Dashboard/images/bt-icon-free-to-search.png"><br><h3>Select your Match</h3><p>Send Interest to<br> Matches you like</p></div></div>
-            <div class="col-sm-3" class="Reg" style="text-align: center;"><div class="memberinner"><img src="Dashboard/images/bt-icon-free-to-talk.png"><br><h3>Contact</h3><p>Talk them directly <br>through phone</p></div></div>
+            <div class="col-sm-3" class="Reg" style="text-align: center;"><div class="memberinner"><img src="assets/images/bt-icon-free-to-reg.png"><br><h3>Sign up</h3><p>Register for free <br>&amp; Create Unlimited Profiles</p></div></div>
+            <div class="col-sm-3" class="Reg" style="text-align: center;"><div class="memberinner"><img src="assets/images/bt-icon-free-to-search.png"><br><h3>Select your Match</h3><p>Send Interest to<br> Matches you like</p></div></div>
+            <div class="col-sm-3" class="Reg" style="text-align: center;"><div class="memberinner"><img src="assets/images/bt-icon-free-to-talk.png"><br><h3>Contact</h3><p>Talk them directly <br>through phone</p></div></div>
         </div>
     </div>
     <div style="background:#F2F2F2;height:1005px;margin-top:-5px;padding-top:30px">
@@ -401,7 +401,7 @@ $rand=substr(rand(),0,4);//only show 4 numbers
      for($i=1;$i<4;$i++) { ?>
           <div class="col-sm-12" style="margin-left: 17px;">
             <div class="col-sm-4" style="background: white;height: 221px;width:365px;margin-right: 30px;margin-bottom: 35px;">
-                <div class="col-sm-2" style="margin-right: 76px;"><img src="Dashboard/images/girl1.jpg" style="margin-left: -23px;width: 533%;margin-top: 6px;"></div>
+                <div class="col-sm-2" style="margin-right: 76px;"><img src="assets/images/girl1.jpg" style="margin-left: -23px;width: 533%;margin-top: 6px;"></div>
                 <div class="col-sm-2" style="width:35.667%; ;">
                 <h3 style="color: #81187f;">ISWARIYA</h3>
                 <h5 style="padding-bottom: 10px;">23 years</h5>
@@ -410,7 +410,7 @@ $rand=substr(rand(),0,4);//only show 4 numbers
                 </div>
             </div>
             <div class="col-sm-4" style="background: white;height: 221px;width:365px;margin-right: 30px;margin-bottom: 35px;">
-                <div class="col-sm-2" style="margin-right: 76px;"><img src="Dashboard/images/boy1.jpg" style="margin-left: -23px;width:533%;height:195px; margin-top: 6px;"></div>
+                <div class="col-sm-2" style="margin-right: 76px;"><img src="assets/images/boy1.jpg" style="margin-left: -23px;width:533%;height:195px; margin-top: 6px;"></div>
                 <div class="col-sm-2" style="width:35.667%; ;">
                 <h3 style="color: #81187f;">Akash</h3>
                 <h5 style="padding-bottom: 10px;">28 years</h5>
@@ -419,7 +419,7 @@ $rand=substr(rand(),0,4);//only show 4 numbers
                 </div>
             </div>
             <div class="col-sm-4" style="background: white;height: 221px;width:365px;margin-right: 30px;margin-bottom: 35px;">
-                <div class="col-sm-2" style="margin-right: 76px;"><img src="Dashboard/images/girl1.jpg" style="margin-left: -23px;width: 533%;margin-top: 6px;"></div>
+                <div class="col-sm-2" style="margin-right: 76px;"><img src="assets/images/girl1.jpg" style="margin-left: -23px;width: 533%;margin-top: 6px;"></div>
                 <div class="col-sm-2" style="width:35.667%; ;">
                 <h3 style="color: #81187f;">ISWARIYA</h3>
                 <h5 style="padding-bottom: 10px;">23 years</h5>
@@ -446,9 +446,9 @@ $rand=substr(rand(),0,4);//only show 4 numbers
           <div class="kvline-2"></div>
           <div class="kvline-3"></div>
           <div style="padding-left:30px;margin-top: 50px;">
-            <div class="col-sm-4" style="margin-right:10px;width: 31.333%;"><img src="Dashboard/images/brideimage1.jpg" class="img-responsive" height="250" width="100%"></div>
-            <div class="col-sm-4" style="margin-right:10px;width: 31.333%;"><img src="Dashboard/images/brideimage1.jpg" class="img-responsive" height="250" width="100%"></div>
-            <div class="col-sm-4" style="margin-right:10px;width: 31.333%;"><img src="Dashboard/images/brideimage1.jpg" class="img-responsive" height="250" width="100%"></div>
+            <div class="col-sm-4" style="margin-right:10px;width: 31.333%;"><img src="assets/images/brideimage1.jpg" class="img-responsive" height="250" width="100%"></div>
+            <div class="col-sm-4" style="margin-right:10px;width: 31.333%;"><img src="assets/images/brideimage1.jpg" class="img-responsive" height="250" width="100%"></div>
+            <div class="col-sm-4" style="margin-right:10px;width: 31.333%;"><img src="assets/images/brideimage1.jpg" class="img-responsive" height="250" width="100%"></div>
           </div>
           <div class="happy-album-info" style="display: none;">
 <h3>Nandha Kumar &amp; Sumathi Renuga</h3>
@@ -477,7 +477,7 @@ Best of Luck, Thanks a lot for helping me find my best life partner. We really b
             <div class="kvline-3" style="margin-bottom:50px"></div>
         </div>
         <div style="margin-left:59px;margin-right: 30px;height: 300px;margin-top: 50px;">
-            <div class="col-sm-5" style="margin-right: -32px;"><img src="Dashboard/images/brideimage1.jpg" width="96%" height="300px"></div>
+            <div class="col-sm-5" style="margin-right: -32px;"><img src="assets/images/brideimage1.jpg" width="96%" height="300px"></div>
             <div class="col-sm-7" style="background:#f2f2f2;height: 300px;">
                 <div class="intro-details">
                     <h5 class="subtitle">1000s of successful Marriages trusted by Brides &amp; Grooms</h5>
@@ -501,7 +501,7 @@ Best of Luck, Thanks a lot for helping me find my best life partner. We really b
                         <p>You can use our mobile website wherever you are, without having to download anything, mobile-friendly websites which look great on all mobile browsers and all screen sizes, including mobile phones, tablets and desktops. The fastest way to find your perfect life partner.</p>
                     </div>
                 </div>
-              <div class="col-xs-12 col-md-7"> <img src="Dashboard/images/bt-android-app-screen.jpg" class="img-responsive"> </div>
+              <div class="col-xs-12 col-md-7"> <img src="assets/images/bt-android-app-screen.jpg" class="img-responsive"> </div>
             </div>
         </div>
      </div>

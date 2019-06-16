@@ -5,14 +5,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Matrimony Software</title>
          
-            <link rel="stylesheet" href="<?php echo SiteUrl?>vendors/iconfonts/mdi/css/materialdesignicons.min.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="stylesheet" href="<?php echo SiteUrl?>vendors/css/vendor.bundle.base.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="stylesheet" href="<?php echo SiteUrl?>vendors/css/vendor.bundle.addons.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="stylesheet" href="<?php echo SiteUrl?>css/style.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="shortcut icon" href="<?php echo SiteUrl?>images/favicon.png" /> 
-            <link rel="stylesheet" href="<?php echo SiteUrl?>vendors/iconfonts/puse-icons-feather/feather.css?rnd=<?php echo rand(10,1000);?>">
-            <script src="http://nahami.online/sl/Dashboard/vendors/jquery-3.1.1.min.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
-            <link href='http://nahami.online/sl/Dashboard/vendors/bootstrap/css/bootstrap.min.css?rnd=<?php echo rand(10,1000);?>' rel='stylesheet' type='text/css'>
+            <link rel="stylesheet" href="<?php echo SiteUrl?>Dashboard/assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css?rnd=<?php echo rand(10,1000);?>">
+            <link rel="stylesheet" href="<?php echo SiteUrl?>Dashboard/assets/vendors/css/vendor.bundle.base.css?rnd=<?php echo rand(10,1000);?>">
+            <link rel="stylesheet" href="<?php echo SiteUrl?>Dashboard/assets/vendors/css/vendor.bundle.addons.css?rnd=<?php echo rand(10,1000);?>">
+            <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/style.css?rnd=<?php echo rand(10,1000);?>">
+            <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/selectboxstyle.css?rnd=<?php echo rand(10,1000);?>">
+            <link rel="shortcut icon" href="<?php echo SiteUrl?>assets/images/favicon.png" /> 
+            <link rel="stylesheet" href="<?php echo SiteUrl?>Dashboard/assets/vendors/iconfonts/puse-icons-feather/feather.css?rnd=<?php echo rand(10,1000);?>">
+            <script src="http://nahami.online/sl/Dashboard/assets/vendors/jquery-3.1.1.min.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
+            <link href='http://nahami.online/sl/Dashboard/assets/vendors/bootstrap/css/bootstrap.min.css?rnd=<?php echo rand(10,1000);?>' rel='stylesheet' type='text/css'>
             
          <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>    
@@ -21,13 +22,16 @@
   
            <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js?rnd=<?php echo rand(10,1000);?>"></script>
             <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css?rnd=<?php echo rand(10,1000);?>">
-         <script src="http://malsup.github.io/jquery.blockUI.js"></script>    
+         <script src="http://malsup.github.io/jquery.blockUI.js"></script> 
+          <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>   
             <style> 
                 .Activedot {height:10px;width:10px;background-color:#20e512;border-radius:50%;display:inline-block;}
                 .Deactivedot {height:10px;width:10px;background-color:#888;border-radius:50%;display:inline-block;}
                 #star{color:red;}
             </style>
-           <script src="http://nahami.online/sl/Dashboard/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
+           <script src="http://nahami.online/sl/Dashboard/assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
             
             <style>
                 .errorstring {font-size:10px;color:red}
@@ -109,7 +113,7 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
               <div class="dropdown-divider"></div>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <img src="<?php// echo SiteUrl?>images/faces/face4.jpg" alt="image" class="profile-pic">
+                  <img src="<?php// echo SiteUrl?>assets/images/faces/face4.jpg" alt="image" class="profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow">
                   <h6 class="preview-subject ellipsis font-weight-medium text-dark">David Grey
@@ -123,7 +127,7 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
               <div class="dropdown-divider"></div>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <img src="<?php // echo SiteUrl?>images/faces/face2.jpg" alt="image" class="profile-pic">
+                  <img src="<?php // echo SiteUrl?>assets/images/faces/face2.jpg" alt="image" class="profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow">
                   <h6 class="preview-subject ellipsis font-weight-medium text-dark">Tim Cook
@@ -137,7 +141,7 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
               <div class="dropdown-divider"></div>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <img src="<?php //echo SiteUrl?>images/faces/face3.jpg" alt="image" class="profile-pic">
+                  <img src="<?php //echo SiteUrl?>assets/images/faces/face3.jpg" alt="image" class="profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow">
                   <h6 class="preview-subject ellipsis font-weight-medium text-dark"> Johnson
@@ -211,7 +215,7 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
              </li>
              <li class="nav-item dropdown d-none d-xl-inline-block">
              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>images/userimage.jpg" alt="Profile image">
+              <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image">
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <a href="<?php echo GetUrl("ChangePassword");?>" class="dropdown-item" style="padding-top: 23px;">
@@ -365,7 +369,7 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
              </li> 
              <li class="nav-item dropdown d-none d-xl-inline-block"> 
              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>images/userimage.jpg" alt="Profile image">
+              <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image">
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <a href="<?php echo GetUrl("ChangePassword");?>" class="dropdown-item">
@@ -518,7 +522,7 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
              </li>
               <li class="nav-item dropdown d-none d-xl-inline-block">
               <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-             <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>images/userimage.jpg" alt="Profile image">
+             <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image">
              </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <a href="<?php echo GetUrl("ChangePassword");?>" class="dropdown-item" style="padding-top: 15px;">

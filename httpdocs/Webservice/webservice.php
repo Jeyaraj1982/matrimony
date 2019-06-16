@@ -1,20 +1,20 @@
 <?php
 //sleep(60);
     // include_once("config.php");
-    include_once("DatabaseController.php");
+    include_once("controller/DatabaseController.php");
     $mysql = new MySql("localhost","nahami_user","nahami_user","nahami_masterdb");
 
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
-    require '../lib/mail/src/Exception.php';
-    require '../lib/mail/src/PHPMailer.php';
-    require '../lib/mail/src/SMTP.php';
+    require 'lib/mail/src/Exception.php';
+    require 'lib/mail/src/PHPMailer.php';
+    require 'lib/mail/src/SMTP.php';
     $mail = new PHPMailer;
 
-    include_once("Dashboard/controllers/la-en.php");
-    include_once("MailController.php");  
-    include_once("MobileSMSController.php");  
+    include_once("la-en.php");
+    include_once("controller/MailController.php");  
+    include_once("controller/MobileSMSController.php");  
     include_once("classes/class.Franchisee.php");
     
     
@@ -130,8 +130,6 @@
           if (sizeof($data)>0){
               $_SESSION['rDetails'] = $res[0];
             $otp=rand(1000,9999);
-            
-            
             $mail2 = new MailController();
                     $mail2->MemberForgetPassword(array("mailTo"     => $data[0]['EmailID'] ,
                                                         "MemberName" => $data[0]['MemberName'],
@@ -708,5 +706,51 @@
       
     }
     
-                 
+    
+    
+    class SeqMaster {
+        
+        function GetNextMemberNumber() {
+            
+            global $mysql;
+        
+            $prefix = "MEM";
+            $Rows = $mysql->select("select * from _tbl_members");
+        
+            $nextNumber = sizeof($Rows)+1; 
+         
+            if (sizeof($nextNumber)==1) {
+                $prefix .= "000".$nextNumber; 
+            }
+        
+            if (sizeof($nextNumber)==2) {
+                $prefix .= "00".$nextNumber; 
+            }
+        
+            if (sizeof($nextNumber)==3) {
+                $prefix .= "0".$nextNumber; 
+            }
+        
+            if (sizeof($nextNumber)==4) {   
+                $prefix .= $nextNumber; 
+            }
+            
+            return $prefix;
+        }
+    }
+    
+    class CodeMaster {
+        
+        function GetGender() {
+            global $mysql;
+            $Sexs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX'") ;
+            return $Sexs;
+        }
+        
+        
+    }
+
+    
     ?>
+    
+    

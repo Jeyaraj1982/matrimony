@@ -1,7 +1,25 @@
 <?php
-    define("ImagePath","http://nahami.online/sl/Dashboard/images/");
+    define("ImagePath","http://nahami.online/sl/Dashboard/assets/images/");
     
+    $loginid = isset($_GET['LoginID']) ? $_GET['LoginID'] : "";
+    $loginInfo = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
+
     class Franchisee {
+        
+        function GetMyProfile() {
+            
+            global $mysql,$loginid;  
+
+            $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
+
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."'");
+          
+            if (sizeof($franchiseedata)>0) {
+                return Response::returnSuccess("success",$franchiseedata[0]);
+            } else{
+                return Response::returnError("Access denied. Please contact support");   
+            }
+        }
         
         function Login() {
             
@@ -33,12 +51,91 @@
                 return Response::returnError("Invalid username and password");
             }
         }
+        
+        function GetMemberCode(){
+            return Response::returnSuccess("success",array("MemberCode" => SeqMaster::GetNextMemberNumber(),
+                                                           "Gender"     => CodeMaster::GetGender()));
+        }
+        
+        function CreateMember() {
+                                                                            
+        global $mysql,$loginid;  
+       
+        $data = $mysql->select("select * from _tbl_members where  MemberCode='".$_POST['MemberCode']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("MemberCode Already Exists");
+        }
+        $data = $mysql->select("select * from _tbl_members where  EmailID='".$_POST['EmailID']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("EmailID Already Exists");
+        }
+        $data = $mysql->select("select * from _tbl_members where  MobileNumber='".$_POST['MobileNumber']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("MobileNumber Already Exists");
+        }
+        if (strlen(trim($_POST['WhatsappNumber']))>0) {
+        $data = $mysql->select("select * from  _tbl_members where WhatsappNumber='".trim($_POST['WhatsappNumber'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("WhatsappNumber Already Exists");
+        }
+        }
+        $data = $mysql->select("select * from _tbl_members where  AadhaarNumber='".$_POST['AadhaarNumber']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("AadhaarNumber Already Exists");
+        }
+        $data = $mysql->select("select * from _tbl_members where  MemberLogin='".$_POST['MemberLogin']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Member Login Already Exists");
+        }
+        if (!(strlen(trim($_POST['MemberName']))>0)) {
+            return Response::returnError("Please enter your name");
+        }
+        if (!(strlen(trim($_POST['DateofBirth']))>0)) {
+            return Response::returnError("Please enter your DateofBirth");
+        }
+        if (!(strlen(trim($_POST['Sex']))>0)) {
+            return Response::returnError("Please enter your Sex");
+        }
+        if (!(strlen(trim($_POST['MobileNumber']))>0)) {
+            return Response::returnError("Please enter your MobileNumber");
+        }
+        if (!(strlen(trim($_POST['EmailID']))>0)) {
+            return Response::returnError("Please enter your email");
+        }
+        if (!(strlen(trim($_POST['AadhaarNumber']))>0)) {
+            return Response::returnError("Please enter AadhaarNumber");
+        }
+        if (!(strlen(trim($_POST['LoginName']))>0)) {
+            return Response::returnError("Please enter MemberLogin");
+        }
+        if (!(strlen(trim($_POST['LoginPassword']))>0)) {
+            return Response::returnError("Please enter MemberPassword");    
+        }
+        $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
+       $id =  $mysql->insert("_tbl_members",array("MemberCode"              => $_POST['MemberCode'],
+                                                           "MemberName"               => $_POST['MemberName'],  
+                                                           "DateofBirth"              => $_POST['DateofBirth'],
+                                                           "Sex"                      => $_POST['Sex'],
+                                                           "MobileNumber"             => $_POST['MobileNumber'],
+                                                           "WhatsappNumber"           => $_POST['WhatsappNumber'],
+                                                           "EmailID"                  => $_POST['EmailID'],
+                                                           "AadhaarNumber"            => $_POST['AadhaarNumber'],
+                                                           "MemberLogin"              => $_POST['LoginName'],
+                                                           "CreatedOn"                => date("Y-m-d H:i:s"),
+                                                           "ReferedBy"                => $login[0]['FranchiseeID'],
+                                                           "MemberPassword"           => $_POST['LoginPassword']));
+        //return "<script>location.href='http://nahami.online/sl/Dashboard/Member/CreateMember';</script>";
+        if (sizeof($id)>0) {
+                return Response::returnSuccess("success",array("MemberCode"=>$_POST['MemberCode']));
+            } else{
+                return Response::returnError("Access denied. Please contact support");   
+            }
+    }
        
         function CheckVerification() {
             
-            global $mysql;
+            global $mysql,$loginid;
             
-            $loginid = $_GET['LoginID'];
             $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."'");
             
@@ -245,10 +342,10 @@
             global $mysql;  
             
             $otpInfo = $mysql->select("select * from _tbl_franchisee_verification_otp where RequestID='".$_POST['reqId']."'");
-             
             if (strlen(trim($_POST['mobile_otp_2']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['mobile_otp_2']))  {
+                
                 $sql = "update _tbl_franchisees_staffs set IsMobileVerified='1', MobileVerifiedOn='".date("Y-m-d H:i:s")."' where FranchiseeID='".$otpInfo[0]['FranchiseeID']."'";
-                $mysql->execute($sql); 
+                $mysql->execute($sql);
                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"></p>
                             <h5 style="text-align:center;color:#ada9a9">
@@ -280,7 +377,7 @@
             
              if ($franchiseedata[0]['IsEmailVerified']==1) {
                 return '<div style="background:white;padding:20px;">
-                            <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -295,7 +392,7 @@
                                 <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;padding-top: 12%;">Please verify your email</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/images/emailicon.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.ImagePath.'emailicon.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>
                             </div>
                             <div class="form-group">
@@ -326,7 +423,7 @@
             
             if ($franchiseedata[0]['IsEmailVerified']==1) {
                 return '<div style="background:white;width:100%;padding:20px;">
-                            <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -444,7 +541,7 @@
                                             <div class="input-group">
                                                 <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
                                             </div>
-                                            <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/images/emailicon.png" width="10%"></p>
+                                            <p style="text-align:center;padding: 20px;"><img src=""'.ImagePath.'emailicon.png" width="10%"></p>
                                             <h5 style="text-align:center;color:#ada9a9;font-size: 18px;">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
                                         </div>
                                         <div class="form-group">
@@ -504,7 +601,7 @@
                 $sql = "update _tbl_franchisees_staffs set IsEmailVerified='1', EmailVerifiedOn='".date("Y-m-d H:i:s")."' where FranchiseeID='".$otpInfo[0]['FranchiseeID']."'";
                 $mysql->execute($sql); 
                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <p style="text-align:center"><a href="../Dashboard" class="btn btn-primary">Continue</a></p>
                             
@@ -512,6 +609,69 @@
                                     } else {
                                         return $this->EmailVerificationForm("<span style='color:red'>You entered, invalid Pin.</span>",$_POST['loginId'],$_POST['email_otp'],$_POST['reqId']);
                                     }  
-        }    
-    }
+        }  
+        
+        function GetMyMembers() {
+            global $loginInfo;     
+            return ($loginInfo[0]['FranchiseeID']>0) ? Response::returnSuccess("success",$this->execute("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."'"))
+                                                     : Response::returnError("Access denied. Please contact support"); 
+        }
+        function GetMyActiveMembers() {
+            global $loginInfo;     
+            return ($loginInfo[0]['FranchiseeID']>0) ? Response::returnSuccess("success",$this->execute("select * from _tbl_members where IsActive='1' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"))
+                                                     : Response::returnError("Access denied. Please contact support");   
+        }
+        function GetMyDeactiveMembers() {
+             global $loginInfo;     
+            return ($loginInfo[0]['FranchiseeID']>0) ? Response::returnSuccess("success",$this->execute("select * from _tbl_members where IsActive='0' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"))
+                                                     : Response::returnError("Access denied. Please contact support"); 
+        }  
+        function execute($Qry) {
+            
+        
+            global $mysql;  
+            return $mysql->select($Qry);
+        }
+        
+        function GetMemberDetails() {
+            global $mysql,$loginInfo;  
+            $Member=$mysql->select(" SELECT 
+                                     _tbl_members.*,
+                                     _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
+                                     _tbl_franchisees.FranchiseName AS FranchiseName,
+                                     _tbl_franchisees.FranchiseeID AS FranchiseeID,
+                                     _tbl_franchisees.IsActive AS FIsActive
+                                    FROM _tbl_members
+                                    INNER JOIN _tbl_franchisees
+                                    ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.ReferedBy='".$loginInfo[0]['FranchiseeID']."' and _tbl_members.MemberID='".$_POST['Code']."'");
+            return Response::returnSuccess("success",$Member[0]);
+        }
+        function GetProfileDetails() {
+            global $mysql,$loginInfo;  
+           $Profiles = $mysql->select("select * from _tbl_Profile_Draft");
+            return Response::returnSuccess("success",$Profiles[0]);
+        }
+        
+        function EditMember(){
+              global $mysql,$loginInfo;    
+              
+              $Member = $mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and  MemberID='".$_POST['Code']."'");
+              $data = $mysql->select("select * from  _tbl_members where EmailID='".trim($_POST['EmailID'])."' and MemberID <>'".$_POST['Code']."' ");
+              if (sizeof($data)>0) {
+                    return Response::returnError("EmailID Already Exists");    
+              }
+                                                       
+                    $mysql->execute("update _tbl_members set MemberName='".$_POST['MemberName']."',
+                                                    EmailID='".$_POST['EmailID']."',
+                                                    MobileNumber='".$_POST['MobileNumber']."',
+                                                    IsActive='".$_POST['Status']."' where  MemberID='".$Member[0]['MemberID']."'");
+      
+     
+             $Member = $mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and  MemberID='".$_POST['Code']."'");
+            
+    
+                return Response::returnSuccess("success",array());
+                                                            
+    }   
+        }
 ?>

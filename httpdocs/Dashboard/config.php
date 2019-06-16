@@ -2,7 +2,7 @@
     session_start();
     define("SiteUrl","http://nahami.online/sl/Dashboard/");
     
-    use PHPMailer\PHPMailer\PHPMailer;
+   /* use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
     require 'lib/mail/src/Exception.php';
@@ -13,12 +13,14 @@
     include_once("controllers/la-en.php");
     include_once("controllers/DatabaseController.php");
     include_once("controllers/MobileSMSController.php");
-    include_once("controllers/MailController.php");  
+    include_once("controllers/MailController.php"); 
     
-    define("SITE_TITLE","Matrimony") ;
+   
      
     $mysql = new MySqlController("localhost","nahami_user","nahami_user","nahami_masterdb");
-    $mobilesms = new MobileSMSController();
+    $mobilesms = new MobileSMSController(); */
+    
+     define("SITE_TITLE","Matrimony") ;
     
     function printDateTime($dateTime) {
         return date("M d, Y H",strtotime($dateTime));
@@ -122,36 +124,7 @@
         }
     }
     
-    class Member  {
-        
-        function GetNextMemberNumber() {
-            
-            global $mysql,$_Member;
-        
-            $prefix = "MEM";
-            $Rows = $mysql->select("select * from _tbl_members");
-        
-            $nextNumber = sizeof($Rows)+1; 
-         
-            if (sizeof($nextNumber)==1) {
-                $prefix .= "000".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==2) {
-                $prefix .= "00".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==3) {
-                $prefix .= "0".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==4) {   
-                $prefix .= $nextNumber; 
-            }
-            
-            return $prefix;
-        }
-    }
+   
     
     class Paypal  {
         
@@ -468,22 +441,54 @@
     }
     
     
+    $loginID = isset($_Franchisee['LoginID']) ? $_Franchisee['LoginID'] : 0;
+    
     class Webservice {
-       // global $userData;
         
-        var $serverURL="http://nahami.online/sl/Dashboard/Webservice/webservice.php?rand=2&";
+        var $serverURL="http://nahami.online/sl/Webservice/webservice.php?rand=2&";
+        
+        function Webservice() {
+            global $loginID;
+            $this->serverURL .= "LoginID=".$loginID."&"; 
+        }
         
         function Login($param) {
               return json_decode($this->_callUrl("Login",$param),true);
         }
+        
         function FLogin($param) {
-           
               return json_decode($this->_callUrl("m=Franchisee&a=Login",$param),true);
-              
+        }
+         function FranchiseeInfo($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=GetMyProfile",$param),true);
+        }
+        function CreateMember($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=CreateMember",$param),true);
+        }
+        function GetMemberCode($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=GetMemberCode",$param),true);
+        }
+        function GetMyMembers($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=GetMyMembers",$param),true);
+        }
+        function GetMyActiveMembers($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=GetMyActiveMembers",$param),true);
+        }
+        function GetMyDeactiveMembers($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=GetMyDeactiveMembers",$param),true);
+        }
+        function GetMemberDetails($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=GetMemberDetails",$param),true);
+        }
+        function GetProfileDetails($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=GetProfileDetails",$param),true);
+        }
+        function EditMember($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=EditMember",$param),true);
         }
         
+        
    function _callUrl($method,$param) {
-       
         
            
             $postvars = '';
@@ -492,6 +497,7 @@
             }
             $ch = curl_init();
             curl_setopt($ch,CURLOPT_URL,$this->serverURL.$method."&User=".$_SESSION['UserData']['MemberID']);
+            
             curl_setopt($ch,CURLOPT_POST, 1);                //0 for a get request
             curl_setopt($ch,CURLOPT_POSTFIELDS,$postvars);
             curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
@@ -503,5 +509,5 @@
         }
     }
     
-    $webservice = new Webservice();
+    $webservice = new Webservice($loginID);
 ?>

@@ -1,75 +1,15 @@
-<?php
-    if (isset($_POST['BtnMember'])) {
-        
-              
-        $ErrorCount =0;
-        $duplicate = $mysql->select("select * from  _tbl_members where MemberCode='".trim($_POST['MemberCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrMemberCode="Member Code Already Exists";    
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from  _tbl_members where EmailId='".trim($_POST['EmailID'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrEmailID="Email ID Already Exists";    
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_members where MobileNumber='".trim($_POST['MobileNumber'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrMobileNumber="Mobile Number Already Exists";    
-             $ErrorCount++;
-        }
-        if (strlen(trim($_POST['WhatsappNumber']))>0) {
-        $duplicate = $mysql->select("select * from  _tbl_members where WhatsappNumber='".trim($_POST['WhatsappNumber'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrWhatsappNumber="Whatsapp Number Already Exists";    
-             $ErrorCount++;
-        } 
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_members where AadhaarNumber='".trim($_POST['AadhaarNumber'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrAadhaarNumber="Aadhaar Number Already Exists";    
-             $ErrorCount++;
-        }
-        
-         $duplicate = $mysql->select("select * from  _tbl_members where MemberLogin='".trim($_POST['LoginName'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrLoginName="Login Name Already Exists";    
-             $ErrorCount++;
-        }
-                                                        
-           if ($ErrorCount==0) {
-           $MemberID = $mysql->insert("_tbl_members",array("MemberCode"              => $_POST['MemberCode'],
-                                                           "MemberName"               => $_POST['MemberName'],  
-                                                           "DateofBirth"              => $_POST['DateofBirth'],
-                                                           "Sex"                      => $_POST['Sex'],
-                                                           "MobileNumber"             => $_POST['MobileNumber'],
-                                                           "WhatsappNumber"           => $_POST['WhatsappNumber'],
-                                                           "EmailID"                  => $_POST['EmailID'],
-                                                           "AadhaarNumber"            => $_POST['AadhaarNumber'],
-                                                           "MemberLogin"              => $_POST['LoginName'],
-                                                           "CreatedOn"                => date("Y-m-d H:i:s"),
-                                                           "ReferedBy"                => $_Franchisee['FranchiseeID'],
-                                                           "MemberPassword"           => $_POST['LoginPassword']));
-                                                                                           
-          /*$mail2 = new MailController();
-            $mail2->NewMember(array("mailTo"         => $_POST['EmailID'] ,
-                                    "FranchiseeName" => $_POST['MemberName'],
-                                    "LoginName"      => $_POST['LoginName'],
-                                    "LoginPassword"  => $_POST['LoginPassword']));*/
-                                                                 
-                                                                  
-        if ($MemberID>0) {
-            echo "Successfully Added";
-            unset($_POST);
-        } else {
-            echo "Error occured. Couldn't save Member  Name";
-        }
-    
+<?php                   
+  if (isset($_POST['BtnMember'])) {         
+    $response = $webservice->CreateMember($_POST);
+    if ($response['status']=="success") {
+        ?>
+        <script>location.href='http://nahami.online/sl/Dashboard/Member/Created';</script>
+        <?php
+    } else {
+        $errormessage = $response['message']; 
     }
     }
-?>
+?>  
 <script>
 
 $(document).ready(function () {
@@ -201,7 +141,17 @@ function SubmitNewMember() {
                  
 }                                                
 </script>
-<form method="post" action="" onsubmit="return SubmitNewMember();">
+<?php 
+     $fInfo = $webservice->GetMemberCode(); 
+
+     $MemCode="";
+        if ($fInfo['status']=="success") {
+            $MemCode  =$fInfo['data']['MemberCode'];
+        }
+        
+        {
+?>
+<form method="post" action="<?php $_SERVER['PHP_SELF']?>" onsubmit="return SubmitNewMember();">
         <div class="col-12 stretch-card">
                   <div class="card">
                     <div class="card-body">
@@ -210,7 +160,7 @@ function SubmitNewMember() {
                       <div class="form-group row">
                           <label for="Member Name" class="col-sm-2 col-form-label">Member Code<span id="star">*</span></label>
                           <div class="col-sm-2">
-                            <input type="text" class="form-control" maxlength="7" id="MemberCode" name="MemberCode" value="<?php echo isset($_POST['MemberCode']) ? $_POST['MemberCode'] : Member::GetNextMemberNumber();?>">
+                            <input type="text" class="form-control" maxlength="8" id="MemberCode" name="MemberCode" value="<?php echo isset($_POST['MemberCode']) ? $_POST['MemberCode'] : $MemCode;?>">
                             <span class="errorstring" id="ErrMemberCode"><?php echo isset($ErrMemberCode)? $ErrMemberCode : "";?></span>
                           </div>
                         </div>
@@ -228,16 +178,14 @@ function SubmitNewMember() {
                             <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth : "";?></span>
                           </div>
                           <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
-                         
-                          <div class="col-sm-3">
+                            <div class="col-sm-3">
                           <select class="form-control" id="Sex"  name="Sex">
-                            <?php $Sexs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX'");  ?>
-                            <?php foreach($Sexs as $Sex) { ?>
+                            <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
                             <option value="<?php echo $Sex['SoftCode'];?>" <?php echo ($_POST['Sex']==$Sex['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
                             <?php } ?>
                         </select>
                        <span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>
-                     </div>
+                     </div> 
                         </div>
                         <div class="form-group row">
                           <label for="MobileNumber" class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
@@ -281,13 +229,15 @@ function SubmitNewMember() {
                             <span class="errorstring" id="ErrLoginPassword"><?php echo isset($ErrLoginPassword)? $ErrLoginPassword : "";?></span></div>
                             <div class="col-sm-2" style="padding-top:5px;"><input type="checkbox" onclick="myFunction()">&nbsp;show</div>
                           </div>
+                          
                        <div class="form-group row">
                         <div class="col-sm-2">
                         <button type="submit" name="BtnMember" class="btn btn-success mr-2">Create Member</button></div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"> <a href="ManageMembers">List of Members </a></div>
-                        </div>
-                        </form>                   
+                        </div> 
+                        </form> 
+                        <div class="col-sm-12" style="text-align: center;color:red"><?php echo $errormessage ;?></div>                  
                     </div>
                   </div>                              
                 </div>
-</form>  
+</form>  <?php }?>

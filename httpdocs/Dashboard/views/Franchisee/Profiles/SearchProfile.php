@@ -1,4 +1,7 @@
-<?php $Profiles = $mysql->select("select * from _tbl_Profile_Draft"); ?>
+<?php
+ $response = $webservice->GetProfileDetails();
+    $Profile=$response['data'];    
+?>
 <div class="form-group row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-9" style="text-align:right;padding-top:5px;color:skyblue;">
