@@ -1,6 +1,7 @@
 <?php
-    $Member = $mysql->select("select * from _tbl_members where MemberID='".$_REQUEST['Code']."'");
-?>
+  $response = $webservice->RefillWallet($_POST); 
+  $Member=$response['data'];
+                    ?> 
 <script>
 $(document).ready(function () {
   $("#AmountToTransfer").keypress(function (e) {

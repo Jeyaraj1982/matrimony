@@ -1,5 +1,5 @@
 <?php
-    if (isset($_POST['BtnupdateStaff'])) {
+ /*   if (isset($_POST['BtnupdateStaff'])) {
         
          
        $ErrorCount =0;
@@ -50,7 +50,7 @@
                                                                  
                                                                   
         
-            unset($_POST);
+            /*unset($_POST);
             echo "Updated Successfully";
         } else {
             echo "Error occured. Couldn't save Staff  Name";
@@ -59,7 +59,22 @@
     }  
    
     
-   $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_REQUEST['Code']."'");
+   $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_REQUEST['Code']."'");              */
+?>
+<?php
+
+    if (isset($_POST['BtnupdateStaff'])) {
+        $response = $webservice->EditFranchiseeStaff($_POST);
+         print_r($response);
+        if ($response['status']=="success") {
+            echo "aa";
+            echo $response['message'];
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+    $response = $webservice->GetStaffs();
+    $Staffs=$response['data'];
 ?>
 <script>
 
@@ -167,7 +182,16 @@ function SubmitNewStaff() {
 </script>
 
 
+ <?php 
+     $fInfo = $webservice->GetFranchiseeStaffCodeCode(); 
 
+     $StaffCode="";
+        if ($fInfo['status']=="success") {
+            $StaffCode  =$fInfo['data']['staffCode'];
+        }
+        
+        {
+?>
 
 <form method="post" action="" onsubmit="return SubmitNewStaff();">            
 <div class="col-12 grid-margin">
@@ -199,16 +223,16 @@ function SubmitNewStaff() {
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
-                          <?php $Sexs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX'"); ?>
                           <div class="col-sm-3">
                           <select class="form-control" id="Sex"  name="Sex" >
-                            <?php foreach($Sexs as $Sex) { ?>
-                                <option value="<?php echo $Sex['CodeValue'];?>" <?php echo ($Sex['CodeValue']==$Staffs[0]['Sex']) ? " selected='selected'" :""; ?>><?php echo $Sex['CodeValue'];?></option>
-                          <?php } ?>
+                          <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
+                            <option value="<?php echo $Sex['SoftCode'];?>" <?php echo ($_POST['Sex']==$Sex['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
+                            <?php } ?>
                           </select>
                           <span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>
                           </div>
-                          <label class="col-sm-3 col-form-label">Date of Birth<span id="star">*</span></label>
+                          <div class="col-sm-1"></div>
+                          <label class="col-sm-2 col-form-label">Date of Birth<span id="star">*</span></label>
                           <div class="col-sm-3">
                           <?php
                          
@@ -231,17 +255,17 @@ function SubmitNewStaff() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
                           <div class="col-sm-1">
-                            <select name="CountryCode" id="CountryCode">
+                            <select name="CountryCode" id="CountryCode" style="padding-top: 9px;padding-bottom: 6px;">
                                 <option value="+91" <?php echo ($CountryCode=="+91") ? ' selected="selected"' : '';?>>+91</option>
                                 <option value="+44" <?php echo ($CountryCode=="+44") ? ' selected="selected"' : '';?>>+44</option>
                             </select>
                             <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber: "";?></span>
                           </div>
                           <div class="col-sm-3">
-                            <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Staffs[0]['MobileNumber']);?>">
+                            <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Staffs[0]['MobileNumber']);?>" style="margin-left: -20px;">
                             <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber: "";?></span>
                           </div>
-                          <label class="col-sm-3 col-form-label">Staff Role<span id="star">*</span></label>
+                          <label class="col-sm-2 col-form-label">Staff Role<span id="star">*</span></label>
                           <div class="col-sm-3">
                               <select class="form-control" id="UserRole"  name="UserRole">
                                 <option value="Admin">Admin</option>
@@ -284,6 +308,7 @@ function SubmitNewStaff() {
                         <div class="col-sm-2"><button type="submit" name="BtnupdateStaff" class="btn btn-success mr-2">Update staff</button></div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../ManageStaffs "><small>List of Staffs</small> </a></div>
                    </div>
+                        <div class="col-sm-12" style="text-align: center;color:red"><?php echo $errormessage ;?></div>    
                 </form>
              </div>
           </div>
@@ -293,4 +318,4 @@ function SubmitNewStaff() {
                         <a href="<?php echo GetUrl("Staffs/BlockStaffs/".$_REQUEST['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Block Staffs</small></a>&nbsp;|&nbsp;
                         <a href="<?php echo GetUrl("Staffs/ResetPassword/".$_REQUEST['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a>&nbsp;|&nbsp;
 </div> 
-</form>   
+</form> <?php }?>  

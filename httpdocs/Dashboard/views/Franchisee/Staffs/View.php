@@ -1,9 +1,13 @@
 <?php
-   $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_REQUEST['Code']."'");
+  /* $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_REQUEST['Code']."'");
          if (sizeof($Staffs)==0) {
             echo "Error: Access denied. Please contact administrator";
-             } else {
+             } else {*/?>
+             <?php
+ $response = $webservice->GetStaffs(array());
+    $Staffs=$response['data'];    
 ?>
+ 
  
 <form method="post" action="">            
 <div class="col-12 grid-margin">
@@ -81,4 +85,3 @@
           </div>
 </div>
 </form>   
-<?php }?>

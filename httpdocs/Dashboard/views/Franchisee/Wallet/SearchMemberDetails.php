@@ -1,6 +1,3 @@
-<?php
-    $Members = $mysql->select("select * from _tbl_members where MemberName='".$_POST['MemberDetails']."' or MobileNumber='".$_POST['MemberDetails']."'or EmailID='".$_POST['MemberDetails']."'");
-?>
 <script>
     function SubmitSearch() {
         
@@ -45,26 +42,8 @@
 </div>
 
 
-<?php
-    $Members = array();
-    if (isset($_POST['MemberDetails'])) {
-        $Members = $mysql->select("SELECT 
-                                    tb1_1.MemberID AS MemberID,
-                                    tb1_1.MemberName AS MemberName,
-                                    tb1_1.MemberCode AS MemberCode,
-                                    tb1_1.MobileNumber AS MobileNumber,
-                                    _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
-                                    _tbl_franchisees.FranchiseName AS FranchiseeName,
-                                    tb1_1.CreatedOn AS CreatedOn,
-                                    tb1_1.IsActive AS IsActive
-                                  FROM 
-                                    (select * from _tbl_members where  MemberCode like '%".$_POST['MemberDetails']."%' or MemberName like '%".$_POST['MemberDetails']."%' or MobileNumber like '%".$_POST['MemberDetails']."%' or EmailID like '%".$_POST['MemberDetails']."%') AS tb1_1
-                                  INNER JOIN 
-                                    _tbl_franchisees
-                                  ON 
-                                    tb1_1.ReferedBy =_tbl_franchisees.FranchiseeID;"); 
-    }
-?>
+<?php if(isset($_POST['MemberDetails'])>0){
+?> 
 <div class="content-wrapper">
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
@@ -82,7 +61,14 @@
                         </tr>                                      
                     </thead>                                                    
                     <tbody>  
-                    <?php foreach($Members as $Member) { ?>
+                    <?php
+                    $Members = array();
+                        if (isset($_POST['MemberDetails'])) {
+                        $response = $webservice->SearchMemberDetails($_POST); 
+                        if (sizeof($response['data'])>0) {
+                        }
+                    ?> 
+                    <?php foreach($response['data'] as $Member) {  ?>
                         <tr>
                             <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberCode'];?></td>
                             <td><?php echo $Member['MemberName'];?></td>
@@ -90,7 +76,7 @@
                             <td style="text-align:right"><?php echo $Member['MobileNumber'];?></td>
                             <td style="text-align:right"><a href="<?php echo GetUrl("Wallet/RefillWallet/". $Member['MemberID'].".html");?>"><span class="glyphicon glyphicon-pencil">Refill</span></a></td>
                         </tr>             
-                    <?php } ?>            
+                    <?php }} ?>            
                     </tbody>                        
                 </table>
             </div>
@@ -104,3 +90,4 @@
         setTimeout("DataTableStyleUpdate()",500);
     });
 </script>
+<?php }?>

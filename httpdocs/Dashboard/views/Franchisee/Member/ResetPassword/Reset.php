@@ -1,10 +1,7 @@
 <?php
-    $Member = $mysql->select("select * from _tbl_members where MemberID='".$_REQUEST['Code']."'");
-    //$Franchisee = $mysql->select("select * from _tbl_franchisees where FranchiseeID='". $Member[0]['ReferedBy']."'"); 
-    //$Franchisee =$mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_REQUEST['Code']."'");
-    //$FranchiseeBank =$mysql->select("select * from _tbl_bank_details where FranchiseeID='".$_REQUEST['Code']."'");
-    //$FranchiseeStaff =$mysql->select("select * from _tbl_franchisees_staffs where ReferedBy='1' and FranchiseeID='".$_REQUEST['Code']."'");
-?>
+  $response = $webservice->ResetPassword($_POST); 
+  $Member=$response['data'];
+                    ?> 
 <div class="col-12 stretch-card">                                         
                   <div class="card">
                     <div class="card-body">

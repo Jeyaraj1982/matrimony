@@ -563,8 +563,14 @@ var API_URL = "http://nahami.online/sl/Webservice/webservice.php?LoginID=<?php e
         $.ajax({
                         url: API_URL + "m=Franchisee&a=CheckVerification", 
                         success: function(result2){
-                            $('#Mobile_VerificationBody').html(result2);
-                               
+                            var v = $.trim(result2).length;
+                            if (parseInt(v)>0) {    
+                                $('#Mobile_VerificationBody').html(result2);
+                            } else {
+                                setTimeout(function(){
+                                  $('#myModal').modal('hide');  
+                                },1000);
+                            }
                         }
                     });
     } 

@@ -33,8 +33,13 @@
                       </thead>
                       <tbody>                      
                         <?php 
-                        $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where ReferedBy<>'1' and FranchiseeID='".$_Franchisee['FranchiseeID']."' "); ?>
-                        <?php foreach($Staffs as $Staff) { ?>
+                       // $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where ReferedBy<>'1' and FranchiseeID='".$_Franchisee['FranchiseeID']."' "); ?>
+                        <?php// foreach($Staffs as $Staff) { ?>   
+                        <?php 
+                         $response = $webservice->GetManageStaffs();
+                         if (sizeof($response['data'])>0) {
+                    ?>
+                        <?php foreach($response['data'] as $Staff) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($Staff['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;
                                 <?php echo $Staff['PersonName'];?></td>
@@ -45,7 +50,7 @@
                                 <td style="text-align:right"><a href="<?php echo GetUrl("Staffs/Edit/". $Staff['PersonID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Staffs/View/".$Staff['PersonID'].".html"); ?>"><span>View</span></a>&nbsp;&nbsp;&nbsp;
                                 </tr>
-                        <?php } ?>            
+                        <?php }} ?>            
                       </tbody>
                     </table>
                   </div>

@@ -38,7 +38,8 @@
             if (sizeof($data)>0) {
                 
                 $loginid = $mysql->insert("_tbl_franchisee_login",array("LoginOn"      => date("Y-m-d H:i:s"),
-                                                                        "FranchiseeID" => $data[0]['FranchiseeID']));
+                                                                        "FranchiseeID" => $data[0]['FranchiseeID'],
+                                                                        "StaffID" => $data[0]['PersonID']));
                 $data[0]['LoginID']=$loginid;
                 
                 if ($data[0]['IsActive']==1) {
@@ -137,7 +138,9 @@
             global $mysql,$loginid;
             
             $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
-            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."'");
+            $sql="select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."' and PersonID='".$login[0]['StaffID']."'";
+           
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."' and PersonID='".$login[0]['StaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==0) {
                return $this->ChangeMobileNumberFromVerificationScreen("",$loginid,"","");
@@ -147,13 +150,13 @@
                return $this->ChangeEmailFromVerificationScreen("",$loginid,"","");
             }
             
-            return "<script>location.href='';</script>";
+           // return "<script>location.href='';</script>";
         }
         
         function VisitedWelcomeMsg(){
             global $mysql;
             $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$_GET['LoginID']."'");     
-            $welcome=$mysql->execute("update _tbl_franchisees_staffs set WelcomeMsg='1' where  FranchiseeID='".$login[0]['FranchiseeID']."'");
+            $welcome=$mysql->execute("update _tbl_franchisees_staffs set WelcomeMsg='1' where  FranchiseeID='".$login[0]['FranchiseeID']."' and PersonID='".$login[0]['StaffID']."'");
             return true;
         }
         
@@ -171,7 +174,7 @@
                 return "Invalid request. Please login again.";
             }   
             
-            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."'");
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."' and PersonID='".$login[0]['StaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==1) {
                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
@@ -373,7 +376,7 @@
                 return "Invalid request. Please login again.";
             }   
             
-            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."'");
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."' and PersonID='".$login[0]['StaffID']."' and PersonID='".$login[0]['StaffID']."'");
             
              if ($franchiseedata[0]['IsEmailVerified']==1) {
                 return '<div style="background:white;padding:20px;">
@@ -646,12 +649,28 @@
                                     ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.ReferedBy='".$loginInfo[0]['FranchiseeID']."' and _tbl_members.MemberID='".$_POST['Code']."'");
             return Response::returnSuccess("success",$Member[0]);
         }
-        function GetProfileDetails() {
-            global $mysql,$loginInfo;  
-           $Profiles = $mysql->select("select * from _tbl_Profile_Draft");
-            return Response::returnSuccess("success",$Profiles[0]);
+        function SearchMemberDetails() {
+            global $mysql,$loginInfo;                                                                      
+            $sql="SELECT tb1_1.MemberID AS MemberID,
+                         tb1_1.MemberName AS MemberName,
+                         tb1_1.MemberCode AS MemberCode,
+                         tb1_1.MobileNumber AS MobileNumber,
+                         _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
+                         _tbl_franchisees.FranchiseName AS FranchiseeName,
+                         tb1_1.CreatedOn AS CreatedOn,
+                         tb1_1.IsActive AS IsActive
+                   FROM 
+                        (select * from _tbl_members where  MemberCode like '%".$_POST['MemberDetails']."%' or MemberName like '%".$_POST['MemberDetails']."%' or MobileNumber like '%".$_POST['MemberDetails']."%' or EmailID like '%".$_POST['MemberDetails']."%') AS tb1_1
+                   INNER JOIN 
+                        _tbl_franchisees 
+                   ON 
+                        tb1_1.ReferedBy=_tbl_franchisees.FranchiseeID
+                   
+                   where 
+                    _tbl_franchisees.FranchiseeID='".$loginInfo[0]['FranchiseeID']."'";
+            $Member=$mysql->select($sql);                                                    
+            return Response::returnSuccess("success".$sql,$Member);
         }
-        
         function EditMember(){
               global $mysql,$loginInfo;    
               
@@ -672,6 +691,130 @@
     
                 return Response::returnSuccess("success",array());
                                                             
-    }   
+    } 
+    function RefillWallet(){
+           global $mysql,$loginInfo;    
+              
+              $Member = $mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and  MemberID='".$_POST['Code']."'");
+              $sql="select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and  MemberID='".$_POST['Code']."'";
+                return Response::returnSuccess("success".$sql,$Member);
+                                                            
+    }
+    function ResetPassword(){
+           global $mysql,$loginInfo;    
+              
+              $Member = $mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and  MemberID='".$_POST['Code']."'");
+              $sql="select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and  MemberID='".$_POST['Code']."'";
+                return Response::returnSuccess("success".$sql,$Member);
+                                                            
+    }
+    function GetManageStaffs(){
+           global $mysql,$loginInfo;    
+              
+              $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where ReferedBy<>'1' and FranchiseeID='".$loginInfo[0]['FranchiseeID']."'");
+              $sql="select * from _tbl_franchisees_staffs where ReferedBy<>'1' and FranchiseeID='".$loginInfo[0]['FranchiseeID']."'";
+                return Response::returnSuccess("success".$sql,$Staffs);
+                                                            
+    }
+    function CreateFranchiseeStaff() {
+                                                                            
+        global $mysql,$loginInfo;  
+       
+        $data = $mysql->select("select * from  _tbl_franchisees_staffs where staffCode='".$_POST['staffCode']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Staff Code Already Exists");
+        }
+        $data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".$_POST['EmailID']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("EmailID Already Exists");
+        }
+        $data = $mysql->select("select * from  _tbl_franchisees_staffs where MobileNumber='".$_POST['MobileNumber']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Mobile Number Already Exists");
+        }
+        $data = $mysql->select("select * from  _tbl_franchisees_staffs where LoginName='".$_POST['LoginName']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("LoginName Already Exists");
+        }
+       
+       $id =  $mysql->insert("_tbl_franchisees_staffs",array("FrCode"          => $loginInfo[0]['FranchiseeCode'],
+                                                                 "StaffCode"       => $_POST['staffCode'],   
+                                                                 "PersonName"      => $_POST['staffName'], 
+                                                                 "Sex"             => $_POST['Sex'], 
+                                                                 "DateofBirth"     => $_POST['DateofBirth'],
+                                                                 "CountryCode"    => $_POST['CountryCode'],
+                                                                 "MobileNumber"    => $_POST['MobileNumber'],
+                                                                 "EmailID"         => $_POST['EmailID'],
+                                                                 "IsActive"        => "1",
+                                                                 "UserRole"        => "Admin",
+                                                                 "LoginName"       => $_POST['LoginName'],
+                                                                 "FranchiseeID"    => $loginInfo[0]['FranchiseeID'],
+                                                                 "ReferedBy"       => "0",
+                                                                 "CreatedOn"       => date("Y-m-d H:i:s"), 
+                                                                 "LoginPassword"   => $_POST['LoginPassword']));
+                                                                       
+           $mail2 = new MailController();
+           $mail2->NewFranchiseeStaff(array("mailTo"         => $_POST['EmailID'] ,
+                                             "StaffName"      => $_POST['staffName'],
+                                             "StaffCode"      => $_POST['staffCode'],
+                                             "FranchiseeName" => $login['FranchiseeName'],
+                                             "LoginName"      => $_POST['LoginName'],
+                                             "LoginPassword"  => $_POST['LoginPassword']));   
+        //return "<script>location.href='http://nahami.online/sl/Dashboard/Member/CreateMember';</script>";
+        if (sizeof($id)>0) {
+                return Response::returnSuccess("success",array());
+            } else{
+                return Response::returnError("Access denied. Please contact support");   
+            }
+    }
+    function GetFranchiseeStaffCodeCode(){
+            return Response::returnSuccess("success",array("staffCode" => SeqMaster::GetNextFranchiseeStaffNumber(),
+                                                           "Gender"     => CodeMaster::GetGender()));
+        }
+    function EditFranchiseeStaff(){
+              global $mysql,$loginInfo;    
+                $data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".trim($_POST['EmailID'])."' and PersonID <>'".$_POST['Code']."'");
+              if (sizeof($data)>0) {
+                    return Response::returnError("EmailID Already Exists");    
+              }
+                
+                $data = $mysql->select("select * from  _tbl_franchisees_staffs where MobileNumber='".$_POST['MobileNumber']."' and PersonID <>'".$_POST['Code']."'");
+                if (sizeof($data)>0) {
+                    return Response::returnError("Mobile Number Already Exists");
+                }   
+                 $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_POST['Code']."'");
+                    $mysql->execute("update _tbl_franchisees_staffs set PersonName='".$_POST['staffName']."', 
+                                                           Sex='".$_POST['Sex']."', 
+                                                           DateofBirth='".$dob."',
+                                                           CountryCode='".$_POST['CountryCode']."',
+                                                           MobileNumber='".$_POST['MobileNumber']."',
+                                                           EmailID='".$_POST['EmailID']."',
+                                                           UserRole='".$_POST['UserRole']."',
+                                                           LoginPassword='".$_POST['LoginPassword']."'
+                                                           where  PersonID='".$Staffs[0]['PersonID']."'");
+                return Response::returnSuccess("success",array());
+                                                            
+    } 
+    function GetStaffs(){
+           global $mysql,$loginInfo;    
+              
+              $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_POST['Code']."'");
+              $sql="select * from _tbl_franchisees_staffs where PersonID='".$_POST['Code']."'";
+                return Response::returnSuccess("success".$sql,$Staffs);
+                                                            
+    }
+    
+    function ChangePassword(){
+              global $mysql,$loginInfo;    
+              echo "select * from _tbl_franchisees_staffs where PersonID='".$_Franchisee['PersonID']."'";
+              $getpassword = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_Franchisee['PersonID']."'");
+              if ($getpassword[0]['LoginPassword']==$_POST['CurrentPassword']) {
+              return Response::returnError("Incorrect Currentpassword"); }                                         
+              if ($getpassword[0]['LoginPassword']==$_POST['CurrentPassword']) {                                         
+                    $mysql->execute("update  _tbl_franchisees_staffs set LoginPassword='".$_POST['ConfirmNewPassword']."' where PersonID='".$_Franchisee['PersonID']."'" );
+              return Response::returnSuccess("success",array());
+              }
+                                                            
+    } 
         }
 ?>

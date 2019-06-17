@@ -85,7 +85,7 @@ $("#CurrentPassword").blur(function () {
             <div class="col-sm-12">
             <div class="col-sm-3">
             <div class="sidemenu" style="width: 200px;margin-left: -58px;margin-top: -30px;border-right: 1px solid #eee;">
-                <?php include_once("Settings/sidemenu.php");?>
+                <?php include_once("sidemenu.php");?>
             </div>
             </div>
             <div class="col-sm-9">
