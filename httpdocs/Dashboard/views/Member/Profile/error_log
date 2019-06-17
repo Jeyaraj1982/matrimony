@@ -1,2 +1,0 @@
-[08-Jun-2019 04:51:30 Etc/GMT] PHP Notice:  Undefined variable: mysql in /home/nahami/public_html/sl/Dashboard/views/Member/Profile/CreateProfile.php on line 2
-[08-Jun-2019 04:51:30 Etc/GMT] PHP Fatal error:  Call to a member function select() on a non-object in /home/nahami/public_html/sl/Dashboard/views/Member/Profile/CreateProfile.php on line 2
