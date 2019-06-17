@@ -5,13 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Matrimony Software</title>
          
-            <link rel="stylesheet" href="<?php echo SiteUrl?>Dashboard/assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="stylesheet" href="<?php echo SiteUrl?>Dashboard/assets/vendors/css/vendor.bundle.base.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="stylesheet" href="<?php echo SiteUrl?>Dashboard/assets/vendors/css/vendor.bundle.addons.css?rnd=<?php echo rand(10,1000);?>">
+            <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css?rnd=<?php echo rand(10,1000);?>">
+            <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/css/vendor.bundle.base.css?rnd=<?php echo rand(10,1000);?>">
+            <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/css/vendor.bundle.addons.css?rnd=<?php echo rand(10,1000);?>">
             <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/style.css?rnd=<?php echo rand(10,1000);?>">
             <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/selectboxstyle.css?rnd=<?php echo rand(10,1000);?>">
             <link rel="shortcut icon" href="<?php echo SiteUrl?>assets/images/favicon.png" /> 
-            <link rel="stylesheet" href="<?php echo SiteUrl?>Dashboard/assets/vendors/iconfonts/puse-icons-feather/feather.css?rnd=<?php echo rand(10,1000);?>">
+            <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/puse-icons-feather/feather.css?rnd=<?php echo rand(10,1000);?>">
             <script src="http://nahami.online/sl/Dashboard/assets/vendors/jquery-3.1.1.min.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
             <link href='http://nahami.online/sl/Dashboard/assets/vendors/bootstrap/css/bootstrap.min.css?rnd=<?php echo rand(10,1000);?>' rel='stylesheet' type='text/css'>
             

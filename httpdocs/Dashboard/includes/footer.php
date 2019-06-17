@@ -5,10 +5,10 @@
            </div>
         </footer>
       
- <script src="<?php echo SiteUrl?>vendors/js/vendor.bundle.base.js"></script> 
-  <script src="<?php echo SiteUrl?>vendors/js/vendor.bundle.addons.js"></script>
-  <script src="<?php echo SiteUrl?>js/off-canvas.js"></script>    
-  <script src="<?php echo SiteUrl?>js/misc.js"></script>
+ <script src="<?php echo SiteUrl?>assets/vendors/js/vendor.bundle.base.js"></script> 
+  <script src="<?php echo SiteUrl?>assets/vendors/js/vendor.bundle.addons.js"></script>
+  <script src="<?php echo SiteUrl?>assets/js/off-canvas.js"></script>    
+  <script src="<?php echo SiteUrl?>assets/js/misc.js"></script>
   
 </body>
 </html>
