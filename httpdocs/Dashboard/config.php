@@ -1,26 +1,8 @@
 <?php
     session_start();
     define("SiteUrl","http://nahami.online/sl/Dashboard/");
-    
-   /* use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\Exception;
-
-    require 'lib/mail/src/Exception.php';
-    require 'lib/mail/src/PHPMailer.php';
-    require 'lib/mail/src/SMTP.php';
-    $mail = new PHPMailer;
-    
-    include_once("controllers/la-en.php");
-    include_once("controllers/DatabaseController.php");
-    include_once("controllers/MobileSMSController.php");
-    include_once("controllers/MailController.php"); 
-    
-   
-     
-    $mysql = new MySqlController("localhost","nahami_user","nahami_user","nahami_masterdb");
-    $mobilesms = new MobileSMSController(); */
-    
-     define("SITE_TITLE","Matrimony") ;
+    define("ImageUrl","http://nahami.online/sl/Dashboard/assets/images/");
+    define("SITE_TITLE","Matrimony") ;
     
     function printDateTime($dateTime) {
         return date("M d, Y H",strtotime($dateTime));
@@ -29,7 +11,6 @@
     function printDate($date) {
         return date("M d, Y ",strtotime($date));
     }
-    
     
     function GetNextNumber($SoftCode) {
         
@@ -341,36 +322,7 @@
             return $prefix;                                
         }
     }
-    class FranchiseeStaff{
-        
-        function GetNextFranchiseeStaffNumber() {
-            
-            global $mysql;
-        
-            $prefix = "FS";
-            $Rows = $mysql->select("select * from _tbl_franchisees_staffs");
-        
-            $nextNumber = sizeof($Rows)+1; 
-         
-            if (sizeof($nextNumber)==1) {
-                $prefix .= "000".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==2) {
-                $prefix .= "00".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==3) {
-                $prefix .= "0".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==4) {   
-                $prefix .= $nextNumber; 
-            }
-            
-            return $prefix;
-        }
-    }
+  
     class MemberNews{
         
         function GetNextMemberNewsNumber() {
@@ -480,11 +432,35 @@
         function GetMemberDetails($param) {
               return json_decode($this->_callUrl("m=Franchisee&a=GetMemberDetails",$param),true);
         }
-        function GetProfileDetails($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=GetProfileDetails",$param),true);
-        }
         function EditMember($param) {
               return json_decode($this->_callUrl("m=Franchisee&a=EditMember",$param),true);
+        }
+        function SearchMemberDetails($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=SearchMemberDetails",$param),true);
+        }
+        function RefillWallet($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=RefillWallet",$param),true);
+        }
+        function ResetPassword($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=ResetPassword",$param),true);
+        }
+        function GetManageStaffs($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=GetManageStaffs",$param),true);
+        }
+        function CreateFranchiseeStaff($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=CreateFranchiseeStaff",$param),true);
+        }
+        function GetFranchiseeStaffCodeCode($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=GetFranchiseeStaffCodeCode",$param),true);
+        }
+        function EditFranchiseeStaff($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=EditFranchiseeStaff",$param),true);
+        }
+        function GetStaffs($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=GetStaffs",$param),true);
+        }
+        function ChangePassword($param) {
+              return json_decode($this->_callUrl("m=Franchisee&a=ChangePassword",$param),true);
         }
         
         
@@ -493,6 +469,9 @@
            
             $postvars = '';
             foreach($param as $key=>$value) {
+                $postvars .= $key . "=" . $value . "&";
+            }
+            foreach($_GET as $key=>$value) {
                 $postvars .= $key . "=" . $value . "&";
             }
             $ch = curl_init();

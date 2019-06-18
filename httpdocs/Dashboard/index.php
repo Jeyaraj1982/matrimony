@@ -1,6 +1,6 @@
 <?php 
     include_once("config.php");
-    include_once("header.php");
+    include_once("includes/header.php");
 
     if (isset($_GET['p'])) {
         if (file_exists("views/".UserRole."/".trim($_GET['p']).".php")) {
@@ -12,5 +12,5 @@
         include_once("views/".UserRole."/Dashboard.php");
     }
     
-    include_once("footer.php");
+    include_once("includes/footer.php");
 ?>
