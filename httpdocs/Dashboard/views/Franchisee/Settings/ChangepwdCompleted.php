@@ -23,7 +23,7 @@
                         </div>
                         <div align="center">
                           <p class="mb-0 ml-1">
-                               <a href="Signin.php" >Go dashbord</a>
+                               <a href="<?php echo SiteUrl;?>">Go dashbord</a>
                             </p>
                           </div>
                         </div>

@@ -113,8 +113,8 @@
 <div class="col-12 grid-margin">
 <div class="col-sm-12" style="text-align: center; padding-top:5px;color:skyblue;">
                         <a href="../ManageMembers"><small style="font-weight:bold;text-decoration:underline">List of Members</small></a>&nbsp;|&nbsp;
-                        <a href="<?php echo GetUrl("Member/ViewMember/".$_GET['Code'].".html");?>"><small style="font-weight:bold;text-decoration:underline">View Member</small></a>&nbsp;|&nbsp;
-                        <a href="<?php echo GetUrl("Member/BlockMember/".$_GET['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Block Member</small></a>&nbsp;|&nbsp;
-                        <a href="<?php echo GetUrl("Member/ResetPassword/".$_GET['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a>
+                        <a href="<?php echo GetUrl("Members/ViewMember/".$_GET['Code'].".html");?>"><small style="font-weight:bold;text-decoration:underline">View Member</small></a>&nbsp;|&nbsp;
+                        <a href="<?php echo GetUrl("Members/BlockMember/".$_GET['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Block Member</small></a>&nbsp;|&nbsp;
+                        <a href="<?php echo GetUrl("Members/ResetPassword/".$_GET['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a>
 </div>         
 </div>              

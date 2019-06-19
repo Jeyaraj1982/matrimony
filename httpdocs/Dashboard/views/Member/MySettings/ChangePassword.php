@@ -1,33 +1,28 @@
 <?php
-  /*  if (isset($_POST['BtnUpdatePassword'])) {
-               $getpassword = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_SESSION['UserDetails']['PersonID']."'");
-        if ($getpassword[0]['LoginPassword']==$_POST['CurrentPassword']) {
-        $ChangePasswordID = $mysql->execute("update  _tbl_franchisees_staffs set LoginPassword='".$_POST['ConfirmNewPassword']."' where PersonID='".$_SESSION['UserDetails']['PersonID']."'" );
+$page="ChangePassword";
+    if (isset($_POST['BtnUpdatePassword'])) {
+        
+        $getpassword = $mysql->select("select * from  _tbl_members where   MemberID='".$_SESSION['MemberDetails']['MemberID']."'");
+        
+        if ($getpassword[0]['MemberPassword']==$_POST['CurrentPassword']) {
+        $ChangePasswordID = $mysql->execute("update  _tbl_members set MemberPassword='".$_POST['ConfirmNewPassword']."' where MemberID='".$_Member['MemberID']."'" );
         echo "Successfully Updated";
         } else {
             $errorCurrentPassword = "Current Password is wrong";
             echo "$errorCurrentPassword";
         }
-      }*/
-?>
-<?php
-
-    if (isset($_POST['BtnUpdatePassword'])) {
-        echo "qq";
-        $response = $webservice->ChangePassword($_POST);
-        echo "11";
-         print_r($response);
-        if ($response['status']=="success") {
-            echo "aa";
-            echo $response['message'];
-        } else {
-            $errormessage = $response['message']; 
-        }
-    }
+      }
 ?>
 <script>
 
 $(document).ready(function () {
+    /*$('#NewPassword, #ConfirmNewPassword').on('keyup', function () {
+  if ($('#NewPassword').val() == $('#ConfirmNewPassword').val()) {
+    $('#message').html('Matching').css('color', 'green');
+  } else 
+    $('#message').html('Not Matching').css('color', 'red');
+}); */
+                                                                           
 $("#CurrentPassword").blur(function () {
     
         IsNonEmpty("CurrentPassword","ErrCurrentPassword","Please Enter Current Password");
@@ -45,7 +40,7 @@ $("#CurrentPassword").blur(function () {
    });
    
 });
-
+     
                                                                                       
     function SubmitChangePassword() {
                         $('#ErrCurrentPassword').html("");
@@ -86,27 +81,37 @@ $("#CurrentPassword").blur(function () {
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+            <div class="form-group-row">
+            <div class="col-sm-12">
+            <div class="col-sm-3">
+            <div class="sidemenu" style="width: 200px;margin-left: -58px;margin-top: -30px;border-right: 1px solid #eee;">
+                <?php include_once("sidemenu.php");?>
+            </div>
+            </div>
+            <div class="col-sm-9">
               <h4 class="card-title">Change Password</h4>
              <form class="forms-sample">
                 <div class="form-group">
-                  <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword" value="<?php echo (isset($_POST['CurrentPassword']) ? $_POST['CurrentPassword'] : "");?>" placeholder="Enter Current Password">
+                  <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword" placeholder="Enter Current Password">
                   <span class="errorstring" id="ErrCurrentPassword"><?php echo isset($ErrCurrentPassword)? $ErrCurrentPassword : "";?></span>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control" id="NewPassword"  name="NewPassword" value="<?php echo (isset($_POST['NewPassword']) ? $_POST['NewPassword'] : "");?>" placeholder="New Password">
+                  <input type="password" class="form-control" id="NewPassword"  name="NewPassword" placeholder="New Password">
                   <span class="errorstring" id="ErrNewPassword"><?php echo isset($ErrNewPassword)? $ErrNewPassword : "";?></span>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control" id="ConfirmNewPassword"  name="ConfirmNewPassword" value="<?php echo (isset($_POST['ConfirmNewPassword']) ? $_POST['ConfirmNewPassword'] : "");?>" placeholder="Confirm New Password">
-                  <span class="errorstring" id="ErrConfirmNewPassword"><?php echo isset($ErrConfirmNewPassword)? $ErrConfirmNewPassword: "";?></span>
+                  <input type="password" class="form-control" id="ConfirmNewPassword"  name="ConfirmNewPassword" placeholder="Confirm New Password">
+                  <span class="errorstring" id="ErrConfirmNewPassword"><?php echo isset($ErrConfirmNewPassword)? $ErrConfirmNewPassword : "";?></span>
                 </div>
                <button type="submit" name="BtnUpdatePassword" class="btn btn-success mr-2">Change Password</button>
-               <div class="col-sm-12" style="text-align: center;color:red"><?php echo $errormessage ;?></div>  
                 </form>
+              </div>
               </div>
             </div>
           </div>
         </div>
       </div>
    </div>
-</form>  
+  </div>
+</form>                
+                

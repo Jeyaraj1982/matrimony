@@ -9,7 +9,7 @@
       $ErrorCount =0;
               print_r($_POST);
       if ($_POST['Country']=="0") {
-            $ErrorCount++;
+            $ErrorCount++; 
             $ErrCountry = "Please select Country ";
         }
       if ($_POST['StateName']=="0") {
@@ -36,7 +36,7 @@
             $ErrorCount++;
             $ErrTypeofOccupation = "Please select Type of Occupation";
         }
-      
+                                                    
     }    
    if (isset($_POST['BtnSaveProfile'])) {
        
@@ -109,12 +109,13 @@
                     <div class="form-group row">
                         <div class="col-sm-6">         
                             <h4 class="card-title">Profile Information</h4></div>
-                        <div class="col-sm-6" align="right" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../Draft");?> <small>List of Profiles</small> </a></div>
+                        <div class="col-sm-3" align="right" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../Draft");?> <small>List of Profiles</small> </a></div>
+                        <div class="col-sm-3" align="right" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../UploadMultiplefiles");?> <small>add</small> </a></div>
                         </div>
                     <div class="form-group row">
-                        <label for="Community" class="col-sm-3 col-form-label"><small>Profile For<span id="star">*</span></small></label>
+                        <label for="Community" class="col-sm-3 col-form-label">Profile For<span id="star">*</span></label>
                         <div class="col-sm-3">
-                            <select  class="form-control selectpicker" id="ProfileFor"  name="ProfileFor">
+                            <select class="selectpicker form-control" data-live-search="true"  id="ProfileFor"  name="ProfileFor">
                                 <option>Choose Profile Sign In</option>
                                 <?php $ProfileFors = $mysql->select("select * from _tbl_master_codemaster Where HardCode='PROFILESIGNIN'"); ?> 
                                 <?php foreach($ProfileFors as $ProfileFor) { ?>
@@ -124,11 +125,11 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="Name" class="col-sm-3 col-form-label"><small>Name<span id="star">*</span></small></label>
+                        <label for="Name" class="col-sm-3 col-form-label">Name<span id="star">*</span></label>
                         <div class="col-sm-9"><input type="text" class="form-control" id="ProfileName" name="ProfileName" value="<?php echo (isset($_POST['ProfileName']) ? $_POST['ProfileName'] : $ProfileInfo[0]['ProfileName']);?>" placeholder="Name"></div>
                     </div>
                     <div class="form-group row">
-                         <label for="Name" class="col-sm-3 col-form-label"><small>Date of Birth<span id="star">*</span></small></label>
+                         <label for="Name" class="col-sm-3 col-form-label">Date of Birth<span id="star">*</span></label>
                           <div class="col-sm-3">
                           <?php
                          
@@ -143,9 +144,9 @@
                             <input type="date" class="form-control" id="DateofBirth" name="DateofBirth" style="line-height:15px !important" value="<?php echo $dob;?>">
                              <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth: "";?></span>
                           </div>
-                         <label for="Sex" class="col-sm-3 col-form-label"><small>Sex<span id="star">*</span></small></label>
+                         <label for="Sex" class="col-sm-3 col-form-label">Sex<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="Sex"  name="Sex">
+                            <select class="selectpicker form-control" data-live-search="true" id="Sex"  name="Sex">
                                 <option>Choose Sex</option>
                                 <?php $Sexs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX'"); ?> 
                                 <?php foreach($Sexs as $Sex) { ?>
@@ -155,9 +156,9 @@
                          </div>
                     </div>
                     <div class="form-group row">
-                         <label for="MaritalStatus" class="col-sm-3 col-form-label"><small>Marital Status<span id="star">*</span></small></label>
+                         <label for="MaritalStatus" class="col-sm-3 col-form-label">Marital Status<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="MaritalStatus"  name="MaritalStatus">
+                            <select class="selectpicker form-control" data-live-search="true" id="MaritalStatus"  name="MaritalStatus">
                                   <option>Choose Marital Status</option>
                                   <?php $MaritalStatuss = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARTIALSTATUS'"); ?>
                                   <?php foreach($MaritalStatuss as $MaritalStatus) { ?>
@@ -165,9 +166,9 @@
                                   <?php } ?>
                             </select>
                          </div>
-                         <label for="Caste" class="col-sm-3 col-form-label"><small>Mother Tongue<span id="star">*</span></small></label>
+                         <label for="Caste" class="col-sm-3 col-form-label">Mother Tongue<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="Language"  name="Language">
+                            <select class="selectpicker form-control" data-live-search="true" id="Language"  name="Language">
                                 <option>Choose Mother Tongue</option>
                                 <?php $Languages = $mysql->select("select * from _tbl_master_codemaster Where HardCode='LANGUAGENAMES'"); ?>
                                 <?php foreach($Languages as $Language) { ?>
@@ -177,9 +178,9 @@
                          </div>
                     </div>
                     <div class="form-group row">
-                         <label for="Religion" class="col-sm-3 col-form-label"><small>Religion<span id="star">*</span></small></label>
+                         <label for="Religion" class="col-sm-3 col-form-label">Religion<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="Religion"  name="Religion">
+                            <select class="selectpicker form-control" data-live-search="true" id="Religion"  name="Religion">
                                 <option>Choose Religion</option>
                                 <?php $Religions = $mysql->select("select * from _tbl_master_codemaster Where HardCode='RELINAMES'"); ?>
                                 <?php foreach($Religions as $Religion) { ?>
@@ -187,9 +188,9 @@
                                 <?php } ?>
                             </select>
                          </div>
-                         <label for="Caste" class="col-sm-3 col-form-label"><small>Caste<span id="star">*</span></small></label>
+                         <label for="Caste" class="col-sm-3 col-form-label">Caste<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="Caste"  name="Caste">
+                            <select class="selectpicker form-control" data-live-search="true" id="Caste"  name="Caste">
                                 <option value="0">Choose Caste</option>
                                 <?php $Castes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CASTNAMES'"); ?>
                                 <?php foreach($Castes as $Caste) { ?>
@@ -200,9 +201,9 @@
                     </div>
                     
                     <div class="form-group row">
-                        <label for="Community" class="col-sm-3 col-form-label"><small>Community<span id="star">*</span></small></label>
+                        <label for="Community" class="col-sm-3 col-form-label">Community<span id="star">*</span></label>
                         <div class="col-sm-3">
-                            <select class="form-control" id="Community"  name="Community">
+                            <select class="selectpicker form-control" data-live-search="true" id="Community"  name="Community">
                                 <option>Choose Community</option>
                                 <?php $Communitys = $mysql->select("select * from _tbl_master_codemaster Where HardCode='COMMUNITY'"); ?>
                                 <?php foreach($Communitys as $Community) { ?>
@@ -210,9 +211,9 @@
                                 <?php } ?>
                             </select>
                         </div>
-                        <label for="Nationality" class="col-sm-3 col-form-label"><small>Nationality<span id="star">*</span></small></label>
+                        <label for="Nationality" class="col-sm-3 col-form-label">Nationality<span id="star">*</span></label>
                         <div class="col-sm-3">
-                            <select class="form-control" id="Nationality"  name="Nationality">
+                            <select class="selectpicker form-control" data-live-search="true" id="Nationality"  name="Nationality">
                                 <option>Choose Nationality</option>
                                 <?php $Nationalitys = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NATIONALNAMES'"); ?>
                                 <?php foreach($Nationalitys as $Nationality) { ?>
@@ -289,9 +290,9 @@
                 <div class="card-body">
                 <h4 class="card-title">Occupation</h4>             
                 <div class="form-group row">
-                         <label for="Employed As" class="col-sm-3 col-form-label"><small>Employed As<span id="star">*</span></small></label>
+                         <label for="Employed As" class="col-sm-3 col-form-label">Employed As<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="EmployedAs"  name="EmployedAs">
+                            <select class="selectpicker form-control" data-live-search="true" id="EmployedAs"  name="EmployedAs">
                                 <option value="0">Choose Employed As</option>
                                 <?php $EmployedAss = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONS'"); ?>
                                 <?php foreach($EmployedAss as $EmployedAs) { ?>
@@ -299,9 +300,9 @@
                                 <?php } ?>
                             </select>
                          </div>
-                         <label for="OccupationType" class="col-sm-3 col-form-label"><small>Occupation<span id="star">*</span></small></label>
+                         <label for="OccupationType" class="col-sm-3 col-form-label">Occupation<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="OccupationType"  name="OccupationType">
+                            <select class="selectpicker form-control" data-live-search="true" id="OccupationType"  name="OccupationType">
                                 <option value="0">Choose Occupatin Types</option>
                                 <?php $OccupationTypes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONTYPES'"); ?>
                                 <?php foreach($OccupationTypes as $OccupationType) { ?>
@@ -311,9 +312,9 @@
                          </div>
                  </div>
                  <div class="form-group row">
-                    <label for="TypeofOccupation" class="col-sm-3 col-form-label"><small>Type of Occupation<span id="star">*</span></small></label>
+                    <label for="TypeofOccupation" class="col-sm-3 col-form-label">Type of Occupation<span id="star">*</span></label>
                     <div class="col-sm-3">
-                        <select class="form-control" id="TypeofOccupation"  name="TypeofOccupation">
+                        <select class="selectpicker form-control" data-live-search="true" id="TypeofOccupation"  name="TypeofOccupation">
                             <option value="0">Choose Type of Occupation</option>
                             <?php $TypeofOccupations = $mysql->select("select * from _tbl_master_codemaster Where HardCode='TYPEOFOCCUPATIONS'"); ?>
                             <?php foreach($TypeofOccupations as $TypeofOccupation) { ?>
@@ -321,9 +322,9 @@
                             <?php } ?>
                         </select>
                     </div>
-                    <label for="IncomeRange" class="col-sm-3 col-form-label"><small>Annual Income<span id="star">*</span></small></label>
+                    <label for="IncomeRange" class="col-sm-3 col-form-label">Annual Income<span id="star">*</span></label>
                     <div class="col-sm-3">
-                        <select class="form-control" id="IncomeRange"  name="IncomeRange">
+                        <select class="selectpicker form-control" data-live-search="true" id="IncomeRange"  name="IncomeRange">
                             <option value="0">Choose IncomeRange</option>
                             <?php $IncomeRanges = $mysql->select("select * from _tbl_master_codemaster Where HardCode='INCOMERANGE'"); ?>
                             <?php foreach($IncomeRanges as $IncomeRange) { ?>
@@ -346,11 +347,11 @@
                 <div class="card-body">
                 <h4 class="card-title">Family Information</h4>
                 <div class="form-group row">
-                        <label for="FatherName" class="col-sm-2 col-form-label"><small>Father's Name<span id="star">*</span></small></label>
+                        <label for="FatherName" class="col-sm-2 col-form-label">Father's Name<span id="star">*</span></label>
                         <div class="col-sm-4"><input type="text" class="form-control" id="FatherName" name="FatherName" value="<?php echo (isset($_POST['FatherName']) ? $_POST['FatherName'] : $ProfileInfo[0]['FathersName']);?>" placeholder="Name"></div>
-                        <label for="FathersOccupation" class="col-sm-3 col-form-label"><small>Fathers Occupation<span id="star">*</span></small></label>
+                        <label for="FathersOccupation" class="col-sm-3 col-form-label">Fathers Occupation<span id="star">*</span></label>
                         <div class="col-sm-3">
-                            <select  class="form-control selectpicker" id="FathersOccupation"  name="FathersOccupation">
+                            <select class="selectpicker form-control" data-live-search="true"id="FathersOccupation"  name="FathersOccupation">
                                 <option value="0">Choose Father Occupation</option>
                                 <?php $FathersOccupations = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONTYPES'"); ?> 
                                 <?php foreach($FathersOccupations as $FathersOccupation) { ?>
@@ -360,13 +361,13 @@
                         </div>
                 </div>
                 <div class="form-group row">
-                         <label for="MotherName" class="col-sm-2 col-form-label"><small>Mother's Name<span id="star">*</span></small></label>
+                         <label for="MotherName" class="col-sm-2 col-form-label">Mother's Name<span id="star">*</span></label>
                          <div class="col-sm-4">
                             <input type="text" class="form-control" id="MotherName" name="MotherName" Placeholder="Mother Name"   value="<?php echo (isset($_POST['MotherName']) ? $_POST['MotherName'] : $ProfileInfo[0]['MothersName']);?>">
                          </div>
-                         <label for="MothersOccupation" class="col-sm-3 col-form-label"><small>Mothers Occupation<span id="star">*</span></small></label>
+                         <label for="MothersOccupation" class="col-sm-3 col-form-label">Mothers Occupation<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="MothersOccupation"  name="MothersOccupation">
+                            <select class="selectpicker form-control" data-live-search="true" id="MothersOccupation"  name="MothersOccupation">
                                 <option value="0">Choose Mother Occupation</option>
                                 <?php $MothersOccupations = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONTYPES'"); ?>
                                 <?php foreach($MothersOccupations as $MothersOccupation) { ?>
@@ -378,7 +379,7 @@
                 <div class="form-group row">
                         <label for="No of Brothers" class="col-sm-2 col-form-label">No of Brothers<span id="star">*</span></label>
                         <div class="col-sm-1" align="left">
-                        <select class="form-control" id="NumberofBrother"  name="NumberofBrother" size="width:60px">
+                        <select class="selectpicker form-control" data-live-search="true" id="NumberofBrother"  name="NumberofBrother" size="width:60px">
                             <?php $NumberofBrothers = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NUMBEROFBROTHER'"); ?>
                             <?php foreach($NumberofBrothers as $NumberofBrother) { ?>
                             <option value="<?php echo $NumberofBrother['SoftCode'];?>" <?php echo ($ProfileInfo[0]['NumberofBrothers']==$NumberofBrother['SoftCode']) ? " selected='selected' " : "";?> ><?php echo $NumberofBrother['CodeValue'];?></option>
@@ -387,25 +388,25 @@
                         </div>
                          <label for="Elder" class="col-sm-1 col-form-label">Elder</label>
                          <div class="col-sm-1">
-                            <select class="form-control" id="elder"  name="elder" size="width:60px">
+                            <select class="selectpicker form-control" data-live-search="true" id="elder"  name="elder" size="width:60px">
                                 <?php $elders = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ELDER'"); ?>
                                 <?php foreach($elders as $elder) { ?>
                                 <option value="<?php echo $elder['SoftCode'];?>" <?php echo ($ProfileInfo[0]['Elder']==$elder['SoftCode']) ? " selected='selected' " : "";?>><?php echo $elder['CodeValue'];?></option>
                                 <?php } ?>
                             </select>
                          </div>
-                        <label for="elder" class="col-sm-2 col-form-label"><small>younger</small></label>
+                        <label for="elder" class="col-sm-2 col-form-label">younger</label>
                         <div class="col-sm-1">
-                            <select class="form-control" id="younger"  name="younger" size="width:60px">
+                            <select class="selectpicker form-control" data-live-search="true" id="younger"  name="younger" size="width:60px">
                                 <?php $youngers = $mysql->select("select * from _tbl_master_codemaster Where HardCode='YOUNGER'"); ?>
                                 <?php foreach($youngers as $younger) { ?>
                                 <option value="<?php echo $younger['SoftCode'];?>" <?php echo ($ProfileInfo[0]['Younger']==$younger['SoftCode']) ? " selected='selected' " : "";?>><?php echo $younger['CodeValue'];?></option>
                                 <?php } ?>
                             </select>
                          </div>
-                        <label for="elder" class="col-sm-1 col-form-label"><small>married</small></label>
+                        <label for="elder" class="col-sm-1 col-form-label">married</label>
                         <div class="col-sm-1">
-                            <select class="form-control" id="married"  name="married" size="width:60px">
+                            <select class="selectpicker form-control" data-live-search="true" id="married"  name="married" size="width:60px">
                                 <?php $marrieds = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARRIED'"); ?>
                                 <?php foreach($marrieds as $married) { ?>
                                 <option value="<?php echo $married['SoftCode'];?>" <?php echo ($ProfileInfo[0]['Married']==$younger['SoftCode']) ? " selected='selected' " : "";?>><?php echo $married['CodeValue'];?></option>
@@ -416,34 +417,34 @@
                 <div class="form-group row">
                         <label for="No of Sisters" class="col-sm-2 col-form-label">No of Sisters<span id="star">*</span></label>
                         <div class="col-sm-1" align="left">
-                            <select class="form-control" id="NumberofSisters"  name="NumberofSisters" size="width:60px">
+                            <select class="selectpicker form-control" data-live-search="true" id="NumberofSisters"  name="NumberofSisters" size="width:60px">
                                 <?php $NumberofSisters = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NOOFSISTER'"); ?>
                                 <?php foreach($NumberofSisters as $NumberofSister) { ?>
                                 <option value="<?php echo $NumberofSister['SoftCode'];?>" <?php echo ($ProfileInfo[0]['NumberofSisters']==$NumberofSister['SoftCode']) ? " selected='selected' " : "";?>><?php echo $NumberofSister['CodeValue'];?></option>
                                 <?php } ?>
                                 </select>
                         </div>
-                        <label for="elder" class="col-sm-1 col-form-label"><small>elder</small></label>
+                        <label for="elder" class="col-sm-1 col-form-label">elder</label>
                         <div class="col-sm-1" align="left">
-                            <select class="form-control" id="elderSister"  name="elderSister" size="width:60px">
+                            <select class="selectpicker form-control" data-live-search="true" id="elderSister"  name="elderSister" size="width:60px">
                                 <?php $elderSisters = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ELDERSIS'"); ?>
                                 <?php foreach($elderSisters as $elderSister) { ?>
                                 <option value="<?php echo $elderSister['SoftCode'];?>" <?php echo ($ProfileInfo[0]['ElderSister']==$elderSister['SoftCode']) ? " selected='selected' " : "";?>><?php echo $elderSister['CodeValue'];?></option>
                                 <?php } ?>
                             </select>
                         </div>
-                        <label for="elder" class="col-sm-2 col-form-label"><small>younger</small></label>
+                        <label for="elder" class="col-sm-2 col-form-label">younger</label>
                         <div class="col-sm-1" align="left">
-                            <select class="form-control" id="youngerSister"  name="youngerSister" size="width:60px">
+                            <select class="selectpicker form-control" data-live-search="true" id="youngerSister"  name="youngerSister" size="width:60px">
                                 <?php $youngerSisters = $mysql->select("select * from _tbl_master_codemaster Where HardCode='YOUNGERSIS'"); ?>
                                 <?php foreach($youngerSisters as $youngerSister) { ?>
                                 <option value="<?php echo $youngerSister['SoftCode'];?>" <?php echo ($ProfileInfo[0]['YoungerSister']==$youngerSister['SoftCode']) ? " selected='selected' " : "";?>><?php echo $youngerSister['CodeValue'];?></option>
                                 <?php } ?>
                             </select>
                         </div>
-                        <label for="elder" class="col-sm-1 col-form-label"><small>married</small></label>
+                        <label for="elder" class="col-sm-1 col-form-label">married</label>
                         <div class="col-sm-1" align="left">
-                            <select class="form-control" id="marriedSister"  name="marriedSister" size="width:60px">
+                            <select class="selectpicker form-control" data-live-search="true" id="marriedSister"  name="marriedSister" size="width:60px">
                                 <?php $marriedSisters = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARRIEDSIS'"); ?>
                                 <?php foreach($marriedSisters as $marriedSister) { ?>
                                 <option value="<?php echo $marriedSister['SoftCode'];?>" <?php echo ($ProfileInfo[0]['MarriedSister']==$marriedSister['SoftCode']) ? " selected='selected' " : "";?>><?php echo $marriedSister['CodeValue'];?></option>
@@ -466,9 +467,9 @@
                 <div class="card-body">
                 <h4 class="card-title">Physical Information</h4>
                 <div class="form-group row">
-                         <label for="PhysicallyImpaired" class="col-sm-3 col-form-label"><small>Physically Impaired?<span id="star">*</span></small></label>
+                         <label for="PhysicallyImpaired" class="col-sm-3 col-form-label">Physically Impaired?<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="PhysicallyImpaired"  name="PhysicallyImpaired">
+                            <select class="selectpicker form-control" data-live-search="true" id="PhysicallyImpaired"  name="PhysicallyImpaired">
                                 <option value="0">Choose Physically Impaired</option>
                                 <?php $PhysicallyImpaireds = $mysql->select("select * from _tbl_master_codemaster Where HardCode='PHYSICALLYIMPAIRED'"); ?>
                                 <?php foreach($PhysicallyImpaireds as $PhysicallyImpaired) { ?>
@@ -476,9 +477,9 @@
                                 <?php } ?>
                             </select>
                          </div>
-                         <label for="VisuallyImpaired" class="col-sm-3 col-form-label"><small>Visually Impaired?<span id="star">*</span></small></label>
+                         <label for="VisuallyImpaired" class="col-sm-3 col-form-label">Visually Impaired?<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="VisuallyImpaired"  name="VisuallyImpaired">
+                            <select class="selectpicker form-control" data-live-search="true" id="VisuallyImpaired"  name="VisuallyImpaired">
                                 <option value="0">Choose Visually Impaired</option>
                                 <?php $VisuallyImpaireds = $mysql->select("select * from _tbl_master_codemaster Where HardCode='VISUALLYIMPAIRED'"); ?>
                                 <?php foreach($VisuallyImpaireds as $VisuallyImpaired) { ?>
@@ -488,9 +489,9 @@
                          </div>
                 </div>
                 <div class="form-group row">
-                         <label for="VissionImpaired" class="col-sm-3 col-form-label"><small>Vission Impaired?<span id="star">*</span></small></label>
+                         <label for="VissionImpaired" class="col-sm-3 col-form-label">Vission Impaired?<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="VissionImpaired"  name="VissionImpaired">
+                            <select class="selectpicker form-control" data-live-search="true" id="VissionImpaired"  name="VissionImpaired">
                                 <option value="0"> Vission Impaired</option>
                                 <?php $VissionImpaireds = $mysql->select("select * from _tbl_master_codemaster Where HardCode='VISSIONIMPAIRED'"); ?>
                                 <?php foreach($VissionImpaireds as $VissionImpaired) { ?>
@@ -498,9 +499,9 @@
                                 <?php } ?>
                             </select>
                          </div>
-                         <label for="SpeechImpaired" class="col-sm-3 col-form-label"><small>Speech Impaired?<span id="star">*</span></small></label>
+                         <label for="SpeechImpaired" class="col-sm-3 col-form-label">Speech Impaired?<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="SpeechImpaired"  name="SpeechImpaired">
+                            <select class="selectpicker form-control" data-live-search="true" id="SpeechImpaired"  name="SpeechImpaired">
                                 <option value="0">Choose Speech Impaired</option>
                                 <?php $SpeechImpaireds = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SPEECHIMPAIRED'"); ?>
                                 <?php foreach($SpeechImpaireds as $SpeechImpaired) { ?>
@@ -510,9 +511,9 @@
                          </div>
                 </div>
                 <div class="form-group row">
-                         <label for="Height" class="col-sm-3 col-form-label"><small>Height<span id="star">*</span>  &nbsp;&nbsp;<small class="mb-0 mr-2 text-muted text-muted">approximate</small></small></label>
+                         <label for="Height" class="col-sm-3 col-form-label">Height<span id="star">*</span>  &nbsp;&nbsp;<small class="mb-0 mr-2 text-muted text-muted">approximate</small></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="Height"  name="Height">
+                            <select class="selectpicker form-control" data-live-search="true" id="Height"  name="Height">
                                 <option value="0">Choose Height</option>
                                 <?php $Heights = $mysql->select("select * from _tbl_master_codemaster Where HardCode='HEIGHTS'"); ?>
                                 <?php foreach($Heights as $Height) { ?>
@@ -520,9 +521,9 @@
                                  <?php } ?>
                             </select>
                          </div>
-                         <label for="Weight" class="col-sm-3 col-form-label"><small>Weight<span id="star">*</span>   &nbsp;&nbsp;<small class="mb-0 mr-2 text-muted text-muted">approximate</small></small></label>
+                         <label for="Weight" class="col-sm-3 col-form-label">Weight<span id="star">*</span>   &nbsp;&nbsp;<small class="mb-0 mr-2 text-muted text-muted">approximate</small></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="Weight"  name="Weight">
+                            <select class="selectpicker form-control" data-live-search="true" id="Weight"  name="Weight">
                                 <option value="0">Choose Weight</option>
                                 <?php $Weights = $mysql->select("select * from _tbl_master_codemaster Where HardCode='WEIGHTs'"); ?>
                                 <?php foreach($Weights as $Weight) { ?>
@@ -532,9 +533,9 @@
                          </div>
                 </div>
                 <div class="form-group row">
-                         <label for="BloodGroup" class="col-sm-3 col-form-label"><small>Blood Group<span id="star">*</span></small></label>
+                         <label for="BloodGroup" class="col-sm-3 col-form-label">Blood Group<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="BloodGroup"  name="BloodGroup">
+                            <select class="selectpicker form-control" data-live-search="true" id="BloodGroup"  name="BloodGroup">
                                 <option value="0">Choose Blood Group</option>
                                 <?php $BloodGroups = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BLOODGROUPS'"); ?>
                                 <?php foreach($BloodGroups as $BloodGroup) { ?>
@@ -542,9 +543,9 @@
                                 <?php } ?>
                             </select>
                          </div>
-                         <label for="Complexation" class="col-sm-3 col-form-label"><small>Complexation<span id="star">*</span></small></label>
+                         <label for="Complexation" class="col-sm-3 col-form-label">Complexation<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="Complexation"  name="Complexation">
+                            <select class="selectpicker form-control" data-live-search="true" id="Complexation"  name="Complexation">
                                 <option value="0">Choose Complexation</option>
                                 <?php $Complexations = $mysql->select("select * from _tbl_master_codemaster Where HardCode='COMPLEXIONS'"); ?>
                                 <?php foreach($Complexations as $Complexation) { ?>
@@ -554,9 +555,9 @@
                          </div>
                 </div>
                 <div class="form-group row">
-                         <label for="BodyType" class="col-sm-3 col-form-label"><small>Body Type<span id="star">*</span></small></label>
+                         <label for="BodyType" class="col-sm-3 col-form-label">Body Type<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="BodyType"  name="BodyType">
+                            <select class="selectpicker form-control" data-live-search="true" id="BodyType"  name="BodyType">
                                 <?php $BodyTypes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BODYTYPES'"); ?>
                                 <option value="0">Choose Body Type</option>
                                 <?php foreach($BodyTypes as $BodyType) { ?>
@@ -564,9 +565,9 @@
                                 <?php } ?>
                             </select>
                          </div>
-                         <label for="Diet" class="col-sm-3 col-form-label"><small>Diet<span id="star">*</span></small></label>
+                         <label for="Diet" class="col-sm-3 col-form-label">Diet<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="Diet"  name="Diet">
+                            <select class="selectpicker form-control" data-live-search="true" id="Diet"  name="Diet">
                                 <option value="0">Choose Body Type</option>
                                 <?php $Diets = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DIETS'"); ?>
                                 <?php foreach($Diets as $Diet) { ?>
@@ -576,9 +577,9 @@
                          </div>
                 </div>
                 <div class="form-group row">
-                         <label for="SmookingHabit" class="col-sm-3 col-form-label"><small>Smooking Habit<span id="star">*</span></small></label>
+                         <label for="SmookingHabit" class="col-sm-3 col-form-label">Smooking Habit<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="SmookingHabit"  name="SmookingHabit">
+                            <select class="selectpicker form-control" data-live-search="true" id="SmookingHabit"  name="SmookingHabit">
                                 <option value="0">Choose Smiking Habits</option>
                                 <?php $SmookingHabits = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SMOKINGHABITS'"); ?>
                                 <?php foreach($SmookingHabits as $SmookingHabit) { ?>
@@ -586,9 +587,9 @@
                                 <?php } ?>
                             </select>
                          </div>
-                         <label for="DrinkingHabit" class="col-sm-3 col-form-label"><small>Drinking Habit<span id="star">*</span></small></label>
+                         <label for="DrinkingHabit" class="col-sm-3 col-form-label">Drinking Habit<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="DrinkingHabit"  name="DrinkingHabit">
+                            <select class="selectpicker form-control" data-live-search="true" id="DrinkingHabit"  name="DrinkingHabit">
                                 <option value="0">Choose Drinking Habits</option>
                                 <?php $DrinkingHabits = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DRINKINGHABITS'"); ?>
                                 <?php foreach($DrinkingHabits as $DrinkingHabit) { ?>
@@ -612,9 +613,9 @@
                 <div class="card-body">
                 <h4 class="card-title">Attachments</h4>
                 <div class="form-group row">
-                         <label for="Documents" class="col-sm-3 col-form-label"><small>Document Type<span id="star">*</span></small></label>
+                         <label for="Documents" class="col-sm-3 col-form-label">Document Type<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="Documents"  name="Documents">
+                            <select class="selectpicker form-control" data-live-search="true" id="Documents"  name="Documents">
                                 <option>Choose Documents</option>
                                 <?php $Documents = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DOCTYPES'"); ?>
                                 <?php foreach($Documents as $Document) { ?>
@@ -624,7 +625,7 @@
                          </div>
                 </div>
                 <div class="form-group row">
-                         <label for="Attachment" class="col-sm-3 col-form-label"><small>Attachment<span id="star">*</span></small></label>
+                         <label for="Attachment" class="col-sm-3 col-form-label">Attachment<span id="star">*</span></label>
                          <div class="col-sm-3"><input type="File" class="form-control" id="File" name="File" Placeholder="File"></div>
                 </div>
                 <div class="form-group row" style="margin-bottom:0px;">
@@ -648,17 +649,17 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="Email ID" class="col-sm-3 col-form-label"><small>Email ID<span id="star">*</span></small></label>
+                    <label for="Email ID" class="col-sm-3 col-form-label">Email ID<span id="star">*</span></label>
                     <div class="col-sm-3"><input type="text" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $ProfileInfo[0]['EmailID']);?>" placeholder="Email ID"></div>
                 </div>
                 <div class="form-group row">
-                    <label for="Mobile Number" class="col-sm-3 col-form-label"><small>Mobile Number<span id="star">*</span></small></label>
+                    <label for="Mobile Number" class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
                     <div class="col-sm-3"><input type="text" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $ProfileInfo[0]['MobileNumber']);?>" placeholder="Mobile Number"></div>
-                    <label for="WhatsappNumber" class="col-sm-3 col-form-label"><small>Whatsapp Number</small></label>
+                    <label for="WhatsappNumber" class="col-sm-3 col-form-label">Whatsapp Number</label>
                     <div class="col-sm-3"><input type="text" class="form-control" id="WhatsappNumber" name="WhatsappNumber" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : $ProfileInfo[0]['WhatsappNumber']);?>" placeholder="Whatsapp Number"></div>
                 </div>
                 <div class="form-group row">
-                    <label for="AddressLine1" class="col-sm-3 col-form-label"><small>Address<span id="star">*</span></small></label>
+                    <label for="AddressLine1" class="col-sm-3 col-form-label">Address<span id="star">*</span></label>
                     <div class="col-sm-9"><input type="text" class="form-control" id="AddressLine1" name="AddressLine1" value="<?php echo (isset($_POST['AddressLine1']) ? $_POST['AddressLine1'] : $ProfileInfo[0]['AddressLine1']);?>" placeholder="AddressLine1"></div>
                 </div>
                 <div class="form-group row">
@@ -670,9 +671,9 @@
                     <div class="col-sm-9"><input type="text" class="form-control" id="AddressLine3" name="AddressLine3" value="<?php echo (isset($_POST['AddressLine3']) ? $_POST['AddressLine3'] : $ProfileInfo[0]['AddressLine3']);?>" placeholder="AddressLine3"></div>
                 </div>
                 <div class="form-group row">
-                         <label for="Country" class="col-sm-3 col-form-label"><small>Country<span id="star">*</span></small></label>
+                         <label for="Country" class="col-sm-3 col-form-label">Country<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="Country"  name="Country">
+                            <select class="selectpicker form-control" data-live-search="true" id="Country"  name="Country">
                                 <option value="0">Choose State</option>
                                 <?php $Countrys = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CONTNAMES'"); ?>
                                 <?php foreach($Countrys as $Country) { ?>
@@ -680,9 +681,9 @@
                                 <?php } ?>
                             </select>
                          </div>
-                         <label for="State" class="col-sm-3 col-form-label"><small>State<span id="star">*</span></small></label>
+                         <label for="State" class="col-sm-3 col-form-label">State<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <select class="form-control" id="StateName"  name="StateName">
+                            <select class="selectpicker form-control" data-live-search="true" id="StateName"  name="StateName">
                                 <option value="0">Choose State</option>
                                 <?php $StateNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='STATNAMES'"); ?>
                                 <?php foreach($StateNames as $StateName) { ?>
@@ -692,10 +693,10 @@
                          </div>
                     </div>
                     <div class="form-group row">
-                         <label for="City" class="col-sm-3 col-form-label"><small>City<span id="star">*</span></small></label>
+                         <label for="City" class="col-sm-3 col-form-label">City<span id="star">*</span></label>
                          <div class="col-sm-3">
                             <input type="text" class="form-control" id="City" name="City" Placeholder="City" value="<?php echo (isset($_POST['City']) ? $_POST['City'] : $ProfileInfo[0]['City']);?>"></div>
-                         <label for="OtherLocation" class="col-sm-3 col-form-label"><small>Landmark</small></label>
+                         <label for="OtherLocation" class="col-sm-3 col-form-label">Landmark</label>
                          <div class="col-sm-3">
                             <input type="text" class="form-control" id="OtherLocation" name="OtherLocation" Placeholder="Other Location" value="<?php echo (isset($_POST['OtherLocation']) ? $_POST['OtherLocation'] : $ProfileInfo[0]['OtherLocation']);?>">
                     </div>
@@ -714,4 +715,6 @@
                             <a href="<?php echo GetUrl("Profile/View/".$_GET['Code'].".htm");?>" class="btn btn-success mr-2">Preview</a>
                         </div>
                     </div>
-<?php } ?>                
+<?php } ?>
+                 
+ 

@@ -1,4 +1,4 @@
-<form method="post" action="<?php echo GetUrl("Member/CreateMember");?>" onsubmit="">      
+<form method="post" action="<?php echo GetUrl("Members/CreateMember");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
@@ -13,11 +13,11 @@
                     <li><a href="#">To Htm</a></li>
                 </ul>
                 </div>
-              <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
+                <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                         <a href="ManageMembers" ><small >All</small></a>&nbsp;|&nbsp;
-                        <a href="ManageActiveMembers"><small style="font-weight:bold;">Active</small></a>&nbsp;|&nbsp;
-                        <a href="ManageDeactiveMembers"><small>Deactive</small></a>
-                    </div>
+                        <a href="ManageActiveMembers"><small>Active</small></a>&nbsp;|&nbsp;
+                        <a href="ManageDeactiveMembers"><small  style="font-weight:bold;text-decoration:underline">Deactive</small></a>
+                </div> 
                 </div>
                 <div class="table-responsive">
                     <table id="myTable" class="table table-striped">
@@ -31,7 +31,7 @@
                     </thead>
                      <tbody>  
                         <?php 
-                         $response = $webservice->GetMyDeactiveMembers(); 
+                         $response = $webservice->GetMyActiveMembers(); 
                          if (sizeof($response['data'])>0) {
                     ?>
                         <?php foreach($response['data'] as $Member) { ?>
@@ -39,12 +39,12 @@
                                 <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberName'];?></td>
                                 <td><?php echo putDateTime($Member['CreatedOn']);?></td>
                                 <td></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Member/EditMember/". $Member['MemberID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Member/ViewMember/". $Member['MemberID'].".html"); ?>"><span>View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Members/EditMember/". $Member['MemberID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Members/ViewMember/". $Member['MemberID'].".html"); ?>"><span>View</span></a></td>
                                 </tr>
-                         <?php } } else {?>            
+                      <?php } } else {?>            
                         
-                        <?php } ?>                 
+                        <?php } ?>     
                       </tbody>                        
                      </table>
                   </div>

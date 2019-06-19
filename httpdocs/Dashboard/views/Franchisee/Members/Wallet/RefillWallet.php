@@ -38,7 +38,7 @@ $("#Remarks").blur(function () {
                  }
                                                                 
 </script>
-<form method="post" action="<?php echo GetUrl("Wallet/ConfirmPage");?>" onsubmit="return SubmitDetails();">
+<form method="post" action="<?php echo GetUrl("Members/Wallet/ConfirmPage");?>" onsubmit="return SubmitDetails();">
         <div class="content-wrapper">
           <div class="col-12 stretch-card">                                         
                   <div class="card">

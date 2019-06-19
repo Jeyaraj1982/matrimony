@@ -101,9 +101,9 @@
 </div>                                                                                     
 <div class="col-sm-12 grid-margin" style="text-align: center; padding-top:5px;color:skyblue;">
                         <a href="../ManageMembers"><small style="font-weight:bold;text-decoration:underline">List of Members</small></a>&nbsp;|&nbsp;
-                        <a href="<?php echo GetUrl("Member/EditMember/".$_REQUEST['Code'].".html");?>"><small style="font-weight:bold;text-decoration:underline">Edit Member</small></a>&nbsp;|&nbsp;
-                        <a href="<?php echo GetUrl("Member/BlockMember/".$_REQUEST['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Block Member</small></a>&nbsp;|&nbsp;
-                        <a href="<?php echo GetUrl("Member/ResetPassword/".$_REQUEST['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a>
+                        <a href="<?php echo GetUrl("Members/EditMember/".$_REQUEST['Code'].".html");?>"><small style="font-weight:bold;text-decoration:underline">Edit Member</small></a>&nbsp;|&nbsp;
+                        <a href="<?php echo GetUrl("Members/BlockMember/".$_REQUEST['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Block Member</small></a>&nbsp;|&nbsp;
+                        <a href="<?php echo GetUrl("Members/ResetPassword/".$_REQUEST['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a>
 </div>         
 </form>
   

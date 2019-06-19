@@ -178,10 +178,10 @@
                     </div>
                     <label for="Nationality" class="col-sm-2 col-form-label">Nationality<span id="star">*</span></label>
                     <div class="col-sm-3">
-                        <select class="form-control" id="Nationality"  name="Nationality">
+                        <select class="form-control" id="Nationality"  name="Nationality"> 
                             <option value="0">Choose Nationality</option>
                             <?php foreach($Nationalitys as $Nationality) { ?>
-                            <option value="<?php echo $Nationality['SoftCode'];?>"<?php echo ($_POST['Nationality']==$Nationality['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Nationality['CodeValue'];?></option>
+                            <option value="<?php echo $Nationality['SoftCode'];?>" <?php echo ($_POST['Nationality']==$Nationality['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Nationality['CodeValue'];?></option>
                             <?php } ?>
                         </select>
                         <span class="errorstring" id="ErrNationality"><?php echo isset($ErrNationality)? $ErrNationality : "";?></span>

@@ -3,7 +3,7 @@
     $response = $webservice->CreateMember($_POST);
     if ($response['status']=="success") {
         ?>
-        <script>location.href='http://nahami.online/sl/Dashboard/Member/Created';</script>
+        <script>location.href='http://nahami.online/sl/Dashboard/Members/Created';</script>
         <?php
     } else {
         $errormessage = $response['message']; 

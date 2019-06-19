@@ -20,7 +20,7 @@
     <div class="col-12 stretch-card">
         <div class="card">
             <div class="card-body">
-            <h4 class="card-title">Refill Wallet</h4>
+            <h4 class="card-title">Reset Password</h4>
                 <form method="post" action="" onsubmit="return SubmitSearch();">
                     <div class="form-group row">
                         <label for="Member Details" class="col-sm-3 col-form-label">Member Details<span id="star">*</span></label>
@@ -74,7 +74,7 @@
                             <td><?php echo $Member['MemberName'];?></td>
                             <td>[<?php echo $Member['FranchiseeCode'];?>]&nbsp;<?php echo $Member['FranchiseeName'];?></td>
                             <td style="text-align:right"><?php echo $Member['MobileNumber'];?></td>
-                            <td style="text-align:right"><a href="<?php echo GetUrl("Wallet/RefillWallet/". $Member['MemberID'].".html");?>"><span class="glyphicon glyphicon-pencil">Refill</span></a></td>
+                            <td style="text-align:right"><a href="<?php echo GetUrl("Members/ResetPassword/Reset/". $Member['MemberID'].".html");?>"><span>Reset Password</span></a></td>
                         </tr>             
                     <?php }} ?>            
                     </tbody>                        

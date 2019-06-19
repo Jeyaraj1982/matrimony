@@ -23,11 +23,13 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
     }
 </style>
 <?php
-$Profiles = $mysql->select("select * from _tbl_Profile_Draft where ReferBy = '".$_Member['MemberID']."'");
- if (sizeof($Profiles)>0) {
+//$Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy = '".$_Member['MemberID']."'");
+ //if (sizeof($Profiles)>0) {
+    $response = $webservice->GetProfiles(); 
+    if (sizeof($response['data'])>0) {
 ?>
 
-<form method="post" action="<?php echo GetUrl("Profile/CreateProfile");?>" onsubmit="">      
+<form method="post" action="<?php echo GetUrl("MyProfile/CreateProfile");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
@@ -45,20 +47,22 @@ $Profiles = $mysql->select("select * from _tbl_Profile_Draft where ReferBy = '".
                 </div>
                 </div>
                 <br><br>
-               <?php foreach($Profiles as $Profile) { ?>
+               <?php foreach($response['data'] as $Profile) { ?>
                 <div style="min-height:110px;width:100%;background:#f6f6f6;padding:14px 0px" class="box-shadow">
-                    <div class="col-sm-2" style="height:79px"><img src="<?php echo SiteUrl?>images/pic1.jpg" width="100%" height="100%"></div>
+                    <div class="col-sm-2" style="height:79px"><img src="<?php echo SiteUrl?>assets/images/pic1.jpg" width="100%" height="100%"></div>
                     <div class="col-sm-1" >Name</div>
-                    <div class="col-sm-7">:<?php echo $Profile['ProfileName'];?></div>
-                    <div class="col-sm-2"><a href="<?php echo GetUrl("Profile/View/". $Profile['ProfileID'].".htm?msg=1");?>"><span>View</span></a></div>      
+                    <div class="col-sm-7">:&nbsp;<?php echo $Profile['ProfileName'];?></div>
+                    <div class="col-sm-1"><a href="<?php echo GetUrl("MyProfile/View/". $Profile['ProfileID'].".htm?msg=1");?>"><span>View</span></a></div>      
+                    <div class="col-sm-1"><a href="<?php echo GetUrl("MyProfile/Edit/". $Profile['ProfileID'].".htm?msg=1");?>"><span>Edit</span></a></div>      
                     <div class="col-sm-1">Age</div>
-                    <div class="col-sm-9">: <?php echo $Profile['Age'];?></div> 
+                    <div class="col-sm-9">:&nbsp;<?php echo $Profile['Age'];?></div> 
                     <div class="col-sm-1">sex</div>
-                    <div class="col-sm-2">: <?php echo $Profile['sex'];?></div>
+                    <?php //$Sex = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX' and SoftCode='".$Profiles[0]['Sex']."'"); ?>
+                    <div class="col-sm-2">:&nbsp;<?php //echo $Sex[0]['CodeValue'];?></div>
                     <div class="col-sm-1">DOB</div>
-                    <div class="col-sm-6">: <?php echo $Profile['DateofBirth'];?></div>
-                    <div class="col-sm-2">Education</div>
-                    <div class="col-sm-8">: <?php echo $Profile['Education'];?></div>
+                    <div class="col-sm-6">:&nbsp;<?php echo putDate($Profile['DateofBirth']);?></div>
+                    <div class="col-sm-2">Education&nbsp;&nbsp;&nbsp;:</div>
+                    <div class="col-sm-8">&nbsp;<?php echo $Profile['Education'];?></div>
                 </div> 
                  <br>              
                         <?php } ?> 
@@ -71,7 +75,7 @@ $Profiles = $mysql->select("select * from _tbl_Profile_Draft where ReferBy = '".
                   <div class="col-lg-12 grid-margin stretch-card bshadow" style="background:#fff;padding:90px;">
         <div class="card">
             <div class="card-body" style="text-align:center;font-family:'Roboto'">
-                <img src="http://nahami.online/sl/Dashboard/images/noprofile.jpg"><Br>
+                <img src="http://nahami.online/sl/Dashboard/assets/images/noprofile.jpg"><Br>
                <div style="padding:30px;padding-top:10px;font-size:20px;color:#ccc;font-family:'Roboto'">There are no profiles</div> 
                 
                 <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a>
@@ -87,7 +91,7 @@ $Profiles = $mysql->select("select * from _tbl_Profile_Draft where ReferBy = '".
         <div class="modal-content">
             <div class="modal-body">
                     <div id="Mobile_VerificationBody" style="height: 315px;">
-                  <img src='../../images/loader.gif'> Loading ....
+                  <img src='../../../images/loader.gif'> Loading ....
                 </div>
             </div>
         </div>
@@ -96,7 +100,7 @@ $Profiles = $mysql->select("select * from _tbl_Profile_Draft where ReferBy = '".
 
  
 <script>
-var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?LoginID=<?php echo $_Member['LoginID'];?>&";
+var API_URL = "http://nahami.online/sl/Webservice/webservice.php?LoginID=<?php echo $_Member['LoginID'];?>&";
    /* function MobileNumberVerificationForm() {
         $('#Mobile_VerificationBody').html("loging....");
          $('#myModal').modal('show');  
@@ -121,7 +125,7 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
         
         var param = $( "#"+frmid1).serialize();
         
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
         $('#myModal').modal('show'); 
         
         $.post(API_URL + "m=Views&a=MobileNumberVerificationForm", 
@@ -132,7 +136,7 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
                     );
     }
     function ChangeMobileNumber() {
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Views&a=ChangeMobileNumber", 
@@ -146,7 +150,7 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
         
         var param = $( "#"+frmid1).serialize();
         
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
         $('#myModal').modal('show'); 
         
         $.post(API_URL + "m=Views&a=EmailVerificationForm", 
@@ -157,7 +161,7 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
                     );
     }
     function ChangeEmailID() {
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Views&a=ChangeEmailID", 
@@ -168,7 +172,7 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
                     });
     } 
     function CheckVerification() {
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Member&a=CheckVerification", 
@@ -180,8 +184,8 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
     }
      function MobileNumberOTPVerification(frmid) {
          var param = $( "#"+frmid).serialize();
-         $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
-                    $.post("http://nahami.online/sl/Dashboard/Webservice/webservice.php?m=Views&a=MobileNumberOTPVerification", 
+         $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+                    $.post("http://nahami.online/sl/Webservice/webservice.php?m=Views&a=MobileNumberOTPVerification", 
                             param,
                             function(result2) {
                                 $('#Mobile_VerificationBody').html(result2);   
@@ -211,8 +215,8 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
     }*/
     function EmailOTPVerification(frmid1) {
          var param = $( "#"+frmid1).serialize();
-         $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/images/loader.gif'>");
-                    $.post("http://nahami.online/sl/Dashboard/Webservice/webservice.php?m=Views&a=EmailOTPVerification", 
+         $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+                    $.post("http://nahami.online/sl/Webservice/webservice.php?m=Views&a=EmailOTPVerification", 
                             param,
                             function(result2) {
                                 $('#Mobile_VerificationBody').html(result2);   
@@ -222,4 +226,4 @@ var API_URL = "http://nahami.online/sl/Dashboard/Webservice/webservice.php?Login
     }
     //var obj = jQuery.parseJSON(result);
     //$('#myModal').modal('show');
-</script>
+</script> 
