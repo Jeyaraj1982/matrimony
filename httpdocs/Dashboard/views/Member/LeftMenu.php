@@ -27,7 +27,7 @@ div, label,a,ul,li,p,h1,h2,h3,h4,h5,h6,span,i,b,u {font-family:'Roboto' !importa
             <div class="collapse" id="manageprofiles">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Profile/ManageProfile");?>">Manage Profiles</a>
+                  <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyProfiles/ManageProfile");?>">Manage Profiles</a>
                 </li>
               </ul>
             </div>
@@ -61,13 +61,13 @@ div, label,a,ul,li,p,h1,h2,h3,h4,h5,h6,span,i,b,u {font-family:'Roboto' !importa
             <div class="collapse" id="myaccounts">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Accounts/MyInvoices");?>">My Invoices</a>
+                  <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyAccounts/MyInvoices");?>">My Invoices</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Accounts/MyTransactions");?>">My Transactions</a>
+                  <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyAccounts/MyTransactions");?>">My Transactions</a>
                 </li>
                  <li class="nav-item">
-                  <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Accounts/MyWallet");?>">My Wallet</a>
+                  <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyAccounts/MyWallet");?>">My Wallet</a>
                 </li>
               </ul>
             </div>

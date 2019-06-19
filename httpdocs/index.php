@@ -186,7 +186,7 @@ $rand=substr(rand(),0,4);//only show 4 numbers
                           </div>
                           <div class="col-sm-12" style="margin-bottom:6px">
                                 <div class="col-sm-4"><div style="float: right;">Captcha</div></div>
-                                <div class="col-sm-8"><input type="text" value="<?=$rand?>" id="ran" readonly="readonly" class="captcha" style="background-image: url(Dashboard/images/captcha_background.png);margin-bottom: 6px;border: none;width: 160px;height: 60px;text-align: center;font-size: 49px;"><br><input type="text" name="Captchatext" id="Captchatext" placeholder="Enter Code" value="<?php echo isset($_POST['Captchatext']) ? $_POST['Captchatext'] : '';?>">
+                                <div class="col-sm-8"><input type="text" value="<?=$rand?>" id="ran" readonly="readonly" class="captcha" style="background-image: url(assets/images/captcha_background.png);margin-bottom: 6px;border: none;width: 160px;height: 60px;text-align: center;font-size: 49px;"><br><input type="text" name="Captchatext" id="Captchatext" placeholder="Enter Code" value="<?php echo isset($_POST['Captchatext']) ? $_POST['Captchatext'] : '';?>">
                                 <span class="errorstring" id="ErrCaptchatext"><?php echo isset($ErrCaptchatext)? $ErrCaptchatext : "";?></span></div>
                           </div>
                           <div class="col-sm-12" style="text-align: center;color:red"><?php echo $errormessage ;?></div>

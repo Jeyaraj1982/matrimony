@@ -76,7 +76,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-3">
                         <div class="ft-verify" style="text-align: right;">
-                            <img class="img-responsive" src="Dashboard/images/ft-verify-sign2.png">
+                            <img class="img-responsive" src="Dashboard/assets/images/ft-verify-sign2.png">
                         </div>
                     </div>
                 </div>

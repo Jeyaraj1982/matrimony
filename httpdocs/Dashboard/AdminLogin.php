@@ -1,56 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-  
     include_once("config.php");
-           
     if (isset($_POST['UserName']))  {
         $res=$mysql->select("select * from _tbl_admin where AdminLogin='".trim($_POST['UserName'])."' and AdminPassword='".trim($_POST['Password'])."'");
         if(sizeof($res)>0) {
-            if ($res[00]['IsActive']==1) {
+            if ($res[0]['IsActive']==1) {
             $_SESSION['AdminDetails']=$res[0];
             header("Location:http://nahami.online/sl/Dashboard/");
         } else {
-                     $status = "Couldn't process. account may be suspended";
-                } 
-        } else { 
-            $status="Invaild Login Name or Login Password"; 
-        }
+            $status = "Couldn't process. account may be suspended";
+        } 
+    } else { 
+        $status="Invaild Login Name or Login Password";         }
     }
 ?>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Admin Login</title>
-  <link rel="stylesheet" href="<?php echo SiteUrl?>vendors/iconfonts/mdi/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="<?php echo SiteUrl?>vendors/iconfonts/puse-icons-feather/feather.css">
-  <link rel="stylesheet" href="<?php echo SiteUrl?>vendors/css/vendor.bundle.base.css">
-  <link rel="stylesheet" href="<?php echo SiteUrl?>vendors/css/vendor.bundle.addons.css">
-  <link rel="stylesheet" href="<?php echo SiteUrl?>css/style.css">
-  <link rel="shortcut icon" href="<?php echo SiteUrl?>images/favicon.png" />
-  <script src="<?php echo SiteUrl?>vendors/js/vendor.bundle.base.js"></script>
-  <script src="../../vendors/js/vendor.bundle.addons.js"></script>
-  <script src="<?php echo SiteUrl?>js/off-canvas.js"></script>
-  <script src="<?php echo SiteUrl?>js/hoverable-collapse.html"></script>
-  <script src="<?php echo SiteUrl?>js/misc.js"></script>
-  <script src="<?php echo SiteUrl?>js/settings.html"></script>
-  <script src="<?php echo SiteUrl?>js/todolist.html"></script>
-  <script src="<?php echo SiteUrl?>js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
+  <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/style.css">
+  <script src="<?php echo SiteUrl?>assets/vendors/js/vendor.bundle.base.js"></script>
+  <script src="<?php echo SiteUrl?>assets/js/misc.js"></script>
+  <script src="<?php echo SiteUrl?>assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
 </head>
- 
-
-
 <script>
 $(document).ready(function () {
    $("#UserName").blur(function () {
-    
         IsNonEmpty("UserName","ErrUserName","Please Enter Login Name");
-                        
    });
 $("#Password").blur(function () {
-                                                                                                            
         IsNonEmpty("Password","ErrPassword","Please Enter Password");
-                        
    });
 });
  function SubmitLogin() { 
@@ -58,13 +39,10 @@ $("#Password").blur(function () {
                          $('#ErrUserName').html("");
                          $('#ErrPassword').html("");
                          $('#server_error').html("");
-                         
                        IsNonEmpty("UserName","ErrUserName","Please Enter Login Name");
                        IsNonEmpty("Password","ErrPassword","Please Enter Password");
-                            
                         return (ErrorCount==0) ? true : false;
                  }
-    
 </script>                                                                     
 <style>
                 .errorstring {font-size:10px;color:red}

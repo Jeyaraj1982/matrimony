@@ -1,40 +1,25 @@
 <!DOCTYPE html>
     <html lang="en">
-<?php
-include_once("config.php");
-
-if (isset($_POST['btnsubmit'])) {
-   $response = $webservice->FLogin($_POST);
-   if ($response['status']=="success")  {
-       $_SESSION['UserDetails'] = $response['data'];
-       ?>
-       <script>
-            location.href='<?php echo SiteUrl; ?>';
-         </script>
-         
-       <?php
-   } else {
-       $loginError=$response['message'];
-   }
-}
-?>
+    <?php
+        include_once("config.php");
+        if (isset($_POST['btnsubmit'])) {
+            $response = $webservice->FLogin($_POST);
+            if ($response['status']=="success")  {
+                $_SESSION['UserDetails'] = $response['data'];
+                echo "<script>location.href='".SiteUrl."';</script>";
+            } else {
+                $loginError=$response['message'];
+            }
+        }
+    ?>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Admin Login :: <?php echo SITE_TITLE; ?></title>
+        <title>Franchisee Login :: <?php echo SITE_TITLE; ?></title>
         <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
-        <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/puse-icons-feather/feather.css">
-        <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/css/vendor.bundle.base.css">
-        <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/css/vendor.bundle.addons.css">
         <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/style.css">
-        <link rel="shortcut icon" href="<?php echo SiteUrl?>assets/images/favicon.png" />
         <script src="<?php echo SiteUrl?>assets/vendors/js/vendor.bundle.base.js"></script>
-        <script src="assets/vendors/js/vendor.bundle.addons.js"></script>
-        <script src="<?php echo SiteUrl?>assets/js/off-canvas.js"></script>
-        <script src="<?php echo SiteUrl?>assets/js/hoverable-collapse.html"></script>
         <script src="<?php echo SiteUrl?>assets/js/misc.js"></script>
-        <script src="<?php echo SiteUrl?>assets/js/settings.html"></script>
-        <script src="<?php echo SiteUrl?>assets/js/todolist.html"></script>
         <script src="<?php echo SiteUrl?>assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
         <script>
         

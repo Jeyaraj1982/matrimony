@@ -1,7 +1,7 @@
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo GetUrl("Dashboard");?>">
+                <a class="nav-link" href="<?php echo SiteUrl;?>">
                     <i class="menu-icon mdi mdi-television"></i>
                     <span class="menu-title">Dashboard</span>
                 </a>
@@ -15,19 +15,19 @@
                 <div class="collapse" id="Member">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("Member/CreateMember");?>">Create Member</a>
+                            <a class="nav-link" href="<?php echo GetUrl("Members/CreateMember");?>">Create Member</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("Member/ManageMembers");?>">Manage My Member</a>
+                            <a class="nav-link" href="<?php echo GetUrl("Members/ManageMembers");?>">Manage My Member</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("Member/SearchMember");?>">Search Member</a>
+                            <a class="nav-link" href="<?php echo GetUrl("Members/SearchMember");?>">Search Member</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("Wallet/SearchMemberDetails");?>">Refill Wallet</a>
+                            <a class="nav-link" href="<?php echo GetUrl("Members/Wallet/SearchMemberDetails");?>">Refill Wallet</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("Member/ResetPassword/SearchMember");?>">Reset Password</a>
+                            <a class="nav-link" href="<?php echo GetUrl("Members/ResetPassword/SearchMember");?>">Reset Password</a>
                         </li>
                     </ul>
                 </div> 
@@ -79,7 +79,7 @@
                             <a class="nav-link" href="<?php echo GetUrl("MyAccounts/MyTransactions");?>">My Transactions</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("RefillWallet");?>">Refill Wallet</a>
+                            <a class="nav-link" href="<?php echo GetUrl("MyAccounts/RefillWallet");?>">Refill Wallet</a>
                         </li>
                     </ul>
                 </div>

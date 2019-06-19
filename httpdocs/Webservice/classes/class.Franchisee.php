@@ -760,7 +760,6 @@
                                              "FranchiseeName" => $login['FranchiseeName'],
                                              "LoginName"      => $_POST['LoginName'],
                                              "LoginPassword"  => $_POST['LoginPassword']));   
-        //return "<script>location.href='http://nahami.online/sl/Dashboard/Member/CreateMember';</script>";
         if (sizeof($id)>0) {
                 return Response::returnSuccess("success",array());
             } else{
@@ -805,14 +804,14 @@
     }
     
     function ChangePassword(){
-              global $mysql,$loginInfo;    
-              echo "select * from _tbl_franchisees_staffs where PersonID='".$_Franchisee['PersonID']."'";
-              $getpassword = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_Franchisee['PersonID']."'");
-              if ($getpassword[0]['LoginPassword']==$_POST['CurrentPassword']) {
-              return Response::returnError("Incorrect Currentpassword"); }                                         
+         global $mysql,$loginInfo;
+              $getpassword = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['StaffID']."'");
+              if ($getpassword[0]['LoginPassword']!=$_POST['CurrentPassword']) {
+                return Response::returnError("Incorrect Currentpassword"); } 
+                                                      
               if ($getpassword[0]['LoginPassword']==$_POST['CurrentPassword']) {                                         
-                    $mysql->execute("update  _tbl_franchisees_staffs set LoginPassword='".$_POST['ConfirmNewPassword']."' where PersonID='".$_Franchisee['PersonID']."'" );
-              return Response::returnSuccess("success",array());
+                    $mysql->execute("update _tbl_franchisees_staffs set LoginPassword='".$_POST['ConfirmNewPassword']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['StaffID']."'");
+              return Response::returnSuccess("Password Changed Successfully",array());
               }
                                                             
     } 

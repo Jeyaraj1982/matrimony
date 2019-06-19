@@ -4,6 +4,13 @@
     define("ImageUrl","http://nahami.online/sl/Dashboard/assets/images/");
     define("SITE_TITLE","Matrimony") ;
     
+    if (isset($_GET['action']) && $_GET['action']=="logout") {
+         unset($_SESSION);
+         session_destroy();
+         sleep(3);
+         header("Location:".$_GET['redirect']);
+    }
+    
     function printDateTime($dateTime) {
         return date("M d, Y H",strtotime($dateTime));
     }
@@ -461,6 +468,9 @@
         }
         function ChangePassword($param) {
               return json_decode($this->_callUrl("m=Franchisee&a=ChangePassword",$param),true);
+        }
+             function GetProfiles($param) {
+              return json_decode($this->_callUrl("GetProfiles",$param),true);
         }
         
         

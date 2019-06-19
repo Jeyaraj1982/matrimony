@@ -90,7 +90,7 @@ div, label,a,h1,h2,h3,h4,h5,h6 {font-family:'Roboto' !important;}
                     </div>
                   </div>
                    <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-bookmark-outline mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Member/RefillWallet">Refill Wallet</a>
+                    <i class="mdi mdi-bookmark-outline mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Members/RefillWallet">Refill Wallet</a>
                   </p></div>
             </div>
             </div>
@@ -109,7 +109,7 @@ div, label,a,h1,h2,h3,h4,h5,h6 {font-family:'Roboto' !important;}
                     </div>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-reload mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Member/RenewProfile">Renew</a>
+                    <i class="mdi mdi-reload mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Members/RenewProfile">Renew</a>
                   </p>
                 </div>
               </div>
@@ -125,7 +125,7 @@ div, label,a,h1,h2,h3,h4,h5,h6 {font-family:'Roboto' !important;}
 for ($x = 0; $x <= 3; $x++) {
                    ?>
                     <div id="resCon_a002">
-                        <img src="<?php echo SiteUrl?>images/userimage.jpg" style="border-radius:115px;width:88%"><br>
+                        <img src="<?php echo SiteUrl?>assets/images/userimage.jpg" style="border-radius:115px;width:88%"><br>
                         <h5 style="margin-bottom:-10px">Justin L</h5><br>
                         <span style="color:#bfacac;">43 yrs, 5' 6', Tamil Bengaluru / Banglore</span><br>
                         <button type="submit" class="btn btn-primary" style="background:transparent;color:#00c1ff;padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</button> 
@@ -142,7 +142,7 @@ for ($x = 0; $x <= 3; $x++) {
                 <?php  for ($x = 0; $x <= 4; $x++) { ?>
                     <div>
                     <div class="col-sm-12" id="resCon_a001">
-                        <div class="col-sm-2"><img src="<?php echo SiteUrl?>images/userimage.jpg" style="border-radius:115px;width:30px"></div>
+                        <div class="col-sm-2"><img src="<?php echo SiteUrl?>assets/images/userimage.jpg" style="border-radius:115px;width:30px"></div>
                         <div class="col-sm-10">
                             <div style="margin-top:0px">Conard G</div>
                             <span style="color:#999 !important">39 yrs, 5' 6',Konkani, Mumbai Hotel & Hospitality Proffession</span>
@@ -165,7 +165,7 @@ for ($x = 0; $x <= 3; $x++) {
 for ($x = 0; $x <= 3; $x++) {
                    ?>
                     <div id="resCon_a002">
-                        <img src="<?php echo SiteUrl?>images/userimage.jpg" style="border-radius:115px;width:88%"><br>
+                        <img src="<?php echo SiteUrl?>assets/images/userimage.jpg" style="border-radius:115px;width:88%"><br>
                         <h5 style="margin-bottom:-10px">Justin L</h5><br>
                         <span style="color:#bfacac;">43 yrs, 5' 6', Tamil Bengaluru / Banglore</span><br>
                         <button type="submit" class="btn btn-primary" style="background:transparent;color:#00c1ff;padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</button> 
@@ -182,7 +182,7 @@ for ($x = 0; $x <= 3; $x++) {
                 <?php  for ($x = 0; $x <= 4; $x++) { ?>
                     <div>
                     <div class="col-sm-12" id="resCon_a001">
-                        <div class="col-sm-2"><img src="<?php echo SiteUrl?>images/userimage.jpg" style="border-radius:115px;width:30px"></div>
+                        <div class="col-sm-2"><img src="<?php echo SiteUrl?>assets/images/userimage.jpg" style="border-radius:115px;width:30px"></div>
                         <div class="col-sm-10">
                             <div style="margin-top:0px">Conard G</div>
                             <span style="color:#999 !important">39 yrs, 5' 6',Konkani, Mumbai Hotel & Hospitality Proffession</span>

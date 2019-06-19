@@ -221,10 +221,11 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
               <a href="<?php echo GetUrl("ChangePassword");?>" class="dropdown-item" style="padding-top: 23px;">
                 Change Password
               </a>
-              <a href="<?php echo GetUrl("Settings/Settings");?>" class="dropdown-item">
+              <a href="<?php echo GetUrl("MySettings/Settings");?>" class="dropdown-item">
                 Settings
               </a>
-              <a href="<?php echo SiteUrl;?>Logout" class="dropdown-item">
+              
+              <a href="<?php echo SiteUrl;?>?action=logout&redirect=../index" class="dropdown-item">
                 Log Out
               </a>
             </div>
@@ -358,7 +359,7 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
           <span class="profile-text" style="line-height:10px;" >         
               <?php echo "Franchisee Name";?></span><br>
           <span class="profile-text" style="line-height:10px; ">   
-              <?php echo "<b>";echo $_SESSION['FranchiseeDetails']['FranchiseName'] ; echo "</b>";?></span><br> 
+              <?php echo "<b>";echo $logininfo[0]['FranchiseName'] ; echo "</b>";?></span><br> 
               <span class="profile-text" style="line-height:10px;">
                <?php if($_Franchisee['IsAdmin']==1){
                     echo "<small>"; echo "Franchisee Admin"; echo "</small>"  ;
@@ -372,13 +373,13 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
               <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image">
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-              <a href="<?php echo GetUrl("ChangePassword");?>" class="dropdown-item">
+              <a href="<?php echo GetUrl("Settings/ChangePassword");?>" class="dropdown-item">
                 Change Password
               </a>
               <a class="dropdown-item">
                 Settings
               </a>
-              <a href="<?php echo SiteUrl;?>Logout" class="dropdown-item">
+              <a href="<?php echo SiteUrl;?>?action=logout&redirect=FranchiseeLogin" class="dropdown-item">
                 Log Out
               </a>
             </div>
@@ -531,7 +532,7 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
               <a href="<?php echo GetUrl("Settings/Setting");?>" class="dropdown-item">
                 Settings
               </a>
-              <a href="<?php echo SiteUrl;?>Logout" class="dropdown-item">
+              <a href="<?php echo SiteUrl;?>?action=logout&redirect=AdminLogin" class="dropdown-item">
                 Log Out
               </a>
             </div>

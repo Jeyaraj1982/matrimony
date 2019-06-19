@@ -1,8 +1,8 @@
 
 RewriteRule ^Masters/(.*)/Manage/Edit/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/Edit
 RewriteRule ^Masters/(.*)/Manage/View/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/View
-RewriteRule ^Profile/Edit/(.*)\.htm$ ./index.php?Code=$1&p=Profile/Edit
-RewriteRule ^Profile/View/(.*)\.htm$ ./index.php?Code=$1&p=Profile/View
+RewriteRule ^MyProfile/Edit/(.*)\.htm$ ./index.php?Code=$1&p=MyProfile/Edit
+RewriteRule ^MyProfile/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfile/View
 RewriteRule ^Members/ViewMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewMember
 RewriteRule ^Members/EditMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/EditMember
 RewriteRule ^Members/ResetPassword/(.*)\.htm$ ./index.php?Code=$1&p=Members/ResetPassword
@@ -30,14 +30,14 @@ RewriteRule ^Franchisees/View/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/View
 RewriteRule ^Franchisees/Report/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Report
 RewriteRule ^Franchisees/ResetPassword/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/ResetPassword
 RewriteRule ^Franchisees/BlockFranchisee/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/BlockFranchisee
-RewriteRule ^Member/ResetPassword/Reset/(.*)\.html$ ./index.php?Code=$1&p=Member/ResetPassword/Reset
+RewriteRule ^Members/ResetPassword/Reset/(.*)\.html$ ./index.php?Code=$1&p=Members/ResetPassword/Reset
 
-RewriteRule ^Member/EditMember/(.*)\.html$ ./index.php?Code=$1&p=Member/EditMember
-RewriteRule ^Member/ViewMember/(.*)\.html$ ./index.php?Code=$1&p=Member/ViewMember
-RewriteRule ^Member/BlockMember/(.*)\.html$ ./index.php?Code=$1&p=Member/BlockMember
-RewriteRule ^Member/ResetPassword/(.*)\.html$ ./index.php?Code=$1&p=Member/ResetPassword
+RewriteRule ^Members/EditMember/(.*)\.html$ ./index.php?Code=$1&p=Members/EditMember
+RewriteRule ^Members/ViewMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMember
+RewriteRule ^Members/BlockMember/(.*)\.html$ ./index.php?Code=$1&p=Members/BlockMember
+RewriteRule ^Members/ResetPassword/(.*)\.html$ ./index.php?Code=$1&p=Members/ResetPassword
 
-RewriteRule ^Wallet/RefillWallet/(.*)\.html$ ./index.php?Code=$1&p=Wallet/RefillWallet
+RewriteRule ^Members/Wallet/RefillWallet/(.*)\.html$ ./index.php?Code=$1&p=Members/Wallet/RefillWallet
 RewriteRule ^Staffs/Edit/(.*)\.html$ ./index.php?Code=$1&p=Staffs/Edit
 RewriteRule ^Staffs/View/(.*)\.html$ ./index.php?Code=$1&p=Staffs/View
 

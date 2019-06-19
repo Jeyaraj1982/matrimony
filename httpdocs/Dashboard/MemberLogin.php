@@ -1,56 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
-<?php
-  
-  /*  include_once("config.php");
-           
-    if (isset($_POST['UserName']))  {
-        $res=$mysql->select("select * from _tbl_members where MemberLogin='".trim($_POST['UserName'])."' and MemberPassword='".trim($_POST['Password'])."'");
-        if(sizeof($res)>0) {
-            if ($res[00]['IsActive']==1) {
-            $_SESSION['MemberDetails']=$res[0];
-            header("Location:http://nahami.online/sl/Dashboard/");
-        }else {
-                  $status = "Couldn't process. account may be suspended";
-        }
-        }  else {
-            $status = "Invaild Login Name or Login Password";
-        }
-        $_SESSION['ProfileID']=$row['ProfileID'];   
-    }    */
-?>
-
-<?php
-include_once("config.php");
-if (isset($_POST['btnsubmit'])) {
-    
-   $response = $webservice->Login($_POST);
-   print_r($response);
-   
-   if ($response['status']=="success")  {
-       $_SESSION['UserData'] = $response['data'];
+    <html lang="en">
+    <?php 
+        include_once("config.php");
+        
+        if (isset($_POST['btnsubmit'])) {
+            $response = $webservice->Login($_POST);
+            if ($response['status']=="success")  {
+                $_SESSION['UserData'] = $response['data'];
        ?>
-       
-        <script>
-        alert("DDDDDD")     
-            location.href='sl/Dashboard';
-         </script>
-         
+        <script>location.href='sl/Dashboard';</script>
        <?php
    } else {
        $loginError=$response['message'];
-       ?>
-             <script>
-             alert("FFFFF")
-        //alert("<?php// echo $response['message'];?>");
-          //  location.href='app/dashboard.php';
-         </script>
-       <?php
    }
-    
 }
 ?>
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -70,26 +34,18 @@ if (isset($_POST['btnsubmit'])) {
   <script src="<?php echo SiteUrl?>js/todolist.html"></script>
   <script src="<?php echo SiteUrl?>js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
 </head>
- 
-
-
 <script>
- function SubmitLogin() {   
-                          ErrorCount=0;  
-                         $('#ErrUserName').html("");
-                         $('#ErrPassword').html("");
-                         $('#server_error').html("");
-                      
-                         IsNonEmpty("UserName","ErrUserName","Please Enter Valid Login Name");
-                         IsNonEmpty("Password","ErrPassword","Please Enter Valid Password");
-                            
-                           return (ErrorCount==0) ? true : false;
-                 }
-    
+function SubmitLogin() {
+    ErrorCount=0;  
+    $('#ErrUserName').html("");
+    $('#ErrPassword').html("");
+    $('#server_error').html("");
+    IsNonEmpty("UserName","ErrUserName","Please Enter Valid Login Name");
+    IsNonEmpty("Password","ErrPassword","Please Enter Valid Password");
+    return (ErrorCount==0) ? true : false;
+}
 </script>
-<style>
-                .errorstring {font-size:10px;color:red}
-            </style>
+<style>.errorstring {font-size:10px;color:red}</style>
 <body>
   <div class="container-scroller">
     <div class="container-fluid page-body-wrapper full-page-wrapper auth-page">
@@ -148,6 +104,4 @@ if (isset($_POST['btnsubmit'])) {
       </div>
      </div>
   </body>
-</html>
-                
-              
+</html>      

@@ -5,7 +5,7 @@
     
     class Webservice {
         
-        var $serverURL="http://nahami.online/sl/Dashboard/Webservice/webservice.php?action=";
+        var $serverURL="http://nahami.online/sl/Webservice/webservice.php?action=";
         
         function Login($param) {
               return json_decode($this->_callUrl("Login",$param),true);
@@ -23,6 +23,8 @@
               return json_decode($this->_callUrl("forgotPasswordchangePassword",$param),true);
         }
         
+        
+   
         
         
    function _callUrl($method,$param) {

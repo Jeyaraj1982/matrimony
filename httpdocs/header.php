@@ -4,18 +4,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Matrimony Software</title>
-            <link rel="stylesheet" href="<?php echo SiteUrl?>vendors/iconfonts/mdi/css/materialdesignicons.min.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="stylesheet" href="<?php echo SiteUrl?>vendors/css/vendor.bundle.base.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="stylesheet" href="stylecss.css">
-            <link rel="stylesheet" href="<?php echo SiteUrl?>vendors/css/vendor.bundle.addons.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="stylesheet" href="<?php echo SiteUrl?>css/style.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="shortcut icon" href="<?php echo SiteUrl?>images/favicon.png" /> 
-            <link rel="stylesheet" href="<?php echo SiteUrl?>vendors/iconfonts/puse-icons-feather/feather.css?rnd=<?php echo rand(10,1000);?>">
-            <script src="http://nahami.online/sl/Dashboard/vendors/jquery-3.1.1.min.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
-            <link href='http://nahami.online/sl/Dashboard/vendors/bootstrap/css/bootstrap.min.css?rnd=<?php echo rand(10,1000);?>' rel='stylesheet' type='text/css'>
-            <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js?rnd=<?php echo rand(10,1000);?>"></script>
-            <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css?rnd=<?php echo rand(10,1000);?>">
-           <script src="http://nahami.online/sl/Dashboard/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script> 
+            <link rel="stylesheet" href="http://nahami.online/sl/assets/css/style.css">
+            <script src="http://nahami.online/sl/assets/vendors/jquery-3.1.1.min.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
+            <link href='http://nahami.online/sl/assets/vendors/bootstrap/css/bootstrap.min.css?rnd=<?php echo rand(10,1000);?>' rel='stylesheet' type='text/css'>
+           <script src="http://nahami.online/sl/assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
         </head>
      <style>
       .navbar{
