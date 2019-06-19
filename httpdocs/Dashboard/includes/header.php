@@ -217,12 +217,12 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
               <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image">
             </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-              <a href="<?php echo GetUrl("ChangePassword");?>" class="dropdown-item" style="padding-top: 23px;">
-                Change Password
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding:0px">
+              <a href="#" class="dropdown-item">
+               Tools
               </a>
               <a href="<?php echo GetUrl("MySettings/Settings");?>" class="dropdown-item">
-                Settings
+              My Settings
               </a>
               
               <a href="<?php echo SiteUrl;?>?action=logout&redirect=../index" class="dropdown-item">
@@ -364,7 +364,7 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
                <?php if($_Franchisee['IsAdmin']==1){
                     echo "<small>"; echo "Franchisee Admin"; echo "</small>"  ;
                } else {
-                   echo "Admin";
+                   echo "Admin"; 
                }
              ?></span>
              </li> 
@@ -373,7 +373,7 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
               <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image">
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-              <a href="<?php echo GetUrl("Settings/ChangePassword");?>" class="dropdown-item">
+              <a href="<?php echo GetUrl("MySettings/ChangePassword");?>" class="dropdown-item">
                 Change Password
               </a>
               <a class="dropdown-item">

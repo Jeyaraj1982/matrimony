@@ -12,7 +12,7 @@ $page="MyPrivacyInfo";
             <div class="form-group-row">
             <div class="col-sm-12">
             <div class="col-sm-3">
-            <div class="sidemenu" style="width: 200px;margin-left: -58px;margin-top: -30px;border-right: 1px solid #eee;">
+            <div class="sidemenu" style="width: 200px;margin-left: -58px;margin-top: -30px;margin-bottom: -41px;border-right: 1px solid #eee;">
                 <?php include_once("sidemenu.php");?>
             </div>
             </div>

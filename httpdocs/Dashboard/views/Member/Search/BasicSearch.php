@@ -1,6 +1,7 @@
 <?php
 $mainlink="Search";
 $page="BasicSearch";
+$Info = $webservice->GetBasicSearchElements();
 ?>
 <style>
 div, label,a {font-family:'Roboto' !important;}
@@ -24,7 +25,7 @@ div, label,a {font-family:'Roboto' !important;}
             <div class="col-sm-1" align="left" style="padding-top: 6px;">To</div>
             <div class="col-sm-2" align="left" style="width:100px">
              <select class="form-control" id="toage"  name="toage">
-                    <?php for($i=18;$i<=70;$i++) {?>
+                <?php for($i=18;$i<=70;$i++) {?>
                     <option value="<?php echo $i; ?>"><?php echo $i;?></option>
                 <?php } ?>
                 </select>           
@@ -33,36 +34,35 @@ div, label,a {font-family:'Roboto' !important;}
             <div class="form-group row">
              <div class="col-sm-4" align="left">Marital Status</div>
              <div class="col-sm-6" align="left">
-                <?php $MaritalStatuss = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARTIALSTATUS'");?>
                 <select class="form-control" id="MaritalStatus"  name="MaritalStatus">
-                            <option value="0">Choose Marital Status</option>
-                            <?php foreach($MaritalStatuss as $MaritalStatus) { ?>
-                            <option value="<?php echo $MaritalStatus['SoftCode'];?>" <?php echo ($_POST['MaritalStatus']==$MaritalStatus['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $MaritalStatus['CodeValue'];?></option>
-                            <?php } ?>
+                    <option value="0">Choose Marital Status</option>
+                    <?php foreach($Info['data']['MaritalStatus'] as $MaritalStatus) { ?>
+                    <option value="<?php echo $MaritalStatus['SoftCode'];?>" <?php echo ($_POST['MaritalStatus']==$MaritalStatus['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $MaritalStatus['CodeValue'];?></option>
+                    <?php } ?>
                 </select>           
             </div>
             </div> 
             <div class="form-group row">
              <div class="col-sm-4" align="left">Religion</div>
-             <div class="col-sm-6" align="left"> <?php $Religions = $mysql->select("select * from _tbl_master_codemaster Where HardCode='RELINAMES'");?>
+             <div class="col-sm-6" align="left">
                 <select class="form-control" id="Religion"  name="Religion">
-                            <option value="0">Choose Religion</option>
-                            <?php foreach($Religions as $Religion) { ?>
-                            <option value="<?php echo $Religion['SoftCode'];?>" <?php echo ($_POST['Religion']==$Religion['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Religion['CodeValue'];?></option>
-                            <?php } ?>
+                    <option value="0">Choose Religion</option>
+                    <?php foreach($Info['data']['Religion'] as $Religion) { ?>
+                    <option value="<?php echo $Religion['SoftCode'];?>" <?php echo ($_POST['Religion']==$Religion['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Religion['CodeValue'];?></option>
+                    <?php } ?>
                 </select>           
             </div>
             </div> 
              
             <div class="form-group row">
              <div class="col-sm-4" align="left">Community</div>
-             <div class="col-sm-6" align="left"> <?php $Communitys = $mysql->select("select * from _tbl_master_codemaster Where HardCode='COMMUNITY'");?>
+             <div class="col-sm-6" align="left">
                 <select class="form-control" id="Community"  name="Community"> 
-                            <option value="0">Choose Community</option>
-                            <option value="All">All</option>
-                            <?php foreach($Communitys as $Community) { ?>
-                            <option value="<?php echo $Community['SoftCode'];?>" <?php echo ($_POST['Community']==$Community['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Community['CodeValue'];?></option>
-                            <?php } ?>
+                    <option value="0">Choose Community</option>
+                    <option value="All">All</option>
+                    <?php foreach($Info['data']['Community'] as $Community) { ?>
+                    <option value="<?php echo $Community['SoftCode'];?>" <?php echo ($_POST['Community']==$Community['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Community['CodeValue'];?></option>
+                    <?php } ?>
                 </select>           
             </div>
             </div> 

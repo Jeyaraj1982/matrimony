@@ -1,8 +1,8 @@
 
 RewriteRule ^Masters/(.*)/Manage/Edit/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/Edit
 RewriteRule ^Masters/(.*)/Manage/View/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/View
-RewriteRule ^MyProfile/Edit/(.*)\.htm$ ./index.php?Code=$1&p=MyProfile/Edit
-RewriteRule ^MyProfile/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfile/View
+RewriteRule ^MyProfiles/Edit/(.*)\.htm$ ./index.php?Code=$1&p=MyProfile/Edit
+RewriteRule ^MyProfiles/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfile/View
 RewriteRule ^Members/ViewMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewMember
 RewriteRule ^Members/EditMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/EditMember
 RewriteRule ^Members/ResetPassword/(.*)\.htm$ ./index.php?Code=$1&p=Members/ResetPassword
@@ -46,6 +46,8 @@ RewriteRule ^Franchisees/Plan/View/(.*)\.html$ ./index.php?Code=$1&p=Franchisees
 
 RewriteRule ^Member/View/(.*)\.html$ ./index.php?Code=$1&p=Member/View
 RewriteRule ^Member/Edit/(.*)\.html$ ./index.php?Code=$1&p=Member/View
+
+RewriteRule ^MySettings/EditMemberInfo/(.*)\.html$ ./index.php?Code=$1&p=MySettings/EditMemberInfo
 
 
 

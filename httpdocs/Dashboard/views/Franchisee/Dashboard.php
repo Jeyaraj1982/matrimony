@@ -1,39 +1,9 @@
-         <!--<div class="row purchace-popup">
-            <div class="col-12">
-            <span class="d-flex alifn-items-center">
-                <p>Like what you see? Check out our premium version for more.</p>
-                <a href="https://github.com/BootstrapDash/StarAdmin-Free-Bootstrap-Admin-Template" target="_blank" class="btn ml-auto download-button">Download Free Version</a>
-                <a href="https://www.bootstrapdash.com/product/star-admin-pro/" target="_blank" class="btn purchase-button">Upgrade To Pro</a>
-                <i class="mdi mdi-close popup-dismiss"></i>
-              </span>
-            </div>
-          </div>-->
-<?php
-  /*  if (isset($_POST['welcomebutton'])) {
-       $welcome=$mysql->execute("update _tbl_franchisees_staffs set WelcomeMsg='1' where  FranchiseeID='".$_Franchisee['FranchiseeID']."'");
-       unset($_POST); 
-       ?>                        
-  <?   }  */                                               
-?>
- <style>
-                            #verifybtn{
-                                background: #0eb1db;;
-                                border:1px#32cbf3;
-                                box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
-                            }
-                            #verifybtn:hover{
-                                 background:#149dc9;
-                            }
-                            input:focus{
-                                border:1px solid #ccc;
-                            }
-                            #errormsg{
-                                text-align:center;
-                                color:red;
-                                padding-bottom:5px;
-                                padding-top:5px;
-                            }
-                        </style>
+<style>
+#verifybtn{background: #0eb1db;;border:1px#32cbf3;box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
+#verifybtn:hover{background:#149dc9;}
+input:focus{border:1px solid #ccc;}
+#errormsg{text-align:center;color:red;padding-bottom:5px;padding-top:5px;}
+</style>
           <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
               <div class="card card-statistics">
@@ -142,17 +112,12 @@
                         </tr>
                       </thead>
                       <tbody> 
-                        <?php /*$News = $mysql->select("select * from _tbl_franchisees_news"); ?>
-                        <?php foreach($News as $New) { ?>
-                                <tr> 
-                                <td><b><?php echo $New['NewsTitle'];?></b> <br> <small><?php echo $New['CreatedOn'];?></small></td>               
-                                </tr>
-                        <?php } */?>            
+                                 
                       </tbody>
                    </table> 
                 </div>
                 <div class=" d-flex" >
-                   <a href="<?php //echo GetUrl("MyAccounts/RefillWallet");?>"><small>View More</small></a>
+                   <a href=""><small>View More</small></a>
                 </div>
               </div>
      </div>
@@ -209,8 +174,6 @@
               </div>
               </div>
           </div>
-
-            
           <div class="row">
             <div class="col-md-12 grid-margin">
               <div class="card">
@@ -631,4 +594,4 @@ var API_URL = "http://nahami.online/sl/Webservice/webservice.php?LoginID=<?php e
    ?>
      </script>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<?php print_r($t);?>
+

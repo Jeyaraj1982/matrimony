@@ -2,6 +2,9 @@
 //sleep(60);
     // include_once("config.php");
     include_once("controller/DatabaseController.php");
+        define("ImagePath","http://nahami.online/sl/Dashboard/assets/images/");
+
+
     $mysql = new MySql("localhost","nahami_user","nahami_user","nahami_masterdb");
 
     use PHPMailer\PHPMailer\PHPMailer;
@@ -18,7 +21,17 @@
     include_once("classes/class.Franchisee.php");
     
       $loginid = isset($_GET['LoginID']) ? $_GET['LoginID'] : "";
-    $loginInfo = $mysql->select("Select * from _tbl_member_login where LoginID='".$loginid."'");
+      
+    //  echo json_encode($_GET);
+     // exit;
+      
+    if (isset($_GET['m']) && $_GET['m']=="Franchisee") {
+       $loginInfo = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'"); 
+    }  else {
+        $loginInfo = $mysql->select("Select * from _tbl_member_login where LoginID='".$loginid."'");    
+    }
+    
+    
       $mail = new PHPMailer;
       
     if (isset($_GET['action'])) {
@@ -67,8 +80,13 @@
             
             $loginid = $mysql->insert("_tbl_member_login",array("LoginOn"   => date("Y-m-d H:i:s"),
                                                                 "MemberID"  => $data[0]['MemberID']));
-            $data[0]['LoginID']=$loginid;
             if ($data[0]['IsActive']==1) {
+                 
+                 if($data[0]['WelcomeMsg']==0) {
+                    $d=$mysql->select("Select * From _tbl_welcome_message where IsActive='1' and UserRole='Member'");
+                    $data[0]['WelcomeMessage']=$d[0]['Message'];  
+                 }
+                 $data[0]['LoginID']=$loginid;
                 return array("status" => "success",
                              "data"   => $data[0]);
             } else{
@@ -221,11 +239,140 @@
         return returnSuccess("New Password saved successfully",$data[0]);
     }
     
+      
     
     class Member {
         
         function IsMobileVerified() {
             return false;
+        }
+        
+         function GetMemberInfo(){
+            global $mysql,$loginInfo;
+            $Member=$mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+            return Response::returnSuccess("success",$Member[0]);
+        }
+        
+        function EditMemberInfo(){
+              global $mysql,$loginInfo;    
+              
+              $Member = $mysql->select("select * from _tbl_members where MemberID='".$_POST['Code']."'");
+              $data = $mysql->select("select * from  _tbl_members where EmailID='".trim($_POST['EmailID'])."' and MemberID <>'".$_POST['Code']."' ");
+              if (sizeof($data)>0) {
+                    return Response::returnError("EmailID Already Exists");    
+              }
+                                                       
+                    $mysql->execute("update _tbl_members set MemberName='".$_POST['MemberName']."',
+                                                    EmailID='".$_POST['EmailID']."',
+                                                    MobileNumber='".$_POST['MobileNumber']."',
+                                                    IsActive='".$_POST['Status']."' where  MemberID='".$Member[0]['MemberID']."'");
+      
+     
+             $Member = $mysql->select("select * from _tbl_members where '".$_POST['Code']."'");
+            
+    
+                return Response::returnSuccess("success",array());
+                                                            
+    }
+        
+         function WelcomeMessage(){
+            global $mysql,$loginInfo;
+            $welcome=$mysql->execute("update _tbl_members set WelcomeMsg='1' where  MemberID='".$loginInfo[0]['MemberID']."'");
+             return Response::returnSuccess("New Password saved successfully"."update _tbl_members set WelcomeMsg='1' where  MemberID='".$loginInfo[0]['MemberID']."'",array());
+        }
+        function GetCodeMasterDatas(){
+            return Response::returnSuccess("success",array("Gender"     => CodeMaster::GetGender(),
+                                                           "MaritalStatus"     => CodeMaster::GetMaritalStatus(),
+                                                           "Language"     => CodeMaster::GetLanguage(),
+                                                           "Religion"     => CodeMaster::GetReligion(),
+                                                           "Caste"     => CodeMaster::GetCaste(),
+                                                           "Community"     => CodeMaster::GetCommunity(),
+                                                           "Nationality"     => CodeMaster::GetNationality(),
+                                                           "ProfileFor" => CodeMaster::GetProfileFor()));
+        }
+        function CreateProfile() {
+                                                                            
+        global $mysql,$loginInfo;  
+       
+        if ((strlen(trim($_POST['ProfileFor']))=="0")) {
+            return Response::returnError("Please select ProfileFor");
+        }
+        if (!(strlen(trim($_POST['ProfileName']))>0)) {
+            return Response::returnError("Please enter your name");
+        }
+        if (!(strlen(trim($_POST['DateofBirth']))>0)) {
+            return Response::returnError("Please enter your date of birth");
+        }
+        if ((strlen(trim($_POST['Sex']))=="0")) {
+            return Response::returnError("Please select sex");
+        }
+        if ((strlen(trim($_POST['MaritalStatus']))=="0")) {
+            return Response::returnError("Please select marital status");
+        }
+        if ((strlen(trim($_POST['Language']))=="0")) {
+            return Response::returnError("Please select language");
+        }
+        if ((strlen(trim($_POST['Religion']))=="0")) {
+            return Response::returnError("Please select religion");
+        }
+        if ((strlen(trim($_POST['Caste']))=="0")) {
+            return Response::returnError("Please select caste");
+        }
+        if ((strlen(trim($_POST['Community']))=="0")) {
+            return Response::returnError("Please select community");
+        }
+        if ((strlen(trim($_POST['Nationality']))=="0")) {
+            return Response::returnError("Please select nationality");
+        }
+        
+       $id =  $mysql->insert("_tbl_Profile_Draft",array("ProfileFor"    => $_POST['ProfileFor'],
+                                                  "ProfileName"   => $_POST['ProfileName'],
+                                                  "DateofBirth"   => $_POST['DateofBirth'],        
+                                                  "Sex"           => $_POST['Sex'],      
+                                                  "MaritalStatus" => $_POST['MaritalStatus'],      
+                                                  "MotherTongue"  => $_POST['Language'], 
+                                                  "Religion"      => $_POST['Religion'],
+                                                  "Caste"         => $_POST['Caste'],
+                                                  "Community"     => $_POST['Community'],        
+                                                  "CreatedOn"     => date("Y-m-d H:i:s"),        
+                                                  "CreatedBy"     => $loginInfo['MemberID'],        
+                                                  "Nationality"   => $_POST['Nationality']));
+                                                           
+        if (sizeof($id)>0) {
+                return Response::returnSuccess("success",array());
+            } else{
+                return Response::returnError("Access denied. Please contact support");   
+            }
+    }
+    
+        function MemberChangePassword(){
+         global $mysql,$loginInfo;
+              $getpassword = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+              if ($getpassword[0]['MemberPassword']!=$_POST['CurrentPassword']) {
+                return Response::returnError("Incorrect Currentpassword"); } 
+                                                      
+              if ($getpassword[0]['MemberPassword']==$_POST['CurrentPassword']) {                                         
+                    $mysql->execute("update _tbl_members set MemberPassword='".$_POST['ConfirmNewPassword']."' where MemberID='".$loginInfo[0]['MemberID']."'");
+              return Response::returnSuccess("Password Changed Successfully",array());
+              }
+                                                            
+    } 
+        
+        function GetAdvancedSearchElements() {
+             return Response::returnSuccess("success",array("SkinType"        => CodeMaster::GetSkinType(),
+                                                            "MaritalStatus" => CodeMaster::GetMaritalStatus(),
+                                                            "Religion"      => CodeMaster::GetReligion(),
+                                                            "Caste"         => CodeMaster::GetCaste(),
+                                                            "Height"        => CodeMaster::GetHeight(),
+                                                            "Diet"          => CodeMaster::GetDiet(),
+                                                            "SmokingHabit"  => CodeMaster::GetSmokingHabit(),
+                                                            "DrinkingHabit" => CodeMaster::GetDrinkingHabit(),
+                                                            "BodyType"      => CodeMaster::GetBodyType()));
+        }
+        function GetBasicSearchElements() {
+             return Response::returnSuccess("success",array("MaritalStatus" => CodeMaster::GetMaritalStatus(),
+                                                            "Religion"      => CodeMaster::GetReligion(),
+                                                            "Community"     => CodeMaster::GetCommunity()));
         }
         
         function CheckVerification() {
@@ -243,7 +390,7 @@
                return Views::ChangeEmailFromVerificationScreen("",$loginid,"","");
             }
             
-            return "<script>location.href='http://nahami.online/sl/Dashboard/Profile/CreateProfile';</script>";
+            return "<script>location.href='http://nahami.online/sl/Dashboard/MyProfiles/CreateProfile';</script>";
         }
     }
     
@@ -280,6 +427,7 @@
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                 <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;padding-top: 10%;">Please verify your mobile number</h4>
                                 </div>
@@ -326,11 +474,12 @@
                         <input type="hidden" value="'.$loginid.'" name="loginId">
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
                            <div class="form-group">
+                           <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right:8px;">&times;</button>
                                 <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;padding-top: 15%;">Change Mobile Number</h4>
                                 </div>
                             </div> 
-                            <div class="form-group"> 
+                            <div class="form-group">
                                 <div class="input-group">
                                     <div class="col-sm-12">
                                         <select name="CountryCode" id="CountryCode" style="padding-top: 12px;padding-bottom: 7px;padding-top: 4px;padding-bottom: 4px;text-align: center;font-family: Roboto;"> 
@@ -409,6 +558,7 @@
                         <input type="hidden" value="'.$loginid.'" name="loginId">
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                 <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
                                 </div>
@@ -479,6 +629,7 @@
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                 <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;padding-top: 12%;">Please verify your email</h4>
                                 </div>
@@ -525,6 +676,7 @@
                         <input type="hidden" value="'.$loginid.'" name="loginId">
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
                            <div class="form-group">
+                           <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                  <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;padding-top: 15%;">Change Email ID</h4>
                                 </div>
@@ -627,6 +779,7 @@
                         <input type="hidden" value="'.$loginid.'" name="loginId">
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                 <div class="input-group">
                                     <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
@@ -774,6 +927,72 @@
             $Sexs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX'") ;
             return $Sexs;
         }
+        function GetProfileFor() {
+            global $mysql;
+            $ProfileFors = $mysql->select("select * from _tbl_master_codemaster Where HardCode='PROFILESIGNIN'") ;
+            return $ProfileFors;
+        }
+        function GetMaritalStatus() {
+            global $mysql;
+            $MaritalStatuss = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARTIALSTATUS'") ;
+            return $MaritalStatuss;
+        }
+        function GetLanguage() {
+            global $mysql;
+            $Languages = $mysql->select("select * from _tbl_master_codemaster Where HardCode='LANGUAGENAMES'") ;
+            return $Languages;
+        }
+        function GetReligion() {
+            global $mysql;
+            $Religions = $mysql->select("select * from _tbl_master_codemaster Where HardCode='RELINAMES'") ;
+            return $Religions;
+        }
+        function GetCaste() {
+            global $mysql;
+            $Castes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CASTNAMES'") ;
+            return $Castes;
+        }
+        function GetCommunity() {
+            global $mysql;
+            $Communitys = $mysql->select("select * from _tbl_master_codemaster Where HardCode='COMMUNITY'") ;
+            return $Communitys;
+        }
+        function GetNationality() {
+            global $mysql;
+            $Nationalitys = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NATIONALNAMES'") ;
+            return $Nationalitys;
+        }
+        function GetHeight() {
+            global $mysql;
+            $Heights = $mysql->select("select * from _tbl_master_codemaster Where HardCode='HEIGHTS'") ;
+            return $Heights;
+        }
+        function GetDiet() {
+            global $mysql;
+            $Diets = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DIETS'") ;
+            return $Diets;
+        }
+        function GetSmokingHabit() {
+            global $mysql;
+            $SmokingHabits = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SMOKINGHABITS'") ;
+            return $SmokingHabits;
+        }
+        function GetDrinkingHabit() {
+            global $mysql;
+            $DrinkingHabits = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DRINKINGHABITS'") ;
+            return $DrinkingHabits;
+        }
+        function GetSkinType() {
+            global $mysql;
+            $SkinTypes = $mysql->select("SELECT * FROM _tbl_master_codemaster WHERE HardCode='COMPLEXIONS'") ;
+            return $SkinTypes;
+        }
+        function GetBodyType() {
+            global $mysql;
+            $BodyTypes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BODYTYPES'") ;
+            return $BodyTypes;
+        }
+      
         
         
     }
@@ -786,6 +1005,5 @@
                                                             
         
     }
-
     
     ?>

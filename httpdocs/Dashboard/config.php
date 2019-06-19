@@ -400,7 +400,13 @@
     }
     
     
-    $loginID = isset($_Franchisee['LoginID']) ? $_Franchisee['LoginID'] : 0;
+    $loginID = "";
+    
+    if (isset($_Franchisee['LoginID'])) {
+        $loginID = $_Franchisee['LoginID'];
+    }  else if (isset($_Member['LoginID'])) {
+        $loginID = $_Member['LoginID'];
+    }
     
     class Webservice {
         
@@ -469,14 +475,37 @@
         function ChangePassword($param) {
               return json_decode($this->_callUrl("m=Franchisee&a=ChangePassword",$param),true);
         }
-             function GetProfiles($param) {
+        function GetProfiles($param) {
               return json_decode($this->_callUrl("GetProfiles",$param),true);
         }
-        
+        function GetMemberInfo($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetMemberInfo",$param),true);
+        }
+        function WelcomeMessage($param) {
+              return json_decode($this->_callUrl("m=Member&a=WelcomeMessage",$param),true);
+        }
+        function GetCodeMasterDatas($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetCodeMasterDatas",$param),true);
+        }
+        function CreateProfile($param) {
+              return json_decode($this->_callUrl("m=Member&a=CreateProfile",$param),true);
+        }
+        function MemberChangePassword($param) {
+              return json_decode($this->_callUrl("m=Member&a=MemberChangePassword",$param),true);
+        }
+        function GetAdvancedSearchElements($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetAdvancedSearchElements",$param),true);
+        }
+        function GetBasicSearchElements($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetBasicSearchElements",$param),true);
+        }
+        function EditMemberInfo($param) {
+              return json_decode($this->_callUrl("m=Member&a=EditMemberInfo",$param),true);
+        }
         
    function _callUrl($method,$param) {
         
-           
+            
             $postvars = '';
             foreach($param as $key=>$value) {
                 $postvars .= $key . "=" . $value . "&";

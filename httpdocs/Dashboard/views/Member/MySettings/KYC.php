@@ -1,7 +1,6 @@
 <?php
-$page="Notification";
+$page="KYC";
 ?>
-
 <form method="post" action="">
   <div class="row">
     <div class="col-md-12 d-flex align-items-stretch grid-margin">
@@ -17,14 +16,24 @@ $page="Notification";
             </div>
             </div>
             <div class="col-sm-9">
-              <h4 class="card-title">Notification</h4>
-              </div>
+              <h4 class="card-title">KYC</h4>
+                <div class="form-group row">
+                     <div class="col-sm-3"><small>ID Proof</small> </div>
+                     <div class="col-sm-3"><input type="file"></div>
+                  </div>
+                  <div class="form-group row">
+                     <div class="col-sm-3"><small>Address Proof</small> </div>
+                     <div class="col-sm-3"><input type="file"></div>
+                  </div>
+                  <div class="col-sm-12" style="text-align:center"><button type="submit" class="btn btn-primary">Update</button></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-   </div>
+     </div>
+    </div>
   </div>
 </form>                
                 

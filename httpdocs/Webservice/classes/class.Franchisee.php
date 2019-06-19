@@ -1,8 +1,5 @@
 <?php
-    define("ImagePath","http://nahami.online/sl/Dashboard/assets/images/");
-    
-    $loginid = isset($_GET['LoginID']) ? $_GET['LoginID'] : "";
-    $loginInfo = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
+ 
 
     class Franchisee {
         

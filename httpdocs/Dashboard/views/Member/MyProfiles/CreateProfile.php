@@ -1,12 +1,12 @@
 <?php
-    $ProfileFors = $mysql->select("select * from _tbl_master_codemaster Where HardCode='PROFILESIGNIN'");
+  /*  $ProfileFors = $mysql->select("select * from _tbl_master_codemaster Where HardCode='PROFILESIGNIN'");
     $Sexs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX'"); 
     $MaritalStatuss = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARTIALSTATUS'");
     $Languages = $mysql->select("select * from _tbl_master_codemaster Where HardCode='LANGUAGENAMES'");
     $Religions = $mysql->select("select * from _tbl_master_codemaster Where HardCode='RELINAMES'");
     $Castes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CASTNAMES'");
     $Communitys = $mysql->select("select * from _tbl_master_codemaster Where HardCode='COMMUNITY'");
-    $Nationalitys = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NATIONALNAMES'");
+    $Nationalitys = $mysql->select("");
     
     if (isset($_POST['BtnSaveProfile'])) {
         
@@ -75,10 +75,24 @@
                 echo "Error occured. Couldn't save Franchise Details";
             }
         }
-    }
+    } */
 ?>
-
-
+<?php                   
+  if (isset($_POST['BtnSaveProfile'])) {   
+    $response = $webservice->CreateProfile($_POST);
+    if ($response['status']=="success") {
+        echo "<script>location.href='Edit/".$ProfileID.".htm?msg=1';</script>";
+        ?>
+        <?php
+    } else {
+        $errormessage = $response['message']; 
+    }
+    }
+?>  
+<?php 
+     $fInfo = $webservice->GetCodeMasterDatas(); 
+     
+?>
 <form method="post" action="" onsubmit="">
     <div class="col-12 grid-margin">
         <div class="card">
@@ -89,14 +103,14 @@
                     <div class="col-sm-3">
                         <select class="form-control" id="ProfileFor" name="ProfileFor">
                             <option value="0">Choose Profile Sign In</option>
-                            <?php foreach($ProfileFors as $ProfileFor) { ?>
+                            <?php foreach($fInfo['data']['ProfileFor'] as $ProfileFor) { ?>
                             <option value="<?php echo $ProfileFor['SoftCode'];?>" <?php echo ($_POST['ProfileFor']==$ProfileFor['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $ProfileFor['CodeValue'];?></option>
                             <?php } ?>
                         </select>
                         <span class="errorstring" id="ErrProfileFor"><?php echo isset($ErrProfileFor)? $ErrProfileFor : "";?></span>
                     </div>
                     <div class="col-sm-3"></div>
-                    <div class="col-sm-3"><img src="<?php echo SiteUrl?>images/userimage.jpg" style="height:100px;max-width:203%;padding-left: 74px;"></div>
+                    <div class="col-sm-3"><img src="<?php echo SiteUrl?>assets/images/userimage.jpg" style="height:100px;max-width:203%;padding-left: 74px;"></div>
                 </div>
                 <div class="form-group row">
                     <label for="Name" class="col-sm-2 col-form-label">Name<span id="star">*</span></label>
@@ -114,7 +128,7 @@
                      <div class="col-sm-3">
                         <select class="form-control" id="Sex"  name="Sex">
                             <option value="0">Choose Sex</option>
-                            <?php foreach($Sexs as $Sex) { ?>
+                            <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
                             <option value="<?php echo $Sex['SoftCode'];?>" <?php echo ($_POST['Sex']==$Sex['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
                             <?php } ?>
                         </select>
@@ -126,7 +140,7 @@
                      <div class="col-sm-3">
                         <select class="form-control" id="MaritalStatus"  name="MaritalStatus">
                             <option value="0">Choose Marital Status</option>
-                            <?php foreach($MaritalStatuss as $MaritalStatus) { ?>
+                            <?php foreach($fInfo['data']['MaritalStatus'] as $MaritalStatus) { ?>
                             <option value="<?php echo $MaritalStatus['SoftCode'];?>" <?php echo ($_POST['MaritalStatus']==$MaritalStatus['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $MaritalStatus['CodeValue'];?></option>
                             <?php } ?>
                         </select>
@@ -136,7 +150,7 @@
                      <div class="col-sm-3">
                         <select class="form-control" id="Language"  name="Language">
                             <option value="0">Choose Mother Tongue</option>
-                            <?php foreach($Languages as $Language) { ?>
+                            <?php foreach($fInfo['data']['Language'] as $Language) { ?>
                             <option value="<?php echo $Language['SoftCode'];?>" <?php echo ($_POST['Language']==$Language['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Language['CodeValue'];?></option>
                             <?php } ?>
                         </select>
@@ -148,7 +162,7 @@
                      <div class="col-sm-3">
                         <select class="form-control" id="Religion"  name="Religion">
                             <option value="0">Choose Religion</option>
-                            <?php foreach($Religions as $Religion) { ?>
+                            <?php foreach($fInfo['data']['Religion'] as $Religion) { ?>
                             <option value="<?php echo $Religion['SoftCode'];?>" <?php echo ($_POST['Religion']==$Religion['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Religion['CodeValue'];?></option>
                             <?php } ?>
                         </select>
@@ -158,7 +172,7 @@
                      <div class="col-sm-3">
                         <select class="form-control" id="Caste"  name="Caste">
                             <option value="0">Choose Caste</option>
-                            <?php foreach($Castes as $Caste) { ?>
+                            <?php foreach($fInfo['data']['Caste'] as $Caste) { ?>
                             <option value="<?php echo $Caste['SoftCode'];?>" <?php echo ($_POST['Religion']==$Caste['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Caste['CodeValue'];?></option>
                             <?php } ?>
                         </select>
@@ -170,7 +184,7 @@
                     <div class="col-sm-3">
                         <select class="form-control" id="Community"  name="Community"> 
                             <option value="0">Choose Community</option>
-                            <?php foreach($Communitys as $Community) { ?>
+                            <?php foreach($fInfo['data']['Community'] as $Community) { ?>
                             <option value="<?php echo $Community['SoftCode'];?>" <?php echo ($_POST['Community']==$Community['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Community['CodeValue'];?></option>
                             <?php } ?>
                         </select>
@@ -180,7 +194,7 @@
                     <div class="col-sm-3">
                         <select class="form-control" id="Nationality"  name="Nationality"> 
                             <option value="0">Choose Nationality</option>
-                            <?php foreach($Nationalitys as $Nationality) { ?>
+                            <?php foreach($fInfo['data']['Nationality'] as $Nationality) { ?>
                             <option value="<?php echo $Nationality['SoftCode'];?>" <?php echo ($_POST['Nationality']==$Nationality['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Nationality['CodeValue'];?></option>
                             <?php } ?>
                         </select>

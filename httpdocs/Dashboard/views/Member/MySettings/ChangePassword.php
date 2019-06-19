@@ -1,28 +1,21 @@
 <?php
 $page="ChangePassword";
     if (isset($_POST['BtnUpdatePassword'])) {
-        
-        $getpassword = $mysql->select("select * from  _tbl_members where   MemberID='".$_SESSION['MemberDetails']['MemberID']."'");
-        
-        if ($getpassword[0]['MemberPassword']==$_POST['CurrentPassword']) {
-        $ChangePasswordID = $mysql->execute("update  _tbl_members set MemberPassword='".$_POST['ConfirmNewPassword']."' where MemberID='".$_Member['MemberID']."'" );
-        echo "Successfully Updated";
+        $response = $webservice->MemberChangePassword($_POST);
+        if ($response['status']=="success") {
+            unset($_POST);
+           $sucessmessage=$response['message'];
+           ?>
+        <script>location.href='http://nahami.online/sl/Dashboard/MySettings/ChangepwdCompleted';</script>
+        <?php
         } else {
-            $errorCurrentPassword = "Current Password is wrong";
-            echo "$errorCurrentPassword";
+            $errormessage = $response['message']; 
         }
-      }
+    }
 ?>
 <script>
 
 $(document).ready(function () {
-    /*$('#NewPassword, #ConfirmNewPassword').on('keyup', function () {
-  if ($('#NewPassword').val() == $('#ConfirmNewPassword').val()) {
-    $('#message').html('Matching').css('color', 'green');
-  } else 
-    $('#message').html('Not Matching').css('color', 'red');
-}); */
-                                                                           
 $("#CurrentPassword").blur(function () {
     
         IsNonEmpty("CurrentPassword","ErrCurrentPassword","Please Enter Current Password");
@@ -84,7 +77,7 @@ $("#CurrentPassword").blur(function () {
             <div class="form-group-row">
             <div class="col-sm-12">
             <div class="col-sm-3">
-            <div class="sidemenu" style="width: 200px;margin-left: -58px;margin-top: -30px;border-right: 1px solid #eee;">
+            <div class="sidemenu" style="width: 200px;margin-left: -58px;margin-top: -30px;margin-bottom: -41px;border-right: 1px solid #eee;">
                 <?php include_once("sidemenu.php");?>
             </div>
             </div>
@@ -92,18 +85,20 @@ $("#CurrentPassword").blur(function () {
               <h4 class="card-title">Change Password</h4>
              <form class="forms-sample">
                 <div class="form-group">
-                  <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword" placeholder="Enter Current Password">
+                  <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword" value="<?php echo (isset($_POST['CurrentPassword']) ? $_POST['CurrentPassword'] : "");?>" placeholder="Enter Current Password">
                   <span class="errorstring" id="ErrCurrentPassword"><?php echo isset($ErrCurrentPassword)? $ErrCurrentPassword : "";?></span>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control" id="NewPassword"  name="NewPassword" placeholder="New Password">
+                  <input type="password" class="form-control" id="NewPassword"  name="NewPassword" value="<?php echo (isset($_POST['NewPassword']) ? $_POST['NewPassword'] : "");?>" placeholder="New Password">
                   <span class="errorstring" id="ErrNewPassword"><?php echo isset($ErrNewPassword)? $ErrNewPassword : "";?></span>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control" id="ConfirmNewPassword"  name="ConfirmNewPassword" placeholder="Confirm New Password">
+                  <input type="password" class="form-control" id="ConfirmNewPassword"  name="ConfirmNewPassword" value="<?php echo (isset($_POST['ConfirmNewPassword']) ? $_POST['ConfirmNewPassword'] : "");?>" placeholder="Confirm New Password">
                   <span class="errorstring" id="ErrConfirmNewPassword"><?php echo isset($ErrConfirmNewPassword)? $ErrConfirmNewPassword : "";?></span>
                 </div>
                <button type="submit" name="BtnUpdatePassword" class="btn btn-success mr-2">Change Password</button>
+               <div class="col-sm-12" style="text-align: center;color:red"><?php echo $sucessmessage ;?></div>  
+               <div class="col-sm-12" style="text-align: center;color:red"><?php echo $errormessage ;?></div>
                 </form>
               </div>
               </div>
