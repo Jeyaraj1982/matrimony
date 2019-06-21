@@ -1,5 +1,7 @@
 <?php
-    $Franchisee =$mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_REQUEST['Code']."'");
+   // $Franchisee =$mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_REQUEST['Code']."'");
+    $response = $webservice->GetFranchisee();
+    $Franchisee=$response['data'];
 ?>
 <form method="post" action="" onsubmit="">
           <div class="col-12 grid-margin">

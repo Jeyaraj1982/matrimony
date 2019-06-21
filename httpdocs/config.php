@@ -5,22 +5,22 @@
     
     class Webservice {
         
-        var $serverURL="http://nahami.online/sl/Webservice/webservice.php?action=";
+        var $serverURL="http://nahami.online/sl/Webservice/webservice.php?";
         
         function Login($param) {
-              return json_decode($this->_callUrl("Login",$param),true);
+              return json_decode($this->_callUrl("m=Member&a=Login",$param),true);
         }
         function Register($param) {
-              return json_decode($this->_callUrl("Register",$param),true);
+              return json_decode($this->_callUrl("m=Member&a=Register",$param),true);
         }
         function forgotPassword($param) {
-              return json_decode($this->_callUrl("forgotPassword",$param),true);
+              return json_decode($this->_callUrl("m=Member&a=forgotPassword",$param),true);
         }
         function forgotPasswordOTPvalidation($param) {
-              return json_decode($this->_callUrl("forgotPasswordOTPvalidation",$param),true);
+              return json_decode($this->_callUrl("m=Member&a=forgotPasswordOTPvalidation",$param),true);
         }
         function forgotPasswordchangePassword($param) {
-              return json_decode($this->_callUrl("forgotPasswordchangePassword",$param),true);
+              return json_decode($this->_callUrl("m=Member&a=forgotPasswordchangePassword",$param),true);
         }
         
         
@@ -34,7 +34,7 @@
                 $postvars .= $key . "=" . $value . "&";
             }
             $ch = curl_init();
-            curl_setopt($ch,CURLOPT_URL,$this->serverURL.$method."&User=".$_SESSION['UserData']['MemberID']);
+            curl_setopt($ch,CURLOPT_URL,$this->serverURL.$method);
             curl_setopt($ch,CURLOPT_POST, 1);                //0 for a get request
             curl_setopt($ch,CURLOPT_POSTFIELDS,$postvars);
             curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);

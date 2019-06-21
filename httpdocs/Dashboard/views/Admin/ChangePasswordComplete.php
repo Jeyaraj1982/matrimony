@@ -14,7 +14,7 @@
                   </div>
                 <div class="col-md-4 d-flex align-items-center">
                   <div class="d-flex flex-row align-items-center">
-                    <a href="<?php echo GetUrl("Dasboard");?>">Go Dashboard</a>
+                    <a href="<?php echo SiteUrl;?>">Go Dashboard</a>
                     </div>
                 </div>
                 </div>

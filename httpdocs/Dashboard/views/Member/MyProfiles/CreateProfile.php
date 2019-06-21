@@ -80,6 +80,7 @@
 <?php                   
   if (isset($_POST['BtnSaveProfile'])) {   
     $response = $webservice->CreateProfile($_POST);
+    print_r($response);
     if ($response['status']=="success") {
         echo "<script>location.href='Edit/".$ProfileID.".htm?msg=1';</script>";
         ?>

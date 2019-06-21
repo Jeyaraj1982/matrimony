@@ -1,5 +1,5 @@
 <?php
-    if (isset($_POST['BtnUpdatePassword'])) {
+  /*  if (isset($_POST['BtnUpdatePassword'])) {
         $getpassword = $mysql->select("select * from _tbl_admin where AdminID='".$_Admin['AdminID']."'");
         
         if ($getpassword[0]['AdminPassword']==$_POST['CurrentPassword']) {
@@ -9,7 +9,23 @@
             $errorCurrentPassword = "Current Password is wrong";
             echo "$errorCurrentPassword";
         }
-       }
+       }*/
+?>
+<?php
+
+    if (isset($_POST['BtnUpdatePassword'])) {
+        $response = $webservice->AdminChangePassword($_POST);
+        print_r($response);
+        if ($response['status']=="success") {
+            unset($_POST);
+           $sucessmessage=$response['message'];
+           ?>
+        <script>location.href='http://nahami.online/sl/Dashboard/ChangePasswordComplete';</script>
+        <?php
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
 ?>
 <script>
 
@@ -84,18 +100,20 @@ $("#CurrentPassword").blur(function () {
               <h4 class="card-title">Change Password</h4>
              <form class="forms-sample">
                 <div class="form-group">
-                  <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword" placeholder="Enter Current Password">
+                  <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword" value="<?php echo (isset($_POST['CurrentPassword']) ? $_POST['CurrentPassword'] : "");?>" placeholder="Enter Current Password">
                   <span class="errorstring" id="ErrCurrentPassword"><?php echo isset($ErrCurrentPassword)? $ErrCurrentPassword : "";?></span>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control" id="NewPassword"  name="NewPassword" placeholder="New Password">
+                  <input type="password" class="form-control" id="NewPassword"  name="NewPassword" value="<?php echo (isset($_POST['NewPassword']) ? $_POST['NewPassword'] : "");?>" placeholder="New Password">
                   <span class="errorstring" id="ErrNewPassword"><?php echo isset($ErrNewPassword)? $ErrNewPassword : "";?></span>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control" id="ConfirmNewPassword"  name="ConfirmNewPassword" placeholder="Confirm New Password">
+                  <input type="password" class="form-control" id="ConfirmNewPassword"  name="ConfirmNewPassword" value="<?php echo (isset($_POST['ConfirmNewPassword']) ? $_POST['ConfirmNewPassword'] : "");?>" placeholder="Confirm New Password">
                   <span class="errorstring" id="ErrConfirmNewPassword"><?php echo isset($ErrConfirmNewPassword)? $ErrConfirmNewPassword : "";?></span>
                 </div>
                 <button type="submit" name="BtnUpdatePassword" class="btn btn-success mr-2">Change Password</button>
+                 <div class="col-sm-12" style="text-align: center;color:red"><?php echo $sucessmessage ;?></div>  
+               <div class="col-sm-12" style="text-align: center;color:red"><?php echo $errormessage ;?></div>
                 </form>
               </div>
             </div>

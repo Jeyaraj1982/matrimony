@@ -1,5 +1,5 @@
 <?php   
-    if (isset($_POST['BtnSaveCreate'])) {
+  /*  if (isset($_POST['BtnSaveCreate'])) {
         
        $ErrorCount =0;
         
@@ -409,8 +409,8 @@
                 echo "Error occured. Couldn't save Franchise Details";
             }
     }
-    }
-?>                                                    
+    } */
+?>
 <style>
 #star{
     color:red;
@@ -706,7 +706,30 @@ function myFunction() {
                  }
     
 </script>
-    <form method="post" action="" id="frmfrn" onsubmit="return SubmitNewFranchisee();">  
+<?php                   
+  if (isset($_POST['BtnSaveCreate'])) {   
+    $response = $webservice->CreateFranchisee($_POST);
+    if ($response['status']=="success") {
+       // echo "<script>location.href='Edit/".$ProfileID.".htm?msg=1';</script>";
+       $successmessage = $response['message']; 
+       unset($_POST);
+        ?>
+        <?php
+    } else {
+        $errormessage = $response['message']; 
+    }
+    }
+
+     $fInfo = $webservice->GetFranchiseeCode(); 
+
+     $FranchiseeCode="";
+        if ($fInfo['status']=="success") {
+            $FranchiseeCode  =$fInfo['data']['FranchiseeCode'];
+        }
+        
+        {
+?>
+    <form method="post" action="<?php $_SERVER['PHP_SELF']?>" id="frmfrn" onsubmit="return SubmitNewFranchisee();">  
         <div class="col-12 grid-margin">
             <div class="card">
                 <div class="card-body">
@@ -716,7 +739,8 @@ function myFunction() {
                    Follow simple bellow steps, you will create a Franchisee.
                 </div>
               </div>
-        </div>          
+        </div>         
+         
 <div class="col-12 grid-margin">
             <div class="card">
                 <div class="card-body">
@@ -725,8 +749,8 @@ function myFunction() {
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Franchisee Code<span id="star">*</span></label>
-                          <div class="col-sm-2">
-                            <input type="text" class="form-control" maxlength="6" id="FranchiseeCode" name="FranchiseeCode" Placeholder="Franchisee Code" value="<?php echo (isset($_POST['FranchiseeCode']) ? $_POST['FranchiseeCode'] : FranchiseeCode::GetNextFranchiseeNumber() );?>">
+                          <div class="col-sm-2">                                                                                                          
+                            <input type="text" class="form-control" maxlength="6" id="FranchiseeCode" name="FranchiseeCode" Placeholder="Franchisee Code" value="<?php echo isset($_POST['FranchiseeCode']) ? $_POST['FranchiseeCode'] : $FranchiseeCode;?>">
                             <span class="errorstring" id="ErrFranchiseeCode"><?php echo isset($ErrFranchiseeCode)? $ErrFranchiseeCode : "";?></span>
                           </div>
                         </div>
@@ -833,9 +857,9 @@ function myFunction() {
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Country Name<span id="star">*</span></label>
                           <div class="col-sm-9">
-                          <?php $CountryNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CONTNAMES'"); ?>
-                          <select class="form-control" id="CountryName"  name="CountryName" >
-                          <?php foreach($CountryNames as $CountryName) { ?>
+                          <select class="selectpicker form-control" data-live-search="true" id="CountryName"  name="CountryName" >
+                          <option value="0">--Choose Your Country Name--</option>
+                          <?php foreach($fInfo['data']['CountryName'] as $CountryName) { ?>
                          <option value="<?php echo $CountryName['CodeValue'];?>">
                          <?php echo $CountryName['CodeValue'];?></option>
                           <?php } ?>
@@ -849,9 +873,9 @@ function myFunction() {
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">State Name<span id="star">*</span></label>
                           <div class="col-sm-3">
-                          <?php $StateNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='STATNAMES'"); ?>
-                          <select class="form-control" id="StateName"  name="StateName" >
-                          <?php foreach($StateNames as $StateName) { ?>
+                          <select class="selectpicker form-control" data-live-search="true" id="StateName"  name="StateName" >
+                          <option value="0">--Choose Your State Name--</option>
+                          <?php foreach($fInfo['data']['StateName'] as $StateName) { ?>
                          <option value="<?php echo $StateName['CodeValue'];?>">
                          <?php echo $StateName['CodeValue'];?></option>
                           <?php } ?>
@@ -859,9 +883,9 @@ function myFunction() {
                           </div>
                           <label class="col-sm-3 col-form-label">District Name<span id="star">*</span></label>
                           <div class="col-sm-3">
-                          <?php $DistrictNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DISTNAMES'"); ?>
-                          <select class="form-control" id="DistrictName"  name="DistrictName" >
-                          <?php foreach($DistrictNames as $DistrictName) { ?>
+                          <select class="selectpicker form-control" data-live-search="true" id="DistrictName"  name="DistrictName" >
+                          <option value="0">--Choose Your District Name--</option>
+                          <?php foreach($fInfo['data']['DistrictName'] as $DistrictName) { ?>
                          <option value="<?php echo $DistrictName['CodeValue'];?>">
                          <?php echo $DistrictName['CodeValue'];?></option>
                           <?php } ?>
@@ -880,9 +904,9 @@ function myFunction() {
                           </div>
                         <label class="col-sm-3 col-form-label">Plan<span id="star">*</span></label>
                           <div class="col-sm-3">
-                          <?php $Plans = $mysql->select("select * from _tbl_franchisees_plans where IsActive='1'"); ?>
-                          <select class="form-control" id="Plan"  name="Plan" >
-                          <?php foreach($Plans as $Plan) { ?>
+                          <select class="selectpicker form-control"  data-live-search="true" id="Plan"  name="Plan" >
+                          <option value="0">--Choose Your Plan--</option>
+                          <?php foreach($fInfo['data']['Plans'] as $Plan) { ?>
                          <option value="<?php echo $Plan['PlanID'];?>">
                          <?php echo $Plan['PlanName'];?></option>
                           <?php } ?>
@@ -903,9 +927,9 @@ function myFunction() {
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Bank Name<span id="star">*</span></label>
                           <div class="col-sm-9">
-                          <?php $BankNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BANKNAMES'"); ?>
-                          <select class="form-control" id="BankName"  name="BankName" >
-                          <?php foreach($BankNames as $BankName) { ?>
+                          <select class="selectpicker form-control" data-live-search="true" id="BankName"  name="BankName">
+                          <option value="0">--Choose Bank Name--</option>
+                          <?php foreach($fInfo['data']['BankName'] as $BankName) { ?>
                          <option value="<?php echo $BankName['CodeValue'];?>">
                          <?php echo $BankName['CodeValue'];?></option>
                           <?php } ?>
@@ -946,9 +970,9 @@ function myFunction() {
                           </div>
                           <label class="col-sm-3 col-form-label">Account Type<span id="star">*</span></label>
                            <div class="col-sm-3">
-                          <?php $AccountTypes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ACCOUNTTYPE'"); ?>
-                          <select class="form-control" id="AccountType"  name="AccountType" >
-                          <?php foreach($AccountTypes as $AccountType) { ?>
+                          <select class="selectpicker form-control" data-live-search="true" id="AccountType"  name="AccountType" >
+                          <option value="0">--Choose Your Account Type--</option>
+                          <?php foreach($fInfo['data']['AccountType'] as $AccountType) { ?>
                          <option value="<?php echo $AccountType['CodeValue'];?>">
                          <?php echo $AccountType['CodeValue'];?></option>
                           <?php } ?>
@@ -997,9 +1021,9 @@ function myFunction() {
                           </div>
                           <label class="col-sm-3 col-form-label">Sex<span id="star">*</span></label>
                          <div class="col-sm-3">
-                            <?php $Sexs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX'"); ?>
-                          <select class="form-control" id="Sex"  name="Sex" >
-                          <?php foreach($Sexs as $Sex) { ?>
+                          <select class="selectpicker form-control" data-live-search="true" id="Sex"  name="Sex" >
+                          <option value="0">--Choose Gender--</option>
+                          <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
                          <option value="<?php echo $Sex['CodeValue'];?>">
                          <?php echo $Sex['CodeValue'];?></option>
                           <?php } ?>
@@ -1103,7 +1127,8 @@ function myFunction() {
                             <div class="col-sm-2"><input type="checkbox" onclick="myFunction()">&nbsp;show</div>
                         </div>
                       </div>
-                      </div>                                                       
+                      </div> 
+                      <div class="col-sm-12"><?php echo $errormessage;?></div>                                                      
       </div>
   </div>
 </div>         
@@ -1120,7 +1145,7 @@ function myFunction() {
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Monday</label>
                           <div class="col-sm-6">
-                          <select name="MonFH">
+                          <select class="selectpicker form-control" data-live-search="true" name="MonFH">
                             <option value="01" <?php echo ($MonFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($MonFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($MonFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1135,7 +1160,7 @@ function myFunction() {
                             <option value="12" <?php echo ($MonFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="MonFM">
+                          <select class="selectpicker form-control" data-live-search="true" name="MonFM">
                             <option value="00" <?php echo ($MonFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($MonFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($MonFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1151,12 +1176,12 @@ function myFunction() {
                             <option value="60" <?php echo ($MonFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="MonFN">
+                          <select class="selectpicker form-control" data-live-search="true" name="MonFN">
                             <option value="AM" <?php echo ($MonFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($MonFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select name="MonTH">
+                          <select class="selectpicker form-control" data-live-search="true" name="MonTH">
                             <option value="01" <?php echo ($MonTH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($MonTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($MonTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1171,7 +1196,7 @@ function myFunction() {
                             <option value="12" <?php echo ($MonTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="MonTM">
+                          <select class="selectpicker form-control" data-live-search="true" name="MonTM">
                             <option value="00" <?php echo ($MonTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($MonTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($MonTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1187,7 +1212,7 @@ function myFunction() {
                             <option value="60" <?php echo ($MonTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="MonTN">
+                          <select class="selectpicker form-control" data-live-search="true" name="MonTN">
                             <option value="AM" <?php echo ($MonTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($MonTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1197,7 +1222,7 @@ function myFunction() {
                                             <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Tuesday</label>
                           <div class="col-sm-6">
-                          <select name="TueFH">
+                          <select class="selectpicker form-control" data-live-search="true" name="TueFH">
                             <option value="01" <?php echo ($TueFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($TueFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($TueFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1212,7 +1237,7 @@ function myFunction() {
                             <option value="12" <?php echo ($TueFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="TueFM">
+                          <select class="selectpicker form-control" data-live-search="true" name="TueFM">
                             <option value="00" <?php echo ($TueFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($TueFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($TueFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1228,12 +1253,12 @@ function myFunction() {
                             <option value="60" <?php echo ($TueFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="TueFN">
+                          <select class="selectpicker form-control" data-live-search="true" name="TueFN">
                             <option value="AM" <?php echo ($TueFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($TueFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select name="TueTH">
+                          <select class="selectpicker form-control" data-live-search="true" name="TueTH">
                             <option value="01" <?php echo ($TueTH=="01") ? ' selected="selected"' : '';?> >01</option>
                             <option value="02" <?php echo ($TueTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($TueTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1248,7 +1273,7 @@ function myFunction() {
                             <option value="12" <?php echo ($TueTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="TueTM">
+                          <select class="selectpicker form-control" data-live-search="true" name="TueTM">
                             <option value="00" <?php echo ($TueTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($TueTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($TueTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1264,7 +1289,7 @@ function myFunction() {
                             <option value="60" <?php echo ($TueTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="TueTN">
+                          <select class="selectpicker form-control" data-live-search="true" name="TueTN">
                             <option value="AM" <?php echo ($TueTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($TueTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1275,7 +1300,7 @@ function myFunction() {
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Wednessday</label>
                           <div class="col-sm-6">
-                          <select name="WedFH">
+                          <select class="selectpicker form-control" data-live-search="true" name="WedFH">
                             <option value="01" <?php echo ($WedFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($WedFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($WedFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1290,7 +1315,7 @@ function myFunction() {
                             <option value="12" <?php echo ($WedFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="WedFM">
+                          <select class="selectpicker form-control" data-live-search="true" name="WedFM">
                             <option value="00" <?php echo ($WedFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($WedFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($WedFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1306,12 +1331,12 @@ function myFunction() {
                             <option value="60" <?php echo ($WedFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="WedFN">
+                          <select class="selectpicker form-control" data-live-search="true" name="WedFN">
                             <option value="AM" <?php echo ($WedFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($WedFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select name="WedTH">
+                          <select class="selectpicker form-control" data-live-search="true" name="WedTH">
                             <option value="01" <?php echo ($WedTH=="01") ? ' selected="selected"' : '';?> >01</option>
                             <option value="02" <?php echo ($WedTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($WedTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1326,7 +1351,7 @@ function myFunction() {
                             <option value="12" <?php echo ($WedTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="WedTM">
+                          <select class="selectpicker form-control" data-live-search="true" name="WedTM">
                             <option value="00" <?php echo ($WedTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($WedTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($WedTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1342,7 +1367,7 @@ function myFunction() {
                             <option value="60" <?php echo ($WedTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="WedTN">
+                          <select class="selectpicker form-control" data-live-search="true" name="WedTN">
                             <option value="AM" <?php echo ($WedTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($WedTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1353,7 +1378,7 @@ function myFunction() {
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Thursday</label>
                           <div class="col-sm-6">
-                          <select name="ThuFH">
+                          <select class="selectpicker form-control" data-live-search="true" name="ThuFH">
                             <option value="01" <?php echo ($ThuFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($ThuFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($ThuFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1368,7 +1393,7 @@ function myFunction() {
                             <option value="12" <?php echo ($ThuFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="ThuFM">
+                          <select class="selectpicker form-control" data-live-search="true" name="ThuFM">
                             <option value="00" <?php echo ($ThuFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($ThuFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($ThuFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1384,12 +1409,12 @@ function myFunction() {
                             <option value="60" <?php echo ($ThuFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="ThuFN">
+                          <select class="selectpicker form-control" data-live-search="true" name="ThuFN">
                             <option value="AM" <?php echo ($ThuFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($ThuFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select name="ThuTH">
+                          <select class="selectpicker form-control" data-live-search="true" name="ThuTH">
                             <option value="01" <?php echo ($ThuTH=="01") ? ' selected="selected"' : '';?> >01</option>
                             <option value="02" <?php echo ($ThuTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($ThuTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1404,7 +1429,7 @@ function myFunction() {
                             <option value="12" <?php echo ($ThuTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="ThuTM">
+                          <select class="selectpicker form-control" data-live-search="true" name="ThuTM">
                             <option value="00" <?php echo ($ThuTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($ThuTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($ThuTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1420,7 +1445,7 @@ function myFunction() {
                             <option value="60" <?php echo ($ThuTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="ThuTN">
+                          <select class="selectpicker form-control" data-live-search="true" name="ThuTN">
                             <option value="AM" <?php echo ($ThuTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($ThuTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1431,7 +1456,7 @@ function myFunction() {
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Friday</label>
                           <div class="col-sm-6">
-                          <select name="FriFH">
+                          <select class="selectpicker form-control" data-live-search="true" name="FriFH">
                             <option value="01" <?php echo ($FriFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($FriFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($FriFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1446,7 +1471,7 @@ function myFunction() {
                             <option value="12" <?php echo ($FriFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="FriFM">
+                          <select class="selectpicker form-control" data-live-search="true" name="FriFM">
                             <option value="00" <?php echo ($FriFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($FriFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($FriFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1462,12 +1487,12 @@ function myFunction() {
                             <option value="60" <?php echo ($FriFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="FriFN">
+                          <select class="selectpicker" data-live-search="true" name="FriFN">
                             <option value="AM" <?php echo ($FriFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($FriFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select name="FriTH">
+                          <select class="selectpicker" data-live-search="true" name="FriTH">
                             <option value="01" <?php echo ($FriTH=="01") ? ' selected="selected"' : '';?> >01</option>
                             <option value="02" <?php echo ($FriTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($FriTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1482,7 +1507,7 @@ function myFunction() {
                             <option value="12" <?php echo ($FriTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="FriTM">
+                          <select class="selectpicker" data-live-search="true" name="FriTM">
                             <option value="00" <?php echo ($FriTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($FriTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($FriTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1498,7 +1523,7 @@ function myFunction() {
                             <option value="60" <?php echo ($FriTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="FriTN">
+                          <select class="selectpicker" data-live-search="true" name="FriTN">
                             <option value="AM" <?php echo ($FriTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($FriTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1509,7 +1534,7 @@ function myFunction() {
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Saturday</label>
                           <div class="col-sm-6">
-                          <select name="SatFH">
+                          <select class="selectpicker" data-live-search="true" name="SatFH">
                             <option value="01" <?php echo ($SatFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($SatFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($SatFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1524,7 +1549,7 @@ function myFunction() {
                             <option value="12" <?php echo ($SatFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="SatFM">
+                          <select class="selectpicker" data-live-search="true" name="SatFM">
                             <option value="00" <?php echo ($SatFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($SatFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($SatFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1540,12 +1565,12 @@ function myFunction() {
                             <option value="60" <?php echo ($SatFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="SatFN">
+                          <select class="selectpicker" data-live-search="true" name="SatFN">
                             <option value="AM" <?php echo ($SatFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($SatFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select name="SatTH">
+                          <select class="selectpicker" data-live-search="true" name="SatTH">
                             <option value="01" <?php echo ($SatTH=="01") ? ' selected="selected"' : '';?> >01</option>
                             <option value="02" <?php echo ($SatTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($SatTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1560,7 +1585,7 @@ function myFunction() {
                             <option value="12" <?php echo ($SatTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="SatTM">
+                          <select class="selectpicker" data-live-search="true" name="SatTM">
                             <option value="00" <?php echo ($SatTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($SatTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($SatTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1576,7 +1601,7 @@ function myFunction() {
                             <option value="60" <?php echo ($SatTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="SatTN">
+                          <select class="selectpicker" data-live-search="true" name="SatTN">
                             <option value="AM" <?php echo ($SatTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($SatTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1587,7 +1612,7 @@ function myFunction() {
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Sunday</label>
                           <div class="col-sm-6">
-                          <select name="SunFH">
+                          <select class="selectpicker" data-live-search="true" name="SunFH">
                             <option value="01" <?php echo ($SunFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($SunFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($SunFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1602,7 +1627,7 @@ function myFunction() {
                             <option value="12" <?php echo ($SunFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="SunFM">
+                          <select class="selectpicker" data-live-search="true" name="SunFM">
                             <option value="00" <?php echo ($SunFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($SunFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($SunFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1618,12 +1643,12 @@ function myFunction() {
                             <option value="60" <?php echo ($SunFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="SunFN">
+                          <select class="selectpicker" data-live-search="true" name="SunFN">
                             <option value="AM" <?php echo ($SunFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($SunFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select name="SunTH">
+                          <select class="selectpicker form-control" data-live-search="true" name="SunTH">
                             <option value="01" <?php echo ($SunTH=="01") ? ' selected="selected"' : '';?> >01</option>
                             <option value="02" <?php echo ($SunTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($SunTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1638,7 +1663,7 @@ function myFunction() {
                             <option value="12" <?php echo ($SunTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select name="SunTM">
+                          <select class="selectpicker" data-live-search="true" name="SunTM">
                             <option value="00" <?php echo ($SunTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($SunTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($SunTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1654,7 +1679,7 @@ function myFunction() {
                             <option value="60" <?php echo ($SunTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select name="SunTN">
+                          <select class="selectpicker" data-live-search="true" name="SunTN">
                             <option value="AM" <?php echo ($SunTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($SunTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1665,7 +1690,9 @@ function myFunction() {
                         <div class="col-sm-3"><button type="submit" class="btn btn-primary" name="BtnSaveCreate">Create Franchisee</button></div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"> <a href="MangeFranchisees"><small>List of Franchisees</small> </a></div>
                       </div>
+                      </form>
                     </div> 
                </div>
- </div>    
-</form>
+ </div> 
+ </form>   
+<?php }?>

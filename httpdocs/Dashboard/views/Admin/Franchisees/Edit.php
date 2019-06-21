@@ -1,5 +1,5 @@
 <?php   
-
+   /*
     if (isset($_POST['Btnupdate'])) {
         
         $ErrorCount =0;
@@ -234,7 +234,7 @@
             $ErrorCount++;  
         }   */
         
-        if (isset($_POST['Password'])) {
+     /*   if (isset($_POST['Password'])) {
             
             if (strlen(trim($_POST['Password']))>0) {
             
@@ -394,9 +394,33 @@
     $Franchisee =$mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_REQUEST['Code']."'");
     $FranchiseeBank =$mysql->select("select * from _tbl_bank_details where FranchiseeID='".$_REQUEST['Code']."'");
     $FranchiseeStaff =$mysql->select("select * from _tbl_franchisees_staffs where ReferedBy='1' and FranchiseeID='".$_REQUEST['Code']."'");
-    
+  */  
     
 ?>
+<?php
+
+    if (isset($_POST['Btnupdate'])) {
+        $response = $webservice->EditFranchisee($_POST);
+         print_r($response);
+        if ($response['status']=="success") {
+            echo "aa";
+            echo $response['message'];
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+?>
+<?php  
+
+    $response = $webservice->GetFranchisee();
+    $Franchisee=$response['data'];
+    $responsebankdetails = $webservice->GetFranchiseePrimaryAccountDetails();
+    $FranchiseeBank=$responsebankdetails['data'];
+    $responseprofileinfo = $webservice->GetFranchiseeStaffProfileInfo();
+    $FranchiseeStaff=$responseprofileinfo['data'];
+    
+?>
+<?php $fInfo = $webservice->GetFranchiseeCode(); ?>
 <style>
 #star{
     color:red;
@@ -803,11 +827,9 @@ function myFunction() {
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Country Name <span id="star">*</span></label>
                           <div class="col-sm-9">
-                          <?php $CountryNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CONTNAMES'"); ?>
                           <select class="form-control" id="CountryName"  name="CountryName" >
-                          <?php foreach($CountryNames as $CountryName) { ?>
-                         <option value="<?php echo $CountryName['CodeValue'];?>">
-                         <?php echo $CountryName['CodeValue'];?></option>
+                          <?php foreach($fInfo['data']['CountryName'] as $CountryName) { ?>
+                         <option value="<?php echo $CountryName['CodeValue'];?>" <?php echo ($_POST['CountryName']==$CountryName['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $CountryName['CodeValue'];?></option>
                           <?php } ?>
                           </select>                   
                           </div>
@@ -819,21 +841,18 @@ function myFunction() {
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">State Name<span id="star">*</span></label>
                           <div class="col-sm-3">
-                          <?php $StateNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='STATNAMES'"); ?>
                           <select class="form-control" id="StateName"  name="StateName" >
-                          <?php foreach($StateNames as $StateName) { ?>
-                         <option value="<?php echo $StateName['CodeValue'];?>">
-                         <?php echo $StateName['CodeValue'];?></option>
-                          <?php } ?>
+                          <?php foreach($fInfo['data']['StateName'] as $StateName) { ?>      
+                           <option value="<?php echo $StateName['CodeValue'];?>" <?php echo ($_POST['StateName']==$StateName['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $StateName['CodeValue'];?></option>
+                          <?php } /*<option value="<?php echo $StateName['CodeValue'];?>" <?php //echo ($StateName['StateName']==$StateName['CodeValue']) ? " selected='selected' " : "";?>> <?php// echo $StateName['CodeValue'];?></option> */?>
                           </select>
                           </div>
                           <label class="col-sm-3 col-form-label">District Name<span id="star">*</span></label>
                           <div class="col-sm-3">
-                          <?php $DistrictNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DISTNAMES'"); ?>
                           <select class="form-control" id="DistrictName"  name="DistrictName" >
-                          <?php foreach($DistrictNames as $DistrictName) { ?>
+                          <?php foreach($fInfo['data']['DistrictName'] as $DistrictName) { ?>
                          <option value="<?php echo $DistrictName['CodeValue'];?>">
-                         <?php echo $DistrictName['CodeValue'];?></option>
+                         <?php echo $DistrictName['CodeValue'];?></option>    
                           <?php } ?>
                           </select>
                           </div>
@@ -850,9 +869,8 @@ function myFunction() {
                           </div>     
                           <label class="col-sm-3 col-form-label">Plan<span id="star">*</span></label>
                           <div class="col-sm-3">
-                            <?php $Plans = $mysql->select("select * from _tbl_franchisees_plans where IsActive='1'"); ?>
                           <select class="form-control" id="Plan" disabled="disabled" name="Plan" >
-                          <?php foreach($Plans as $Plan) { ?>
+                          <?php foreach($fInfo['data']['Plans'] as $Plan) { ?>
                          <option value="<?php echo $Plan['Plan'];?>" <?php echo ($Plan['Plan']==$Plan[0]['PlanName']) ? " selected='selected'" :""; ?>><?php echo $Plan['PlanName'];?></option>
                           <?php } ?>
                           </select>
@@ -874,8 +892,7 @@ function myFunction() {
                           <label class="col-sm-3 col-form-label">Bank Name<span id="star">*</span></label>
                           <div class="col-sm-9">
                           <select class="form-control" id="BankName"  name="BankName" >
-                          <?php $BankNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BANKNAMES'"); ?> 
-                          <?php foreach($BankNames as $BankName) { ?> 
+                          <?php foreach($fInfo['data']['BankName'] as $BankName) { ?> 
                          <option value="<?php echo $BankName['CodeValue'];?>" <?php echo ($FranchiseeBank[0]['BankName']==$BankName['CodeValue']) ? " selected='selected' " : "";?> ><?php echo $BankName['CodeValue'];?></option>
                           <?php } ?>
                           </select>
@@ -915,9 +932,8 @@ function myFunction() {
                           </div>
                           <label class="col-sm-3 col-form-label">Account Type<span id="star">*</span></label>
                           <div class="col-sm-3">
-                          <?php $AccountTypes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ACCOUNTTYPE'"); ?>
                           <select class="form-control" id="AccountType"  name="AccountType" >
-                          <?php foreach($AccountTypes as $AccountType) { ?>
+                          <?php foreach($fInfo['data']['AccountType'] as $AccountType) { ?>
                          <option value="<?php echo $AccountType['CodeValue'];?>" <?php echo ($FranchiseeBank[0]['AccountType']==$AccountType['CodeValue']) ? " selected='selected' " : "";?> ><?php echo $AccountType['CodeValue'];?></option>
                           <?php } ?>
                           </select>
@@ -976,8 +992,7 @@ function myFunction() {
                           <label class="col-sm-3 col-form-label">Sex<span id="star">*</span></label>
                          <div class="col-sm-3">
                           <select class="form-control" id="Sex"  name="Sex" >
-                          <?php $Sexs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX'"); ?>
-                          <?php foreach($Sexs as $Sex) { ?>
+                          <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
                           <option value="<?php echo $Sex['CodeValue'];?>" <?php echo ($FranchiseeStaff[0]['Sex']==$Sex['CodeValue']) ? " selected='selected' " : "";?> ><?php echo $Sex['CodeValue'];?></option>
                           <?php } ?>
                           </select>

@@ -33,8 +33,11 @@
                         </tr>  
                     </thead>
                      <tbody>  
-                        <?php $Franchisees = $mysql->select("select * from _tbl_franchisees"); ?>
-                        <?php foreach($Franchisees as $Franchisee) { ?>
+                        <?php 
+                         $response = $webservice->GetManageFranchisee(); 
+                         if (sizeof($response['data'])>0) {
+                         ?>
+                        <?php foreach($response['data'] as $Franchisee) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($Franchisee['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Franchisee['FranchiseName'];?></td>
                                 <td><?php echo $Franchisee['StateName'];?></td>
@@ -46,7 +49,7 @@
                                 <a href="<?php echo GetUrl("Franchisees/Report/". $Franchisee['FranchiseeID'].".html");?>"><span>Report</span></a>
                                 </td>
                                 </tr>
-                        <?php } ?>            
+                        <?php }} ?>            
                       </tbody>                        
                      </table>
                   </div>

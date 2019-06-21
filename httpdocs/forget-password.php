@@ -72,6 +72,7 @@
             if (isset($_POST['btnResetPassword'])) {
                 
                 $response = $webservice->forgotPassword($_POST);
+                print_r($response);
                 if ($response['status']=="success") {
                     ?>
                     <form action="forget-password-otp.php" id="reqFrm" method="post">

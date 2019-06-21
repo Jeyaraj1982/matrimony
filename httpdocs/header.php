@@ -18,10 +18,7 @@
     <?php
 include_once("config.php");
 if (isset($_POST['btnsubmit'])) {
-    
    $response = $webservice->Login($_POST);
-   //print_r($response);
-   
    if ($response['status']=="success")  {
        $_SESSION['MemberDetails'] = $response['data'];
        ?>

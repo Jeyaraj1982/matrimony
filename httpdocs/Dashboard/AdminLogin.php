@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-    include_once("config.php");
-    if (isset($_POST['UserName']))  {
-        $res=$mysql->select("select * from _tbl_admin where AdminLogin='".trim($_POST['UserName'])."' and AdminPassword='".trim($_POST['Password'])."'");
-        if(sizeof($res)>0) {
-            if ($res[0]['IsActive']==1) {
-            $_SESSION['AdminDetails']=$res[0];
-            header("Location:http://nahami.online/sl/Dashboard/");
-        } else {
-            $status = "Couldn't process. account may be suspended";
-        } 
-    } else { 
-        $status="Invaild Login Name or Login Password";         }
-    }
-?>
+        include_once("config.php");
+        if (isset($_POST['btnsubmit'])) {
+            echo "aaaa";
+            $response = $webservice->AdminLogin($_POST);
+            print_r($response);
+            if ($response['status']=="success")  {
+                $_SESSION['AdminDetails'] = $response['data'];
+                echo "<script>location.href='".SiteUrl."';</script>";
+            } else {
+                $loginError=$response['message'];
+            }
+        }
+    ?>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -67,7 +66,7 @@ $("#Password").blur(function () {
                     <span class="errorstring" id="ErrPassword"><?php echo isset($ErrPassword)? $ErrPassword : "";?></span>
                   </div>
                 <div class="form-group">
-                  <button ttype="submit" class="btn btn-primary submit-btn btn-block">Login</button>
+                  <button type="submit" class="btn btn-primary submit-btn btn-block" name="btnsubmit">Login</button>
                   <?php
                       if (isset($status)) {
                           echo'<span class="errorstring" id="server_error">'.$status.'</span>';
