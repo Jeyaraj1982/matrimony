@@ -145,37 +145,6 @@
         }
     }
     
-    class Plan{
-        
-        function GetNextPlanNumber() {
-            
-            global $mysql;
-        
-            $prefix = "PLN";
-            $Rows = $mysql->select("select * from _tbl_franchisees_plans");
-        
-            $nextNumber = sizeof($Rows)+1; 
-         
-            if (sizeof($nextNumber)==1) {
-                $prefix .= "000".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==2) {
-                $prefix .= "00".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==3) {
-                $prefix .= "0".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==4) {   
-                $prefix .= $nextNumber; 
-            }
-            
-            return $prefix;
-        }
-    }
-    
     class EmailApi{
         
         function GetNextEmailApiNumber() {
@@ -497,8 +466,8 @@
         function GetManageDeactiveFranchisee($param) {
               return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveFranchisee",$param),true);
         }
-        function GetFranchisee($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetFranchisee",$param),true);
+        function GetFranchiseeInfo($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetFranchiseeInfo",$param),true);
         }
         function GetFranchiseePrimaryAccountDetails($param) {
               return json_decode($this->_callUrl("m=Admin&a=GetFranchiseePrimaryAccountDetails",$param),true);
@@ -508,6 +477,27 @@
         }
         function EditFranchisee($param) {
               return json_decode($this->_callUrl("m=Admin&a=EditFranchisee",$param),true);
+        }
+        function GetManagePlans($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManagePlans",$param),true);
+        }
+        function GetManageActivePlans($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageActivePlans",$param),true);
+        }
+        function GetManageDeactivePlans($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactivePlans",$param),true);
+        }
+        function GetNextFranchiseePlanNumber($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetNextFranchiseePlanNumber",$param),true);
+        }
+        function CreateFranchiseePlan($param) {
+              return json_decode($this->_callUrl("m=Admin&a=CreateFranchiseePlan",$param),true);
+        }
+        function EditFranchiseePlan($param) {
+              return json_decode($this->_callUrl("m=Admin&a=EditFranchiseePlan",$param),true);
+        }
+        function GetFranchiseePlanInfo($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetFranchiseePlanInfo",$param),true);
         }
         
         

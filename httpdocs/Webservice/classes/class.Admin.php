@@ -80,13 +80,13 @@ class Admin {
         if ((strlen(trim($_POST['StateName']))==0 || $_POST['StateName']=="0" )) {
             return Response::returnError("Please select State Name");
         }
-        if ((strlen(trim($_POST['DistrictName']))=="0")) {
+        if ((strlen(trim($_POST['DistrictName']))==0 || $_POST['DistrictName']=="0")) {
             return Response::returnError("Please select District Name");
         }
         if (!(strlen(trim($_POST['PinCode']))>0)) {
             return Response::returnError("Please enter PinCode");
         }
-        if ((strlen(trim($_POST['BankName']))=="0")) {
+        if ((strlen(trim($_POST['BankName']))==0 || $_POST['BankName']=="0")) {
             return Response::returnError("Please select Bank Name");
         }
         if (!(strlen(trim($_POST['AccountName']))>0)) {
@@ -98,7 +98,7 @@ class Admin {
         if (!(strlen(trim($_POST['IFSCode']))>0)) {
             return Response::returnError("Please enter IFS Code");
         }
-        if ((strlen(trim($_POST['AccountType']))=="0")) {
+        if ((strlen(trim($_POST['AccountType']))==0 || $_POST['AccountType']=="0")) {
             return Response::returnError("Please select Account Type");
         }
         if (!(strlen(trim($_POST['AccountType']))>0)) {
@@ -113,7 +113,7 @@ class Admin {
         if (!(strlen(trim($_POST['DateofBirth']))>0)) {
             return Response::returnError("Please enter Date of Birth");
         }
-        if ((strlen(trim($_POST['Sex']))=="0")) {
+        if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0")) {
             return Response::returnError("Please select Sex");
         }
         if (!(strlen(trim($_POST['EmailID']))>0)) {
@@ -276,21 +276,9 @@ class Admin {
         if (!(strlen(trim($_POST['CityName']))>0)) {
             return Response::returnError("Please enter CityName");
         }
-        if ((strlen(trim($_POST['CountryName']))=="0")) {
-            return Response::returnError("Please select Country Name");
-        }
-        if ((strlen(trim($_POST['StateName']))=="0")) {
-            return Response::returnError("Please select State Name");
-        }
-        if ((strlen(trim($_POST['DistrictName']))=="0")) {
-            return Response::returnError("Please select District Name");
-        }
         if (!(strlen(trim($_POST['PinCode']))>0)) {
             return Response::returnError("Please enter PinCode");
         }
-       /* if ((strlen(trim($_POST['BankName']))=="0")) {
-            return Response::returnError("Please select Bank Name");
-        } */
         if (!(strlen(trim($_POST['AccountName']))>0)) {
             return Response::returnError("Please enter Account Name");
         }
@@ -299,9 +287,6 @@ class Admin {
         }
         if (!(strlen(trim($_POST['IFSCode']))>0)) {
             return Response::returnError("Please enter IFS Code");
-        }
-        if ((strlen(trim($_POST['AccountType']))=="0")) {
-            return Response::returnError("Please select Account Type");
         }
         if (!(strlen(trim($_POST['AccountType']))>0)) {
             return Response::returnError("Please enter Account Type");
@@ -315,9 +300,6 @@ class Admin {
         if (!(strlen(trim($_POST['DateofBirth']))>0)) {
             return Response::returnError("Please enter Date of Birth");
         }
-        if ((strlen(trim($_POST['Sex']))=="0")) {
-            return Response::returnError("Please select Sex");
-        }
         if (!(strlen(trim($_POST['EmailID']))>0)) {
             return Response::returnError("Please enter EmailID");
         }
@@ -330,13 +312,6 @@ class Admin {
         if (!(strlen(trim($_POST['AadhaarCard']))>0)) {
             return Response::returnError("Please enter AadhaarCard");
         }
-        if (!(strlen(trim($_POST['UserName']))>0)) {
-            return Response::returnError("Please enter UserName");
-        }
-        if (!(strlen(trim($_POST['Password']))>0)) {
-            return Response::returnError("Please enter Password");
-        }  
-       
         $data = $mysql->select("select * from  _tbl_franchisees where FranchiseeCode='".trim($_POST['FranchiseeCode'])."' and FranchiseeID <>'".$_POST['Code']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Franchisee Code Already Exists");
@@ -360,6 +335,10 @@ class Admin {
         if (sizeof($data)>0) {
             return Response::returnError("Business LandlineNumber Already Exists");
         }
+        }
+        $data = $mysql->select("select * from  _tbl_bank_details where AccountNumber='".trim($_POST['AccountNumber'])."' and FranchiseeID <>'".$_POST['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Account Number Already Exists");
         }
         $data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".trim($_POST['EmailID'])."' and FranchiseeID <>'".$_POST['Code']."'");
         if (sizeof($data)>0) {
@@ -415,9 +394,29 @@ class Admin {
                                                  ThursdayT='".$_POST['ThuTH']." ".$_POST['ThuTM']." ".$_POST['ThuTN']."',
                                                  FridayT='".$_POST['FriTH']." ".$_POST['FriTM']." ".$_POST['FriTN']."',
                                                  SaturdayT='".$_POST['SatTH']." ".$_POST['SatTM']." ".$_POST['SatTN']."',
-                                                 SundayT='".$_POST['SunTH']." ".$_POST['SunTM']." ".$_POST['SunTN']."',
-                                                 Plan='".$_POST['Plan']."'
-                                                 where  FranchiseeID='".$_POST['Code']."'"); 
+                                                 SundayT='".$_POST['SunTH']." ".$_POST['SunTM']." ".$_POST['SunTN']."'
+                                                 where FranchiseeID='".$_POST['Code']."'");
+                                                 
+              $mysql->execute("update _tbl_bank_details set BankName='".$_POST['BankName']."',
+                                                 AccountName='".$_POST['AccountName']."',
+                                                 AccountNumber='".$_POST['AccountNumber']."',
+                                                 IFSCode='".$_POST['IFSCode']."',
+                                                 AccountType='".$_POST['AccountType']."'
+                                                 where FranchiseeID='".$_POST['Code']."'");
+                                                 
+              $mysql->execute("update _tbl_franchisees_staffs set PersonName='".$_POST['PersonName']."',
+                                                 FatherName='".$_POST['FatherName']."',
+                                                 DateofBirth='".$_POST['DateofBirth']."',
+                                                 Sex='".$_POST['Sex']."',
+                                                 EmailID='".$_POST['EmailID']."',
+                                                 MobileNumber='".$_POST['MobileNumber']."',
+                                                 WhatsappNumber='".$_POST['WhatsappNumber']."',
+                                                 LandlineNumber='".$_POST['LandlineNumber']."',
+                                                 AddressLine1='".$_POST['Address1']."',
+                                                 AddressLine2='".$_POST['Address2']."',
+                                                 AddressLine3='".$_POST['Address3']."',
+                                                 AadhaarNumber='".$_POST['AadhaarCard']."'
+                                                  where  ReferedBy='1' and FranchiseeID='".$_POST['Code']."'");
                 return Response::returnSuccess("success",array());
                                                             
     } 
@@ -439,23 +438,130 @@ class Admin {
                 return Response::returnSuccess("success",$Franchisees);
                                                             
     }
-    function GetFranchisee(){
-           global $mysql;    
-              $Franchisees = $mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_POST['Code']."'");
-                return Response::returnSuccess("success",$Franchisees);
+    function GetFranchiseeInfo(){
+        
+        global $mysql;
+        $Franchisees = $mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_POST['Code']."'");
+        $FranchiseeStaff = $mysql->select("select * from _tbl_franchisees_staffs where ReferedBy='1' and FranchiseeID='".$_POST['Code']."'");
+        $PrimaryBankAccount = $mysql->select("select * from _tbl_bank_details where FranchiseeID='".$_POST['Code']."'");
+              
+        return Response::returnSuccess("success",array("Franchisee"         => $Franchisees[0],
+                                                       "FranchiseeStaff"    => $FranchiseeStaff[0],
+                                                       "CountryNames"        => CodeMaster::GetCountryName(),
+                                                       "StateName"          => CodeMaster::GetStateName(),
+                                                       "DistrictName"       => CodeMaster::GetDistrictName(),
+                                                       "BankNames"          => CodeMaster::GetAvailableBankName(),
+                                                       "AccountType"        => CodeMaster::GetAccountType(),
+                                                       "PrimaryBankAccount" => $PrimaryBankAccount[0],
+                                                       "Gender"             => CodeMaster::GetGender()));
                                                             
     }
-    function GetFranchiseePrimaryAccountDetails(){
+    function GetManagePlans() {
            global $mysql;    
-              $Franchisees = $mysql->select("select * from _tbl_bank_details where FranchiseeID='".$_POST['Code']."'");
-                return Response::returnSuccess("success",$Franchisees);
-                                                            
+              $Plans = $mysql->select("SELECT t1.*,  COUNT(t2.PlanID) AS cnt FROM _tbl_franchisees_plans AS t1 LEFT OUTER JOIN _tbl_franchisees AS t2 ON t1.PlanID = t2.PlanID GROUP BY t1.PlanID");
+                return Response::returnSuccess("success",$Plans);
     }
-    function GetFranchiseeStaffProfileInfo(){
+    function GetManageActivePlans() {
            global $mysql;    
-              $Franchiseestaff = $mysql->select("select * from _tbl_franchisees_staffs where ReferedBy='1' and FranchiseeID='".$_POST['Code']."'");
-                return Response::returnSuccess("success",$Franchiseestaff);
-                                                            
+              $Plans = $mysql->select("select * from _tbl_franchisees_plans where IsActive='1'");
+                return Response::returnSuccess("success",$Plans);
     }
+    function GetManageDeactivePlans() {
+           global $mysql;    
+              $Plans = $mysql->select("select * from _tbl_franchisees_plans where IsActive='0'");
+                return Response::returnSuccess("success",$Plans);
+    }
+    function GetNextFranchiseePlanNumber(){
+            return Response::returnSuccess("success",array("PlanCode" => SeqMaster::GetNextFranchiseePlanNumber()));
+    }
+    function CreateFranchiseePlan() {
+        global $mysql;
+       
+        $data = $mysql->select("select * from  _tbl_franchisees_plans where PlanName='".trim($_POST['PlanName'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Plan Name Already Exists");
+        }
+        $data = $mysql->select("select * from  _tbl_franchisees_plans where PlanCode='".trim($_POST['PlanCode'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Plan Code Already Exists");
+        }
+        
+        $insArray = array("PlanCode"  => $_POST['PlanCode'],
+                          "PlanName"  => $_POST['PlanName'],
+                          "Duration"  => $_POST['Duration'],
+                          "Amount"    => $_POST['Amount']);
+                          
+        if ($_POST['ProfileActiveCommissionType'] == "Rs") {
+            $insArray["ProfileCommissionWithPercentage"] = '0';
+            $insArray["ProfileCommissionWithRupees"] = $_POST['ProfileActiveCommission'];
+        }
+        if ($_POST['ProfileActiveCommissionType'] == "Percentage") {
+            $insArray["ProfileCommissionWithPercentage"] = $_POST['ProfileActiveCommission'];
+            $insArray["ProfileCommissionWithRupees"] = '0';
+        }
+        if ($_POST['ProfileRenewalCommissionType'] == "Rs") {
+            $insArray["RenewalCommissionWithPercentage"] ='0' ;
+            $insArray["RenewalCommissionWithRupees"] = $_POST['ProfileRenewalCommission'];
+        }
+        if ($_POST['ProfileRenewalCommissionType'] == "Percentage") {
+            $insArray["RenewalCommissionWithPercentage"] =$_POST['ProfileRenewalCommission'];
+            $insArray["RenewalCommissionWithRupees"] =  '0';
+        }
+        if ($_POST['WalletRefillCommissionType'] == "Rs") {
+            $insArray["RefillCommissionWithPercentage"] = '0' ;
+            $insArray["RefillCommissionWithRupees"] =$_POST['WalletRefillCommission'] ;
+        }
+        if ($_POST['WalletRefillCommissionType'] == "Percentage") {
+            $insArray["RefillCommissionWithPercentage"] = $_POST['WalletRefillCommission'];
+            $insArray["RefillCommissionWithRupees"] =  '0';
+        }
+        if ($_POST['ProfiledownloadCommissionType'] == "Rs") {
+            $insArray["ProfileDownloadCommissionWithPercentage"] = '0';
+            $insArray["ProfileDownloadCommissionWithRupees"] = $_POST['ProfiledownloadCommission'];
+        }
+        if ($_POST['ProfiledownloadCommissionType'] == "Percentage") {
+            $insArray["ProfileDownloadCommissionWithPercentage"] =$_POST['ProfiledownloadCommission'];
+            $insArray["ProfileDownloadCommissionWithRupees"] =  '0';
+        }
+                          
+                          
+                          
+                         
+         $id = $mysql->insert("_tbl_franchisees_plans",$insArray);
+                                                                 
+        if (sizeof($id)>0) {
+                return Response::returnSuccess("success",array());
+            } else{
+                return Response::returnError("Access denied. Please contact support");   
+            }
+    }
+    function EditFranchiseePlan(){
+              global $mysql;
+       
+        $data = $mysql->select("select * from  _tbl_franchisees_plans where PlanName='".trim($_POST['PlanName'])."' and PlanID <>'".$_POST['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Plan Name Already Exists");
+        } 
+         $mysql->execute("update _tbl_franchisees_plans set PlanName='".$_POST['PlanName']."',
+                                                 Duration='".$_POST['Duration']."',
+                                                 Amount='".$_POST['Amount']."',
+                                                 ProfileCommissionWithPercentage='".$_POST['ProfileCommissionWithPercentage']."',
+                                                 ProfileCommissionWithRupees='".$_POST['ProfileCommissionWithRupees']."',
+                                                 RefillCommissionWithPercentage='".$_POST['RefillCommissionWithPercentage']."',
+                                                 RefillCommissionWithRupees='".$_POST['RefillCommissionWithRupees']."',
+                                                 ProfileDownloadCommissionWithPercentage='".$_POST['ProfileDownloadCommissionWithPercentage']."',
+                                                 ProfileDownloadCommissionWithRupees='".$_POST['ProfileDownloadCommissionWithRupees']."',
+                                                 RenewalCommissionWithPercentage='".$_POST['RenewalCommissionWithPercentage']."',
+                                                 RenewalCommissionWithRupees='".$_POST['RenewalCommissionWithRupees']."'
+                                                 where  PlanCode='".$_POST['Code']."'");
+                return Response::returnSuccess("success",array());
+                                                            
+    } 
+     function GetFranchiseePlanInfo() {
+           global $mysql;    
+              $Plans = $mysql->select("select * from _tbl_franchisees_plans where PlanCode='".$_POST['Code']."'");
+                return Response::returnSuccess("success",$Plans[0]);
+    }
+ 
 }
 ?>

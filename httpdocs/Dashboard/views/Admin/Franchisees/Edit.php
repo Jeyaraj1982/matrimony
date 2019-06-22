@@ -1,433 +1,23 @@
 <?php   
-   /*
     if (isset($_POST['Btnupdate'])) {
         
-        $ErrorCount =0;
-        
-        if (isset($_POST['FranchiseeName'])) {
-            
-            if (!(strlen(trim($_POST['FranchiseeName']))>0)) {
-                $ErrFranchiseeName="Please enter Franchisee Name";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrFranchiseeName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['FranchiseeEmailID'])) {
-            
-            if (!(strlen(trim($_POST['FranchiseeEmailID']))>0)) {
-                $ErrFranchiseeEmailID="Please enter Franchisee Email ID";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrFranchiseeEmailID="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['BusinessMobileNumber'])) {
-            
-            if (!(strlen(trim($_POST['BusinessMobileNumber']))>0)) {
-                $ErrBusinessMobileNumber="Please enter Mobile Number";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrBusinessMobileNumber="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['BusinessAddress1'])) {
-            
-            if (!(strlen(trim($_POST['BusinessAddress1']))>0)) {
-                $ErrBusinessAddress1="Please enter Address";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrBusinessAddress1="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['CityName'])) {
-            
-            if (strlen(trim($_POST['CityName']))>0) {
-            
-            } else {
-                $ErrCityName="Please enter City Name";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrCityName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['PinCode'])) {
-            
-            if (strlen(trim($_POST['PinCode']))>0) {
-            
-            } else {
-                $ErrPinCode="Please enter Pin Code";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrPinCode="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['AccountName'])) {
-            
-            if (strlen(trim($_POST['AccountName']))>0) {
-            
-            } else {
-                $ErrAccountName="Please enter Account Name";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrAccountName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['AccountNumber'])) {
-            
-            if (strlen(trim($_POST['AccountNumber']))>0) {
-            
-            } else {
-                $ErrAccountNumber="Please enter Account Number";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrAccountNumber="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['IFSCode'])) {
-            
-            if (strlen(trim($_POST['IFSCode']))>0) {
-            
-            } else {
-                $ErrIFSCode="Please enter IFS Code";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrIFSCode="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['PersonName'])) {
-            
-            if (strlen(trim($_POST['PersonName']))>0) {
-            
-            } else {
-                $ErrPersonName="Please enter Person Name";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrPersonName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['FatherName'])) {
-            
-            if (strlen(trim($_POST['FatherName']))>0) {
-            
-            } else {
-                $ErrFatherName="Please enter Father Name";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrFatherName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['DateofBirth'])) {
-            
-            if (strlen(trim($_POST['DateofBirth']))>0) {
-            
-            } else {
-                $ErrDateofBirth="Please enter Date of Birth";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrDateofBirth="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['EmailID'])) {
-            
-            if (strlen(trim($_POST['EmailID']))>0) {
-            
-            } else {
-                $ErrEmailID="Please enter Email ID";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrEmailID="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['MobileNumber'])) {
-            
-            if (strlen(trim($_POST['MobileNumber']))>0) {
-            
-            } else {
-                $ErrMobileNumber="Please enter Mobile Number";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrMobileNumber="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['Address1'])) {
-            
-            if (strlen(trim($_POST['Address1']))>0) {
-            
-            } else {
-                $ErrAddress1="Please enter Address1";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrAddress1="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['AadhaarCard'])) {
-            
-            if (strlen(trim($_POST['AadhaarCard']))>0) {
-            
-            } else {
-                $ErrAadhaarCard="Please enter AadhaarCard";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrAadhaarCard="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-       /* if (isset($_POST['UserName'])) {
-            
-            if (strlen(trim($_POST['UserName']))>0) {
-            
-            } else {
-                $ErrUserName="Please enter UserName";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrUserName="Param Missing";    
-            $ErrorCount++;  
-        }   */
-        
-     /*   if (isset($_POST['Password'])) {
-            
-            if (strlen(trim($_POST['Password']))>0) {
-            
-            } else {
-                $ErrPassword="Please enter Password";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrPassword="Param Missing";    
-            $ErrorCount++;  
-        }
-            
-            
-            
-            
-            
-            
-        $duplicate = $mysql->select("select * from  _tbl_franchisees where ContactEmail='".trim($_POST['FranchiseeEmailID'])."' and FranchiseeID<>'".$_GET['Code']."' ");
-        if (sizeof($duplicate)>0) {
-             $ErrFranchiseeEmailID="Email ID Already Exists";    
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_franchisees where ContactNumber='".trim($_POST['BusinessMobileNumber'])."' and FranchiseeID<>'".$_GET['Code']."' ");
-        if (sizeof($duplicate)>0) {
-             $ErrBusinessMobileNumber="Mobile Number Already Exists";    
-             $ErrorCount++;
-        }
-        if(strlen(trim($_POST['BusinessWhatsappNumber']))>0){
-            $duplicate = $mysql->select("select * from  _tbl_franchisees where ContactWhatsapp='".trim($_POST['BusinessWhatsappNumber'])."' and FranchiseeID<>'".$_GET['Code']."' ");
-            if (sizeof($duplicate)>0) {
-                 $ErrBusinessWhatsappNumber="Whatsapp Number Already Exists";    
-                 $ErrorCount++;
-            }
-        }
-        
-       if(strlen(trim($_POST['BusinessLandlineNumber']))>0){ 
-        $duplicate = $mysql->select("select * from  _tbl_franchisees where ContactLandline='".trim($_POST['BusinessLandlineNumber'])."' and FranchiseeID<>'".$_GET['Code']."' ");
-        if (sizeof($duplicate)>0) {
-             $ErrBusinessLandlineNumber="Landline Number Already Exists";    
-             $ErrorCount++;
-        }
-       }  
-        $duplicate = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".trim($_POST['EmailID'])."' and FranchiseeID<>'".$_GET['Code']."' ");
-        if (sizeof($duplicate)>0) {
-             $ErrEmailID="Email ID Already Exists";    
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_franchisees_staffs where MobileNumber='".trim($_POST['MobileNumber'])."' and FranchiseeID<>'".$_GET['Code']."' ");
-        if (sizeof($duplicate)>0) {
-             $ErrMobileNumber="Mobile Number Already Exists";    
-             $ErrorCount++;
-        }
-          if(strlen(trim($_POST['WhatsappNumber']))>0){ 
-        $duplicate = $mysql->select("select * from  _tbl_franchisees_staffs where WhatsappNumber='".trim($_POST['WhatsappNumber'])."' and FranchiseeID<>'".$_GET['Code']."' ");
-        if (sizeof($duplicate)>0) {
-             $ErrWhatsappNumber="Whatsapp Number Already Exists";    
-             $ErrorCount++;
-        }
-          }
-          if(strlen(trim($_POST['LandlineNumber']))>0){ 
-        $duplicate = $mysql->select("select * from  _tbl_franchisees_staffs where LandlineNumber='".trim($_POST['LandlineNumber'])."' and FranchiseeID<>'".$_GET['Code']."' ");
-        if (sizeof($duplicate)>0) {
-             $ErrLandlineNumber="Landline Number Already Exists";    
-             $ErrorCount++;
-        }
-        
-          }
-        $duplicate = $mysql->select("select * from  _tbl_franchisees_staffs where AadhaarNumber='".trim($_POST['AadhaarCard'])."' and FranchiseeID<>'".$_GET['Code']."' ");
-        if (sizeof($duplicate)>0) {
-             $ErrAadhaarCard="Aadhaar Number Already Exists";    
-             $ErrorCount++;
-        }
-   
-         $Franchisee =$mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_REQUEST['Code']."'");
-         
-            if (sizeof($Franchisee)==0) {
-            echo "Error: Access denied. Please contact administrator";
-             } else {
-        
-
-                 
-  if ($ErrorCount==0) {
-      $dob = strtotime($_POST['DateofBirth']);
-               $dob = date("Y",$dob)."-".date("m",$dob)."-".date("d",$dob);
-               
-    $mysql->execute("update _tbl_franchisees set FranchiseName='".$_POST['FranchiseeName']."',
-                                                 ContactEmail='".$_POST['FranchiseeEmailID']."',
-                                                 ContactNumber='".$_POST['BusinessMobileNumber']."',
-                                                 ContactWhatsapp='".$_POST['BusinessWhatsappNumber']."',
-                                                 ContactLandline='".$_POST['BusinessLandlineNumber']."',
-                                                 BusinessAddressLine1='".$_POST['BusinessAddress1']."',
-                                                 BusinessAddressLine2='".$_POST['BusinessAddress2']."',
-                                                 BusinessAddressLine3='".$_POST['BusinessAddress3']."',
-                                                 DistrictName='".$_POST['DistrictName']."',
-                                                 StateName='".$_POST['StateName']."',
-                                                 CountryName='".$_POST['CountryName']."',
-                                                 CityName='".$_POST['CityName']."',
-                                                 Landmark='".$_POST['LandMark']."',
-                                                 PinCode='".$_POST['PinCode']."',
-                                                 MondayF='".$_POST['MonFH']." ".$_POST['MonFM']." ".$_POST['MonFN']."',
-                                                 TuesdayF='".$_POST['TueFH']." ".$_POST['TueFM']." ".$_POST['TueFN']."',
-                                                 WednessdayF='".$_POST['WedFH']." ".$_POST['WedFM']." ".$_POST['WedFN']."',
-                                                 ThursdayF='".$_POST['ThuFH']." ".$_POST['ThuFM']." ".$_POST['ThuFN']."',
-                                                 FridayF='".$_POST['FriFH']." ".$_POST['FriFM']." ".$_POST['FriFN']."',
-                                                 SaturdayF='".$_POST['SatFH']." ".$_POST['SatFM']." ".$_POST['SatFN']."',
-                                                 SundayF='".$_POST['SunFH']." ".$_POST['SunFM']." ".$_POST['SunFN']."',
-                                                 MondayT='".$_POST['MonTH']." ".$_POST['MonTM']." ".$_POST['MonTN']."',
-                                                 TuesdayT='".$_POST['TueTH']." ".$_POST['TueTM']." ".$_POST['TueTN']."',
-                                                 WednessdayT='".$_POST['WedTH']." ".$_POST['WedTM']." ".$_POST['WedTN']."',
-                                                 ThursdayT='".$_POST['ThuTH']." ".$_POST['ThuTM']." ".$_POST['ThuTN']."',
-                                                 FridayT='".$_POST['FriTH']." ".$_POST['FriTM']." ".$_POST['FriTN']."',
-                                                 SaturdayT='".$_POST['SatTH']." ".$_POST['SatTM']." ".$_POST['SatTN']."',
-                                                 SundayT='".$_POST['SunTH']." ".$_POST['SunTM']." ".$_POST['SunTN']."',
-                                                 Plan='".$_POST['Plan']."'
-                                                 where  FranchiseeID='".$_REQUEST['Code']."'"); 
-                                                           
-    $mysql->execute("update _tbl_bank_details set BankName='".$_POST['BankName']."',
-                                                 AccountName='".$_POST['AccountName']."',
-                                                 AccountNumber='".$_POST['AccountNumber']."',
-                                                 IFSCode='".$_POST['IFSCode']."',
-                                                 AccountType='".$_POST['AccountType']."'
-                                                  where  FranchiseeID='".$_REQUEST['Code']."'"); 
-                                                              
-    $mysql->execute("update _tbl_franchisees_staffs set PersonName='".$_POST['PersonName']."',
-                                                 FatherName='".$_POST['FatherName']."',
-                                                 DateofBirth='".$_POST['DateofBirth']."',
-                                                 Sex='".$_POST['Sex']."',
-                                                 EmailID='".$_POST['EmailID']."',
-                                                 MobileNumber='".$_POST['MobileNumber']."',
-                                                 WhatsappNumber='".$_POST['WhatsappNumber']."',
-                                                 LandlineNumber='".$_POST['LandlineNumber']."',
-                                                 AddressLine1='".$_POST['Address1']."',
-                                                 AddressLine2='".$_POST['Address2']."',
-                                                 AddressLine3='".$_POST['Address3']."',
-                                                 AadhaarNumber='".$_POST['AadhaarCard']."',
-                                                 LoginName='".$_POST['UserName']."',
-                                                 LoginPassword='".$_POST['Password']."'
-                                                  where  ReferedBy='1' and  FranchiseeID='".$_REQUEST['Code']."'"); 
-                                                               
-                                                              
-            
-           
-            unset($_POST);
-               echo "Updated Successfully";
-            
-        } else {
-            echo "Error occured. Couldn't save Franchise Details";
-        }
-          
- 
-    
-    }
-    }
-    $Franchisee =$mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_REQUEST['Code']."'");
-    $FranchiseeBank =$mysql->select("select * from _tbl_bank_details where FranchiseeID='".$_REQUEST['Code']."'");
-    $FranchiseeStaff =$mysql->select("select * from _tbl_franchisees_staffs where ReferedBy='1' and FranchiseeID='".$_REQUEST['Code']."'");
-  */  
-    
-?>
-<?php
-
-    if (isset($_POST['Btnupdate'])) {
         $response = $webservice->EditFranchisee($_POST);
-         print_r($response);
         if ($response['status']=="success") {
-            echo "aa";
             echo $response['message'];
         } else {
             $errormessage = $response['message']; 
         }
     }
-?>
-<?php  
 
-    $response = $webservice->GetFranchisee();
-    $Franchisee=$response['data'];
-    $responsebankdetails = $webservice->GetFranchiseePrimaryAccountDetails();
-    $FranchiseeBank=$responsebankdetails['data'];
-    $responseprofileinfo = $webservice->GetFranchiseeStaffProfileInfo();
-    $FranchiseeStaff=$responseprofileinfo['data'];
-    
+    $response = $webservice->GetFranchiseeInfo();
+    $Franchisee          = $response['data']['Franchisee'];
+    $FranchiseeBank      = $response['data']['PrimaryBankAccount'];
+    $FranchiseeStaff = $response['data']['FranchiseeStaff'];
 ?>
-<?php $fInfo = $webservice->GetFranchiseeCode(); ?>
 <style>
-#star{
-    color:red;
-}
+#star{color:red;}
 </style>
 <script>
-
 $(document).ready(function () {
   $("#BusinessMobileNumber").keypress(function (e) {
      if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
@@ -674,47 +264,40 @@ function myFunction() {
 </script>
 
 
-<form method="post" action="" onsubmit="return SubmitNewFranchisee();">  
-<div class="col-12 grid-margin">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Franchisees</h4>
-                  <h4 class="card-title">Edit Franchisee</h4>
-                   <div class="row">                                    
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-2 col-form-label">Created On</label>
-                          <label class="col-sm-2 col-form-label"><?php echo (isset($_POST['CreatedOn']) ? $_POST['CreatedOn'] : putDateTime($Franchisee[0]['CreatedOn']));?></label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">                                    
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-2 col-form-label">Last Updated On</label>
-                          <label class="col-sm-2 col-form-label"><?php echo (isset($_POST['CreatedOn']) ? $_POST['CreatedOn'] : putDateTime($Franchisee[0]['CreatedOn']));?></label>
-                          </div>
-                        </div>
-                      </div>
-                   </div>
+<form method="post" action="" onsubmit="return SubmitNewFranchisee();">
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Franchisees</h4>
+                <h4 class="card-title">Edit Franchisee</h4>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Created On</label>
+                    <label class="col-sm-2 col-form-label">
+                        <?php echo (isset($_POST['CreatedOn']) ? $_POST['CreatedOn'] : putDateTime($Franchisee['CreatedOn']));?>
+                    </label>
                 </div>
-              </div>
-<div class="col-12 grid-margin">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Business Information</h4>
-                  <form class="form-sample">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Franchisee Code<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" class="form-control" disabled="disabled" id="FranchiseeCode" name="FranchiseeCode" Placeholder="Franchisee Code" value="<?php echo (isset($_POST['FranchiseeCode']) ? $_POST['FranchiseeCode'] : $Franchisee[0]['FranchiseeCode']);?>">
-                            <span class="errorstring" id="ErrFranchiseeCode"><?php echo isset($ErrFranchiseeCode)? $ErrFranchiseeCode : "";?></span>
-                          </div>
-                          <div class="col-sm-1"><small>Status:</small></div>
-                          <div class="col-sm-3"><span class="<?php echo ($Franchisee[0]['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<small style="color:#737373;">
-                              <?php if($Franchisee[0]['IsActive']==1){
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Last Updated On</label>
+                    <label class="col-sm-2 col-form-label">
+                        <?php echo (isset($_POST['CreatedOn']) ? $_POST['CreatedOn'] : putDateTime($Franchisee['CreatedOn']));?>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Business Information</h4>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Franchisee Code<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" disabled="disabled" id="FranchiseeCode" name="FranchiseeCode" Placeholder="Franchisee Code" value="<?php echo (isset($_POST['FranchiseeCode']) ? $_POST['FranchiseeCode'] : $Franchisee['FranchiseeCode']);?>">
+                        <span class="errorstring" id="ErrFranchiseeCode"><?php echo isset($ErrFranchiseeCode)? $ErrFranchiseeCode : "";?></span>
+                    </div>
+                    <div class="col-sm-1"><small>Status:</small></div>
+                    <div class="col-sm-3"><span class="<?php echo ($Franchisee['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<small style="color:#737373;">
+                              <?php if($Franchisee['IsActive']==1){
                                   echo "Active";
                               }                                  
                               else{
@@ -722,384 +305,281 @@ function myFunction() {
                               }
                               ?>
                               </small>
-                        </div>
-                        </div>
-                      </div>
-                      </div>
-                    <div class="row">                                    
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Franchisee Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="FranchiseeName" name="FranchiseeName" Placeholder="Franchisee Name" value="<?php echo (isset($_POST['FranchiseeName']) ? $_POST['FranchiseeName'] : $Franchisee[0]['FranchiseName']);?>">
-                            <span class="errorstring" id="ErrFranchiseeName"><?php echo isset($ErrFranchiseeName)? $ErrFranchiseeName : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label"> Email Id<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="type" class="form-control" id="FranchiseeEmailID" name="FranchiseeEmailID" Placeholder="Email ID" value="<?php echo (isset($_POST['FranchiseeEmailID']) ? $_POST['FranchiseeEmailID'] : $Franchisee[0]['ContactEmail']);?>">
-                            <span class="errorstring" id="ErrFranchiseeEmailID"><?php echo isset($ErrFranchiseeEmailID)? $ErrFranchiseeEmailID : "";?></span>
-                           </div>
-                        </div>
-                      </div>
-                      </div> 
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" maxlength="10" class="form-control" id="BusinessMobileNumber" name="BusinessMobileNumber" Placeholder="Mobile Number" value="<?php echo (isset($_POST['BusinessMobileNumber']) ? $_POST['BusinessMobileNumber'] : $Franchisee[0]['ContactNumber']);?>">
-                            <span class="errorstring" id="ErrBusinessMobileNumber"><?php echo isset($ErrBusinessMobileNumber)? $ErrBusinessMobileNumber : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Whatsapp Number </label>
-                          <div class="col-sm-3">
-                            <input type="text" maxlength="10" class="form-control" id="BusinessWhatsappNumber" name="BusinessWhatsappNumber" Placeholder="Whatsapp Number" value="<?php echo (isset($_POST['BusinessWhatsappNumber']) ? $_POST['BusinessWhatsappNumber'] : $Franchisee[0]['ContactWhatsapp']);?>">
-                            <span class="errorstring" id="ErrBusinessWhatsappNumber"><?php echo isset($ErrBusinessWhatsappNumber)? $ErrBusinessWhatsappNumber : "";?></span>
-                          </div>
-                          <label class="col-sm-3 col-form-label">Landline Number </label>
-                          <div class="col-sm-3">
-                            <input type="text" class="form-control" id="BusinessLandlineNumber" name="BusinessLandlineNumber" Placeholder="Landline Number"value="<?php echo (isset($_POST['BusinessLandlineNumber']) ? $_POST['BusinessLandlineNumber'] : $Franchisee[0]['ContactLandline']);?>">
-                            <span class="errorstring" id="ErrBusinessLandlineNumber"><?php echo isset($ErrBusinessLandlineNumber)? $ErrBusinessLandlineNumber : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Address<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="BusinessAddress1" name="BusinessAddress1" Placeholder="Address Line 1" value="<?php echo (isset($_POST['BusinessAddress1']) ? $_POST['BusinessAddress1'] : $Franchisee[0]['BusinessAddressLine1']);?>">
-                            <span class="errorstring" id="ErrBusinessAddress1"><?php echo isset($ErrBusinessAddress1)? $ErrBusinessAddress1 : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label"></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="BusinessAddress2" name="BusinessAddress2" Placeholder="Address Line 2" value="<?php echo (isset($_POST['BusinessAddress2']) ? $_POST['BusinessAddress2'] : $Franchisee[0]['BusinessAddressLine2']);?>">
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label"></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="BusinessAddress3" name="BusinessAddress3" Placeholder="Address Line 3" value="<?php echo (isset($_POST['BusinessAddress3']) ? $_POST['BusinessAddress3'] : $Franchisee[0]['BusinessAddressLine3']);?>">
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                       <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">City Name<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <input type="text" class="form-control" id="CityName" name="CityName" Placeholder="City Name" value="<?php echo (isset($_POST['CityName']) ? $_POST['CityName'] : $Franchisee[0]['CityName']);?>">
-                          <span class="errorstring" id="ErrCityName"><?php echo isset($ErrCityName)? $ErrCityName : "";?></span>
-                          </div>
-                          <label class="col-sm-3 col-form-label">Land Mark<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <input type="text" class="form-control" id="LandMark" name="LandMark" Placeholder="Land Mark" value="<?php echo (isset($_POST['LandMark']) ? $_POST['LandMark'] : $Franchisee[0]['Landmark']);?>">
-                          <span class="errorstring" id="ErrLandMark"><?php echo isset($ErrLandMark)? $ErrLandMark : "";?></span>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Country Name <span id="star">*</span></label>
-                          <div class="col-sm-9">
-                          <select class="form-control" id="CountryName"  name="CountryName" >
-                          <?php foreach($fInfo['data']['CountryName'] as $CountryName) { ?>
-                         <option value="<?php echo $CountryName['CodeValue'];?>" <?php echo ($_POST['CountryName']==$CountryName['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $CountryName['CodeValue'];?></option>
-                          <?php } ?>
-                          </select>                   
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">State Name<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <select class="form-control" id="StateName"  name="StateName" >
-                          <?php foreach($fInfo['data']['StateName'] as $StateName) { ?>      
-                           <option value="<?php echo $StateName['CodeValue'];?>" <?php echo ($_POST['StateName']==$StateName['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $StateName['CodeValue'];?></option>
-                          <?php } /*<option value="<?php echo $StateName['CodeValue'];?>" <?php //echo ($StateName['StateName']==$StateName['CodeValue']) ? " selected='selected' " : "";?>> <?php// echo $StateName['CodeValue'];?></option> */?>
-                          </select>
-                          </div>
-                          <label class="col-sm-3 col-form-label">District Name<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <select class="form-control" id="DistrictName"  name="DistrictName" >
-                          <?php foreach($fInfo['data']['DistrictName'] as $DistrictName) { ?>
-                         <option value="<?php echo $DistrictName['CodeValue'];?>">
-                         <?php echo $DistrictName['CodeValue'];?></option>    
-                          <?php } ?>
-                          </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                   <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Pin Code<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" maxlength="10" class="form-control" id="PinCode" name="PinCode" Placeholder="Pin Code" value="<?php echo (isset($_POST['PinCode']) ? $_POST['PinCode'] : $Franchisee[0]['PinCode']);?>">
-                            <span class="errorstring" id="ErrPinCode"><?php echo isset($ErrPinCode)? $ErrPinCode : "";?></span>
-                          </div>     
-                          <label class="col-sm-3 col-form-label">Plan<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <select class="form-control" id="Plan" disabled="disabled" name="Plan" >
-                          <?php foreach($fInfo['data']['Plans'] as $Plan) { ?>
-                         <option value="<?php echo $Plan['Plan'];?>" <?php echo ($Plan['Plan']==$Plan[0]['PlanName']) ? " selected='selected'" :""; ?>><?php echo $Plan['PlanName'];?></option>
-                          <?php } ?>
-                          </select>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                   </div>
                 </div>
-              </div>
-<div class="col-12 grid-margin">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Primary Account Details</h4>
-                   <form class="form-sample">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Bank Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                          <select class="form-control" id="BankName"  name="BankName" >
-                          <?php foreach($fInfo['data']['BankName'] as $BankName) { ?> 
-                         <option value="<?php echo $BankName['CodeValue'];?>" <?php echo ($FranchiseeBank[0]['BankName']==$BankName['CodeValue']) ? " selected='selected' " : "";?> ><?php echo $BankName['CodeValue'];?></option>
-                          <?php } ?>
-                          </select>
-                          </div>
-                        </div>
-                      </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Franchisee Name<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="FranchiseeName" name="FranchiseeName" Placeholder="Franchisee Name" value="<?php echo (isset($_POST['FranchiseeName']) ? $_POST['FranchiseeName'] : $Franchisee['FranchiseName']);?>">
+                        <span class="errorstring" id="ErrFranchiseeName"><?php echo isset($ErrFranchiseeName)? $ErrFranchiseeName : "";?></span>
                     </div>
-                     <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Account Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="AccountName" name="AccountName" Placeholder="Account Name" value="<?php echo (isset($_POST['AccountName']) ? $_POST['AccountName'] : $FranchiseeBank[0]['AccountName']);?>">
-                            <span class="errorstring" id="ErrAccountName"><?php echo isset($ErrAccountName)? $ErrAccountName : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div> 
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Account Number<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="AccountNumber" name="AccountNumber" Placeholder="Account Number" value="<?php echo (isset($_POST['AccountNumber']) ? $_POST['AccountNumber'] : $FranchiseeBank[0]['AccountNumber']);?>">
-                            <span class="errorstring" id="ErrAccountNumber"><?php echo isset($ErrAccountNumber)? $ErrAccountNumber : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">IFS Code<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" maxlength="15" class="form-control" id="IFSCode" name="IFSCode" Placeholder="IFS Code" value="<?php echo (isset($_POST['IFSCode']) ? $_POST['IFSCode'] : $FranchiseeBank[0]['IFSCode']);?>">
-                            <span class="errorstring" id="ErrIFSCode"><?php echo isset($ErrIFSCode)? $ErrIFSCode : "";?></span>
-                          </div>
-                          <label class="col-sm-3 col-form-label">Account Type<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <select class="form-control" id="AccountType"  name="AccountType" >
-                          <?php foreach($fInfo['data']['AccountType'] as $AccountType) { ?>
-                         <option value="<?php echo $AccountType['CodeValue'];?>" <?php echo ($FranchiseeBank[0]['AccountType']==$AccountType['CodeValue']) ? " selected='selected' " : "";?> ><?php echo $AccountType['CodeValue'];?></option>
-                          <?php } ?>
-                          </select>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                   </div>
-              </div>
-</div>
-<div class="col-12 grid-margin">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Profile Information</h4>
-                   <form class="form-sample">
-                   <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Person Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="PersonName" name="PersonName" Placeholder="Person Name" value="<?php echo (isset($_POST['PersonName']) ? $_POST['PersonName'] : $FranchiseeStaff[0]['PersonName']);?>">
-                            <span class="errorstring" id="ErrPersonName"><?php echo isset($ErrPersonName)? $ErrPersonName : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Father's Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="FatherName" name="FatherName" Placeholder="Father's Name" value="<?php echo (isset($_POST['FatherName']) ? $_POST['FatherName'] : $FranchiseeStaff[0]['FatherName']);?>">
-                            <span class="errorstring" id="ErrFatherName"><?php echo isset($ErrFatherName)? $ErrFatherName : "";?> </span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Date of birth<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <?php
-                         
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"> Email Id<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="type" class="form-control" id="FranchiseeEmailID" name="FranchiseeEmailID" Placeholder="Email ID" value="<?php echo (isset($_POST['FranchiseeEmailID']) ? $_POST['FranchiseeEmailID'] : $Franchisee['ContactEmail']);?>">
+                        <span class="errorstring" id="ErrFranchiseeEmailID"><?php echo isset($ErrFranchiseeEmailID)? $ErrFranchiseeEmailID : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" maxlength="10" class="form-control" id="BusinessMobileNumber" name="BusinessMobileNumber" Placeholder="Mobile Number" value="<?php echo (isset($_POST['BusinessMobileNumber']) ? $_POST['BusinessMobileNumber'] : $Franchisee['ContactNumber']);?>">
+                        <span class="errorstring" id="ErrBusinessMobileNumber"><?php echo isset($ErrBusinessMobileNumber)? $ErrBusinessMobileNumber : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Whatsapp Number </label>
+                    <div class="col-sm-3">
+                        <input type="text" maxlength="10" class="form-control" id="BusinessWhatsappNumber" name="BusinessWhatsappNumber" Placeholder="Whatsapp Number" value="<?php echo (isset($_POST['BusinessWhatsappNumber']) ? $_POST['BusinessWhatsappNumber'] : $Franchisee['ContactWhatsapp']);?>">
+                        <span class="errorstring" id="ErrBusinessWhatsappNumber"><?php echo isset($ErrBusinessWhatsappNumber)? $ErrBusinessWhatsappNumber : "";?></span>
+                    </div>
+                    <label class="col-sm-3 col-form-label">Landline Number </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="BusinessLandlineNumber" name="BusinessLandlineNumber" Placeholder="Landline Number" value="<?php echo (isset($_POST['BusinessLandlineNumber']) ? $_POST['BusinessLandlineNumber'] : $Franchisee['ContactLandline']);?>">
+                        <span class="errorstring" id="ErrBusinessLandlineNumber"><?php echo isset($ErrBusinessLandlineNumber)? $ErrBusinessLandlineNumber : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Address<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="BusinessAddress1" name="BusinessAddress1" Placeholder="Address Line 1" value="<?php echo (isset($_POST['BusinessAddress1']) ? $_POST['BusinessAddress1'] : $Franchisee['BusinessAddressLine1']);?>">
+                        <span class="errorstring" id="ErrBusinessAddress1"><?php echo isset($ErrBusinessAddress1)? $ErrBusinessAddress1 : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="BusinessAddress2" name="BusinessAddress2" Placeholder="Address Line 2" value="<?php echo (isset($_POST['BusinessAddress2']) ? $_POST['BusinessAddress2'] : $Franchisee['BusinessAddressLine2']);?>">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="BusinessAddress3" name="BusinessAddress3" Placeholder="Address Line 3" value="<?php echo (isset($_POST['BusinessAddress3']) ? $_POST['BusinessAddress3'] : $Franchisee['BusinessAddressLine3']);?>">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">City Name<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="CityName" name="CityName" Placeholder="City Name" value="<?php echo (isset($_POST['CityName']) ? $_POST['CityName'] : $Franchisee['CityName']);?>">
+                        <span class="errorstring" id="ErrCityName"><?php echo isset($ErrCityName)? $ErrCityName : "";?></span></div>
+                    <label class="col-sm-3 col-form-label">Land Mark<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="LandMark" name="LandMark" Placeholder="Land Mark" value="<?php echo (isset($_POST['LandMark']) ? $_POST['LandMark'] : $Franchisee['Landmark']);?>">
+                        <span class="errorstring" id="ErrLandMark"><?php echo isset($ErrLandMark)? $ErrLandMark : "";?></span></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Country Name <span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <select class="selectpicker form-control" data-live-search="true" id="CountryName" name="CountryName">
+                            <?php foreach($response['data']['CountryNames'] as $CountryName) { ?>
+                                <option value="<?php echo $CountryName['CodeValue'];?>" <?php echo (isset($_POST[ 'CountryName'])) ? (($_POST[ 'CountryName']==$CountryName[ 'CodeValue']) ? " selected='selected' " : "") : (($Franchisee[ 'CountryName']==$CountryName[ 'CodeValue']) ? " selected='selected' " : "");?> >
+                                    <?php echo $CountryName['CodeValue'];?>
+                                </option>
+                                <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">State Name<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <select class="selectpicker form-control" data-live-search="true" id="StateName" name="StateName">
+                            <?php foreach($response['data']['StateName'] as $StateName) { ?>
+                                <option value="<?php echo $StateName['CodeValue'];?>" <?php echo (isset($_POST[ 'StateName'])) ? (($_POST[ 'StateName']==$StateName[ 'CodeValue']) ? " selected='selected' " : "") : (($Franchisee[ 'StateName']==$StateName[ 'CodeValue']) ? " selected='selected' " : "");?> >
+                                    <?php echo $StateName['CodeValue'];?>
+                                </option>
+
+                                <?php } ?>
+                        </select>
+                    </div>
+                    <label class="col-sm-3 col-form-label">District Name<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <select class="selectpicker form-control" data-live-search="true" id="DistrictName" name="DistrictName">
+                            <?php foreach($response['data']['DistrictName'] as $DistrictName) { ?>
+                                <option value="<?php echo $DistrictName['CodeValue'];?>" <?php echo (isset($_POST[ 'DistrictName'])) ? (($_POST[ 'DistrictName']==$DistrictName[ 'CodeValue']) ? " selected='selected' " : "") : (($Franchisee[ 'DistrictName']==$DistrictName[ 'CodeValue']) ? " selected='selected' " : "");?> >
+                                    <?php echo $DistrictName['CodeValue'];?>
+                                </option>
+                                <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Pin Code<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" maxlength="10" class="form-control" id="PinCode" name="PinCode" Placeholder="Pin Code" value="<?php echo (isset($_POST['PinCode']) ? $_POST['PinCode'] : $Franchisee['PinCode']);?>">
+                        <span class="errorstring" id="ErrPinCode"><?php echo isset($ErrPinCode)? $ErrPinCode : "";?></span></div>
+                    <label class="col-sm-3 col-form-label">Plan<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" disabled="disabled" class="form-control" id="Plan" name="Plan" value="<?php echo $Franchisee['Plan'];?>">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <?php echo $errormessage ;?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Primary Account Details</h4>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Bank Name<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <select class="selectpicker form-control" data-live-search="true" id="BankName" name="BankName">
+                            <?php foreach($response['data']['BankNames'] as $BankName) { ?>
+                                <option value="<?php echo $BankName['CodeValue'];?>" <?php echo (isset($_POST[ 'BankName'])) ? (($_POST[ 'BankName']==$BankName[ 'CodeValue']) ? " selected='selected' " : "") : (($Franchisee[ 'BankName']==$BankName[ 'CodeValue']) ? " selected='selected' " : "");?> >
+                                    <?php echo $BankName['CodeValue'];?>
+                                </option>
+                                <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Account Name<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="AccountName" name="AccountName" Placeholder="Account Name" value="<?php echo (isset($_POST['AccountName']) ? $_POST['AccountName'] : $FranchiseeBank['AccountName']);?>">
+                        <span class="errorstring" id="ErrAccountName"><?php echo isset($ErrAccountName)? $ErrAccountName : "";?></span></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Account Number<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="AccountNumber" name="AccountNumber" Placeholder="Account Number" value="<?php echo (isset($_POST['AccountNumber']) ? $_POST['AccountNumber'] : $FranchiseeBank['AccountNumber']);?>">
+                        <span class="errorstring" id="ErrAccountNumber"><?php echo isset($ErrAccountNumber)? $ErrAccountNumber : "";?></span></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">IFS Code<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" maxlength="15" class="form-control" id="IFSCode" name="IFSCode" Placeholder="IFS Code" value="<?php echo (isset($_POST['IFSCode']) ? $_POST['IFSCode'] : $FranchiseeBank['IFSCode']);?>">
+                        <span class="errorstring" id="ErrIFSCode"><?php echo isset($ErrIFSCode)? $ErrIFSCode : "";?></span></div>
+                    <label class="col-sm-3 col-form-label">Account Type<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <select class="selectpicker form-control" data-live-search="true" id="AccountType" name="AccountType">
+                            <?php foreach($response['data']['AccountType'] as $AccountType) { ?>
+                                <option value="<?php echo $AccountType['CodeValue'];?>" <?php echo (isset($_POST[ 'AccountType'])) ? (($_POST[ 'AccountType']==$AccountType[ 'CodeValue']) ? " selected='selected' " : "") : (($Franchisee[ 'AccountType']==$AccountType[ 'CodeValue']) ? " selected='selected' " : "");?> >
+                                    <?php echo $AccountType['CodeValue'];?>
+                                </option>
+                                <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <?php echo $errormessage ;?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Profile Information</h4>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Person Name<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="PersonName" name="PersonName" Placeholder="Person Name" value="<?php echo (isset($_POST['PersonName']) ? $_POST['PersonName'] : $FranchiseeStaff['PersonName']);?>">
+                        <span class="errorstring" id="ErrPersonName"><?php echo isset($ErrPersonName)? $ErrPersonName : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Father's Name<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="FatherName" name="FatherName" Placeholder="Father's Name" value="<?php echo (isset($_POST['FatherName']) ? $_POST['FatherName'] : $FranchiseeStaff['FatherName']);?>">
+                        <span class="errorstring" id="ErrFatherName"><?php echo isset($ErrFatherName)? $ErrFatherName : "";?> </span></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Date of birth<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <?php
+
                           if (isset($_POST['DateofBirth'])) {
                             $dob=$_POST['DateofBirth']  ;
                           } else {
-                              $dob=strtotime($FranchiseeStaff[0]['DateofBirth'])  ;  
+                              $dob=strtotime($FranchiseeStaff['DateofBirth'])  ;  
                                $dob = date("Y",$dob)."-".date("m",$dob)."-".date("d",$dob);
                           } 
-      
+
                           ?>
                             <input type="Date" class="form-control" id="DateofBirth" name="DateofBirth" value="<?php echo $dob;?>" style="line-height:15px !important">
                             <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth : "";?> </span>
-                          </div>
-                          <label class="col-sm-3 col-form-label">Sex<span id="star">*</span></label>
-                         <div class="col-sm-3">
-                          <select class="form-control" id="Sex"  name="Sex" >
-                          <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
-                          <option value="<?php echo $Sex['CodeValue'];?>" <?php echo ($FranchiseeStaff[0]['Sex']==$Sex['CodeValue']) ? " selected='selected' " : "";?> ><?php echo $Sex['CodeValue'];?></option>
-                          <?php } ?>
-                          </select>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Email Id<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="EmailID" name="EmailID" Placeholder="Email ID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $FranchiseeStaff[0]['EmailID']);?>">
-                            <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div> 
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" Placeholder="Mobile Number" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $FranchiseeStaff[0]['MobileNumber']);?>">
-                            <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Whatsapp Number </label>
-                          <div class="col-sm-3">
-                            <input type="text" maxlength="10" class="form-control" id="WhatsappNumber" name="WhatsappNumber" Placeholder="Whatsapp Number" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : $FranchiseeStaff[0]['WhatsappNumber']);?>">
-                            <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
-                          </div>
-                          <label class="col-sm-3 col-form-label">Landline Number </label>
-                          <div class="col-sm-3">
-                            <input type="text" class="form-control" id="LandlineNumber" name="LandlineNumber" Placeholder="Landline Number"value="<?php echo (isset($_POST['LandlineNumber']) ? $_POST['LandlineNumber'] : $FranchiseeStaff[0]['LandlineNumber']);?>">
-                            <span class="errorstring" id="ErrLandlineNumber"><?php echo isset($ErrLandlineNumber)? $ErrLandlineNumber : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Address<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="Address1" name="Address1" Placeholder="Address Line 1" value="<?php echo (isset($_POST['Address1']) ? $_POST['Address1'] : $FranchiseeStaff[0]['AddressLine1']);?>">
-                            <span class="errorstring" id="ErrAddress1"><?php echo isset($ErrAddress1)? $ErrAddress1 : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label"></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="Address2" name="Address2" Placeholder="Address Line 2" value="<?php echo (isset($_POST['Address2']) ? $_POST['Address2'] : $FranchiseeStaff[0]['AddressLine2']);?>">
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label"></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="Address3" name="Address3" Placeholder="Address Line 3" value="<?php echo (isset($_POST['Address3']) ? $_POST['Address3'] : $FranchiseeStaff[0]['AddressLine3']);?>">
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                   <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Adhaar Number<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" class="form-control" id="AadhaarCard" name="AadhaarCard" Placeholder="Aadhaar Number" value="<?php echo (isset($_POST['AadhaarCard']) ? $_POST['AadhaarCard'] : $FranchiseeStaff[0]['AadhaarNumber']);?>">
-                            <span class="errorstring" id="ErrAadhaarCard"><?php echo isset($ErrAadhaarCard)? $ErrAadhaarCard : "";?> </span></div>
-                            <div class="col-sm-3"></div>
-                        </div>
-                      </div> 
-                   </div>
-                   <div class="row">
-                      <div class="col-md-12">                              
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Login Name<span id="star">*</span></label>
-                          <div class="col-sm-2">
-                            <input type="text" minlength="6" disabled="disabled"  class="form-control" id="UserName" name="UserName" Placeholder="Login Name" value="<?php echo (isset($_POST['UserName']) ? $_POST['UserName'] : $FranchiseeStaff[0]['LoginName']);?>">
-                            <span class="errorstring" id="ErrUserName"><?php echo isset($ErrUserName)? $ErrUserName : "";?> </span>
-                          </div>
-                         <label class="col-sm-2 col-form-label">Login Password<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="Password" maxlength="8" class="form-control" id="Password" name="Password" Placeholder="Login Password" value="<?php echo (isset($_POST['Password']) ? $_POST['Password'] : $FranchiseeStaff[0]['LoginPassword']);?>">
-                            <span class="errorstring" id="ErrPassword"><?php echo isset($ErrPassword)? $ErrPassword : "";?> </span> </div>
-                            <div class="col-sm-2"><input type="checkbox" onclick="myFunction()">&nbsp;show
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-      </div>
-</div>
-</div>
+                    </div>
+                    <label class="col-sm-3 col-form-label">Sex<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <select class="selectpicker form-control" data-live-search="true" id="Sex" name="Sex">
+                            <?php foreach($response['data']['Gender'] as $Sex) { ?>
+                                <option value="<?php echo $Sex['CodeValue'];?>" <?php echo (isset($_POST[ 'Sex'])) ? (($_POST[ 'Sex']==$Sex[ 'CodeValue']) ? " selected='selected' " : "") : (($Franchisee[ 'Sex']==$Sex[ 'CodeValue']) ? " selected='selected' " : "");?> >
+                                    <?php echo $Sex['CodeValue'];?>
+                                </option>
+
+                                <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Email Id<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="EmailID" name="EmailID" Placeholder="Email ID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $FranchiseeStaff['EmailID']);?>">
+                        <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" Placeholder="Mobile Number" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $FranchiseeStaff['MobileNumber']);?>">
+                        <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Whatsapp Number </label>
+                    <div class="col-sm-3">
+                        <input type="text" maxlength="10" class="form-control" id="WhatsappNumber" name="WhatsappNumber" Placeholder="Whatsapp Number" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : $FranchiseeStaff['WhatsappNumber']);?>">
+                        <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span></div>
+                    <label class="col-sm-3 col-form-label">Landline Number </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="LandlineNumber" name="LandlineNumber" Placeholder="Landline Number" value="<?php echo (isset($_POST['LandlineNumber']) ? $_POST['LandlineNumber'] : $FranchiseeStaff['LandlineNumber']);?>">
+                        <span class="errorstring" id="ErrLandlineNumber"><?php echo isset($ErrLandlineNumber)? $ErrLandlineNumber : "";?></span></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Address<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="Address1" name="Address1" Placeholder="Address Line 1" value="<?php echo (isset($_POST['Address1']) ? $_POST['Address1'] : $FranchiseeStaff['AddressLine1']);?>">
+                        <span class="errorstring" id="ErrAddress1"><?php echo isset($ErrAddress1)? $ErrAddress1 : "";?></span></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="Address2" name="Address2" Placeholder="Address Line 2" value="<?php echo (isset($_POST['Address2']) ? $_POST['Address2'] : $FranchiseeStaff['AddressLine2']);?>">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="Address3" name="Address3" Placeholder="Address Line 3" value="<?php echo (isset($_POST['Address3']) ? $_POST['Address3'] : $FranchiseeStaff['AddressLine3']);?>">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Adhaar Number<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="AadhaarCard" name="AadhaarCard" Placeholder="Aadhaar Number" value="<?php echo (isset($_POST['AadhaarCard']) ? $_POST['AadhaarCard'] : $FranchiseeStaff['AadhaarNumber']);?>">
+                        <span class="errorstring" id="ErrAadhaarCard"><?php echo isset($ErrAadhaarCard)? $ErrAadhaarCard : "";?> </span></div>
+                    <div class="col-sm-3"></div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Login Name<span id="star">*</span></label>
+                    <div class="col-sm-2">
+                        <input type="text" minlength="6" disabled="disabled" class="form-control" id="UserName" name="UserName" Placeholder="Login Name" value="<?php echo (isset($_POST['UserName']) ? $_POST['UserName'] : $FranchiseeStaff['LoginName']);?>">
+                        <span class="errorstring" id="ErrUserName"><?php echo isset($ErrUserName)? $ErrUserName : "";?> </span></div>
+                    <label class="col-sm-2 col-form-label">Login Password<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="Password" disabled="disabled" maxlength="8" class="form-control" id="Password" name="Password" Placeholder="Login Password" value="<?php echo (isset($_POST['Password']) ? $_POST['Password'] : $FranchiseeStaff['LoginPassword']);?>">
+                        <span class="errorstring" id="ErrPassword"><?php echo isset($ErrPassword)? $ErrPassword : "";?> </span> </div>
+                    <div class="col-sm-2">
+                        <input type="checkbox" onclick="myFunction()">&nbsp;show</div>
+                </div>
+                <div class="col-sm-12">
+                    <?php echo $errormessage ;?>
+                </div>
+            </div>
+        </div>
+    </div>
 <div class="col-12 grid-margin">
                   <div class="card">                                                            
                     <div class="card-body">                                                                            
@@ -1958,7 +1438,7 @@ function myFunction() {
 <div class="col-sm-12 grid-margin" style="text-align: center; padding-top:5px;color:skyblue;">
                         <a href="../MangeFranchisees"><small style="font-weight:bold;text-decoration:underline">List of Franchisee</small></a>&nbsp;|&nbsp;
                         <a href="<?php echo GetUrl("Franchisees/View/".$_REQUEST['Code'].".html");?>"><small style="font-weight:bold;text-decoration:underline">View Franchisee</small></a>&nbsp;|&nbsp;
-                        <?php if($Franchisee[0]['IsActive']==1){ ?>
+                        <?php if($Franchisee['IsActive']==1){ ?>
                         <a href="<?php echo GetUrl("Franchisees/BlockFranchisee/".$_REQUEST['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Block Franchisee</small></a>&nbsp;|&nbsp;                                   
                          <?php     }                                  
                               else {    ?>

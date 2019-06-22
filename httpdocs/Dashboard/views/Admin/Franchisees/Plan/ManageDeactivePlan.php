@@ -33,8 +33,9 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $Plans = $mysql->select("select * from _tbl_franchisees_plans where IsActive='0'"); ?>
-                        <?php foreach($Plans as $Plan) { ?>
+                       <?php 
+                         $response = $webservice->GetManageDeactivePlans(); ?>
+                        <?php foreach($response['data'] as $Plan) { ?>
                                 <tr>
                                 <td>
                                 <span class="<?php echo ($Plan['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;

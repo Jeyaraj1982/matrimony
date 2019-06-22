@@ -37,9 +37,9 @@
                         </tr>
                       </thead>                                            
                       <tbody>  
-                      <?php $Plans = $mysql->select("SELECT t1.*,  COUNT(t2.PlanID) AS cnt FROM _tbl_franchisees_plans AS t1
-LEFT OUTER JOIN _tbl_franchisees AS t2 ON t1.PlanID = t2.PlanID GROUP BY t1.PlanID"); ?>  
-                        <?php foreach($Plans as $Plan) { ?>
+                        <?php 
+                         $response = $webservice->GetManagePlans(); ?>
+                        <?php foreach($response['data'] as $Plan) { ?>
                                 <tr>
                                 <td>
                                 <span class="<?php echo ($Plan['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;

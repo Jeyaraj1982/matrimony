@@ -1,416 +1,3 @@
-<?php   
-  /*  if (isset($_POST['BtnSaveCreate'])) {
-        
-       $ErrorCount =0;
-        
-        if (isset($_POST['FranchiseeName'])) {
-            if (!(strlen(trim($_POST['FranchiseeName']))>0)) {
-                $ErrFranchiseeName="Please enter Franchisee Name";    
-                $ErrorCount++;  
-            }
-        } else {
-            $ErrFranchiseeName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['FranchiseeEmailID'])) {
-            if (!(strlen(trim($_POST['FranchiseeEmailID']))>0)) {
-                $ErrFranchiseeEmailID="Please enter Franchisee Email ID";    
-                $ErrorCount++;  
-            }
-        } else {
-            $ErrFranchiseeEmailID="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['BusinessMobileNumber'])) {
-            
-            if (!(strlen(trim($_POST['BusinessMobileNumber']))>0)) {
-                $ErrBusinessMobileNumber="Please enter Mobile Number";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrBusinessMobileNumber="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['BusinessAddress1'])) {
-            
-            if (!(strlen(trim($_POST['BusinessAddress1']))>0)) {
-                $ErrBusinessAddress1="Please enter Address";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrBusinessAddress1="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['CityName'])) {
-            
-            if (strlen(trim($_POST['CityName']))>0) {
-            
-            } else {
-                $ErrCityName="Please enter City Name";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrCityName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['PinCode'])) {
-            
-            if (strlen(trim($_POST['PinCode']))>0) {
-            
-            } else {
-                $ErrPinCode="Please enter Pin Code";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrPinCode="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['AccountName'])) {
-            
-            if (strlen(trim($_POST['AccountName']))>0) {
-            
-            } else {
-                $ErrAccountName="Please enter Account Name";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrAccountName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['AccountNumber'])) {
-            
-            if (strlen(trim($_POST['AccountNumber']))>0) {
-            
-            } else {
-                $ErrAccountNumber="Please enter Account Number";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrAccountNumber="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['IFSCode'])) {
-            
-            if (strlen(trim($_POST['IFSCode']))>0) {
-            
-            } else {
-                $ErrIFSCode="Please enter IFS Code";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrIFSCode="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['AccountType'])) {
-            
-            if (strlen(trim($_POST['AccountType']))>0) {
-            
-            } else {
-                $ErrAccountType="Please  select AccountType";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrAccountType="Param Missing";    
-            $ErrorCount++;  
-        }
-        if (isset($_POST['PersonName'])) {
-            
-            if (strlen(trim($_POST['PersonName']))>0) {
-            
-            } else {
-                $ErrPersonName="Please enter Person Name";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrPersonName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['FatherName'])) {
-            
-            if (strlen(trim($_POST['FatherName']))>0) {
-            
-            } else {
-                $ErrFatherName="Please enter Father Name";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrFatherName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['DateofBirth'])) {
-            
-            if (strlen(trim($_POST['DateofBirth']))>0) {
-            
-            } else {
-                $ErrDateofBirth="Please enter Date of Birth";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrDateofBirth="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['EmailID'])) {
-            
-            if (strlen(trim($_POST['EmailID']))>0) {
-            
-            } else {
-                $ErrEmailID="Please enter Email ID";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrEmailID="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['MobileNumber'])) {
-            
-            if (strlen(trim($_POST['MobileNumber']))>0) {
-            
-            } else {
-                $ErrMobileNumber="Please enter Mobile Number";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrMobileNumber="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['Address1'])) {
-            
-            if (strlen(trim($_POST['Address1']))>0) {
-            
-            } else {
-                $ErrAddress1="Please enter Address1";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrAddress1="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['AadhaarCard'])) {
-            
-            if (strlen(trim($_POST['AadhaarCard']))>0) {
-            
-            } else {
-                $ErrAadhaarCard="Please enter AadhaarCard";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrAadhaarCard="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['UserName'])) {
-            
-            if (strlen(trim($_POST['UserName']))>0) {
-            
-            } else {
-                $ErrUserName="Please enter UserName";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrUserName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['Password'])) {
-            
-            if (strlen(trim($_POST['Password']))>0) {
-            
-            } else {
-                $ErrPassword="Please enter Password";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrPassword="Param Missing";    
-            $ErrorCount++;  
-        }
-            
-            
-            
-            
-            
-            
-        $duplicate = $mysql->select("select * from  _tbl_franchisees where ContactEmail='".trim($_POST['FranchiseeEmailID'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrFranchiseeEmailID="Email ID Already Exists";    
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from  _tbl_franchisees where FranchiseeCode='".trim($_POST['FranchiseeCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrFranchiseeCode="Franchisee Code Already Exists";    
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_franchisees where ContactNumber='".trim($_POST['BusinessMobileNumber'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrBusinessMobileNumber="Mobile Number Already Exists";    
-             $ErrorCount++;
-        }
-        if(strlen(trim($_POST['BusinessWhatsappNumber']))>0){
-            $duplicate = $mysql->select("select * from  _tbl_franchisees where ContactWhatsapp='".trim($_POST['BusinessWhatsappNumber'])."'");
-            if (sizeof($duplicate)>0) {
-                 $ErrBusinessWhatsappNumber="Whatsapp Number Already Exists";    
-                 $ErrorCount++;
-            }
-        }
-        
-       if(strlen(trim($_POST['BusinessLandlineNumber']))>0){ 
-        $duplicate = $mysql->select("select * from  _tbl_franchisees where ContactLandline='".trim($_POST['BusinessLandlineNumber'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrBusinessLandlineNumber="Landline Number Already Exists";    
-             $ErrorCount++;
-        }
-       }  
-        $duplicate = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".trim($_POST['EmailID'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrEmailID="Email ID Already Exists";    
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_franchisees_staffs where MobileNumber='".trim($_POST['MobileNumber'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrMobileNumber="Mobile Number Already Exists";    
-             $ErrorCount++;
-        }
-          if(strlen(trim($_POST['WhatsappNumber']))>0){ 
-        $duplicate = $mysql->select("select * from  _tbl_franchisees_staffs where WhatsappNumber='".trim($_POST['WhatsappNumber'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrWhatsappNumber="Whatsapp Number Already Exists";    
-             $ErrorCount++;
-        }
-          }
-          if(strlen(trim($_POST['LandlineNumber']))>0){ 
-        $duplicate = $mysql->select("select * from  _tbl_franchisees_staffs where LandlineNumber='".trim($_POST['LandlineNumber'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrLandlineNumber="Landline Number Already Exists";    
-             $ErrorCount++;
-        }
-        
-          }
-        $duplicate = $mysql->select("select * from  _tbl_franchisees_staffs where AadhaarNumber='".trim($_POST['AadhaarCard'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrAadhaarCard="Aadhaar Number Already Exists";    
-             $ErrorCount++;
-        }
-   
-        $duplicate = $mysql->select("select * from  _tbl_franchisees_staffs where LoginName='".trim($_POST['UserName'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrUserName="User Name Already Exists";    
-             $ErrorCount++;
-        }
-                   
-        if ($ErrorCount==0) {
-            
-            $plan = $mysql->select("select * from _tbl_franchisees_plans where PlanID='".$_POST['Plan']."'");
-            
-            $FranchiseeID = $mysql->insert("_tbl_franchisees",array("FranchiseeCode"       => $_POST['FranchiseeCode'],
-                                                                    "FranchiseName"        => $_POST['FranchiseeName'],
-                                                                    "ContactEmail"         => $_POST['FranchiseeEmailID'],
-                                                                    "ContactNumber"        => $_POST['BusinessMobileNumber'],
-                                                                    "ContactWhatsapp"      => $_POST['BusinessWhatsappNumber'],
-                                                                    "ContactLandline"      => $_POST['BusinessLandlineNumber'],
-                                                                    "BusinessAddressLine1" => $_POST['BusinessAddress1'],
-                                                                    "BusinessAddressLine2" => $_POST['BusinessAddress2'],
-                                                                    "BusinessAddressLine3" => $_POST['BusinessAddress3'],
-                                                                    "Landmark"             => $_POST['Landmark'],
-                                                                    "DistrictName"         => $_POST['DistrictName'],
-                                                                    "StateName"            => $_POST['StateName'],
-                                                                    "CountryName"          => $_POST['CountryName'],
-                                                                    "CityName"             => $_POST['CityName'],
-                                                                    "PinCode"              => $_POST['PinCode'],
-                                                                    "ValidUpto"            => $_POST['Validupto'],
-                                                                    "MondayF"              => $_POST['MonFH']." ". $_POST['MonFM']." ". $_POST['MonFN'],
-                                                                    "TuesdayF"             => $_POST['TueFH']." ". $_POST['TueFM']." ". $_POST['TueFN'],
-                                                                    "WednessdayF"          => $_POST['WedFH']." ". $_POST['WedFM']." ". $_POST['WedFN'],
-                                                                    "ThursdayF"            => $_POST['ThuFH']." ". $_POST['ThuFM']." ". $_POST['ThuFN'],
-                                                                    "FridayF"              => $_POST['FriFH']." ". $_POST['FriFM']." ". $_POST['FriFN'],
-                                                                    "SaturdayF"            => $_POST['SatFH']." ". $_POST['SatFM']." ". $_POST['SatFN'],
-                                                                    "SundayF"              => $_POST['SunFH']." ". $_POST['SunFM']." ". $_POST['SunFN'],
-                                                                    "MondayT"              => $_POST['MonTH']." ".$_POST['MonTM']." ".$_POST['MonTN'],
-                                                                    "TuesdayT"             => $_POST['TueTH']." ".$_POST['TueTM']." ".$_POST['TueTN'],
-                                                                    "WednessdayT"          => $_POST['WedTH']." ".$_POST['WedTM']." ".$_POST['WedTN'],
-                                                                    "ThursdayT"            => $_POST['ThuTH']." ".$_POST['ThuTM']." ".$_POST['ThuTN'],
-                                                                    "FridayT"              => $_POST['FriTH']." ".$_POST['FriTM']." ".$_POST['FriTN'],
-                                                                    "SaturdayT"            => $_POST['SatTH']." ".$_POST['SatTM']." ".$_POST['SatTN'],
-                                                                    "SundayT"              => $_POST['SunTH']." ".$_POST['SunTM']." ".$_POST['SunTN'],
-                                                                    "CreatedOn"            => date("Y-m-d H:i:s"),
-                                                                    "PlanID"               => $plan[0]['PlanID'],
-                                                                    "Plan"                 => $plan[0]['PlanName'] )); 
-                                                             
-            $mysql->insert("_tbl_bank_details",array("BankName"      => $_POST['BankName'],
-                                                     "FranchiseeID"  => $FranchiseeID,
-                                                     "AccountName"   => $_POST['AccountName'],
-                                                     "AccountNumber" => $_POST['AccountNumber'],  
-                                                     "IFSCode"       => $_POST['IFSCode'],
-                                                     "AccountType"   => $_POST['AccountType']));
-                                                              
-            $mysql->insert("_tbl_franchisees_staffs",array("PersonName"     => $_POST['PersonName'],
-                                                           "FatherName"     => $_POST['FatherName'],
-                                                           "FranchiseeID"   => $FranchiseeID,
-                                                           "DateofBirth"    => $_POST['DateofBirth'],
-                                                           "Sex"            => $_POST['Sex'],
-                                                           "FrCode"         => $_POST['FranchiseeCode'],
-                                                           "EmailID"        => $_POST['EmailID'],
-                                                           "MobileNumber"   => $_POST['MobileNumber'],
-                                                           "WhatsappNumber" => $_POST['WhatsappNumber'],
-                                                           "LandlineNumber" => $_POST['LandlineNumber'],
-                                                           "AddressLine1"   => $_POST['Address1'],
-                                                           "AddressLine2"   => $_POST['Address2'],
-                                                           "CreatedOn"      => date("Y-m-d H:i:s"),
-                                                           "AddressLine3"   => $_POST['Address3'],
-                                                           "AadhaarNumber"  => $_POST['AadhaarCard'],
-                                                           "IsActive"       => "1",
-                                                           "LoginName"      => $_POST['UserName'],
-                                                           "ReferedBy"      => $_Admin['AdminID'],
-                                                           "LoginPassword"  => $_POST['Password']));
-
-            $mail2 = new MailController();
-            
-            $mail2->NewFranchisee(array("mailTo"         => $_POST['FranchiseeEmailID'] ,
-                                        "FranchiseeName" => $_POST['FranchiseeName'],
-                                        "FranchiseeCode" => $_POST['FranchiseeCode'],
-                                        "LoginName"      => $_POST['UserName'],
-                                        "LoginPassword"  => $_POST['Password']));                                   ;
-            if ($FranchiseeID>0) {
-                unset($_POST);
-                echo "Created Successfully";
-            } else {
-                echo "Error occured. Couldn't save Franchise Details";
-            }
-    }
-    } */
-?>
 <style>
 #star{
     color:red;
@@ -710,428 +297,321 @@ function myFunction() {
   if (isset($_POST['BtnSaveCreate'])) {   
     $response = $webservice->CreateFranchisee($_POST);
     if ($response['status']=="success") {
-       // echo "<script>location.href='Edit/".$ProfileID.".htm?msg=1';</script>";
        $successmessage = $response['message']; 
        unset($_POST);
-        ?>
-        <?php
     } else {
         $errormessage = $response['message']; 
     }
     }
-
-     $fInfo = $webservice->GetFranchiseeCode(); 
-
+  $fInfo = $webservice->GetFranchiseeCode(); 
      $FranchiseeCode="";
         if ($fInfo['status']=="success") {
             $FranchiseeCode  =$fInfo['data']['FranchiseeCode'];
         }
-        
         {
 ?>
-    <form method="post" action="<?php $_SERVER['PHP_SELF']?>" id="frmfrn" onsubmit="return SubmitNewFranchisee();">  
+    <form method="post" action="<?php $_SERVER['PHP_SELF']?>" id="frmfrn" onsubmit="return SubmitNewFranchisee();">
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Franchisees</h4>
+                <h4 class="card-title">Create Franchisee</h4> Franchising your matrimony business is a proven route to rapid growth. Follow simple bellow steps, you will create a Franchisee.
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Business Information</h4>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Franchisee Code<span id="star">*</span></label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" maxlength="6" id="FranchiseeCode" name="FranchiseeCode" Placeholder="Franchisee Code" value="<?php echo isset($_POST['FranchiseeCode']) ? $_POST['FranchiseeCode'] : $FranchiseeCode;?>">
+                        <span class="errorstring" id="ErrFranchiseeCode"><?php echo isset($ErrFranchiseeCode)? $ErrFranchiseeCode : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Franchisee Name<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="FranchiseeName" name="FranchiseeName" Placeholder="Franchisee Name" value="<?php echo (isset($_POST['FranchiseeName']) ? $_POST['FranchiseeName'] : " ");?>">
+                        <span class="errorstring" id="ErrFranchiseeName"><?php echo isset($ErrFranchiseeName)? $ErrFranchiseeName : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"> Email Id<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="type" class="form-control" id="FranchiseeEmailID" name="FranchiseeEmailID" Placeholder="Email ID" value="<?php echo (isset($_POST['FranchiseeEmailID']) ? $_POST['FranchiseeEmailID'] : " ");?>">
+                        <span class="errorstring" id="ErrFranchiseeEmailID"><?php echo isset($ErrFranchiseeEmailID)? $ErrFranchiseeEmailID : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" maxlength="10" class="form-control" id="BusinessMobileNumber" name="BusinessMobileNumber" Placeholder="Mobile Number" value="<?php echo (isset($_POST['BusinessMobileNumber']) ? $_POST['BusinessMobileNumber'] : " ");?>">
+                        <span class="errorstring" id="ErrBusinessMobileNumber"><?php echo isset($ErrBusinessMobileNumber)? $ErrBusinessMobileNumber : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Whatsapp Number </label>
+                    <div class="col-sm-3">
+                        <input type="text" maxlength="10" class="form-control" id="BusinessWhatsappNumber" name="BusinessWhatsappNumber" Placeholder="Whatsapp Number" value="<?php echo (isset($_POST['BusinessWhatsappNumber']) ? $_POST['BusinessWhatsappNumber'] : " ");?>">
+                        <span class="errorstring" id="ErrBusinessWhatsappNumber"><?php echo isset($ErrBusinessWhatsappNumber)? $ErrBusinessWhatsappNumber : "";?></span>
+                    </div>
+                    <label class="col-sm-3 col-form-label">Landline Number </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="BusinessLandlineNumber" name="BusinessLandlineNumber" Placeholder="Landline Number" value="<?php echo (isset($_POST['BusinessLandlineNumber']) ? $_POST['BusinessLandlineNumber'] : " ");?>">
+                        <span class="errorstring" id="ErrBusinessLandlineNumber"><?php echo isset($ErrBusinessLandlineNumber)? $ErrBusinessLandlineNumber : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Address<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="BusinessAddress1" name="BusinessAddress1" Placeholder="Address Line 1" value="<?php echo (isset($_POST['BusinessAddress1']) ? $_POST['BusinessAddress1'] : " ");?>">
+                        <span class="errorstring" id="ErrBusinessAddress1"><?php echo isset($ErrBusinessAddress1)? $ErrBusinessAddress1 : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="BusinessAddress2" name="BusinessAddress2" Placeholder="Address Line 2" value="<?php echo (isset($_POST['BusinessAddress2']) ? $_POST['BusinessAddress2'] : " ");?>">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="BusinessAddress3" name="BusinessAddress3" Placeholder="Address Line 3" value="<?php echo (isset($_POST['BusinessAddress3']) ? $_POST['BusinessAddress3'] : " ");?>">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">City Name<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="CityName" name="CityName" Placeholder="City Name" value="<?php echo (isset($_POST['CityName']) ? $_POST['CityName'] : " ");?>">
+                        <span class="errorstring" id="ErrCityName"><?php echo isset($ErrCityName)? $ErrCityName : "";?></span>
+                    </div>
+                    <label class="col-sm-3 col-form-label">Landmark<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="Landmark" name="Landmark" Placeholder="Landmark" value="<?php echo (isset($_POST['Landmark']) ? $_POST['Landmark'] : " ");?>">
+                        <span class="errorstring" id="ErrLandmark"><?php echo isset($ErrLandmark)? $ErrLandmark : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Country Name<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <select class="selectpicker form-control" data-live-search="true" id="CountryName" name="CountryName">
+                            <option value="0">--Choose Your Country Name--</option>
+                            <?php foreach($fInfo['data']['CountryName'] as $CountryName) { ?>
+                                <option value="<?php echo $CountryName['CodeValue'];?>" <?php echo ($CountryName[ 'CodeValue']==$_POST[ 'CountryName']) ? ' selected="selected" ' : '';?>>
+                                    <?php echo $CountryName['CodeValue'];?>
+                                </option>
+                                <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">State Name<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <select class="selectpicker form-control" data-live-search="true" id="StateName" name="StateName">
+                            <option value="0">--Choose Your State Name--</option>
+                            <?php foreach($fInfo['data']['StateName'] as $StateName) { ?>
+                                <option value="<?php echo $StateName['CodeValue'];?>" <?php echo ($StateName[ 'CodeValue']==$_POST[ 'StateName']) ? ' selected="selected" ' : '';?>>
+                                    <?php echo $StateName['CodeValue'];?>
+                                </option>
+                                <?php } ?>
+                        </select>
+                    </div>
+                    <label class="col-sm-3 col-form-label">District Name<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <select class="selectpicker form-control" data-live-search="true" id="DistrictName" name="DistrictName">
+                            <option value="0">--Choose Your District Name--</option>
+                            <?php foreach($fInfo['data']['DistrictName'] as $DistrictName) { ?>
+                                <option value="<?php echo $DistrictName['CodeValue'];?>" <?php echo ($DistrictName[ 'CodeValue']==$_POST[ 'DistrictName']) ? ' selected="selected" ' : '';?>>
+                                    <?php echo $DistrictName['CodeValue'];?>
+                                </option>
+                                <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Pin Code<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" maxlength="10" class="form-control" id="PinCode" name="PinCode" Placeholder="Pin Code" value="<?php echo (isset($_POST['PinCode']) ? $_POST['PinCode'] : " ");?>">
+                        <span class="errorstring" id="ErrPinCode"><?php echo isset($ErrPinCode)? $ErrPinCode : "";?></span>
+                    </div>
+                    <label class="col-sm-3 col-form-label">Plan<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <select class="selectpicker form-control" data-live-search="true" id="Plan" name="Plan">
+                            <option value="0">--Choose Your Plan--</option>
+                            <?php foreach($fInfo['data']['Plans'] as $Plan) { ?>
+                                <option value="<?php echo $Plan['PlanID'];?>" <?php echo ($Plan[ 'PlanName']==$_POST[ 'Plan']) ? ' selected="selected" ' : '';?>>
+                                    <?php echo $Plan['PlanName'];?>
+                                </option>
+                                <?php } ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Bank Account Details</h4>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Bank Name<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <select class="selectpicker form-control" data-live-search="true" id="BankName" name="BankName">
+                            <option value="0">--Choose Bank Name--</option>
+                            <?php foreach($fInfo['data']['BankName'] as $BankName) { ?>
+                                <option value="<?php echo $BankName['CodeValue'];?>" <?php echo ($BankName[ 'CodeValue']==$_POST[ 'BankName']) ? ' selected="selected" ' : '';?>>
+                                    <?php echo $BankName['CodeValue'];?>
+                                </option>
+                                <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Account Name<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="AccountName" name="AccountName" Placeholder="Account Name" value="<?php echo (isset($_POST['AccountName']) ? $_POST['AccountName'] : " ");?>">
+                        <span class="errorstring" id="ErrAccountName"><?php echo isset($ErrAccountName)? $ErrAccountName : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Account Number<span id="star">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="AccountNumber" name="AccountNumber" Placeholder="Account Number" value="<?php echo (isset($_POST['AccountNumber']) ? $_POST['AccountNumber'] : " ");?>">
+                        <span class="errorstring" id="ErrAccountNumber"><?php echo isset($ErrAccountNumber)? $ErrAccountNumber : "";?></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">IFS Code<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <input type="text" maxlength="15" class="form-control" id="IFSCode" name="IFSCode" Placeholder="IFS Code" value="<?php echo (isset($_POST['IFSCode']) ? $_POST['IFSCode'] : " ");?>">
+                        <span class="errorstring" id="ErrIFSCode"><?php echo isset($ErrIFSCode)? $ErrIFSCode : "";?></span>
+                    </div>
+                    <label class="col-sm-3 col-form-label">Account Type<span id="star">*</span></label>
+                    <div class="col-sm-3">
+                        <select class="selectpicker form-control" data-live-search="true" id="AccountType" name="AccountType">
+                            <option value="0">--Choose Your Account Type--</option>
+                            <?php foreach($fInfo['data']['AccountType'] as $AccountType) { ?>
+                                <option value="<?php echo $AccountType['CodeValue'];?>" <?php echo ($AccountType[ 'CodeValue']==$_POST[ 'AccountType']) ? ' selected="selected" ' : '';?>>
+                                    <?php echo $AccountType['CodeValue'];?>
+                                </option>
+                                <?php } ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-12 grid-margin">
             <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Franchisees</h4>
-                  <h4 class="card-title">Create Franchisee</h4>
-                   Franchising your matrimony business is a proven route to rapid growth. 
-                   Follow simple bellow steps, you will create a Franchisee.
-                </div>
-              </div>
-        </div>         
-         
-<div class="col-12 grid-margin">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Business Information</h4>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Franchisee Code<span id="star">*</span></label>
-                          <div class="col-sm-2">                                                                                                          
-                            <input type="text" class="form-control" maxlength="6" id="FranchiseeCode" name="FranchiseeCode" Placeholder="Franchisee Code" value="<?php echo isset($_POST['FranchiseeCode']) ? $_POST['FranchiseeCode'] : $FranchiseeCode;?>">
-                            <span class="errorstring" id="ErrFranchiseeCode"><?php echo isset($ErrFranchiseeCode)? $ErrFranchiseeCode : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Franchisee Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="FranchiseeName" name="FranchiseeName" Placeholder="Franchisee Name" value="<?php echo (isset($_POST['FranchiseeName']) ? $_POST['FranchiseeName'] : "");?>">
-                            <span class="errorstring" id="ErrFranchiseeName"><?php echo isset($ErrFranchiseeName)? $ErrFranchiseeName : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label"> Email Id<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="type" class="form-control" id="FranchiseeEmailID" name="FranchiseeEmailID" Placeholder="Email ID" value="<?php echo (isset($_POST['FranchiseeEmailID']) ? $_POST['FranchiseeEmailID'] : "");?>">
-                            <span class="errorstring" id="ErrFranchiseeEmailID"><?php echo isset($ErrFranchiseeEmailID)? $ErrFranchiseeEmailID : "";?></span>
-                           </div>
-                        </div>
-                      </div>
-                      </div> 
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" maxlength="10" class="form-control" id="BusinessMobileNumber" name="BusinessMobileNumber" Placeholder="Mobile Number" value="<?php echo (isset($_POST['BusinessMobileNumber']) ? $_POST['BusinessMobileNumber'] : "");?>">
-                            <span class="errorstring" id="ErrBusinessMobileNumber"><?php echo isset($ErrBusinessMobileNumber)? $ErrBusinessMobileNumber : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Whatsapp Number </label>
-                          <div class="col-sm-3">
-                            <input type="text" maxlength="10" class="form-control" id="BusinessWhatsappNumber" name="BusinessWhatsappNumber" Placeholder="Whatsapp Number" value="<?php echo (isset($_POST['BusinessWhatsappNumber']) ? $_POST['BusinessWhatsappNumber'] : "");?>">
-                            <span class="errorstring" id="ErrBusinessWhatsappNumber"><?php echo isset($ErrBusinessWhatsappNumber)? $ErrBusinessWhatsappNumber : "";?></span>
-                          </div>
-                          <label class="col-sm-3 col-form-label">Landline Number </label>
-                          <div class="col-sm-3">
-                            <input type="text" class="form-control" id="BusinessLandlineNumber" name="BusinessLandlineNumber" Placeholder="Landline Number"value="<?php echo (isset($_POST['BusinessLandlineNumber']) ? $_POST['BusinessLandlineNumber'] : "");?>">
-                            <span class="errorstring" id="ErrBusinessLandlineNumber"><?php echo isset($ErrBusinessLandlineNumber)? $ErrBusinessLandlineNumber : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Address<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="BusinessAddress1" name="BusinessAddress1" Placeholder="Address Line 1" value="<?php echo (isset($_POST['BusinessAddress1']) ? $_POST['BusinessAddress1'] : "");?>">
-                            <span class="errorstring" id="ErrBusinessAddress1"><?php echo isset($ErrBusinessAddress1)? $ErrBusinessAddress1 : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label"></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="BusinessAddress2" name="BusinessAddress2" Placeholder="Address Line 2" value="<?php echo (isset($_POST['BusinessAddress2']) ? $_POST['BusinessAddress2'] : "");?>">
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label"></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="BusinessAddress3" name="BusinessAddress3" Placeholder="Address Line 3" value="<?php echo (isset($_POST['BusinessAddress3']) ? $_POST['BusinessAddress3'] : "");?>">
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                     <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                           <label class="col-sm-3 col-form-label">City Name<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" class="form-control" id="CityName" name="CityName" Placeholder="City Name" value="<?php echo (isset($_POST['CityName']) ? $_POST['CityName'] : "");?>">
-                          <span class="errorstring" id="ErrCityName"><?php echo isset($ErrCityName)? $ErrCityName : "";?></span>
-                          </div>
-                          <label class="col-sm-3 col-form-label">Landmark<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" class="form-control" id="Landmark" name="Landmark" Placeholder="Landmark" value="<?php echo (isset($_POST['Landmark']) ? $_POST['Landmark'] : "");?>">
-                            <span class="errorstring" id="ErrLandmark"><?php echo isset($ErrLandmark)? $ErrLandmark : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Country Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                          <select class="selectpicker form-control" data-live-search="true" id="CountryName"  name="CountryName" >
-                          <option value="0">--Choose Your Country Name--</option>
-                          <?php foreach($fInfo['data']['CountryName'] as $CountryName) { ?>
-                         <option value="<?php echo $CountryName['CodeValue'];?>">
-                         <?php echo $CountryName['CodeValue'];?></option>
-                          <?php } ?>
-                          </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">State Name<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <select class="selectpicker form-control" data-live-search="true" id="StateName"  name="StateName" >
-                          <option value="0">--Choose Your State Name--</option>
-                          <?php foreach($fInfo['data']['StateName'] as $StateName) { ?>
-                         <option value="<?php echo $StateName['CodeValue'];?>">
-                         <?php echo $StateName['CodeValue'];?></option>
-                          <?php } ?>
-                          </select>
-                          </div>
-                          <label class="col-sm-3 col-form-label">District Name<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <select class="selectpicker form-control" data-live-search="true" id="DistrictName"  name="DistrictName" >
-                          <option value="0">--Choose Your District Name--</option>
-                          <?php foreach($fInfo['data']['DistrictName'] as $DistrictName) { ?>
-                         <option value="<?php echo $DistrictName['CodeValue'];?>">
-                         <?php echo $DistrictName['CodeValue'];?></option>
-                          <?php } ?>
-                          </select>
-                          </div>
-                        </div>
-                      </div>                                                                                                                                                                                                    
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Pin Code<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" maxlength="10" class="form-control" id="PinCode" name="PinCode" Placeholder="Pin Code" value="<?php echo (isset($_POST['PinCode']) ? $_POST['PinCode'] : "");?>">
-                            <span class="errorstring" id="ErrPinCode"><?php echo isset($ErrPinCode)? $ErrPinCode : "";?></span>
-                          </div>
-                        <label class="col-sm-3 col-form-label">Plan<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <select class="selectpicker form-control"  data-live-search="true" id="Plan"  name="Plan" >
-                          <option value="0">--Choose Your Plan--</option>
-                          <?php foreach($fInfo['data']['Plans'] as $Plan) { ?>
-                         <option value="<?php echo $Plan['PlanID'];?>">
-                         <?php echo $Plan['PlanName'];?></option>
-                          <?php } ?>
-                          </select>
-                          </div>
-                        </div>
-                      </div>
-                      </div>                             
-                   </div>
-                </div>                                       
-              </div>
-<div class="col-12 grid-margin">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Bank Account Details</h4>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Bank Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                          <select class="selectpicker form-control" data-live-search="true" id="BankName"  name="BankName">
-                          <option value="0">--Choose Bank Name--</option>
-                          <?php foreach($fInfo['data']['BankName'] as $BankName) { ?>
-                         <option value="<?php echo $BankName['CodeValue'];?>">
-                         <?php echo $BankName['CodeValue'];?></option>
-                          <?php } ?>
-                          </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                     <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Account Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="AccountName" name="AccountName" Placeholder="Account Name" value="<?php echo (isset($_POST['AccountName']) ? $_POST['AccountName'] : "");?>">
-                            <span class="errorstring" id="ErrAccountName"><?php echo isset($ErrAccountName)? $ErrAccountName : "";?></span>
-                          </div>
-                        </div>
-                      </div>
-                      </div> 
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Account Number<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="AccountNumber" name="AccountNumber" Placeholder="Account Number" value="<?php echo (isset($_POST['AccountNumber']) ? $_POST['AccountNumber'] : "");?>">
-                            <span class="errorstring" id="ErrAccountNumber"><?php echo isset($ErrAccountNumber)? $ErrAccountNumber : "";?></span>
-                          </div>
-                        </div>
-                      </div>                             
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">IFS Code<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" maxlength="15" class="form-control" id="IFSCode" name="IFSCode" Placeholder="IFS Code" value="<?php echo (isset($_POST['IFSCode']) ? $_POST['IFSCode'] : "");?>">
-                            <span class="errorstring" id="ErrIFSCode"><?php echo isset($ErrIFSCode)? $ErrIFSCode : "";?></span>
-                          </div>
-                          <label class="col-sm-3 col-form-label">Account Type<span id="star">*</span></label>
-                           <div class="col-sm-3">
-                          <select class="selectpicker form-control" data-live-search="true" id="AccountType"  name="AccountType" >
-                          <option value="0">--Choose Your Account Type--</option>
-                          <?php foreach($fInfo['data']['AccountType'] as $AccountType) { ?>
-                         <option value="<?php echo $AccountType['CodeValue'];?>">
-                         <?php echo $AccountType['CodeValue'];?></option>
-                          <?php } ?>
-                          </select>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                   </div>
-              </div>
-</div>
-<div class="col-12 grid-margin">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Profile Information</h4>
-                   <form class="form-sample">
-                   <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Person Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="PersonName" name="PersonName" Placeholder="Person Name" value="<?php echo (isset($_POST['PersonName']) ? $_POST['PersonName'] : "");?>">
+                    <h4 class="card-title">Profile Information</h4>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Person Name<span id="star">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="PersonName" name="PersonName" Placeholder="Person Name" value="<?php echo (isset($_POST['PersonName']) ? $_POST['PersonName'] : " ");?>">
                             <span class="errorstring" id="ErrPersonName"><?php echo isset($ErrPersonName)? $ErrPersonName : "";?></span>
-                          </div>
                         </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Father's Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="FatherName" name="FatherName" Placeholder="Father's Name" value="<?php echo (isset($_POST['FatherName']) ? $_POST['FatherName'] : "");?>">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Father's Name<span id="star">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="FatherName" name="FatherName" Placeholder="Father's Name" value="<?php echo (isset($_POST['FatherName']) ? $_POST['FatherName'] : " ");?>">
                             <span class="errorstring" id="ErrFatherName"><?php echo isset($ErrFatherName)? $ErrFatherName : "";?> </span>
-                          </div>
                         </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Date of birth<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="Date" class="form-control" id="DateofBirth" name="DateofBirth" value="<?php echo (isset($_POST['DateofBirth']) ? $_POST['DateofBirth'] : "");?>" style="line-height:15px !important">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Date of birth<span id="star">*</span></label>
+                        <div class="col-sm-3">
+                            <input type="Date" class="form-control" id="DateofBirth" name="DateofBirth" value="<?php echo (isset($_POST['DateofBirth']) ? $_POST['DateofBirth'] : " ");?>" style="line-height:15px !important">
                             <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth : "";?> </span>
-                          </div>
-                          <label class="col-sm-3 col-form-label">Sex<span id="star">*</span></label>
-                         <div class="col-sm-3">
-                          <select class="selectpicker form-control" data-live-search="true" id="Sex"  name="Sex" >
-                          <option value="0">--Choose Gender--</option>
-                          <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
-                         <option value="<?php echo $Sex['CodeValue'];?>">
-                         <?php echo $Sex['CodeValue'];?></option>
-                          <?php } ?>
-                          </select>
-                          </div>
                         </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Email Id<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="EmailID" name="EmailID" Placeholder="Email ID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : "");?>">
+                        <label class="col-sm-3 col-form-label">Sex<span id="star">*</span></label>
+                        <div class="col-sm-3">
+                            <select class="selectpicker form-control" data-live-search="true" id="Sex" name="Sex">
+                                <option value="0">--Choose Gender--</option>
+                                <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
+                                    <option value="<?php echo $Sex['CodeValue'];?>" <?php echo ($Sex[ 'CodeValue']==$_POST[ 'Sex']) ? ' selected="selected" ' : '';?>>
+                                        <?php echo $Sex['CodeValue'];?>
+                                    </option>
+                                    <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Email Id<span id="star">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="EmailID" name="EmailID" Placeholder="Email ID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : " ");?>">
                             <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span>
-                          </div>
                         </div>
-                      </div>
-                      </div> 
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" Placeholder="Mobile Number" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" Placeholder="Mobile Number" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : " ");?>">
                             <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
-                          </div>
                         </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Whatsapp Number </label>
-                          <div class="col-sm-3">
-                            <input type="text" maxlength="10" class="form-control" id="WhatsappNumber" name="WhatsappNumber" Placeholder="Whatsapp Number" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : "");?>">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Whatsapp Number </label>
+                        <div class="col-sm-3">
+                            <input type="text" maxlength="10" class="form-control" id="WhatsappNumber" name="WhatsappNumber" Placeholder="Whatsapp Number" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : " ");?>">
                             <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
-                          </div>
-                          <label class="col-sm-3 col-form-label">Landline Number </label>
-                          <div class="col-sm-3">
-                            <input type="text" class="form-control" id="LandlineNumber" name="LandlineNumber" Placeholder="Landline Number"value="<?php echo (isset($_POST['LandlineNumber']) ? $_POST['LandlineNumber'] : "");?>">
+                        </div>
+                        <label class="col-sm-3 col-form-label">Landline Number </label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="LandlineNumber" name="LandlineNumber" Placeholder="Landline Number" value="<?php echo (isset($_POST['LandlineNumber']) ? $_POST['LandlineNumber'] : " ");?>">
                             <span class="errorstring" id="ErrLandlineNumber"><?php echo isset($ErrLandlineNumber)? $ErrLandlineNumber : "";?></span>
-                          </div>
                         </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Address<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="Address1" name="Address1" Placeholder="Address Line 1" value="<?php echo (isset($_POST['Address1']) ? $_POST['Address1'] : "");?>">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Address<span id="star">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Address1" name="Address1" Placeholder="Address Line 1" value="<?php echo (isset($_POST['Address1']) ? $_POST['Address1'] : " ");?>">
                             <span class="errorstring" id="ErrAddress1"><?php echo isset($ErrAddress1)? $ErrAddress1 : "";?></span>
-                          </div>
                         </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label"></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="Address2" name="Address2" Placeholder="Address Line 2" value="<?php echo (isset($_POST['Address2']) ? $_POST['Address2'] : "");?>">
-                          </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Address2" name="Address2" Placeholder="Address Line 2" value="<?php echo (isset($_POST['Address2']) ? $_POST['Address2'] : " ");?>">
                         </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label"></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="Address3" name="Address3" Placeholder="Address Line 3" value="<?php echo (isset($_POST['Address3']) ? $_POST['Address3'] : "");?>">
-                          </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Address3" name="Address3" Placeholder="Address Line 3" value="<?php echo (isset($_POST['Address3']) ? $_POST['Address3'] : " ");?>">
                         </div>
-                      </div>
-                      </div>
-                   <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Adhaar Number<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" class="form-control" id="AadhaarCard" name="AadhaarCard" Placeholder="Aadhaar Number" value="<?php echo (isset($_POST['AadhaarCard']) ? $_POST['AadhaarCard'] : "");?>">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Adhaar Number<span id="star">*</span></label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="AadhaarCard" name="AadhaarCard" Placeholder="Aadhaar Number" value="<?php echo (isset($_POST['AadhaarCard']) ? $_POST['AadhaarCard'] : " ");?>">
                             <span class="errorstring" id="ErrAadhaarCard"><?php echo isset($ErrAadhaarCard)? $ErrAadhaarCard : "";?> </span></div>
-                            <div class="col-sm-3"></div>
-                        </div>
-                      </div> 
-                   </div>
-                   <div class="row">                                            
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Login Name<span id="star">*</span></label>
-                          <div class="col-sm-2">
-                            <input type="text" minlength="6"  class="form-control" id="UserName" name="UserName" Placeholder="Login Name" value="<?php echo (isset($_POST['UserName']) ? $_POST['UserName'] : "");?>">
+                        <div class="col-sm-3"></div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Login Name<span id="star">*</span></label>
+                        <div class="col-sm-2">
+                            <input type="text" minlength="6" class="form-control" id="UserName" name="UserName" Placeholder="Login Name" value="<?php echo (isset($_POST['UserName']) ? $_POST['UserName'] : " ");?>">
                             <span class="errorstring" id="ErrUserName"><?php echo isset($ErrUserName)? $ErrUserName : "";?> </span>
-                          </div>
-                         <label class="col-sm-2 col-form-label">Login Password<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="Password" maxlength="8" class="form-control" id="Password" name="Password" Placeholder="Password" value="<?php echo (isset($_POST['Password']) ? $_POST['Password'] : "");?>">
-                            <span class="errorstring" id="ErrPassword"><?php echo isset($ErrPassword)? $ErrPassword : "";?> </span></div>
-                            <div class="col-sm-2"><input type="checkbox" onclick="myFunction()">&nbsp;show</div>
                         </div>
-                      </div>
-                      </div> 
-                      <div class="col-sm-12"><?php echo $errormessage;?></div>                                                      
-      </div>
-  </div>
-</div>         
+                        <label class="col-sm-2 col-form-label">Login Password<span id="star">*</span></label>
+                        <div class="col-sm-3">
+                            <input type="Password" maxlength="8" class="form-control" id="Password" name="Password" Placeholder="Password" value="<?php echo (isset($_POST['Password']) ? $_POST['Password'] : " ");?>">
+                            <span class="errorstring" id="ErrPassword"><?php echo isset($ErrPassword)? $ErrPassword : "";?> </span></div>
+                        <div class="col-sm-2">
+                            <input type="checkbox" onclick="myFunction()">&nbsp;show</div>
+                    </div>
+                    <div class="col-sm-12">
+                        <?php echo $errormessage;?>
+                    </div>
+                </div>
+            </div>
+        </div>
 <div class="col-12 grid-margin">
                   <div class="card">                                                             
                     <div class="card-body">                                                                            
@@ -1145,7 +625,7 @@ function myFunction() {
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Monday</label>
                           <div class="col-sm-6">
-                          <select class="selectpicker form-control" data-live-search="true" name="MonFH">
+                          <select name="MonFH">
                             <option value="01" <?php echo ($MonFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($MonFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($MonFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1160,7 +640,7 @@ function myFunction() {
                             <option value="12" <?php echo ($MonFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="MonFM">
+                          <select name="MonFM">
                             <option value="00" <?php echo ($MonFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($MonFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($MonFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1176,12 +656,12 @@ function myFunction() {
                             <option value="60" <?php echo ($MonFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="MonFN">
+                          <select name="MonFN">
                             <option value="AM" <?php echo ($MonFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($MonFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select class="selectpicker form-control" data-live-search="true" name="MonTH">
+                          <select name="MonTH">
                             <option value="01" <?php echo ($MonTH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($MonTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($MonTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1196,7 +676,7 @@ function myFunction() {
                             <option value="12" <?php echo ($MonTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="MonTM">
+                          <select name="MonTM">
                             <option value="00" <?php echo ($MonTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($MonTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($MonTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1212,7 +692,7 @@ function myFunction() {
                             <option value="60" <?php echo ($MonTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="MonTN">
+                          <select name="MonTN">
                             <option value="AM" <?php echo ($MonTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($MonTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1222,7 +702,7 @@ function myFunction() {
                                             <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Tuesday</label>
                           <div class="col-sm-6">
-                          <select class="selectpicker form-control" data-live-search="true" name="TueFH">
+                          <select name="TueFH">
                             <option value="01" <?php echo ($TueFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($TueFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($TueFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1237,7 +717,7 @@ function myFunction() {
                             <option value="12" <?php echo ($TueFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="TueFM">
+                          <select name="TueFM">
                             <option value="00" <?php echo ($TueFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($TueFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($TueFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1253,12 +733,12 @@ function myFunction() {
                             <option value="60" <?php echo ($TueFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="TueFN">
+                          <select name="TueFN">
                             <option value="AM" <?php echo ($TueFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($TueFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select class="selectpicker form-control" data-live-search="true" name="TueTH">
+                          <select name="TueTH">
                             <option value="01" <?php echo ($TueTH=="01") ? ' selected="selected"' : '';?> >01</option>
                             <option value="02" <?php echo ($TueTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($TueTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1273,7 +753,7 @@ function myFunction() {
                             <option value="12" <?php echo ($TueTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="TueTM">
+                          <select name="TueTM">
                             <option value="00" <?php echo ($TueTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($TueTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($TueTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1289,7 +769,7 @@ function myFunction() {
                             <option value="60" <?php echo ($TueTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="TueTN">
+                          <select name="TueTN">
                             <option value="AM" <?php echo ($TueTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($TueTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1300,7 +780,7 @@ function myFunction() {
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Wednessday</label>
                           <div class="col-sm-6">
-                          <select class="selectpicker form-control" data-live-search="true" name="WedFH">
+                          <select name="WedFH">
                             <option value="01" <?php echo ($WedFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($WedFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($WedFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1315,7 +795,7 @@ function myFunction() {
                             <option value="12" <?php echo ($WedFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="WedFM">
+                          <select name="WedFM">
                             <option value="00" <?php echo ($WedFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($WedFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($WedFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1331,12 +811,12 @@ function myFunction() {
                             <option value="60" <?php echo ($WedFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="WedFN">
+                          <select name="WedFN">
                             <option value="AM" <?php echo ($WedFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($WedFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select class="selectpicker form-control" data-live-search="true" name="WedTH">
+                          <select name="WedTH">
                             <option value="01" <?php echo ($WedTH=="01") ? ' selected="selected"' : '';?> >01</option>
                             <option value="02" <?php echo ($WedTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($WedTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1351,7 +831,7 @@ function myFunction() {
                             <option value="12" <?php echo ($WedTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="WedTM">
+                          <select name="WedTM">
                             <option value="00" <?php echo ($WedTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($WedTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($WedTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1367,7 +847,7 @@ function myFunction() {
                             <option value="60" <?php echo ($WedTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="WedTN">
+                          <select name="WedTN">
                             <option value="AM" <?php echo ($WedTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($WedTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1378,7 +858,7 @@ function myFunction() {
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Thursday</label>
                           <div class="col-sm-6">
-                          <select class="selectpicker form-control" data-live-search="true" name="ThuFH">
+                          <select name="ThuFH">
                             <option value="01" <?php echo ($ThuFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($ThuFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($ThuFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1393,7 +873,7 @@ function myFunction() {
                             <option value="12" <?php echo ($ThuFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="ThuFM">
+                          <select name="ThuFM">
                             <option value="00" <?php echo ($ThuFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($ThuFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($ThuFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1409,12 +889,12 @@ function myFunction() {
                             <option value="60" <?php echo ($ThuFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="ThuFN">
+                          <select name="ThuFN">
                             <option value="AM" <?php echo ($ThuFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($ThuFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select class="selectpicker form-control" data-live-search="true" name="ThuTH">
+                          <select name="ThuTH">
                             <option value="01" <?php echo ($ThuTH=="01") ? ' selected="selected"' : '';?> >01</option>
                             <option value="02" <?php echo ($ThuTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($ThuTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1429,7 +909,7 @@ function myFunction() {
                             <option value="12" <?php echo ($ThuTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="ThuTM">
+                          <select name="ThuTM">
                             <option value="00" <?php echo ($ThuTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($ThuTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($ThuTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1445,7 +925,7 @@ function myFunction() {
                             <option value="60" <?php echo ($ThuTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="ThuTN">
+                          <select name="ThuTN">
                             <option value="AM" <?php echo ($ThuTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($ThuTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1456,7 +936,7 @@ function myFunction() {
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Friday</label>
                           <div class="col-sm-6">
-                          <select class="selectpicker form-control" data-live-search="true" name="FriFH">
+                          <select name="FriFH">
                             <option value="01" <?php echo ($FriFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($FriFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($FriFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1471,7 +951,7 @@ function myFunction() {
                             <option value="12" <?php echo ($FriFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker form-control" data-live-search="true" name="FriFM">
+                          <select name="FriFM">
                             <option value="00" <?php echo ($FriFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($FriFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($FriFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1487,12 +967,12 @@ function myFunction() {
                             <option value="60" <?php echo ($FriFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker" data-live-search="true" name="FriFN">
+                          <select name="FriFN">
                             <option value="AM" <?php echo ($FriFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($FriFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select class="selectpicker" data-live-search="true" name="FriTH">
+                          <select name="FriTH">
                             <option value="01" <?php echo ($FriTH=="01") ? ' selected="selected"' : '';?> >01</option>
                             <option value="02" <?php echo ($FriTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($FriTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1507,7 +987,7 @@ function myFunction() {
                             <option value="12" <?php echo ($FriTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker" data-live-search="true" name="FriTM">
+                          <select name="FriTM">
                             <option value="00" <?php echo ($FriTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($FriTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($FriTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1523,7 +1003,7 @@ function myFunction() {
                             <option value="60" <?php echo ($FriTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker" data-live-search="true" name="FriTN">
+                          <select name="FriTN">
                             <option value="AM" <?php echo ($FriTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($FriTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1534,7 +1014,7 @@ function myFunction() {
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Saturday</label>
                           <div class="col-sm-6">
-                          <select class="selectpicker" data-live-search="true" name="SatFH">
+                          <select name="SatFH">
                             <option value="01" <?php echo ($SatFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($SatFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($SatFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1549,7 +1029,7 @@ function myFunction() {
                             <option value="12" <?php echo ($SatFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker" data-live-search="true" name="SatFM">
+                          <select name="SatFM">
                             <option value="00" <?php echo ($SatFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($SatFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($SatFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1565,12 +1045,12 @@ function myFunction() {
                             <option value="60" <?php echo ($SatFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker" data-live-search="true" name="SatFN">
+                          <select name="SatFN">
                             <option value="AM" <?php echo ($SatFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($SatFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select class="selectpicker" data-live-search="true" name="SatTH">
+                          <select name="SatTH">
                             <option value="01" <?php echo ($SatTH=="01") ? ' selected="selected"' : '';?> >01</option>
                             <option value="02" <?php echo ($SatTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($SatTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1585,7 +1065,7 @@ function myFunction() {
                             <option value="12" <?php echo ($SatTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker" data-live-search="true" name="SatTM">
+                          <select name="SatTM">
                             <option value="00" <?php echo ($SatTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($SatTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($SatTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1601,7 +1081,7 @@ function myFunction() {
                             <option value="60" <?php echo ($SatTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker" data-live-search="true" name="SatTN">
+                          <select name="SatTN">
                             <option value="AM" <?php echo ($SatTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($SatTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
@@ -1612,7 +1092,7 @@ function myFunction() {
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Sunday</label>
                           <div class="col-sm-6">
-                          <select class="selectpicker" data-live-search="true" name="SunFH">
+                          <select name="SunFH">
                             <option value="01" <?php echo ($SunFH=="01") ? ' selected="selected"' : '';?>>01</option>
                             <option value="02" <?php echo ($SunFH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($SunFH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1627,7 +1107,7 @@ function myFunction() {
                             <option value="12" <?php echo ($SunFH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker" data-live-search="true" name="SunFM">
+                          <select name="SunFM">
                             <option value="00" <?php echo ($SunFM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($SunFM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($SunFM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1643,12 +1123,12 @@ function myFunction() {
                             <option value="60" <?php echo ($SunFM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker" data-live-search="true" name="SunFN">
+                          <select name="SunFN">
                             <option value="AM" <?php echo ($SunFN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($SunFN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
                           &nbsp;&nbsp;&nbsp;&nbsp;   <small>to</small> &nbsp;&nbsp;&nbsp;&nbsp; 
-                          <select class="selectpicker form-control" data-live-search="true" name="SunTH">
+                          <select name="SunTH">
                             <option value="01" <?php echo ($SunTH=="01") ? ' selected="selected"' : '';?> >01</option>
                             <option value="02" <?php echo ($SunTH=="02") ? ' selected="selected"' : '';?>>02</option>
                             <option value="03" <?php echo ($SunTH=="03") ? ' selected="selected"' : '';?>>03</option>
@@ -1663,7 +1143,7 @@ function myFunction() {
                             <option value="12" <?php echo ($SunTH=="12") ? ' selected="selected"' : '';?>>12</option>
                           </select> 
                           
-                          <select class="selectpicker" data-live-search="true" name="SunTM">
+                          <select name="SunTM">
                             <option value="00" <?php echo ($SunTM=="00") ? ' selected="selected"' : '';?>>00</option>
                             <option value="05" <?php echo ($SunTM=="05") ? ' selected="selected"' : '';?>>05</option>
                             <option value="10" <?php echo ($SunTM=="10") ? ' selected="selected"' : '';?>>10</option>
@@ -1679,7 +1159,7 @@ function myFunction() {
                             <option value="60" <?php echo ($SunTM=="60") ? ' selected="selected"' : '';?>>60</option>
                           </select>
                           
-                          <select class="selectpicker" data-live-search="true" name="SunTN">
+                          <select name="SunTN">
                             <option value="AM" <?php echo ($SunTN=="AM") ? ' selected="selected"' : '';?>>AM</option>
                             <option value="PM" <?php echo ($SunTN=="PM") ? ' selected="selected"' : '';?>>PM</option>
                           </select>
