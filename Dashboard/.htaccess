@@ -1,0 +1,61 @@
+
+RewriteRule ^Masters/(.*)/Manage/Edit/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/Edit
+RewriteRule ^Masters/(.*)/Manage/View/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/View
+RewriteRule ^MyProfiles/Edit/(.*)\.htm$ ./index.php?Code=$1&p=MyProfile/Edit
+RewriteRule ^MyProfiles/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfile/View
+RewriteRule ^Members/ViewMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewMember
+RewriteRule ^Members/EditMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/EditMember
+RewriteRule ^Members/ResetPassword/(.*)\.htm$ ./index.php?Code=$1&p=Members/ResetPassword
+RewriteRule ^Members/BlockMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/BlockMember
+RewriteRule ^Members/News/ViewNews/(.*)\.htm$ ./index.php?Code=$1&p=Members/News/ViewNews
+RewriteRule ^Members/News/EditNews/(.*)\.htm$ ./index.php?Code=$1&p=Members/News/EditNews
+RewriteRule ^Franchisees/News/View/(.*)\.htm$ ./index.php?Code=$1&p=Franchisees/News/View
+RewriteRule ^Franchisees/News/Edit/(.*)\.htm$ ./index.php?Code=$1&p=Franchisees/News/Edit
+RewriteRule ^Members/ViewFranchiseeInfo/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewFranchiseeInfo
+RewriteRule ^Settings/Email/Edit/(.*)\.htm$ ./index.php?Code=$1&p=Settings/Email/Edit
+RewriteRule ^Settings/Email/View/(.*)\.htm$ ./index.php?Code=$1&p=Settings/Email/View
+RewriteRule ^Settings/MobileSMS/Edit/(.*)\.htm$ ./index.php?Code=$1&p=Settings/MobileSMS/Edit
+RewriteRule ^Settings/MobileSMS/View/(.*)\.htm$ ./index.php?Code=$1&p=Settings/MobileSMS/View
+RewriteRule ^Settings/Bank/Edit/(.*)\.htm$ ./index.php?Code=$1&p=Settings/Bank/Edit
+RewriteRule ^Settings/Bank/View/(.*)\.htm$ ./index.php?Code=$1&p=Settings/Bank/View
+RewriteRule ^Settings/PayPal/Edit/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PayPal/Edit
+RewriteRule ^Settings/PayPal/View/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PayPal/View
+RewriteRule ^Franchisees/ResetPassword/Reset/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/ResetPassword/Reset
+
+RewriteRule ^Members/Plan/EditPlan/(.*)\.htm$ ./index.php?Code=$1&p=Members/Plan/EditPlan
+RewriteRule ^Members/Plan/View/(.*)\.htm$ ./index.php?Code=$1&p=Members/Plan/View
+
+RewriteRule ^Franchisees/Edit/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Edit
+RewriteRule ^Franchisees/View/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/View
+RewriteRule ^Franchisees/Report/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Report
+RewriteRule ^Franchisees/ResetPassword/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/ResetPassword
+RewriteRule ^Franchisees/BlockFranchisee/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/BlockFranchisee
+RewriteRule ^Members/ResetPassword/Reset/(.*)\.html$ ./index.php?Code=$1&p=Members/ResetPassword/Reset
+
+RewriteRule ^Members/EditMember/(.*)\.html$ ./index.php?Code=$1&p=Members/EditMember
+RewriteRule ^Members/ViewMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMember
+RewriteRule ^Members/BlockMember/(.*)\.html$ ./index.php?Code=$1&p=Members/BlockMember
+RewriteRule ^Members/ResetPassword/(.*)\.html$ ./index.php?Code=$1&p=Members/ResetPassword
+
+RewriteRule ^Members/Wallet/RefillWallet/(.*)\.html$ ./index.php?Code=$1&p=Members/Wallet/RefillWallet
+RewriteRule ^Staffs/Edit/(.*)\.html$ ./index.php?Code=$1&p=Staffs/Edit
+RewriteRule ^Staffs/View/(.*)\.html$ ./index.php?Code=$1&p=Staffs/View
+
+RewriteRule ^Franchisees/Plan/Edit/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Plan/Edit
+RewriteRule ^Franchisees/Plan/View/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Plan/View
+
+RewriteRule ^Member/View/(.*)\.html$ ./index.php?Code=$1&p=Member/View
+RewriteRule ^Member/Edit/(.*)\.html$ ./index.php?Code=$1&p=Member/View
+
+RewriteRule ^MySettings/EditMemberInfo/(.*)\.html$ ./index.php?Code=$1&p=MySettings/EditMemberInfo
+
+
+
+
+RewriteRule ^([a-zA-Z0-9-/+]+)([0-9]+)$ index.php?p=$1&pn=$2 [L]
+RewriteRule ^([a-zA-Z0-9-/+]+)$ index.php?p=$1 [L]
+RewriteRule ^([a-zA-Z0-9-/+]+)([a-zA-Z/]+)([0-9]+)$ index.php?p=/$1&t=$2&pn=$3/ [L]
+RewriteRule ^([a-zA-Z0-9-/+]+)([a-zA-Z/]+)([0-9]+)$ index.php?p=/$1&q=$2&pn=$3/ [L]
+
+
+ 
