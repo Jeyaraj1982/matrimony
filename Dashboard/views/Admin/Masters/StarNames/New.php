@@ -1,36 +1,3 @@
-<?php
-    if (isset($_POST['BtnSaveStarName'])) {
-        
-        $ErrorCount =0;
-            
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='STARNAMES' and CodeValue='".trim($_POST['StarName'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrStarName="Star Name Already Exists";    
-             echo $ErrStarName;
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='STARNAMES' and SoftCode='".trim($_POST['StarCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrStarCode="Star Code Already Exists";    
-             echo $ErrStarCode;
-             $ErrorCount++;
-        }
-        
-        if ($ErrorCount==0) {
-        $StarID = $mysql->insert("_tbl_master_codemaster",array("HardCode"   => "STARNAMES",
-                                                                "SoftCode"   => trim($_POST['StarCode']),
-                                                                "CodeValue"  => trim($_POST['StarName'])));
-        if ($StarID>0) {
-            echo "Successfully Added";
-            unset($_POST);
-        } else {
-            echo "Error occured. Couldn't save Star Name";
-        }
-    
-    }
-    }
-?>
 <script>
 $(document).ready(function () {
    $("#StarCode").blur(function () {  
@@ -62,7 +29,23 @@ $(document).ready(function () {
                  }
     
 </script>
-
+ <?php                   
+  if (isset($_POST['BtnSaveStarName'])) {   
+    $response = $webservice->CreateStarName($_POST);
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    } 
+  $StarCode = $webservice->GetMastersManageDetails(); 
+     $GetNextStarCode="";
+        if ($StarCode['status']=="success") {
+            $GetNextStarCode  =$StarCode['data']['StarCode'];
+        }
+        {     
+?>
 <form method="post" action="" onsubmit="return SubmitNewStarName();">
              <div class="col-12 stretch-card">
                   <div class="card">
@@ -73,7 +56,7 @@ $(document).ready(function () {
                       <div class="form-group row">
                           <label for="Star Code" class="col-sm-3 col-form-label">Star Name Code<span id="star">*</span></label>
                           <div class="col-sm-2">
-                            <input type="text" class="form-control" id="StarCode" name="StarCode"  maxlength="10" value="<?php echo (isset($_POST['StarCode']) ? $_POST['StarCode'] :GetNextNumber('STARNAMES'));?>" placeholder="Star Code">
+                            <input type="text" class="form-control" id="StarCode" name="StarCode"  maxlength="10" value="<?php echo (isset($_POST['StarCode']) ? $_POST['StarCode'] : $GetNextStarCode);?>" placeholder="Star Code">
                             <span class="errorstring" id="ErrStarCode"><?php echo isset($ErrStarCode)? $ErrStarCode : "";?></span>
                           </div>
                         </div>
@@ -85,6 +68,9 @@ $(document).ready(function () {
                           </div>
                         </div>
                         <div class="form-group row">
+                                        <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
+                        </div>
+                        <div class="form-group row">
                         <div class="col-sm-3">
                        <button type="submit" name="BtnSaveStarName" id="BtnSaveStarName"  class="btn btn-primary mr-2">Save Star Name</button> </div>
                        <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageStar"><small>List of Star Names</small> </a>  </div>
@@ -94,3 +80,4 @@ $(document).ready(function () {
                   </div>
                 </div>
              </form>
+<?php }?>

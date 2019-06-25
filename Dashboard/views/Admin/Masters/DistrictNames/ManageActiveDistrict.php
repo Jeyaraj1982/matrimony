@@ -33,8 +33,8 @@
                         </tr>  
                     </thead>
                      <tbody>  
-                        <?php $DistrictNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DISTNAMES' and IsActive='1'"); ?>
-                        <?php foreach($DistrictNames as $DistrictName) { ?>
+                        <?php $DistrictNames = $webservice->GetManageActiveDistrictNames(); ?>
+                        <?php foreach($DistrictNames['data'] as $DistrictName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($DistrictName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $DistrictName['SoftCode'];?></td>
                                 <td><?php echo $DistrictName['CodeValue'];?></td>

@@ -246,8 +246,18 @@ function SubmitNewPlan() {
                                             <div class="col-sm-3">
                                                 <div class="input-group">
                                                 <div class="input-group-addon">
-                                                <select name="ProfileActiveCommissionType" id="ProfileActiveCommissionType"><option value="Rs">Rs</option><option value="Percentage">%</option></select></div>
-                                                <input type="text" class="form-control" id="ProfileActiveCommission" name="ProfileActiveCommission" value="<?php if($Plan['ProfileCommissionWithPercentage']>0){ echo $Plan['ProfileCommissionWithPercentage'];echo "&nbsp"; echo "%";  }  else{ echo $Plan['ProfileCommissionWithRupees'];} ?>">
+                                                <select name="ProfileActiveCommissionType" id="ProfileActiveCommissionType">
+                                                    <option value="Rs" <?php echo ($Plan['ProfileCommissionWithRupees']>0) ? " selected='selected' " : "";?>>Rs</option>
+                                                    <option value="Percentage" <?php echo ($Plan['ProfileCommissionWithPercentage']>0) ? " selected='selected' " : "";?>>%</option>
+                                                </select>
+                                                </div>
+                                                <input type="text" class="form-control" id="ProfileActiveCommission" name="ProfileActiveCommission" value="<?php if($Plan['ProfileCommissionWithPercentage']>0){
+                                                echo $Plan['ProfileCommissionWithPercentage'];
+                                                 }                                  
+                                                 else{
+                                                 echo $Plan['ProfileCommissionWithRupees'];
+                                                  }
+                                                  ?> ">
                                                 </div>
                                                 <span class="errorstring" id="ErrProfileActiveCommission"><?php echo isset($ErrProfileActiveCommission) ? $ErrProfileActiveCommission : "";?></span>
                                             </div>
@@ -255,12 +265,16 @@ function SubmitNewPlan() {
                                             <div class="col-sm-3">
                                                 <div class="input-group">
                                                 <div class="input-group-addon">
-                                                <select name="ProfileRenewalCommissionType" id="ProfileRenewalCommissionType"><option value="Rs">Rs</option><option value="Percentage">%</option></select></div>
+                                                <select name="ProfileRenewalCommissionType" id="ProfileRenewalCommissionType">
+                                                    <option value="Rs" <?php echo ($Plan['RenewalCommissionWithRupees']>0) ? " selected='selected' " : "";?>>Rs</option>
+                                                    <option value="Percentage" <?php echo ($Plan['RenewalCommissionWithPercentage']>0) ? " selected='selected' " : "";?>>%</option>
+                                                </select>
+                                                </div>
                                                 <input type="text" class="form-control" id="ProfileRenewalCommission" name="ProfileRenewalCommission" value="<?php if($Plan['RenewalCommissionWithPercentage']>0){
-                                                echo $Plan['RenewalCommissionWithPercentage'];echo "&nbsp"; echo "%";
+                                                echo $Plan['RenewalCommissionWithPercentage'];
                                                  }                                  
                                                  else{
-                                                 echo $Plan['RenewalCommissionWithRupees'];  echo "&nbsp"; echo "RS";
+                                                 echo $Plan['RenewalCommissionWithRupees']; 
                                                   }
                                                   ?>">
                                                 </div>
@@ -271,12 +285,17 @@ function SubmitNewPlan() {
                                             <label for="Refill Commission" class="col-sm-2 col-form-label">Wallet<br>Refill Commission<span id="star">*</span></label>
                                             <div class="col-sm-3">
                                                 <div class="input-group">
-                                                <div class="input-group-addon"><select name="WalletRefillCommissionType" id="WalletRefillCommissionType"><option value="Rs">Rs</option><option value="Percentage">%</option></select></div>
+                                                <div class="input-group-addon">
+                                                    <select name="WalletRefillCommissionType" id="WalletRefillCommissionType">
+                                                        <option value="Rs" <?php echo ($Plan['RefillCommissionWithRupees']>0) ? " selected='selected' " : "";?>>Rs</option>
+                                                        <option value="Percentage" <?php echo ($Plan['RefillCommissionWithPercentage']>0) ? " selected='selected' " : "";?>>%</option>
+                                                    </select>
+                                                </div>
                                                 <input type="text" class="form-control" id="WalletRefillCommission" name="WalletRefillCommission" value="<?php if($Plan['RefillCommissionWithPercentage']>0){
-                                                echo $Plan['RefillCommissionWithPercentage'];echo "&nbsp"; echo "%";
+                                                echo $Plan['RefillCommissionWithPercentage'];
                                                  }                                  
                                                  else{
-                                                 echo $Plan['RefillCommissionWithRupees'];  echo "&nbsp"; echo "RS";
+                                                 echo $Plan['RefillCommissionWithRupees'];  
                                                   }
                                                   ?>">
                                                 </div>
@@ -285,14 +304,19 @@ function SubmitNewPlan() {
                                             <label for="ProfileDownload" class="col-sm-2 col-form-label">Profile download Commission<span id="star">*</span></label>
                                              <div class="col-sm-3">
                                                 <div class="input-group">
-                                                <div class="input-group-addon"><select name="ProfiledownloadCommissionType" id="ProfiledownloadCommissionType"><option value="Rs">Rs</option><option value="Percentage">%</option></select></div>
+                                                <div class="input-group-addon">
+                                                <select name="ProfiledownloadCommissionType" id="ProfiledownloadCommissionType">
+                                                    <option value="Rs" <?php echo ($Plan['ProfileDownloadCommissionWithRupees']>0) ? " selected='selected' " : "";?>>Rs</option>
+                                                    <option value="Percentage" <?php echo ($Plan['ProfileDownloadCommissionWithPercentage']>0) ? " selected='selected' " : "";?>>%</option>
+                                                </select>
+                                                </div>
                                                 <input type="text" class="form-control" id="ProfiledownloadCommission" name="ProfiledownloadCommission" value="<?php if($Plan['ProfileDownloadCommissionWithPercentage']>0){
-                                                echo $Plan['ProfileDownloadCommissionWithPercentage'];echo "&nbsp"; echo "%";
+                                                echo $Plan['ProfileDownloadCommissionWithPercentage'];
                                                  }                                  
                                                  else{
-                                                 echo $Plan['ProfileDownloadCommissionWithRupees'];  echo "&nbsp"; echo "RS";
+                                                 echo $Plan['ProfileDownloadCommissionWithRupees'];
                                                   }
-                                                  ?>">
+                                                  ?> ">
                                                 </div>
                                                 <span class="errorstring" id="ErrProfiledownloadCommission"><?php echo isset($ErrProfiledownloadCommission) ? $ErrProfiledownloadCommission : "";?></span>
                                             </div>

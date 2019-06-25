@@ -1,35 +1,3 @@
-<?php
-    if (isset($_POST['BtnReligionName'])) {
-        
-        $ErrorCount =0;
-            
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='RELINAMES' and CodeValue='".trim($_POST['ReligionName'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrReligionName="Religion Name Alreay Exists";    
-             echo $ErrReligionName;
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='RELINAMES' and SoftCode='".trim($_POST['ReligionCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrReligionCode="Religion Code Alreay Exists";    
-             echo $ErrReligionCode;
-             $ErrorCount++;
-        }
-        
-        if ($ErrorCount==0) {
-            $ReligionNamesID = $mysql->insert("_tbl_master_codemaster",array("HardCode"  => "RELINAMES",
-                                                                             "SoftCode"  => trim($_POST['ReligionCode']),
-                                                                             "CodeValue" => trim($_POST['ReligionName'])));
-            if ($ReligionNamesID>0) {
-                echo "Successfully Added";
-                unset($_POST);
-            } else {
-                echo "Error occured. Couldn't save Religion  Name";
-            }
-        }
-    }
-?>
 <script>
 $(document).ready(function () {
    $("#ReligionCode").blur(function () {  
@@ -61,6 +29,23 @@ $(document).ready(function () {
                  }
     
 </script>
+<?php                   
+  if (isset($_POST['BtnReligionName'])) {   
+    $response = $webservice->CreateReligionName($_POST);
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    } 
+  $ReligionCode = $webservice->GetMastersManageDetails(); 
+     $GetNextReligionCode="";
+        if ($ReligionCode['status']=="success") {
+            $GetNextReligionCode  =$ReligionCode['data']['ReligionCode'];
+        }
+        {     
+?>
  
 <form method="post" action="" onsubmit="return SubmitNewReligionName();">
         <div class="col-12 grid-margin">
@@ -72,7 +57,7 @@ $(document).ready(function () {
                       <div class="form-group row">
                           <label for="Religion Name" class="col-sm-3 col-form-label">Religion Name Code<span id="star">*</span></label>
                           <div class="col-sm-2">
-                            <input type="text"   class="form-control" id="ReligionCode" name="ReligionCode" maxlength="10" value="<?php echo isset($_POST['ReligionCode']) ? $_POST['ReligionCode'] : GetNextNumber('RELINAMES');?>" placeholder="Religion Code">
+                            <input type="text"   class="form-control" id="ReligionCode" name="ReligionCode" maxlength="10" value="<?php echo isset($_POST['ReligionCode']) ? $_POST['ReligionCode'] : $GetNextReligionCode ; ?>" placeholder="Religion Code">
                             <span class="errorstring" id="ErrReligionCode"><?php echo isset($ErrReligionCode)? $ErrReligionCode : "";?></span>
                           </div>
                         </div>
@@ -88,8 +73,10 @@ $(document).ready(function () {
                        <button type="submit" name="BtnReligionName" id="BtnReligionName"  class="btn btn-primary mr-2">Save Religion Name</button> </div>
                        <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageReligion"><small>List of Religion Names</small> </a>  </div>
                        </div>
+                       <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
                         </form>
                     </div>
                   </div>
                 </div>
 </form>
+<?php } ?>

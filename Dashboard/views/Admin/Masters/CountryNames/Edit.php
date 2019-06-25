@@ -1,26 +1,4 @@
-<?php
-    if (isset($_POST['BtnUpdateCountryName'])) {
-         
-        $duplicateCountryName = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['CountryName']."' and  HardCode='CONTNAMES' and SoftCode<>'".$_GET['Code']."'");
-        
-        if (sizeof($duplicateCountryName)==0) {  
-        $CountryNamesID = $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['CountryName']."',
-                                                                             IsActive='".$_POST['IsActive']."',
-                                                                             ParamA='".$_POST['STDCode']."',
-                                                                             ParamB='".$_POST['CurrencyString']."',
-                                                                             ParamC='".$_POST['CurrencySubString']."',
-                                                                             ParamD='".$_POST['CurrencyShortString']."' where HardCode='CONTNAMES' and SoftCode= '".$_GET['Code']."'");
-        echo "Successfully Updated";
-         } else {
-            $ErrCountryName = "Country Name already exists";
-            echo "$ErrCountryName";
-        }
-    }   
-        
-    $CountryName = $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$_GET['Code']."'");
-?>
 <script>
-
 $(document).ready(function () {
     $("#STDCode").keypress(function (e) {
      if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
@@ -102,6 +80,19 @@ $(document).ready(function () {
                  }
     
 </script>
+<?php   
+    if (isset($_POST['BtnUpdateCountryName'])) {
+        
+        $response = $webservice->EditCountryName($_POST);
+        if ($response['status']=="success") {
+            echo $response['message'];
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+    $response     = $webservice->GetMasterAllViewInfo();
+    $CountryName = $response['data']['ViewInfo'];
+?>
 <form method="post" action="" onsubmit="return SubmitNewCountryName();">
           <div class="col-12 stretch-card">
                   <div class="card">
@@ -112,13 +103,13 @@ $(document).ready(function () {
                       <div class="form-group row">
                           <label for="CountryCode" class="col-sm-3 col-form-label">Country Code</label>
                           <div class="col-sm-9">
-                            <input type="text" disabled="disabled" style="width:80px;background:#f1f1f1" maxlength="10" class="form-control" id="CountryCode" name="CountryCode" value="<?php echo $CountryName[0]['SoftCode'];?>" placeholder="Country Code">
+                            <input type="text" disabled="disabled" style="width:80px;background:#f1f1f1" maxlength="10" class="form-control" id="CountryCode" name="CountryCode" value="<?php echo $CountryName['SoftCode'];?>" placeholder="Country Code">
                           </div>
                         </div>
                         <div class="form-group row">
                           <label for="CountryName" class="col-sm-3 col-form-label">Country Name<span id="star">*</span></label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" id="CountryName" name="CountryName" maxlength="100" value="<?php echo (isset($_POST['CountryName']) ? $_POST['CountryName'] : $CountryName[0]['CodeValue']);?>" placeholder="Country Name">
+                            <input type="text" class="form-control" id="CountryName" name="CountryName" maxlength="100" value="<?php echo (isset($_POST['CountryName']) ? $_POST['CountryName'] : $CountryName['CodeValue']);?>" placeholder="Country Name">
                             <span class="errorstring" id="ErrCountryName"><?php echo isset($ErrCountryName)? $ErrCountryName : "";?></span>
                           </div>
                         </div>
@@ -129,7 +120,7 @@ $(document).ready(function () {
                           <div class="col-sm-9">
                             <div class="input-group">
                                 <div class="input-group-addon">+</div>
-                                <input type="text" class="form-control" id="STDCode" name="STDCode" value="<?php echo (isset($_POST['STDCode']) ? $_POST['STDCode'] : $CountryName[0]['ParamA']);?>" Placeholder="STD Code"> </div>
+                                <input type="text" class="form-control" id="STDCode" name="STDCode" value="<?php echo (isset($_POST['STDCode']) ? $_POST['STDCode'] : $CountryName['ParamA']);?>" Placeholder="STD Code"> </div>
                             <span class="errorstring" id="ErrSTDCode"><?php echo isset($ErrSTDCode)? $ErrSTDCode : "";?></span>
                           </div>
                         </div>
@@ -140,7 +131,7 @@ $(document).ready(function () {
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Currency String</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" id="CurrencyString" name="CurrencyString" value="<?php echo (isset($_POST['CurrencyString']) ? $_POST['CurrencyString'] : $CountryName[0]['ParamB']);?>" Placeholder="Currency String">
+                            <input type="text" class="form-control" id="CurrencyString" name="CurrencyString" value="<?php echo (isset($_POST['CurrencyString']) ? $_POST['CurrencyString'] : $CountryName['ParamB']);?>" Placeholder="Currency String">
                             <span class="errorstring" id="ErrCurrencyString"><?php echo isset($ErrCurrencyString)? $ErrCurrencyString : "";?></span>
                           </div>
                         </div>
@@ -151,7 +142,7 @@ $(document).ready(function () {
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Currency Sub String</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" id="CurrencySubString" name="CurrencySubString"  value="<?php echo (isset($_POST['CurrencySubString']) ? $_POST['CurrencySubString'] : $CountryName[0]['ParamC']);?>" Placeholder="Currency SubString">
+                            <input type="text" class="form-control" id="CurrencySubString" name="CurrencySubString"  value="<?php echo (isset($_POST['CurrencySubString']) ? $_POST['CurrencySubString'] : $CountryName['ParamC']);?>" Placeholder="Currency SubString">
                             <span class="errorstring" id="ErrCurrencySubString"><?php echo isset($ErrCurrencySubString)? $ErrCurrencySubString : "";?></span>
                           </div>
                         </div>
@@ -162,21 +153,24 @@ $(document).ready(function () {
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Currency Short String</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" id="CurrencyShortString" name="CurrencyShortString" value="<?php echo (isset($_POST['CurrencyShortString']) ? $_POST['CurrencyShortString'] : $CountryName[0]['ParamD']);?>"  Placeholder="Curency Short String">
+                            <input type="text" class="form-control" id="CurrencyShortString" name="CurrencyShortString" value="<?php echo (isset($_POST['CurrencyShortString']) ? $_POST['CurrencyShortString'] : $CountryName['ParamD']);?>"  Placeholder="Curency Short String">
                             <span class="errorstring" id="ErrCurrencyShortString"><?php echo isset($ErrCurrencyShortString)? $ErrCurrencyShortString : "";?></span>
                           </div>
                         </div>
                       </div>
                     </div>
-                         <div class="form-group row">
-                          <label for="IsActive" class="col-sm-3 col-form-label">Is Active</label>
-                          <div class="col-sm-9">
-                                <select name="IsActive" class="form-control" style="width:80px">
-                                    <option value="1" <?php echo ($CountryName[0]['IsActive']==1) ? " selected='selected' " : "";?>>Yes</option>
-                                    <option value="0" <?php echo ($CountryName[0]['IsActive']==0) ? " selected='selected' " : "";?>>No</option>
-                                </select>
-                          </div>
-                        </div>
+                     <div class="form-group row">
+                      <label for="IsActive" class="col-sm-3 col-form-label">Is Active</label>
+                      <div class="col-sm-9">
+                      <select name="IsActive" class="form-control" style="width:80px">
+                        <option value="1" <?php echo ($CountryName['IsActive']==1) ? " selected='selected' " : "";?>>Yes</option>
+                        <option value="0" <?php echo ($CountryName['IsActive']==0) ? " selected='selected' " : "";?>>No</option>
+                        </select> 
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
+                    </div>
                         <div class="form-group row">
                         <div class="col-sm-3">
                         <button type="submit" name="BtnUpdateCountryName" class="btn btn-primary mr-2"><small>Update Country Name</small></button></div>

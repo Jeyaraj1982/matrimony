@@ -32,6 +32,11 @@ class CodeMaster {
             $Castes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CASTNAMES'") ;
             return $Castes;
         }
+        function GetStarName() {
+            global $mysql;
+            $StarNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='STARNAMES'") ;
+            return $StarNames;
+        }
         function GetCommunity() {
             global $mysql;
             $Communitys = $mysql->select("select * from _tbl_master_codemaster Where HardCode='COMMUNITY'") ;
@@ -41,6 +46,11 @@ class CodeMaster {
             global $mysql;
             $Nationalitys = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NATIONALNAMES'") ;
             return $Nationalitys;
+        }
+        function GetIncomeRange() {
+            global $mysql;
+            $IncomeRanges = $mysql->select("select * from _tbl_master_codemaster Where HardCode='INCOMERANGE'") ;
+            return $IncomeRanges;
         }
         function GetHeight() {
             global $mysql;
@@ -96,6 +106,97 @@ class CodeMaster {
             global $mysql;
             $AccountTypes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ACCOUNTTYPE'") ;
             return $AccountTypes;
+        }
+        function GetEmployedAs() {
+            global $mysql;
+            $EmployedAs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONS'") ;
+            return $EmployedAs;
+        }
+        function GetOccupation() {
+            global $mysql;
+            $Occupations = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONTYPES'") ;
+            return $Occupations;
+        }
+        function GetOccupationTypes() {
+            global $mysql;
+            $OccupationTypes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='TYPEOFOCCUPATIONS'") ;
+            return $OccupationTypes;
+        }
+        function GetNumberOfBrother() {
+            global $mysql;
+            $NumberOfBrothers = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NUMBEROFBROTHER'") ;
+            return $NumberOfBrothers;
+        }
+        function GetNumberOfElderBrother() {
+            global $mysql;
+            $NumberOfElderBrothers = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ELDER'") ;
+            return $NumberOfElderBrothers;
+        }
+        function GetNumberOfYoungerBrother() {
+            global $mysql;
+            $NumberOfYoungerBrothers = $mysql->select("select * from _tbl_master_codemaster Where HardCode='YOUNGER'") ;
+            return $NumberOfYoungerBrothers;
+        }
+        function GetNumberOfMarriedBrother() {
+            global $mysql;
+            $NumberOfMarrieBrothers = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARRIED'") ;
+            return $NumberOfMarrieBrothers;
+        }
+        function GetNumberOfSisters() {
+            global $mysql;
+            $NumberOfSisters = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NOOFSISTER'") ;
+            return $NumberOfSisters;
+        }
+        function GetNumberOfElderSisters() {
+            global $mysql;
+            $NumberOfElderSisters = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ELDERSIS'") ;
+            return $NumberOfElderSisters;
+        }
+        function GetNumberOfYoungerSisters() {
+            global $mysql;
+            $NumberOfYoungerSisters = $mysql->select("select * from _tbl_master_codemaster Where HardCode='YOUNGERSIS'") ;
+            return $NumberOfYoungerSisters;
+        }
+        function GetNumberOfMarriedSisters() {
+            global $mysql;
+            $NumberOfMarriedSisters = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARRIEDSIS'") ;
+            return $NumberOfMarriedSisters;
+        }
+        function GetPhysicallyImpaired() {
+            global $mysql;
+            $PhysicallyImpaireds = $mysql->select("select * from _tbl_master_codemaster Where HardCode='PHYSICALLYIMPAIRED'") ;
+            return $PhysicallyImpaireds;
+        }
+        function GetVisuallyImpaired() {
+            global $mysql;
+            $VisuallyImpaireds = $mysql->select("select * from _tbl_master_codemaster Where HardCode='VISUALLYIMPAIRED'") ;
+            return $VisuallyImpaireds;
+        }
+        function GetVisionImpaired() {
+            global $mysql;
+            $VisionImpaireds = $mysql->select("select * from _tbl_master_codemaster Where HardCode='VISSIONIMPAIRED'") ;
+            return $VisionImpaireds;
+        }
+        function GetSpeechImpaired() {
+            global $mysql;
+            $SpeechImpaireds = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SPEECHIMPAIRED'") ;
+            return $SpeechImpaireds;
+        }
+        function GetWeight() {
+            global $mysql;
+            $Weight = $mysql->select("select * from _tbl_master_codemaster Where HardCode='WEIGHTS'") ;
+            return $Weight;
+        }
+        function GetBloodGroups() {
+            global $mysql;
+            $BloodGroups = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BLOODGROUPS'") ;
+            return $BloodGroups;
+        }
+       
+        function GetDocumentType() {
+            global $mysql;
+            $DocumentTypes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DOCTYPES'") ;
+            return $DocumentTypes;
         }
         
         

@@ -34,8 +34,8 @@
                             </tr>
                         </thead>
                       <tbody>
-                        <?php $CountryNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CONTNAMES' and IsActive='1'"); ?>
-                        <?php foreach($CountryNames as $CountryName) { ?>
+                        <?php $CountryNames =$webservice->GetManageActiveCountryNames(); ?>
+                        <?php foreach($CountryNames['data'] as $CountryName) { ?>
                             <tr>
                                 <td><span class="<?php echo ($CountryName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $CountryName['SoftCode'];?></td>
                                 <td><?php echo $CountryName['CodeValue'];?></td>

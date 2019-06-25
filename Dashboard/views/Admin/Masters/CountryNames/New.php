@@ -1,68 +1,4 @@
-<?php
-    if (isset($_POST['BtnSaveCountryName'])) {
-        
-        $ErrorCount =0;
-            
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='CONTNAMES' and CodeValue='".trim($_POST['CountryName'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrCountryName="Country Name Alreay Exists";    
-             echo $ErrReligionName;
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='CONTNAMES' and SoftCode='".trim($_POST['CountryCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrCountryCode="Country Code Alreay Exists";    
-             echo $ErrCountryCode;
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='CONTNAMES' and ParamA='".trim($_POST['STDCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrSTDCode="Country STD Code Alreay Exists";    
-             echo $ErrSTDCode;
-             $ErrorCount++;
-        }
-        
-       /* $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='CONTNAMES' and ParamA='".trim($_POST['CurrencyString'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrCurrencyString="Country Currency String Alreay Exists";    
-             echo $ErrCurrencyString;
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='CONTNAMES' and ParamA='".trim($_POST['CurrencySubString'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrCurrencySubString="Country Currency Sub String Alreay Exists";    
-             echo $ErrCurrencySubString;
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='CONTNAMES' and ParamA='".trim($_POST['CurrencyShortString'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrCurrencyShortString="Country Currency Short String Alreay Exists";    
-             echo $ErrCurrencyShortString;
-             $ErrorCount++;
-        }   */
-        
-        if ($ErrorCount==0) {
-        $CountryID = $mysql->insert("_tbl_master_codemaster",array("HardCode"   => "CONTNAMES",
-                                                                   "SoftCode"   => trim($_POST['CountryCode']),
-                                                                   "CodeValue"  => trim($_POST['CountryName']),
-                                                                   "ParamA"     => trim($_POST['STDCode']),
-                                                                   "ParamB"     => trim($_POST['CurrencyString']),
-                                                                   "ParamC"     => trim($_POST['CurrencySubString']),
-                                                                   "ParamD"     => trim($_POST['CurrencyShortString'])));
-        if ($CountryID>0) {
-            echo "Successfully Added";
-            unset($_POST);
-        } else {
-            echo "Error occured. Couldn't save Country Name";
-        }
-    
-    }
-    } 
-?>
+
 <script>
 
 $(document).ready(function () {
@@ -128,7 +64,23 @@ $(document).ready(function () {
                  }
     
 </script>
-            
+<?php                   
+  if (isset($_POST['BtnSaveCountryName'])) {   
+    $response = $webservice->CreateCountryName($_POST);
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    } 
+  $CountryCode = $webservice->GetMastersManageDetails(); 
+     $GetNextCountryCode="";
+        if ($CountryCode['status']=="success") {
+            $GetNextCountryCode  =$CountryCode['data']['CountryCode'];
+        }
+        {     
+?>            
 <form method="post" action="" onsubmit="return SubmitNewCountryName();">            
 <div class="col-12 grid-margin">
               <div class="card">
@@ -141,7 +93,7 @@ $(document).ready(function () {
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Country Name Code<span id="star">*</span></label>
                           <div class="col-sm-2">
-                            <input type="text" class="form-control"  id="CountryCode" name="CountryCode"  maxlength="5" value="<?php echo isset($_POST['CountryCode']) ? $_POST['CountryCode'] :  GetNextNumber('CONTNAMES');?>" Placeholder="Country Code">
+                            <input type="text" class="form-control"  id="CountryCode" name="CountryCode"  maxlength="5" value="<?php echo isset($_POST['CountryCode']) ? $_POST['CountryCode'] :  $GetNextCountryCode;?>" Placeholder="Country Code">
                             <span class="errorstring" id="ErrCountryCode"><?php echo isset($ErrCountryCode)? $ErrCountryCode : "";?></span>
                           </div>
                         </div>
@@ -205,6 +157,9 @@ $(document).ready(function () {
                       </div>
                     </div>
                     <div class="form-group row">
+                        <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
+                    </div>
+                    <div class="form-group row">
                         <div class="col-sm-3">
                        <button type="submit" name="BtnSaveCountryName" id="BtnReligionName"  class="btn btn-primary mr-2">Save Country Name</button> </div>
                        <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageCountry"><small>List of Country Names</small> </a>  </div>
@@ -214,3 +169,4 @@ $(document).ready(function () {
               </div>
               
 </form>
+<?php }?>

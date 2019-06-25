@@ -1,18 +1,3 @@
-<?php
-    if (isset($_POST['BtnUpdateIncomeRange'])) {
-         
-        $duplicateIncomeRange = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['IncomeRange']."' and  HardCode='INCOMERANGE' and SoftCode<>'".$_GET['Code']."'");
-        
-        if (sizeof($duplicateIncomeRange)==0) {  
-        $IncomeRangeID = $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['IncomeRange']."',IsActive='".$_POST['IsActive']."' where HardCode='INCOMERANGE' and SoftCode= '".$_GET['Code']."'");
-        echo "Successfully Updated";
-        } else {
-            $ErrIncomeRange = "Income Range already exists";
-            echo "$ErrIncomeRange";
-        }
-    }
-    $IncomeRange = $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$_GET['Code']."'");
-?>
 <script>
 
 $(document).ready(function () {
@@ -43,6 +28,19 @@ $(document).ready(function () {
                  }
     
 </script>
+<?php   
+    if (isset($_POST['BtnUpdateIncomeRange'])) {
+        
+        $response = $webservice->EditIncomeRange($_POST);
+        if ($response['status']=="success") {
+            echo $response['message'];
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+    $response     = $webservice->GetMasterAllViewInfo();
+    $IncomeRange = $response['data']['ViewInfo'];
+?>
 <form method="post" action="" onsubmit="return SubmitNewIncomeRange();">
           <div class="col-12 stretch-card">
                   <div class="card">
@@ -53,13 +51,13 @@ $(document).ready(function () {
                       <div class="form-group row">
                           <label for="IncomeRangeCode" class="col-sm-3 col-form-label">Income Code</label>
                           <div class="col-sm-9">
-                            <input type="text" disabled="disabled" style="width:80px;background:#f1f1f1" class="form-control" maxlength="10" id="IncomeRangeCode" name="IncomeRangeCode" value="<?php echo $IncomeRange[0]['SoftCode'];?>" placeholder="IncomeRange Code">
+                            <input type="text" disabled="disabled" style="width:80px;background:#f1f1f1" class="form-control" maxlength="10" id="IncomeRangeCode" name="IncomeRangeCode" value="<?php echo $IncomeRange['SoftCode'];?>" placeholder="IncomeRange Code">
                           </div>
                         </div>
                         <div class="form-group row">
                           <label for="IncomeRange" class="col-sm-3 col-form-label">IncomeRange<span id="star">*</span></label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" id="IncomeRange" name="IncomeRange" maxlength="100" value="<?php echo (isset($_POST['IncomeRange']) ? $_POST['IncomeRange'] : $IncomeRange[0]['CodeValue']);?>" placeholder="IncomeRange">
+                            <input type="text" class="form-control" id="IncomeRange" name="IncomeRange" maxlength="100" value="<?php echo (isset($_POST['IncomeRange']) ? $_POST['IncomeRange'] : $IncomeRange['CodeValue']);?>" placeholder="IncomeRange">
                             <span class="errorstring" id="ErrIncomeRange"><?php echo isset($ErrIncomeRange)? $ErrIncomeRange : "";?></span>
                           </div>
                         </div>
@@ -67,10 +65,13 @@ $(document).ready(function () {
                           <label for="IsActive" class="col-sm-3 col-form-label">Is Active<span id="star">*</span></label>
                           <div class="col-sm-9">
                                 <select name="IsActive" class="form-control" style="width:80px">
-                                    <option value="1" <?php echo ($IncomeRange[0]['IsActive']==1) ? " selected='selected' " : "";?>>Yes</option>
-                                    <option value="0" <?php echo ($IncomeRange[0]['IsActive']==0) ? " selected='selected' " : "";?>>No</option>
+                                    <option value="1" <?php echo ($IncomeRange['IsActive']==1) ? " selected='selected' " : "";?>>Yes</option>
+                                    <option value="0" <?php echo ($IncomeRange['IsActive']==0) ? " selected='selected' " : "";?>>No</option>
                                 </select>
                           </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
                         </div>
                        <div class="form-group row">
                         <div class="col-sm-3"><button type="submit" name="BtnUpdateIncomeRange" class="btn btn-primary mr-2">Update Income Range</button></div>

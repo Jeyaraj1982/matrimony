@@ -20,8 +20,11 @@
                         </tr>
                       </thead>
                       <tbody>
-                         <?php $Wallets = $mysql->select("select * from _tbl_refillwallet"); ?>
-                        <?php foreach($Wallets as $Wallet) { ?>
+                      <?php 
+                         $response = $webservice->GetFranchiseeRefillWalletManage(); 
+                         if (sizeof($response['data'])>0) {
+                         ?>
+                        <?php foreach($response['data'] as $Wallet) { ?>
                         <tr>
                            <td><?php echo $Wallet['ReqID'];?></td>           
                            <td><?php echo $Wallet['BankName'];?></td>           
@@ -31,7 +34,7 @@
                            <td><?php echo $Wallet['Mode'];?></td>           
                            <td></td>           
                        </tr>
-                       <?php } ?>
+                       <?php } } ?>
                       </tbody> 
                     </table>
                   </div>

@@ -1,5 +1,6 @@
 <?php
-    $LanguageNames = $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$_GET['Code']."'");
+    $response     = $webservice->GetMasterAllViewInfo();
+    $LanguageNames = $response['data']['ViewInfo'];
 ?>
 <form method="post" action="" onsubmit="">
         <div class="main-panel">
@@ -11,21 +12,21 @@
                       <h4 class="card-title">LanguageName Details</h4>  
                       <form class="forms-sample">
                       <div class="form-group row">
-                          <label for="LanguageCode" class="col-sm-3 col-form-label"><small>Language Code</small></label>
+                          <label for="LanguageCode" class="col-sm-3 col-form-label">Language Code</label>
                           <div class="col-sm-9">
-                            <input type="text" readonly="readonly" style="width:80px;background:#fff;border:1px solid #fff" class="form-control" id="LanguageCode" name="LanguageCode" value="<?php echo $LanguageNames[0]['SoftCode'];?>" placeholder="Language Code">
+                            <input type="text" readonly="readonly" style="width:80px;background:#fff;border:1px solid #fff" class="form-control" id="LanguageCode" name="LanguageCode" value="<?php echo $LanguageNames['SoftCode'];?>" placeholder="Language Code">
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label for="LanguageName" class="col-sm-3 col-form-label"><small>Language Name</small></label>
+                          <label for="LanguageName" class="col-sm-3 col-form-label">Language Name</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" id="LanguageName" readonly="readonly" name="LanguageName" value="<?php echo  $LanguageNames[0]['CodeValue'];?>" style="background:#fff;border:1px solid #fff">
+                            <input type="text" class="form-control" id="LanguageName" readonly="readonly" name="LanguageName" value="<?php echo  $LanguageNames['CodeValue'];?>" style="background:#fff;border:1px solid #fff">
                           </div>
                         </div>
                          <div class="form-group row">
-                          <label for="IsActive" class="col-sm-3 col-form-label"><small>Is Active</small></label>
+                          <label for="IsActive" class="col-sm-3 col-form-label">Is Active</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" id="LanguageName" name="LanguageName" value="<?php echo  ($LanguageNames[0]['IsActive']) ? "Active" : "DeActive";?>" style="background:#fff;border:1px solid #fff">
+                            <input type="text" class="form-control" id="LanguageName" name="LanguageName" value="<?php echo  ($LanguageNames['IsActive']) ? "Active" : "DeActive";?>" style="background:#fff;border:1px solid #fff">
                           </div>
                         </div>
                         <div class="form-group row">

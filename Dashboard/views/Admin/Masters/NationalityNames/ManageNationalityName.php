@@ -28,10 +28,10 @@
                           <th>Nationality Names</th>
                           <th></th> 
                         </tr>
-                      </thead>
+                      </thead>                   
                       <tbody>  
-                        <?php $NationalityNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NATIONALNAMES'"); ?>
-                        <?php foreach($NationalityNames as $NationalityName) { ?>
+                        <?php $NationalityNames = $webservice->GetMastersManageDetails(); ?>
+                        <?php foreach($NationalityNames['data']['NationalityNames'] as $NationalityName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($NationalityName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $NationalityName['SoftCode'];?></td>
                                 <td><?php echo $NationalityName['CodeValue'];?></td>

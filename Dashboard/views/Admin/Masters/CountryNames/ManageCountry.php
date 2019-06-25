@@ -32,10 +32,10 @@
                                 <th>ShortName</th>
                                 <th></th>
                             </tr>
-                        </thead>
+                        </thead>   
                       <tbody>
-                        <?php $CountryNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CONTNAMES'"); ?>
-                        <?php foreach($CountryNames as $CountryName) { ?>
+                        <?php $CountryNames = $webservice->GetMastersManageDetails(); ?>
+                        <?php foreach($CountryNames['data']['CountryName'] as $CountryName) { ?>
                             <tr>
                                 <td><span class="<?php echo ($CountryName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $CountryName['SoftCode'];?></td>
                                 <td><?php echo $CountryName['CodeValue'];?></td>

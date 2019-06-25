@@ -1,20 +1,17 @@
-0<?php
+<?php   
     if (isset($_POST['BtnUpdateReligionName'])) {
         
-        $duplicateReligionName = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['ReligionName']."' and  HardCode='RELINAMES' and SoftCode<>'".$_GET['Code']."'");
-        
-        if (sizeof($duplicateReligionName)==0) {
-        $ReligionNamesID = $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['ReligionName']."',IsActive='".$_POST['IsActive']."' where HardCode='RELINAMES' and SoftCode= '".$_GET['Code']."'");
-        echo "Successfully Updated";
+        $response = $webservice->EditReligionName($_POST);
+        if ($response['status']=="success") {
+            echo $response['message'];
         } else {
-            $errorReligionName = "Religion name already exists";
-            echo "$errorReligionName";
+            $errormessage = $response['message']; 
         }
-    
     }
-    $ReligionName = $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$_GET['Code']."'");
+    $response     = $webservice->GetMasterAllViewInfo();
+    $ReligionName = $response['data']['ViewInfo'];
 ?>
-<script>
+<script>                                          
 $(document).ready(function () {
    $("#ReligionCode").blur(function () {  
     IsNonEmpty("ReligionCode","ErrReligionCode","Please Enter Valid Religion Code");
@@ -56,13 +53,13 @@ $(document).ready(function () {
                       <div class="form-group row">
                           <label for="ReligionCode" class="col-sm-3 col-form-label">Religion Code</label>
                           <div class="col-sm-2">
-                            <input type="text" disabled="disabled" style="width:80px;background:#f1f1f1" maxlength="10" class="form-control" id="ReligionCode" name="ReligionCode" value="<?php echo $ReligionName[0]['SoftCode'];?>" placeholder="Religion Code">
+                            <input type="text" disabled="disabled" style="width:80px;background:#f1f1f1" maxlength="10" class="form-control" id="ReligionCode" name="ReligionCode" value="<?php echo $ReligionName['SoftCode'];?>" placeholder="Religion Code">
                           </div>
                         </div>
                         <div class="form-group row">
                           <label for="ReligionName" class="col-sm-3 col-form-label">Religion Name<span id="star">*</span></label>
                           <div class="col-sm-6">
-                            <input type="text" class="form-control" id="ReligionName" name="ReligionName" maxlength="100" value="<?php echo (isset($_POST['ReligionName']) ? $_POST['ReligionName'] : $ReligionName[0]['CodeValue']);?>" placeholder="Religion Name">
+                            <input type="text" class="form-control" id="ReligionName" name="ReligionName" maxlength="100" value="<?php echo (isset($_POST['ReligionName']) ? $_POST['ReligionName'] : $ReligionName['CodeValue']);?>" placeholder="Religion Name">
                             <span class="errorstring" id="ErrReligionName"><?php echo isset($ErrReligionName)? $ErrReligionName : "";?></span>
                           </div>
                         </div>
@@ -70,10 +67,13 @@ $(document).ready(function () {
                           <label for="IsActive" class="col-sm-3 col-form-label">Is Active<span id="star">*</span></label>
                           <div class="col-sm-9">
                                 <select name="IsActive" class="form-control" style="width:80px">
-                                    <option value="1" <?php echo ($ReligionName[0]['IsActive']==1) ? " selected='selected' " : "";?>>Yes</option>
-                                    <option value="0" <?php echo ($ReligionName[0]['IsActive']==0) ? " selected='selected' " : "";?>>No</option>
+                                    <option value="1" <?php echo ($ReligionName['IsActive']==1) ? " selected='selected' " : "";?>>Yes</option>
+                                    <option value="0" <?php echo ($ReligionName['IsActive']==0) ? " selected='selected' " : "";?>>No</option>
                                 </select>
                           </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
                         </div>
                         <div class="form-group row">
                         <div class="col-sm-3">

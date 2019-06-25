@@ -1,21 +1,3 @@
-<?php
-    if (isset($_POST['BtnUpdateCasteName'])) {
-         
-        $duplicateCasteName = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['CasteName']."' and  HardCode='CASTNAMES' and SoftCode<>'".$_GET['Code']."'");
-        
-        if (sizeof($duplicateCasteName)==0) {  
-        $CasteNamesID = $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['CasteName']."',IsActive='".$_POST['IsActive']."' where HardCode='CASTNAMES' and SoftCode= '".$_GET['Code']."'");
-        echo "Successfully Updated";
-         } else {
-            $ErrCasteName = "Caste name already exists";
-            echo "$ErrCasteName";
-
-        }
-    
-    }
-    $CasteName = $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$_GET['Code']."'");
-    
-?>  
 <script>
 $(document).ready(function () {
     
@@ -51,7 +33,19 @@ $("#CasteCode").blur(function () {
                  }
     
 </script> 
-
+<?php   
+    if (isset($_POST['BtnUpdateCasteName'])) {
+        
+        $response = $webservice->EditCasteName($_POST);
+        if ($response['status']=="success") {
+            echo $response['message'];
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+    $response     = $webservice->GetMasterAllViewInfo();
+    $CasteName = $response['data']['ViewInfo'];
+?>
 <form method="post" action="" onsubmit="return SubmitNewCasteName();">
           <div class="col-12 stretch-card">
                   <div class="card">
@@ -62,13 +56,13 @@ $("#CasteCode").blur(function () {
                       <div class="form-group row">
                           <label for="ReligionCode" class="col-sm-3 col-form-label">Caste Name Code</label>
                           <div class="col-sm-2">
-                            <input type="text" disabled="disabled" style="width:100px;background:#f1f1f1" maxlength="10" class="form-control" id="CasteCode" name="CasteCode" value="<?php echo $CasteName[0]['SoftCode'];?>" placeholder="Caste Code">
+                            <input type="text" disabled="disabled" style="width:100px;background:#f1f1f1" maxlength="10" class="form-control" id="CasteCode" name="CasteCode" value="<?php echo $CasteName['SoftCode'];?>" placeholder="Caste Code">
                           </div>
                         </div>
                         <div class="form-group row">
                           <label for="CasteName" class="col-sm-3 col-form-label">Caste Name<span id="star">*</span></label>
                           <div class="col-sm-6">
-                            <input type="text" class="form-control" id="CasteName" name="CasteName" maxlength="100" value="<?php echo (isset($_POST['CasteName']) ? $_POST['CasteName'] : $CasteName[0]['CodeValue']);?>" placeholder="Caste Name">
+                            <input type="text" class="form-control" id="CasteName" name="CasteName" maxlength="100" value="<?php echo (isset($_POST['CasteName']) ? $_POST['CasteName'] : $CasteName['CodeValue']);?>" placeholder="Caste Name">
                             <span class="errorstring" id="ErrCasteName"><?php echo isset($ErrCasteName)? $ErrCasteName : "";?></span>
                           </div>
                         </div>
@@ -76,10 +70,13 @@ $("#CasteCode").blur(function () {
                           <label for="IsActive" class="col-sm-3 col-form-label">Is Active</label>
                           <div class="col-sm-9">
                                 <select name="IsActive" class="form-control" style="width:80px">
-                                    <option value="1" <?php echo ($CasteName[0]['IsActive']==1) ? " selected='selected' " : "";?>>Yes</option>
-                                    <option value="0" <?php echo ($CasteName[0]['IsActive']==0) ? " selected='selected' " : "";?>>No</option>
+                                    <option value="1" <?php echo ($CasteName['IsActive']==1) ? " selected='selected' " : "";?>>Yes</option>
+                                    <option value="0" <?php echo ($CasteName['IsActive']==0) ? " selected='selected' " : "";?>>No</option>
                                 </select>
                           </div>
+                        </div>
+                        <div class="form-group row">
+                                        <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
                         </div>
                         <div class="form-group row">
                         <div class="col-sm-3">

@@ -1,6 +1,4 @@
 <?php
- 
-
     class Franchisee {
         
         function GetMyProfile() {
@@ -183,12 +181,14 @@
                 
                 $formid = "frmChangeMobileNumber_".rand(30,3000);
              
-                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                return '<div id="otpfrm" style="width:100%;padding:15px;height:100%;">
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -12px;">&times;</button>
                                 <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;padding-top: 10%;">Please verify your mobile number</h4>
+                                    <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
+                                    <h5 style="color: #969292;font-weight: 100;padding-top: 21px;">In order to protect the security of your account,we will send you a text message with a verification that you will need to enter the next screen</h4>
                                 </div>
                                 <p style="text-align:center;padding: 20px;"><img src="'.ImagePath.'smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['CountryCode'].'&nbsp;'.$franchiseedata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumberF()">Change</h4>

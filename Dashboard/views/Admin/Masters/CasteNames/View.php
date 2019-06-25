@@ -1,5 +1,6 @@
 <?php
-    $CasteName = $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$_GET['Code']."'");
+    $response     = $webservice->GetMasterAllViewInfo();
+    $CasteName = $response['data']['ViewInfo'];
 ?>
 <form method="post" action="" onsubmit="">
           <div class="col-12 stretch-card">
@@ -10,15 +11,15 @@
                       <form class="forms-sample">
                       <div class="form-group row">
                           <label for="CasteCode" class="col-sm-3 col-form-label">Caste Code</label>
-                          <label for="CasteCode" class="col-sm-3 col-form-label"><?php echo $CasteName[0]['SoftCode'];?></label>
+                          <label for="CasteCode" class="col-sm-3 col-form-label"><?php echo $CasteName['SoftCode'];?></label>
                         </div>
                         <div class="form-group row">
                           <label for="CasteName" class="col-sm-3 col-form-label">Caste Name</label>
-                          <label for="CasteName" class="col-sm-3 col-form-label"><?php echo  $CasteName[0]['CodeValue'];?></label>
+                          <label for="CasteName" class="col-sm-3 col-form-label"><?php echo  $CasteName['CodeValue'];?></label>
                         </div>
                          <div class="form-group row">
                           <label for="IsActive" class="col-sm-3 col-form-label">Is Active</label>
-                          <label for="IsActive" class="col-sm-3 col-form-label"><?php echo  ($CasteName[0]['IsActive']) ? "Active" : "DeActive";?></label>
+                          <label for="IsActive" class="col-sm-3 col-form-label"><?php echo  ($CasteName['IsActive']) ? "Active" : "DeActive";?></label>
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-3" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageCaste"><small>List of Caste Names</small> </a>  </div>

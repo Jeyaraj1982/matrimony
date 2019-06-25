@@ -110,5 +110,63 @@
             
             return $prefix;
         }
+   
+   /* Admin Master  */
+    function GetNextCode($SoftCode) {
+        
+        global $mysql;
+        
+        $Table = $mysql->select("select * from _tbl_master_codemaster Where SoftCode='".$SoftCode."'");
+        $no = $Table[0]['ParamA'];
+        
+        $Rows = $mysql->select("select * from _tbl_master_codemaster Where HardCode='".$SoftCode."'");
+        $nextNumber = sizeof($Rows)+1;
+         
+        if ($Table[0]['ParamB']==1) {
+            $no .= $nextNumber+1; 
+        }
+        
+        if ($Table[0]['ParamB']==2) {
+            
+            if (strlen($nextNumber)==1) {
+               $no .= "0".$nextNumber; 
+            }
+            if (strlen($nextNumber)==2) {
+               $no .= $nextNumber; 
+            }
+        }
+        
+        if ($Table[0]['ParamB']==3) {
+            
+            if (strlen($nextNumber)==1) {
+               $no .= "00".$nextNumber; 
+            }
+            if (strlen($nextNumber)==2) {
+               $no .= "0".$nextNumber; 
+            }
+            if (strlen($nextNumber)==3) {
+               $no .= $nextNumber; 
+            }
+        }
+        
+        if ($Table[0]['ParamB']==4) {
+            
+            if (strlen($nextNumber)==1) {
+               $no .= "000".$nextNumber; 
+            }
+            if (strlen($nextNumber)==2) {
+               $no .= "00".$nextNumber; 
+            }
+            if (strlen($nextNumber)==3) {
+               $no .= "0".$nextNumber; 
+            }
+            if (strlen($nextNumber)==4) {
+               $no .= $nextNumber; 
+            }
+        }
+        return $no;
+    
     }
+    
+     }
 ?>

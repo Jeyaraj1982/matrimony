@@ -21,22 +21,25 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
         padding-bottom:5px;
         padding-top:5px;
     }
+    .box-shaddow{
+box-shadow: 0 0 5px #e9e9e9 !important;
+-moz-box-shadow: 0 0 5px #e9e9e9 !important;
+-webkit-box-shadow: 0 0 24px #e9e9e9 !important;
+}
 </style>
 <?php
-//$Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy = '".$_Member['MemberID']."'");
- //if (sizeof($Profiles)>0) {
-    $response = $webservice->GetProfiles(); 
+    $response = $webservice->GetMyDraftProfiles(); 
     if (sizeof($response['data'])>0) {
 ?>
-
-<form method="post" action="<?php echo GetUrl("MyProfile/CreateProfile");?>" onsubmit="">      
+<form method="post" action="<?php echo GetUrl("MyProfiles/CreateProfile");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Manage Profiles</h4>
+                <h4 class="card-title">Drafted Profiles</h4>
                 <div class="form-group row">
                 <div class="col-sm-6">
-                <button type="submit" class="btn btn-primary "><i class="mdi mdi-plus"></i>Create Profile</button>
+                <!--<button type="submit" class="btn btn-primary "><i class="mdi mdi-plus"></i>Create Profile</button>-->
                 </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                     <a href="All" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
@@ -48,29 +51,38 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
                 </div>
                 <br><br>
                <?php foreach($response['data'] as $Profile) { ?>
-                <div style="min-height:110px;width:100%;background:#f6f6f6;padding:14px 0px" class="box-shadow">
-                    <div class="col-sm-2" style="height:79px"><img src="<?php echo SiteUrl?>assets/images/pic1.jpg" width="100%" height="100%"></div>
-                    <div class="col-sm-1" >Name</div>
-                    <div class="col-sm-7">:&nbsp;<?php echo $Profile['ProfileName'];?></div>
-                    <div class="col-sm-1"><a href="<?php echo GetUrl("MyProfile/View/". $Profile['ProfileID'].".htm?msg=1");?>"><span>View</span></a></div>      
-                    <div class="col-sm-1"><a href="<?php echo GetUrl("MyProfile/Edit/". $Profile['ProfileID'].".htm?msg=1");?>"><span>Edit</span></a></div>      
-                    <div class="col-sm-1">Age</div>
-                    <div class="col-sm-9">:&nbsp;<?php echo $Profile['Age'];?></div> 
-                    <div class="col-sm-1">sex</div>
-                    <?php //$Sex = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX' and SoftCode='".$Profiles[0]['Sex']."'"); ?>
-                    <div class="col-sm-2">:&nbsp;<?php //echo $Sex[0]['CodeValue'];?></div>
-                    <div class="col-sm-1">DOB</div>
-                    <div class="col-sm-6">:&nbsp;<?php echo putDate($Profile['DateofBirth']);?></div>
-                    <div class="col-sm-2">Education&nbsp;&nbsp;&nbsp;:</div>
-                    <div class="col-sm-8">&nbsp;<?php echo $Profile['Education'];?></div>
-                </div> 
-                 <br>              
-                        <?php } ?> 
-                </div>
+                <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
+                    <div class="form-group row">
+                        <div class="col-sm-3" style="text-align:center">
+                            <img src="<?php echo SiteUrl?>assets/images/prof1.jpg" style="height: 159px;margin-bottom: -18px;">
+                            <button type="button" class="btn btn-primary" style="padding: 0px 0px;font-size: 13px;margin-top: 8px;">Add a Photo</button>
+                        </div>
+                        <div class="col-sm-9">
+                            <div style="border-bottom:1px solid #d7d7d7;width:100%;padding-bottom: 10px;font-size: 21px;color: #514444cc;"> 
+                                <?php echo $Profile['ProfileName'];?>
+                            </div>
+                            <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                <div><?php echo $Profile['Height'];?></div>
+                                <div><?php echo $Profile['Religion'];?></div>
+                                <div><?php echo $Profile['Caste'];?></div>
+                            </div>   
+                            <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                <div><?php echo $Profile['MaritalStatus'];?></div>
+                                <div><?php echo $Profile['City'];?></div>
+                                <div><?php echo $Profile['Occupation'];?></div>
+                            </div>
+                            <div class="col-sm-12"  style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
+                                Am a very simple man by nature I love to learn from people I like travelling I love people that love I love to learn from people I like travelling I love people that love......<a href="<?php echo GetUrl("MyProfiles/View/". $Profile['ProfileID'].".htm?msg=1");?>">More</a>
+                            </div> 
+                        </div>
+                    </div>
+                   <div style="float:right;line-height: 1px;"><a href="<?php echo GetUrl("MyProfiles/Edit/". $Profile['ProfileID'].".htm?msg=1");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/View/". $Profile['ProfileID'].".htm?msg=1");?>">View</a>  </div> 
+                </div>  <br>
+                <?php }?>
               </div>
             </div>
         </form>   
-<?php } else   { ?>
+<?php     } else   { ?>
                  
                   <div class="col-lg-12 grid-margin stretch-card bshadow" style="background:#fff;padding:90px;">
         <div class="card">

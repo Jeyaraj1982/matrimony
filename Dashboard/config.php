@@ -19,61 +19,7 @@
         return date("M d, Y ",strtotime($date));
     }
     
-    function GetNextNumber($SoftCode) {
-        
-        global $mysql;
-        
-        $Table = $mysql->select("select * from _tbl_master_codemaster Where SoftCode='".$SoftCode."'");
-        $no = $Table[0]['ParamA'];
-        
-        $Rows = $mysql->select("select * from _tbl_master_codemaster Where HardCode='".$SoftCode."'");
-        $nextNumber = sizeof($Rows)+1;
-         
-        if ($Table[0]['ParamB']==1) {
-            $no .= $nextNumber+1; 
-        }
-        
-        if ($Table[0]['ParamB']==2) {
-            
-            if (strlen($nextNumber)==1) {
-               $no .= "0".$nextNumber; 
-            }
-            if (strlen($nextNumber)==2) {
-               $no .= $nextNumber; 
-            }
-        }
-        
-        if ($Table[0]['ParamB']==3) {
-            
-            if (strlen($nextNumber)==1) {
-               $no .= "00".$nextNumber; 
-            }
-            if (strlen($nextNumber)==2) {
-               $no .= "0".$nextNumber; 
-            }
-            if (strlen($nextNumber)==3) {
-               $no .= $nextNumber; 
-            }
-        }
-        
-        if ($Table[0]['ParamB']==4) {
-            
-            if (strlen($nextNumber)==1) {
-               $no .= "000".$nextNumber; 
-            }
-            if (strlen($nextNumber)==2) {
-               $no .= "00".$nextNumber; 
-            }
-            if (strlen($nextNumber)==3) {
-               $no .= "0".$nextNumber; 
-            }
-            if (strlen($nextNumber)==4) {
-               $no .= $nextNumber; 
-            }
-        }
-        return $no;
     
-    }
     
     class Franchisee  {
         
@@ -415,8 +361,8 @@
         function ChangePassword($param) {
               return json_decode($this->_callUrl("m=Franchisee&a=ChangePassword",$param),true);
         }
-        function GetProfiles($param) {
-              return json_decode($this->_callUrl("GetProfiles",$param),true);
+        function GetMyDraftProfiles($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetMyDraftProfiles",$param),true);
         }
         function GetMemberInfo($param) {
               return json_decode($this->_callUrl("m=Member&a=GetMemberInfo",$param),true);
@@ -429,6 +375,9 @@
         }
         function CreateProfile($param) {
               return json_decode($this->_callUrl("m=Member&a=CreateProfile",$param),true);
+        }
+        function EditProfile($param) {
+              return json_decode($this->_callUrl("m=Member&a=EditProfile",$param),true);
         }
         function MemberChangePassword($param) {
               return json_decode($this->_callUrl("m=Member&a=MemberChangePassword",$param),true);
@@ -499,8 +448,134 @@
         function GetFranchiseePlanInfo($param) {
               return json_decode($this->_callUrl("m=Admin&a=GetFranchiseePlanInfo",$param),true);
         }
+        function GetFranchiseeRefillWalletManage($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetFranchiseeRefillWalletManage",$param),true);
+        }
+        function GetFranchiseeManageNewsandEvents($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetFranchiseeManageNewsandEvents",$param),true);
+        }
+        function GetMastersManageDetails($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetMastersManageDetails",$param),true);
+        }
+        function GetManageActiveReligionNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveReligionNames",$param),true);
+        }
+        function GetManageDeactiveReligionNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveReligionNames",$param),true);
+        }
+        function CreateReligionName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=CreateReligionName",$param),true);
+        }
+        function EditReligionName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=EditReligionName",$param),true);
+        }
+        function GetMasterAllViewInfo($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetMasterAllViewInfo",$param),true);
+        }
+        function GetManageActiveCasteNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveCasteNames",$param),true);
+        }
+        function GetManageDeactiveCasteNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveCasteNames",$param),true);
+        }
+        function CreateCasteName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=CreateCasteName",$param),true);
+        }
+        function EditCasteName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=EditCasteName",$param),true);
+        }
+        function GetManageActiveStarNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveStarNames",$param),true);
+        }
+        function GetManageDeactiveStarNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveStarNames",$param),true);
+        }
+        function CreateStarName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=CreateStarName",$param),true);
+        }
+        function EditStarName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=EditStarName",$param),true);
+        }
+        function GetManageActiveNationalityNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveNationalityNames",$param),true);
+        }
+        function GetManageDeactiveNationalityNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveNationalityNames",$param),true);
+        }
+        function CreateNationalityName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=CreateNationalityName",$param),true);
+        }
+        function EditNationalityName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=EditNationalityName",$param),true);
+        }
+        function GetManageActiveIncomeRanges($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveIncomeRanges",$param),true);
+        }
+        function GetManageDeactiveIncomeRanges($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveIncomeRanges",$param),true);
+        }
+        function CreateIncomeRange($param) {
+              return json_decode($this->_callUrl("m=Admin&a=CreateIncomeRange",$param),true);
+        }
+        function EditIncomeRange($param) {
+              return json_decode($this->_callUrl("m=Admin&a=EditIncomeRange",$param),true);
+        }
+        function GetManageActiveCountryNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveCountryNames",$param),true);
+        }
+        function GetManageDeactiveCountryNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveCountryNames",$param),true);
+        }
+        function CreateCountryName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=CreateCountryName",$param),true);
+        }
+        function EditCountryName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=EditCountryName",$param),true);
+        }
+        function GetManageActiveDistrictNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveDistrictNames",$param),true);
+        }
+        function GetManageDeactiveDistrictNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveDistrictNames",$param),true);
+        }
+        function CreateDistrictName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=CreateDistrictName",$param),true);
+        }
+        function EditDistrictName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=EditDistrictName",$param),true);
+        }
+        function GetManageActiveStateNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveStateNames",$param),true);
+        }
+        function GetManageDeactiveStateNames($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveStateNames",$param),true);
+        }
+        function CreateStateName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=CreateStateName",$param),true);
+        }
+        function EditStateName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=EditStateName",$param),true);
+        }
+        function GetManageActiveProfileSignInFors($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveProfileSignInFors",$param),true);
+        }
+        function GetManageDeactiveProfileSignInFors($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveProfileSignInFors",$param),true);
+        }
+        function CreateProfileSignInFor($param) {
+              return json_decode($this->_callUrl("m=Admin&a=CreateProfileSignInFor",$param),true);
+        }
+        function EditProfileSignInFor($param) {
+              return json_decode($this->_callUrl("m=Admin&a=EditProfileSignInFor",$param),true);
+        }
+        function CreateLanguageName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=CreateLanguageName",$param),true);
+        }
+        function EditLanguageName($param) {
+              return json_decode($this->_callUrl("m=Admin&a=EditLanguageName",$param),true);
+        }
         
-        
+         
         
         
    function _callUrl($method,$param) {

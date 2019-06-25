@@ -1,5 +1,5 @@
 <?php
-    $Members = $mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_POST['FranchiseeCode']."'");
+   // $Members = $mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_POST['FranchiseeCode']."'");
 ?>
 
 

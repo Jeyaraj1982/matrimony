@@ -108,24 +108,22 @@
                            
                       
                   $mail->isSMTP(); 
-                    
                   $mail->SMTPDebug = 0;
                   $mail->Host = "mail.nahami.online";
                   $mail->Port = 465;
                   $mail->SMTPSecure = 'ssl';
                   $mail->SMTPAuth = true;
                   $mail->Username = "support@nahami.online";
-                  $mail->Password = "welcome@@82";
-                  $mail->setFrom("support@nahami.online", "Support nahami");
-                  $mail->addAddress($data[0]['EmailID'],"nahami.online");
-                  $mail->Subject = 'Reset Password';
+                  $mail->Password = "Welcome@@82";
+                  $mail->setFrom("support@nahami.online", "noreply nahami");
+                  $mail->addAddress("2".$data[0]['EmailID'],"nahami");
+                  $mail->Subject = 'Reset your Password';
                   $mail->msgHTML($cart);
-                   $mail->Body=$cart;
-                  $mail->AltBody = $cart;
-                   
+                 // $mail->Body=$cart;
+                 // $mail->AltBody = $cart;
                   if(!$mail->send()){
               
-                     return  Response::returnError("Error. unable to process your request.". $mail->ErrorInfo);
+                     return  Response::returnError("Error. unable to process your request.". $mail->ErrorInfo.$data[0]['EmailID'].$cart);
                     
                   } else {
                       
@@ -221,6 +219,7 @@
                                                            "Language"     => CodeMaster::GetLanguage(),
                                                            "Religion"     => CodeMaster::GetReligion(),
                                                            "Caste"     => CodeMaster::GetCaste(),
+                                                           "Height"     => CodeMaster::GetHeight(),
                                                            "Community"     => CodeMaster::GetCommunity(),
                                                            "Nationality"     => CodeMaster::GetNationality(),
                                                            "ProfileFor" => CodeMaster::GetProfileFor()));
@@ -259,19 +258,36 @@
         if ((strlen(trim($_POST['Nationality']))=="0")) {
             return Response::returnError("Please select nationality");
         }
-        
-       $id =  $mysql->insert("_tbl_Profile_Draft",array("ProfileFor"    => $_POST['ProfileFor'],
-                                                  "ProfileName"   => $_POST['ProfileName'],
-                                                  "DateofBirth"   => $_POST['DateofBirth'],        
-                                                  "Sex"           => $_POST['Sex'],      
-                                                  "MaritalStatus" => $_POST['MaritalStatus'],      
-                                                  "MotherTongue"  => $_POST['Language'], 
-                                                  "Religion"      => $_POST['Religion'],
-                                                  "Caste"         => $_POST['Caste'],
-                                                  "Community"     => $_POST['Community'],        
-                                                  "CreatedOn"     => date("Y-m-d H:i:s"),        
-                                                  "CreatedBy"     => $loginInfo['MemberID'],        
-                                                  "Nationality"   => $_POST['Nationality']));
+                                                     
+      $MaritalStatus = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARTIALSTATUS' and SoftCode='".$_POST['MaritalStatus']."'");  
+      $Sex = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX' and SoftCode='".$_POST['Sex']."'");  
+      $MotherTongue = $mysql->select("select * from _tbl_master_codemaster Where HardCode='LANGUAGENAMES' and SoftCode='".$_POST['Language']."'");  
+      $Religion = $mysql->select("select * from _tbl_master_codemaster Where HardCode='RELINAMES' and SoftCode='".$_POST['Religion']."'");  
+      $Caste = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CASTNAMES' and SoftCode='".$_POST['Caste']."'");  
+      $Community = $mysql->select("select * from _tbl_master_codemaster Where HardCode='COMMUNITY' and SoftCode='".$_POST['Community']."'");  
+      $Nationality = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NATIONALNAMES' and SoftCode='".$_POST['Nationality']."'");  
+ 
+ 
+ $id =  $mysql->insert("_tbl_Profile_Draft",array("ProfileFor"          => $_POST['ProfileFor'],
+                                                  "ProfileName"         => $_POST['ProfileName'],
+                                                  "DateofBirth"         => $_POST['DateofBirth'],        
+                                                  "SexCode"             => $_POST['Sex'],      
+                                                  "Sex"                 => $Sex[0]['CodeValue'],      
+                                                  "MaritalStatusCode"   => $_POST['MaritalStatus'],      
+                                                  "MaritalStatus"       => $MaritalStatus[0]['CodeValue'],      
+                                                  "MotherTongueCode"    => $_POST['Language'], 
+                                                  "MotherTongue"        => $MotherTongue[0]['CodeValue'],      
+                                                  "ReligionCode"        => $_POST['Religion'],
+                                                  "Religion"            => $Religion[0]['CodeValue'],      
+                                                  "CasteCode"           => $_POST['Caste'],
+                                                  "Caste"               => $Caste[0]['CodeValue'],      
+                                                  "CommunityCode"       => $_POST['Community'],        
+                                                  "Community"           => $Community[0]['CodeValue'],           
+                                                  "CreatedOn"           => date("Y-m-d H:i:s"),        
+                                                  "CreatedBy"           => $loginInfo['MemberID'],        
+                                                  "NationalityCode"     => $_POST['Nationality'],
+                                                  "Nationality"         => $Nationality[0]['CodeValue'],
+                                                  "CreatedBy"         => $loginInfo[0]['MemberID']));
                                                            
         if (sizeof($id)>0) {
                 return Response::returnSuccess("success",array());
@@ -399,13 +415,14 @@
                 
                 $formid = "frmChangeMobileNumber_".rand(30,3000);
              
-                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                return '<div id="otpfrm" style="width:100%;padding:15px;height:100%;">
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
-                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -12px;">&times;</button>
                                 <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;padding-top: 10%;">Please verify your mobile number</h4>
+                                    <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
+                                    <h5 style="color: #969292;font-weight: 100;padding-top: 21px;">In order to protect the security of your account,we will send you a text message with a verification that you will need to enter the next screen</h4>
                                 </div>
                                 <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/assets/images/smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumber()">Change</h4>
@@ -730,7 +747,7 @@
                   $mail->SMTPSecure = 'ssl';
                   $mail->SMTPAuth = true;
                   $mail->Username = "support@nahami.online";
-                  $mail->Password = "welcome@@82";
+                  $mail->Password = "Welcome@@82";
                   $mail->setFrom("support@nahami.online", "Support nahami");
                   $mail->addAddress($memberdata[0]['EmailID'],"Support");
                   $mail->Subject = 'Email Verifications';
@@ -835,16 +852,54 @@
         }
         
         
-        function GetProfiles() {
-          global $mysql,$loginInfo;    
-              
-              $Profile = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy = '".$loginInfo[0]['MemberID']."'");
-              $sql="select * from _tbl_Profile_Draft where CreatedBy = '".$loginInfo[0]['MemberID']."'";
-                return Response::returnSuccess("success".$sql,$Profile);
-                                                            
+        function GetMyDraftProfiles() {
+            
+            global $mysql,$loginInfo;    
+            $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy = '".$loginInfo[0]['MemberID']."'");
+            $sql="select * from _tbl_Profile_Draft where CreatedBy = '".$loginInfo[0]['MemberID']."'";
+            return Response::returnSuccess("success".$sql,$Profiles);
+        }
+        function EditProfile(){
         
-    }
+        global $mysql,$loginInfo;
+        $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");
+        return Response::returnSuccess("success",array("ProfileInfo"             => $Profiles[0],
+                                                       "ProfileSignInFor"        => CodeMaster::GetProfileFor(),
+                                                       "Gender"                  => CodeMaster::GetGender(),
+                                                       "MaritalStatus"           => CodeMaster::GetMaritalStatus(),
+                                                       "Language"                => CodeMaster::GetLanguage(),
+                                                       "Religion"                => CodeMaster::GetReligion(),
+                                                       "Caste"                   => CodeMaster::GetCaste(),
+                                                       "Community"               => CodeMaster::GetCommunity(),
+                                                       "Nationality"             => CodeMaster::GetNationality(),
+                                                       "EmployedAs"              => CodeMaster::GetEmployedAs(),
+                                                       "Occupation"              => CodeMaster::GetOccupation(),
+                                                       "TypeofOccupation"        => CodeMaster::GetOccupationTypes(),
+                                                       "IncomeRange"             => CodeMaster::GetIncomeRange(),
+                                                       "NumberofBrother"         => CodeMaster::GetNumberOfBrother(),
+                                                       "NumberofElderBrother"    => CodeMaster::GetNumberOfElderBrother(),
+                                                       "NumberofYoungerBrother"  => CodeMaster::GetNumberOfYoungerBrother(),
+                                                       "NumberofMarriedBrother"  => CodeMaster::GetNumberOfMarriedBrother(),
+                                                       "NumberofSisters"         => CodeMaster::GetNumberOfSisters(),
+                                                       "NumberofElderSisters"    => CodeMaster::GetNumberOfElderSisters(),
+                                                       "NumberofYoungerSisters"  => CodeMaster::GetNumberOfYoungerSisters(),
+                                                       "NumberofMarriedSisters"  => CodeMaster::GetNumberOfMarriedSisters(),
+                                                       "PhysicallyImpaired"      => CodeMaster::GetPhysicallyImpaired(),
+                                                       "VisuallyImpaired"        => CodeMaster::GetVisuallyImpaired(),
+                                                       "VissionImpaired"         => CodeMaster::GetVisionImpaired(),
+                                                       "SpeechImpaired"          => CodeMaster::GetSpeechImpaired(),
+                                                       "Height"                  => CodeMaster::GetHeight(),
+                                                       "Weight"                  => CodeMaster::GetWeight(),
+                                                       "BloodGroup"              => CodeMaster::GetBloodGroups(),
+                                                       "Complexation"            => CodeMaster::GetSkinType(),
+                                                       "BodyType"                => CodeMaster::GetBodyType(),
+                                                       "Diet"                    => CodeMaster::GetDiet(),
+                                                       "SmookingHabit"           => CodeMaster::GetSmokingHabit(),
+                                                       "DrinkingHabit"           => CodeMaster::GetDrinkingHabit(),
+                                                       "DocumentType"            => CodeMaster::GetDocumentType(),
+                                                       "CountryName"             => CodeMaster::GetCountryName(),
+                                                       "StateName"               => CodeMaster::GetStateName()));
     
     }
-     
+     }   
  ?> 

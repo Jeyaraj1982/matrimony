@@ -1,5 +1,6 @@
 <?php
-    $DistrictName = $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$_GET['Code']."'");
+    $response     = $webservice->GetMasterAllViewInfo();            
+    $DistrictName = $response['data']['ViewInfo'];
 ?>
 <form method="post" action="" onsubmit="">
           <div class="col-12 stretch-card">
@@ -10,15 +11,15 @@
                       <form class="forms-sample">
                       <div class="form-group row">
                           <label for="DistrictCode" class="col-sm-3 col-form-label">District Code</label>
-                          <label for="DistrictCode" class="col-sm-3 col-form-label"><?php echo $DistrictName[0]['SoftCode'];?></label>
+                          <label for="DistrictCode" class="col-sm-3 col-form-label"><?php echo $DistrictName['SoftCode'];?></label>
                       </div>
                       <div class="form-group row">
                           <label for=">DistrictName" class="col-sm-3 col-form-label">District Name</label>
-                          <label for=">DistrictName" class="col-sm-3 col-form-label"><?php echo  $DistrictName[0]['CodeValue'];?></label>
+                          <label for=">DistrictName" class="col-sm-3 col-form-label"><?php echo  $DistrictName['CodeValue'];?></label>
                       </div>
                       <div class="form-group row">
                           <label for="IsActive" class="col-sm-3 col-form-label">Is Active</label>
-                          <label for="IsActive" class="col-sm-3 col-form-label"><?php echo  ($DistrictName[0]['IsActive']) ? "Active" : "DeActive";?></label>
+                          <label for="IsActive" class="col-sm-3 col-form-label"><?php echo  ($DistrictName['IsActive']) ? "Active" : "DeActive";?></label>
                       </div>
                       <div class="form-group row">
                        <div class="col-sm-3" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageDistrict"><small>List of District Names</small> </a>  </div>

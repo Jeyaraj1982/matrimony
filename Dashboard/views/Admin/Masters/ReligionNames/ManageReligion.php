@@ -26,12 +26,12 @@
                         <tr>
                           <th width="30px">ID</th>  
                           <th>Religion Names</th>
-                          <th width="80px"></th> 
+                          <th width="80px"></th>        
                         </tr>
-                      </thead>
+                      </thead>            
                       <tbody>  
-                        <?php $ReligionNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='RELINAMES'"); ?>
-                        <?php foreach($ReligionNames as $ReligionName) { ?>
+                        <?php $ReligionNames = $webservice->GetMastersManageDetails(); ?>
+                        <?php foreach($ReligionNames['data']['ReligionNames'] as $ReligionName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($ReligionName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $ReligionName['SoftCode'];?></td>
                                 <td><?php echo $ReligionName['CodeValue'];?></td>

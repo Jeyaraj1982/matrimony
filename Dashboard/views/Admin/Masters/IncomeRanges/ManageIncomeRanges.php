@@ -30,8 +30,8 @@
                         </tr>
                       </thead>
                       <tbody>  
-                           <?php $IncomeRanges = $mysql->select("select * from _tbl_master_codemaster Where HardCode='INCOMERANGE'"); ?>
-                        <?php foreach($IncomeRanges as $IncomeRange) { ?>
+                           <?php $IncomeRanges = $webservice->GetMastersManageDetails(); ?>
+                        <?php foreach($IncomeRanges['data']['IncomeRange'] as $IncomeRange) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($IncomeRange['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $IncomeRange['SoftCode'];?></td>
                                 <td><?php echo $IncomeRange['CodeValue'];?></td>

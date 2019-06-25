@@ -1,36 +1,3 @@
-<?php
-    if (isset($_POST['BtnSaveNationalityName'])) {
-                
-        $ErrorCount =0;
-            
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='NATIONALNAMES' and CodeValue='".trim($_POST['NationalityName'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrNationalityName="Nationality Name Alreay Exists";    
-             echo $ErrNationalityName;
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='NATIONALNAMES' and SoftCode='".trim($_POST['NationalityCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrNationalityCode="Nationality Code Alreay Exists";    
-             echo $ErrNationalityCode;
-             $ErrorCount++;
-        }
-        
-        if ($ErrorCount==0) {
-        $NationalityID = $mysql->insert("_tbl_master_codemaster",array("HardCode"     => "NATIONALNAMES",
-                                                                       "SoftCode"     => trim($_POST['NationalityCode']),
-                                                                       "CodeValue"    => trim($_POST['NationalityName'])));
-        if ($NationalityID>0) {
-            echo "Successfully Added";
-            unset($_POST);
-        } else {
-            echo "Error occured. Couldn't save Nationality Name";
-        }
-    
-    }
-    }
-?>
 <script>
 $(document).ready(function () {
    $("#NationalityCode").blur(function () {  
@@ -62,7 +29,23 @@ $(document).ready(function () {
                  }
     
 </script>
-
+<?php                   
+  if (isset($_POST['BtnSaveNationalityName'])) {   
+    $response = $webservice->CreateNationalityName($_POST);
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    } 
+  $NationalityCode = $webservice->GetMastersManageDetails(); 
+     $GetNextNationalityCode="";
+        if ($NationalityCode['status']=="success") {
+            $GetNextNationalityCode  =$NationalityCode['data']['NationalityNameCode'];
+        }
+        {     
+?>
 <form method="post" action="" onsubmit="return SubmitNewNationalityName();">
           <div class="col-12 stretch-card">
                   <div class="card">                                                   
@@ -73,7 +56,7 @@ $(document).ready(function () {
                       <div class="form-group row">
                           <label for="Nationality Code" class="col-sm-3 col-form-label">Nationality Name Code<span id="star">*</span></label>
                           <div class="col-sm-2">
-                            <input type="text" class="form-control" id="NationalityCode" name="NationalityCode"  maxlength="10" value="<?php echo (isset($_POST['NationalityCode']) ? $_POST['NationalityCode'] : GetNextNumber('NATIONALNAMES'));?>" placeholder="Nationality Code">
+                            <input type="text" class="form-control" id="NationalityCode" name="NationalityCode"  maxlength="10" value="<?php echo (isset($_POST['NationalityCode']) ? $_POST['NationalityCode'] : $GetNextNationalityCode);?>" placeholder="Nationality Code">
                             <span class="errorstring" id="ErrNationalityCode"><?php echo isset($ErrNationalityCode)? $ErrNationalityCode : "";?></span>
                           </div>
                         </div>
@@ -85,6 +68,9 @@ $(document).ready(function () {
                           </div>
                         </div>
                         <div class="form-group row">
+                            <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
+                        </div>
+                        <div class="form-group row">
                         <div class="col-sm-3">
                        <button type="submit" name="BtnSaveNationalityName" id="BtnSaveNationalityName"  class="btn btn-primary mr-2"><small>Save Nationality Name</small></button> </div>
                        <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageNationalityName"><small>List of Nationality Names</small> </a>  </div>
@@ -94,3 +80,4 @@ $(document).ready(function () {
                   </div>
                 </div>
 </form>
+<?php } ?>

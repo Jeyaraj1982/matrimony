@@ -1,36 +1,3 @@
-<?php
-    if (isset($_POST['BtnSaveIncomeRange'])) {
-        
-        $ErrorCount =0;
-            
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='INCOMERANGE' and CodeValue='".trim($_POST['IncomeRange'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrIncomeRange="Income Range Alreay Exists";    
-             echo $ErrIncomeRange;
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='INCOMERANGE' and SoftCode='".trim($_POST['IncomeRangeCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrIncomeRangeCode="Income Range Code Alreay Exists";    
-             echo $ErrIncomeRangeCode;
-             $ErrorCount++;
-        }
-        
-        if ($ErrorCount==0) {
-        $IncomeRangeID = $mysql->insert("_tbl_master_codemaster",array("HardCode"   => "INCOMERANGE",
-                                                                       "SoftCode"   => trim($_POST['IncomeRangeCode']),
-                                                                       "CodeValue"  => trim($_POST['IncomeRange'])));
-        if ($IncomeRangeID>0) {
-            echo "Successfully Added";
-            unset($_POST);
-        } else {
-            echo "Error occured. Couldn't save Income";
-        }
-    
-    }
-    }
-?>
 <script>
 
 $(document).ready(function () {
@@ -61,7 +28,23 @@ $(document).ready(function () {
                  }
     
 </script>
-
+<?php                   
+  if (isset($_POST['BtnSaveIncomeRange'])) {   
+    $response = $webservice->CreateIncomeRange($_POST);
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    } 
+  $IncomeRangeCode = $webservice->GetMastersManageDetails(); 
+     $GetNextIncomeRangeCode="";
+        if ($IncomeRangeCode['status']=="success") {
+            $GetNextIncomeRangeCode  =$IncomeRangeCode['data']['IncomeRangeCode'];
+        }
+        {     
+?>
 <form method="post" action="" onsubmit="return SubmitNewIncomeRange();">
           <div class="col-12 stretch-card">
                   <div class="card">
@@ -72,7 +55,7 @@ $(document).ready(function () {
                       <div class="form-group row">
                           <label for="Income Range Code" class="col-sm-3 col-form-label">Income Range Code<span id="star">*</span></label>
                           <div class="col-sm-2">
-                            <input type="text" class="form-control" id="IncomeRangeCode" name="IncomeRangeCode"  maxlength="10" value="<?php echo (isset($_POST['IncomeRangeCode']) ? $_POST['IncomeRangeCode'] : GetNextNumber('INCOMERANGE'));?>" placeholder="IncomeRangeCode">
+                            <input type="text" class="form-control" id="IncomeRangeCode" name="IncomeRangeCode"  maxlength="10" value="<?php echo (isset($_POST['IncomeRangeCode']) ? $_POST['IncomeRangeCode'] : $GetNextIncomeRangeCode);?>" placeholder="IncomeRangeCode">
                             <span class="errorstring" id="ErrIncomeRangeCode"><?php echo isset($ErrIncomeRangeCode)? $ErrIncomeRangeCode : "";?></span>
                           </div>
                         </div>
@@ -84,6 +67,9 @@ $(document).ready(function () {
                           </div>
                         </div>
                         <div class="form-group row">
+                            <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
+                        </div>
+                        <div class="form-group row">
                         <div class="col-sm-3">
                        <button type="submit" name="BtnSaveIncomeRange" id="BtnSaveIncomeRange"  class="btn btn-primary mr-2">Save Income</button> </div>
                        <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageIncomeRanges"><small>List of Income Ranges</small> </a>  </div>
@@ -93,3 +79,4 @@ $(document).ready(function () {
                   </div>
                 </div>
                 </form>
+          <?php }?>

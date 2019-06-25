@@ -1,5 +1,6 @@
 <?php
-    $IncomeRange = $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$_GET['Code']."'");
+    $response     = $webservice->GetMasterAllViewInfo();
+    $IncomeRange = $response['data']['ViewInfo'];
 ?>
 <form method="post" action="" onsubmit="">
           <div class="col-12 stretch-card">
@@ -10,15 +11,15 @@
                       <form class="forms-sample">
                       <div class="form-group row">
                           <label for="IncomeRangeCode" class="col-sm-3 col-form-label">Income Range Code</label>
-                          <label for="IncomeRangeCode" class="col-sm-3 col-form-label"><?php echo $IncomeRange[0]['SoftCode'];?></label>
+                          <label for="IncomeRangeCode" class="col-sm-3 col-form-label"><?php echo $IncomeRange['SoftCode'];?></label>
                       </div>
                       <div class="form-group row">
                           <label for="IncomeRange" class="col-sm-3 col-form-label">IncomeRange</label>
-                          <label for="IncomeRange" class="col-sm-3 col-form-label"><?php echo  $IncomeRange[0]['CodeValue'];?></label>
+                          <label for="IncomeRange" class="col-sm-3 col-form-label"><?php echo  $IncomeRange['CodeValue'];?></label>
                       </div>
                       <div class="form-group row">
                           <label for="IsActive" class="col-sm-3 col-form-label">Is Active</label>
-                          <label for="IsActive" class="col-sm-3 col-form-label"><?php echo  ($IncomeRange[0]['IsActive']) ? "Active" : "DeActive";?></label>
+                          <label for="IsActive" class="col-sm-3 col-form-label"><?php echo  ($IncomeRange['IsActive']) ? "Active" : "DeActive";?></label>
                       </div>
                       <div class="form-group row">
                        <div class="col-sm-3" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageIncomeRanges"><small>List of Income Ranges</small> </a>  </div>

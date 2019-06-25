@@ -1,5 +1,6 @@
 <?php
-    $NationalityName = $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$_GET['Code']."'");
+    $response     = $webservice->GetMasterAllViewInfo();
+    $NationalityName = $response['data']['ViewInfo'];
 ?>
 <form method="post" action="" onsubmit="">
           <div class="col-12 stretch-card">
@@ -10,15 +11,15 @@
                       <form class="forms-sample">
                       <div class="form-group row">
                           <label for="NationalityCode" class="col-sm-3 col-form-label">Nationality Code</label>
-                          <label for="NationalityCode" class="col-sm-3 col-form-label"><?php echo $NationalityName[0]['SoftCode'];?></label>
+                          <label for="NationalityCode" class="col-sm-3 col-form-label"><?php echo $NationalityName['SoftCode'];?></label>
                         </div>
                         <div class="form-group row">
                           <label for="NationalityName" class="col-sm-3 col-form-label">Nationality Name</label>
-                          <label for="NationalityName" class="col-sm-3 col-form-label"><?php echo  $NationalityName[0]['CodeValue'];?></label>
+                          <label for="NationalityName" class="col-sm-3 col-form-label"><?php echo  $NationalityName['CodeValue'];?></label>
                         </div>
                         <div class="form-group row">
                             <label for="IsActive" class="col-sm-3 col-form-label">Is Active</label>
-                            <label for="IsActive" class="col-sm-3 col-form-label"><?php echo  ($NationalityName[0]['IsActive']) ? "Active" : "DeActive";?></label>
+                            <label for="IsActive" class="col-sm-3 col-form-label"><?php echo  ($NationalityName['IsActive']) ? "Active" : "DeActive";?></label>
                         </div>
                         <div class="form-group row">
                        <div class="col-sm-3" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageNationalityName"><small>List of Nationality Names</small> </a>  </div>

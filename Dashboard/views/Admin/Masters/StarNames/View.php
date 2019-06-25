@@ -1,5 +1,6 @@
 <?php
-    $StarName = $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$_GET['Code']."'");
+    $response     = $webservice->GetMasterAllViewInfo();
+    $StarName = $response['data']['ViewInfo'];
 ?>
 <form method="post" action="" onsubmit="">
           <div class="col-12 stretch-card">
@@ -10,15 +11,15 @@
                       <form class="forms-sample">
                       <div class="form-group row">
                           <label for="StarCode" class="col-sm-3 col-form-label">Star Code</label>
-                          <label for="StarCode" class="col-sm-3 col-form-label"><?php echo $StarName[0]['SoftCode'];?></label>
+                          <label for="StarCode" class="col-sm-3 col-form-label"><?php echo $StarName['SoftCode'];?></label>
                       </div>
                       <div class="form-group row">
                           <label for="StarName" class="col-sm-3 col-form-label">StarName</label>
-                          <label for="StarName" class="col-sm-3 col-form-label"><?php echo  $StarName[0]['CodeValue'];?></label>
+                          <label for="StarName" class="col-sm-3 col-form-label"><?php echo  $StarName['CodeValue'];?></label>
                       </div>
                       <div class="form-group row">
                           <label for="IsActive" class="col-sm-3 col-form-label">Is Active</label>
-                          <label for="IsActive" class="col-sm-3 col-form-label"><?php echo  ($StarName[0]['IsActive']) ? "Active" : "DeActive";?></label>
+                          <label for="IsActive" class="col-sm-3 col-form-label"><?php echo  ($StarName['IsActive']) ? "Active" : "DeActive";?></label>
                       </div>
                       <div class="form-group row">
                        <div class="col-sm-3" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageStar"><small>List of Star Names</small> </a>  </div>

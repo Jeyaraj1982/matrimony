@@ -27,9 +27,11 @@
                            <th></th>
                         </tr>
                       </thead>
-                      <tbody>  
-                        <?php $News = $mysql->select("select * from _tbl_franchisees_news where NewsFor='NF001'"); ?>
-                        <?php foreach($News as $New) { ?>
+                      <tbody> 
+                      <?php 
+                         $response = $webservice->GetFranchiseeManageNewsandEvents(); 
+                         ?>
+                        <?php foreach($response['data'] as $New) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($New['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo putDateTime($New['CreatedOn']);?></td>
                                 <td><?php echo $New['NewsTitle'];?></td> 

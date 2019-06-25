@@ -30,8 +30,8 @@
                         </tr>
                       </thead>
                       <tbody>                                            
-                             <?php $CasteNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CASTNAMES' and IsActive='1'"); ?>
-                        <?php foreach($CasteNames as $CasteName) { ?>
+                       <?php $CasteNames = $webservice->GetManageActiveCasteNames(); ?>
+                        <?php foreach($CasteNames['data'] as $CasteName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($CasteName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $CasteName['SoftCode'];?></td>
                                 <td><?php echo $CasteName['CodeValue'];?></td>

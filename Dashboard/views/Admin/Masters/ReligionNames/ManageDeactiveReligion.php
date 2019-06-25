@@ -30,8 +30,8 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $ReligionNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='RELINAMES' and IsActive='0'"); ?>
-                        <?php foreach($ReligionNames as $ReligionName) { ?>
+                         <?php $ReligionNames = $webservice->GetManageDeactiveReligionNames(); ?>
+                        <?php foreach($ReligionNames['data'] as $ReligionName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($ReligionName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $ReligionName['SoftCode'];?></td>
                                 <td><?php echo $ReligionName['CodeValue'];?></td>

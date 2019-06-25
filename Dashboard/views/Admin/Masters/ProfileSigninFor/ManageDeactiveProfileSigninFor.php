@@ -30,8 +30,8 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $ProfileSigninFors = $mysql->select("select * from _tbl_master_codemaster Where HardCode='PROFILESIGNIN' and IsActive='0'"); ?>
-                        <?php foreach($ProfileSigninFors as $ProfileSigninFor) { ?>
+                        <?php $ProfileSigninFors = $webservice->GetManageDeactiveProfileSignInFors(); ?>
+                        <?php foreach($ProfileSigninFors['data'] as $ProfileSigninFor) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($ProfileSigninFor['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $ProfileSigninFor['SoftCode'];?></td>
                                 <td><?php echo $ProfileSigninFor['CodeValue'];?></td>
