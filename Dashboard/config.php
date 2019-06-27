@@ -183,6 +183,7 @@
             return $prefix;
         }
     }
+    
     class MemberPlan{
         
         function GetNextMemberPlanNumber() {

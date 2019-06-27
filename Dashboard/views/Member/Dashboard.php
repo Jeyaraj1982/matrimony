@@ -36,6 +36,9 @@ div, label,a,h1,h2,h3,h4,h5,h6 {font-family:'Roboto' !important;}
         padding-bottom:5px;
         padding-top:5px;
     }
+    #resCon_a002 a:hover{
+        text-decoration: none;
+    }
 </style>                                                 
          <!--<div class="row purchace-popup">
             <div class="col-12">
@@ -63,7 +66,7 @@ function myFunction() {
                 <div class="card-body" style="border-radius: 5px;background: #fffdc4;border: 1px solid #ccc;padding: 12px;">
                   <div class="col-sm-6" id="verificationContent">
                   </div>
-                  <a href="javascript:void(0)" onclick="myFunction()" class="close" >&times;</a>
+                  <a href="javascript:void(0)" onclick="myFunction()" class="close" style="outline:none" >&times;</a>
                 </div>
               </div>
             </div>
@@ -75,7 +78,7 @@ function myFunction() {
                 <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:258px">
                     <div id="resCon_a002" style="background:white;width:97%">
                         <div style="text-align:center;">
-                            <h5 style="margin-top:84px;color: #eceaea;">No Profiles Found </h5>
+                            <a href="<?php echo GetUrl("MyProfiles/ManageProfile");?>" ><h5 style="margin-top:84px;color: #eceaea;">No Profiles Found </h5></a>
                         </div>
                     </div>
                    </div> 
@@ -102,7 +105,7 @@ function myFunction() {
                 <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:158px">
                     <div id="resCon_a002" style="background:white;width:97%;height:136px">
                         <div style="text-align:center;">
-                            <h5 style="margin-top: 35px;color: #eceaea;">No Profiles Found </h5>
+                            <h5 style="margin-top: 35px;color: #eceaea;">No Visitors Found</h5>
                         </div>
                     </div>
                    </div> 
@@ -241,3 +244,4 @@ function myFunction() {
         </div>
     </div>
     <?php }?> 
+

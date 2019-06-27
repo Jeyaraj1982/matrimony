@@ -19,7 +19,7 @@
                    border-radius:1px;
                   
                }
-               .errorstring {font-size:10px;color:red}
+               .errorstring {color:red}
 </style>
 <script>/*                                                             
 $(document).ready(function () {
@@ -146,10 +146,6 @@ function Submitotp() {
                         </div>
                     </div>
                     <ul class="nav navbar-nav navbar-right user-profile">
-                        <li class="dropdown">
-
-                            <a class="dropdown-toggle disabled up-btn-upgrade hidden-xs visible-sm visible-md visible-lg" data-toggle="dropdown" href="upgrade_membership.php">Upgrade</a>
-                        </li>
                         <li class="dropdown hidden-xs">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="help.php">Help</a>
                         </li>
@@ -164,14 +160,55 @@ function Submitotp() {
                 </div>
             </div>
          </nav> 
-         
+<script>
+$(document).ready(function () {
+   $("#newpassword").blur(function () {
+        if (IsNonEmpty("newpassword","Errnewpassword","Please Enter New Password")) {
+        IsFPassword("newpassword","Errnewpassword","Please Enter Alpha Numeric Characters");
+        }
+                        
+   });
+$("#confirmnewpassword").blur(function () {
+                                                                                                            
+        if (IsNonEmpty("confirmnewpassword","Errconfirmnewpassword","Please Enter Confirm New Password")) {
+        IsFPassword("confirmnewpassword","Errconfirmnewpassword","Please Enter Alpha Numeric Characters");
+        }                
+   });
+});
+
+function SubmitPassword() {
+                        $('#Errnewpassword').html("");
+                        $('#Errconfirmnewpassword').html("");
+                         ErrorCount=0;
+                         IsNonEmpty("newpassword","Errnewpassword","Please Enter New Password")
+                        IsNonEmpty("confirmnewpassword","Errconfirmnewpassword","Please Enter Confirm New Password")
+                        if (ErrorCount>0) {
+                            return false;
+                        }
+                        
+                       var password = document.getElementById("newpassword").value;
+                       var confirmPassword = document.getElementById("confirmnewpassword").value;
+                             if (password != confirmPassword) {
+                                 ErrorCount++;
+                               $('#Errconfirmnewpassword').html("Passwords do not match.");
+                              
+                                }
+                             
+                        
+                        if (ErrorCount==0) {
+                            return true;
+                        } else{
+                            return false;
+                        }
+                 }
+</script>         
          <div class="page-container" style="margin-top: -19px">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 container-contentbar">
                         <div class="page-main">
-                            <div style="background:white ;height: 310px;width: 361px;margin-top: 50px;padding-top:34px;border-radius: 10px;margin-left: 373px;padding-left:35px;padding-right:35px">
-                              <h4 style="text-align:center">Change Password</h4>
+                            <div style="background:white ;height: 310px;width: 361px;margin-top: 50px;margin-bottom:110px;padding-top:34px;border-radius: 10px;margin-left: 373px;padding-left:35px;padding-right:35px">
+                               <p style="text-align: center;color: #E3425B;font-size: 21px;">Change Password</p>
             <?php
                
             if (isset($_POST['btnResetPassword'])) {
@@ -194,14 +231,15 @@ function Submitotp() {
               }                               
                  
                ?>
-              <p>please enter new password bellow boxes and click "Save Password" button.</p> <br>               
-              <form action="" method="post">
+              <p style="margin-bottom: -10px;">Please enter new password bellow boxes and click "Save Password".</p> <br>               
+              <form action="" method="post" onsubmit="return SubmitPassword();">
                <input type="hidden"  value="<?php echo $_POST['reqEmail'];?>" name="reqEmail">
                 <input type="hidden"  value="<?php echo $_POST['reqID'];?>" name="reqID">
               
-                <input type="password" placeholder="  New Password here ..." name="newpassword" style="width: 100%;padding:7px;margin-bottom:10px" value="<?php echo isset($_POST['newpassword']) ? $_POST['newpassword'] : '';?>"> 
-                <input type="password" placeholder="  Confrim New Password here ..." name="confirmnewpassword" style="width: 100%;padding:7px;margin-bottom:10px" value="<?php echo isset($_POST['confirmnewpassword']) ? $_POST['confirmnewpassword'] : '';?>">
-             
+                <input type="password" placeholder="  New Password" name="newpassword" id="newpassword" style="width: 100%;padding:7px;margin-bottom:10px" value="<?php echo isset($_POST['newpassword']) ? $_POST['newpassword'] : '';?>">
+                <span class="errorstring" id="Errnewpassword"><?php echo isset($Errnewpassword)? $Errnewpassword : "";?>  </span>
+                <input type="password" placeholder="  Confrim New Password" name="confirmnewpassword" id="confirmnewpassword" style="width: 100%;padding:7px;margin-bottom:10px" value="<?php echo isset($_POST['confirmnewpassword']) ? $_POST['confirmnewpassword'] : '';?>">
+                 <span class="errorstring" id="Errconfirmnewpassword"><?php echo isset($Errconfirmnewpassword)? $Errconfirmnewpassword : "";?> </span>
                 <?php
                     if (isset($errormessage)) {
                         echo "<span style='color:red;'>".$errormessage."</span><Br>";

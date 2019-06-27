@@ -8,8 +8,10 @@
     require 'lib/mail/src/PHPMailer.php';
     require 'lib/mail/src/SMTP.php';
     
-
+    $mail    = new PHPMailer;
+    
     include_once("la-en.php");
+    
     include_once("controller/MailController.php");  
     include_once("controller/MobileSMSController.php");  
     include_once("controller/DatabaseController.php");
@@ -22,7 +24,6 @@
     include_once("classes/class.Admin.php");
     
     $mysql   = new MySql("localhost","nahami_user","nahami_user","nahami_masterdb");
-    $mail    = new PHPMailer;
     $loginid = isset($_GET['LoginID']) ? $_GET['LoginID'] : "";
       
     if (isset($_GET['m']) && $_GET['m']=="Franchisee") {
@@ -43,9 +44,7 @@
             echo "error";
         }
     }     
-
-   
-    
+     
     class Plans{
         function GetFranchiseePlans(){
             global $mysql;
@@ -53,6 +52,16 @@
             
             return $franchiseePlans;
             return Response::returnSuccess("success",$franchiseePlan[0]);
+        }
+    }
+    
+    class Validation {
+        
+        function isEmail($email) {
+            if (!preg_match("/^[^@]{1,64}@[^@]{1,255}$/", $email)) {
+                return false;
+            }
+            return true;
         }
     }
 ?>

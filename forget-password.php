@@ -11,6 +11,9 @@
     color: white;
 
 }
+.errorstring{                           
+    color:red;
+}
 </style>
         
          <nav class="navbar dashboard-menu">
@@ -50,10 +53,6 @@
                         </div>
                     </div>
                     <ul class="nav navbar-nav navbar-right user-profile">
-                        <li class="dropdown">
-
-                            <a class="dropdown-toggle disabled up-btn-upgrade hidden-xs visible-sm visible-md visible-lg" data-toggle="dropdown" href="upgrade_membership.php">Upgrade</a>
-                        </li>
                         <li class="dropdown hidden-xs">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="help.php">Help</a>
                         </li>
@@ -68,11 +67,16 @@
                 </div>
             </div>
          </nav> 
+<script>
+    function SubmitEmail() {
+        $('#ErrFpUserName').html("");
+        return IsNonEmpty("FpUserName","ErrFpUserName","Please Enter Valid Login Name or Email");
+    }
+</script>
           <?php
             if (isset($_POST['btnResetPassword'])) {
                 
                 $response = $webservice->forgotPassword($_POST);
-                print_r($response);
                 if ($response['status']=="success") {
                     ?>
                     <form action="forget-password-otp.php" id="reqFrm" method="post">
@@ -92,20 +96,21 @@
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 container-contentbar">
                         <div class="page-main">
-                            <div style="background:white ;height: 310px;width: 361px;margin-top: 50px;padding-top:34px;border-radius: 10px;margin-left: 373px;padding-left:35px;padding-right:35px">
+                            <div style="background:white ;height: 310px;width: 361px;margin-top: 50px;margin-bottom: 110px;padding-top:34px;border-radius: 10px;margin-left: 373px;padding-left:35px;padding-right:35px">
                      <form method="POST" action="" onsubmit="return SubmitEmail();">
                 <div class="form-group">
                 <div align="center"><p style="text-align: center;color: #E3425B;font-size: 21px;">Forget Password</p></div>
                   <div class="input-group">
-                    <small style="font-size: 12px;font-weight: 400;">Please provide your Login Name or Registered Email Address, we'll send an security code to your email address for reset your password.</small>
+                    <small style="font-size: 12px;font-weight: 400;">Please provide your Login Name or Registered Email Address, we'll send a verification code to your email address to reset your password.</small>
                   </div>
                 </div>
-                <input type="text"  placeholder="Login Name / Registered Email Address" id="UserName" name="UserName" style="width:100%;margin-bottom:10px;padding: 7px;">
+                <input type="text"  placeholder="Login Name / Registered Email Address" id="FpUserName" name="FpUserName" value="<?php echo isset($_POST['FpUserName']) ? $_POST['FpUserName'] : '';?>" style="width:100%;margin-bottom:10px;padding: 7px;">
+                 <span class="errorstring" id="ErrFpUserName"><?php echo isset($ErrFpUserName)? $ErrFpUserName : "";?></span>
                 <?php echo '<div style="color:red">'; echo $errormessage;?>
                 <button type="submit" class="btn btn-primary" name="btnResetPassword" style="width:100%">Submit</button>
                 <hr>
                 <div>
-                  <a href="../../FranchiseeLogin.php" class="text-small forgot-password text-black">Back to SignIn</a>
+                  <a href="index.php" class="text-small forgot-password text-black">Back to SignIn</a>
                 </div>
               </form>
                         </div>

@@ -96,16 +96,16 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
         <ul class="navbar-nav navbar-nav-right">
             <li class="nav-item dropdown d-none d-xl-inline-block <?php echo ($mainlink=="Search") ? ' linkactive1 ':'';?>" >
                 <span class="profile-text">         
-                    <a href="<?php echo SiteUrl?>Search/BasicSearch" class="msearch" style="color: white;">Search</a>
+                    <a href="<?php echo SiteUrl?>Search/BasicSearch" class="msearch" style="color: white;font-size:15px">Search</a>
                   </span>
                  </li>
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
               <i class="mdi mdi-file-document-box"></i>
-              <span class="count">7</span>
+              <span class="count">0</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-              <div class="dropdown-item">
+              <!--<div class="dropdown-item">
                 <p class="mb-0 font-weight-normal float-left">You have 7 unread mails
                 </p>
                 <span class="badge badge-info badge-pill float-right">View all</span>
@@ -151,16 +151,23 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
                     Upcoming board meeting
                   </p>
                 </div>
+              </a>-->
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item preview-item">
+                <div class="preview-item-content flex-grow">
+                  <h6 class="preview-subject ellipsis font-weight-medium text-dark" style="margin-bottom: -7px;">You don't have mail at this time
+                  </h6>
+                 </div>
               </a>
             </div>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="mdi mdi-bell"></i>
-              <span class="count">4</span>
+              <span class="count">0</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <a class="dropdown-item">
+              <!--<a class="dropdown-item">
                 <p class="mb-0 font-weight-normal float-left">You have 4 new notifications
                 </p>
                 <span class="badge badge-pill badge-warning float-right">View all</span>
@@ -206,7 +213,14 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
                     2 days ago
                   </p>
                 </div>
-              </a>
+              </a> -->
+             <div class="dropdown-divider"></div>
+              <a class="dropdown-item preview-item">
+                <div class="preview-item-content flex-grow">
+                  <h6 class="preview-subject ellipsis font-weight-medium text-dark" style="margin-bottom: -7px;">You don't have notifications
+                  </h6>
+                 </div>
+              </a> 
             </div>
           </li>
           <li class="nav-item dropdown d-none d-xl-inline-block">
@@ -217,7 +231,7 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
               <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image">
             </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding:0px">
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding-top: 10px;padding-bottom: 10px;">
               <a href="#" class="dropdown-item">
                Tools
               </a>

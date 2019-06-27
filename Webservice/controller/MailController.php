@@ -10,6 +10,30 @@
         var $mailTitle    = "";
         var $mailContent  = "";
                    
+        function Send($message,$title,$to,&$mailError) {
+             
+             global $mail;
+             
+             $mail->isSMTP(); 
+             $mail->SMTPDebug = 0;
+             $mail->Host = "mail.nahami.online"; 
+             $mail->Port = 465;
+             $mail->SMTPSecure = 'ssl';
+             $mail->SMTPAuth = true;
+             $mail->Username = "support@nahami.online";
+             $mail->Password = "Welcome@@82";
+             $mail->setFrom("noreply@nahami.online", "noreply nahami");
+             $mail->addAddress($to,"nahami");
+             $mail->Subject = $title;
+             $mail->msgHTML($message);
+             $mailError = $mail->ErrorInfo;
+             if(!$mail->send()){
+                return false;
+             } else {
+                return true;
+             } 
+        }
+        
         function FranchiseeForgetPassword($param) {
             
             global $mysql;

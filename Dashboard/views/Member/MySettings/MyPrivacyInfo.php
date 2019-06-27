@@ -3,6 +3,7 @@ $page="MyPrivacyInfo";
 ?>
 
 <form method="post" action="">
+<h4>My Settings</h4>
   <div class="row">
     <div class="col-md-12 d-flex align-items-stretch grid-margin">
       <div class="row flex-grow">

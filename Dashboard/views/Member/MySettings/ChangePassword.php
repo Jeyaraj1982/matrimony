@@ -68,6 +68,7 @@ $("#CurrentPassword").blur(function () {
     
 </script>
 <form method="post" action="" onsubmit="return SubmitChangePassword();">
+<h4>My Settings</h4>
   <div class="row">
     <div class="col-md-12 d-flex align-items-stretch grid-margin">
       <div class="row flex-grow">
@@ -76,12 +77,12 @@ $("#CurrentPassword").blur(function () {
             <div class="card-body">
             <div class="form-group-row">
             <div class="col-sm-12">
-            <div class="col-sm-3">
+            <div class="col-sm-3" style="width: 21%;">
             <div class="sidemenu" style="width: 200px;margin-left: -58px;margin-top: -30px;margin-bottom: -41px;border-right: 1px solid #eee;">
                 <?php include_once("sidemenu.php");?>
             </div>
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-9" style="margin-top: -8px;">
               <h4 class="card-title">Change Password</h4>
              <form class="forms-sample">
                 <div class="form-group">
@@ -96,7 +97,7 @@ $("#CurrentPassword").blur(function () {
                   <input type="password" class="form-control" id="ConfirmNewPassword"  name="ConfirmNewPassword" value="<?php echo (isset($_POST['ConfirmNewPassword']) ? $_POST['ConfirmNewPassword'] : "");?>" placeholder="Confirm New Password">
                   <span class="errorstring" id="ErrConfirmNewPassword"><?php echo isset($ErrConfirmNewPassword)? $ErrConfirmNewPassword : "";?></span>
                 </div>
-               <button type="submit" name="BtnUpdatePassword" class="btn btn-success mr-2">Change Password</button>
+               <button type="submit" name="BtnUpdatePassword" class="btn btn-primary mr-2" style="font-family: roboto;">Change Password</button>
                <div class="col-sm-12" style="text-align: center;color:red"><?php echo $sucessmessage ;?></div>  
                <div class="col-sm-12" style="text-align: center;color:red"><?php echo $errormessage ;?></div>
                 </form>

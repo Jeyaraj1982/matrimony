@@ -51,10 +51,6 @@
                         </div>
                     </div>
                     <ul class="nav navbar-nav navbar-right user-profile">
-                        <li class="dropdown">
-
-                            <a class="dropdown-toggle disabled up-btn-upgrade hidden-xs visible-sm visible-md visible-lg" data-toggle="dropdown" href="upgrade_membership.php">Upgrade</a>
-                        </li>
                         <li class="dropdown hidden-xs">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="help.php">Help</a>
                         </li>
@@ -75,11 +71,12 @@
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 container-contentbar">
                         <div class="page-main">
-                            <div style="background:white ;height: 310px;width: 361px;margin-top: 50px;padding-top:34px;border-radius: 10px;margin-left: 373px;padding-left:35px;padding-right:35px">
-                              <h4 style="text-align:center">Change Password</h4>
-                                  <p> Password changed successfully</p>
-                                  <p style="text-align:center"><a href="index.php" class="btn btn-primary">Login here</a></p>
-              
+                            <div style="background:white ;height: 350px;width: 361px;margin-top: 50px;margin-bottom: 110px;padding-top:34px;border-radius: 10px;margin-left: 373px;padding-left:35px;padding-right:35px">
+                                  <p style="text-align: center;margin-top: 15px;margin-bottom: 30px;"><img src="assets/images/greentickcircle.png" width="25%"> </p>
+                                  <h3 style="text-align: center;margin-top:0px">Password Updated!</h3>
+                                  <div style="text-align: center;">Your password has been changed successfully. Use your new password to login</div><br><br><br>
+                                  <p style="text-align:center;margin-top:-20px"><a href="index.php" class="btn btn-primary">Login here</a></p>
+            <br><br>  
                         </div>
                     </div>
                     </div>

@@ -1,5 +1,6 @@
 <?php  
-    $ProfileInfo = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$_Member['MemberID']."' and ProfileID='".$_GET['Code']."'");
+     $response = $webservice->EditProfile();
+    $ProfileInfo          = $response['data']['ProfileInfo'];
     if (sizeof($ProfileInfo)==0) {
         echo "Error: Access denied. Please contact administrator";
     } else { ?>

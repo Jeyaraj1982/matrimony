@@ -151,8 +151,8 @@
                             <select class="selectpicker form-control" data-live-search="true" id="Sex"  name="Sex">
                                 <option>Choose Sex</option>
                                 <?php foreach($response['data']['Gender'] as $Sex) { ?>
-                                <option value="<?php echo $Sex['SoftCode'];?>"<?php echo ($ProfileInfo['Sex']==$Sex['SoftCode']) ? " selected='selected' " : "";?> ><?php echo $Sex['CodeValue'];?></option>
-                                <?php } ?>
+                                <option value="<?php echo $Sex['SoftCode'];?>"<?php echo ($ProfileInfo['SexCode']==$Sex['SoftCode']) ? " selected='selected' " : "";?> ><?php echo $Sex['CodeValue'];?></option>
+                                <?php } ?> 
                             </select>
                          </div>
                     </div>
@@ -162,7 +162,7 @@
                             <select class="selectpicker form-control" data-live-search="true" id="MaritalStatus"  name="MaritalStatus">
                                   <option>Choose Marital Status</option>
                                   <?php foreach($response['data']['MaritalStatus'] as $MaritalStatus) { ?>
-                                  <option value="<?php echo $MaritalStatus['SoftCode'];?>"<?php echo ($ProfileInfo['MaritalStatus']==$MaritalStatus['SoftCode']) ? " selected='selected' " : "";?>><?php echo $MaritalStatus['CodeValue'];?></option>
+                                  <option value="<?php echo $MaritalStatus['SoftCode'];?>"<?php echo ($ProfileInfo['MaritalStatusCode']==$MaritalStatus['SoftCode']) ? " selected='selected' " : "";?>><?php echo $MaritalStatus['CodeValue'];?></option>
                                   <?php } ?>
                             </select>
                          </div>
@@ -171,7 +171,7 @@
                             <select class="selectpicker form-control" data-live-search="true" id="Language"  name="Language">
                                 <option>Choose Mother Tongue</option>
                                <?php foreach($response['data']['Language'] as $Language) { ?>
-                                <option value="<?php echo $Language['SoftCode'];?>"<?php echo ($ProfileInfo['MotherTongue']==$Language['SoftCode']) ? " selected='selected' " : "";?>><?php echo $Language['CodeValue'];?></option>
+                                <option value="<?php echo $Language['SoftCode'];?>"<?php echo ($ProfileInfo['MotherTongueCode']==$Language['SoftCode']) ? " selected='selected' " : "";?>><?php echo $Language['CodeValue'];?></option>
                                 <?php } ?>
                             </select>
                          </div>
@@ -182,7 +182,7 @@
                             <select class="selectpicker form-control" data-live-search="true" id="Religion"  name="Religion">
                                 <option>Choose Religion</option>
                                 <?php foreach($response['data']['Religion'] as $Religion) { ?>
-                                <option value="<?php echo $Religion['SoftCode'];?>"<?php echo ($ProfileInfo['Religion']==$Religion['SoftCode']) ? " selected='selected' " : "";?>><?php echo $Religion['CodeValue'];?></option>
+                                <option value="<?php echo $Religion['SoftCode'];?>"<?php echo ($ProfileInfo['ReligionCode']==$Religion['SoftCode']) ? " selected='selected' " : "";?>><?php echo $Religion['CodeValue'];?></option>
                                 <?php } ?>
                             </select>
                          </div>
@@ -191,7 +191,7 @@
                             <select class="selectpicker form-control" data-live-search="true" id="Caste"  name="Caste">
                                 <option value="0">Choose Caste</option>
                                 <?php foreach($response['data']['Caste'] as $Caste) { ?>
-                                <option value="<?php echo $Caste['SoftCode'];?>"<?php echo ($ProfileInfo['Caste']==$Caste['SoftCode']) ? " selected='selected' " : "";?>><?php echo $Caste['CodeValue'];?></option>
+                                <option value="<?php echo $Caste['SoftCode'];?>"<?php echo ($ProfileInfo['CasteCode']==$Caste['SoftCode']) ? " selected='selected' " : "";?>><?php echo $Caste['CodeValue'];?></option>
                                 <?php } ?>
                             </select>
                          </div>
@@ -203,7 +203,7 @@
                             <select class="selectpicker form-control" data-live-search="true" id="Community"  name="Community">
                                 <option>Choose Community</option>
                                 <?php foreach($response['data']['Community'] as $Community) { ?>
-                                <option value="<?php echo $Community['SoftCode'];?>"<?php echo ($ProfileInfo['Community']==$Community['SoftCode']) ? " selected='selected' " : "";?>><?php echo $Community['CodeValue'];?></option>
+                                <option value="<?php echo $Community['SoftCode'];?>"<?php echo ($ProfileInfo['CommunityCode']==$Community['SoftCode']) ? " selected='selected' " : "";?>><?php echo $Community['CodeValue'];?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -212,7 +212,7 @@
                             <select class="selectpicker form-control" data-live-search="true" id="Nationality"  name="Nationality">
                                 <option>Choose Nationality</option>
                                  <?php foreach($response['data']['Nationality'] as $Nationality) { ?>
-                                <option value="<?php echo $Nationality['SoftCode'];?>" <?php echo ($ProfileInfo['Nationality']==$Nationality['SoftCode']) ? " selected='selected' " : "";?>><?php echo $Nationality['CodeValue'];?></option>
+                                <option value="<?php echo $Nationality['SoftCode'];?>" <?php echo ($ProfileInfo['NationalityCode']==$Nationality['SoftCode']) ? " selected='selected' " : "";?>><?php echo $Nationality['CodeValue'];?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -290,7 +290,7 @@
                             <select class="selectpicker form-control" data-live-search="true" id="EmployedAs"  name="EmployedAs">
                                 <option value="0">Choose Employed As</option>
                                 <?php foreach($response['data']['EmployedAs'] as $EmployedAs) { ?>
-                                <option value="<?php echo $EmployedAs['SoftCode'];?>" <?php echo ($ProfileInfo['EmployedAs']==$EmployedAs['SoftCode']) ? " selected='selected' " : "";?>  ><?php echo $EmployedAs['CodeValue'];?></option>
+                                <option value="<?php echo $EmployedAs['SoftCode'];?>" <?php echo ($ProfileInfo['EmployedAsCode']==$EmployedAs['SoftCode']) ? " selected='selected' " : "";?>  ><?php echo $EmployedAs['CodeValue'];?></option>
                                 <?php } ?>
                             </select>
                          </div>
@@ -299,7 +299,7 @@
                             <select class="selectpicker form-control" data-live-search="true" id="OccupationType"  name="OccupationType">
                                 <option value="0">Choose Occupatin Types</option>
                                 <?php foreach($response['data']['Occupation'] as $OccupationType) { ?>
-                                <option value="<?php echo $OccupationType['SoftCode'];?>" <?php echo ($ProfileInfo['OccupationType']==$OccupationType['SoftCode']) ? " selected='selected' " : "";?> ><?php echo $OccupationType['CodeValue'];?></option>
+                                <option value="<?php echo $OccupationType['SoftCode'];?>" <?php echo ($ProfileInfo['OccupationTypeCode']==$OccupationType['SoftCode']) ? " selected='selected' " : "";?> ><?php echo $OccupationType['CodeValue'];?></option>
                             <?php } ?>
                          </select>
                          </div>
@@ -310,7 +310,7 @@
                         <select class="selectpicker form-control" data-live-search="true" id="TypeofOccupation"  name="TypeofOccupation">
                             <option value="0">Choose Type of Occupation</option>    
                             <?php foreach($response['data']['TypeofOccupation'] as $TypeofOccupation) { ?>
-                            <option value="<?php echo $TypeofOccupation['SoftCode'];?>" <?php echo ($ProfileInfo['TypeofOccupation']==$TypeofOccupation['SoftCode']) ? " selected='selected' " : "";?> ><?php echo $TypeofOccupation['CodeValue'];?></option>
+                            <option value="<?php echo $TypeofOccupation['SoftCode'];?>" <?php echo ($ProfileInfo['TypeofOccupationCode']==$TypeofOccupation['SoftCode']) ? " selected='selected' " : "";?> ><?php echo $TypeofOccupation['CodeValue'];?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -319,7 +319,7 @@
                         <select class="selectpicker form-control" data-live-search="true" id="IncomeRange"  name="IncomeRange">
                             <option value="0">Choose IncomeRange</option>  
                             <?php foreach($response['data']['IncomeRange'] as $IncomeRange) { ?>
-                            <option value="<?php echo $IncomeRange['SoftCode'];?>" <?php echo ($ProfileInfo['AnnualIncome']==$IncomeRange['SoftCode']) ? " selected='selected' " : "";?> ><?php echo $IncomeRange['CodeValue'];?></option>
+                            <option value="<?php echo $IncomeRange['SoftCode'];?>" <?php echo ($ProfileInfo['AnnualIncomeCode']==$IncomeRange['SoftCode']) ? " selected='selected' " : "";?> ><?php echo $IncomeRange['CodeValue'];?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -678,7 +678,7 @@
 </div>                                                                              
                         <div class="form-group row" style="margin-bottom:0px;">
                         <div class="col-sm-12" align="center">
-                            <a href="<?php echo GetUrl("Profile/View/".$_GET['Code'].".htm");?>" class="btn btn-success mr-2">Preview</a>
+                            <a href="<?php echo GetUrl("MyProfiles/View/".$_GET['Code'].".htm");?>" class="btn btn-success mr-2">Preview</a>
                         </div>
                     </div>
 

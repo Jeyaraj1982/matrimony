@@ -11,15 +11,7 @@
     color: white;
 
 }
-.otpbox{
-                   width:60px;
-                   float:left;
-                   text-align: center;
-                   box-align:center;
-                   border-radius:1px;
-                  
-               }
-               .errorstring {font-size:10px;color:red}
+               .errorstring {color:red}
 </style>
 <script>/*                                                             
 $(document).ready(function () {
@@ -146,10 +138,6 @@ function Submitotp() {
                         </div>
                     </div>
                     <ul class="nav navbar-nav navbar-right user-profile">
-                        <li class="dropdown">
-
-                            <a class="dropdown-toggle disabled up-btn-upgrade hidden-xs visible-sm visible-md visible-lg" data-toggle="dropdown" href="upgrade_membership.php">Upgrade</a>
-                        </li>
                         <li class="dropdown hidden-xs">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="help.php">Help</a>
                         </li>
@@ -164,14 +152,20 @@ function Submitotp() {
                 </div>
             </div>
          </nav> 
-         
+<script>
+    function VerificationCode() {
+        $('#Errscode').html("");
+         return IsNonEmpty("scode","Errscode","Please enter a received verification code");
+         return IsNumeric("scode","Errscode","Please enter Numeric characters only");
+    }
+</script> 
          <div class="page-container" style="margin-top: -19px">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 container-contentbar">
                         <div class="page-main">
-                            <div style="background:white ;height: 310px;width: 361px;margin-top: 50px;padding-top:34px;border-radius: 10px;margin-left: 373px;padding-left:35px;padding-right:35px">
-                               <h4 style="text-align:center">Forget Password OTP</h4>
+                            <div style="background:white ;height: 310px;width: 361px;margin-top: 50px;margin-bottom: 110px;padding-top:34px;border-radius: 10px;margin-left: 373px;padding-left:35px;padding-right:31px">
+                               <p style="text-align: center;color: #E3425B;font-size: 21px;">Forget Password</p>
                 <?php
              
             if (isset($_POST['btnVerifyCode'])) {
@@ -193,18 +187,21 @@ function Submitotp() {
                     }  
               }                               
                   ?>
-            <p>We have sent an security code to your email. Please enter the code and continue</p><br>
-              <form action="" method="post"> 
+            <p>We have sent a verification code to your email. Please enter the code bellow box</p><br>
+              <form action="" method="post" onsubmit="return VerificationCode()"> 
                 <input type="hidden"  value="<?php echo $_POST['reqEmail'];?>" name="reqEmail">
                 <input type="hidden"  value="<?php echo $_POST['reqID'];?>" name="reqID">
-                <input type="text" placeholder="  Security Code Here ..." name="scode" maxlength="4" style="width: 100%;padding: 7px;margin-bottom:10px" value="<?php echo isset($_POST['scode']) ? $_POST['scode'] : '';?>">
+                <input type="text" placeholder="Verification code here ..." name="scode" id="scode" maxlength="4" style="width: 100%;padding: 7px;margin-bottom:10px" value="<?php echo isset($_POST['scode']) ? $_POST['scode'] : '';?>">
+                <span class="errorstring" id="Errscode"><?php echo isset($Errscode)? $Errscode : "";?></span>
                  <?php
                     if (isset($errormessage)) {
                         echo "<span style='color:red;'>".$errormessage."</span><Br>";
                     }
                 ?>
-                <input type="submit" value="Verify Code" name="btnVerifyCode"  class="btn btn-primary" style="width: 100%;">
-            
+                <input type="submit" value="Verify your code" name="btnVerifyCode"  class="btn btn-primary" style="width: 100%;">
+                 <div style="margin-top: 10px;">
+                  <a href="forget-password.php" class="text-small forgot-password text-black">Back</a>
+                </div>
                
               </form>
                         </div>
