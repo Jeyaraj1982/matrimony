@@ -198,6 +198,11 @@ class CodeMaster {
             $DocumentTypes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DOCTYPES'") ;
             return $DocumentTypes;
         }
+        function GetSecure() {
+            global $mysql;
+            $Securs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SECURE'") ;
+            return $Securs;
+        }
         
         
     }

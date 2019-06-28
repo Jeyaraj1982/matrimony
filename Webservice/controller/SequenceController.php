@@ -11,19 +11,19 @@
         
             $nextNumber = sizeof($Rows)+1; 
          
-            if (sizeof($nextNumber)==1) {
+            if (strlen($nextNumber)==1) {
                 $prefix .= "000".$nextNumber; 
             }
         
-            if (sizeof($nextNumber)==2) {
+            if (strlen($nextNumber)==2) {
                 $prefix .= "00".$nextNumber; 
             }
         
-            if (sizeof($nextNumber)==3) {
+            if (strlen($nextNumber)==3) {
                 $prefix .= "0".$nextNumber; 
             }
         
-            if (sizeof($nextNumber)==4) {   
+            if (strlen($nextNumber)==4) {   
                 $prefix .= $nextNumber; 
             }
             
@@ -110,6 +110,32 @@
             
             return $prefix;
         }
+        function GetNextEmailApiNumber() {
+            
+            global $mysql;
+        
+            $prefix = "API";
+            $Rows = $mysql->select("select * from _tbl_settings_emailapi");
+        
+            $nextNumber = sizeof($Rows)+1; 
+         
+            if (strlen($nextNumber)==1) {
+                $prefix .= "000".$nextNumber; 
+            }
+        
+            if (strlen($nextNumber)==2) {
+                $prefix .= "00".$nextNumber; 
+            }
+        
+            if (strlen($nextNumber)==3) {
+                $prefix .= "0".$nextNumber; 
+            }
+        
+            if (strlen($nextNumber)==4) {   
+                $prefix .= $nextNumber; 
+            }
+             return $prefix;
+        } 
    
    /* Admin Master  */
     function GetNextCode($SoftCode) {

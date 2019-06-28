@@ -1,220 +1,50 @@
 <?php
-   class MailController {
+    class MailController {
         
-        var $mailHost     = "mail.nahami.online";
-        var $mailFrom     = "support@nahami.online";
-        var $mailPassword = "welcome@82";
-        var $mailPort     = "465";
-        
-        var $mailTo       = ""; 
-        var $mailTitle    = "";
-        var $mailContent  = "";
-                   
-        function Send($message,$title,$to,&$mailError) {
+        function Send($param,&$mailError) {
+            
+            global $mail,$mysql;
+            
+            $reqID = $mysql->insert("_tbl_logs_email",array("EmailTo"          => $param['MailTo'],
+                                                            "EmaildFor"        => $param['Category'],
+                                                            "MemberID"         => isset($param['MemberID']) ? $param['MemberID'] : 0,
+                                                            "EmailSubject"     => $param['Subject'],
+                                                            "EmailContent"     => base64_encode($param['Message']),
+                                                            "EmailRequestedOn" => date("Y-m-d H:i:s")));
+                 
+            $emailSettings = $mysql->select("select * from _tbl_settings_emailapi where IsActive='1' order by ApiID Desc");
+            
+            if (sizeof($emailSettings)==0) {
+                $mailError="Email not configured";
+                $mysql->execute("update _tbl_logs_email set  IsFailure='1', FailureMessage='Email not configured' where EmailLogID='".$reqID."'");
+                return false;  
+            }
+
+            $mysql->execute("update _tbl_logs_email set EmailAPIID='".$emailSettings[0]['ApiID']."', APIRequestedOn='".date("Y-m-d H:i:s")."' where EmailLogID='".$reqID."'");
              
-             global $mail;
-             
-             $mail->isSMTP(); 
-             $mail->SMTPDebug = 0;
-             $mail->Host = "mail.nahami.online"; 
-             $mail->Port = 465;
-             $mail->SMTPSecure = 'ssl';
-             $mail->SMTPAuth = true;
-             $mail->Username = "support@nahami.online";
-             $mail->Password = "Welcome@@82";
-             $mail->setFrom("noreply@nahami.online", "noreply nahami");
-             $mail->addAddress($to,"nahami");
-             $mail->Subject = $title;
-             $mail->msgHTML($message);
-             $mailError = $mail->ErrorInfo;
-             if(!$mail->send()){
-                return false;
-             } else {
-                return true;
-             } 
-        }
-        
-        function FranchiseeForgetPassword($param) {
-            
-            global $mysql;
-            
-            $this->mailTo      = $param['mailTo'];
-            $this->mailTitle   = "Reset Password.";
-            $this->mailContent = "<div>
-                                    Dear (".$param['PersonName']."),<br><br>
-                                     
-                                     Your forget password security code is : ".$param['code']."
-                                    <br><br>
-                                    Thanks<br>
-                                    Support Team<br>
-                                 </div>";
-            $res=$this->SendMail();  
-             
-            $res .= $mysql->insert("_tbl_log_email",array("MailedOn"     => date("Y-m-d H:i:s"),
-                                                         "IsFranchisee" => "1",
-                                                         "IsMember"     => "0",
-                                                         "UserCode"     => "0",
-                                                         "MailSubject"  => $this->mailTitle,
-                                                         "Content"      => base64_encode($this->mailContent),
-                                                         "SentTo"       => $this->mailTo,
-                                                         "ApiResponse"  => $res,
-                                                         "Category"     => "CreateFranchisee"));       
-                                                                                                     
-            return $res;
-        }
-        function MemberForgetPassword($param) {
-            
-            global $mysql;
-            
-            $this->mailTo      = $param['mailTo'];
-            $this->mailTitle   = "Reset Password.";
-            $this->mailContent = "<div>
-                                    Dear (".$param['MemberName']."),<br><br>
-                                     
-                                     Your forget password security code is : ".$param['code']."
-                                    <br><br>
-                                    Thanks<br>
-                                    Support Team<br>
-                                 </div>";
-            $res=$this->SendMail();  
-             
-            $res .= $mysql->insert("_tbl_log_email",array("MailedOn"     => date("Y-m-d H:i:s"),
-                                                         "IsFranchisee" => "1",
-                                                         "IsMember"     => "0",
-                                                         "UserCode"     => "0",
-                                                         "MailSubject"  => $this->mailTitle,
-                                                         "Content"      => base64_encode($this->mailContent),
-                                                         "SentTo"       => $this->mailTo,
-                                                         "ApiResponse"  => $res,
-                                                         "Category"     => "CreateFranchisee"));       
-                                                                                                     
-            return $res;
-        } 
-         function NewFranchisee($param) {
-            
-            global $mysql;
-            
-            $this->mailTo      = $param['mailTo'];
-            $this->mailTitle   = "Franchisee Account Created.";
-            $this->mailContent = "<div>
-                                    Dear Franchisee (".$param['FranchiseeName']."),<br><br>
-                                    <table style='border:1px solid #ccc'>
-                                        <tr>
-                                            <td>Login Name</td>
-                                            <td>".$param['LoginName']."</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Login Password</td>
-                                            <td>".$param['LoginPassword']."</td>
-                                        </tr>
-                                    </table>
-                                    <br><br>
-                                    Thanks<br>
-                                    Support Team<br>
-                                 </div>";
-            $res=$this->SendMail();  
-             
-            $res .= $mysql->insert("_tbl_log_email",array("MailedOn"     => date("Y-m-d H:i:s"),
-                                                         "IsFranchisee" => "1",
-                                                         "IsMember"     => "0",
-                                                         "UserCode"     => $param['FranchiseeCode'],
-                                                         "MailSubject"  => $this->mailTitle,
-                                                         "Content"      => base64_encode($this->mailContent),
-                                                         "SentTo"       => $this->mailTo,
-                                                          "ApiResponse"  => $res,
-                                                          "Category"     => "CreateFranchisee"));       
-                                                                                                     
-            return $res;
-        }
-        
-        
-        function NewFranchiseeStaff($param) {
-            
-            global $mysql;
-            
-            $this->mailTo      = $param['mailTo'];
-            $this->mailTitle   = "[Staff Account]Account Created.";
-            $this->mailContent = "<div>
-                                    Dear Franchisee (".$param['StaffName']."),<br><br>
-                                    You have added as a staff in ".$param['FranchiseeName']."<Br><bR>
-                                    
-                                    <table style='border:1px solid #ccc'>
-                                        <tr>
-                                            <td>Login Name</td>
-                                            <td>".$param['LoginName']."</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Login Password</td>
-                                            <td>".$param['LoginPassword']."</td>
-                                        </tr>
-                                    </table>
-                                    <br><br>
-                                    Thanks<br>
-                                    Support Team<br>
-                                 </div>";
-            $res=$this->SendMail();  
-             
-            $res .= $mysql->insert("_tbl_log_email",array("MailedOn"     => date("Y-m-d H:i:s"),
-                                                         "IsFranchisee" => "1",
-                                                         "IsMember"     => "0",
-                                                         "UserCode"     => $param['StaffCode'],
-                                                         "MailSubject"  => $this->mailTitle,
-                                                         "Content"      => base64_encode($this->mailContent),
-                                                         "SentTo"       => $this->mailTo,
-                                                         "ApiResponse"  => $res,
-                                                         "Category"     => "CreateFranchiseeStaff"));       
-                                                                                                     
-            return $res;
-        }
-        
-        function NewMember($param) {
-            
-            $this->mailTo=$param['mailTo'];
-            $this->mailTitle="Member Account Created.";
-            $this->mailContent="<div>
-                                    Dear Member (".$param['MemberName']."),<br><br>
-                                    <table style='border:1px solid #ccc'>
-                                        <tr>
-                                            <td>Login Name</td>
-                                            <td>".$param['LoginName']."</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Login Password</td>
-                                            <td>".$param['LoginPassword']."</td>
-                                        </tr>
-                                    </table>
-                                    <br><br>
-                                    Thanks<br>
-                                    Support Team<br>
-                                 </div>";
-            return $this->SendMail();
-        }
-        
-        function SendMail() {
-            
-            global $mail;
-            
             $mail->isSMTP(); 
             $mail->SMTPDebug = 0;
-            $mail->Host = $this->mailHost;
-            $mail->Port = $this->mailPort;
-            $mail->SMTPSecure = 'ssl';
-            $mail->SMTPAuth = true;
-            $mail->Username = $this->mailFrom;
-            $mail->Password = $this->mailPassword;
-            $mail->setFrom($this->mailFrom, "Support nahami");
-            $mail->addAddress($this->mailTo,"Support nahami");
-            $mail->Subject = $this->mailTitle;
-            $mail->msgHTML($this->mailContent);
-            $mail->AltBody = 'HTML messaging not supported';
-            // $mail->addAttachment($fname); //Attach an image file
+            $mail->Host = $emailSettings[0]["HostName"];
+            $mail->Port = $emailSettings[0]["PortNumber"];
+            $mail->SMTPSecure = $emailSettings[0]["Secure"];
+            $mail->SMTPAuth   = true;
+            $mail->Username   = $emailSettings[0]["SMTPUserName"];
+            $mail->Password   = $emailSettings[0]["SMTPPassword"];
+            $mail->Subject    = $param['Subject'];
+            $mail->setFrom("noreply@nahami.online", $emailSettings[0]["SendersName"]);
+            $mail->addAddress($param['MailTo'],"");
+            $mail->msgHTML($param['Message']);
+            $mailError = $mail->ErrorInfo;
+             
             if(!$mail->send()){
-                return "Mailer Error: " . $mail->ErrorInfo;
+                $mysql->execute("update _tbl_logs_email set IsFailure='1', FailureMessage='".$mail->ErrorInfo."' where EmailLogID='".$reqID."'");
+                $mailError = true;
+                return false;
             } else {
-               return "Message sent!";
-            }
-            
-            
+                $mailError = false;
+                $mysql->execute("update _tbl_logs_email set IsSuccess='1' where EmailLogID='".$reqID."'");
+                return true;
+            } 
         }
-    }
+   }
 ?>

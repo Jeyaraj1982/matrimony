@@ -24,8 +24,8 @@
                         </tr>  
                     </thead>
                     <tbody>  
-                        <?php $EmailApis = $mysql->select("select * from _tbl_settings_emailapi where IsActive='0'"); ?>
-                        <?php foreach($EmailApis as $EmailApi) { ?>
+                        <?php $response = $webservice->GetManageDeactiveEmailApi(); ?>
+                        <?php foreach($response['data'] as $EmailApi) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($EmailApi['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $EmailApi['ApiCode'];?></td>
                                 <td><?php echo $EmailApi['ApiName'];?></td>

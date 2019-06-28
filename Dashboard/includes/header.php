@@ -83,7 +83,7 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
     
 
     <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="margin-bottom:0px !important;border-radius:0px !important">
-    <?php if (UserRole=="Member") { ?>   
+    <?php if (UserRole=="Member") { ?> 
      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center ">
         <!--<a class="navbar-brand brand-logo" href="../Dashboard">
           <img src="<?php //echo SiteUrl?>images/logo.svg" alt="logo" />
@@ -100,31 +100,37 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
                   </span>
                  </li>
           <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <i class="mdi mdi-file-document-box"></i>
-              <span class="count">0</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-              <!--<div class="dropdown-item">
+    <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+        <i class="mdi mdi-file-document-box"></i>
+        <span class="count">0</span>
+    </a>
+                    <?php 
+                         $response = $webservice->GetMyEmails();
+                    ?>
+
+        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
+        <?php if (sizeof($response['data'])>0) {  ?>
+            <div class="dropdown-item">
                 <p class="mb-0 font-weight-normal float-left">You have 7 unread mails
                 </p>
                 <span class="badge badge-info badge-pill float-right">View all</span>
-              </div>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
+            </div>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <img src="<?php// echo SiteUrl?>assets/images/faces/face4.jpg" alt="image" class="profile-pic">
+                    <img src="<?php// echo SiteUrl?>assets/images/faces/face4.jpg" alt="image" class="profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium text-dark">David Grey
+                    <h6 class="preview-subject ellipsis font-weight-medium text-dark"><?php echo $response['data']['EmailSubject'];?>
                     <span class="float-right font-weight-light small-text">1 Minutes ago</span>
                   </h6>
-                  <p class="font-weight-light small-text">
-                    The meeting is cancelled
-                  </p>
+                    <p class="font-weight-light small-text">
+                        The meeting is cancelled
+                    </p>
                 </div>
-              </a>
-              <div class="dropdown-divider"></div>
+            </a>
+            <?php } else{?>
+                <!--<div class="dropdown-divider"></div>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
                   <img src="<?php // echo SiteUrl?>assets/images/faces/face2.jpg" alt="image" class="profile-pic">
@@ -152,15 +158,16 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
                   </p>
                 </div>
               </a>-->
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium text-dark" style="margin-bottom: -7px;">You don't have mail at this time
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                    <div class="preview-item-content flex-grow">
+                        <h6 class="preview-subject ellipsis font-weight-medium text-dark" style="margin-bottom: -7px;">You don't have mail at this time
                   </h6>
-                 </div>
-              </a>
-            </div>
-          </li>
+                    </div>
+                </a>
+                <?php }?>
+        </div>
+</li>
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="mdi mdi-bell"></i>
@@ -232,10 +239,10 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
               <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image">
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding-top: 10px;padding-bottom: 10px;">
-              <a href="#" class="dropdown-item">
+              <!--<a href="#" class="dropdown-item">
                Tools
-              </a>
-              <a href="<?php echo GetUrl("MySettings/Settings");?>" class="dropdown-item">
+              </a>-->
+              <a href="<?php echo GetUrl("MySettings/MyMemberInfo");?>" class="dropdown-item">
               My Settings
               </a>
               

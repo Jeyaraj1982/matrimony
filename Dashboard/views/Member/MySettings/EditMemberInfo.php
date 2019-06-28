@@ -1,5 +1,5 @@
 <?php
-
+$page="MyMemberInfo";
     if (isset($_POST['Btnupdate'])) {
         $response = $webservice->EditMemberInfo($_POST);
         if ($response['status']=="success") {
@@ -48,23 +48,29 @@
         return (ErrorCount==0) ? true : false;
     }                                                
 </script>
+<div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" style="font-size: 22px;">My Settings</h4>
+                <h5 style="color:#666">Control, protect and secure your account, all in one place.</h5>
+                <h6 style="color:#999">This page gives you quick access to settings and tools that let you safeguard your data, protect your privacy and decide how your information can make us.</h6>
+            </div>
+        </div>
+</div>
 <form method="post" action="" onsubmit="return SubmitNewMember();">
-<h4>My Settings</h4>
-  <div class="row">
-    <div class="col-md-12 d-flex align-items-stretch grid-margin">
+<div class="col-md-12 d-flex align-items-stretch grid-margin">
       <div class="row flex-grow">
         <div class="col-12">
           <div class="card">
             <div class="card-body">
              <div class="form-group-row">
               <div class="col-sm-12">
-               <div class="col-sm-3">
+               <div class="col-sm-3" style="width:21%">
                 <div class="sidemenu" style="width: 200px;margin-left: -58px;margin-bottom: -41px;margin-top: -30px;border-right: 1px solid #eee;">
                     <?php include_once("sidemenu.php");?>
                 </div>
                 </div>
                 <div class="col-sm-9">
-                 <h4 class="card-title">Manage My Member</h4>  
                  <h4 class="card-title">Edit Member Information</h4>  
                   <div class="form-group row">
                      <div class="col-sm-3"><small>Member Code</small> </div>
@@ -78,29 +84,34 @@
                   </div>
                   <div class="form-group row">
                      <div class="col-sm-3"><small>Mobile Number<span id="star">*</span></small></div>
-                     <div class="col-sm-3"><input type="text" class="form-control" maxlength="10" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Member['MobileNumber']);?>" placeholder="Mobile Number">
-                     <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span></div>
+                     <div class="col-sm-3">
+                     <?php if($Member['IsMobileVerified']==0){ ?>
+                     <input type="text" class="form-control" maxlength="10" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Member['MobileNumber']);?>" placeholder="Mobile Number">
+                     <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
+                     <?php } else{ ?>
+                     <input type="text" class="form-control" disabled="disabled" maxlength="10" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Member['MobileNumber']);?>" placeholder="Mobile Number">
+                     </div>
+                     <div class="col-sm-6" style="color:#5dce37"><img src="<?php echo SiteUrl?>assets/images/Green-Tick-PNG-Picture.png" width="7%">&nbsp;Verified</div>
+                     <?php }?>
                   </div>
                   <div class="form-group row">     
                      <div class="col-sm-3"><small>Email ID<span id="star">*</span></small></div>
-                     <div class="col-sm-6"><input type="text" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $Member['EmailID']);?>" placeholder="Email ID">
-                     <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span></div>
-                  </div>
-                  <div class="form-group row">
-                    <div class="col-sm-3"><small>Status<span id="star">*</span></small></div>
-                     <div class="col-sm-3">
-                         <select name="Status" class="form-control" style="width: 140px;" >
-                             <option value="1" <?php echo ($Member['IsActive']==1) ? " selected='selected' " : "";?>>Active</option>
-                             <option value="0" <?php echo ($Member['IsActive']==0) ? " selected='selected' " : "";?>>Deactive</option>
-                         </select>
+                     <div class="col-sm-6">
+                     <?php if($Member['IsEmailVerified']==0){ ?>
+                     <input type="text" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $Member['EmailID']);?>" placeholder="Email ID">
+                     <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span>
+                     <?php } else{ ?>
+                     <input type="text" disabled="disabled" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $Member['EmailID']);?>" placeholder="Email ID">
                      </div>
+                     <div class="col-sm-3" style="color:#5dce37"><img src="<?php echo SiteUrl?>assets/images/Green-Tick-PNG-Picture.png" width="15%">&nbsp;Verified</div>
+                     <?php }?>
                   </div>
                   <div class="form-group row">
-                     <div class="col-sm-3"><small>Created On</small></div>
-                     <div class="col-sm-3"><small style="color:#737373;"><?php echo  putDateTime($Member['CreatedOn']);?></small></div>
-                  </div>
                   <div class="col-sm-12" style="text-align:center;color:red"><?php echo $successmessage;?> <?php echo $errormessage;?></div>
-                  <button type="submit" name="Btnupdate" class="btn btn-primary mr-2">Update Information</button>
+                  </div>
+                  <div class="form-group row">     
+                     <div class="col-sm-4"><button type="submit" name="Btnupdate" class="btn btn-primary mr-2">Update Information</button></div>
+                     <div class="col-sm-3"><a href="../MyMemberInfo">cancel</a></div>
                 </div>                                                                                                        
               </div>
              </div>

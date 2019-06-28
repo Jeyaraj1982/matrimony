@@ -86,20 +86,20 @@ function submitregform() {
                          ErrorCount=0;
                         
                         
-                        if (IsNonEmpty("Name","ErrName","Please EnterName")) {
-                        IsAlphabet("Name","ErrName","Please Enter Alpha Numeric characters only");
+                        if (IsNonEmpty("Name","ErrName","Please enter your name")) {
+                        IsAlphabet("Name","ErrName","Please enter alpha numeric characters only");
                         }
-                        IsNonEmpty("Gender","ErrGender","Please Enter Valid Gender");
+                        IsNonEmpty("Gender","ErrGender","Please enter valid gender");
                         IsNonEmpty("check","Errcheck","Please agree");
-                        if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter MobileNumber")) {
-                        IsMobileNumber("MobileNumber","ErrMobileNumber","Please Enter Valid Mobile Number");
+                        if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please enter your mobile number")) {
+                        IsMobileNumber("MobileNumber","ErrMobileNumber","Please enter valid Mobile Number");
                         }
                        
-                        if (IsNonEmpty("Email","ErrEmail","Please Enter Email")) {
-                            IsEmail("Email","ErrEmail","Please Enter Valid EmailID");    
+                        if (IsNonEmpty("Email","ErrEmail","Please enter email")) {
+                            IsEmail("Email","ErrEmail","Please enter valid email id");    
                         }
-                        if (IsNonEmpty("LoginPassword","ErrLoginPassword","Please Enter Login Password")) {
-                            IsPassword("LoginPassword","ErrLoginPassword","Please Enter Alpha Numeric Characters and More than 8 characters");  
+                        if (IsNonEmpty("LoginPassword","ErrLoginPassword","Please enter login password")) {
+                            IsPassword("LoginPassword","ErrLoginPassword","Please Enter alpha numeric characters and more than 8 characters");  
                         }
                          
                         if(document.form1.Captchatext.value==""){
@@ -111,9 +111,9 @@ function submitregform() {
                            return false;
                            }
                            if(document.form1.check.checked == false){
+                               document.getElementById("Errcheck").innerHTML="if yo agree please selcet!";
                                    alert ('if yo agree please selcet');
-                                   check.focus();
-                                   return false;}
+                                  return false;}
                         if (ErrorCount==0) {
                             return true;
                         } else{

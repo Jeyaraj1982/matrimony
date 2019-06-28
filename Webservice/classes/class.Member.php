@@ -70,19 +70,31 @@
              if (sizeof($data)>0) {
                 return Response::returnError("Email Already Exists");
              }
-             
+             $MemberCode=SeqMaster::GetNextMemberNumber();
              $id = $mysql->insert("_tbl_members",array("MemberName"     => $_POST['Name'],
+                                                       "MemberCode"     => $MemberCode,
                                                        "Sex"            => $_POST['Gender'],
                                                        "MobileNumber"   => $_POST['MobileNumber'],
                                                        "EmailID"        => $_POST['Email'],
                                                        "MemberPassword" => $_POST['LoginPassword'],
                                                        "CountryCode"    => $_POST['CountryCode'],
-                                                       "ReferedBy"      => "32",
+                                                       "ReferedBy"      => AdminFranchise,
                                                        "CreatedOn"      => date("Y-m-d H:i:s"))); 
              $data = $mysql->select("select * from _tbl_members where MemberID='".$id."'");
              
              $loginid = $mysql->insert("_tbl_member_login",array("LoginOn"  => date("Y-m-d H:i:s"),
                                                                  "MemberID" => $data[0]['MemberID']));
+                                                                 
+             $mContent = $mysql->select("select * from mailcontent where Category='NewMemberCreated'");
+             $content  = str_replace("#MemberName#",$_POST['Name'],$mContent[0]['Content']);
+             $content  = str_replace("#MemberID#",$MemberCode,$content);
+             $content  = str_replace("#LoginPassword#",$_POST['LoginPassword'],$content);
+             
+             MailController::Send(array("MailTo"   => $_POST['Email'],
+                                        "Category" => "NewMemberCreated",
+                                        "MemberID" => $id,
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
                                                                
              $data[0]['LoginID']=$loginid;       
              return Response::returnSuccess("Registered successfully",$data[0]);
@@ -110,16 +122,19 @@
                                                                          "Requested"    => date("Y-m-d h:i:s"), 
                                                                          "EmailId"      => $data[0]['EmailID'],
                                                                          "IsCompleted"  => 0)) ; 
-             $cart = "<div>
-                            Dear (".$data[0]['MemberName']."),<br><br>
-                            Your forget password security code is : ".$otp."
-                            <br><br>
-                            Thanks<br>
-                            Support Team<br>
-                        </div>";
-             $response = MailController::Send($cart,"Reset Password",$data[0]['EmailID'],$mailError);
-             if(trim($mailError)!=""){
-                return  Response::returnError("Error: unable to process your request.".strlen($response));
+           
+             $mContent = $mysql->select("select * from mailcontent where Category='MemberPasswordForget'");
+             $content  = str_replace("#MemberName#",$data[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#otp#",$otp,$content);
+             
+             MailController::Send(array("MailTo"   => $data[0]['EmailID'],
+                                        "Category" => "MemberPasswordForget",
+                                        "MemberID" => $data[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+         
+             if($mailError){
+                return  Response::returnError("Error: unable to process your request.");
              } else {
                 return Response::returnSuccess("Email sent successfully",array("reqID"=>$securitycode,"email"=>$data[0]['EmailID']));
              }
@@ -280,7 +295,7 @@
              global $mysql,$loginInfo;
              $getpassword = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
              if ($getpassword[0]['MemberPassword']!=$_POST['CurrentPassword']) {
-                return Response::returnError("Incorrect Currentpassword"); 
+                return Response::returnError("Incorrect Current password"); 
              } 
              if ($getpassword[0]['MemberPassword']==$_POST['CurrentPassword']) {
                  $mysql->execute("update _tbl_members set MemberPassword='".$_POST['ConfirmNewPassword']."' where MemberID='".$loginInfo[0]['MemberID']."'");
@@ -399,7 +414,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
-                                    <div class="col-sm-12" style="text-align:center"><a href="javascript:void(0)" onclick="MobileNumberVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to Verify</a></div>
+                                    <div class="col-sm-12" style="text-align:center"><a href="javascript:void(0)" onclick="MobileNumberVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -679,41 +694,27 @@
                  
                  if ($error=="") {
                      $otp=rand(1111,9999);
-                     $cart = '<div style="width:650px;margin:0px auto">
-                                <table style="width:100%">
-                                    <tr>
-                                        <td colspan="2">Dear '.$memberdata[0]['MemberName'].', <Br><Br>Email Verification Security Code is '.$otp.'</td>
-                                    </tr>
-                                </table>
-                                </div>';
-                          $mail = new PHPMailer;
-                  $mail->isSMTP(); 
-                  $mail->SMTPDebug = 0;
-                  $mail->Host = "mail.nahami.online";
-                  $mail->Port = 465;
-                  $mail->SMTPSecure = 'ssl';
-                  $mail->SMTPAuth = true;
-                  $mail->Username = "support@nahami.online";
-                  $mail->Password = "Welcome@@82";
-                  $mail->setFrom("support@nahami.online", "Support nahami");
-                  $mail->addAddress($memberdata[0]['EmailID'],"Support");
-                  $mail->Subject = 'Email Verifications';
-                  $mail->msgHTML($cart);
-                  $mail->msgHTML($cart);
-                  $mail->AltBody = $cart;
-                          
-                          
-                          
-                          if(!$mail->send()){
-                            return "Mailer Error: " . $mail->ErrorInfo.
-                             "Error. unable to process your request.";
-                          } else {
-                               $securitycode = $mysql->insert("_tbl_verification_otp",array("MemberID" =>$memberdata[0]['MemberID'],
-                                                                                        "EmailTo" =>$memberdata[0]['EmailID'],
-                                                                                        "SecurityCode" =>$otp,
-                                                                                        "messagedon"=>date("Y-m-d h:i:s"))) ;
-                              $formid = "frmMobileNoVerification_".rand(30,3000);
-                 $memberdata = $mysql->select("select * from _tbl_members where MemberID='".$login[0]['MemberID']."'");                                                          
+                     
+                     $mContent = $mysql->select("select * from mailcontent where Category='MemberEmailVerification'");
+                     $content  = str_replace("#MemberName#",$memberdata[0]['MemberName'],$mContent[0]['Content']);
+                     $content  = str_replace("#otp#",$otp,$content);
+                     
+                     MailController::Send(array("MailTo"   => $memberdata[0]['EmailID'],
+                                                "Category" => "NewMemberCreated",
+                                                "MemberID" => $memberdata[0]['MemberID'],
+                                                "Subject"  => $mContent[0]['Title'],
+                                                "Message"  => $content),$mailError);
+                                                
+                     if($mailError){
+                        return "Mailer Error: " . $mail->ErrorInfo.
+                        "Error. unable to process your request.";
+                     } else {
+                        $securitycode = $mysql->insert("_tbl_verification_otp",array("MemberID" =>$memberdata[0]['MemberID'],
+                                                                                     "EmailTo" =>$memberdata[0]['EmailID'],
+                                                                                     "SecurityCode" =>$otp,
+                                                                                     "messagedon"=>date("Y-m-d h:i:s"))) ;
+                        $formid = "frmMobileNoVerification_".rand(30,3000);
+                        $memberdata = $mysql->select("select * from _tbl_members where MemberID='".$login[0]['MemberID']."'");                                                          
                                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
                         <form method="POST" id="'.$formid.'">
                         <input type="hidden" value="'.$loginid.'" name="loginId">
@@ -730,7 +731,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="col-sm-12">
-                                        <div class="col-sm-7"><input type="text" value="'.$scode.'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-7"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
                                         <div class="col-sm-5"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                     </div>
                                     <div class="col-sm-12">'.$error.'</div>
@@ -763,7 +764,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="col-sm-12">
-                                        <div class="col-sm-7"><input type="text" value="'.$scode.'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-7"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
                                         <div class="col-sm-5"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                     </div>
                                     <div class="col-sm-12">'.$error.'</div>
@@ -771,8 +772,7 @@
                             </div>
                             <h5 style="text-align:center;color:#ada9a9">Did not receive the PIN?<a href="#">&nbsp;Resend</a><h5> 
                         </form>                                                                                                       
-                        </div>
-                        '; 
+                        </div>'; 
                 }
             }                                    
          }
@@ -791,7 +791,7 @@
                             
                        </div>';
              } else {
-                 return $this->EmailVerificationForm("<span style='color:red'>You entered, invalid security code.</span>",$_POST['loginId'],$_POST['email_otp'],$_POST['reqId']);
+                 return $this->EmailVerificationForm("<span style='color:red'>Invalid verification code.</span>",$_POST['loginId'],$_POST['email_otp'],$_POST['reqId']);
              }  
          }
          
@@ -805,7 +805,154 @@
          function EditProfile() {
              
              global $mysql,$loginInfo;
-             $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");
+             
+            /* if ((strlen(trim($_POST['Country']))==0 || $_POST['Country']=="0" )) {
+             return Response::returnError("Please select Country Name");
+             }
+             if ((strlen(trim($_POST['StateName']))==0 || $_POST['StateName']=="0" )) {
+             return Response::returnError("Please select State Name");
+             }
+             if (!(strlen(trim($_POST['City']))>0)) {
+             return Response::returnError("Please enter CityName");
+             }
+             if (!(strlen(trim($_POST['OtherLocation']))>0)) {
+             return Response::returnError("Please enter Other Location");
+             }
+             if (!(strlen(trim($_POST['Occupation']))>0)) {
+             return Response::returnError("Please enter Occupation");
+             }
+             if (!(strlen(trim($_POST['TypeofOccupation']))>0)) {
+             return Response::returnError("Please enter Type of Occupation");
+             }  */
+             
+             $dob = strtotime($_POST['DateofBirth']);
+               $dob = date("Y",$dob)."-".date("m",$dob)."-".date("d",$dob);
+             
+             $MaritalStatus = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARTIALSTATUS' and SoftCode='".$_POST['MaritalStatus']."'");  
+             $Sex = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX' and SoftCode='".$_POST['Sex']."'");  
+             $MotherTongue = $mysql->select("select * from _tbl_master_codemaster Where HardCode='LANGUAGENAMES' and SoftCode='".$_POST['Language']."'");  
+             $Religion = $mysql->select("select * from _tbl_master_codemaster Where HardCode='RELINAMES' and SoftCode='".$_POST['Religion']."'");  
+             $Caste = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CASTNAMES' and SoftCode='".$_POST['Caste']."'");  
+             $Community = $mysql->select("select * from _tbl_master_codemaster Where HardCode='COMMUNITY' and SoftCode='".$_POST['Community']."'");  
+             $Nationality = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NATIONALNAMES' and SoftCode='".$_POST['Nationality']."'");  
+             $Country = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CONTNAMES' and SoftCode='".$_POST['Country']."'");  
+             $State = $mysql->select("select * from _tbl_master_codemaster Where HardCode='STATNAMES' and SoftCode='".$_POST['StateName']."'");  
+             $EmployedAs = $mysql->select("selectselect * from _tbl_master_codemaster Where HardCode='OCCUPATIONS' and SoftCode='".$_POST['EmployedAs']."'");  
+             $OccupationType = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONTYPES' and SoftCode='".$_POST['OccupationType']."'");  
+             $TypeofOccupation = $mysql->select("select * from _tbl_master_codemaster Where HardCode='TYPEOFOCCUPATIONS' and SoftCode='".$_POST['TypeofOccupation']."'");  
+             $IncomeRange = $mysql->select("select * from _tbl_master_codemaster Where HardCode='INCOMERANGE' and SoftCode='".$_POST['IncomeRange']."'");  
+             $FathersOccupation = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONTYPES' and SoftCode='".$_POST['FathersOccupation']."'");  
+             $MothersOccupation = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONTYPES' and SoftCode='".$_POST['MothersOccupation']."'");  
+             $NumberofBrothers = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NUMBEROFBROTHER' and SoftCode='".$_POST['NumberofBrothers']."'");  
+             $younger = $mysql->select("select * from _tbl_master_codemaster Where HardCode='YOUNGER' and SoftCode='".$_POST['younger']."'");  
+             $elder = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ELDER' and SoftCode='".$_POST['elder']."'");  
+             $married = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARRIED' and SoftCode='".$_POST['married']."'");  
+             $NumberofSisters = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NOOFSISTER' and SoftCode='".$_POST['NumberofSisters']."'");  
+             $elderSister = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ELDERSIS' and SoftCode='".$_POST['elderSister']."'");  
+             $youngerSister = $mysql->select("select * from _tbl_master_codemaster Where HardCode='YOUNGERSIS' and SoftCode='".$_POST['youngerSister']."'");  
+             $marriedSister = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARRIEDSIS' and SoftCode='".$_POST['marriedSister']."'");  
+             $PhysicallyImpaired = $mysql->select("select * from _tbl_master_codemaster Where HardCode='PHYSICALLYIMPAIRED' and SoftCode='".$_POST['PhysicallyImpaired']."'");  
+             $VisuallyImpaired = $mysql->select("select * from _tbl_master_codemaster Where HardCode='VISUALLYIMPAIRED' and SoftCode='".$_POST['VisuallyImpaired']."'");  
+             $VissionImpaired = $mysql->select("select * from _tbl_master_codemaster Where HardCode='VISSIONIMPAIRED' and SoftCode='".$_POST['VissionImpaired']."'");  
+             $SpeechImpaired = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SPEECHIMPAIRED' and SoftCode='".$_POST['SpeechImpaired']."'");  
+             $Height = $mysql->select("select * from _tbl_master_codemaster Where HardCode='HEIGHTS' and SoftCode='".$_POST['Height']."'");  
+             $Weight = $mysql->select("select * from _tbl_master_codemaster Where HardCode='WEIGHTS' and SoftCode='".$_POST['Weight']."'");  
+             $BloodGroup = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BLOODGROUPS' and SoftCode='".$_POST['BloodGroup']."'");  
+             $Complexation = $mysql->select("SELECT * FROM _tbl_master_codemaster WHERE HardCode='COMPLEXIONS' and SoftCode='".$_POST['Complexation']."'");  
+             $BodyType = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BODYTYPES' and SoftCode='".$_POST['BodyType']."'");  
+             $Diet = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DIETS' and SoftCode='".$_POST['Diet']."'");  
+             $SmookingHabit = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SMOKINGHABITS' and SoftCode='".$_POST['SmookingHabit']."'");  
+             $DrinkingHabit = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DRINKINGHABITS' and SoftCode='".$_POST['DrinkingHabit']."'");  
+             
+             
+             
+             $mysql->execute("update _tbl_Profile_Draft set ProfileFor='".$_POST['ProfileFor']."',
+                                                       ProfileName='".$_POST['ProfileName']."',
+                                                       DateofBirth='".$dob."',
+                                                       SexCode='".$_POST['Sex']."',
+                                                       Sex='".$Sex[0]['CodeValue']."',
+                                                       MaritalStatusCode='".$_POST['MaritalStatus']."',
+                                                       MaritalStatus='".$MaritalStatus[0]['CodeValue']."',
+                                                       MotherTongueCode='".$_POST['Language']."',
+                                                       MotherTongue='".$MotherTongue[0]['CodeValue']."',
+                                                       ReligionCode='".$_POST['Religion']."',
+                                                       Religion='".$Religion[0]['CodeValue']."',
+                                                       CasteCode='".$_POST['Caste']."',
+                                                       Caste='".$Caste[0]['CodeValue']."',
+                                                       Country='".$_POST['Country']."',
+                                                       StateCode='".$_POST['StateName']."',
+                                                       State='".$State[0]['CodeValue']."',
+                                                       City='".$_POST['City']."',
+                                                       OtherLocation='".$_POST['OtherLocation']."',
+                                                       CommunityCode='".$_POST['Community']."',
+                                                       Community='".$Community[0]['CodeValue']."',
+                                                       NationalityCode='".$_POST['Nationality']."',
+                                                       Nationality='".$Nationality[0]['CodeValue']."',
+                                                       AadhaarNo='".$_POST['Aadhaar']."',
+                                                       Education='".$_POST['EducationDegree']."',
+                                                       EmployedAsCode='".$_POST['EmployedAs']."',
+                                                       EmployedAs='".$EmployedAs[0]['CodeValue']."',
+                                                       OccupationTypeCode='".$_POST['OccupationType']."',
+                                                       OccupationType='".$OccupationType[0]['CodeValue']."',
+                                                       TypeofOccupationCode='".$_POST['TypeofOccupation']."',
+                                                       TypeofOccupation='".$TypeofOccupation[0]['CodeValue']."',
+                                                       AnnualIncomeCode='".$_POST['IncomeRange']."',
+                                                       AnnualIncome='".$IncomeRange[0]['CodeValue']."',
+                                                       FathersName='".$_POST['FatherName']."',
+                                                       FathersOccupationCode='".$_POST['FathersOccupation']."',
+                                                       FathersOccupation='".$FathersOccupation[0]['CodeValue']."',
+                                                       MothersName='".$_POST['MotherName']."',
+                                                       MothersOccupationCode='".$_POST['MothersOccupation']."',
+                                                       MothersOccupation='".$MothersOccupation[0]['CodeValue']."',
+                                                       NumberofBrothersCode='".$_POST['NumberofBrother']."',
+                                                       NumberofBrothers='".$NumberofBrothers[0]['CodeValue']."',
+                                                       YoungerCode='".$_POST['younger']."',
+                                                       Younger='".$younger[0]['CodeValue']."',
+                                                       ElderCode='".$_POST['elder']."',
+                                                       Elder='".$elder[0]['CodeValue']."',
+                                                       MarriedCode='".$_POST['married']."',
+                                                       Married='".$married[0]['CodeValue']."',
+                                                       NumberofSistersCode='".$_POST['NumberofSisters']."',
+                                                       NumberofSisters='".$NumberofSisters[0]['CodeValue']."',
+                                                       ElderSisterCode='".$_POST['elderSister']."',
+                                                       ElderSister='".$elderSister[0]['CodeValue']."',
+                                                       YoungerSisterCode='".$_POST['youngerSister']."',
+                                                       YoungerSister='".$youngerSister[0]['CodeValue']."',
+                                                       MarriedSisterCode='".$_POST['marriedSister']."',
+                                                       MarriedSister='".$marriedSister[0]['CodeValue']."',
+                                                       PhysicallyImpairedCode='".$_POST['PhysicallyImpaired']."',
+                                                       PhysicallyImpaired='".$PhysicallyImpaired[0]['CodeValue']."',
+                                                       VisuallyImpairedCode='".$_POST['VisuallyImpaired']."',
+                                                       VisuallyImpaired='".$VisuallyImpaired[0]['CodeValue']."',
+                                                       VissionImpairedCode='".$_POST['VissionImpaired']."',
+                                                       VissionImpairedCode='".$VissionImpaired[0]['CodeValue']."',
+                                                       SpeechImpairedCode='".$_POST['SpeechImpaired']."',
+                                                       SpeechImpaired='".$SpeechImpaired[0]['CodeValue']."',
+                                                       HeightCode='".$_POST['Height']."',
+                                                       Height='".$Height[0]['CodeValue']."',
+                                                       WeightCode='".$_POST['Weight']."',
+                                                       Weight='".$Weight[0]['CodeValue']."',
+                                                       BloodGroupCode='".$_POST['BloodGroup']."',
+                                                       BloodGroup='".$BloodGroup[0]['CodeValue']."',
+                                                       ComplexationCode='".$_POST['Complexation']."',
+                                                       Complexation='".$Complexation[0]['CodeValue']."',
+                                                       BodyTypeCode='".$_POST['BodyType']."',
+                                                       BodyType='".$BodyType[0]['CodeValue']."',
+                                                       DietCode='".$_POST['Diet']."',
+                                                       Diet='".$Diet[0]['CodeValue']."',
+                                                       SmokingHabitCode='".$_POST['SmookingHabit']."',
+                                                       SmokingHabit='".$SmookingHabit[0]['CodeValue']."',
+                                                       DrinkingHabitCode='".$_POST['DrinkingHabit']."',
+                                                       DrinkingHabit='".$DrinkingHabit[0]['CodeValue']."',
+                                                       EmailID='".$_POST['EmailID']."',
+                                                       MobileNumber='".$_POST['MobileNumber']."',
+                                                       WhatsappNumber='".$_POST['WhatsappNumber']."',
+                                                       AddressLine1='".$_POST['AddressLine1']."',
+                                                       AddressLine2='".$_POST['AddressLine2']."',
+                                                       AddressLine3='".$_POST['AddressLine3']."'
+                                                        where  CreatedBy='".$_Member['MemberID']."' and ProfileID'".$_POST['Code']."'");
+             
+             $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");               
              return Response::returnSuccess("success",array("ProfileInfo"             => $Profiles[0],
                                                             "ProfileSignInFor"        => CodeMaster::GetProfileFor(),
                                                             "Gender"                  => CodeMaster::GetGender(),
@@ -843,12 +990,58 @@
                                                             "CountryName"             => CodeMaster::GetCountryName(),
                                                             "StateName"               => CodeMaster::GetStateName()));
          } 
+         function editprofileviewinfo(){
+             global $mysql,$loginInfo;
+             $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");               
+             return Response::returnSuccess("success",array("ProfileInfo"             => $Profiles[0],
+                                                            "ProfileSignInFor"        => CodeMaster::GetProfileFor(),
+                                                            "Gender"                  => CodeMaster::GetGender(),
+                                                            "MaritalStatus"           => CodeMaster::GetMaritalStatus(),
+                                                            "Language"                => CodeMaster::GetLanguage(),
+                                                            "Religion"                => CodeMaster::GetReligion(),
+                                                            "Caste"                   => CodeMaster::GetCaste(),
+                                                            "Community"               => CodeMaster::GetCommunity(),
+                                                            "Nationality"             => CodeMaster::GetNationality(),
+                                                            "EmployedAs"              => CodeMaster::GetEmployedAs(),
+                                                            "Occupation"              => CodeMaster::GetOccupation(),
+                                                            "TypeofOccupation"        => CodeMaster::GetOccupationTypes(),
+                                                            "IncomeRange"             => CodeMaster::GetIncomeRange(),
+                                                            "NumberofBrother"         => CodeMaster::GetNumberOfBrother(),
+                                                            "NumberofElderBrother"    => CodeMaster::GetNumberOfElderBrother(),
+                                                            "NumberofYoungerBrother"  => CodeMaster::GetNumberOfYoungerBrother(),
+                                                            "NumberofMarriedBrother"  => CodeMaster::GetNumberOfMarriedBrother(),
+                                                            "NumberofSisters"         => CodeMaster::GetNumberOfSisters(),
+                                                            "NumberofElderSisters"    => CodeMaster::GetNumberOfElderSisters(),
+                                                            "NumberofYoungerSisters"  => CodeMaster::GetNumberOfYoungerSisters(),
+                                                            "NumberofMarriedSisters"  => CodeMaster::GetNumberOfMarriedSisters(),
+                                                            "PhysicallyImpaired"      => CodeMaster::GetPhysicallyImpaired(),
+                                                            "VisuallyImpaired"        => CodeMaster::GetVisuallyImpaired(),
+                                                            "VissionImpaired"         => CodeMaster::GetVisionImpaired(),
+                                                            "SpeechImpaired"          => CodeMaster::GetSpeechImpaired(),
+                                                            "Height"                  => CodeMaster::GetHeight(),
+                                                            "Weight"                  => CodeMaster::GetWeight(),
+                                                            "BloodGroup"              => CodeMaster::GetBloodGroups(),
+                                                            "Complexation"            => CodeMaster::GetSkinType(),
+                                                            "BodyType"                => CodeMaster::GetBodyType(),
+                                                            "Diet"                    => CodeMaster::GetDiet(),
+                                                            "SmookingHabit"           => CodeMaster::GetSmokingHabit(),
+                                                            "DrinkingHabit"           => CodeMaster::GetDrinkingHabit(),
+                                                            "DocumentType"            => CodeMaster::GetDocumentType(),
+                                                            "CountryName"             => CodeMaster::GetCountryName(),
+                                                            "StateName"               => CodeMaster::GetStateName()));
+         }
          function updateProfilePhoto() {
              
              global $mysql,$loginInfo;
              $Profiles = $mysql->select("update  _tbl_members set FileName='".$_POST['filename']."'  where MemberID='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("success",array());
-         }          
+         }
+         function GetMyEmails() {
+           global $mysql;    
+              $MyEmails = $mysql->select("select * from _tbl_logs_email where MemberID='".$loginInfo[0]['MemberID']."'");
+                return Response::returnSuccess("success",$MyEmails);
+                                                            
+    }          
      }   
      
 ?> 

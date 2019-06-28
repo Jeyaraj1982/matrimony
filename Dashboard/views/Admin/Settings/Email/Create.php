@@ -1,5 +1,5 @@
 <?php
-if (isset($_POST['BtnSaveApi'])) {
+/*if (isset($_POST['BtnSaveApi'])) {
          
         $ErrorCount =0;
         
@@ -165,8 +165,8 @@ $EmailApi = $mysql->insert("_tbl_settings_emailapi",array("ApiCode"     => $_POS
                                                           "HostName"    => $_POST['HostName'],
                                                           "PortNumber"  => $_POST['PortNo'],
                                                           "Secure"      => $_POST['Secure'],
-                                                          "UserName"    => $_POST['UserName'],
-                                                          "Password"    => $_POST['Password'],
+                                                          "SMTPUserName"    => $_POST['UserName'],
+                                                          "SMTPPassword"    => $_POST['Password'],
                                                           "SendersName" => $_POST['SendersName'],
                                                           "CreatedOn"   => date("Y-m-d H:i:s"),
                                                           "Remarks"     => $_POST['Remarks']));
@@ -179,7 +179,7 @@ $EmailApi = $mysql->insert("_tbl_settings_emailapi",array("ApiCode"     => $_POS
         }
           
     }
-    }
+    }*/
 ?>
 <script>
 $(document).ready(function () {
@@ -258,8 +258,8 @@ function SubmitNewApi() {
                         }
                         IsNonEmpty("HostName","ErrHostName","Please Enter Host Name");
                         IsNonEmpty("PortNo","ErrPortNo","Please Enter Port No");
-                        if (IsLogin("UserName","ErrUserName","Please Enter the character greater than 6 character and less than 9 character")) {
-                        IsAlphabet("UserName","ErrUserName","Please Enter Alpha Numeric Character only");
+                        if (IsNonEmpty("UserName","ErrUserName","Please Enter the user name")) {
+                        //IsEmail("UserName","ErrUserName","Please Enter Valid ");
                         }
                         if (IsPassword("Password","ErrPassword","Please Enter More than 8 characters")) {
                         IsAlphaNumeric("Password","ErrPassword","Alpha Numeric Characters only");
@@ -274,7 +274,23 @@ function SubmitNewApi() {
                  
 }
 </script>                                                         
-
+<?php                   
+  if (isset($_POST['BtnSaveApi'])) {   
+    $response = $webservice->CreateEmailApi($_POST);
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    }
+  $EInfo = $webservice->GetEmailApiCode(); 
+     $EmailApiCode="";
+        if ($EInfo['status']=="success") {
+            $EmailApiCode  =$EInfo['data']['EmailApiCode'];
+        }
+        {
+?>
 
 <div class="col-12 grid-margin">
               <div class="card">
@@ -295,7 +311,7 @@ function SubmitNewApi() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Api Code<span id="star">*</span></label>
                           <div class="col-sm-2">
-                            <input type="text" value="<?php echo isset($_POST['ApiCode']) ? $_POST['ApiCode'] : EmailApi::GetNextEmailApiNumber();?>" class="form-control" id="ApiCode" name="ApiCode" maxlength="6">
+                            <input type="text" value="<?php echo isset($_POST['ApiCode']) ? $_POST['ApiCode'] : $EmailApiCode;?>" class="form-control" id="ApiCode" name="ApiCode" maxlength="7">
                             <span class="errorstring" id="ErrApiCode"><?php echo isset($ErrApiCode)? $ErrApiCode : "";?></span>
                           </div>
                         </div>
@@ -334,10 +350,11 @@ function SubmitNewApi() {
                           <label class="col-sm-2 col-form-label">Secure<span id="star">*</span></label>
                           <div class="col-sm-3">
                             <select class="form-control" id="Secure"  name="Secure">
-                             <?php $Secures = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SECURE'");  ?>
-                              <?php foreach($Secures as $Secure) { ?>
-                              <option value="<?php echo $Secure['CodeValue'];?>" <?php echo ($_POST['Secure']==$Secure['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Secure['CodeValue'];?></option>
-                             <?php } ?>
+                             <?php foreach($EInfo['data']['Secure'] as $Secure) { ?>
+                                <option value="<?php echo $Secure['CodeValue'];?>" <?php echo ($Secure[ 'CodeValue']==$_POST[ 'Secure']) ? ' selected="selected" ' : '';?>>
+                                    <?php echo $Secure['CodeValue'];?>
+                                </option>
+                                <?php } ?>
                             </select>
                             <span class="errorstring" id="ErrSecure"><?php echo isset($ErrSecure)? $ErrSecure : "";?></span>
                           </div>
@@ -389,6 +406,9 @@ function SubmitNewApi() {
                       </div>
                     </div>
                    <div class="form-group row">
+                        <div class="col-sm-12"><?php echo $errormessage;?><?php echo $successmessage;?></div>
+                   </div>
+                    <div class="form-group row">
                         <div class="col-sm-2"><button type="submit" name="BtnSaveApi" class="btn btn-primary mr-2">Save</button></div>
                         <div class="col-sm-2"><a href="EmailApi" style="text-decoration: underline;">List of Api</a></div>
                    </div>
@@ -397,3 +417,4 @@ function SubmitNewApi() {
           </div>
 </div>
 </form>                                                  
+<?php }?>

@@ -74,7 +74,7 @@ class Admin {
         if (!(strlen(trim($_POST['CityName']))>0)) {
             return Response::returnError("Please enter CityName");
         }                        
-        if ($_POST['CountryName']=="0") {
+        if ((strlen(trim($_POST['CountryName']))==0 || $_POST['CountryName']=="0" )) {
             return Response::returnError("Please select Country Name");
         }
         if ((strlen(trim($_POST['StateName']))==0 || $_POST['StateName']=="0" )) {
@@ -1072,6 +1072,141 @@ class Admin {
                     return Response::returnError("Language Name already exists");    
               }
               $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['LanguageName']."',IsActive='".$_POST['IsActive']."' where HardCode='LANGUAGENAMES' and SoftCode='".$_POST['Code']."'");
+              return Response::returnSuccess("success",array());
+    }
+    function CreateEmailApi() {
+                                                                            
+        global $mysql;  
+       
+        if (!(strlen(trim($_POST['ApiCode']))>0)) {
+            return Response::returnError("Please enter api code");
+        }
+        if (!(strlen(trim($_POST['ApiName']))>0)) {
+            return Response::returnError("Please enter api name");
+        }
+        if (!(strlen(trim($_POST['HostName']))>0)) {
+            return Response::returnError("Please enter host name");
+        }
+        if (!(strlen(trim($_POST['PortNo']))>0)) {
+            return Response::returnError("Please enter port number");
+        }
+        if (!(strlen(trim($_POST['Secure']))>0)) {
+            return Response::returnError("Please enter port number");
+        }
+        if (!(strlen(trim($_POST['UserName']))>0)) {
+            return Response::returnError("Please enter user name");
+        }
+        if (!(strlen(trim($_POST['Password']))>0)) {
+            return Response::returnError("Please enter password");
+        }
+        if (!(strlen(trim($_POST['SendersName']))>0)) {
+            return Response::returnError("Please enter senders name");
+        }
+        if (!(strlen(trim($_POST['Remarks']))>0)) {
+            return Response::returnError("Please enter remarks");
+        }
+        $data = $mysql->select("select * from _tbl_settings_emailapi where ApiCode='".trim($_POST['ApiCode'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Api Code Already Exists");
+        }
+        $data = $mysql->select("select * from _tbl_settings_emailapi where ApiName='".trim($_POST['ApiName'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Api Name Already Exists");
+        }
+        $data = $mysql->select("select * from _tbl_settings_emailapi where HostName='".trim($_POST['HostName'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Host Name Already Exists");
+        }
+        $data = $mysql->select("select * from _tbl_settings_emailapi where PortNumber='".trim($_POST['PortNo'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Port Number Already Exists");
+        }
+        $data = $mysql->select("select * from _tbl_settings_emailapi where SMTPUserName='".trim($_POST['UserName'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("User Name Already Exists");
+        }
+       $id =  $mysql->insert("_tbl_settings_emailapi",array("ApiCode"     => $_POST['ApiCode'],
+                                                          "ApiName"     => $_POST['ApiName'],
+                                                          "HostName"    => $_POST['HostName'],
+                                                          "PortNumber"  => $_POST['PortNo'],
+                                                          "Secure"      => $_POST['Secure'],
+                                                          "SMTPUserName"    => $_POST['UserName'],
+                                                          "SMTPPassword"    => $_POST['Password'],
+                                                          "SendersName" => $_POST['SendersName'],
+                                                          "CreatedOn"   => date("Y-m-d H:i:s"),
+                                                          "Remarks"     => $_POST['Remarks']));
+          
+        if (sizeof($id)>0) {
+                return Response::returnSuccess("success",array());
+            } else{
+                return Response::returnError("Access denied. Please contact support");   
+            }
+    }
+    function GetEmailApiCode(){
+            return Response::returnSuccess("success",array("EmailApiCode"   => SeqMaster::GetNextEmailApiNumber(),
+                                                           "Secure"         => CodeMaster::GetSecure()));
+    }
+    function GetManageEmailApi() {
+           global $mysql;    
+              $EmailApi = $mysql->select("select * from _tbl_settings_emailapi");
+                return Response::returnSuccess("success",$EmailApi);
+                                                            
+    }
+    function GetManageActiveEmailApi() {
+           global $mysql;    
+              $EmailApi = $mysql->select("select * from _tbl_settings_emailapi where IsActive='1'");
+                return Response::returnSuccess("success",$EmailApi);
+                                                            
+    }
+    function GetManageDeactiveEmailApi() {
+           global $mysql;    
+              $EmailApi = $mysql->select("select * from _tbl_settings_emailapi where IsActive='0'");
+                return Response::returnSuccess("success",$EmailApi);
+                                                            
+    }
+    function GetEmailApiInfo(){
+        
+        global $mysql;
+        $Api = $mysql->select("select * from _tbl_settings_emailapi where ApiID='".$_POST['Code']."'");
+        return Response::returnSuccess("success",array("Api"         => $Api[0],
+                                                       "Secure"         => CodeMaster::GetSecure()));
+                                                            
+    }
+    function EditEmailApi(){  
+        
+              global $mysql;     
+              
+              $data = $mysql->select("select * from _tbl_settings_emailapi where ApiName='".trim($_POST['ApiName'])."'and ApiID<>'".$_POST['Code']."'");
+              if (sizeof($data)>0) {
+                    return Response::returnError("Api Name already exists");    
+              }
+              $data = $mysql->select("select * from _tbl_settings_emailapi where HostName='".trim($_POST['HostName'])."'and ApiID<>'".$_POST['Code']."'");
+              if (sizeof($data)>0) {
+                    return Response::returnError("Host Name already exists");    
+              }
+              $data = $mysql->select("select * from _tbl_settings_emailapi where PortNumber='".trim($_POST['PortNo'])."'and ApiID<>'".$_POST['Code']."'");
+              if (sizeof($data)>0) {
+                    return Response::returnError("Port Number already exists");    
+              }
+              $data = $mysql->select("select * from _tbl_settings_emailapi where SMTPUserName='".trim($_POST['UserName'])."'and ApiID<>'".$_POST['Code']."'");
+              if (sizeof($data)>0) {
+                    return Response::returnError("User Name already exists");    
+              }
+              
+              if (isset($_POST['Status']) && $_POST['Status']==1) {
+                   $mysql->execute("update _tbl_settings_emailapi set IsActive='0'");
+              }
+              
+              $mysql->execute("update _tbl_settings_emailapi set ApiName='".$_POST['ApiName']."',
+                                                        HostName='".$_POST['HostName']."',
+                                                        PortNumber='".$_POST['PortNo']."',
+                                                        Secure='".$_POST['Secure']."',
+                                                        SMTPUserName='".$_POST['UserName']."',
+                                                        SMTPPassword='".$_POST['Password']."',
+                                                        SendersName='".$_POST['SendersName']."',
+                                                        Remarks='".$_POST['Remarks']."',
+                                                        IsActive='".$_POST['Status']."'
+                                                        where  ApiID='".$_POST['Code']."'");
               return Response::returnSuccess("success",array());
     }
 }                        

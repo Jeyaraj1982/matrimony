@@ -41,13 +41,7 @@
                                                                  "CreatedOn"       => date("Y-m-d H:i:s"), 
                                                                  "LoginPassword"   => $_POST['LoginPassword']));
                                                                        
-           $mail2 = new MailController();
-           $mail2->NewFranchiseeStaff(array("mailTo"         => $_POST['EmailID'] ,
-                                             "StaffName"      => $_POST['staffName'],
-                                             "StaffCode"      => $_POST['staffCode'],
-                                             "FranchiseeName" => $_FranchiseeInfo['FranchiseeName'],
-                                             "LoginName"      => $_POST['LoginName'],
-                                             "LoginPassword"  => $_POST['LoginPassword']));   
+          
                                                                  
                                                                   
         if ($StaffID>0) {

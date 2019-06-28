@@ -91,37 +91,6 @@
         }
     }
     
-    class EmailApi{
-        
-        function GetNextEmailApiNumber() {
-            
-            global $mysql;
-        
-            $prefix = "API";
-            $Rows = $mysql->select("select * from _tbl_settings_emailapi");
-        
-            $nextNumber = sizeof($Rows)+1; 
-         
-            if (sizeof($nextNumber)==1) {
-                $prefix .= "000".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==2) {
-                $prefix .= "00".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==3) {
-                $prefix .= "0".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==4) {   
-                $prefix .= $nextNumber; 
-            }
-            
-            return $prefix;
-        }
-    }
-    
     class MobileSMS{
         
         function GetNextMobileSMSNumber() {
@@ -183,7 +152,6 @@
             return $prefix;
         }
     }
-    
     class MemberPlan{
         
         function GetNextMemberPlanNumber() {
@@ -380,6 +348,12 @@
         function EditProfile($param) {
               return json_decode($this->_callUrl("m=Member&a=EditProfile",$param),true);
         }
+        function editprofileviewinfo($param) {
+              return json_decode($this->_callUrl("m=Member&a=editprofileviewinfo",$param),true);
+        }
+        function GetMyEmails($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetMyEmails",$param),true);
+        }
         function MemberChangePassword($param) {
               return json_decode($this->_callUrl("m=Member&a=MemberChangePassword",$param),true);
         }
@@ -394,6 +368,9 @@
         }
         function SaveBasicSearch($param) {
               return json_decode($this->_callUrl("m=Member&a=SaveBasicSearch",$param),true);
+        }
+        function updateProfilePhoto($param) {
+              return json_decode($this->_callUrl("m=Member&a=updateProfilePhoto",$param),true);
         }
         function AdminLogin($param) {
               return json_decode($this->_callUrl("m=Admin&a=AdminLogin",$param),true);
@@ -574,6 +551,27 @@
         }
         function EditLanguageName($param) {
               return json_decode($this->_callUrl("m=Admin&a=EditLanguageName",$param),true);
+        }
+        function CreateEmailApi($param) {
+              return json_decode($this->_callUrl("m=Admin&a=CreateEmailApi",$param),true);
+        }
+        function GetEmailApiCode($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetEmailApiCode",$param),true);
+        }
+        function GetManageEmailApi($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageEmailApi",$param),true);
+        }
+        function GetManageActiveEmailApi($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveEmailApi",$param),true);
+        }
+        function GetManageDeactiveEmailApi($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveEmailApi",$param),true);
+        }
+        function GetEmailApiInfo($param) {
+              return json_decode($this->_callUrl("m=Admin&a=GetEmailApiInfo",$param),true);
+        }
+        function EditEmailApi($param) {
+              return json_decode($this->_callUrl("m=Admin&a=EditEmailApi",$param),true);
         }
         
          

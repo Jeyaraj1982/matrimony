@@ -24,13 +24,13 @@
                         </tr>  
                     </thead>
                     <tbody>  
-                        <?php $EmailApis = $mysql->select("select * from _tbl_settings_emailapi where IsActive='1'"); ?>
-                        <?php foreach($EmailApis as $EmailApi) { ?>
+                        <?php $response = $webservice->GetManageActiveEmailApi(); ?>
+                        <?php foreach($response['data'] as $EmailApi) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($EmailApi['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $EmailApi['ApiCode'];?></td>
                                 <td><?php echo $EmailApi['ApiName'];?></td>
                                 <td><?php echo $EmailApi['HostName'];?></td>
-                                <td><?php echo $EmailApi['UserName'];?></td>
+                                <td><?php echo $EmailApi['SMTPUserName'];?></td>
                                 <td><a href="<?php echo GetUrl("Settings/Email/Edit/". $EmailApi['ApiID'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Settings/Email/View/". $EmailApi['ApiID'].".htm");?>"><span>View</span></a>
                                 </td>

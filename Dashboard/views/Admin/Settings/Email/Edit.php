@@ -1,68 +1,3 @@
-<?php 
- if (isset($_POST['Btnupdate'])) {
-        
-        $ErrorCount =0;
-        $duplicate = $mysql->select("select * from _tbl_settings_emailapi where ApiCode='".trim($_POST['ApiCode'])."'and ApiID<>'".$_GET['Code']."'");
-        if (sizeof($duplicate)>0) {
-             $ErrApiCode="Api Code Already Exists";    
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from _tbl_settings_emailapi where ApiName='".trim($_POST['ApiName'])."'and ApiID<>'".$_GET['Code']."'");
-        if (sizeof($duplicate)>0) {
-             $ErrApiName="Api Name Already Exists";    
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from _tbl_settings_emailapi where HostName='".trim($_POST['HostName'])."'and ApiID<>'".$_GET['Code']."'");
-        if (sizeof($duplicate)>0) {
-             $ErrHostName="Host Name Already Exists";    
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from _tbl_settings_emailapi where PortNumber='".trim($_POST['PortNo'])."'and ApiID<>'".$_GET['Code']."'");
-        if (sizeof($duplicate)>0) {
-             $ErrPortNo="Port Number Already Exists";    
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from _tbl_settings_emailapi where UserName='".trim($_POST['UserName'])."'and ApiID<>'".$_GET['Code']."'");
-        if (sizeof($duplicate)>0) {
-             $ErrUserName="User Name Already Exists";    
-             $ErrorCount++;
-        }
-        
-         $Api =$mysql->select("select * from _tbl_settings_emailapi where ApiID='".$_REQUEST['Code']."'");
-         
-            if (sizeof($Api)==0) {
-            echo "Error: Access denied. Please contact administrator";
-             } else {
-        
-
-                 
-  if ($ErrorCount==0) {
-               
-    $mysql->execute("update _tbl_settings_emailapi set ApiName='".$_POST['ApiName']."',
-                                                        HostName='".$_POST['HostName']."',
-                                                        PortNumber='".$_POST['PortNo']."',
-                                                        Secure='".$_POST['Secure']."',
-                                                        UserName='".$_POST['UserName']."',
-                                                        Password='".$_POST['Password']."',
-                                                        SendersName='".$_POST['SendersName']."',
-                                                        Remarks='".$_POST['Remarks']."',
-                                                        IsActive='".$_POST['Status']."'
-                                                        where  ApiID='".$_REQUEST['Code']."'"); 
-                                                              
-            unset($_POST);
-               echo "Updated Successfully";
-            
-        } else {
-            echo "Error occured. Couldn't save";
-        }
-          
- 
-    
-    }
-    }
-    $Api =$mysql->select("select * from _tbl_settings_emailapi where ApiID='".$_REQUEST['Code']."'");
-
-?>
 <script>
 $(document).ready(function () {
   $("#MobileNumber").keypress(function (e) {
@@ -146,11 +81,11 @@ function SubmitNewApi() {
                         }
                         IsNonEmpty("HostName","ErrHostName","Please Enter Host Name");
                         IsNonEmpty("PortNo","ErrPortNo","Please Enter Port No");
-                        if (IsLogin("UserName","ErrUserName","Please Enter the character greater than 6 character and less than 9 character")) {
-                        IsAlphabet("UserName","ErrUserName","Please Enter Alpha Numeric Character only");
+                        if (IsNonEmpty("UserName","ErrUserName","Please Enter the character greater than 6 character and less than 9 character")) {
+                        //IsAlphabet("UserName","ErrUserName","Please Enter Alpha Numeric Character only");
                         }
                         if (IsPassword("Password","ErrPassword","Please Enter More than 8 characters")) {
-                        IsAlphaNumeric("Password","ErrPassword","Alpha Numeric Characters only");
+                        //IsAlphaNumeric("Password","ErrPassword","Alpha Numeric Characters only");
                         }
                         IsNonEmpty("SendersName","ErrSendersName","Please Enter Senders Name");
                         IsNonEmpty("Remarks","ErrRemarks","Please Enter Remarks");
@@ -162,9 +97,21 @@ function SubmitNewApi() {
                  
 }
 </script>                                                         
+<?php   
+    if (isset($_POST['Btnupdate'])) {
+        
+        $response = $webservice->EditEmailApi($_POST);
+        if ($response['status']=="success") {
+            echo $response['message'];
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
 
+    $response = $webservice->GetEmailApiInfo();
+    $Api          = $response['data']['Api'];
 
-
+ ?>
 <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
@@ -183,7 +130,7 @@ function SubmitNewApi() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Api Code<span id="star">*</span></label>
                           <div class="col-sm-2">
-                            <input type="text" class="form-control" disabled="disabled" id="ApiCode" name="ApiCode" maxlength="6" value="<?php echo (isset($_POST['ApiCode']) ? $_POST['ApiCode'] : $Api[0]['ApiCode']);?>">
+                            <input type="text" class="form-control" disabled="disabled" id="ApiCode" name="ApiCode" maxlength="6" value="<?php echo (isset($_POST['ApiCode']) ? $_POST['ApiCode'] : $Api['ApiCode']);?>">
                             <span class="errorstring" id="ErrApiCode"><?php echo isset($ErrApiCode)? $ErrApiCode : "";?></span>
                           </div>
                         </div>
@@ -194,7 +141,7 @@ function SubmitNewApi() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Api Name<span id="star">*</span></label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control" id="ApiName" name="ApiName" value="<?php echo (isset($_POST['ApiName']) ? $_POST['ApiName'] : $Api[0]['ApiName']);?>">
+                            <input type="text" class="form-control" id="ApiName" name="ApiName" value="<?php echo (isset($_POST['ApiName']) ? $_POST['ApiName'] : $Api['ApiName']);?>">
                             <span class="errorstring" id="ErrApiName"><?php echo isset($ErrApiName)? $ErrApiName : "";?></span>
                           </div>
                         </div>
@@ -205,7 +152,7 @@ function SubmitNewApi() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Host Name<span id="star">*</span></label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control" id="HostName" name="HostName" value="<?php echo (isset($_POST['HostName']) ? $_POST['HostName'] : $Api[0]['HostName']);?>">
+                            <input type="text" class="form-control" id="HostName" name="HostName" value="<?php echo (isset($_POST['HostName']) ? $_POST['HostName'] : $Api['HostName']);?>">
                             <span class="errorstring" id="ErrHostName"><?php echo isset($ErrHostName)? $ErrHostName : "";?></span>
                           </div>
                         </div>
@@ -216,16 +163,17 @@ function SubmitNewApi() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Port No<span id="star">*</span></label>
                           <div class="col-sm-3">
-                            <input type="text" class="form-control" id="PortNo" name="PortNo" value="<?php echo (isset($_POST['PortNo']) ? $_POST['PortNo'] : $Api[0]['PortNumber']);?>">
+                            <input type="text" class="form-control" id="PortNo" name="PortNo" value="<?php echo (isset($_POST['PortNo']) ? $_POST['PortNo'] : $Api['PortNumber']);?>">
                             <span class="errorstring" id="ErrPortNo"><?php echo isset($ErrPortNo)? $ErrPortNo : "";?></span>
                           </div>
                           <label class="col-sm-2 col-form-label">Secure<span id="star">*</span></label>
                           <div class="col-sm-3">
                             <select class="form-control" id="Secure"  name="Secure">
-                             <?php $Secures = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SECURE'");  ?>
-                              <?php foreach($Secures as $Secure) { ?>
-                              <option value="<?php echo $Secure['CodeValue'];?>" <?php echo ($Api[0]['Secure']==$Secure['CodeValue']) ? " selected='selected' " : "";?> ><?php echo $Secure['CodeValue'];?></option>
-                             <?php } ?>
+                             <?php foreach($response['data']['Secure'] as $Secure) { ?>
+                                <option value="<?php echo $Secure['CodeValue'];?>" <?php echo (isset($_POST[ 'Secure'])) ? (($_POST[ 'Secure']==$Secure[ 'CodeValue']) ? " selected='selected' " : "") : (($Api[ 'Secure']==$Secure[ 'CodeValue']) ? " selected='selected' " : "");?> >
+                                    <?php echo $Secure['CodeValue'];?>
+                                </option>
+                                <?php } ?>
                             </select>
                             <span class="errorstring" id="ErrSecure"><?php echo isset($ErrSecure)? $ErrSecure : "";?></span>
                           </div>
@@ -237,7 +185,7 @@ function SubmitNewApi() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">User Name<span id="star">*</span></label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control" id="UserName" name="UserName" value="<?php echo (isset($_POST['UserName']) ? $_POST['UserName'] : $Api[0]['UserName']);?>">
+                            <input type="text" class="form-control" id="UserName" name="UserName" value="<?php echo (isset($_POST['UserName']) ? $_POST['UserName'] : $Api['SMTPUserName']);?>">
                             <span class="errorstring" id="ErrUserName"><?php echo isset($ErrUserName)? $ErrUserName : "";?></span>
                           </div>
                         </div>
@@ -248,7 +196,7 @@ function SubmitNewApi() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Password<span id="star">*</span></label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control" id="Password" name="Password" value="<?php echo (isset($_POST['Password']) ? $_POST['Password'] : $Api[0]['Password']);?>">
+                            <input type="text" class="form-control" id="Password" name="Password" value="<?php echo (isset($_POST['Password']) ? $_POST['Password'] : $Api['SMTPPassword']);?>">
                             <span class="errorstring" id="ErrPassword"><?php echo isset($ErrPassword)? $ErrPassword : "";?></span>
                           </div>
                         </div>
@@ -259,7 +207,7 @@ function SubmitNewApi() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Sender's Name<span id="star">*</span></label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control" id="SendersName" name="SendersName" value="<?php echo (isset($_POST['SendersName']) ? $_POST['SendersName'] : $Api[0]['SendersName']);?>">
+                            <input type="text" class="form-control" id="SendersName" name="SendersName" value="<?php echo (isset($_POST['SendersName']) ? $_POST['SendersName'] : $Api['SendersName']);?>">
                             <span class="errorstring" id="ErrSendersName"><?php echo isset($ErrSendersName)? $ErrSendersName : "";?></span>
                           </div>
                         </div>
@@ -270,7 +218,7 @@ function SubmitNewApi() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Remarks<span id="star">*</span></label>
                           <div class="col-sm-8">
-                            <textarea  rows="2" class="form-control" id="Remarks" name="Remarks"><?php echo (isset($_POST['Remarks']) ? $_POST['Remarks'] : $Api[0]['Remarks']);?></textarea>
+                            <textarea  rows="2" class="form-control" id="Remarks" name="Remarks"><?php echo (isset($_POST['Remarks']) ? $_POST['Remarks'] : $Api['Remarks']);?></textarea>
                             <span class="errorstring" id="ErrRemarks"><?php echo isset($ErrRemarks)? $ErrRemarks : "";?></span>
                           </div>
                         </div>
@@ -282,15 +230,18 @@ function SubmitNewApi() {
                           <label class="col-sm-2 col-form-label">Status<span id="star">*</span></label>
                           <div class="col-sm-3">
                                 <select name="Status" class="form-control" style="width: 140px;" >
-                                    <option value="1" <?php echo ($Api[0]['IsActive']==1) ? " selected='selected' " : "";?>>Active</option>
-                                    <option value="0" <?php echo ($Api[0]['IsActive']==0) ? " selected='selected' " : "";?>>Deactive</option>
+                                    <option value="1" <?php echo ($Api['IsActive']==1) ? " selected='selected' " : "";?>>Active</option>
+                                    <option value="0" <?php echo ($Api['IsActive']==0) ? " selected='selected' " : "";?>>Deactive</option>
                                 </select>
                           </div>
                           <label class="col-sm-2 col-form-label">Created On<span id="star">*</span></label>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo putDateTime($Api[0]['CreatedOn']);?></small></div>
+                          <div class="col-sm-3"><small style="color:#737373;"><?php echo putDateTime($Api['CreatedOn']);?></small></div>
                         </div>
                       </div>
                     </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12"><?php echo $errormessage;?><?php echo $successmessage;?></div>
+                   </div>
                    <div class="form-group row">
                         <div class="col-sm-2"><button type="submit" name="Btnupdate" class="btn btn-primary mr-2">Update</button></div>
                         <div class="col-sm-2"><a href="../EmailApi" style="text-decoration: underline;">List of Api</a></div>

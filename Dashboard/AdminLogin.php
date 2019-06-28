@@ -3,9 +3,7 @@
 <?php
         include_once("config.php");
         if (isset($_POST['btnsubmit'])) {
-            echo "aaaa";
             $response = $webservice->AdminLogin($_POST);
-            print_r($response);
             if ($response['status']=="success")  {
                 $_SESSION['AdminDetails'] = $response['data'];
                 echo "<script>location.href='".SiteUrl."';</script>";
