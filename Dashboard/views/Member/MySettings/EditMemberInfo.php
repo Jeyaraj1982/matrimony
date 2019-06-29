@@ -48,29 +48,10 @@ $page="MyMemberInfo";
         return (ErrorCount==0) ? true : false;
     }                                                
 </script>
-<div class="col-12 grid-margin">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title" style="font-size: 22px;">My Settings</h4>
-                <h5 style="color:#666">Control, protect and secure your account, all in one place.</h5>
-                <h6 style="color:#999">This page gives you quick access to settings and tools that let you safeguard your data, protect your privacy and decide how your information can make us.</h6>
-            </div>
-        </div>
-</div>
+<?php include_once("settings_header.php");?> 
 <form method="post" action="" onsubmit="return SubmitNewMember();">
-<div class="col-md-12 d-flex align-items-stretch grid-margin">
-      <div class="row flex-grow">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-             <div class="form-group-row">
-              <div class="col-sm-12">
-               <div class="col-sm-3" style="width:21%">
-                <div class="sidemenu" style="width: 200px;margin-left: -58px;margin-bottom: -41px;margin-top: -30px;border-right: 1px solid #eee;">
-                    <?php include_once("sidemenu.php");?>
-                </div>
-                </div>
-                <div class="col-sm-9">
+ 
+                <div class="col-sm-9"  style="margin-top: -8px;">
                  <h4 class="card-title">Edit Member Information</h4>  
                   <div class="form-group row">
                      <div class="col-sm-3"><small>Member Code</small> </div>
@@ -114,12 +95,7 @@ $page="MyMemberInfo";
                      <div class="col-sm-3"><a href="../MyMemberInfo">cancel</a></div>
                 </div>                                                                                                        
               </div>
-             </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+           
 </form>
+<?php include_once("settings_footer.php");?>
                                                                                                          

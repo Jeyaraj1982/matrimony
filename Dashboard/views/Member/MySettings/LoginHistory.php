@@ -1,12 +1,10 @@
 <?php
-    $page="Notification";
-    $response = $webservice->GetMemberInfo();
-    $Member=$response['data'];    
+    $page="LoginHistory";
 ?>
 <?php include_once("settings_header.php");?>
 <form method="post" action="">
     <div class="col-sm-9" style="margin-top: -8px;">
-        <h4 class="card-title">Notification</h4>
+        <h4 class="card-title">Login History</h4>
     </div>
 </form>                
 <?php include_once("settings_footer.php");?>                   
