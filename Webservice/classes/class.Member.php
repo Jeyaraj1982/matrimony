@@ -4,7 +4,7 @@
          
          function Login() {
              
-             global $mysql;
+             global $mysql,$loginInfo;
              
              if (!(strlen(trim($_POST['UserName']))>0)) {
                  return Response::returnError("Please enter login name ");
@@ -14,29 +14,53 @@
                  return Response::returnError("Please enter login password ");
              }
              
-             $data=$mysql->select("select * from _tbl_members where MemberLogin='".$_POST['UserName']."' or EmailID='".$_POST['UserName']."' or MobileNumber='".$_POST['UserName']."' and MemberPassword='".$_POST['Password']."'") ;
-             
+             $data=$mysql->select("select * from _tbl_members where (MemberLogin='".$_POST['UserName']."' or EmailID='".$_POST['UserName']."' or MobileNumber='".$_POST['UserName']."')");
+             $loginid = $mysql->insert("_tbl_member_login",array("LoginOn"        => date("Y-m-d H:i:s"),
+                                                                 "MemberID"       => $data[0]['MemberID'],
+                                                                 "LoginName"      => $_POST['UserName'],
+                                                                 "LoginPassword"  => $_POST['Password']));
              if (sizeof($data)>0) {
                  
-                 $loginid = $mysql->insert("_tbl_member_login",array("LoginOn"   => date("Y-m-d H:i:s"),
-                                                                     "MemberID"  => $data[0]['MemberID']));
-                 if ($data[0]['IsActive']==1) {
+                 if ($data[0]['MemberPassword']==$_POST['Password']) {
                      
-                     if($data[0]['WelcomeMsg']==0) {
-                         $d=$mysql->select("Select * From _tbl_welcome_message where IsActive='1' and UserRole='Member'");
-                         $data[0]['WelcomeMessage']=$d[0]['Message'];  
+                     $mysql->execute("update _tbl_member_login set LoginStatus='1' where LoginID='".$loginid."'");
+                 
+                     if ($data[0]['IsActive']==1) {
+                         
+                         if($data[0]['WelcomeMsg']==0) {
+                            $d=$mysql->select("Select * From _tbl_welcome_message where IsActive='1' and UserRole='Member'");
+                            $data[0]['WelcomeMessage']=$d[0]['Message'];  
+                         }
+                         $data[0]['LoginID']=$loginid;
+                         return Response::returnSuccess("success",$data[0]);
+                 
+                     } else {
+                        return Response::returnError("Access denied. Please contact support");   
+                        
                      }
-                     
-                     $data[0]['LoginID']=$loginid;
-                     return Response::returnSuccess("success",$data[0]);
                  } else {
-                     return Response::returnError("Access denied. Please contact support");   
+                     return Response::returnError("Invalid username or password");
                  }
              } else {
                 return Response::returnError("Invalid username and password");
              }
+         }
+         
+         function Logout() {
+             global $mysql,$loginInfo;
+             $mysql->execute("update _tbl_member_login set UserLogout='".date("Y-m-d H:i:s")."' where LoginID='".$loginInfo[0]['LoginID']."'") ;
+             return Response::returnSuccess("success",array()); 
          }                                                                           
-                                                                                                
+         function GetLoginHistory() {
+             global $mysql,$loginInfo;
+             $LoginHistory = $mysql->select("select * from _tbl_member_login where MemberID='".$loginInfo[0]['MemberID']."' ORDER BY LoginID DESC LIMIT 0,5");
+                return Response::returnSuccess("success",$LoginHistory);
+         }  
+          function GetNotificationHistory() {
+             global $mysql,$loginInfo;
+             $NotificationHistory = $mysql->select("select * from _tbl_logs_activity where MemberID='".$loginInfo[0]['MemberID']."' ORDER BY ActivityID DESC LIMIT 0,5");
+                return Response::returnSuccess("success",$NotificationHistory);
+         }                                                                                     
          function Register() {
              
              global $mysql;
@@ -190,7 +214,11 @@
              global $mysql,$loginInfo;
              
              $Member = $mysql->select("select * from _tbl_members where MemberID='".$_POST['Code']."'");
-             $data = $mysql->select("select * from  _tbl_members where EmailID='".trim($_POST['EmailID'])."' and MemberID <>'".$_POST['Code']."'");
+             $data = $mysql->select("select * from  _tbl_members where MobileNumber='".trim($_POST['MobileNumber'])."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
+             if (sizeof($data)>0) {
+                 return Response::returnError("Mobile Number Already Exists");    
+             }
+             $data = $mysql->select("select * from  _tbl_members where EmailID='".trim($_POST['EmailID'])."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
              if (sizeof($data)>0) {
                  return Response::returnError("EmailID Already Exists");    
              }
@@ -199,6 +227,12 @@
                                                       MobileNumber='".$_POST['MobileNumber']."',
                                                       IsActive='".$_POST['Status']."' where  MemberID='".$Member[0]['MemberID']."'");
              $Member = $mysql->select("select * from _tbl_members where '".$_POST['Code']."'");
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                                 "ActivityType"   => 'Yourmemberinformationupdated.',
+                                                                 "ActivityString" => 'Your member information updated.',
+                                                                 "SqlQuery"       => base64_encode($sqlQry),
+                                                                 //"oldData"        => base64_encode(json_encode($oldData)),
+                                                                 "ActivityOn"     => date("Y-m-d H:i:s"))); 
              return Response::returnSuccess("success",array());
          }
         
@@ -298,7 +332,15 @@
                 return Response::returnError("Incorrect Current password"); 
              } 
              if ($getpassword[0]['MemberPassword']==$_POST['CurrentPassword']) {
-                 $mysql->execute("update _tbl_members set MemberPassword='".$_POST['ConfirmNewPassword']."' where MemberID='".$loginInfo[0]['MemberID']."'");
+                 $oldData = $mysql->select("select * from  _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+                 $sqlQry = "update _tbl_members set MemberPassword='".$_POST['ConfirmNewPassword']."' where MemberID='".$loginInfo[0]['MemberID']."'";
+                 $mysql->execute($sqlQry);
+                 $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                                 "ActivityType"   => 'Passwordchanged',
+                                                                 "ActivityString" => 'Password changed',
+                                                                 "SqlQuery"       => base64_encode($sqlQry),
+                                                                 "oldData"        => base64_encode(json_encode($oldData)),
+                                                                 "ActivityOn"     => date("Y-m-d H:i:s"))); 
                  return Response::returnSuccess("Password Changed Successfully",array());
              }
          }
@@ -400,14 +442,14 @@
                        </div>';    
              } else {
                 $formid = "frmChangeMobileNumber_".rand(30,3000);
-                return '<div id="otpfrm" style="width:100%;padding:15px;height:100%;">
+                return '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
                             <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -12px;">&times;</button>
                                 <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
-                                    <h5 style="color: #969292;font-weight: 100;padding-top: 21px;">In order to protect the security of your account,we will send you a text message with a verification that you will need to enter the next screen</h4>
+                                    <h5 style="color: #777;line-height:20px;font-weight: 100;padding-top: 21px;">In order to protect the security of your account, we will send you a text message with a verification that you will need to enter the next screen</h4>
                                 </div>
                                 <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/assets/images/smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumber()">Change</h4>
@@ -1041,7 +1083,101 @@
               $MyEmails = $mysql->select("select * from _tbl_logs_email where MemberID='".$loginInfo[0]['MemberID']."'");
                 return Response::returnSuccess("success",$MyEmails);
                                                             
-    }          
+         }   
+         function GetKYC() {
+           global $mysql;    
+           $KYCs = $mysql->select("select * from _tbl_member_documents where MemberID='".$loginInfo[0]['MemberID']."'");
+                return Response::returnSuccess("success",array("IDProof"        => CodeMaster::GetIDProof(),
+                                                               "AddressProof"   => CodeMaster::GetAddressProof(),
+                                                               "KYCView"        =>$KYCs[0]));
+                                                            
+         }
+         function UpdateKYC() {
+             
+             global $mysql,$loginInfo;
+             
+             $returnA = 0;
+             $returnB = 0;
+                $FileTypeA = $mysql->select("select * from _tbl_master_codemaster Where HardCode='IDPROOF' and SoftCode='".$_POST['IDType']."'");  
+                
+                if (isset($_POST['IDProofFileName']) && strlen($_POST['IDProofFileName'])>0) {
+                    
+                    $id = $mysql->insert("_tbl_member_documents",array("MemberID"     => $loginInfo[0]['MemberID'],
+                                                                       "DocumentType" => 'Id Proof',
+                                                                       "FileName"     => $_POST['IDProofFileName'],
+                                                                       "FileTypeCode" => $_POST['IDType'],
+                                                                       "FileType"     => $FileTypeA[0]['CodeValue'],
+                                                                       "SubmittedOn"  => date("Y-m-d H:i:s"))); 
+                    
+                    $id = $mysql->insert("_tbl_logs_activity",array("MemberID"        => $loginInfo[0]['MemberID'],
+                                                                    "ActivityType"    => 'docidproof',
+                                                                    "ActivityString"  => 'KYC Id proof has been submitted',
+                                                                    "SqlQuery"        => '',
+                                                                    "ActivityOn"      => date("Y-m-d H:i:s"))); 
+                    $returnA = 1;
+                }
+                
+                $FileTypeB = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ADDRESSPROOF'and SoftCode='".$_POST['AddressProofType']."'");  
+                if (isset($_POST['AddressProofFileName']) && strlen($_POST['AddressProofFileName'])>0) {
+                    $id = $mysql->insert("_tbl_member_documents",array("MemberID"     => $loginInfo[0]['MemberID'],
+                                                                       "DocumentType" => 'Address Proof',
+                                                                       "FileName"     => $_POST['AddressProofFileName'],
+                                                                       "FiletypeCode" => $_POST['AddressProofType'],
+                                                                       "FileType"     => $FileTypeB[0]['CodeValue'],
+                                                                       "SubmittedOn"  => date("Y-m-d H:i:s"))); 
+                    $id = $mysql->insert("_tbl_logs_activity",array("MemberID"        => $loginInfo[0]['MemberID'],
+                                                                    "ActivityType"    => 'docaddressproof',
+                                                                    "ActivityString"  => 'KYC address proof has been submitted',
+                                                                    "SqlQuery"        => '',
+                                                                    "ActivityOn"      => date("Y-m-d H:i:s")));
+                    $returnB = 1;
+                }
+                
+                
+                if ($returnA==1 && $returnB==1) {
+                    return Response::returnSuccess("successfully updated idproof and address proof",array());
+                }
+                
+                if ($returnA==1 && $returnB==0) {
+                    return Response::returnSuccess("successfully updated idproof",array());
+                }
+                if ($returnA==0 && $returnB==1) {
+                    return Response::returnSuccess("successfully updated address proof",array());
+                }
+                if ($returnA==0 && $returnB==0) {
+                    return Response::returnSuccess("Please choose document",array());
+                }
+             
+             
+         }
+          function UpdateNotification() {
+             
+             global $mysql,$loginInfo;
+            
+            $sqlQry="update _tbl_members set SMSNotification='".(($_POST['Sms']=="on") ? '1' : '0')."',EmailNotification='".(($_POST['Email']=="on")? '1':'0')."' where MemberID='".$loginInfo[0]['MemberID']."'";
+             $mysql->execute("update _tbl_members set SMSNotification='".(($_POST['Sms']=="on") ? '1' : '0')."',EmailNotification='".(($_POST['Email']=="on")? '1':'0')."' where MemberID='".$loginInfo[0]['MemberID']."'");
+              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                                 "ActivityType"   => 'Yournotificationupdated.',
+                                                                 "ActivityString" => 'Your notification updated.',
+                                                                 "SqlQuery"       => base64_encode($sqlQry),
+                                                                 //"oldData"        => base64_encode(json_encode($oldData)),
+                                                                 "ActivityOn"     => date("Y-m-d H:i:s"))); 
+             return Response::returnSuccess("Notification updated successfully",$data[0]);
+         }
+         function UpdatePrivacy() {
+             
+             global $mysql,$loginInfo;
+            
+            $sqlQry="update _tbl_members set PrivacyVerifiedMember='".(($_POST['VerfiedMembers']=="on") ? '1' : '0')."',PrivacyNonVerifiedMember='".(($_POST['non-VerfiedMembers']=="on")? '1':'0')."' where MemberID='".$loginInfo[0]['MemberID']."'";
+             $mysql->execute("update _tbl_members set PrivacyVerifiedMember='".(($_POST['VerfiedMembers']=="on") ? '1' : '0')."',PrivacyNonVerifiedMember='".(($_POST['non-VerfiedMembers']=="on")? '1':'0')."' where MemberID='".$loginInfo[0]['MemberID']."'");
+              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                                 "ActivityType"   => 'Yourprivacyupdated.',
+                                                                 "ActivityString" => 'Your privacy updated..',
+                                                                 "SqlQuery"       => base64_encode($sqlQry),
+                                                                 //"oldData"        => base64_encode(json_encode($oldData)),
+                                                                 "ActivityOn"     => date("Y-m-d H:i:s"))); 
+             return Response::returnSuccess("Privacy updated successfully","update _tbl_members set PrivacyVerifiedMember='".(($_POST['VerfiedMembers']=="on") ? '1' : '0')."',PrivacyNonVerifiedMember='".(($_POST['non-VerfiedMembers']=="on")? '1':'0')."' where MemberID='".$loginInfo[0]['MemberID']."'",$data[0]);
+         }          
      }   
      
 ?> 

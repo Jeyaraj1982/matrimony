@@ -4,12 +4,7 @@
     define("ImageUrl","http://nahami.online/sl/Dashboard/assets/images/");
     define("SITE_TITLE","Matrimony") ;
     
-    if (isset($_GET['action']) && $_GET['action']=="logout") {
-         unset($_SESSION);
-         session_destroy();
-         sleep(3);
-         header("Location:".$_GET['redirect']);
-    }
+    
     
     function printDateTime($dateTime) {
         return date("M d, Y H",strtotime($dateTime));
@@ -372,6 +367,12 @@
         function updateProfilePhoto($param) {
               return json_decode($this->_callUrl("m=Member&a=updateProfilePhoto",$param),true);
         }
+        function GetKYC($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetKYC",$param),true);
+        }
+        function UpdateKYC($param) {
+              return json_decode($this->_callUrl("m=Member&a=UpdateKYC",$param),true);
+        }
         function AdminLogin($param) {
               return json_decode($this->_callUrl("m=Admin&a=AdminLogin",$param),true);
         }
@@ -573,6 +574,22 @@
         function EditEmailApi($param) {
               return json_decode($this->_callUrl("m=Admin&a=EditEmailApi",$param),true);
         }
+        function GetLoginHistory($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetLoginHistory",$param),true);
+        }
+        function GetNotificationHistory($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetNotificationHistory",$param),true);
+        } 
+         function MemberLogout() {
+              return json_decode($this->_callUrl("m=Member&a=Logout",array()),true);
+        }
+        function UpdateNotification($param) {
+              return json_decode($this->_callUrl("m=Member&a=UpdateNotification",$param),true);
+        }
+        function UpdatePrivacy($param) {
+              return json_decode($this->_callUrl("m=Member&a=UpdatePrivacy",$param),true);
+        }
+        
         
          
         
@@ -601,5 +618,21 @@
         }
     }
     
-    $webservice = new Webservice($loginID);
+     $webservice = new Webservice($loginID);
+     
+    if (isset($_GET['action']) && $_GET['action']=="logout") {
+        
+        if (isset($_Franchisee['LoginID'])) {
+        $loginID = $_Franchisee['LoginID'];
+    }  else if (isset($_Member['LoginID'])) {
+        $webservice->MemberLogout();
+    }  else {
+        $loginID = $_Admin['LoginID'];
+    }
+         unset($_SESSION);
+         session_destroy();
+         sleep(3);
+         header("Location:".$_GET['redirect']);
+    }
+   
 ?>

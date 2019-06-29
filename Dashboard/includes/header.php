@@ -94,11 +94,11 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center  bshadow">        
         <ul class="navbar-nav navbar-nav-right">
-            <li class="nav-item dropdown d-none d-xl-inline-block <?php echo ($mainlink=="Search") ? ' linkactive1 ':'';?>" >
+            <!--<li class="nav-item dropdown d-none d-xl-inline-block <?php echo ($mainlink=="Search") ? ' linkactive1 ':'';?>" >
                 <span class="profile-text">         
                     <a href="<?php echo SiteUrl?>Search/BasicSearch" class="msearch" style="color: white;font-size:15px">Search</a>
                   </span>
-                 </li>
+                 </li>-->
           <li class="nav-item dropdown">
     <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
         <i class="mdi mdi-file-document-box"></i>
@@ -242,6 +242,9 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
               <!--<a href="#" class="dropdown-item">
                Tools
               </a>-->
+              <a href="<?php echo GetUrl("MyAccounts/MyWallet");?>" class="dropdown-item">
+              My Accounts
+              </a>
               <a href="<?php echo GetUrl("MySettings/MyMemberInfo");?>" class="dropdown-item">
               My Settings
               </a>

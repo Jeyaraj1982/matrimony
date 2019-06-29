@@ -78,8 +78,8 @@ function myFunction() {
                 <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:258px">
                     <div id="resCon_a002" style="background:white;width:97%">
                         <div style="text-align:center;">
-                            <h5 style="margin-top:84px;color: #eceaea;">No Profiles Found </h5><br>
-                            <a href="<?php echo GetUrl("MyProfiles/ManageProfile");?>" ><h5 style="margin-top:-17px;color: #8d8a8a;">Create Profile </h5></a>
+                            <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5><br>
+                            <a href="<?php echo GetUrl("MyProfiles/ManageProfile");?>" ><h5 style="margin-top:-17px;color: #3091e2;">Create Profile </h5></a>
                         </div>
                     </div>
                    </div> 
@@ -106,7 +106,7 @@ function myFunction() {
                 <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:158px">
                     <div id="resCon_a002" style="background:white;width:97%;height:136px">
                         <div style="text-align:center;">
-                            <h5 style="margin-top: 35px;color: #eceaea;">No Visitors Found</h5>
+                            <h5 style="margin-top: 35px;color: #aaa;">No Visitors Found</h5>
                         </div>
                     </div>
                    </div> 
@@ -118,7 +118,7 @@ function myFunction() {
                 <div class="card-body" style="padding:10px !important;">
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
                         <div style="text-align:center;">
-                            <h5 style="margin-top: 197px;color: #eceaea;">No Profiles Found </h5>
+                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
                         </div>
                     </div>
                   </div>
@@ -146,7 +146,7 @@ function myFunction() {
                 <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:258px">
                     <div id="resCon_a002" style="background:white;width:97%">
                         <div style="text-align:center;">
-                            <h5 style="margin-top:84px;color: #eceaea;">No Profiles Found </h5>
+                            <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5>
                         </div>
                     </div>
                    </div> 
@@ -173,7 +173,7 @@ function myFunction() {
                 <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:158px">
                     <div id="resCon_a002" style="background:white;width:97%;height:136px">
                         <div style="text-align:center;">
-                            <h5 style="margin-top:35px;color: #eceaea;">No Profiles Found </h5>
+                            <h5 style="margin-top:35px;color: #aaa;">No Profiles Found </h5>
                         </div>
                     </div>
                    </div> 
@@ -185,7 +185,7 @@ function myFunction() {
                 <div class="card-body" style="padding:10px !important;">
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
                         <div style="text-align:center;">
-                            <h5 style="margin-top: 197px;color: #eceaea;">No Profiles Found </h5>
+                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
                         </div>
                     </div>
                   </div>

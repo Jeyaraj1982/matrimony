@@ -203,6 +203,16 @@ class CodeMaster {
             $Securs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SECURE'") ;
             return $Securs;
         }
+        function GetIDProof() {
+            global $mysql;
+            $IDProofs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='IDPROOF'") ;
+            return $IDProofs;
+        }
+        function GetAddressProof() {
+            global $mysql;
+            $AddressProofs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ADDRESSPROOF'") ;
+            return $AddressProofs;
+        }
         
         
     }
