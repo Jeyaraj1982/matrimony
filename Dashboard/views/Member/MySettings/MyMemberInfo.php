@@ -1,7 +1,8 @@
 <?php
     $page="MyMemberInfo";
     $response = $webservice->GetMemberInfo();
-    $Member=$response['data'];    
+    $Member=$response['data'];
+    $CountryCodes=$Member['Country']; 
 ?>
 <?php include_once("settings_header.php");?>
 <form method="post" action="">

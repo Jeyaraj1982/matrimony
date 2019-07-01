@@ -5,7 +5,7 @@
             <h5 style="color:#666">This page gives you quick access to view recently viewed profiles by you.</h5>
         </div>
     </div>
-</div>
+</div> 
 <div class="col-12 grid-margin" style="padding:0px !important">
     <div class="card">
         <div style="padding:100px;text-align:center;color:#aaa">

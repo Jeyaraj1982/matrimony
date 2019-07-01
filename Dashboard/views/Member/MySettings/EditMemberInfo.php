@@ -11,6 +11,7 @@ $page="MyMemberInfo";
     }
     $response = $webservice->GetMemberInfo();
     $Member=$response['data'];
+    $CountryCodes=$Member['Country'];
 ?>
     <script>
         $(document).ready(function() {
@@ -55,36 +56,44 @@ $page="MyMemberInfo";
             <div class="col-sm-9" style="margin-top: -8px;">
                 <h4 class="card-title">Edit Member Information</h4>
                 <div class="form-group row">
-                    <div class="col-sm-3"><small>Member Code</small> </div>
+                    <div class="col-sm-3" style="margin-right: -40px;"><small>Member Code</small> </div>
                     <div class="col-sm-3">
-                        <input type="text" disabled="disabled" class="form-control" id="MemberCode" name="MemberCode" value="<?php echo (isset($_POST['MemberCode']) ? $_POST['MemberCode'] : $Member['MemberCode']);?>" placeholder="Member Code">
+                        <input type="text" disabled="disabled" class="form-control" id="MemberCode" name="MemberCode" style="width:84%" value="<?php echo (isset($_POST['MemberCode']) ? $_POST['MemberCode'] : $Member['MemberCode']);?>" placeholder="Member Code">
                         <span class="errorstring" id="ErrMemberCode"><?php echo isset($ErrMemberCode)? $ErrMemberCode : "";?></span>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-3"><small>Member Name<span id="star">*</span></small> </div>
+                    <div class="col-sm-3" style="margin-right: -40px;"><small>Member Name<span id="star">*</span></small> </div>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="MemberName" name="MemberName" value="<?php echo (isset($_POST['MemberName']) ? $_POST['MemberName'] : $Member['MemberName']);?>" placeholder="Member Name">
                         <span class="errorstring" id="ErrMemberName"><?php echo isset($ErrMemberName)? $ErrMemberName : "";?></span>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-3"><small>Mobile Number<span id="star">*</span></small></div>
+                    <div class="col-sm-3" style="margin-right: -40px;"><small>Mobile Number<span id="star">*</span></small></div>
                     <div class="col-sm-9">
                         <?php if($Member['IsMobileVerified']==0){ ?>
-                            <div class="col-sm-6" style="margin-left: -15px;width: 31%;">
+                            <div class="col-sm-4" style="margin-left: -15px;">
+                                <select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="width: 61px;">
+                                   <?php foreach($CountryCodes as $CountryCode) { ?>
+                                  <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'CountryCode'])) ? (($_POST[ 'CountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "") : (($Member[ 'CountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                            <?php echo $CountryCode['str'];?>
+                                   <?php } ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-6" style="margin-left: -25px;width: 31%;">
                                 <input type="text" class="form-control" maxlength="10" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Member['MobileNumber']);?>" placeholder="Mobile Number">
                                 <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span></div>
-                            <div class="col-sm-6" style="padding-top: 7px;padding-left: 0px;"><a href="javascript:void(0)" onclick="MobileNumberVerification()">Verfiy now</a></div>
+                            <div class="col-sm-3" style="padding-top: 7px;padding-left: 0px;"><a href="javascript:void(0)" onclick="MobileNumberVerification()">Verfiy now</a></div>
                             <?php } else{ ?>
                                 <div class="col-sm-6" style="margin-left: -15px;width: 31%;">
-                                <input type="text" class="form-control" disabled="disabled" maxlength="10" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Member['MobileNumber']);?>" placeholder="Mobile Number"></div>
+                                <input type="text" class="form-control" disabled="disabled" blocked maxlength="10" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Member['MobileNumber']);?>" placeholder="Mobile Number"></div>
                                 <div class="col-sm-6" style="color:#5dce37"><img src="<?php echo SiteUrl?>assets/images/Green-Tick-PNG-Picture.png" width="7%">&nbsp;Verified</div>
                             <?php }?>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-3"><small>Email ID<span id="star">*</span></small></div>
+                    <div class="col-sm-3" style="margin-right: -40px;"><small>Email ID<span id="star">*</span></small></div>
                     <div class="col-sm-9">
                         <?php if($Member['IsEmailVerified']==0){ ?>
                         <div class="col-sm-8" style="margin-left: -15px;">
@@ -108,7 +117,7 @@ $page="MyMemberInfo";
                     <div class="col-sm-4">
                         <button type="submit" name="Btnupdate" class="btn btn-primary mr-2" style="font-family: roboto;">Update Information</button>
                     </div>
-                    <div class="col-sm-3" style="margin-left: -53px;margin-top: 6px;"><a href="../MyMemberInfo" style="color: #424141">cancel</a></div>
+                    <div class="col-sm-3" style="margin-left: -60px;margin-top: 6px;"><a href="../MyMemberInfo" style="color: #424141">Cancel</a></div>
                 </div>
             </div>
 

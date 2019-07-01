@@ -56,19 +56,22 @@
          <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#mysearch" aria-expanded="false" aria-controls="mysearch">
               <i class="menu-icon mdi mdi-content-copy"></i>
-              <span class="menu-title"  style="font-size:14px">Search Matches</span>
+              <span class="menu-title"  style="font-size:14px">Matches</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="mysearch">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="<?php echo GetUrl("Search/BasicSearch");?>" style="font-size:13px">Basic Search </a>
+                  <a class="nav-link" href="<?php echo GetUrl("Matches/BrowseMatches");?>" style="font-size:13px">Browse Matches</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="<?php echo GetUrl("Search/AdvancedSearch");?>" style="font-size:13px">Advanced Search</a>
+                  <a class="nav-link" href="<?php echo GetUrl("Matches/BasicSearch");?>" style="font-size:13px">Basic Search </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="<?php echo GetUrl("Matches/AdvancedSearch");?>" style="font-size:13px">Advanced Search</a>
                 </li>
               <li class="nav-item">
-                  <a class="nav-link" href="<?php echo GetUrl("Search/ByProfileID");?>" style="font-size:13px">Search By ID</a>
+                  <a class="nav-link" href="<?php echo GetUrl("Matches/ByProfileID");?>" style="font-size:13px">Search By ID</a>
                 </li>
                  
               </ul>

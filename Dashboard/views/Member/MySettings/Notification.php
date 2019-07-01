@@ -20,12 +20,12 @@
         <div class="form-group row" style="margin-bottom:0px;">
             <div class="col-sm-1" style="margin-right: -23px;">
             <input type="checkbox"  id="Sms" name="Sms" <?php echo ($Member['SMSNotification']==1) ? ' checked="checked" ' :'';?> style="margin-top: 0px;"></div>
-            <label for="Sms" class="col-sm-11" style="margin-top: 2px;color:#444">SMS Notification</label>
+            <label for="Sms" class="col-sm-11" style="margin-top: 2px;padding-left: 3px;color:#444">SMS Notification</label>
         </div>
         <div class="form-group row" style="margin-bottom:0px;">
             <div class="col-sm-1" style="margin-right: -23px;">
             <input type="checkbox"  id="Email" name="Email" <?php echo ($Member['EmailNotification']==1) ? ' checked="checked" ' :'';?> style="margin-top: 0px;"></div>
-            <label for="Email" class="col-sm-11" style="margin-top: 2px;color:#444">Email Notification</label>
+            <label for="Email" class="col-sm-11" style="margin-top: 2px;padding-left: 3px;color:#444">Email Notification</label>
         </div>
         <div class="form-group row">
             <div class="col-sm-12"><?php echo $successmessage;?><?php echo $errormessage; ?></div>

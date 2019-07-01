@@ -213,27 +213,42 @@
        
          function GetMemberInfo(){
              global $mysql,$loginInfo;
-             $Member=$mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+             $Member=$mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'"); 
+             $Member[0]['Country'] = CodeMaster::RegisterAllowedCountries();
              return Response::returnSuccess("success",$Member[0]);
-         }
+         }    
          
          function EditMemberInfo() {
+             
              global $mysql,$loginInfo;
              
-             $Member = $mysql->select("select * from _tbl_members where MemberID='".$_POST['Code']."'");
-             $data = $mysql->select("select * from  _tbl_members where MobileNumber='".trim($_POST['MobileNumber'])."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
-             if (sizeof($data)>0) {
-                 return Response::returnError("Mobile Number Already Exists");    
+             $Member = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+             
+             $sqlQry = " update _tbl_members set MemberName='".$_POST['MemberName']."',  IsActive='".$_POST['Status']."' ";
+
+             if($Member[0]['IsMobileVerified']==0) {
+                 $sqlQry .= ", MobileNumber='".$_POST['MobileNumber']."' " ;
+                 //mobile format
+                 
+                 //duplicate, 
+                 $data = $mysql->select("select * from  _tbl_members where MobileNumber='".trim($_POST['MobileNumber'])."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
+                 if (sizeof($data)>0) {
+                    return Response::returnError("Mobile Number Already Exists");    
+                 }
+             } 
+             if($Member[0]['IsEmailVerified']==0) {
+                $sqlQry .= ", EmailID='".$_POST['EmailID']."', CountryCode='".$_POST['CountryCode']."' " ;
+                //email format
+                
+                //duplicate,
+                $data = $mysql->select("select * from  _tbl_members where EmailID='".trim($_POST['EmailID'])."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
+                if (sizeof($data)>0) {
+                    return Response::returnError("EmailID Already Exists");    
+                }
              }
-             $data = $mysql->select("select * from  _tbl_members where EmailID='".trim($_POST['EmailID'])."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
-             if (sizeof($data)>0) {
-                 return Response::returnError("EmailID Already Exists");    
-             }
-             $mysql->execute("update _tbl_members set MemberName='".$_POST['MemberName']."',
-                                                      EmailID='".$_POST['EmailID']."',
-                                                      MobileNumber='".$_POST['MobileNumber']."',
-                                                      IsActive='".$_POST['Status']."' where  MemberID='".$Member[0]['MemberID']."'");
-             $Member = $mysql->select("select * from _tbl_members where '".$_POST['Code']."'");
+
+             $sqlQry .= " where  MemberID='".$Member[0]['MemberID']."'" ;  
+             $mysql->execute($sqlQry)  ;
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
                                                                  "ActivityType"   => 'Yourmemberinformationupdated.',
                                                                  "ActivityString" => 'Your member information updated.',

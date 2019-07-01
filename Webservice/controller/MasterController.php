@@ -213,7 +213,12 @@ class CodeMaster {
             $AddressProofs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ADDRESSPROOF'") ;
             return $AddressProofs;
         }
-        
+           function RegisterAllowedCountries() {
+             global $mysql;
+             $country = $mysql->select("SELECT *, CONCAT(CodeValue,' (',ParamA,')') as str FROM _tbl_master_codemaster  WHERE HardCode='CONTNAMES' and ParamB='1'");
+             return $country;
+         }
+      
         
     }
 ?>
