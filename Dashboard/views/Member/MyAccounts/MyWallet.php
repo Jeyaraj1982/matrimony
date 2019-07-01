@@ -9,7 +9,7 @@
             <img src="<?php echo ImageUrl;?>wallet.svg" style="height:128px"><Br><Br>
             You have ₹ 0.00<br><br>
             <img style="margin-top:-3px" src="<?php echo ImageUrl;?>hand_point_right.png" align="absmiddle">&nbsp;&nbsp;<a href="<?php echo GetUrl("MyAccounts/RefillWallet");?>" style="color:#2f5bc4">Refill your wallet</a><br>  
-            <span style="color:#999;font-size:11px;">You can refill your wallet Using Bank Transfer or Paypal.</span>
+            <span style="color:#999;font-size:11px;">Refill your wallet Using Bank Transfer or Paypal.</span>
         </div>
     </div>
 </form>                

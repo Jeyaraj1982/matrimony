@@ -3,7 +3,7 @@ $page="MyMemberInfo";
     if (isset($_POST['Btnupdate'])) {
         $response = $webservice->EditMemberInfo($_POST);
         if ($response['status']=="success") {   ?>
-           <script>location.href='http://nahami.online/sl/Dashboard/MySettings/SuccessEditPage';</script>
+           <script>location.href='<?php echo AppUrl;?>MySettings/MemberInfoUpdated';</script>
         <?php
         } else {
             $errormessage = $response['message']; 

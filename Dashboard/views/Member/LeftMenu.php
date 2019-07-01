@@ -29,7 +29,7 @@
               <a href="javascript:changeMemberStatus('Invisible')" class="dropdown-item">
                 Invisible
               </a></li>
-        <li class="nav-item" style="text-align: center;padding-right:25px;padding-left:25px;padding-bottom:10px;padding-top: 0px;">
+        <li class="nav-item" style="text-align: center;padding-right:25px;padding-left:20px;padding-bottom:10px;padding-top: 0px;">
             <img class="rounded-circle" src="<?php echo ImageUrl?>userimage.jpg" alt="Profile image" style="height:100px">
             <img data-toggle="modal" data-target="#UploadImage" data-backdrop="false" src="<?php echo ImageUrl?>camera.png" style="height: 25px;margin-top: 58px;margin-left: -35px;border: 1px solid #fff;border-radius: 50%;cursor:pointer"><br>
         </li>
@@ -82,6 +82,9 @@
             </a>
             <div class="collapse" id="mycontacts">
               <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="<?php echo GetUrl("MyContacts/MyRecentViewed");?>" style="font-size:13px">My Recently Viewed </a>
+                </li> 
                 <li class="nav-item">
                   <a class="nav-link" href="<?php echo GetUrl("MyContacts/MyFavorited");?>" style="font-size:13px">My Favorited </a>
                 </li>

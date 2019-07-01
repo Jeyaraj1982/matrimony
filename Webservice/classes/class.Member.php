@@ -4,7 +4,7 @@
          
          function Login() {
              
-             global $mysql,$loginInfo;
+             global $mysql,$loginInfo,$j2japplication;
              
              if (!(strlen(trim($_POST['UserName']))>0)) {
                  return Response::returnError("Please enter login name ");
@@ -15,10 +15,17 @@
              }
              
              $data=$mysql->select("select * from _tbl_members where (MemberLogin='".$_POST['UserName']."' or EmailID='".$_POST['UserName']."' or MobileNumber='".$_POST['UserName']."')");
-             $loginid = $mysql->insert("_tbl_member_login",array("LoginOn"        => date("Y-m-d H:i:s"),
-                                                                 "MemberID"       => $data[0]['MemberID'],
-                                                                 "LoginName"      => $_POST['UserName'],
-                                                                 "LoginPassword"  => $_POST['Password']));
+             $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
+             $loginid = $mysql->insert("_tbl_member_login",array("LoginOn"       => date("Y-m-d H:i:s"),
+                                                                 "LoginFrom"     => "Web",
+                                                                 "Device"        => $clientinfo['Device'],
+                                                                 "MemberID"      => $data[0]['MemberID'],
+                                                                 "LoginName"     => $_POST['UserName'],
+                                                                 "BrowserIP"     => $clientinfo['query'],
+                                                                 "CountryName"   => $clientinfo['country'],
+                                                                 "BrowserName"   => $clientinfo['UserAgent'],
+                                                                 "APIResponse"   => json_encode($clientinfo),
+                                                                 "LoginPassword" => $_POST['Password']));
              if (sizeof($data)>0) {
                  
                  if ($data[0]['MemberPassword']==$_POST['Password']) {
@@ -53,7 +60,7 @@
          }                                                                           
          function GetLoginHistory() {
              global $mysql,$loginInfo;
-             $LoginHistory = $mysql->select("select * from _tbl_member_login where MemberID='".$loginInfo[0]['MemberID']."' ORDER BY LoginID DESC LIMIT 0,5");
+             $LoginHistory = $mysql->select("select * from _tbl_member_login where MemberID='".$loginInfo[0]['MemberID']."' ORDER BY LoginID DESC LIMIT 0,10");
                 return Response::returnSuccess("success",$LoginHistory);
          }  
           function GetNotificationHistory() {

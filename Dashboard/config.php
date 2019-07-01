@@ -1,10 +1,11 @@
 <?php
     session_start();
     define("SiteUrl","http://nahami.online/sl/Dashboard/");
+    define("AppUrl","http://nahami.online/sl/Dashboard/");
     define("ImageUrl","http://nahami.online/sl/Dashboard/assets/images/");
+    define("ImagePath","http://nahami.online/sl/Dashboard/assets/images/");
     define("SITE_TITLE","Matrimony") ;
-    
-    
+    $__Global = $_SERVER;
     
     function printDateTime($dateTime) {
         return date("M d, Y H",strtotime($dateTime));
@@ -13,8 +14,6 @@
     function printDate($date) {
         return date("M d, Y ",strtotime($date));
     }
-    
-    
     
     class Franchisee  {
         
@@ -52,8 +51,6 @@
             return $prefix;
         }
     }
-    
-   
     
     class Paypal  {
         
@@ -590,23 +587,23 @@
               return json_decode($this->_callUrl("m=Member&a=UpdatePrivacy",$param),true);
         }
         
-        
-         
-        
-        
-   function _callUrl($method,$param) {
-        
+        function _callUrl($method,$param) {
+            
+            global $__Global;
             
             $postvars = '';
+            
             foreach($param as $key=>$value) {
                 $postvars .= $key . "=" . $value . "&";
             }
+            
             foreach($_GET as $key=>$value) {
                 $postvars .= $key . "=" . $value . "&";
             }
+            
+            $postvars .= "qry=".base64_encode(json_encode(array("UserAgent"=>$__Global['HTTP_USER_AGENT'],"IPAddress"=>$__Global['REMOTE_ADDR'])));
             $ch = curl_init();
             curl_setopt($ch,CURLOPT_URL,$this->serverURL.$method."&User=".$_SESSION['UserData']['MemberID']);
-            
             curl_setopt($ch,CURLOPT_POST, 1);                //0 for a get request
             curl_setopt($ch,CURLOPT_POSTFIELDS,$postvars);
             curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
@@ -623,16 +620,16 @@
     if (isset($_GET['action']) && $_GET['action']=="logout") {
         
         if (isset($_Franchisee['LoginID'])) {
-        $loginID = $_Franchisee['LoginID'];
-    }  else if (isset($_Member['LoginID'])) {
-        $webservice->MemberLogout();
-    }  else {
-        $loginID = $_Admin['LoginID'];
+            $loginID = $_Franchisee['LoginID'];
+        } else if (isset($_Member['LoginID'])) {
+            $webservice->MemberLogout();
+        } else {
+            $loginID = $_Admin['LoginID'];
+        }
+        unset($_SESSION);
+        session_destroy();
+        sleep(3);
+        header("Location:".$_GET['redirect']);
     }
-         unset($_SESSION);
-         session_destroy();
-         sleep(3);
-         header("Location:".$_GET['redirect']);
-    }
-   
+
 ?>

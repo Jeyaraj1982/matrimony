@@ -56,7 +56,7 @@
         <h4 class="card-title">Change Password</h4>
         <form class="forms-sample" method="post" action="" onsubmit="return SubmitChangePassword();">
             <div class="form-group">
-                <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword" value="<?php echo (isset($_POST['CurrentPassword']) ? $_POST['CurrentPassword'] : "");?>" placeholder="Enter Current Password">
+                <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword" value="<?php echo (isset($_POST['CurrentPassword']) ? $_POST['CurrentPassword'] : "");?>" placeholder="Current Password">
                 <span class="errorstring" id="ErrCurrentPassword"><?php echo isset($ErrCurrentPassword)? $ErrCurrentPassword : "";?></span>
             </div>
             <div class="form-group">
