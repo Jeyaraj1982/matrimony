@@ -62,18 +62,18 @@
             <div class="collapse" id="mysearch">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="<?php echo GetUrl("Matches/BrowseMatches");?>" style="font-size:13px">Browse Matches</a>
+                  <a class="nav-link" href="<?php echo GetUrl("Matches/Browse/BrowseMatches");?>" style="font-size:13px">Browse Matches</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="<?php echo GetUrl("Matches/BasicSearch");?>" style="font-size:13px">Basic Search </a>
+                  <a class="nav-link" href="<?php echo GetUrl("Matches/Search/BasicSearch");?>" style="font-size:13px">Basic Search </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="<?php echo GetUrl("Matches/AdvancedSearch");?>" style="font-size:13px">Advanced Search</a>
+               <!-- <li class="nav-item">
+                  <a class="nav-link" href="<?php echo GetUrl("Matches/Search/AdvancedSearch");?>" style="font-size:13px">Advanced Search</a>
                 </li>
               <li class="nav-item">
-                  <a class="nav-link" href="<?php echo GetUrl("Matches/ByProfileID");?>" style="font-size:13px">Search By ID</a>
+                  <a class="nav-link" href="<?php echo GetUrl("Matches/Search/ByProfileID");?>" style="font-size:13px">Search By ID</a>
                 </li>
-                 
+                --> 
               </ul>
             </div>
         </li>

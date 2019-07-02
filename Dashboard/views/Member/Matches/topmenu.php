@@ -1,3 +1,4 @@
+ <h4 style="margin-top:0px">Browse Matches</h4>
 <div class="scrollmenu shadow">
   <a href="BasicSearch" class="<?php echo ($page=="BasicSearch") ? ' linkactive ':'';?>">Basic Search</a>
   <a href="AdvancedSearch" class="<?php echo ($page=="AdvancedSearch") ? ' linkactive ':'';?>">Advanced Search</a>

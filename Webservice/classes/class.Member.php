@@ -280,7 +280,7 @@
              
              global $mysql,$loginInfo;
              
-             if ((strlen(trim($_POST['ProfileFor']))=="0")) {    
+             if ((strlen(trim($_POST['ProfileFor']))==0 || $_POST['ProfileFor']=="0" )) {
                 return Response::returnError("Please select ProfileFor");
              }
              if (!(strlen(trim($_POST['ProfileName']))>0)) {
@@ -289,25 +289,25 @@
              if (!(strlen(trim($_POST['DateofBirth']))>0)) {
                 return Response::returnError("Please enter your date of birth");
              }
-             if (strlen(trim($_POST['Sex']))=="0") {
+             if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0" )) {
                 return Response::returnError("Please select sex");
              }
-             if (strlen(trim($_POST['MaritalStatus']))=="0") {
+             if ((strlen(trim($_POST['MaritalStatus']))==0 || $_POST['MaritalStatus']=="0" )) {
                 return Response::returnError("Please select marital status");
              }
-             if (strlen(trim($_POST['Language']))=="0") {
+             if ((strlen(trim($_POST['Language']))==0 || $_POST['Language']=="0" )) {
                 return Response::returnError("Please select language");
              }
-             if (strlen(trim($_POST['Religion']))=="0") {
+             if ((strlen(trim($_POST['Religion']))==0 || $_POST['Religion']=="0" )) {
                 return Response::returnError("Please select religion");
              }
-             if (strlen(trim($_POST['Caste']))=="0") {
+             if ((strlen(trim($_POST['Caste']))==0 || $_POST['Caste']=="0" )) {
                 return Response::returnError("Please select caste");
              }
-             if (strlen(trim($_POST['Community']))=="0") {
+             if ((strlen(trim($_POST['Community']))==0 || $_POST['Community']=="0" )) {
                 return Response::returnError("Please select community");
              }
-             if (strlen(trim($_POST['Nationality']))=="0") {
+             if ((strlen(trim($_POST['Nationality']))==0 || $_POST['Nationality']=="0" )) {
                 return Response::returnError("Please select nationality");
              }
 
@@ -388,15 +388,14 @@
          function CheckVerification() {
              
              global $mysql,$loginInfo;
-             $memberdata = $mysql->select("select * from _tbl_members where MemberID='".$login[0]['MemberID']."'");
-             
+             $memberdata = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==0) {
-                 return $this->ChangeMobileNumberFromVerificationScreen("",$loginid,"","");
+                 return $this->ChangeMobileNumberFromVerificationScreen("",$loginInfo[0]["LoginID"],"","");
              }
              if ($memberdata[0]['IsEmailVerified']==0) {
-                 return $this->ChangeEmailFromVerificationScreen("",$loginid,"","");
+                 return $this->ChangeEmailFromVerificationScreen("",$loginInfo[0]["LoginID"],"","");
              }
-             return "<script>location.href='http://nahami.online/sl/Dashboard/MyProfiles/CreateProfile';</script>";
+             return "<script>location.href='".AppPath."/MyProfiles/CreateProfile';</script>";
          }
          
          function SaveBasicSearch() {
@@ -506,7 +505,7 @@
                  return '<div style="background:white;width:100%;padding:20px;">
                             <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
+                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="CheckVerification()">Continue</a>
                        </div>';    
             } else {
                 $formid = "frmChangeMobileNo_".rand(30,3000);
