@@ -1,6 +1,7 @@
 <?php
     session_start();
     define("SiteUrl","http://nahami.online/sl/Dashboard/");
+    define("WebServiceUrl","http://nammamarriage.com/Webservice/");
     define("AppUrl","http://nahami.online/sl/Dashboard/");
     define("ImageUrl","http://nahami.online/sl/Dashboard/assets/images/");
     define("ImagePath","http://nahami.online/sl/Dashboard/assets/images/");
@@ -223,14 +224,14 @@
     if (isset($_SESSION['UserDetails']) && ($_SESSION['UserDetails']['FranchiseeID']>0)) {
         $_Franchisee = $_SESSION['UserDetails'];
         $_FranchiseeInfo = $_SESSION['FranchiseeDetails'];
-    }  
+    } else  if (isset($_SESSION['AdminDetails']) && ($_SESSION['AdminDetails']['AdminID']>0)) {
     
-    if (isset($_SESSION['AdminDetails']) && ($_SESSION['AdminDetails']['AdminID']>0)) {
         $_Admin = $_SESSION['AdminDetails'];
-    }
+    } else if (isset($_SESSION['MemberDetails']) && ($_SESSION['MemberDetails']['MemberID']>0)) {
     
-    if (isset($_SESSION['MemberDetails']) && ($_SESSION['MemberDetails']['MemberID']>0)) {
         $_Member = $_SESSION['MemberDetails'];
+    } else {
+        echo "<script>alert('session expired. login again');location.href='../';</script>";
     }
    
    if ($_Admin['AdminID']>0) {
@@ -340,8 +341,11 @@
         function EditProfile($param) {
               return json_decode($this->_callUrl("m=Member&a=EditProfile",$param),true);
         }
-        function editprofileviewinfo($param) {
-              return json_decode($this->_callUrl("m=Member&a=editprofileviewinfo",$param),true);
+        function GetDraftProfileInformation($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetDraftProfileInformation",$param),true);
+        }
+        function EditDraftGeneralInformation($param) {
+              return json_decode($this->_callUrl("m=Member&a=EditDraftGeneralInformation",$param),true);
         }
         function GetMyEmails($param) {
               return json_decode($this->_callUrl("m=Member&a=GetMyEmails",$param),true);

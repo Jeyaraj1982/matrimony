@@ -50,6 +50,9 @@
                 <li class="nav-item">
                   <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyProfiles/ManageProfile");?>">Manage Profiles</a>
                 </li>
+                  <li class="nav-item">
+                  <a class="nav-link" href="<?php echo GetUrl("MyContacts/RecentlyWhoViewed");?>" style="font-size:13px">Recently who viewed</a>
+                </li>
               </ul>
             </div>
         </li>

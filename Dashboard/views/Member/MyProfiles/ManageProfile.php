@@ -72,11 +72,11 @@ box-shadow: 0 0 5px #e9e9e9 !important;
                                 <div><?php echo $Profile['Occupation'];?></div>
                             </div>
                             <div class="col-sm-12"  style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
-                                Am a very simple man by nature I love to learn from people I like travelling I love people that love I love to learn from people I like travelling I love people that love......<a href="<?php echo GetUrl("MyProfiles/View/". $Profile['ProfileID'].".htm?msg=1");?>">More</a>
+                                Am a very simple man by nature I love to learn from people I like travelling I love people that love I love to learn from people I like travelling I love people that love......<a href="<?php echo GetUrl("MyProfiles/View/". $Profile['ProfileID'].".htm");?>">More</a>
                             </div> 
                         </div>
                     </div>
-                   <div style="float:right;line-height: 1px;"><a href="<?php echo GetUrl("MyProfiles/Edit/". $Profile['ProfileID'].".htm?msg=1");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/View/". $Profile['ProfileID'].".htm?msg=1");?>">View</a>  </div> 
+                   <div style="float:right;line-height: 1px;"><a href="<?php echo GetUrl("MyProfiles/Edit/GeneralInformation/". $Profile['ProfileID'].".htm");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/View/". $Profile['ProfileID'].".htm");?>">View</a>  </div> 
                 </div>  <br>
                 <?php }?>
               </div>

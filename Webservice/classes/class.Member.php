@@ -1053,9 +1053,9 @@
                                                             "CountryName"             => CodeMaster::GetCountryName(),
                                                             "StateName"               => CodeMaster::GetStateName()));
          } 
-         function editprofileviewinfo(){
+         function GetDraftProfileInformation(){
              global $mysql,$loginInfo;
-             $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");               
+             $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");               
              return Response::returnSuccess("success",array("ProfileInfo"             => $Profiles[0],
                                                             "ProfileSignInFor"        => CodeMaster::GetProfileFor(),
                                                             "Gender"                  => CodeMaster::GetGender(),
@@ -1199,6 +1199,62 @@
                                                                  "ActivityOn"     => date("Y-m-d H:i:s"))); 
              return Response::returnSuccess("Privacy updated successfully","update _tbl_members set PrivacyVerifiedMember='".(($_POST['VerfiedMembers']=="on") ? '1' : '0')."',PrivacyNonVerifiedMember='".(($_POST['non-VerfiedMembers']=="on")? '1':'0')."' where MemberID='".$loginInfo[0]['MemberID']."'",$data[0]);
          }          
-     }   
-     
-?> 
+      
+     function EditDraftGeneralInformation() {
+             
+             global $mysql,$loginInfo;
+             
+             $dob = strtotime($_POST['DateofBirth']);
+               $dob = date("Y",$dob)."-".date("m",$dob)."-".date("d",$dob);
+             
+             $MaritalStatus = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARTIALSTATUS' and SoftCode='".$_POST['MaritalStatus']."'");  
+             $Sex = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX' and SoftCode='".$_POST['Sex']."'");  
+             $MotherTongue = $mysql->select("select * from _tbl_master_codemaster Where HardCode='LANGUAGENAMES' and SoftCode='".$_POST['Language']."'");  
+             $Religion = $mysql->select("select * from _tbl_master_codemaster Where HardCode='RELINAMES' and SoftCode='".$_POST['Religion']."'");  
+             $Caste = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CASTNAMES' and SoftCode='".$_POST['Caste']."'");  
+             $Community = $mysql->select("select * from _tbl_master_codemaster Where HardCode='COMMUNITY' and SoftCode='".$_POST['Community']."'");  
+             $Nationality = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NATIONALNAMES' and SoftCode='".$_POST['Nationality']."'");    
+             
+             $updateSql = "update _tbl_Profile_Draft set ProfileFor='".$_POST['ProfileFor']."',
+                                                       ProfileName='".$_POST['ProfileName']."',
+                                                       DateofBirth='".$dob."',
+                                                       SexCode='".$_POST['Sex']."',
+                                                       Sex='".$Sex[0]['CodeValue']."',
+                                                       MaritalStatusCode='".$_POST['MaritalStatus']."',
+                                                       MaritalStatus='".$MaritalStatus[0]['CodeValue']."',
+                                                       MotherTongueCode='".$_POST['Language']."',
+                                                       MotherTongue='".$MotherTongue[0]['CodeValue']."',
+                                                       ReligionCode='".$_POST['Religion']."',
+                                                       Religion='".$Religion[0]['CodeValue']."',
+                                                       CasteCode='".$_POST['Caste']."',
+                                                       Caste='".$Caste[0]['CodeValue']."',
+                                                       Country='".$_POST['Country']."',
+                                                       StateCode='".$_POST['StateName']."',
+                                                       State='".$State[0]['CodeValue']."',
+                                                       City='".$_POST['City']."',
+                                                       OtherLocation='".$_POST['OtherLocation']."',
+                                                       CommunityCode='".$_POST['Community']."',
+                                                       Community='".$Community[0]['CodeValue']."',
+                                                       NationalityCode='".$_POST['Nationality']."',
+                                                       Nationality='".$Nationality[0]['CodeValue']."' where  CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'";
+             $mysql->execute($updateSql);  
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                                 "ActivityType"   => 'Generalinformationupdated.',
+                                                                 "ActivityString" => 'General Information Updated.',
+                                                                 "SqlQuery"       => base64_encode($updateSql),
+                                                                 //"oldData"        => base64_encode(json_encode($oldData)),
+                                                                 "ActivityOn"     => date("Y-m-d H:i:s")));
+             $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");      
+             
+             return Response::returnSuccess("success",array("ProfileInfo"             => $Profiles[0],
+                                                            "ProfileSignInFor"        => CodeMaster::GetProfileFor(),
+                                                            "Gender"                  => CodeMaster::GetGender(),
+                                                            "MaritalStatus"           => CodeMaster::GetMaritalStatus(),
+                                                            "Language"                => CodeMaster::GetLanguage(),
+                                                            "Religion"                => CodeMaster::GetReligion(),
+                                                            "Caste"                   => CodeMaster::GetCaste(),
+                                                            "Community"               => CodeMaster::GetCommunity(),
+                                                            "Nationality"             => CodeMaster::GetNationality()));
+         } 
+         }
+     ?> 

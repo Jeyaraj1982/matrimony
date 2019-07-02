@@ -12,107 +12,55 @@
             <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/selectboxstyle.css?rnd=<?php echo rand(10,1000);?>">
             <link rel="shortcut icon" href="<?php echo SiteUrl?>assets/images/favicon.png" /> 
             <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/puse-icons-feather/feather.css?rnd=<?php echo rand(10,1000);?>">
-            <script src="http://nahami.online/sl/Dashboard/assets/vendors/jquery-3.1.1.min.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
-            <link href='http://nahami.online/sl/Dashboard/assets/vendors/bootstrap/css/bootstrap.min.css?rnd=<?php echo rand(10,1000);?>' rel='stylesheet' type='text/css'>
-            
-         <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>    
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>   --> 
-  
-  
-           <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js?rnd=<?php echo rand(10,1000);?>"></script>
+            <script src="<?php echo SiteUrl?>assets/vendors/jquery-3.1.1.min.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
+            <link href='<?php echo SiteUrl?>assets/vendors/bootstrap/css/bootstrap.min.css?rnd=<?php echo rand(10,1000);?>' rel='stylesheet' type='text/css'>
+            <!--
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>    
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>   
+            --> 
+            <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js?rnd=<?php echo rand(10,1000);?>"></script>
             <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css?rnd=<?php echo rand(10,1000);?>">
-         <script src="http://malsup.github.io/jquery.blockUI.js"></script> 
-          <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>   
-            <style> 
+            <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>   
+            <script src="<?php echo SiteUrl?>assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
+            <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+            <style>
                 .Activedot {height:10px;width:10px;background-color:#20e512;border-radius:50%;display:inline-block;}
                 .Deactivedot {height:10px;width:10px;background-color:#888;border-radius:50%;display:inline-block;}
                 #star{color:red;}
-            </style>
-           <script src="http://nahami.online/sl/Dashboard/assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
-            
-            <style>
                 .errorstring {font-size:10px;color:red}
-                
+                div.scrollmenu {background:#fff;border-bottom:2px solid #e5e5e5;white-space: nowrap;padding-left:25px;padding-top:5px;}
+                div.scrollmenu a {display: inline-block;color: #333;text-align: center;padding: 10px 10px;font-family:'Roboto';text-decoration: none;border-bottom:3px solid #fff;margin-right:15px;}
+                div.scrollmenu a:hover {border-bottom:3px solid #fff;color:#ff007b;}
+                .linkactive{border-bottom:3px solid #ff007b !important;color:#ff007b  !important;}
+                .shadow {-webkit-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);-moz-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
             </style>
-            <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-<style>
-div.scrollmenu {
-  background:#fff;
-  border-bottom:2px solid #e5e5e5;
-  
-  white-space: nowrap;
-  padding-left:25px;
-  padding-top:5px;
-}
-
-div.scrollmenu a {
-  display: inline-block;
-  color: #333;
-  text-align: center;
-  padding: 10px 10px;
-  font-family:'Roboto';
-  text-decoration: none;
-   border-bottom:3px solid #fff;
-   margin-right:15px;
-}
-
-div.scrollmenu a:hover {
- /* background-color: #777;*/
- border-bottom:3px solid #fff;
- color:#ff007b;
-}
-
- .linkactive{
-     border-bottom:3px solid #ff007b !important;
-      color:#ff007b  !important;
- }
- 
- .shadow {
-   -webkit-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
--moz-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
-}
-</style>
- 
         </head>
     <body>
-    
-    
-
-    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="margin-bottom:0px !important;border-radius:0px !important">
-    <?php if (UserRole=="Member") { ?> 
-     <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center ">
-        <!--<a class="navbar-brand brand-logo" href="../Dashboard">
-          <img src="<?php //echo SiteUrl?>images/logo.svg" alt="logo" />
-        </a>
-        <a class="navbar-brand brand-logo-mini" href="../Dashboard">
-          <img src="<?php //echo SiteUrl?>images/logo-mini.svg" alt="logo" />
-        </a> -->
-    </div>
-    <div class="navbar-menu-wrapper d-flex align-items-center  bshadow">        
-        <ul class="navbar-nav navbar-nav-right">
-            <!--<li class="nav-item dropdown d-none d-xl-inline-block <?php echo ($mainlink=="Search") ? ' linkactive1 ':'';?>" >
-                <span class="profile-text">         
-                    <a href="<?php echo SiteUrl?>Search/BasicSearch" class="msearch" style="color: white;font-size:15px">Search</a>
-                  </span>
-                 </li>-->
-          <li class="nav-item dropdown">
-    <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-        <i class="mdi mdi-file-document-box"></i>
-        <span class="count">0</span>
-    </a>
-                    <?php 
-                         $response = $webservice->GetMyEmails();
-                    ?>
-
-        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-        <?php if (sizeof($response['data'])>0) {  ?>
-            <div class="dropdown-item">
-                <p class="mb-0 font-weight-normal float-left">You have 7 unread mails
-                </p>
+        <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="margin-bottom:0px !important;border-radius:0px !important">
+            <?php if (UserRole=="Member") { ?> 
+                     <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center ">
+                         <!--<a class="navbar-brand brand-logo" href="../Dashboard">
+                         <img src="<?php //echo SiteUrl?>images/logo.svg" alt="logo" />
+                         </a>
+                         <a class="navbar-brand brand-logo-mini" href="../Dashboard">
+                         <img src="<?php //echo SiteUrl?>images/logo-mini.svg" alt="logo" />
+                         </a> -->
+                     </div>
+                     <div class="navbar-menu-wrapper d-flex align-items-center  bshadow">        
+                        <ul class="navbar-nav navbar-nav-right">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="mdi mdi-file-document-box"></i>
+                                    <span class="count">0</span>
+                                </a>
+                                <?php  $response = $webservice->GetMyEmails(); ?>
+                                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
+                                    <?php if (sizeof($response['data'])>0) {  ?>
+                                    <div class="dropdown-item">
+                                        <p class="mb-0 font-weight-normal float-left">You have 7 unread mails</p>
                 <span class="badge badge-info badge-pill float-right">View all</span>
             </div>
             <div class="dropdown-divider"></div>
@@ -230,28 +178,15 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
               </a> 
             </div>
           </li>
-          <li class="nav-item dropdown d-none d-xl-inline-block">
-            <span class="profile-text">         
-              <?php echo "<b>";echo $_Member['MemberName'] ; echo "</b>";?></span><br> 
-             </li>
+                <li class="nav-item dropdown d-none d-xl-inline-block">
+                <span class="profile-text"><?php echo "<b>";echo $_Member['MemberName'] ; echo "</b>";?></span><br> 
+              </li>
              <li class="nav-item dropdown d-none d-xl-inline-block">
-             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image">
-            </a>
+             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"><img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image"></a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding-top: 10px;padding-bottom: 10px;">
-              <!--<a href="#" class="dropdown-item">
-               Tools
-              </a>-->
-              <a href="<?php echo GetUrl("MyAccounts/MyWallet");?>" class="dropdown-item">
-              My Accounts
-              </a>
-              <a href="<?php echo GetUrl("MySettings/MyMemberInfo");?>" class="dropdown-item">
-              My Settings
-              </a>
-              
-              <a href="<?php echo SiteUrl;?>?action=logout&redirect=../index" class="dropdown-item">
-                Log Out
-              </a>
+              <a href="<?php echo GetUrl("MyAccounts/MyWallet");?>" class="dropdown-item">My Accounts</a>
+              <a href="<?php echo GetUrl("MySettings/MyMemberInfo");?>" class="dropdown-item">My Settings</a>
+              <a href="<?php echo SiteUrl;?>?action=logout&redirect=../index" class="dropdown-item">Log Out</a>
             </div>
           </li>
     </ul>
@@ -379,36 +314,23 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
               </a>
             </div>
           </li>-->
-          <li class="nav-item dropdown d-none d-xl-inline-block">
-          <span class="profile-text" style="line-height:10px;" >         
-              <?php echo "Franchisee Name";?></span><br>
-          <span class="profile-text" style="line-height:10px; ">   
-              <?php echo "<b>";echo $logininfo[0]['FranchiseName'] ; echo "</b>";?></span><br> 
-              <span class="profile-text" style="line-height:10px;">
-               <?php if($_Franchisee['IsAdmin']==1){
-                    echo "<small>"; echo "Franchisee Admin"; echo "</small>"  ;
-               } else {
-                   echo "Admin"; 
-               }
-             ?></span>
+             <li class="nav-item dropdown d-none d-xl-inline-block">
+                <span class="profile-text" style="line-height:10px;" >         
+                <?php echo "Franchisee Name";?></span><br>
+                <span class="profile-text" style="line-height:10px; ">   
+                <?php echo "<b>";echo $logininfo[0]['FranchiseName'] ; echo "</b>";?></span><br> 
+                <span class="profile-text" style="line-height:10px;">
+                <?php echo ($_Franchisee['IsAdmin']==1) ? "<small>Franchisee Admin</small>"  : "Admin"; ?></span>
              </li> 
              <li class="nav-item dropdown d-none d-xl-inline-block"> 
-             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image">
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-              <a href="<?php echo GetUrl("MySettings/ChangePassword");?>" class="dropdown-item">
-                Change Password
-              </a>
-              <a class="dropdown-item">
-                Settings
-              </a>
-              <a href="<?php echo SiteUrl;?>?action=logout&redirect=FranchiseeLogin" class="dropdown-item">
-                Log Out
-              </a>
-            </div>
-          </li>
-    </ul>
+                <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"><img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image"></a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                    <a href="<?php echo GetUrl("MySettings/ChangePassword");?>" class="dropdown-item">Change Password</a>
+                    <a class="dropdown-item">Settings</a>
+                    <a href="<?php echo SiteUrl;?>?action=logout&redirect=FranchiseeLogin" class="dropdown-item">Log Out</a>
+                </div>
+             </li>
+          </ul>
     </div>
       
       <?php } ?>
@@ -533,36 +455,22 @@ box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);
               </a>
             </div>
           </li>-->
-          
-          <li class="nav-item dropdown d-none d-xl-inline-block">
-          <span class="profile-text" >
-              <?php echo "<b>";echo $_Admin['AdminName'] ; echo "</b>";?></span><br> 
-              <span class="profile-text" style="line-height:20px;" >
-               <?php if($_Admin['IsAdmin']==0){
-                    echo "<small>"; echo "Administrator"; echo "</small>"  ;
-               } else {
-                   echo "Admin Staff";
-               }
-             ?></span>                                                                  
+              <li class="nav-item dropdown d-none d-xl-inline-block">
+                <span class="profile-text" >
+                    <?php echo "<b>";echo $_Admin['AdminName'] ; echo "</b>";?></span><br> 
+                    <span class="profile-text" style="line-height:20px;" >
+                    <?php echo ($_Admin['IsAdmin']==0) ? "<small>Administrator</small>"  : "Admin Staff"; ?>
+                </span>                                                                  
              </li>
               <li class="nav-item dropdown d-none d-xl-inline-block">
-              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-             <img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image">
-             </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-              <a href="<?php echo GetUrl("ChangePassword");?>" class="dropdown-item" style="padding-top: 15px;">
-                Change Password
-              </a>
-              <a href="<?php echo GetUrl("Settings/Setting");?>" class="dropdown-item">
-                Settings
-              </a>
-              <a href="<?php echo SiteUrl;?>?action=logout&redirect=AdminLogin" class="dropdown-item">
-                Log Out
-              </a>
-            </div>
-          </li>
-    </ul>
-        
+                <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"><img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image"></a>
+                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                        <a href="<?php echo GetUrl("ChangePassword");?>" class="dropdown-item" style="padding-top: 15px;">Change Password</a>
+                        <a href="<?php echo GetUrl("Settings/Setting");?>" class="dropdown-item">Settings</a>
+                        <a href="<?php echo SiteUrl;?>?action=logout&redirect=AdminLogin" class="dropdown-item">Log Out</a>
+                    </div>
+                </li>
+              </ul>
       </div>
       <?php } ?>
   </nav>
