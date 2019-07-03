@@ -30,7 +30,7 @@ $(document).ready(function () {
 </script>
 <?php                   
   if (isset($_POST['BtnSaveIncomeRange'])) {   
-    $response = $webservice->CreateIncomeRange($_POST);
+    $response = $webservice->getData("Admin","CreateIncomeRange",$_POST);
     if ($response['status']=="success") {
        $successmessage = $response['message']; 
        unset($_POST);

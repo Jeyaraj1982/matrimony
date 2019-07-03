@@ -40,7 +40,7 @@ $(document).ready(function () {
 <?php   
     if (isset($_POST['BtnUpdateDistrictName'])) {
         
-        $response = $webservice->EditDistrictName($_POST);
+        $response = $webservice->getData("Admin","EditDistrictName",$_POST); 
         if ($response['status']=="success") {
             echo $response['message'];
         } else {

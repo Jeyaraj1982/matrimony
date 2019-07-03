@@ -1,15 +1,16 @@
 <?php
     session_start();
+    
     include_once("config_client.php");
     $__Global = $_SERVER;
     
-    function printDateTime($dateTime) {
+    /*function printDateTime($dateTime) {
         return date("M d, Y H",strtotime($dateTime));
     }
     
     function printDate($date) {
         return date("M d, Y ",strtotime($date));
-    }
+    }*/
     
     class Franchisee  {
         
@@ -206,48 +207,33 @@
     
     function GetUrl($Param) {
        return SiteUrl.$Param;
-       return SiteUrl.UserRole."/".$Param;
     }
    
     function putDateTime($dateTime) {
         return date("M d, Y H:i",strtotime($dateTime));
-        
     }
+    
     function putDate($date) {
         return date("M d, Y",strtotime($date));
-        
     }
-    if (isset($_SESSION['UserDetails']) && ($_SESSION['UserDetails']['FranchiseeID']>0)) {
-        $_Franchisee = $_SESSION['UserDetails'];
-        $_FranchiseeInfo = $_SESSION['FranchiseeDetails'];
-    } else  if (isset($_SESSION['AdminDetails']) && ($_SESSION['AdminDetails']['AdminID']>0)) {
-        $_Admin = $_SESSION['AdminDetails'];
-    } else if (isset($_SESSION['MemberDetails']) && ($_SESSION['MemberDetails']['MemberID']>0)) {
-        $_Member = $_SESSION['MemberDetails'];
-    } else {
-        echo "<script>alert('session expired. login again');location.href='../';</script>";
-    }
-   
-   if ($_Admin['AdminID']>0) {
-        define("UserRole","Admin");
-        
-    } 
-    if ($_Franchisee['FranchiseeID']>0) {
-        define("UserRole","Franchisee");     
-    }
-    if ($_Member['MemberID']>0) {
-        define("UserRole","Member");     
-    }
-    
     
     $loginID = "";
-    
-    if (isset($_Franchisee['LoginID'])) {
-        $loginID = $_Franchisee['LoginID'];
-    }  else if (isset($_Member['LoginID'])) {
-        $loginID = $_Member['LoginID'];
-    }  else {
+
+    if (isset($_SESSION['UserDetails']) && ($_SESSION['UserDetails']['FranchiseeID']>0)) {
+        $_Franchisee     = $_SESSION['UserDetails'];
+        $_FranchiseeInfo = $_SESSION['FranchiseeDetails'];
+        $loginID         = $_Franchisee['LoginID'];
+        define("UserRole","Franchisee");     
+    } else  if (isset($_SESSION['AdminDetails']) && ($_SESSION['AdminDetails']['AdminID']>0)) {
+        $_Admin  = $_SESSION['AdminDetails'];
         $loginID = $_Admin['LoginID'];
+        define("UserRole","Admin");
+    } else if (isset($_SESSION['MemberDetails']) && ($_SESSION['MemberDetails']['MemberID']>0)) {
+        $_Member = $_SESSION['MemberDetails'];
+        $loginID = $_Member['LoginID'];
+        define("UserRole","Member");     
+    } else {
+        echo "<script>alert('session expired. login again');location.href='../';</script>";
     }
     
     class Webservice {
@@ -260,102 +246,133 @@
         }
         
         function Login($param) {
-              return json_decode($this->_callUrl("Login",$param),true);
+            return json_decode($this->_callUrl("Login",$param),true);
         }
         
         function FLogin($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=Login",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=Login",$param),true);
         }
-         function FranchiseeInfo($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=GetMyProfile",$param),true);
+        
+        function FranchiseeInfo($param) {
+            return json_decode($this->_callUrl("m=Franchisee&a=GetMyProfile",$param),true);
         }
+        
         function CreateMember($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=CreateMember",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=CreateMember",$param),true);
         }
+        
         function GetMemberCode($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=GetMemberCode",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=GetMemberCode",$param),true);
         }
+        
         function GetMyMembers($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=GetMyMembers",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=GetMyMembers",$param),true);
         }
+        
         function GetMyActiveMembers($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=GetMyActiveMembers",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=GetMyActiveMembers",$param),true);
         }
+        
         function GetMyDeactiveMembers($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=GetMyDeactiveMembers",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=GetMyDeactiveMembers",$param),true);
         }
+        
         function GetMemberDetails($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=GetMemberDetails",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=GetMemberDetails",$param),true);
         }
+        
         function EditMember($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=EditMember",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=EditMember",$param),true);
         }
+        
         function SearchMemberDetails($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=SearchMemberDetails",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=SearchMemberDetails",$param),true);
         }
+        
         function RefillWallet($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=RefillWallet",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=RefillWallet",$param),true);
         }
+        
         function ResetPassword($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=ResetPassword",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=ResetPassword",$param),true);
         }
+        
         function GetManageStaffs($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=GetManageStaffs",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=GetManageStaffs",$param),true);
         }
+        
         function CreateFranchiseeStaff($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=CreateFranchiseeStaff",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=CreateFranchiseeStaff",$param),true);
         }
+        
         function GetFranchiseeStaffCodeCode($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=GetFranchiseeStaffCodeCode",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=GetFranchiseeStaffCodeCode",$param),true);
         }
+        
         function EditFranchiseeStaff($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=EditFranchiseeStaff",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=EditFranchiseeStaff",$param),true);
         }
+        
         function GetStaffs($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=GetStaffs",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=GetStaffs",$param),true);
         }
+        
         function ChangePassword($param) {
-              return json_decode($this->_callUrl("m=Franchisee&a=ChangePassword",$param),true);
+            return json_decode($this->_callUrl("m=Franchisee&a=ChangePassword",$param),true);
         }
+        
         function GetMyDraftProfiles($param) {
-              return json_decode($this->_callUrl("m=Member&a=GetMyDraftProfiles",$param),true);
+            return json_decode($this->_callUrl("m=Member&a=GetMyDraftProfiles",$param),true);
         }
+        
         function GetMemberInfo($param) {
               return json_decode($this->_callUrl("m=Member&a=GetMemberInfo",$param),true);
         }
+        
         function WelcomeMessage($param) {
-              return json_decode($this->_callUrl("m=Member&a=WelcomeMessage",$param),true);
+            return json_decode($this->_callUrl("m=Member&a=WelcomeMessage",$param),true);
         }
+        
         function GetCodeMasterDatas($param) {
               return json_decode($this->_callUrl("m=Member&a=GetCodeMasterDatas",$param),true);
         }
+        
         function CreateProfile($param) {
-              return json_decode($this->_callUrl("m=Member&a=CreateProfile",$param),true);
+            return json_decode($this->_callUrl("m=Member&a=CreateProfile",$param),true);
         }
+        
         function EditProfile($param) {
-              return json_decode($this->_callUrl("m=Member&a=EditProfile",$param),true);
+            return json_decode($this->_callUrl("m=Member&a=EditProfile",$param),true);
         }
+        
         function GetDraftProfileInformation($param) {
-              return json_decode($this->_callUrl("m=Member&a=GetDraftProfileInformation",$param),true);
+            return json_decode($this->_callUrl("m=Member&a=GetDraftProfileInformation",$param),true);
         }
+        
         function EditDraftGeneralInformation($param) {
               return json_decode($this->_callUrl("m=Member&a=EditDraftGeneralInformation",$param),true);
         }
+        
         function GetMyEmails($param) {
               return json_decode($this->_callUrl("m=Member&a=GetMyEmails",$param),true);
         }
+        /*
         function MemberChangePassword($param) {
               return json_decode($this->_callUrl("m=Member&a=MemberChangePassword",$param),true);
-        }
+        } */
+        
         function GetAdvancedSearchElements($param) {
               return json_decode($this->_callUrl("m=Member&a=GetAdvancedSearchElements",$param),true);
         }
+        
         function GetBasicSearchElements($param) {
               return json_decode($this->_callUrl("m=Member&a=GetBasicSearchElements",$param),true);
         }
+        
         function EditMemberInfo($param) {
               return json_decode($this->_callUrl("m=Member&a=EditMemberInfo",$param),true);
         }
+        
         function SaveBasicSearch($param) {
               return json_decode($this->_callUrl("m=Member&a=SaveBasicSearch",$param),true);
         }
@@ -458,18 +475,14 @@
         function EditCasteName($param) {
               return json_decode($this->_callUrl("m=Admin&a=EditCasteName",$param),true);
         }
+        
         function GetManageActiveStarNames($param) {
               return json_decode($this->_callUrl("m=Admin&a=GetManageActiveStarNames",$param),true);
         }
         function GetManageDeactiveStarNames($param) {
               return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveStarNames",$param),true);
         }
-        function CreateStarName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=CreateStarName",$param),true);
-        }
-        function EditStarName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=EditStarName",$param),true);
-        }
+  
         function GetManageActiveNationalityNames($param) {
               return json_decode($this->_callUrl("m=Admin&a=GetManageActiveNationalityNames",$param),true);
         }
@@ -482,54 +495,8 @@
         function EditNationalityName($param) {
               return json_decode($this->_callUrl("m=Admin&a=EditNationalityName",$param),true);
         }
-        function GetManageActiveIncomeRanges($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveIncomeRanges",$param),true);
-        }
-        function GetManageDeactiveIncomeRanges($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveIncomeRanges",$param),true);
-        }
-        function CreateIncomeRange($param) {
-              return json_decode($this->_callUrl("m=Admin&a=CreateIncomeRange",$param),true);
-        }
-        function EditIncomeRange($param) {
-              return json_decode($this->_callUrl("m=Admin&a=EditIncomeRange",$param),true);
-        }
-        function GetManageActiveCountryNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveCountryNames",$param),true);
-        }
-        function GetManageDeactiveCountryNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveCountryNames",$param),true);
-        }
-        function CreateCountryName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=CreateCountryName",$param),true);
-        }
-        function EditCountryName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=EditCountryName",$param),true);
-        }
-        function GetManageActiveDistrictNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveDistrictNames",$param),true);
-        }
-        function GetManageDeactiveDistrictNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveDistrictNames",$param),true);
-        }
-        function CreateDistrictName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=CreateDistrictName",$param),true);
-        }
-        function EditDistrictName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=EditDistrictName",$param),true);
-        }
-        function GetManageActiveStateNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveStateNames",$param),true);
-        }
-        function GetManageDeactiveStateNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveStateNames",$param),true);
-        }
-        function CreateStateName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=CreateStateName",$param),true);
-        }
-        function EditStateName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=EditStateName",$param),true);
-        }
+        
+ 
         function GetManageActiveProfileSignInFors($param) {
               return json_decode($this->_callUrl("m=Admin&a=GetManageActiveProfileSignInFors",$param),true);
         }
@@ -569,32 +536,19 @@
         function EditEmailApi($param) {
               return json_decode($this->_callUrl("m=Admin&a=EditEmailApi",$param),true);
         }
-        function GetLoginHistory($param) {
-              return json_decode($this->_callUrl("m=Member&a=GetLoginHistory",$param),true);
-        }
-        function GetNotificationHistory($param) {
-              return json_decode($this->_callUrl("m=Member&a=GetNotificationHistory",$param),true);
-        } 
-         function MemberLogout() {
-              return json_decode($this->_callUrl("m=Member&a=Logout",array()),true);
-        }
-        function UpdateNotification($param) {
-              return json_decode($this->_callUrl("m=Member&a=UpdateNotification",$param),true);
-        }
-        function UpdatePrivacy($param) {
-              return json_decode($this->_callUrl("m=Member&a=UpdatePrivacy",$param),true);
+
+        function getData($method,$action,$param=array()) {
+            return json_decode($this->_callUrl("m=".$method."&a=".$action,$param),true);
         }
         
         function _callUrl($method,$param) {
             
             global $__Global;
-            
             $postvars = '';
             
             foreach($param as $key=>$value) {
                 $postvars .= $key . "=" . $value . "&";
             }
-            
             foreach($_GET as $key=>$value) {
                 $postvars .= $key . "=" . $value . "&";
             }
@@ -602,7 +556,7 @@
             $postvars .= "qry=".base64_encode(json_encode(array("UserAgent"=>$__Global['HTTP_USER_AGENT'],"IPAddress"=>$__Global['REMOTE_ADDR'])));
             $ch = curl_init();
             curl_setopt($ch,CURLOPT_URL,$this->serverURL.$method."&User=".$_SESSION['UserData']['MemberID']);
-            curl_setopt($ch,CURLOPT_POST, 1);                //0 for a get request
+            curl_setopt($ch,CURLOPT_POST, 1);
             curl_setopt($ch,CURLOPT_POSTFIELDS,$postvars);
             curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch,CURLOPT_CONNECTTIMEOUT ,3);
@@ -613,14 +567,14 @@
         }
     }
     
-     $webservice = new Webservice($loginID);
+    $webservice = new Webservice($loginID);
      
     if (isset($_GET['action']) && $_GET['action']=="logout") {
         
         if (isset($_Franchisee['LoginID'])) {
             $loginID = $_Franchisee['LoginID'];
         } else if (isset($_Member['LoginID'])) {
-            $webservice->MemberLogout();
+            $response = $webservice->getData("Member","MemberLogout");
         } else {
             $loginID = $_Admin['LoginID'];
         }
@@ -629,5 +583,4 @@
         sleep(3);
         header("Location:".$_GET['redirect']);
     }
-
 ?>

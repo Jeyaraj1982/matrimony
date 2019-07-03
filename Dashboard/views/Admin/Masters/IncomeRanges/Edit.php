@@ -31,7 +31,7 @@ $(document).ready(function () {
 <?php   
     if (isset($_POST['BtnUpdateIncomeRange'])) {
         
-        $response = $webservice->EditIncomeRange($_POST);
+        $response = $webservice->getData("Admin","EditIncomeRange",$_POST) ;
         if ($response['status']=="success") {
             echo $response['message'];
         } else {

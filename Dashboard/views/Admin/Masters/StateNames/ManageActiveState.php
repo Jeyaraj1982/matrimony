@@ -30,7 +30,7 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $StateNames = $webservice->GetManageActiveStateNames(); ?>
+                        <?php $StateNames = $webservice->getData("Admin","GetManageActiveStateNames"); ?>
                         <?php foreach($StateNames['data'] as $StateName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($StateName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $StateName['SoftCode'];?></td>

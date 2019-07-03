@@ -31,7 +31,7 @@ $(document).ready(function () {
 </script>
  <?php                   
   if (isset($_POST['BtnSaveStarName'])) {   
-    $response = $webservice->CreateStarName($_POST);
+    $response = $webservice->getData("Admin","CreateStarName",$_POST);
     if ($response['status']=="success") {
        $successmessage = $response['message']; 
        unset($_POST);

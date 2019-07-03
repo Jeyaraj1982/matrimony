@@ -32,7 +32,7 @@ $(document).ready(function () {
 <?php   
     if (isset($_POST['BtnUpdateStarName'])) {
         
-        $response = $webservice->EditStarName($_POST);
+        $response = $webservice->getData("Admin","EditStarName",$_POST);
         if ($response['status']=="success") {
             echo $response['message'];
         } else {

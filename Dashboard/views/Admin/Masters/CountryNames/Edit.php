@@ -83,7 +83,7 @@ $(document).ready(function () {
 <?php   
     if (isset($_POST['BtnUpdateCountryName'])) {
         
-        $response = $webservice->EditCountryName($_POST);
+        $response = $webservice->getData("Admin","EditCountryName",$_POST); 
         if ($response['status']=="success") {
             echo $response['message'];
         } else {

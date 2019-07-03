@@ -34,7 +34,7 @@
                             </tr>
                         </thead>
                       <tbody>
-                        <?php $CountryNames =$webservice->GetManageActiveCountryNames(); ?>
+                        <?php $CountryNames =$webservice->getData("Admin","GetManageActiveCountryNames");  ?>
                         <?php foreach($CountryNames['data'] as $CountryName) { ?>
                             <tr>
                                 <td><span class="<?php echo ($CountryName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $CountryName['SoftCode'];?></td>

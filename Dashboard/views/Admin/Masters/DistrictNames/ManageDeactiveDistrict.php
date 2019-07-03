@@ -33,7 +33,7 @@
                         </tr>  
                     </thead>
                      <tbody>         
-                        <?php $DistrictNames = $webservice->GetManageDeactiveDistrictNames(); ?>
+                        <?php $DistrictNames = $webservice->getData("Admin","GetManageDeactiveDistrictNames");  ?>
                         <?php foreach($DistrictNames['data'] as $DistrictName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($DistrictName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $DistrictName['SoftCode'];?></td>

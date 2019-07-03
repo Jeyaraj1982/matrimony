@@ -34,7 +34,7 @@ $(document).ready(function () {
 <?php   
     if (isset($_POST['BtnUpdateStateName'])) {
         
-        $response = $webservice->EditStateName($_POST);
+        $response = $webservice->getData("Admin","EditStateName",$_POST); 
         if ($response['status']=="success") {
             echo $response['message'];
         } else {

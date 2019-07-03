@@ -66,7 +66,7 @@ $(document).ready(function () {
 </script>
 <?php                   
   if (isset($_POST['BtnSaveCountryName'])) {   
-    $response = $webservice->CreateCountryName($_POST);
+    $response = $webservice->getData("Admin","CreateCountryName",$_POST); 
     if ($response['status']=="success") {
        $successmessage = $response['message']; 
        unset($_POST);

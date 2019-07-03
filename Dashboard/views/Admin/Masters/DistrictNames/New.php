@@ -39,7 +39,7 @@ $(document).ready(function () {
 </script>
 <?php                   
   if (isset($_POST['BtnSaveDistrictName'])) {   
-    $response = $webservice->CreateDistrictName($_POST);
+    $response = $webservice->getData("Admin","CreateDistrictName",$_POST);  
     if ($response['status']=="success") {
        $successmessage = $response['message']; 
        unset($_POST);
