@@ -30,7 +30,7 @@
                         </tr>
                       </thead>
                       <tbody>  
-                       <?php $ReligionNames = $webservice->GetManageActiveReligionNames(); ?>
+                       <?php $ReligionNames = $webservice->getData("Admin","GetManageActiveReligionNames"); ?>
                         <?php foreach($ReligionNames['data'] as  $ReligionName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($ReligionName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $ReligionName['SoftCode'];?></td>

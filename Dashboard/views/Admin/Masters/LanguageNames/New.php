@@ -1,35 +1,5 @@
 <?php
-   /* if (isset($_POST['BtnSaveLanguageName'])) {
-        
-        $ErrorCount =0;
-            
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='LANGUAGENAMES' and CodeValue='".trim($_POST['LanguageName'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrLanguageName="Language Name Alreay Exists";    
-             echo $ErrLanguageName;
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='LANGUAGENAMES' and SoftCode='".trim($_POST['LanguageNameCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrLanguageNameCode="Language Name Code Alreay Exists";    
-             echo $ErrLanguageNameCode;
-             $ErrorCount++;
-        }
-        
-        if ($ErrorCount==0) {
-        $LanguageNameID = $mysql->insert("_tbl_master_codemaster",array("HardCode"   => "LANGUAGENAMES",
-                                                                        "SoftCode"   => trim($_POST['LanguageNameCode']),
-                                                                        "CodeValue"  => trim($_POST['LanguageName'])));
-        if ($LanguageNameID>0) {
-            echo "Successfully Added";
-            unset($_POST);
-        } else {
-            echo "Error occured. Couldn't save Language Name";
-        }
-    
-    }
-    }   */
+   
 ?>
 <script>
  function SubmitLanguage() {
@@ -53,7 +23,7 @@
 </script>
  <?php                   
   if (isset($_POST['BtnSaveLanguageName'])) {   
-    $response = $webservice->CreateLanguageName($_POST);
+    $response = $webservice->getData("Admin","CreateLanguageName",$_POST);
     if ($response['status']=="success") {
        $successmessage = $response['message']; 
        unset($_POST);

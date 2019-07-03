@@ -31,7 +31,7 @@ $(document).ready(function () {
 </script>
 <?php                   
   if (isset($_POST['BtnReligionName'])) {   
-    $response = $webservice->CreateReligionName($_POST);
+    $response = $webservice->getData("Admin","CreateReligionName",$_POST);
     if ($response['status']=="success") {
        $successmessage = $response['message']; 
        unset($_POST);

@@ -36,7 +36,7 @@ $("#CasteCode").blur(function () {
 <?php   
     if (isset($_POST['BtnUpdateCasteName'])) {
         
-        $response = $webservice->EditCasteName($_POST);
+        $response = $webservice->getData("Admin","EditCasteName",$_POST);
         if ($response['status']=="success") {
             echo $response['message'];
         } else {

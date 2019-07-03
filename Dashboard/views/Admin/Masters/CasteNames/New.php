@@ -30,7 +30,7 @@ $("#CasteCode").blur(function () {
 </script>
 <?php                   
   if (isset($_POST['BtnSaveCasteName'])) {   
-    $response = $webservice->CreateCasteName($_POST);
+    $response = $webservice->getData("Admin","CreateCasteName",$_POST);
     if ($response['status']=="success") {
        $successmessage = $response['message']; 
        unset($_POST);

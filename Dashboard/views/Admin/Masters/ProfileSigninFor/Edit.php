@@ -18,7 +18,7 @@
 <?php   
     if (isset($_POST['BtnUpdateProfileSigninFor'])) {
         
-        $response = $webservice->EditProfileSignInFor($_POST);
+        $response = $webservice->getData("Admin","EditProfileSignInFor",$_POST);
         if ($response['status']=="success") {
             echo $response['message'];
         } else {

@@ -1,7 +1,7 @@
 <?php   
     if (isset($_POST['BtnUpdateReligionName'])) {
         
-        $response = $webservice->EditReligionName($_POST);
+        $response = $webservice->getData("Admin","EditReligionName",$_POST);
         if ($response['status']=="success") {
             echo $response['message'];
         } else {

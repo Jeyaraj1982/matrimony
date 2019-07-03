@@ -100,7 +100,7 @@ function SubmitNewApi() {
 <?php   
     if (isset($_POST['Btnupdate'])) {
         
-        $response = $webservice->EditEmailApi($_POST);
+        $response = $webservice->getData("Admin","EditEmailApi",$_POST);
         if ($response['status']=="success") {
             echo $response['message'];
         } else {
@@ -108,7 +108,7 @@ function SubmitNewApi() {
         }
     }
 
-    $response = $webservice->GetEmailApiInfo();
+    $response = $webservice->getData("Admin","GetEmailApiInfo");
     $Api          = $response['data']['Api'];
 
  ?>

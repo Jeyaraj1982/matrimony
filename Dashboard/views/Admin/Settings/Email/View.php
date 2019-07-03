@@ -1,5 +1,5 @@
 <?php
-    $response = $webservice->GetEmailApiInfo();
+    $response = $webservice->getData("Admin","GetEmailApiInfo");
     $Api          = $response['data']['Api'];
 ?>
 <div class="col-12 grid-margin">

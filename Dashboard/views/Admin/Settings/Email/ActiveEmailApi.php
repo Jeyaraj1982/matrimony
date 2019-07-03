@@ -24,7 +24,7 @@
                         </tr>  
                     </thead>
                     <tbody>  
-                        <?php $response = $webservice->GetManageActiveEmailApi(); ?>
+                        <?php $response = $webservice->getData("Admin","GetManageActiveEmailApi"); ?>
                         <?php foreach($response['data'] as $EmailApi) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($EmailApi['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $EmailApi['ApiCode'];?></td>

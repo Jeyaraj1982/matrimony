@@ -30,7 +30,7 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $CasteNames = $webservice->GetManageDeactiveCasteNames(); ?>
+                        <?php $CasteNames = $webservice->getData("Admin","GetManageDeactiveCasteNames"); ?>
                         <?php foreach($CasteNames['data'] as $CasteName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($CasteName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $CasteName['SoftCode'];?></td>

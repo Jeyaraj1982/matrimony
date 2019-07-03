@@ -18,7 +18,7 @@
 <?php   
     if (isset($_POST['BtnUpdateLanguageName'])) {
         
-        $response = $webservice->EditLanguageName($_POST);
+        $response = $webservice->getData("Admin","EditLanguageName",$_POST);
         if ($response['status']=="success") {
             echo $response['message'];
         } else {
