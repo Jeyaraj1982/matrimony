@@ -1,7 +1,5 @@
 <?php
-    define("ImagePath","http://nahami.online/sl/Dashboard/assets/images/");
-    define("AppPath","http://nahami.online/sl/Dashboard/");
-    define("AdminFranchise",32);
+   include_once("config_client.php");
    
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;

@@ -1,11 +1,6 @@
 <?php
     session_start();
-    define("SiteUrl","http://nahami.online/sl/Dashboard/");
-    define("WebServiceUrl","http://nammamarriage.com/Webservice/");
-    define("AppUrl","http://nahami.online/sl/Dashboard/");
-    define("ImageUrl","http://nahami.online/sl/Dashboard/assets/images/");
-    define("ImagePath","http://nahami.online/sl/Dashboard/assets/images/");
-    define("SITE_TITLE","Matrimony") ;
+    include_once("config_client.php");
     $__Global = $_SERVER;
     
     function printDateTime($dateTime) {
@@ -145,6 +140,7 @@
             return $prefix;
         }
     }
+    
     class MemberPlan{
         
         function GetNextMemberPlanNumber() {
@@ -225,10 +221,8 @@
         $_Franchisee = $_SESSION['UserDetails'];
         $_FranchiseeInfo = $_SESSION['FranchiseeDetails'];
     } else  if (isset($_SESSION['AdminDetails']) && ($_SESSION['AdminDetails']['AdminID']>0)) {
-    
         $_Admin = $_SESSION['AdminDetails'];
     } else if (isset($_SESSION['MemberDetails']) && ($_SESSION['MemberDetails']['MemberID']>0)) {
-    
         $_Member = $_SESSION['MemberDetails'];
     } else {
         echo "<script>alert('session expired. login again');location.href='../';</script>";
