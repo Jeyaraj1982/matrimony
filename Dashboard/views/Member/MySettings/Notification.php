@@ -1,13 +1,13 @@
 <?php
     $page="Notification";
-                   
-  if (isset($_POST['savnotification'])) {         
-    $response = $webservice->UpdateNotification($_POST);
-    if ($response['status']=="success") {
-           $successmessage= $response['message'];
-    } else {
-        $errormessage = $response['message']; 
-    }
+    
+    if (isset($_POST['savnotification'])) {
+        $response = $webservice->getData("Member","UpdateNotification",$_POST);
+        if ($response['status']=="success") {
+            $successmessage= $response['message'];
+        } else {
+            $errormessage = $response['message']; 
+        }
     }
     $res = $webservice->GetMemberInfo();
     $Member=$res['data'];

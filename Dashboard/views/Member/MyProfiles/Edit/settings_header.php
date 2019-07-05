@@ -31,25 +31,25 @@
                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/GeneralInformation/". $_GET['Code'].".htm");?>" class="Notification" style="text-decoration:none"><span>General Information</span></a>
                                         </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon1 <?php echo ($page=="EducationDetails") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">   
-                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a" href="<?php echo GetUrl("MyProfiles/Edit/EducationDetails");?>" class="" style="text-decoration:none"><span>Education Details</span></a>
+                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a" href="<?php echo GetUrl("MyProfiles/Edit/EducationDetails/". $_GET['Code'].".htm");?>" class="" style="text-decoration:none"><span>Education Details</span></a>
                                         </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="OccupationDetails") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
-                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/OccupationDetails");?>" class="Notification" style="text-decoration:none"><span>Occupation Detail</span></a>
+                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/OccupationDetails/". $_GET['Code'].".htm");?>" class="Notification" style="text-decoration:none"><span>Occupation Detail</span></a>
                                         </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="FamilyInformation") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
-                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/FamilyInformation");?>" class="Notification" style="text-decoration:none"><span>Family Information</span></a>
+                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/FamilyInformation/". $_GET['Code'].".htm");?>" class="Notification" style="text-decoration:none"><span>Family Information</span></a>
                                         </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="PhysicalInformation") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
-                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/PhysicalInformation");?>" class="Notification" style="text-decoration:none"><span>Physical Information</span></a>
+                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/PhysicalInformation/". $_GET['Code'].".htm");?>" class="Notification" style="text-decoration:none"><span>Physical Information</span></a>
                                         </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="DocumentAttachment") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
-                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/DocumentAttachment");?>" class="Notification" style="text-decoration:none"><span>Document Attachment</span></a>
+                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/DocumentAttachment/". $_GET['Code'].".htm");?>" class="Notification" style="text-decoration:none"><span>Document Attachment</span></a>
                                         </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="CommunicationDetails") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
-                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/CommunicationDetails");?>" class="Notification" style="text-decoration:none"><span>Communication Details</span></a>
+                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/CommunicationDetails/". $_GET['Code'].".htm");?>" class="Notification" style="text-decoration:none"><span>Communication Details</span></a>
                                         </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="PartnersExpectation") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
-                                           <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/PartnersExpectation");?>" class="Notification" style="text-decoration:none"><span>Partner's Expectation</span></a>
+                                           <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/PartnersExpectation/". $_GET['Code'].".htm");?>" class="Notification" style="text-decoration:none"><span>Partner's Expectation</span></a>
                                         </li>
                                     </ul>
                                 </div>

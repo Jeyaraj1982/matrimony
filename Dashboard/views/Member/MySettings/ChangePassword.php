@@ -1,12 +1,12 @@
 <?php
     $page="ChangePassword";
     if (isset($_POST['BtnUpdatePassword'])) {
-        $response = $webservice->MemberChangePassword($_POST);
+        $response = $webservice->getData("Member","MemberChangePassword",$_POST); 
         if ($response['status']=="success") {
             unset($_POST);
            $sucessmessage=$response['message'];
            ?>
-        <script>location.href='http://nahami.online/sl/Dashboard/MySettings/ChangepwdCompleted';</script>
+        <script>location.href='<?php echo AppUrl;?>MySettings/ChangepwdCompleted';</script>
         <?php
         } else {
             $errormessage = $response['message']; 

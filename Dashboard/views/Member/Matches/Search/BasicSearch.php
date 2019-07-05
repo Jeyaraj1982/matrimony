@@ -5,7 +5,6 @@ $Info = $webservice->GetBasicSearchElements();
 ?>
 <?php                   
   if (isset($_POST['searchBtn'])) {  
-  echo "AAAAA";       
     $response = $webservice->SaveBasicSearch($_POST);
     print_r($response);
     if ($response['status']=="success") {
@@ -78,50 +77,14 @@ div, label,a {font-family:'Roboto' !important;}
                 </select>           
             </div>
             </div> 
-            <hr>
             <div class="form-group row">
-                <div class="col-sm-12"><input type="checkbox" id="check" name="check" onclick="saveSearchAgree()" style="width: 2%;" data-toggle="collapse" data-target="#savesearch"><label for="check" style="cursor:pointer;font-size:15px" data-toggle="collapse" data-target="#savesearch" onclick="saveSearchAgree()">&nbsp;&nbsp;&nbsp;Save upto 5 searchs </label></div>
+                <div class="col-sm-12"><button type="submit" name="searchBtn" class="btn btn-primary" style="font-family:roboto">Submit</button></div>
             </div>
-            <div id="savesearch" class="collapse">
-                <div class="form-group row">
-                    <div class="col-sm-4" align="left">Save Search as</div>
-                    <div class="col-sm-6" align="left"><input type="text" class="form-control" maxlength="20" name="SaveSearchas" id="SaveSearchas" placeholder="Eg : 25to35 christian bride"></div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-4" align="left">Email Me</div>
-                    <div class="col-sm-2" align="left"><input type="radio" name="EmailMe" value="Daily" style="padding:5px">&nbsp;Daily</div>
-                    <div class="col-sm-2" align="left"><input type="radio" name="EmailMe" value="Weekly">&nbsp;Weekly</div>
-                    <div class="col-sm-2" align="left"><input type="radio" checked="checked" name="EmailMe" value="Never">&nbsp;Never</div>
-                </div>
-                
-            </div>
-            <div class="form-group row">
-                   <div class="col-sm-5"><button type="submit" name="searchBtn" id="searchBtn" class="btn btn-primary">Search</button></div>
-            </div>
-            </div>
-            <div class="col-sm-5">
-                    <div style="width: 230px;height:315px;border:2px solid #d2d2d2;padding:10px">
-                        <p style="font-size: 15px;border-bottom:2px solid #d1d1d1;width:97px">Saved Search</p>
-                            <?php for($i=1;$i<4;$i++) {?>
-                            <p style="font-size: 15px;padding-left:10px;">25to35 christian brides&nbsp;&nbsp;&nbsp;<img src="<?php echo SiteUrl?>assets/images/trash.png" width="10%"></p>
-                            <?php } ?> 
-                        <p style="color:#ccc;text-align: center;font-size:15px;margin-top:25px">No records found</p>   
-                    </div> 
-                 </div>
-        <div class="col-sm-12"><?php echo $successmessage;?><?php echo $errormessage;?></div>
-            </form>  
-            <script>
-            var _saveSearchAgree=0;
-            function saveSearchAgree() {
-                if (_saveSearchAgree==0) {
-                    _saveSearchAgree=1;
-                    $('#searchBtn').html(" Save & Search ");
-                } else {
-                    _saveSearchAgree=0;
-                    $('#searchBtn').html(" Search ");
-                }
-            }
-            </script>   
         </div>
     </div>
+</form>
 </div>
+</div>
+</div>
+
+            

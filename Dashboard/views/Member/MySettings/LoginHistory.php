@@ -1,12 +1,11 @@
-<?php $page="LoginHistory"; ?>
 <?php 
+    $page="LoginHistory";
     include_once("settings_header.php");
-    $response = $webservice->GetLoginHistory(); 
+    $response = $webservice->getData("Member","GetLoginHistory");
 ?>
 <div class="col-sm-9" style="margin-top: -8px;">
     <h4 class="card-title" style="margin-bottom:5px">Login History</h4>
     <span style="color:#999;">The last 10 logins listed bellow. <!--You can download login history using service request under support category--></span><br><br>
-    
     <div class="table-responsive" style="width: 120%;">
         <table id="myTable" class="table table-striped" style="width:100%;border-bottom:1px solid #ccc;">
             <thead>  

@@ -3,6 +3,14 @@ RewriteRule ^Masters/(.*)/Manage/Edit/(.*)\.html$ ./index.php?Fname=Edit&Module=
 RewriteRule ^Masters/(.*)/Manage/View/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/View
 
 RewriteRule ^MyProfiles/Edit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/GeneralInformation
+RewriteRule ^MyProfiles/Edit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/EducationDetails
+RewriteRule ^MyProfiles/Edit/AddEducationalDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/AddEducationalDetails
+RewriteRule ^MyProfiles/Edit/OccupationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/OccupationDetails
+RewriteRule ^MyProfiles/Edit/FamilyInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/FamilyInformation
+RewriteRule ^MyProfiles/Edit/PhysicalInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/PhysicalInformation
+RewriteRule ^MyProfiles/Edit/DocumentAttachment/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/DocumentAttachment
+RewriteRule ^MyProfiles/Edit/CommunicationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/CommunicationDetails
+RewriteRule ^MyProfiles/Edit/PartnersExpectation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/PartnersExpectation
 RewriteRule ^MyProfiles/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/View
 RewriteRule ^Members/ViewMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewMember
 RewriteRule ^Members/EditMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/EditMember

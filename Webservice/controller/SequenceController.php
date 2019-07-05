@@ -1,140 +1,47 @@
 <?php
-
   class SeqMaster {
+      
+        function GenerateCode($prefix,$numberlength,$number) { 
+            for($i=1;$i<=$numberlength-strlen($number);$i++) {
+                $prefix .= "0";    
+            }
+            return $prefix.$number;
+        }
         
         function GetNextMemberNumber() {
-            
             global $mysql;
-        
             $prefix = "MEM";
-            $Rows = $mysql->select("select * from _tbl_members");
-        
-            $nextNumber = sizeof($Rows)+1; 
-         
-            if (strlen($nextNumber)==1) {
-                $prefix .= "000".$nextNumber; 
-            }
-        
-            if (strlen($nextNumber)==2) {
-                $prefix .= "00".$nextNumber; 
-            }
-        
-            if (strlen($nextNumber)==3) {
-                $prefix .= "0".$nextNumber; 
-            }
-        
-            if (strlen($nextNumber)==4) {   
-                $prefix .= $nextNumber; 
-            }
-            
-            return $prefix;
+            $length = 4;
+            $Rows   = $mysql->select("select count(*) as rCount from `_tbl_members`");
+            return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1);
         }
+        
         function GetNextFranchiseeStaffNumber() {
-            
             global $mysql;
-        
             $prefix = "FS";
-            $Rows = $mysql->select("select * from _tbl_franchisees_staffs");
-        
-            $nextNumber = sizeof($Rows)+1; 
-         
-            if (sizeof($nextNumber)==1) {
-                $prefix .= "000".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==2) {
-                $prefix .= "00".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==3) {
-                $prefix .= "0".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==4) {   
-                $prefix .= $nextNumber; 
-            }
-            
-            return $prefix;
+            $Rows   = $mysql->select("select count(*) as rCount from `_tbl_franchisees_staffs`");
+            return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1);
         }
+        
         function GetNextFranchiseeNumber() {
-            
             global $mysql,$_Franchisee;
-        
             $prefix = "FR";
-            $Rows = $mysql->select("select * from _tbl_franchisees");
-        
-            $nextNumber = sizeof($Rows)+1; 
-         
-            if (sizeof($nextNumber)==1) {
-                $prefix .= "000".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==2) {
-                $prefix .= "00".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==3) {
-                $prefix .= "0".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==4) {   
-                $prefix .= $nextNumber; 
-            }
-            
-            return $prefix;
+            $Rows   = $mysql->select("select count(*) as rCount from `_tbl_franchisees`");
+            return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1);
+             
         }
         function GetNextFranchiseePlanNumber() {
-            
             global $mysql;
-        
-            $prefix = "PLN";
-            $Rows = $mysql->select("select * from _tbl_franchisees_plans");
-        
-            $nextNumber = sizeof($Rows)+1; 
-         
-            if (sizeof($nextNumber)==1) {
-                $prefix .= "000".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==2) {
-                $prefix .= "00".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==3) {
-                $prefix .= "0".$nextNumber; 
-            }
-        
-            if (sizeof($nextNumber)==4) {   
-                $prefix .= $nextNumber; 
-            }
+            $prefix = "FPLN";
+            $Rows   = $mysql->select("select count(*) as rCount from `_tbl_franchisees_plans`");
+            return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1);
             
-            return $prefix;
         }
         function GetNextEmailApiNumber() {
-            
             global $mysql;
-        
-            $prefix = "API";
-            $Rows = $mysql->select("select * from _tbl_settings_emailapi");
-        
-            $nextNumber = sizeof($Rows)+1; 
-         
-            if (strlen($nextNumber)==1) {
-                $prefix .= "000".$nextNumber; 
-            }
-        
-            if (strlen($nextNumber)==2) {
-                $prefix .= "00".$nextNumber; 
-            }
-        
-            if (strlen($nextNumber)==3) {
-                $prefix .= "0".$nextNumber; 
-            }
-        
-            if (strlen($nextNumber)==4) {   
-                $prefix .= $nextNumber; 
-            }
-             return $prefix;
+            $prefix = "EAPI";
+            $Rows   = $mysql->select("select count(*) as rCount from `_tbl_settings_emailapi`");
+            return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
         } 
    
    /* Admin Master  */
@@ -191,8 +98,6 @@
             }
         }
         return $no;
-    
     }
-    
-     }
+          }
 ?>

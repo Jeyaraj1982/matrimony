@@ -214,7 +214,7 @@
          function GetMemberInfo(){
              global $mysql,$loginInfo;
              $Member=$mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'"); 
-             $Member[0]['Country'] = CodeMaster::RegisterAllowedCountries();
+             $Member[0]['Country'] = CodeMaster::getData('RegisterAllowedCountries');
              return Response::returnSuccess("success",$Member[0]);
          }    
          
@@ -265,15 +265,15 @@
          }
          
          function GetCodeMasterDatas() {
-             return Response::returnSuccess("success",array("Gender"        => CodeMaster::GetGender(),
-                                                            "MaritalStatus" => CodeMaster::GetMaritalStatus(),
-                                                            "Language"      => CodeMaster::GetLanguage(),
-                                                            "Religion"      => CodeMaster::GetReligion(),
-                                                            "Caste"         => CodeMaster::GetCaste(),
-                                                            "Height"        => CodeMaster::GetHeight(),
-                                                            "Community"     => CodeMaster::GetCommunity(),
-                                                            "Nationality"   => CodeMaster::GetNationality(),
-                                                            "ProfileFor"    => CodeMaster::GetProfileFor()));
+             return Response::returnSuccess("success",array("Gender"        => CodeMaster::getData('Gender'),
+                                                            "MaritalStatus" => CodeMaster::getData('MaritalStatus'),
+                                                            "Language"      => CodeMaster::getData('Language'),
+                                                            "Religion"      => CodeMaster::getData('Religion'),
+                                                            "Caste"         => CodeMaster::getData('Caste'),
+                                                            "Height"        => CodeMaster::getData('Height'),
+                                                            "Community"     => CodeMaster::getData('Community'),
+                                                            "Nationality"   => CodeMaster::getData('Nationality'),
+                                                            "ProfileFor"    => CodeMaster::getData('ProfileFor')));
          }
          
          function CreateProfile() {
@@ -368,21 +368,21 @@
          }
             
          function GetAdvancedSearchElements() {
-             return Response::returnSuccess("success",array("SkinType"        => CodeMaster::GetSkinType(),
-                                                            "MaritalStatus" => CodeMaster::GetMaritalStatus(),
-                                                            "Religion"      => CodeMaster::GetReligion(),
-                                                            "Caste"         => CodeMaster::GetCaste(),
-                                                            "Height"        => CodeMaster::GetHeight(),
-                                                            "Diet"          => CodeMaster::GetDiet(),
-                                                            "SmokingHabit"  => CodeMaster::GetSmokingHabit(),
-                                                            "DrinkingHabit" => CodeMaster::GetDrinkingHabit(),
-                                                            "BodyType"      => CodeMaster::GetBodyType()));
+             return Response::returnSuccess("success",array("SkinType"      => CodeMaster::getData('SkinType'),
+                                                            "MaritalStatus" => CodeMaster::getData('MaritalStatus'),
+                                                            "Religion"      => CodeMaster::getData('Religion'),
+                                                            "Caste"         => CodeMaster::getData('Caste'),
+                                                            "Height"        => CodeMaster::getData('Height'),
+                                                            "Diet"          => CodeMaster::getData('Diet'),
+                                                            "SmokingHabit"  => CodeMaster::getData('SmokingHabit'),
+                                                            "DrinkingHabit" => CodeMaster::getData('DrinkingHabit'),
+                                                            "BodyType"      => CodeMaster::getData('BodyType')));
          }
          
          function GetBasicSearchElements() {
-             return Response::returnSuccess("success",array("MaritalStatus" => CodeMaster::GetMaritalStatus(),
-                                                            "Religion"      => CodeMaster::GetReligion(),
-                                                            "Community"     => CodeMaster::GetCommunity()));
+             return Response::returnSuccess("success",array("MaritalStatus" => CodeMaster::getData('MaritalStatus'),
+                                                            "Religion"      => CodeMaster::getData('Religion'),
+                                                            "Community"     => CodeMaster::getData('Community')));
          }
          
          function CheckVerification() {
@@ -900,7 +900,7 @@
              $Nationality = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NATIONALNAMES' and SoftCode='".$_POST['Nationality']."'");  
              $Country = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CONTNAMES' and SoftCode='".$_POST['Country']."'");  
              $State = $mysql->select("select * from _tbl_master_codemaster Where HardCode='STATNAMES' and SoftCode='".$_POST['StateName']."'");  
-             $EmployedAs = $mysql->select("selectselect * from _tbl_master_codemaster Where HardCode='OCCUPATIONS' and SoftCode='".$_POST['EmployedAs']."'");  
+             $EmployedAs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONS' and SoftCode='".$_POST['EmployedAs']."'");  
              $OccupationType = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONTYPES' and SoftCode='".$_POST['OccupationType']."'");  
              $TypeofOccupation = $mysql->select("select * from _tbl_master_codemaster Where HardCode='TYPEOFOCCUPATIONS' and SoftCode='".$_POST['TypeofOccupation']."'");  
              $IncomeRange = $mysql->select("select * from _tbl_master_codemaster Where HardCode='INCOMERANGE' and SoftCode='".$_POST['IncomeRange']."'");  
@@ -1017,81 +1017,84 @@
              
              $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");               
              return Response::returnSuccess("success",array("ProfileInfo"             => $Profiles[0],
-                                                            "ProfileSignInFor"        => CodeMaster::GetProfileFor(),
-                                                            "Gender"                  => CodeMaster::GetGender(),
-                                                            "MaritalStatus"           => CodeMaster::GetMaritalStatus(),
-                                                            "Language"                => CodeMaster::GetLanguage(),
-                                                            "Religion"                => CodeMaster::GetReligion(),
-                                                            "Caste"                   => CodeMaster::GetCaste(),
-                                                            "Community"               => CodeMaster::GetCommunity(),
-                                                            "Nationality"             => CodeMaster::GetNationality(),
-                                                            "EmployedAs"              => CodeMaster::GetEmployedAs(),
-                                                            "Occupation"              => CodeMaster::GetOccupation(),
-                                                            "TypeofOccupation"        => CodeMaster::GetOccupationTypes(),
-                                                            "IncomeRange"             => CodeMaster::GetIncomeRange(),
-                                                            "NumberofBrother"         => CodeMaster::GetNumberOfBrother(),
-                                                            "NumberofElderBrother"    => CodeMaster::GetNumberOfElderBrother(),
-                                                            "NumberofYoungerBrother"  => CodeMaster::GetNumberOfYoungerBrother(),
-                                                            "NumberofMarriedBrother"  => CodeMaster::GetNumberOfMarriedBrother(),
-                                                            "NumberofSisters"         => CodeMaster::GetNumberOfSisters(),
-                                                            "NumberofElderSisters"    => CodeMaster::GetNumberOfElderSisters(),
-                                                            "NumberofYoungerSisters"  => CodeMaster::GetNumberOfYoungerSisters(),
-                                                            "NumberofMarriedSisters"  => CodeMaster::GetNumberOfMarriedSisters(),
-                                                            "PhysicallyImpaired"      => CodeMaster::GetPhysicallyImpaired(),
-                                                            "VisuallyImpaired"        => CodeMaster::GetVisuallyImpaired(),
-                                                            "VissionImpaired"         => CodeMaster::GetVisionImpaired(),
-                                                            "SpeechImpaired"          => CodeMaster::GetSpeechImpaired(),
-                                                            "Height"                  => CodeMaster::GetHeight(),
-                                                            "Weight"                  => CodeMaster::GetWeight(),
-                                                            "BloodGroup"              => CodeMaster::GetBloodGroups(),
-                                                            "Complexation"            => CodeMaster::GetSkinType(),
-                                                            "BodyType"                => CodeMaster::GetBodyType(),
-                                                            "Diet"                    => CodeMaster::GetDiet(),
-                                                            "SmookingHabit"           => CodeMaster::GetSmokingHabit(),
-                                                            "DrinkingHabit"           => CodeMaster::GetDrinkingHabit(),
-                                                            "DocumentType"            => CodeMaster::GetDocumentType(),
-                                                            "CountryName"             => CodeMaster::GetCountryName(),
-                                                            "StateName"               => CodeMaster::GetStateName()));
+                                                            "ProfileSignInFor"        => CodeMaster::getData('ProfileFor'),
+                                                            "Gender"                  => CodeMaster::getData('Gender'),
+                                                            "MaritalStatus"           => CodeMaster::getData('MaritalStatus'),
+                                                            "Language"                => CodeMaster::getData('Language'),
+                                                            "Religion"                => CodeMaster::getData('Religion'),
+                                                            "Caste"                   => CodeMaster::getData('Caste'),
+                                                            "Community"               => CodeMaster::getData('Community'),
+                                                            "Nationality"             => CodeMaster::getData('Nationality'),
+                                                            "EmployedAs"              => CodeMaster::getData('EmployedAs'),
+                                                            "Occupation"              => CodeMaster::getData('Occupation'),
+                                                            "TypeofOccupation"        => CodeMaster::getData('OccupationTypes'),
+                                                            "IncomeRange"             => CodeMaster::getData('IncomeRange'),
+                                                            "NumberofBrother"         => CodeMaster::getData('NumberOfBrother'),
+                                                            "NumberofElderBrother"    => CodeMaster::getData('NumberOfElderBrother'),
+                                                            "NumberofYoungerBrother"  => CodeMaster::getData('NumberOfYoungerBrother'),
+                                                            "NumberofMarriedBrother"  => CodeMaster::getData('NumberOfMarriedBrother'),
+                                                            "NumberofSisters"         => CodeMaster::getData('NumberOfSisters'),
+                                                            "NumberofElderSisters"    => CodeMaster::getData('NumberOfElderSisters'),
+                                                            "NumberofYoungerSisters"  => CodeMaster::getData('NumberOfYoungerSisters'),
+                                                            "NumberofMarriedSisters"  => CodeMaster::getData('NumberOfMarriedSister'),
+                                                            "PhysicallyImpaired"      => CodeMaster::getData('PhysicallyImpaired'),
+                                                            "VisuallyImpaired"        => CodeMaster::getData('VisuallyImpaired'),
+                                                            "VissionImpaired"         => CodeMaster::getData('VisionImpaired'),
+                                                            "SpeechImpaired"          => CodeMaster::getData('SpeechImpaired'),
+                                                            "Height"                  => CodeMaster::getData('Height'),
+                                                            "Weight"                  => CodeMaster::getData('Weight'),
+                                                            "BloodGroup"              => CodeMaster::getData('BloodGroups'),
+                                                            "Complexation"            => CodeMaster::getData('SkinType'),
+                                                            "BodyType"                => CodeMaster::getData('BodyType'),
+                                                            "Diet"                    => CodeMaster::getData('Diet'),
+                                                            "SmookingHabit"           => CodeMaster::getData('SmokingHabit'),
+                                                            "DrinkingHabit"           => CodeMaster::getData('DrinkingHabit'),
+                                                            "DocumentType"            => CodeMaster::getData('DocumentType'),
+                                                            "CountryName"             => CodeMaster::getData('CountryName'),
+                                                            "StateName"               => CodeMaster::getData('StateName')));
          } 
          function GetDraftProfileInformation(){
              global $mysql,$loginInfo;
              $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");               
              return Response::returnSuccess("success",array("ProfileInfo"             => $Profiles[0],
-                                                            "ProfileSignInFor"        => CodeMaster::GetProfileFor(),
-                                                            "Gender"                  => CodeMaster::GetGender(),
-                                                            "MaritalStatus"           => CodeMaster::GetMaritalStatus(),
-                                                            "Language"                => CodeMaster::GetLanguage(),
-                                                            "Religion"                => CodeMaster::GetReligion(),
-                                                            "Caste"                   => CodeMaster::GetCaste(),
-                                                            "Community"               => CodeMaster::GetCommunity(),
-                                                            "Nationality"             => CodeMaster::GetNationality(),
-                                                            "EmployedAs"              => CodeMaster::GetEmployedAs(),
-                                                            "Occupation"              => CodeMaster::GetOccupation(),
-                                                            "TypeofOccupation"        => CodeMaster::GetOccupationTypes(),
-                                                            "IncomeRange"             => CodeMaster::GetIncomeRange(),
-                                                            "NumberofBrother"         => CodeMaster::GetNumberOfBrother(),
-                                                            "NumberofElderBrother"    => CodeMaster::GetNumberOfElderBrother(),
-                                                            "NumberofYoungerBrother"  => CodeMaster::GetNumberOfYoungerBrother(),
-                                                            "NumberofMarriedBrother"  => CodeMaster::GetNumberOfMarriedBrother(),
-                                                            "NumberofSisters"         => CodeMaster::GetNumberOfSisters(),
-                                                            "NumberofElderSisters"    => CodeMaster::GetNumberOfElderSisters(),
-                                                            "NumberofYoungerSisters"  => CodeMaster::GetNumberOfYoungerSisters(),
-                                                            "NumberofMarriedSisters"  => CodeMaster::GetNumberOfMarriedSisters(),
-                                                            "PhysicallyImpaired"      => CodeMaster::GetPhysicallyImpaired(),
-                                                            "VisuallyImpaired"        => CodeMaster::GetVisuallyImpaired(),
-                                                            "VissionImpaired"         => CodeMaster::GetVisionImpaired(),
-                                                            "SpeechImpaired"          => CodeMaster::GetSpeechImpaired(),
-                                                            "Height"                  => CodeMaster::GetHeight(),
-                                                            "Weight"                  => CodeMaster::GetWeight(),
-                                                            "BloodGroup"              => CodeMaster::GetBloodGroups(),
-                                                            "Complexation"            => CodeMaster::GetSkinType(),
-                                                            "BodyType"                => CodeMaster::GetBodyType(),
-                                                            "Diet"                    => CodeMaster::GetDiet(),
-                                                            "SmookingHabit"           => CodeMaster::GetSmokingHabit(),
-                                                            "DrinkingHabit"           => CodeMaster::GetDrinkingHabit(),
-                                                            "DocumentType"            => CodeMaster::GetDocumentType(),
-                                                            "CountryName"             => CodeMaster::GetCountryName(),
-                                                            "StateName"               => CodeMaster::GetStateName()));
+                                                            "ProfileSignInFor"        => CodeMaster::getData('ProfileFor'),
+                                                            "Gender"                  => CodeMaster::getData('Gender'),
+                                                            "MaritalStatus"           => CodeMaster::getData('MaritalStatus'),
+                                                            "Language"                => CodeMaster::getData('Language'),
+                                                            "Religion"                => CodeMaster::getData('Religion'),
+                                                            "Caste"                   => CodeMaster::getData('Caste'),
+                                                            "Community"               => CodeMaster::getData('Community'),
+                                                            "Nationality"             => CodeMaster::getData('Nationality'),
+                                                            "EmployedAs"              => CodeMaster::getData('EmployedAs'),
+                                                            "Occupation"              => CodeMaster::getData('Occupation'),
+                                                            "TypeofOccupation"        => CodeMaster::getData('OccupationTypes'),
+                                                            "IncomeRange"             => CodeMaster::getData('IncomeRange'),
+                                                            "FamilyType"              => CodeMaster::getData('FamilyType'),
+                                                            "FamilyValue"             => CodeMaster::getData('FamilyValue'),
+                                                            "FamilyAffluence"         => CodeMaster::getData('FamilyAffluence'),
+                                                            "NumberofBrother"         => CodeMaster::getData('NumberOfBrother'),
+                                                            "NumberofElderBrother"    => CodeMaster::getData('NumberOfElderBrother'),
+                                                            "NumberofYoungerBrother"  => CodeMaster::getData('NumberOfYoungerBrother'),
+                                                            "NumberofMarriedBrother"  => CodeMaster::getData('NumberOfMarriedBrother'),
+                                                            "NumberofSisters"         => CodeMaster::getData('NumberOfSisters'),
+                                                            "NumberofElderSisters"    => CodeMaster::getData('NumberOfElderSisters'),
+                                                            "NumberofYoungerSisters"  => CodeMaster::getData('NumberOfYoungerSisters'),
+                                                            "NumberofMarriedSisters"  => CodeMaster::getData('NumberOfMarriedSisters'),
+                                                            "PhysicallyImpaired"      => CodeMaster::getData('PhysicallyImpaired'),
+                                                            "VisuallyImpaired"        => CodeMaster::getData('VisuallyImpaired'),
+                                                            "VissionImpaired"         => CodeMaster::getData('VisionImpaired'),
+                                                            "SpeechImpaired"          => CodeMaster::getData('SpeechImpaired'),
+                                                            "Height"                  => CodeMaster::getData('Height'),
+                                                            "Weight"                  => CodeMaster::getData('Weight'),
+                                                            "BloodGroup"              => CodeMaster::getData('BloodGroups'),
+                                                            "Complexation"            => CodeMaster::getData('SkinType'),
+                                                            "BodyType"                => CodeMaster::getData('BodyType'),
+                                                            "Diet"                    => CodeMaster::getData('Diet'),
+                                                            "SmookingHabit"           => CodeMaster::getData('SmokingHabit'),
+                                                            "DrinkingHabit"           => CodeMaster::getData('DrinkingHabit'),
+                                                            "DocumentType"            => CodeMaster::getData('DocumentType'),
+                                                            "CountryName"             => CodeMaster::getData('CountryName'),
+                                                            "StateName"               => CodeMaster::getData('StateName')));
          }
          function updateProfilePhoto() {
              
@@ -1108,8 +1111,8 @@
          function GetKYC() {
            global $mysql;    
            $KYCs = $mysql->select("select * from _tbl_member_documents where MemberID='".$loginInfo[0]['MemberID']."'");
-                return Response::returnSuccess("success",array("IDProof"        => CodeMaster::GetIDProof(),
-                                                               "AddressProof"   => CodeMaster::GetAddressProof(),
+                return Response::returnSuccess("success",array("IDProof"        => CodeMaster::getData('IDProof'),
+                                                               "AddressProof"   => CodeMaster::getData('AddressProof'),
                                                                "KYCView"        =>$KYCs[0]));
                                                             
          }
@@ -1247,14 +1250,247 @@
              $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");      
              
              return Response::returnSuccess("success",array("ProfileInfo"             => $Profiles[0],
-                                                            "ProfileSignInFor"        => CodeMaster::GetProfileFor(),
-                                                            "Gender"                  => CodeMaster::GetGender(),
-                                                            "MaritalStatus"           => CodeMaster::GetMaritalStatus(),
-                                                            "Language"                => CodeMaster::GetLanguage(),
-                                                            "Religion"                => CodeMaster::GetReligion(),
-                                                            "Caste"                   => CodeMaster::GetCaste(),
-                                                            "Community"               => CodeMaster::GetCommunity(),
-                                                            "Nationality"             => CodeMaster::GetNationality()));
-         } 
+                                                            "ProfileSignInFor"        => CodeMaster::getData('ProfileFor'),
+                                                            "Gender"                  => CodeMaster::getData('Gender'),
+                                                            "MaritalStatus"           => CodeMaster::getData('MaritalStatus'),
+                                                            "Language"                => CodeMaster::getData('Language'),
+                                                            "Religion"                => CodeMaster::getData('Religion'),
+                                                            "Caste"                   => CodeMaster::getData('Caste'),
+                                                            "Community"               => CodeMaster::getData('Community'),
+                                                            "Nationality"             => CodeMaster::getData('Nationality')));
          }
+         
+         function EditDraftFamilyInformation() {
+             
+             global $mysql,$loginInfo;
+             $FathersOccupation = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONTYPES' and SoftCode='".$_POST['FathersOccupation']."'");  
+             $FamilyType = $mysql->select("select * from _tbl_master_codemaster Where HardCode='FAMILYTYPE' and SoftCode='".$_POST['FamilyType']."'");  
+             $FamilyValue = $mysql->select("select * from _tbl_master_codemaster Where HardCode='FAMILYVALUE' and SoftCode='".$_POST['FamilyValue']."'");  
+             $FamilyAffluence = $mysql->select("select * from _tbl_master_codemaster Where HardCode='FAMILYAFFLUENCE' and SoftCode='".$_POST['FamilyAffluence']."'");  
+             $MothersOccupation = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONTYPES' and SoftCode='".$_POST['MothersOccupation']."'");  
+             $NumberofBrothers = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NUMBEROFBROTHER' and SoftCode='".$_POST['NumberofBrothers']."'");  
+             $younger = $mysql->select("select * from _tbl_master_codemaster Where HardCode='YOUNGER' and SoftCode='".$_POST['younger']."'");  
+             $elder = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ELDER' and SoftCode='".$_POST['elder']."'");  
+             $married = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARRIED' and SoftCode='".$_POST['married']."'");  
+             $NumberofSisters = $mysql->select("select * from _tbl_master_codemaster Where HardCode='NOOFSISTER' and SoftCode='".$_POST['NumberofSisters']."'");  
+             $elderSister = $mysql->select("select * from _tbl_master_codemaster Where HardCode='ELDERSIS' and SoftCode='".$_POST['elderSister']."'");  
+             $youngerSister = $mysql->select("select * from _tbl_master_codemaster Where HardCode='YOUNGERSIS' and SoftCode='".$_POST['youngerSister']."'");  
+             $marriedSister = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARRIEDSIS' and SoftCode='".$_POST['marriedSister']."'");  
+             
+             $updateSql = "update _tbl_Profile_Draft set FathersName='".$_POST['FatherName']."',
+                                                       FathersOccupationCode='".$_POST['FathersOccupation']."',
+                                                       FathersOccupation='".$FathersOccupation[0]['CodeValue']."',
+                                                       MothersName='".$_POST['MotherName']."',
+                                                       FamilyTypeCode='".$_POST['FamilyType']."',
+                                                       FamilyType='".$FamilyType[0]['CodeValue']."',
+                                                       FamilyValueCode='".$_POST['FamilyValue']."',
+                                                       FamilyValue='".$FamilyValue[0]['CodeValue']."',
+                                                       FamilyAffluenceCode='".$_POST['FamilyAffluence']."',
+                                                       FamilyAffluence='".$FamilyAffluence[0]['CodeValue']."',
+                                                       MothersOccupationCode='".$_POST['MothersOccupation']."',
+                                                       MothersOccupation='".$MothersOccupation[0]['CodeValue']."',
+                                                       NumberofBrothersCode='".$_POST['NumberofBrother']."',
+                                                       NumberofBrothers='".$NumberofBrothers[0]['CodeValue']."',
+                                                       YoungerCode='".$_POST['younger']."',
+                                                       Younger='".$younger[0]['CodeValue']."',
+                                                       ElderCode='".$_POST['elder']."',
+                                                       Elder='".$elder[0]['CodeValue']."',
+                                                       MarriedCode='".$_POST['married']."',
+                                                       Married='".$married[0]['CodeValue']."',
+                                                       NumberofSistersCode='".$_POST['NumberofSisters']."',
+                                                       NumberofSisters='".$NumberofSisters[0]['CodeValue']."',
+                                                       ElderSisterCode='".$_POST['elderSister']."',
+                                                       ElderSister='".$elderSister[0]['CodeValue']."',
+                                                       YoungerSisterCode='".$_POST['youngerSister']."',
+                                                       YoungerSister='".$youngerSister[0]['CodeValue']."',
+                                                       MarriedSisterCode='".$_POST['marriedSister']."',
+                                                       MarriedSister='".$marriedSister[0]['CodeValue']."' where  CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'";
+             $mysql->execute($updateSql);  
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'Familyinformationupdated.',
+                                                             "ActivityString" => 'Family Information Updated.',
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+             $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");      
+             
+             return Response::returnSuccess("success",array("ProfileInfo"             => $Profiles[0],
+                                                            "Occupation"              => CodeMaster::getData('Occupation'),
+                                                            "FamilyType"              => CodeMaster::getData('FamilyType'),
+                                                            "FamilyValue"              => CodeMaster::getData('FamilyValue'),
+                                                            "FamilyAffluence"              => CodeMaster::getData('FamilyAffluence'),
+                                                            "NumberofBrother"         => CodeMaster::getData('NumberOfBrother'),
+                                                            "NumberofElderBrother"    => CodeMaster::getData('NumberOfElderBrother'),
+                                                            "NumberofYoungerBrother"  => CodeMaster::getData('NumberOfYoungerBrother'),
+                                                            "NumberofMarriedBrother"  => CodeMaster::getData('NumberOfMarriedBrother'),
+                                                            "NumberofSisters"         => CodeMaster::getData('NumberOfSisters'),
+                                                            "NumberofElderSisters"    => CodeMaster::getData('NumberOfElderSisters'),
+                                                            "NumberofYoungerSisters"  => CodeMaster::getData('NumberOfYoungerSisters'),
+                                                            "NumberofMarriedSisters"  => CodeMaster::getData('NumberOfMarriedSisters')));
+         }
+         function EditDraftPhysicalInformation() {
+             
+             global $mysql,$loginInfo;
+             $PhysicallyImpaired = $mysql->select("select * from _tbl_master_codemaster Where HardCode='PHYSICALLYIMPAIRED' and SoftCode='".$_POST['PhysicallyImpaired']."'");  
+             $VisuallyImpaired = $mysql->select("select * from _tbl_master_codemaster Where HardCode='VISUALLYIMPAIRED' and SoftCode='".$_POST['VisuallyImpaired']."'");  
+             $VissionImpaired = $mysql->select("select * from _tbl_master_codemaster Where HardCode='VISSIONIMPAIRED' and SoftCode='".$_POST['VissionImpaired']."'");  
+             $SpeechImpaired = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SPEECHIMPAIRED' and SoftCode='".$_POST['SpeechImpaired']."'");  
+             $Height = $mysql->select("select * from _tbl_master_codemaster Where HardCode='HEIGHTS' and SoftCode='".$_POST['Height']."'");  
+             $Weight = $mysql->select("select * from _tbl_master_codemaster Where HardCode='WEIGHTS' and SoftCode='".$_POST['Weight']."'");  
+             $BloodGroup = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BLOODGROUPS' and SoftCode='".$_POST['BloodGroup']."'");  
+             $Complexation = $mysql->select("SELECT * FROM _tbl_master_codemaster WHERE HardCode='COMPLEXIONS' and SoftCode='".$_POST['Complexation']."'");  
+             $BodyType = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BODYTYPES' and SoftCode='".$_POST['BodyType']."'");  
+             $Diet = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DIETS' and SoftCode='".$_POST['Diet']."'");  
+             $SmookingHabit = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SMOKINGHABITS' and SoftCode='".$_POST['SmookingHabit']."'");  
+             $DrinkingHabit = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DRINKINGHABITS' and SoftCode='".$_POST['DrinkingHabit']."'");  
+             
+             $updateSql = "update _tbl_Profile_Draft set PhysicallyImpairedCode='".$_POST['PhysicallyImpaired']."',
+                                                       PhysicallyImpaired='".$PhysicallyImpaired[0]['CodeValue']."',
+                                                       VisuallyImpairedCode='".$_POST['VisuallyImpaired']."',
+                                                       VisuallyImpaired='".$VisuallyImpaired[0]['CodeValue']."',
+                                                       VissionImpairedCode='".$_POST['VissionImpaired']."',
+                                                       VissionImpaired='".$VissionImpaired[0]['CodeValue']."',
+                                                       SpeechImpairedCode='".$_POST['SpeechImpaired']."',
+                                                       SpeechImpaired='".$SpeechImpaired[0]['CodeValue']."',
+                                                       HeightCode='".$_POST['Height']."',
+                                                       Height='".$Height[0]['CodeValue']."',
+                                                       WeightCode='".$_POST['Weight']."',
+                                                       Weight='".$Weight[0]['CodeValue']."',
+                                                       BloodGroupCode='".$_POST['BloodGroup']."',
+                                                       BloodGroup='".$BloodGroup[0]['CodeValue']."',
+                                                       ComplexationCode='".$_POST['Complexation']."',
+                                                       Complexation='".$Complexation[0]['CodeValue']."',
+                                                       BodyTypeCode='".$_POST['BodyType']."',
+                                                       BodyType='".$BodyType[0]['CodeValue']."',
+                                                       DietCode='".$_POST['Diet']."',
+                                                       Diet='".$Diet[0]['CodeValue']."',
+                                                       SmokingHabitCode='".$_POST['SmookingHabit']."',
+                                                       SmokingHabit='".$SmookingHabit[0]['CodeValue']."',
+                                                       DrinkingHabitCode='".$_POST['DrinkingHabit']."',
+                                                       DrinkingHabit='".$DrinkingHabit[0]['CodeValue']."' where  CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'";
+             $mysql->execute($updateSql);  
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'Physicalinformationupdated.',
+                                                             "ActivityString" => 'Physical Information Updated.',
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+             $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");      
+             
+             return Response::returnSuccess("success".$updateSql,array("ProfileInfo"             => $Profiles[0],
+                                                                       "PhysicallyImpaired"      => CodeMaster::getData('PhysicallyImpaired'),
+                                                                       "VisuallyImpaired"        => CodeMaster::getData('VisuallyImpaired'),
+                                                                       "VissionImpaired"         => CodeMaster::getData('VisionImpaired'),
+                                                                       "SpeechImpaired"          => CodeMaster::getData('SpeechImpaired'),
+                                                                       "Height"                  => CodeMaster::getData('Height'),
+                                                                       "Weight"                  => CodeMaster::getData('Weight'),
+                                                                       "BloodGroup"              => CodeMaster::getData('BloodGroups'),
+                                                                       "Complexation"            => CodeMaster::getData('SkinType'),
+                                                                       "BodyType"                => CodeMaster::getData('BodyType'),
+                                                                       "Diet"                    => CodeMaster::getData('Diet'),
+                                                                       "SmookingHabit"           => CodeMaster::getData('SmokingHabit'),
+                                                                       "DrinkingHabit"           => CodeMaster::getData('DrinkingHabit')));
+         } 
+         function EditDraftCommunicationDetails() {
+             
+             global $mysql,$loginInfo;
+              $Country = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CONTNAMES' and SoftCode='".$_POST['Country']."'");  
+             $State = $mysql->select("select * from _tbl_master_codemaster Where HardCode='STATNAMES' and SoftCode='".$_POST['StateName']."'");  
+              $updateSql = "update _tbl_Profile_Draft set  EmailID='".$_POST['EmailID']."',
+                                                       MobileNumber='".$_POST['MobileNumber']."',
+                                                       WhatsappNumber='".$_POST['WhatsappNumber']."',
+                                                       AddressLine1='".$_POST['AddressLine1']."',
+                                                       AddressLine2='".$_POST['AddressLine2']."',
+                                                       AddressLine3='".$_POST['AddressLine3']."',
+                                                       CountryCode='".$_POST['Country']."',
+                                                       Country='".$Country[0]['CodeValue']."',
+                                                       StateCode='".$_POST['StateName']."',
+                                                       State='".$State[0]['CodeValue']."',
+                                                       City='".$_POST['City']."',
+                                                       OtherLocation='".$_POST['OtherLocation']."' where  CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'";
+             $mysql->execute($updateSql);  
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'Communicationdetailsupdated.',
+                                                             "ActivityString" => 'Communication Details Updated.',
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+             $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");      
+             
+             return Response::returnSuccess("success",array("ProfileInfo"             => $Profiles[0],
+                                                                       "CountryName"             => CodeMaster::getData('CountryName'),
+                                                                       "StateName"               => CodeMaster::getData('StateName')));
+         }
+         function EditDraftOccupationDetails() {
+             
+             global $mysql,$loginInfo;
+             
+             $EmployedAs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONS' and SoftCode='".$_POST['EmployedAs']."'");  
+             $OccupationType = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONTYPES' and SoftCode='".$_POST['OccupationType']."'");  
+             $TypeofOccupation = $mysql->select("select * from _tbl_master_codemaster Where HardCode='TYPEOFOCCUPATIONS' and SoftCode='".$_POST['TypeofOccupation']."'");  
+             $IncomeRange = $mysql->select("select * from _tbl_master_codemaster Where HardCode='INCOMERANGE' and SoftCode='".$_POST['IncomeRange']."'");
+             
+              $updateSql = "update _tbl_Profile_Draft set  EmployedAsCode='".$_POST['EmployedAs']."',
+                                                       EmployedAs='".$EmployedAs[0]['CodeValue']."',
+                                                       OccupationTypeCode='".$_POST['OccupationType']."',
+                                                       OccupationType='".$OccupationType[0]['CodeValue']."',
+                                                       TypeofOccupationCode='".$_POST['TypeofOccupation']."',
+                                                       TypeofOccupation='".$TypeofOccupation[0]['CodeValue']."',
+                                                       AnnualIncomeCode='".$_POST['IncomeRange']."',
+                                                       AnnualIncome='".$IncomeRange[0]['CodeValue']."' where  CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'";
+             $mysql->execute($updateSql);  
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'Occupationdetailsupdated.',
+                                                             "ActivityString" => 'Occupation Details Updated.',
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+             $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");      
+             
+             return Response::returnSuccess("success",array("ProfileInfo"             => $Profiles[0],
+                                                                       "EmployedAs"              => CodeMaster::getData('EmployedAs'),
+                                                                       "Occupation"              => CodeMaster::getData('Occupation'),
+                                                                       "TypeofOccupation"        => CodeMaster::getData('OccupationTypes'),
+                                                                       "IncomeRange"             => CodeMaster::getData('IncomeRange')));
+         }  
+         function AddEducationalDetails(){
+                global $mysql,$loginInfo;
+                $id = $mysql->insert("_tbl_member_attachments",array("EducationDetails"  => $_POST['education'],
+                                                              "AttachedOn"        => date("Y-m-d H:i:s"),
+                                                              "ProfileID"       => $_POST['Code'],
+                                                              "MemberID"          => $loginInfo[0]['MemberID']));
+            if (sizeof($id)>0) {
+                 return Response::returnSuccess("success",$_POST);
+             } else{
+                 return Response::returnError("Access denied. Please contact support");   
+             }
+         }
+         function AttachDocuments(){
+                global $mysql,$loginInfo;
+                $id = $mysql->insert("_tbl_member_attachments",array("DocumentType"  => $_POST['Documents'],
+                                                              "AttachedOn"        => date("Y-m-d H:i:s"),
+                                                              "ProfileID"       => $_POST['Code'],
+                                                              "MemberID"          => $loginInfo[0]['MemberID']));
+            if (sizeof($id)>0) {
+                 return Response::returnSuccess("success",$_POST);
+             } else{
+                 return Response::returnError("Access denied. Please contact support");   
+             }
+         }
+         function GetViewAttachments(){
+           global $mysql,$loginInfo;    
+              
+              $SAttachments = $mysql->select("select * from _tbl_member_attachments where MemberID='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");
+              $sql="select * from _tbl_member_attachments where MemberID='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'";
+                return Response::returnSuccess("success".$sql,$SAttachments);
+                                                            
+    }
+    function GetMyProfiles() {
+           global $mysql;    
+              $MyProfiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$loginInfo[0]['MemberID']."'");
+                return Response::returnSuccess("success",$MyProfiles);
+                                                            
+         }
+            }
+         
      ?> 

@@ -50,7 +50,7 @@
         
         function GetMemberCode(){
             return Response::returnSuccess("success",array("MemberCode" => SeqMaster::GetNextMemberNumber(),
-                                                           "Gender"     => CodeMaster::GetGender()));
+                                                           "Gender"     => CodeMaster::getData('Gender')));
         }
         
         function CreateMember() {
@@ -765,7 +765,7 @@
     }
     function GetFranchiseeStaffCodeCode(){
             return Response::returnSuccess("success",array("staffCode" => SeqMaster::GetNextFranchiseeStaffNumber(),
-                                                           "Gender"     => CodeMaster::GetGender()));
+                                                           "Gender"     => CodeMaster::getData('Gender')));
         }
     function EditFranchiseeStaff(){
               global $mysql,$loginInfo;    

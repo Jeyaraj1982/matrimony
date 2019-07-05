@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-        include_once("config.php");
         if (isset($_POST['btnsubmit'])) {
-            $response = $webservice->AdminLogin($_POST);
+            include_once("config.php");
+            $response = $webservice->getData("Admin","AdminLogin",$_POST);
             if ($response['status']=="success")  {
                 $_SESSION['AdminDetails'] = $response['data'];
                 echo "<script>location.href='".SiteUrl."';</script>";
@@ -52,6 +52,7 @@ $("#Password").blur(function () {
           <div class="col-lg-4 mx-auto">
             <div class="auto-form-wrapper">
               <form method="POST" action="" onsubmit="return SubmitLogin();">
+                <input type="hidden" name="login">
                 <div class="form-group">
                 <div align="center"><h5>Admin Login</h5></div>
                   <label class="label">Login Name</label>
@@ -80,17 +81,6 @@ $("#Password").blur(function () {
                 </div>
                </form>
             </div>
-            <!--<ul class="auth-footer">
-              <li>
-                <a href="#">Conditions</a>
-              </li>
-              <li>
-                <a href="#">Help</a>
-              </li>
-              <li>
-                <a href="#">Terms</a>
-              </li>
-            </ul>-->
           </div>
         </div>
       </div>

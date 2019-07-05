@@ -3,15 +3,7 @@
     
     include_once("config_client.php");
     $__Global = $_SERVER;
-    
-    /*function printDateTime($dateTime) {
-        return date("M d, Y H",strtotime($dateTime));
-    }
-    
-    function printDate($date) {
-        return date("M d, Y ",strtotime($date));
-    }*/
-    
+
     class Franchisee  {
         
         function GetDetails($FranchiseeCode) {
@@ -218,7 +210,7 @@
     }
     
     $loginID = "";
-
+    
     if (isset($_SESSION['UserDetails']) && ($_SESSION['UserDetails']['FranchiseeID']>0)) {
         $_Franchisee     = $_SESSION['UserDetails'];
         $_FranchiseeInfo = $_SESSION['FranchiseeDetails'];
@@ -233,9 +225,11 @@
         $loginID = $_Member['LoginID'];
         define("UserRole","Member");     
     } else {
+        if (!(isset($_POST['login']))) {
         echo "<script>alert('session expired. login again');location.href='../';</script>";
+        }
     }
-    
+     
     class Webservice {
         
         var $serverURL="http://nahami.online/sl/Webservice/webservice.php?rand=2&";
@@ -321,73 +315,7 @@
             return json_decode($this->_callUrl("m=Franchisee&a=ChangePassword",$param),true);
         }
         
-        function GetMyDraftProfiles($param) {
-            return json_decode($this->_callUrl("m=Member&a=GetMyDraftProfiles",$param),true);
-        }
-        
-        function GetMemberInfo($param) {
-              return json_decode($this->_callUrl("m=Member&a=GetMemberInfo",$param),true);
-        }
-        
-        function WelcomeMessage($param) {
-            return json_decode($this->_callUrl("m=Member&a=WelcomeMessage",$param),true);
-        }
-        
-        function GetCodeMasterDatas($param) {
-              return json_decode($this->_callUrl("m=Member&a=GetCodeMasterDatas",$param),true);
-        }
-        
-        function CreateProfile($param) {
-            return json_decode($this->_callUrl("m=Member&a=CreateProfile",$param),true);
-        }
-        
-        function EditProfile($param) {
-            return json_decode($this->_callUrl("m=Member&a=EditProfile",$param),true);
-        }
-        
-        function GetDraftProfileInformation($param) {
-            return json_decode($this->_callUrl("m=Member&a=GetDraftProfileInformation",$param),true);
-        }
-        
-        function EditDraftGeneralInformation($param) {
-              return json_decode($this->_callUrl("m=Member&a=EditDraftGeneralInformation",$param),true);
-        }
-        
-        function GetMyEmails($param) {
-              return json_decode($this->_callUrl("m=Member&a=GetMyEmails",$param),true);
-        }
-        /*
-        function MemberChangePassword($param) {
-              return json_decode($this->_callUrl("m=Member&a=MemberChangePassword",$param),true);
-        } */
-        
-        function GetAdvancedSearchElements($param) {
-              return json_decode($this->_callUrl("m=Member&a=GetAdvancedSearchElements",$param),true);
-        }
-        
-        function GetBasicSearchElements($param) {
-              return json_decode($this->_callUrl("m=Member&a=GetBasicSearchElements",$param),true);
-        }
-        
-        function EditMemberInfo($param) {
-              return json_decode($this->_callUrl("m=Member&a=EditMemberInfo",$param),true);
-        }
-        
-        function SaveBasicSearch($param) {
-              return json_decode($this->_callUrl("m=Member&a=SaveBasicSearch",$param),true);
-        }
-        function updateProfilePhoto($param) {
-              return json_decode($this->_callUrl("m=Member&a=updateProfilePhoto",$param),true);
-        }
-        function GetKYC($param) {
-              return json_decode($this->_callUrl("m=Member&a=GetKYC",$param),true);
-        }
-        function UpdateKYC($param) {
-              return json_decode($this->_callUrl("m=Member&a=UpdateKYC",$param),true);
-        }
-        function AdminLogin($param) {
-              return json_decode($this->_callUrl("m=Admin&a=AdminLogin",$param),true);
-        }
+         
         function AdminChangePassword($param) {
               return json_decode($this->_callUrl("m=Admin&a=AdminChangePassword",$param),true);
         }
@@ -445,97 +373,86 @@
         function GetFranchiseeManageNewsandEvents($param) {
               return json_decode($this->_callUrl("m=Admin&a=GetFranchiseeManageNewsandEvents",$param),true);
         }
+        
+        
         function GetMastersManageDetails($param) {
               return json_decode($this->_callUrl("m=Admin&a=GetMastersManageDetails",$param),true);
         }
-        function GetManageActiveReligionNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveReligionNames",$param),true);
-        }
-        function GetManageDeactiveReligionNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveReligionNames",$param),true);
-        }
-        function CreateReligionName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=CreateReligionName",$param),true);
-        }
-        function EditReligionName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=EditReligionName",$param),true);
-        }
+        
         function GetMasterAllViewInfo($param) {
               return json_decode($this->_callUrl("m=Admin&a=GetMasterAllViewInfo",$param),true);
         }
-        function GetManageActiveCasteNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveCasteNames",$param),true);
-        }
-        function GetManageDeactiveCasteNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveCasteNames",$param),true);
-        }
-        function CreateCasteName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=CreateCasteName",$param),true);
-        }
-        function EditCasteName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=EditCasteName",$param),true);
-        }
-        
-        function GetManageActiveStarNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveStarNames",$param),true);
-        }
-        function GetManageDeactiveStarNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveStarNames",$param),true);
-        }
-  
-        function GetManageActiveNationalityNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveNationalityNames",$param),true);
-        }
-        function GetManageDeactiveNationalityNames($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveNationalityNames",$param),true);
-        }
-        function CreateNationalityName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=CreateNationalityName",$param),true);
-        }
-        function EditNationalityName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=EditNationalityName",$param),true);
-        }
-        
- 
-        function GetManageActiveProfileSignInFors($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveProfileSignInFors",$param),true);
-        }
-        function GetManageDeactiveProfileSignInFors($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveProfileSignInFors",$param),true);
-        }
-        function CreateProfileSignInFor($param) {
-              return json_decode($this->_callUrl("m=Admin&a=CreateProfileSignInFor",$param),true);
-        }
-        function EditProfileSignInFor($param) {
-              return json_decode($this->_callUrl("m=Admin&a=EditProfileSignInFor",$param),true);
-        }
-        function CreateLanguageName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=CreateLanguageName",$param),true);
-        }
-        function EditLanguageName($param) {
-              return json_decode($this->_callUrl("m=Admin&a=EditLanguageName",$param),true);
-        }
-        function CreateEmailApi($param) {
-              return json_decode($this->_callUrl("m=Admin&a=CreateEmailApi",$param),true);
-        }
-        function GetEmailApiCode($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetEmailApiCode",$param),true);
-        }
+         
         function GetManageEmailApi($param) {
               return json_decode($this->_callUrl("m=Admin&a=GetManageEmailApi",$param),true);
         }
-        function GetManageActiveEmailApi($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageActiveEmailApi",$param),true);
+        /*
+        function MemberChangePassword($param) {
+              return json_decode($this->_callUrl("m=Member&a=MemberChangePassword",$param),true);
+        } */
+        
+        function GetMyDraftProfiles($param) {
+            return json_decode($this->_callUrl("m=Member&a=GetMyDraftProfiles",$param),true);
         }
-        function GetManageDeactiveEmailApi($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetManageDeactiveEmailApi",$param),true);
+        
+        function GetMemberInfo($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetMemberInfo",$param),true);
         }
-        function GetEmailApiInfo($param) {
-              return json_decode($this->_callUrl("m=Admin&a=GetEmailApiInfo",$param),true);
+        
+        function WelcomeMessage($param) {
+            return json_decode($this->_callUrl("m=Member&a=WelcomeMessage",$param),true);
         }
-        function EditEmailApi($param) {
-              return json_decode($this->_callUrl("m=Admin&a=EditEmailApi",$param),true);
+        
+        function GetCodeMasterDatas($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetCodeMasterDatas",$param),true);
         }
+        
+        function CreateProfile($param) {
+            return json_decode($this->_callUrl("m=Member&a=CreateProfile",$param),true);
+        }
+        
+        function EditProfile($param) {
+            return json_decode($this->_callUrl("m=Member&a=EditProfile",$param),true);
+        }
+        
+        function GetDraftProfileInformation($param) {
+            return json_decode($this->_callUrl("m=Member&a=GetDraftProfileInformation",$param),true);
+        }
+        
+        function EditDraftGeneralInformation($param) {
+              return json_decode($this->_callUrl("m=Member&a=EditDraftGeneralInformation",$param),true);
+        }
+        
+        function GetMyEmails($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetMyEmails",$param),true);
+        }
+        
+        function GetAdvancedSearchElements($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetAdvancedSearchElements",$param),true);
+        }
+        
+        function GetBasicSearchElements($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetBasicSearchElements",$param),true);
+        }
+        
+        function EditMemberInfo($param) {
+              return json_decode($this->_callUrl("m=Member&a=EditMemberInfo",$param),true);
+        }
+        
+        function SaveBasicSearch($param) {
+              return json_decode($this->_callUrl("m=Member&a=SaveBasicSearch",$param),true);
+        }
+        function updateProfilePhoto($param) {
+              return json_decode($this->_callUrl("m=Member&a=updateProfilePhoto",$param),true);
+        }
+        function GetKYC($param) {
+              return json_decode($this->_callUrl("m=Member&a=GetKYC",$param),true);
+        }
+        function UpdateKYC($param) {
+              return json_decode($this->_callUrl("m=Member&a=UpdateKYC",$param),true);
+        }
+        
+         
 
         function getData($method,$action,$param=array()) {
             return json_decode($this->_callUrl("m=".$method."&a=".$action,$param),true);
@@ -545,14 +462,12 @@
             
             global $__Global;
             $postvars = '';
-            
             foreach($param as $key=>$value) {
                 $postvars .= $key . "=" . $value . "&";
             }
             foreach($_GET as $key=>$value) {
                 $postvars .= $key . "=" . $value . "&";
             }
-            
             $postvars .= "qry=".base64_encode(json_encode(array("UserAgent"=>$__Global['HTTP_USER_AGENT'],"IPAddress"=>$__Global['REMOTE_ADDR'])));
             $ch = curl_init();
             curl_setopt($ch,CURLOPT_URL,$this->serverURL.$method."&User=".$_SESSION['UserData']['MemberID']);
