@@ -34,8 +34,8 @@
                               "OccupationTypes"          => "select * from `_tbl_master_codemaster` Where `HardCode`='TYPEOFOCCUPATIONS'",
                               "AvailableBankName"        => "select * from `_tbl_master_codemaster` Where `HardCode`='BANKNAMES'",
                               "FamilyType"               => "select * from `_tbl_master_codemaster` Where `HardCode`='FAMILYTYPE'",
-                              "FamilyValue"               => "select * from `_tbl_master_codemaster` Where `HardCode`='FAMILYVALUE'",
-                              "FamilyAffluence"               => "select * from `_tbl_master_codemaster` Where `HardCode`='FAMILYAFFLUENCE'",
+                              "FamilyValue"              => "select * from `_tbl_master_codemaster` Where `HardCode`='FAMILYVALUE'",
+                              "FamilyAffluence"          => "select * from `_tbl_master_codemaster` Where `HardCode`='FAMILYAFFLUENCE'",
                               "NumberOfBrother"          => "select * from `_tbl_master_codemaster` Where `HardCode`='NUMBEROFBROTHER'",
                               "NumberOfElderBrother"     => "select * from `_tbl_master_codemaster` Where `HardCode`='ELDER'",
                               "NumberOfYoungerBrother"   => "select * from `_tbl_master_codemaster` Where `HardCode`='YOUNGER'",
@@ -48,6 +48,7 @@
                               "VisuallyImpaired"         => "select * from `_tbl_master_codemaster` Where `HardCode`='VISUALLYIMPAIRED'",
                               "VisionImpaired"           => "select * from `_tbl_master_codemaster` Where `HardCode`='VISSIONIMPAIRED'",
                               "SpeechImpaired"           => "select * from `_tbl_master_codemaster` Where `HardCode`='SPEECHIMPAIRED'",
+                              "Mode"                     => "select * from `_tbl_master_codemaster` Where `HardCode`='MODE'",
                               "RegisterAllowedCountries" => "select *, CONCAT(CodeValue,' (',ParamA,')') as str FROM `_tbl_master_codemaster`  WHERE `HardCode`='CONTNAMES' and ParamB='1'");
               return $mysql->select($quries[$Request]);
         }

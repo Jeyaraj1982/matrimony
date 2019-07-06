@@ -1,5 +1,7 @@
 <?php   
-    $Bank =$mysql->select("select * from _tbl_settings_bankdetails where BankID='".$_REQUEST['Code']."'");
+    $response = $webservice->getData("Admin","BankDetailsForView");
+    $Bank= $response['data']['ViewBankDetails'];
+
 ?>
 
 <div class="col-12 grid-margin">
@@ -19,7 +21,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <div class="col-sm-3">Bank Name</div>
-                          <div class="col-sm-9"><small style="color:#737373;"><?php echo $Bank[0]['BankName'];?></small></div>                                                                
+                          <div class="col-sm-9"><small style="color:#737373;"><?php echo $Bank['BankName'];?></small></div>                                                                
                         </div>
                       </div>
                     </div>
@@ -27,7 +29,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <div class="col-sm-3">Account Name</div>
-                          <div class="col-sm-9"><small style="color:#737373;"><?php echo $Bank[0]['AccountName'];?></small></div>
+                          <div class="col-sm-9"><small style="color:#737373;"><?php echo $Bank['AccountName'];?></small></div>
                         </div>
                       </div>
                       </div> 
@@ -35,7 +37,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <div class="col-sm-3">Account Number</div>
-                          <div class="col-sm-9"><small style="color:#737373;"><?php echo $Bank[0]['AccountNumber'];?></small></div>
+                          <div class="col-sm-9"><small style="color:#737373;"><?php echo $Bank['AccountNumber'];?></small></div>
                         </div>
                       </div>
                       </div>
@@ -43,7 +45,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <div class="col-sm-3">IFS Code</div>
-                          <div class="col-sm-9"><small style="color:#737373;"><?php echo $Bank[0]['IFSCode'];?></small></div>
+                          <div class="col-sm-9"><small style="color:#737373;"><?php echo $Bank['IFSCode'];?></small></div>
                         </div>
                       </div>
                       </div>
@@ -52,7 +54,7 @@
                         <div class="form-group row">
                           <div class="col-sm-3">Status</div>
                           <div class="col-sm-3"><small style="color:#737373;">
-                              <?php if($Bank[0]['IsActive']==1){
+                              <?php if($Bank['IsActive']==1){
                                   echo "Active";
                               }                                  
                               else{

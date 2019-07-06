@@ -4,7 +4,7 @@ $Franchisees = $mysql->select("select * from _tbl_franchisees where FranchiseeID
 <script>
 function GetFranchiseeDetails() {
     $.ajax({
-        url: "http://nahami.online/sl/Dashboard/webservice.php?fr=Franchisee&fi=GetDetails&Code="+$('#FranchiseeCode').val(), 
+        url: API_URL + "fr=Franchisee&fi=GetDetails&Code="+$('#FranchiseeCode').val(), 
         success: function(result){
             
             var $fr = jQuery.parseJSON(result);

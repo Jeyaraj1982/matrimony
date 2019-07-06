@@ -471,7 +471,7 @@ var API_URL = "http://nahami.online/sl/Webservice/webservice.php?LoginID=<?php e
         
         var param = $( "#"+frmid1).serialize();
         
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html(preloader);
         $('#myModal').modal('show'); 
         
         $.post(API_URL + "m=Franchisee&a=MobileNumberVerificationForm", 

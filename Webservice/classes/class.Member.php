@@ -464,6 +464,7 @@
              } else {
                 $formid = "frmChangeMobileNumber_".rand(30,3000);
                 return '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">
+                            
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
@@ -583,6 +584,7 @@
                  $formid = "frmMobileNoVerification_".rand(30,3000);
                  return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
                          <form method="POST" id="'.$formid.'">
+                         <input type="hidden" value="'.$_GET['callfrom'].'" name="callfrom">
                          <input type="hidden" value="'.$loginid.'" name="loginId">
                          <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
@@ -615,11 +617,12 @@
              $otpInfo = $mysql->select("select * from _tbl_verification_otp where RequestID='".$_POST['reqId']."'");
              if (strlen(trim($_POST['mobile_otp_2']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['mobile_otp_2']))  {
                  $sql = "update _tbl_members set IsMobileVerified='1', MobileVerifiedOn='".date("Y-m-d H:i:s")."' where MemberID='".$otpInfo[0]['MemberID']."'";
-                 $mysql->execute($sql);
+                 $mysql->execute($sql);  
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="CheckVerification()">Continue</a> <h5>
+                            <!--<h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="CheckVerification()">Continue</a> <h5>-->
+                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="location.href=location.href">Continue</a> <h5>
                        </div>';
                  } else {
                      return $this->MobileNumberVerificationForm("<span style='color:red'>You entered, invalid pin.</span>",$_POST['loginId'],$_POST['mobile_otp_2'],$_POST['reqId']);
@@ -655,7 +658,7 @@
                                 <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;padding-top: 12%;">Please verify your email</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/assets/images/smallmobile.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/assets/images/emailicon.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'&nbsp;&#65372&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>
                             </div>
                             <div class="form-group">
@@ -1069,9 +1072,9 @@
                                                             "Occupation"              => CodeMaster::getData('Occupation'),
                                                             "TypeofOccupation"        => CodeMaster::getData('OccupationTypes'),
                                                             "IncomeRange"             => CodeMaster::getData('IncomeRange'),
-                                                            "FamilyType"              => CodeMaster::getData('FamilyType'),
-                                                            "FamilyValue"             => CodeMaster::getData('FamilyValue'),
-                                                            "FamilyAffluence"         => CodeMaster::getData('FamilyAffluence'),
+                                                            "FamilyType"               => CodeMaster::getData('FamilyType'),
+                                                            "FamilyValue"               => CodeMaster::getData('FamilyValue'),
+                                                            "FamilyAffluence"           => CodeMaster::getData('FamilyAffluence'),
                                                             "NumberofBrother"         => CodeMaster::getData('NumberOfBrother'),
                                                             "NumberofElderBrother"    => CodeMaster::getData('NumberOfElderBrother'),
                                                             "NumberofYoungerBrother"  => CodeMaster::getData('NumberOfYoungerBrother'),
@@ -1491,6 +1494,14 @@
                 return Response::returnSuccess("success",$MyProfiles);
                                                             
          }
+     function GetBankNames(){
+         global $mysql,$loginInfo;    
+              
+              $BankNames = $mysql->select("select * from  _tbl_settings_bankdetails");                    
+               return Response::returnSuccess("success",array("BankName"   => $BankNames,
+                                                              "Mode"       => CodeMaster::getData('Mode')));
+                                                            
+    }
             }
          
      ?> 

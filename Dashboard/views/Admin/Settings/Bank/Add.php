@@ -1,87 +1,3 @@
-<?php   
-           /* $mail2 = new MailController();
-            echo    $mail2->NewFranchisee(array("mailTo"         => "Jeyaraj_123@yahoo.com",
-                                       "FranchiseeName" => "Jeyaraj",
-                                       "LoginName"      => "Jeyaraj123",
-                                       "LoginPassword"  => "welcome@82"));                                                 */
-            
-    if (isset($_POST['BtnSaveCreate'])) {
-         
-        $ErrorCount =0;
-        
-        if (isset($_POST['AccountName'])) {
-            
-            if (strlen(trim($_POST['AccountName']))>0) {
-            
-            } else {
-                $ErrAccountName="Please enter Account Name";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrAccountName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['AccountNumber'])) {
-            
-            if (strlen(trim($_POST['AccountNumber']))>0) {
-            
-            } else {
-                $ErrAccountNumber="Please enter Account Number";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrAccountNumber="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['IFSCode'])) {
-            
-            if (strlen(trim($_POST['IFSCode']))>0) {
-            
-            } else {
-                $ErrIFSCode="Please enter IFS Code";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrIFSCode="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-            
-        
-        $duplicate = $mysql->select("select * from  _tbl_settings_bankdetails where AccountName='".trim($_POST['AccountName'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrAccountName="Account Name Already Exists";    
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from  _tbl_settings_bankdetails where AccountNumber='".trim($_POST['AccountNumber'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrAccountNumber="Account Number Already Exists";    
-             $ErrorCount++;
-        }
-        
-        
-  if ($ErrorCount==0) {
-
-      $BankID = $mysql->insert("_tbl_settings_bankdetails",array("BankName"                => $_POST['BankName'],
-                                                                 "AccountName"             => $_POST['AccountName'],
-                                                                 "AccountNumber"           => $_POST['AccountNumber'],
-                                                                 "IFSCode"                 => $_POST['IFSCode'] ));
-                                                              
-        if ($BankID>0) {
-            echo "Successfully Created ";
-            unset($_POST);
-        } else {
-            echo "Error occured. Couldn't save Bank Details";
-        }
-          
-    }
-    }
-?>                                                                        
 <script>
 
 $(document).ready(function () {
@@ -132,7 +48,18 @@ function SubmitNewBank() {
                         }
                  }
 </script>   
-
+<?php                   
+  if (isset($_POST['BtnSaveCreate'])) {
+    $response = $webservice->getData("Admin","CreateBank",$_POST);   
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    }
+   $Bank = $webservice->getData("Admin","GetBank");
+?>
 <form method="post" action="" onsubmit="return SubmitNewBank();">
 <div class="col-12 grid-margin">
               <div class="card">
@@ -144,12 +71,12 @@ function SubmitNewBank() {
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Bank Name<span id="star">*</span></label>
                           <div class="col-sm-9">
-                          <?php $BankNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BANKNAMES'"); ?>
                           <select class="form-control" id="BankName"  name="BankName" >
-                          <?php foreach($BankNames as $BankName) { ?>
-                         <option value="<?php echo $BankName['CodeValue'];?>">
-                         <?php echo $BankName['CodeValue'];?></option>
-                          <?php } ?>
+                          <?php foreach($Bank['data']['BankName'] as $BankName) { ?>
+                                <option value="<?php echo $BankName['CodeValue'];?>" <?php echo ($BankName[ 'CodeValue']==$_POST[ 'BankName']) ? ' selected="selected" ' : '';?>>
+                                    <?php echo $BankName['CodeValue'];?>
+                                </option>
+                                <?php } ?>
                           </select>
                           </div>
                         </div>
@@ -188,6 +115,9 @@ function SubmitNewBank() {
                         </div>
                       </div>
                       </div>
+                      <div class="form-group row" style="margin-bottom:0px;">
+                            <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
+                        </div>
                       <div class="row">
                       <div class="col-md-12">
                       <div class="form-group row">

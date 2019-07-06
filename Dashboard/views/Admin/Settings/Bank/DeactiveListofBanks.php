@@ -24,7 +24,10 @@
                         </tr>
                       </thead>
                        <tbody>  
-                        <?php $Banks = $mysql->select("select * from _tbl_settings_bankdetails where IsActive='0'"); ?>
+                        <?php
+                      $response =$webservice->getData("Admin","GetManageDeactiveBanks");
+                      $Banks = $response['data'];
+                       ?>
                         <?php foreach($Banks as $Bank) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($Bank['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Bank['BankName'];?></td>

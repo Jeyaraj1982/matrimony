@@ -1,7 +1,8 @@
-<?php 
+<?php
+
 class Admin extends Master {
     
-	function AdminLogin() {
+    function AdminLogin() {
             
             global $mysql;  
         
@@ -451,7 +452,7 @@ class Admin extends Master {
               
         return Response::returnSuccess("success",array("Franchisee"         => $Franchisees[0],
                                                        "FranchiseeStaff"    => $FranchiseeStaff[0],
-                                                       "CountryNames"       => CodeMaster::getData('CountryName'),
+                                                       "CountryNames"        => CodeMaster::getData('CountryName'),
                                                        "StateName"          => CodeMaster::getData('StateName'),
                                                        "DistrictName"       => CodeMaster::getData('DistrictName'),
                                                        "BankNames"          => CodeMaster::getData('AvailableBankName'),
@@ -768,5 +769,98 @@ class Admin extends Master {
                                                         where  ApiID='".$_POST['Code']."'");
               return Response::returnSuccess("success",array());
     }
-}                        
-?>
+    function GetManageBanks() {
+           global $mysql;    
+              $Banks = $mysql->select("select * from _tbl_settings_bankdetails");
+                return Response::returnSuccess("success",$Banks);
+                                                            
+    }
+    
+    function GetManageActiveBanks() {
+           global $mysql;    
+              $Banks = $mysql->select("select * from _tbl_settings_bankdetails where IsActive='1'");
+                return Response::returnSuccess("success",$Banks);
+                                                            
+    }
+    
+    function GetManageDeactiveBanks() {
+           global $mysql;    
+              $Banks = $mysql->select("select * from _tbl_settings_bankdetails where IsActive='0'");
+                return Response::returnSuccess("success",$Banks);
+                                                            
+    }
+    function CreateBank() {
+                                                                            
+        global $mysql,$loginInfo;
+        if (!(strlen(trim($_POST['AccountName']))>0)) {
+            return Response::returnError("Please enter your account name");
+        }
+        if (!(strlen(trim($_POST['AccountNumber']))>0)) {
+            return Response::returnError("Please enter account number");
+        }
+        if (!(strlen(trim($_POST['IFSCode']))>0)) {
+            return Response::returnError("Please enter IFSCode");
+        }
+        
+        $data = $mysql->select("select * from  _tbl_settings_bankdetails where AccountName='".trim($_POST['AccountName'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Account Name Already Exists");
+        }
+        $data = $mysql->select("select * from  _tbl_settings_bankdetails where AccountNumber='".trim($_POST['AccountNumber'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Account Number Already Exists");
+        }
+        
+         $id = $mysql->insert("_tbl_settings_bankdetails",array("BankName"                => $_POST['BankName'],
+                                                                "AccountName"             => $_POST['AccountName'],
+                                                                "AccountNumber"           => $_POST['AccountNumber'],
+                                                                "IFSCode"                 => $_POST['IFSCode'] ));
+           
+        if (sizeof($id)>0) {
+                return Response::returnSuccess("success",array());
+            } else{
+                return Response::returnError("Access denied. Please contact support");   
+            }
+    }
+    function GetBank(){
+            return Response::returnSuccess("success",array("BankName"    => CodeMaster::getData('AvailableBankName')));
+        }
+    function BankDetailsForView() {
+           global $mysql;    
+        $Banks = $mysql->select("select * from _tbl_settings_bankdetails where BankID='".$_POST['Code']."'");
+              
+        return Response::returnSuccess("success",array("ViewBankDetails"    => $Banks[0],
+                                                       "BankName"           => CodeMaster::getData('AvailableBankName')));
+    }
+    function EditBankDetails(){
+              global $mysql,$loginInfo;
+       if (!(strlen(trim($_POST['AccountName']))>0)) {
+            return Response::returnError("Please enter your account name");
+        }
+        if (!(strlen(trim($_POST['AccountNumber']))>0)) {
+            return Response::returnError("Please enter account number");
+        }
+        if (!(strlen(trim($_POST['IFSCode']))>0)) {
+            return Response::returnError("Please enter IFSCode");
+        }
+        $data = $mysql->select("select * from  _tbl_settings_bankdetails where AccountName='".trim($_POST['AccountName'])."' and BankID <>'".$_POST['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Account Name Already Exists");
+        }
+        $data = $mysql->select("select * from  _tbl_settings_bankdetails where AccountNumber='".trim($_POST['AccountNumber'])."' and BankID <>'".$_POST['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Account Number Already Exists");
+        } 
+        $mysql->execute("update _tbl_settings_bankdetails set BankName='".$_POST['BankName']."',
+                                                        AccountName='".$_POST['AccountName']."',
+                                                        AccountNumber='".$_POST['AccountNumber']."',
+                                                        IFSCode='".$_POST['IFSCode']."',
+                                                        IsActive='".$_POST['Status']."'
+                                                        where  BankID='".$_POST['Code']."'");
+         
+         return Response::returnSuccess("success",array());
+                                                            
+    }  
+    }
+?> 
+

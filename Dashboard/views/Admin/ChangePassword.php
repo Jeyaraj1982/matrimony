@@ -20,7 +20,7 @@
             unset($_POST);
            $sucessmessage=$response['message'];
            ?>
-        <script>location.href='http://nahami.online/sl/Dashboard/ChangePasswordComplete';</script>
+        <script>location.href='<?php echo AppUrl;?>ChangePasswordComplete';</script>
         <?php
         } else {
             $errormessage = $response['message']; 

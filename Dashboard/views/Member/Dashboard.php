@@ -36,33 +36,25 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
+    <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">My Recent Profiles</div>
-            <?php if (sizeof($response['data'])<0) {      ?>
-            <div class="card"  style="background:#dee9ea">
+             <div class="card"  style="background:#dee9ea">
                 <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:258px">
                     <div id="resCon_a002" style="background:white;width:97%">
+                    <?php if (sizeof($response['data'])<0) {      ?>
                         <div style="text-align:center;">
-                            <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5><br>
-                            <a href="<?php echo GetUrl("MyProfiles/ManageProfile");?>" ><h5 style="margin-top:-17px;color: #3091e2;">Create Profile </h5></a>
+                            <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5>
                         </div>
-                    </div>
-                </div> 
-            </div>
-            <?php } else {  ?>
-            <div class="card"  style="background:#dee9ea">
-                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:258px">
-                <div>
-                <?php if (sizeof($response['data'])>0) { ?>
+                    <?php } else {?>
+                    <?php if (sizeof($response['data'])>0) { ?>
                     <?php foreach($response['data'] as $Profile) { ?>
-                    <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
                         <div class="form-group row">
                             <div class="col-sm-3" style="text-align:center">
                                 <img src="<?php echo SiteUrl?>assets/images/prof1.jpg" style="height: 159px;margin-bottom: -18px;">
                                 <button type="button" class="btn btn-primary" style="padding: 0px 0px;font-size: 13px;margin-top: 8px;">Add a Photo</button>
                             </div>
                             <div class="col-sm-9">
-                                <div style="border-bottom:1px solid #d7d7d7;width:100%;padding-bottom: 10px;font-size: 21px;color: #514444cc;"> 
+                                <div style="border-bottom:1px solid #d7d7d7;width:100%;padding-bottom: 10px;font-size: 21px;color: #514444cc;text-align:left"> 
                                     <?php echo $Profile['ProfileName'];?>
                                 </div>
                                 <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
@@ -81,25 +73,24 @@
                             </div>
                         </div>
                         <div style="float:right;line-height: 1px;"><a href="<?php echo GetUrl("MyProfiles/Edit/GeneralInformation/". $Profile['ProfileID'].".htm");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/View/". $Profile['ProfileID'].".htm");?>">View</a>  </div> 
-                    </div>
                     <?php } ?>
-                <?php }?> 
-                </div> 
+                <?php } }?> 
+                    </div>
+                   </div> 
                 </div>
-            </div>
-            <?php }?>
-            <br>
+              <br>
             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recent Visitors</div>
-            <div class="card"  style="background:#dee9ea">
+             <div class="card"  style="background:#dee9ea">
                 <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:158px">
                     <div id="resCon_a002" style="background:white;width:97%;height:136px">
                         <div style="text-align:center;">
-                            <h5 style="margin-top: 35px;color: #aaa;">No Visitors Found</h5>
+                            <h5 style="margin-top:35px;color: #aaa;">No Visitors Found </h5>
                         </div>
                     </div>
-                </div> 
+                   </div> 
+                </div>
             </div>
-        </div> 
+         
         <div class="col-5 grid-margin" style="max-width: 35.667%;">
             <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recomended Profiles</div>
             <div class="card"  style="background:#dee9ea;">
