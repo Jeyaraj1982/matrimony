@@ -1,6 +1,6 @@
     function MobileNumberVerification() {
         
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html(preloader);
         $('#myModal').modal('show'); 
         $.ajax({
             url: API_URL + "m=Member&a=ChangeMobileNumberFromVerificationScreen", 
@@ -14,7 +14,7 @@
     }
     function EmailVerification() {
         
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html(preloader);
         $('#myModal').modal('show'); 
         $.ajax({
             url: API_URL + "m=Member&a=ChangeEmailFromVerificationScreen", 
@@ -26,12 +26,12 @@
     function MobileNumberVerificationForm(frmid1) {
         
         var param = $( "#"+frmid1).serialize();
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html(preloader);
         $('#myModal').modal('show'); 
         $.post(API_URL + "m=Member&a=MobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
     }
     function ChangeMobileNumber() {
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html(preloader);
         $('#myModal').modal('show'); 
         $.ajax({url: API_URL + "m=Member&a=ChangeMobileNumber",success: function(result2){$('#Mobile_VerificationBody').html(result2);}});
     } 
@@ -40,7 +40,7 @@
         
         var param = $( "#"+frmid1).serialize();
         
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html(preloader");
         $('#myModal').modal('show'); 
         
         $.post(API_URL + "m=Member&a=EmailVerificationForm", 
@@ -51,7 +51,7 @@
                     );
     }
     function ChangeEmailID() {
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html(preloader);
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Member&a=ChangeEmailID", 
@@ -62,7 +62,7 @@
                     });
     } 
     function CheckVerification() {
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html(preloader);
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Member&a=CheckVerification", 
@@ -74,8 +74,8 @@
     }
      function MobileNumberOTPVerification(frmid) {
          var param = $( "#"+frmid).serialize();
-         $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
-                    $.post("http://nahami.online/sl/Webservice/webservice.php?m=Member&a=MobileNumberOTPVerification", 
+         $('#Mobile_VerificationBody').html(preloader);
+                    $.post( API_URL + "m=Member&a=MobileNumberOTPVerification", 
                             param,
                             function(result2) {
                                 $('#Mobile_VerificationBody').html(result2);   
@@ -105,8 +105,8 @@
     }*/
     function EmailOTPVerification(frmid1) {
          var param = $( "#"+frmid1).serialize();
-         $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
-                    $.post("http://nahami.online/sl/Webservice/webservice.php?m=Member&a=EmailOTPVerification", 
+         $('#Mobile_VerificationBody').html(preloader);
+                    $.post(API_URL + "m=Member&a=EmailOTPVerification", 
                             param,
                             function(result2) {
                                 $('#Mobile_VerificationBody').html(result2);   
