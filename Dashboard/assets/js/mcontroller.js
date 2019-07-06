@@ -40,7 +40,7 @@
         
         var param = $( "#"+frmid1).serialize();
         
-        $('#Mobile_VerificationBody').html(preloader");
+        $('#Mobile_VerificationBody').html(preloader);
         $('#myModal').modal('show'); 
         
         $.post(API_URL + "m=Member&a=EmailVerificationForm", 
