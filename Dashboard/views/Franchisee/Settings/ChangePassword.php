@@ -6,7 +6,7 @@
             unset($_POST);
            $sucessmessage=$response['message'];
            ?>
-        <script>location.href='http://nahami.online/sl/Dashboard/Settings/ChangepwdCompleted';</script>
+        <script>location.href='<?php echo AppUrl;?>Settings/ChangepwdCompleted';</script>
         <?php
         } else {
             $errormessage = $response['message']; 

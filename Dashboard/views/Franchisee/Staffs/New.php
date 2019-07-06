@@ -59,7 +59,7 @@
     $response = $webservice->CreateFranchiseeStaff($_POST);
     if ($response['status']=="success") {
         ?>
-        <script>location.href='http://nahami.online/sl/Dashboard/Staffs/Created';</script>
+        <script>location.href='<?php echo AppUrl;?>Staffs/Created';</script>
         <?php
     } else {
         $errormessage = $response['message']; 

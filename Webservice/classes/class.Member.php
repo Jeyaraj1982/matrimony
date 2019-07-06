@@ -457,7 +457,7 @@
              $memberdata = $mysql->select("select * from _tbl_members where MemberID='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -473,7 +473,7 @@
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
                                     <h5 style="color: #777;line-height:20px;font-weight: 100;padding-top: 21px;">In order to protect the security of your account, we will send you a text message with a verification that you will need to enter the next screen</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/assets/images/smallmobile.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppUrl.'assets/images/smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumber()">Change</h4>
                             </div>
                             <div class="form-group">
@@ -504,7 +504,7 @@
              
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;">
-                            <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="CheckVerification()">Continue</a>
                        </div>';    
@@ -566,7 +566,7 @@
              $memberdata = $mysql->select("select * from _tbl_members where MemberID='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -592,7 +592,7 @@
                                 <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/assets/images/smallmobile.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppUrl.'assets/images/smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9;font-size: 18px;">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'</h4>
                             </div>
                             <div class="form-group">
@@ -619,7 +619,7 @@
                  $sql = "update _tbl_members set IsMobileVerified='1', MobileVerifiedOn='".date("Y-m-d H:i:s")."' where MemberID='".$otpInfo[0]['MemberID']."'";
                  $mysql->execute($sql);  
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
                             <!--<h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="CheckVerification()">Continue</a> <h5>-->
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="location.href=location.href">Continue</a> <h5>
@@ -644,7 +644,7 @@
              $memberdata = $mysql->select("select * from _tbl_members where MemberID='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -658,7 +658,7 @@
                                 <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;padding-top: 12%;">Please verify your email</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/assets/images/emailicon.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppUrl.'assets/images/emailicon.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'&nbsp;&#65372&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>
                             </div>
                             <div class="form-group">
@@ -688,7 +688,7 @@
              
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;">
-                            <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -752,7 +752,7 @@
              
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -791,7 +791,7 @@
                                     <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/assets/images/emailicon.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppUrl.'assets/images/emailicon.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
                             </div>
                             <div class="form-group">
@@ -824,7 +824,7 @@
                                     <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                     <h4 style="text-align:center;color:#ada9a9">Please verify your email</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="//nahami.online/sl/Dashboard/assets/images/emailicon.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppUrl.'assets/images/emailicon.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
                             </div>
                             <div class="form-group">
@@ -851,7 +851,7 @@
                  $sql = "update _tbl_members set IsEmailVerified='1', EmailVerifiedOn='".date("Y-m-d H:i:s")."' where MemberID='".$otpInfo[0]['MemberID']."'";
                  $mysql->execute($sql); 
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="http://nahami.online/sl/Dashboard/assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <p style="text-align:center"><a href="CreateProfile" class="btn btn-primary">Continue</a></p>
                             

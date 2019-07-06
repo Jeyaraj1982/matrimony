@@ -3,29 +3,28 @@
 <?php
    include_once("../../config.php");
     if (isset($_POST['BtnUpdatePassword'])) {
-        //echo "update _tbl_franchisees_staffs set LoginPassword='".$_POST['RePassword']."' where PersonID='".$_SESSION['rDetails']['PersonID']."'" ;
          $mysql->execute("update _tbl_members set MemberPassword='".$_POST['RePassword']."' where MemberID='".$_SESSION['rDetails']['MemberID']."'" );
-        header("Location:http://nahami.online/sl/Dashboard/views/Member/FpwdCompleted.php");
+        header("Location:".AppUrl."views/Member/FpwdCompleted.php");
         } 
 ?>
  <head>                                                        
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Franchisee Login</title>
-  <link rel="stylesheet" href="http://nahami.online/sl/Dashboard/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="http://nahami.online/sl/Dashboard/vendors/iconfonts/puse-icons-feather/feather.css">
-  <link rel="stylesheet" href="http://nahami.online/sl/Dashboard/vendors/css/vendor.bundle.base.css">
-  <link rel="stylesheet" href="http://nahami.online/sl/Dashboard/vendors/css/vendor.bundle.addons.css">
-  <link rel="stylesheet" href="http://nahami.online/sl/Dashboard/css/style.css">
-  <link rel="shortcut icon" href="http://nahami.online/sl/Dashboard/images/favicon.png" />
-  <script src="http://nahami.online/sl/Dashboard/vendors/js/vendor.bundle.base.js"></script>
-  <script src="http://nahami.online/sl/Dashboard/vendors/js/vendor.bundle.addons.js"></script>
-  <script src="http://nahami.online/sl/Dashboard/js/off-canvas.js"></script>
-  <script src="http://nahami.online/sl/Dashboard/js/hoverable-collapse.html"></script>
-  <script src="http://nahami.online/sl/Dashboard/js/misc.js"></script>
-  <script src="http://nahami.online/sl/Dashboard/js/settings.html"></script>
-  <script src="http://nahami.online/sl/Dashboard/js/todolist.html"></script>
-  <script src="http://nahami.online/sl/Dashboard/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
+  <link rel="stylesheet" href="<?php echo AppUrl;?>assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="<?php echo AppUrl;?>assets/vendors/iconfonts/puse-icons-feather/feather.css">
+  <link rel="stylesheet" href="<?php echo AppUrl;?>assets/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="<?php echo AppUrl;?>assets/vendors/css/vendor.bundle.addons.css">
+  <link rel="stylesheet" href="<?php echo AppUrl;?>assets/css/style.css">
+  <link rel="shortcut icon" href="<?php echo AppUrl;?>assets/images/favicon.png" />
+  <script src="<?php echo AppUrl;?>assets/vendors/js/vendor.bundle.base.js"></script>
+  <script src="<?php echo AppUrl;?>assets/vendors/js/vendor.bundle.addons.js"></script>
+  <script src="<?php echo AppUrl;?>assets/js/off-canvas.js"></script>
+  <script src="<?php echo AppUrl;?>assets/js/hoverable-collapse.html"></script>
+  <script src="<?php echo AppUrl;?>assets/js/misc.js"></script>
+  <script src="<?php echo AppUrl;?>assets/js/settings.html"></script>
+  <script src="<?php echo AppUrl;?>assets/js/todolist.html"></script>
+  <script src="<?php echo AppUrl;?>assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
 </head>
 <script>
 $(document).ready(function () {

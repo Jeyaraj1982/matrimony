@@ -120,7 +120,6 @@
                                                            "CreatedOn"                => date("Y-m-d H:i:s"),
                                                            "ReferedBy"                => $login[0]['FranchiseeID'],
                                                            "MemberPassword"           => $_POST['LoginPassword']));
-        //return "<script>location.href='http://nahami.online/sl/Dashboard/Member/CreateMember';</script>";
         if (sizeof($id)>0) {
                 return Response::returnSuccess("success",array("MemberCode"=>$_POST['MemberCode']));
             } else{

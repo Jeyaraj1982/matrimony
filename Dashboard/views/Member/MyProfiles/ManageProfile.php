@@ -87,7 +87,7 @@ box-shadow: 0 0 5px #e9e9e9 !important;
                   <div class="col-lg-12 grid-margin stretch-card bshadow" style="background:#fff;padding:90px;">
         <div class="card">
             <div class="card-body" style="text-align:center;font-family:'Roboto'">
-                <img src="http://nahami.online/sl/Dashboard/assets/images/noprofile.jpg"><Br>
+                <img src="<?php echo AppUrl;?>assets/images/noprofile.jpg"><Br>
                <div style="padding:30px;padding-top:10px;font-size:20px;color:#ccc;font-family:'Roboto'">There are no profiles</div> 
                 
                 <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a>

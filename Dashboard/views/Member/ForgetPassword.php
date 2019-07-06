@@ -15,7 +15,7 @@
                      $mail2->MemberForgetPassword(array("mailTo"     => $res[0]['EmailID'] ,
                                                         "MemberName" => $res[0]['MemberName'],
                                                         "code"       => $_SESSION['OTP']));
-                    header("Location:http://nahami.online/sl/Dashboard/views/Member/FpwdOTP.php");
+                    header("Location:".AppUrl."views/Member/FpwdOTP.php");
                 } else {
                      $status = "Couldn't process. account may be suspended";
                 }
@@ -28,20 +28,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Franchisee Login</title>
-  <link rel="stylesheet" href="http://nahami.online/sl/Dashboard/assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="http://nahami.online/sl/Dashboard/assets/vendors/iconfonts/puse-icons-feather/feather.css">
-  <link rel="stylesheet" href="http://nahami.online/sl/Dashboard/assets/vendors/css/vendor.bundle.base.css">
-  <link rel="stylesheet" href="http://nahami.online/sl/Dashboard/assets/vendors/css/vendor.bundle.addons.css">
-  <link rel="stylesheet" href="http://nahami.online/sl/Dashboard/assets/css/style.css">
-  <link rel="shortcut icon" href="http://nahami.online/sl/Dashboard/assets/images/favicon.png" />
-  <script src="http://nahami.online/sl/Dashboard/assets/vendors/js/vendor.bundle.base.js"></script>
-  <script src="http://nahami.online/sl/Dashboard/assets/vendors/js/vendor.bundle.addons.js"></script>
-  <script src="http://nahami.online/sl/Dashboard/assets/js/off-canvas.js"></script>
-  <script src="http://nahami.online/sl/Dashboard/assets/js/hoverable-collapse.html"></script>
-  <script src="http://nahami.online/sl/Dashboard/assets/js/misc.js"></script>
-  <script src="http://nahami.online/sl/Dashboard/assets/js/settings.html"></script>
-  <script src="http://nahami.online/sl/Dashboard/assets/js/todolist.html"></script>
-  <script src="http://nahami.online/sl/Dashboard/assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
+  <link rel="stylesheet" href="<?php echo AppUrl;?>assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="<?php echo AppUrl;?>assets/vendors/iconfonts/puse-icons-feather/feather.css">
+  <link rel="stylesheet" href="<?php echo AppUrl;?>assets/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="<?php echo AppUrl;?>assets/vendors/css/vendor.bundle.addons.css">
+  <link rel="stylesheet" href="<?php echo AppUrl;?>assets/css/style.css">
+  <link rel="shortcut icon" href="<?php echo AppUrl;?>assets/images/favicon.png" />
+  <script src="<?php echo AppUrl;?>assets/vendors/js/vendor.bundle.base.js"></script>
+  <script src="<?php echo AppUrl;?>assets/vendors/js/vendor.bundle.addons.js"></script>
+  <script src="<?php echo AppUrl;?>assets/js/off-canvas.js"></script>
+  <script src="<?php echo AppUrl;?>assets/js/hoverable-collapse.html"></script>
+  <script src="<?php echo AppUrl;?>assets/js/misc.js"></script>
+  <script src="<?php echo AppUrl;?>assets/js/settings.html"></script>
+  <script src="<?php echo AppUrl;?>assets/js/todolist.html"></script>
+  <script src="<?php echo AppUrl;?>assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
 </head>
 <script>
 $(document).ready(function () {

@@ -455,7 +455,7 @@ chart.render();
 
     
 <script>
-var API_URL = "http://nahami.online/sl/Webservice/webservice.php?LoginID=<?php echo $_Franchisee['LoginID'];?>&";
+var API_URL = "<?php echo WebServiceUrl;?>webservice.php?LoginID=<?php echo $_Franchisee['LoginID'];?>&";
      function VisitedWelcomeMsg() {
          $('#FranchiseeWelcome').modal('hide'); 
         $.ajax({
@@ -482,7 +482,7 @@ var API_URL = "http://nahami.online/sl/Webservice/webservice.php?LoginID=<?php e
                     );
     }
     function ChangeMobileNumberF() {
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html(preloader);
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Franchisee&a=ChangeMobileNumber", 
@@ -497,7 +497,7 @@ var API_URL = "http://nahami.online/sl/Webservice/webservice.php?LoginID=<?php e
         
         var param = $( "#"+frmid1).serialize();
         
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html(preloader);
         $('#myModal').modal('show'); 
         
         $.post(API_URL + "m=Franchisee&a=EmailVerificationForm", 
@@ -509,7 +509,7 @@ var API_URL = "http://nahami.online/sl/Webservice/webservice.php?LoginID=<?php e
     }  
     
     function ChangeEmailID() {
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html(preloader);
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Franchisee&a=ChangeEmailID", 
@@ -521,7 +521,7 @@ var API_URL = "http://nahami.online/sl/Webservice/webservice.php?LoginID=<?php e
     }
     
     function FCheckVerification() {
-        $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+        $('#Mobile_VerificationBody').html(preloader);
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Franchisee&a=CheckVerification", 
@@ -546,7 +546,7 @@ var API_URL = "http://nahami.online/sl/Webservice/webservice.php?LoginID=<?php e
          }
                          
          var param = $( "#"+frmid).serialize();
-         $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+         $('#Mobile_VerificationBody').html(preloader);
                     $.post(API_URL+"m=Franchisee&a=MobileNumberOTPVerification", 
                             param,
                             function(result2) {
@@ -564,7 +564,7 @@ var API_URL = "http://nahami.online/sl/Webservice/webservice.php?LoginID=<?php e
          }
          
          var param = $( "#"+frmid1).serialize();
-         $('#Mobile_VerificationBody').html("<div style='text-align:center;padding-top: 35%;'><img src='//nahami.online/sl/Dashboard/assets/images/loader.gif'>");
+         $('#Mobile_VerificationBody').html(preloader);
                     $.post(API_URL+"m=Franchisee&a=EmailOTPVerification", 
                             param,
                             function(result2) {
