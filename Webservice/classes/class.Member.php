@@ -227,7 +227,7 @@
              
              $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              
-             $sqlQry = " update `_tbl_members` set `MemberName`='".$_POST['MemberName']."',  `IsActive`='".$_POST['Status']."' ";
+             $sqlQry = " update `_tbl_members` set `MemberName`='".$_POST['MemberName']."'   ";
 
              if($Member[0]['IsMobileVerified']==0) {
                  $sqlQry .= ", MobileNumber='".$_POST['MobileNumber']."' " ;
@@ -460,7 +460,7 @@
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -476,7 +476,7 @@
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
                                     <h5 style="color: #777;line-height:20px;font-weight: 100;padding-top: 21px;">In order to protect the security of your account, we will send you a text message with a verification that you will need to enter the next screen</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppUrl.'assets/images/smallmobile.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumber()">Change</h4>
                             </div>
                             <div class="form-group">
@@ -507,7 +507,7 @@
              
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;">
-                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="CheckVerification()">Continue</a>
                        </div>';    
@@ -569,7 +569,7 @@
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -595,7 +595,7 @@
                                 <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppUrl.'assets/images/smallmobile.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9;font-size: 18px;">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'</h4>
                             </div>
                             <div class="form-group">
@@ -622,7 +622,7 @@
                  $sql = "update `_tbl_members` set `IsMobileVerified`='1', `MobileVerifiedOn`='".date("Y-m-d H:i:s")."' where `MemberID`='".$otpInfo[0]['MemberID']."'";
                  $mysql->execute($sql);  
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
                             <!--<h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="CheckVerification()">Continue</a> <h5>-->
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="location.href=location.href">Continue</a> <h5>
@@ -647,7 +647,7 @@
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -661,12 +661,12 @@
                                 <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;padding-top: 12%;">Please verify your email</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppUrl.'assets/images/emailicon.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/emailicon.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'&nbsp;&#65372&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
-                                    <div class="col-sm-12" style="text-align:center"><a  href="javascript:void(0)" onclick="EmailVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to Verify</a></div>
+                                    <div class="col-sm-12" style="text-align:center"><a  href="javascript:void(0)" onclick="EmailVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -691,7 +691,7 @@
              
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;">
-                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -755,7 +755,7 @@
              
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -794,7 +794,7 @@
                                     <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppUrl.'assets/images/emailicon.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/emailicon.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
                             </div>
                             <div class="form-group">
@@ -827,7 +827,7 @@
                                     <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                     <h4 style="text-align:center;color:#ada9a9">Please verify your email</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppUrl.'assets/images/emailicon.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/emailicon.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
                             </div>
                             <div class="form-group">
@@ -854,7 +854,7 @@
                  $sql = "update `_tbl_members` set `IsEmailVerified`='1', `EmailVerifiedOn`='".date("Y-m-d H:i:s")."' where `MemberID`='".$otpInfo[0]['MemberID']."'";
                  $mysql->execute($sql); 
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <p style="text-align:center"><a href="CreateProfile" class="btn btn-primary">Continue</a></p>
                             
@@ -1180,30 +1180,31 @@
          function UpdateNotification() {
              
              global $mysql,$loginInfo;
-             
-             $sqlQry="update _tbl_members set `SMSNotification`='".(($_POST['Sms']=="on") ? '1' : '0')."',`EmailNotification`='".(($_POST['Email']=="on")? '1':'0')."' where `MemberID`='".$loginInfo[0]['MemberID']."'";
-             $mysql->execute("update `_tbl_members` set `SMSNotification`='".(($_POST['Sms']=="on") ? '1' : '0')."',`EmailNotification`='".(($_POST['Email']=="on")? '1':'0')."' where `MemberID`='".$loginInfo[0]['MemberID']."'");
+             $sqlQry = "update `_tbl_members` set `SMSNotification`='".(($_POST['Sms']=="on") ? '1' : '0')."',`EmailNotification`='".(($_POST['Email']=="on")? '1':'0')."' where `MemberID`='".$loginInfo[0]['MemberID']."'";
+             $mysql->execute($sqlQry);
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
                                                              "ActivityType"   => 'Yournotificationupdated.',
                                                              "ActivityString" => 'Your notification updated.',
                                                              "SqlQuery"       => base64_encode($sqlQry),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s"))); 
-             return Response::returnSuccess("Notification updated successfully",$data[0]);
+             $Member=$mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
+             return Response::returnSuccess("Notifications are updated.",$Member[0]);
          }
          
          function UpdatePrivacy() {
              
              global $mysql,$loginInfo;
              $sqlQry="update `_tbl_members` set `PrivacyVerifiedMember`='".(($_POST['VerfiedMembers']=="on") ? '1' : '0')."',`PrivacyNonVerifiedMember`='".(($_POST['non-VerfiedMembers']=="on")? '1':'0')."' where `MemberID`='".$loginInfo[0]['MemberID']."'";
-             $mysql->execute("update `_tbl_members` set `PrivacyVerifiedMember`='".(($_POST['VerfiedMembers']=="on") ? '1' : '0')."',`PrivacyNonVerifiedMember`='".(($_POST['non-VerfiedMembers']=="on")? '1':'0')."' where `MemberID`='".$loginInfo[0]['MemberID']."'");
+             $mysql->execute($sqlQry);
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
                                                              "ActivityType"   => 'Yourprivacyupdated.',
                                                              "ActivityString" => 'Your privacy updated..',
                                                              "SqlQuery"       => base64_encode($sqlQry),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s"))); 
-             return Response::returnSuccess("Privacy updated successfully",$data[0]);
+             $Member=$mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
+             return Response::returnSuccess("Privacy information updated.",$Member[0]);
          }
          
          function EditDraftGeneralInformation() {

@@ -498,4 +498,16 @@
         sleep(3);
         header("Location:".$_GET['redirect']);
     }
+    
+    class J2JDashboard {
+        
+        function showSuccessMsg($message) {
+            return "<div style='border:1px solid #d5d5d5;background:#a5f296;color:green;padding:10px 20px;border-radius: 10px;margin-bottom: 20px;'>".$message."</div>";
+        }
+        
+        function showErrorMsg($message) {
+            return "<div style='border:1px solid #d5d5d5;background:#ff0000;color:green;padding:10px 20px;border-radius: 10px;margin-bottom: 20px;'>".$message."</div>";
+        }
+    }
+    $dashboard = new J2JDashboard();
 ?>

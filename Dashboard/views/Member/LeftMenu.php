@@ -134,7 +134,7 @@
             </div>
         </li>   
         
-        <li class="nav-item">
+       <!-- <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#others" aria-expanded="false" aria-controls="others">
               <i class="menu-icon mdi mdi-content-copy"></i>
               <span class="menu-title"  style="font-size:14px">Others</span>
@@ -147,7 +147,7 @@
                 </li>
               </ul>
             </div>
-        </li>        
+        </li>   -->                             
     </ul>
 </nav>
 
