@@ -226,7 +226,7 @@
         define("UserRole","Member");     
     } else {
         if (!(isset($_POST['login']))) {
-        echo "<script>alert('session expired. login again');location.href='../';</script>";
+        echo "<script>alert('session expired. login again');location.href='".DomainName."';</script>";
         }
     }
      
@@ -489,14 +489,15 @@
         if (isset($_Franchisee['LoginID'])) {
             $loginID = $_Franchisee['LoginID'];
         } else if (isset($_Member['LoginID'])) {
-            $response = $webservice->getData("Member","MemberLogout");
+            $response = $webservice->getData("Member","Logout");
         } else {
             $loginID = $_Admin['LoginID'];
         }
         unset($_SESSION);
         session_destroy();
         sleep(3);
-        header("Location:".$_GET['redirect']);
+        //header("Location:".$_GET['redirect']);
+        header("Location:".DomainName);
     }
     
     class J2JDashboard {

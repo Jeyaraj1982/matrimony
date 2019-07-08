@@ -51,6 +51,9 @@
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="PartnersExpectation") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                            <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/PartnersExpectation/". $_GET['Code'].".htm");?>" class="Notification" style="text-decoration:none"><span>Partner's Expectation</span></a>
                                         </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="HoroscopeDetails") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                           <img src="<?php echo SiteUrl?>assets/images/ticksquare.png">&nbsp;<a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyProfiles/Edit/HoroscopeDetails/". $_GET['Code'].".htm");?>" class="Notification" style="text-decoration:none"><span>Horoscope Details</span></a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

@@ -48,12 +48,16 @@
                             "MODE"               => "select * from `_tbl_master_codemaster` Where `HardCode`='MODE'".$filter,
                             
                              
-                            "StarName"      => "select * from `_tbl_master_codemaster` Where `HardCode`='STARNAMES'".$filter,
-                            "Secure"        => "select * from `_tbl_master_codemaster` Where `HardCode`='SECURE'".$filter,
+                            "STARNAMES"      => "select * from `_tbl_master_codemaster` Where `HardCode`='STARNAMES'".$filter,
+                            "MONSIGNS"      => "select * from `_tbl_master_codemaster` Where `HardCode`='MONSIGNS'".$filter,
+                            "LAKANAM"      => "select * from `_tbl_master_codemaster` Where `HardCode`='LAKANAM'".$filter,
+                            "EDUCATETITLES" => "select * from `_tbl_master_codemaster` Where `HardCode`='EDUCATETITLES'".$filter,
                             
                             "DistrictName"  => "select * from `_tbl_master_codemaster` Where `HardCode`='DISTNAMES'".$filter,
-                            "AccountType"   => "select * from `_tbl_master_codemaster` Where `HardCode`='ACCOUNTTYPE'".$filter,
                             "Occupation"    => "select * from `_tbl_master_codemaster` Where `HardCode`='OCCUPATIONTYPES'".$filter,
+
+                            "Secure"        => "select * from `_tbl_master_codemaster` Where `HardCode`='SECURE'".$filter,
+                            "AccountType"   => "select * from `_tbl_master_codemaster` Where `HardCode`='ACCOUNTTYPE'".$filter,
                             "AvailableBankName"        => "select * from `_tbl_master_codemaster` Where `HardCode`='BANKNAMES'".$filter,
                             "RegisterAllowedCountries" => "select *, CONCAT(CodeValue,' (',ParamA,')') as str FROM `_tbl_master_codemaster`  WHERE `HardCode`='CONTNAMES' and ParamB='1'");
               return $mysql->select($quries[$Request]);

@@ -1,81 +1,9 @@
+
+
+
 <?php
-  /*  $ProfileFors = $mysql->select("select * from _tbl_master_codemaster Where HardCode='PROFILESIGNIN'");
-    $Sexs = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SEX'"); 
-    $MaritalStatuss = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARTIALSTATUS'");
-    $Languages = $mysql->select("select * from _tbl_master_codemaster Where HardCode='LANGUAGENAMES'");
-    $Religions = $mysql->select("select * from _tbl_master_codemaster Where HardCode='RELINAMES'");
-    $Castes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CASTNAMES'");
-    $Communitys = $mysql->select("select * from _tbl_master_codemaster Where HardCode='COMMUNITY'");
-    $Nationalitys = $mysql->select("");
-    
-    if (isset($_POST['BtnSaveProfile'])) {
-        
-      $ErrorCount =0;
-              print_r($_POST);
-      if ($_POST['ProfileFor']=="0") {
-            $ErrorCount++;
-            $ErrProfileFor = "Please select Profile for ";
-        }
-      if ($_POST['ProfileName']=="") {
-            $ErrorCount++;
-            $ErrProfileName = "Please Enter your Name ";
-        }
-      if ($_POST['DateofBirth']=="") {
-            $ErrorCount++;
-            $ErrDateofBirth = "Please Enter Date of Birth ";
-        }
-      if ($_POST['Sex']=="0") {
-            $ErrorCount++;
-            $ErrSex = "Please select Sex ";         
-        }
-      if ($_POST['MaritalStatus']=="0") {                                
-            $ErrorCount++;
-            $ErrMaritalStatus = "Please select Marital Status ";
-        }
-      if ($_POST['Language']=="0") {                                        
-            $ErrorCount++;
-            $ErrLanguage = "Please select Mother Tongue ";
-        }
-      if ($_POST['Religion']=="0") {                                
-            $ErrorCount++;
-            $ErrReligion = "Please select Religion";
-        }
-      if ($_POST['Caste']=="0") {                                
-            $ErrorCount++;
-            $ErrCaste = "Please select Caste";
-        }  
-        if ($_POST['Community']=="0") {                                
-            $ErrorCount++;
-            $ErrCommunity = "Please select Community";
-        }  
-        if ($_POST['Nationality']=="0") {                                
-            $ErrorCount++;
-            $ErrNationality = "Please select Nationality";
-        }  
-          
-        if ($ErrorCount==0) {
-        
-            $ProfileID = $mysql->insert("_tbl_Profile_Draft",array("ProfileFor"    => $_POST['ProfileFor'],
-                                                                   "ProfileName"   => $_POST['ProfileName'],
-                                                                   "DateofBirth"   => $_POST['DateofBirth'],        
-                                                                   "Sex"           => $_POST['Sex'],      
-                                                                   "MaritalStatus" => $_POST['MaritalStatus'],      
-                                                                   "MotherTongue"  => $_POST['Language'], 
-                                                                   "Religion"      => $_POST['Religion'],
-                                                                   "Caste"         => $_POST['Caste'],
-                                                                   "Community"     => $_POST['Community'],        
-                                                                   "CreatedOn"     => date("Y-m-d H:i:s"),        
-                                                                   "CreatedBy"     => $_Member['MemberID'],        
-                                                                   "Nationality"   => $_POST['Nationality']));
-            if ($ProfileID>0) {
-                echo "Successfully Added";
-                unset($_POST);
-                echo "<script>location.href='Edit/".$ProfileID.".htm?msg=1';</script>";
-            } else {
-                echo "Error occured. Couldn't save Franchise Details";
-            }
-        }
-    } */
+    $response = $webservice->GetMyDraftProfiles(); 
+    if (sizeof($response['data'])==0) {
 ?>
 <?php                   
   if (isset($_POST['BtnSaveProfile'])) {   
@@ -202,12 +130,28 @@
                 </div>
                    <div class="form-group row">
                     <div class="col-sm-3">
-                    <button type="submit" name="BtnSaveProfile" class="btn btn-primary" style="font-family:roboto">Save as draft</button></div>
+                    <button type="submit" name="BtnSaveProfile" class="btn btn-primary" style="font-family:roboto">Save &amp; Continue</button></div>
                 </div>
             </div>
         </div>
     </div>
 </form>
+<?php } if (sizeof($response['data'])>0){ ?>
+
+ <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Profile Information</h4>  
+                      <p class="card-description">
+                       Profile Already Created
+                      </p>
+                      <div class="form-group row">
+                            <div class="col-sm-6" style="text-align:center"><a href="ManageProfile">Manage Profile</a> </div>
+                      </div>
+              </div>
+        </div>
+ </div>
+<?php }?> 
 
 
 

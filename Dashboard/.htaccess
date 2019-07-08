@@ -11,6 +11,7 @@ RewriteRule ^MyProfiles/Edit/PhysicalInformation/(.*)\.htm$ ./index.php?Code=$1&
 RewriteRule ^MyProfiles/Edit/DocumentAttachment/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/DocumentAttachment
 RewriteRule ^MyProfiles/Edit/CommunicationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/CommunicationDetails
 RewriteRule ^MyProfiles/Edit/PartnersExpectation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/PartnersExpectation
+RewriteRule ^MyProfiles/Edit/HoroscopeDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/HoroscopeDetails
 RewriteRule ^MyProfiles/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/View
 RewriteRule ^Members/ViewMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewMember
 RewriteRule ^Members/EditMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/EditMember
