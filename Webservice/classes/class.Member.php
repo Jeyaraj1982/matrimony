@@ -1109,7 +1109,7 @@
          }
          
          function GetMyEmails() {
-             global $mysql;
+             global $mysql,$loginInfo;
              $MyEmails = $mysql->select("select * from `_tbl_logs_email` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("success",$MyEmails);
          }
@@ -1195,7 +1195,7 @@
          function UpdatePrivacy() {
              
              global $mysql,$loginInfo;
-             $sqlQry="update `_tbl_members` set `PrivacyVerifiedMember`='".(($_POST['VerfiedMembers']=="on") ? '1' : '0')."',`PrivacyNonVerifiedMember`='".(($_POST['non-VerfiedMembers']=="on")? '1':'0')."' where `MemberID`='".$loginInfo[0]['MemberID']."'";
+             $sqlQry="update `_tbl_members` set `PrivacyVerifiedMember`='".(($_POST['VerfiedMembers']=="on") ? '1' : '0')."',`PrivacyNonVerifiedMember`='".(($_POST['nonVerfiedMembers']=="on")? '1':'0')."' where `MemberID`='".$loginInfo[0]['MemberID']."'";
              $mysql->execute($sqlQry);
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
                                                              "ActivityType"   => 'Yourprivacyupdated.',

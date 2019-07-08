@@ -6,7 +6,7 @@
             return json_encode(array("status"=>"failed","message"=>$message));
         }
     
-        function returnSuccess($message,$data) {
+        function returnSuccess($message,$data=array()) {
             return json_encode(array("status"=>"success","message"=>$message,"data"=>$data));
         }
     }

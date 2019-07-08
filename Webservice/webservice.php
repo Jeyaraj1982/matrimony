@@ -94,7 +94,7 @@
         include_once("classes/class.Member.php");    
     }
     
-    $mysql   = new MySql("localhost","nahami_user","nahami_user","nahami_masterdb");
+    $mysql   = new MySql($db[0],$db[1],$db[2],$db[3]);
     $loginid = isset($_GET['LoginID']) ? $_GET['LoginID'] : "";
       
     if (isset($_GET['m']) && $_GET['m']=="Franchisee") {
