@@ -1,6 +1,10 @@
 <?php
-    $page="MyWallet";
-    $spage="RefillWallet";
+    $page  = "MyWallet";
+    $spage = "RefillWallet";
+    $sp    = "Bank";
+    $response  = $webservice->getData("Member","GetBankNames");
+    $BankNames = $response['data']['BankName'] ;
+    $Modes = $response['data']['Mode'] ;
 ?>
     <script>
         $(document).ready(function() {
@@ -25,13 +29,12 @@
             $('#ErrTxnDate').html("");
             $('#ErrTxnId').html("");
             
-           IsNonEmpty("TxnDate","ErrTxnDate","Please Enter Transaction Date");
-           if(IsNonEmpty("TxnId","ErrTxnId","Please Enter Transaction ID")){
-               IsAlphaNumeric("TxnId","ErrTxnId","Please Enter Alpha Numeric characters only")
-           }
+            IsNonEmpty("TxnDate","ErrTxnDate","Please Enter Transaction Date");
+            if(IsNonEmpty("TxnId","ErrTxnId","Please Enter Transaction ID")) {
+                IsAlphaNumeric("TxnId","ErrTxnId","Please Enter Alpha Numeric characters only");
+            }
 
             if (IsNonEmpty("Amount", "ErrAmount", "Please Enter Amount")) {
-
                 if (!(parseInt($('#Amount').val()) >= 500 && parseInt($('#Amount').val()) <= 10000)) {
                     $("#ErrAmount").html("Please enter above 500 and below 10000");
                     return false;
@@ -42,6 +45,7 @@
                     return false;
                 }
             }
+            
             if (document.form1.check.checked == false) {
                 $("#Errcheck").html("Please agree terms and conditions");
                 return false;
@@ -49,17 +53,28 @@
             $('#form1').submit();
         }
     </script>
-    <?php 
-     $response = $webservice->getData("Member","GetBankNames");
-            $BankNames = $response['data']['BankName'] ;
-            $Modes = $response['data']['Mode'] ;
-
-?>
-        <?php include_once("accounts_header.php");?>
-       <form method="post" action="" name="form1" id="form1">
-       <div class="col-sm-9" style="margin-top: -8px;">
+    <?php include_once("accounts_header.php"); ?>  
+    <?php if (sizeof($BankNames)==0)    { ?>
+        <div class="col-sm-9" style="margin-top: -8px;">  
         <h4 class="card-title" style="margin-bottom:5px">Refill Wallet Using Bank</h4>
         <span style="color:#999;">It's is safe transaction and gives refill amount.</span>
+            <span style="color:#666"><br><br><br><br><br>Currently bank transfer not allowed.<br>
+            Please contact support team.
+            <br><br><br><br><br><br><br><br><br>
+            </span>
+        </div> 
+    <?php } else { ?>
+    <div class="col-sm-9" style="margin-top: -8px;">  
+        <h4 class="card-title" style="margin-bottom:5px">Refill Wallet Using Bank</h4>
+        <span style="color:#999;">It's is safe transaction and gives refill amount.</span>
+        <?php
+        if (isset($_POST['saverequest'])) {
+            $response =$webservice->getData("Member","SaveBankRequest",$_POST);
+            echo  ($response['status']=="success") ? $dashboard->showSuccessMsg($response['message'])
+                                                   : $dashboard->showErrorMsg($response['message']);
+        }
+        ?>
+        <form method="post" action="" onsubmit="return submitamount()" name="form1" id="form1">
         <br>
         <br>
         <div class="form-group row">
@@ -69,7 +84,7 @@
             <div class="col-sm-7">
                 <select id="BankName" class="form-control" name="BankName" style="border: 1px solid #ccc;padding: 3px;padding-left: 3px;padding-left: 10px;">
                     <?php foreach($BankNames as $BankName) { ?>
-                        <option value="<?php echo $BankName['BankName'];?>" <?php echo ($_POST[ 'BankName']==$BankName[ 'BankName']) ? " selected='selected' " : "";?>>
+                        <option value="<?php echo $BankName['BankID'];?>" <?php echo ($_POST[ 'BankName']==$BankName[ 'BankName']) ? " selected='selected' " : "";?>>
                             <?php echo $BankName['BankName'];?>
                         </option>
                         <?php } ?>
@@ -90,17 +105,18 @@
             <div class="col-sm-5">Transaction Date<span id="star">*</span></div>
             <div class="col-sm-7">
                 <input type="date" class="form-control" name="TxnDate" id="TxnDate" style="border:1px solid #ccc;padding:3px;padding-left:10px;">
-                <span class="errorstring" id="ErrTxnDate"></span> </div>
+                <span class="errorstring" id="ErrTxnDate"></span> 
+            </div>
         </div>
         <div class="form-group row">
             <div class="col-sm-5"> Mode<span id="star">*</span></div>
             <div class="col-sm-7">
                 <select id="Mode" class="form-control" name="Mode" style="border: 1px solid #ccc;padding: 3px;padding-left: 3px;padding-left: 10px;">
                     <?php foreach($Modes as $Mode) { ?>
-                        <option value="<?php echo $Mode['CodeValue'];?>" <?php echo ($_POST[ 'MODE']==$Mode[ 'CodeValue']) ? " selected='selected' " : "";?>>
+                        <option value="<?php echo $Mode['SoftCode'];?>" <?php echo ($_POST[ 'MODE']==$Mode[ 'SoftCode']) ? " selected='selected' " : "";?>>
                             <?php echo $Mode['CodeValue'];?>
                         </option>
-                        <?php } ?>
+                    <?php } ?>
                 </select>
                 <span class="errorstring" id="ErrMode"><?php echo isset($ErrMode)? $ErrMode : "";?></span>
             </div>
@@ -112,18 +128,22 @@
                 <span class="errorstring" id="ErrTxnId"></span>
             </div>
         </div>
-        <input type="checkbox" name="check" id="check">&nbsp;
-        <label for="check" style="font-weight:normal">I understand terms of wallet udpate </label>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#condition">Lean more</a>
-        <Br>
-        <span class="errorstring" id="Errcheck"></span>
-        <br>
-        <div>
-            <a class="btn btn-primary" onclick="submitamount()" style="height:36px;color:white;cursor:pointer;font-family:roboto">Submit</a>
+        <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal">I understand terms of wallet udpate </label>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#condition">Lean more</a>
+        <Br><span class="errorstring" id="Errcheck"></span><br>
+        <div class="form-group row">
+            <div class="col-sm-3">
+            <button type="submit" class="btn btn-primary" name="saverequest" style="height:36px;color:white;cursor:pointer;font-family:roboto">Submit</button>
+            </div>
+        </div>
+        </form>
+        <div class="form-group row">
+            <div class="col-sm-9">
+            <a href="ListOfBankRequests" >List of Previous Requests</a>
+            </div>
         </div>
     </div>
     <div class="col-sm-4" style="border-left:1px solid #e6e6e6;;overflow: auto;">
-    <?php
-    foreach($BankNames as $BankName) { ?>
+        <?php foreach($BankNames as $BankName) { ?>
         <div class="form-group row">
             <div class="col-sm-12">
                 <?php echo $BankName['BankName'];?><br>
@@ -132,32 +152,26 @@
                 <?php echo $BankName['IFSCode'];?><br>
             </div>
         </div>
-         <hr>
+        <hr>
         <?php } ?>
     </div>
-    </div>
-    </div>
-    
-<div class="modal" id="condition" style="padding-top:177px;">
+    <div class="modal" id="condition" style="padding-top:177px;">
     <div class="modal-dialog" style="width: 367px;">
         <div class="modal-content">
             <div class="modal-body" style="padding:20px">
                     <div  style="height: 315px;">
                     <h5 style="text-align:center">Refill Wallet</h5>
                     <ol>
-                    <li>Indian Nationals & Citizens. </li>
-                    <li> Persons of Indian Origin (PIO). </li>
-                    <li> Non Resident Indians (NRI).</li>
-                    <li> Persons of Indian Descent or Indian Heritage  </li>
-                    <li> Not prohibited or prevented by any applicable law for the time being in force from entering into a valid marriage.</li>
-                    <li>Sharing of confidential and personal data with each other but not limited to sharing of bank details, etc.</li>
+                        <li>Minimum 4 hrs will taken to refill amount in your wallet.</li>
+                        <li>Sunday we are not process to refill wallet process</li>
+                        <li>Amount Only INR.</li>
+                        <li>Refund is not possible, only access our services.</li>
                    </ol>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                    
                 </div>
             </div>
         </div>
     </div>
 </div> 
-</form>
+<?php } ?>
 <?php include_once("accounts_footer.php");?>

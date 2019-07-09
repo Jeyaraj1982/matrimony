@@ -16,7 +16,7 @@
              
              $data=$mysql->select("select * from `_tbl_members` where (`MemberLogin`='".$_POST['UserName']."' or `EmailID`='".$_POST['UserName']."' or `MobileNumber`='".$_POST['UserName']."')");
              $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
-             $loginid = $mysql->insert("_tbl_member_login",array("LoginOn"       => date("Y-m-d H:i:s"),
+             $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"       => date("Y-m-d H:i:s"),
                                                                  "LoginFrom"     => "Web",
                                                                  "Device"        => $clientinfo['Device'],
                                                                  "MemberID"      => $data[0]['MemberID'],
@@ -30,7 +30,7 @@
                  
                  if ($data[0]['MemberPassword']==$_POST['Password']) {
                      
-                     $mysql->execute("update `_tbl_member_login` set `LoginStatus`='1' where `LoginID`='".$loginid."'");
+                     $mysql->execute("update `_tbl_logs_logins` set `LoginStatus`='1' where `LoginID`='".$loginid."'");
                  
                      if ($data[0]['IsActive']==1) {
                          
@@ -55,13 +55,13 @@
          
          function Logout() {
              global $mysql,$loginInfo;
-             $mysql->execute("update `_tbl_member_login` set `UserLogout`='".date("Y-m-d H:i:s")."' where `LoginID`='".$loginInfo[0]['LoginID']."'") ;
+             $mysql->execute("update `_tbl_logs_logins` set `UserLogout`='".date("Y-m-d H:i:s")."' where `LoginID`='".$loginInfo[0]['LoginID']."'") ;
              return Response::returnSuccess("success",array()); 
          }
                                                                                     
          function GetLoginHistory() {
              global $mysql,$loginInfo;
-             $LoginHistory = $mysql->select("select * from `_tbl_member_login` where `MemberID`='".$loginInfo[0]['MemberID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
+             $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$loginInfo[0]['MemberID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
                 return Response::returnSuccess("success",$LoginHistory);
          }
            
@@ -116,7 +116,7 @@
                                                        "CreatedOn"      => date("Y-m-d H:i:s"))); 
              $data = $mysql->select("select * from `_tbl_members` where `MemberID`='".$id."'");
              
-             $loginid = $mysql->insert("_tbl_member_login",array("LoginOn"  => date("Y-m-d H:i:s"),
+             $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"  => date("Y-m-d H:i:s"),
                                                                  "MemberID" => $data[0]['MemberID']));
                                                                  
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='NewMemberCreated'");
@@ -457,7 +457,7 @@
              
              global $mysql;
              
-             $login = $mysql->select("Select * from `_tbl_member_login` where `LoginID`='".$loginid."'");
+             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
              
              if (sizeof($login)==0) {
                  return "Invalid request. Please login again.";
@@ -503,7 +503,7 @@
              
              global $mysql;
              
-             $login = $mysql->select("Select * from `_tbl_member_login` where `LoginID`='".$loginid."'");
+             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
              
              if (sizeof($login)==0) {
                  return "Invalid request. Please login again.";
@@ -557,7 +557,7 @@
                  $loginid = $_GET['LoginID'];
              }
              global $mysql;
-             $login = $mysql->select("Select * from `_tbl_member_login` where `LoginID`='".$loginid."'");
+             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
              if (sizeof($login)==0) {
                  return "Invalid request. Please login again.";
              }
@@ -645,7 +645,7 @@
              }
              
              global $mysql;
-             $login = $mysql->select("Select * from `_tbl_member_login` where `LoginID`='".$loginid."'");
+             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
              if (sizeof($login)==0) {
                  return "Invalid request. Please login again.";
              }
@@ -688,7 +688,7 @@
              
              global $mysql;
              
-             $login = $mysql->select("Select * from `_tbl_member_login` where `LoginID`='".$loginid."'");
+             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
              if (sizeof($login)==0) {
                  return "Invalid request. Please login again.";
              }
@@ -738,8 +738,7 @@
              }
              
              global $mysql;
-             
-             $login = $mysql->select("Select * from `_tbl_member_login` where `LoginID`='".$loginid."'");
+             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
              
              if (sizeof($login)==0) {
                  return "Invalid request. Please login again.";
@@ -753,7 +752,6 @@
                  if (sizeof($duplicate)>0) {
                      return $this->ChangeEmailID("Email already in use.",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']); 
                  }
-
                  $mysql->execute("update `_tbl_members` set `EmailID`='".$_POST['new_email']."' where `MemberID`='".$login[0]['MemberID']."'");
              }
              
@@ -1316,7 +1314,31 @@
                                                             `LakanamCode`   = '".$_POST['Lakanam']."',
                                                             `Lakanam`       = '".$Lakanam[0]['CodeValue']."',
                                                             `RasiNameCode`  = '".$_POST['RasiName']."',
-                                                            `RasiName`      = '".$RasiName[0]['CodeValue']."'where  `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'";
+                                                            `RasiName`      = '".$RasiName[0]['CodeValue']."',
+                                                            `R1`            = '".$_POST['RA1']."',
+                                                            `R2`            = '".$_POST['RA2']."',
+                                                            `R3`            = '".$_POST['RA3']."',
+                                                            `R4`            = '".$_POST['RA4']."',
+                                                            `R5`            = '".$_POST['RB1']."',
+                                                            `R8`            = '".$_POST['RB4']."',
+                                                            `R9`            = '".$_POST['RC1']."',
+                                                            `R12`            = '".$_POST['RC4']."',
+                                                            `R13`            = '".$_POST['RD1']."',
+                                                            `R14`            = '".$_POST['RD2']."',
+                                                            `R15`            = '".$_POST['RD3']."',
+                                                            `R16`            = '".$_POST['RD4']."',
+                                                            `A1`            = '".$_POST['A1']."',
+                                                            `A2`            = '".$_POST['A2']."',
+                                                            `A3`            = '".$_POST['A3']."',
+                                                            `A4`            = '".$_POST['A4']."',
+                                                            `A5`            = '".$_POST['A5']."',
+                                                            `A8`            = '".$_POST['A8']."',
+                                                            `A9`            = '".$_POST['A9']."',
+                                                            `A12`            = '".$_POST['A12']."',
+                                                            `A13`            = '".$_POST['A13']."',
+                                                            `A14`            = '".$_POST['A14']."',
+                                                            `A15`            = '".$_POST['A15']."',
+                                                            `A16`            = '".$_POST['A16']."' where  `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'";
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
                                                              "ActivityType"   => 'HoroscopeDetailsUpdated.',
@@ -1345,7 +1367,7 @@
          
          function GetBankNames() {
              global $mysql,$loginInfo;
-             $BankNames = $mysql->select("select * from  `_tbl_settings_bankdetails`");                    
+             $BankNames = $mysql->select("select * from  `_tbl_settings_bankdetails` where `IsActive`='1'");                    
              return Response::returnSuccess("success",array("BankName" => $BankNames,
                                                             "Mode"     => CodeMaster::getData('MODE')));
          }
@@ -1355,11 +1377,70 @@
              $mysql->execute("update `_tbl_members` set `IsDeleted`='1', `DeletedOn`='".date("Y-m-d H:i:s")."'  where  `MemberID`='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("successfully",array());
          }
-     }
-     
-     function PartnerExpectation() {
+         function SaveBankRequest() {
              
-             global $mysql,$loginInfo;    
-             return Response::returnSuccess("success",array());
+             global $mysql,$loginInfo;
+             $BankNames = $mysql->select("select * from  `_tbl_settings_bankdetails` where BankID='".$_POST['BankName']."'"); 
+             $TransferMode= CodeMaster::getData("MODE",$_POST['Mode']); 
+             $id =  $mysql->insert("_tbl_wallet_bankrequests",array("RequestedOn" => date("Y-m-d H:i:s"),
+                                                              "MemberID"          => $loginInfo[0]['MemberID'],
+                                                              "BankCode"          => $BankNames[0]['BankCode'],        
+                                                              "BankName"          => $BankNames[0]['BankName'],      
+                                                              "AccountName"       => $BankNames[0]['AccountName'],      
+                                                              "AccountNumber"     => $BankNames[0]['AccountNumber'],      
+                                                              "IFSCode"           => $BankNames[0]['IFSCode'],      
+                                                              "RefillAmount"      => $_POST['Amount'],      
+                                                              "TransferedOn"      => date("Y-m-d H:i:s"),
+                                                              "TransferModeCode"  =>  $TransferMode[0]['SoftCode'],
+                                                              "TransferMode"      =>  $TransferMode[0]['CodeValue'],
+                                                              "TransactionID"      =>  $_POST['TxnId']));
+             if (sizeof($id)>0) {
+                 return Response::returnSuccess("success",array());
+             } else{
+                 return Response::returnError("Access denied. Please contact support");   
+             }
          }
-?> 
+         function SavePayPalRequest() {
+             
+             global $mysql,$loginInfo;
+             $PayPal = $mysql->select("select * from  `_tbl_settings_paypal` where `IsActive`='1'"); 
+             $id =  $mysql->insert("_tbl_wallet_paypalrequests",array("TransactionOn" => date("Y-m-d H:i:s"),
+                                                                      "MemberID"           => $loginInfo[0]['MemberID'],
+                                                                      "PayPalCode"         => $PayPal[0]['PaypalCode'],        
+                                                                      "PayPalName"         => $PayPal[0]['PaypalName'],      
+                                                                      "PaypalAccountEmail" => $PayPal[0]['PaypalEmailID'],      
+                                                                      "Amount"             => $_POST['Amount']));
+             if (sizeof($id)>0) {
+                 return Response::returnSuccess("success",array("PaypalID" =>$id,"PaypalAccount" =>$PayPal[0]['PaypalEmailID']));
+             } else{
+                 return Response::returnError("Access denied. Please contact support");   
+             }
+         }
+         function GetListOfPreviousBankRequests() {
+             global $mysql,$loginInfo;
+             return Response::returnSuccess("success",$mysql->select("select * from  `_tbl_wallet_bankrequests` where `MemberID`='". $loginInfo[0]['MemberID']."' order by `ReqID` DESC "));
+         }
+         function GetListOfPreviousPaypalRequests() {
+             global $mysql,$loginInfo;
+             $Paypal = $mysql->select("select * from  `_tbl_wallet_paypalrequests` where `MemberID`='". $loginInfo[0]['MemberID']."' order by `PaypalID` DESC ");                    
+             return Response::returnSuccess("success",$Paypal);
+         }
+         function GetViewPaypalRequests() {
+             global $mysql,$loginInfo;
+             $Paypal = $mysql->select("select * from  `_tbl_wallet_paypalrequests` where `MemberID`='". $loginInfo[0]['MemberID']."' and `PaypalID`='".$_POST['Code']."'");                    
+             return Response::returnSuccess("success",$Paypal[0]);
+         }
+         function GetViewBankRequests() {
+             global $mysql,$loginInfo;
+             $Paypal = $mysql->select("select * from  `_tbl_wallet_bankrequests` where `MemberID`='". $loginInfo[0]['MemberID']."' and `ReqID`='".$_POST['Code']."'");                    
+             return Response::returnSuccess("success",$Paypal[0]);
+         }
+         
+         function IsPaypalTransferAllowed() {
+             global $mysql,$loginInfo;
+              $paypal = $mysql->select("select * from  `_tbl_settings_paypal` where `IsActive`='1'");   
+              
+             return Response::returnSuccess("success",array("IsAllowed"=>sizeof($paypal))); 
+         }
+     }
+?>  

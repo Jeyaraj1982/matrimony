@@ -29,6 +29,7 @@
                 <div class="collapse" id="manageprofiles">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Requested");?>">Requested</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Drafted");?>">Drafted</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Published");?>">Published</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Expired");?>">Expired</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Rejected");?>">Rejected</a></li>
@@ -81,8 +82,9 @@
                 </a>
                 <div class="collapse" id="requests">
                     <ul class="nav flex-column sub-menu">                             
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ViewRequests");?>">View Requests</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ManageMemberWallet");?>">Member Wallet Refill Request</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ViewBankRequests");?>">Member Wallet Bank Requests</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ViewPaypalRequests");?>">Member Wallet Paypal Request</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ViewDocumentsVerification");?>">Member Document Verification Request</a></li>
                     </ul>
                 </div>
             </li>
@@ -197,8 +199,8 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Logs/SMSLog");?>">SMS Log</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Logs/EmailLog");?>">Email Log</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Logs/LoginLog");?>">Login Log</a></li>
-                       </ul>
+                    </ul>
                 </div>
             </li>
         </ul>
-    </nav>
+    </nav> 

@@ -223,7 +223,7 @@
     } else if (isset($_SESSION['MemberDetails']) && ($_SESSION['MemberDetails']['MemberID']>0)) {
         $_Member = $_SESSION['MemberDetails'];
         $loginID = $_Member['LoginID'];
-        define("UserRole","Member");     
+        define("UserRole","Member");
     } else {
         if (!(isset($_POST['login']))) {
         echo "<script>alert('session expired. login again');location.href='".DomainName."';</script>";

@@ -34,6 +34,12 @@
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 " style="<?php echo ($spage=="RefillWallet") ? ' font-weight:bold; ':'';?>;padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyAccounts/RefillWallet");?>" class="Notification" style="text-decoration:none;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Refill Wallet</span></a>
                                         </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 " style="<?php echo ($spage=="RefillWallet" && $sp=="Bank") ? '  background:#e3eafc;color:#333':'';?>;padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyAccounts/RefillBank");?>" class="Notification" style="text-decoration:none;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Using Bank</span></a>
+                                        </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 " style="<?php echo ($spage=="RefillWallet" && $sp=="Paypal") ? ' background:#e3eafc;color:#333':'';?>;padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyAccounts/RefillPaypal");?>" class="Notification" style="text-decoration:none;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Using Paypal</span></a>
+                                        </li>
                                         <?php } ?>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="MyTransactions") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MyAccounts/MyTransactions");?>" class="Notification" style="text-decoration:none"><span>My Transactions</span></a>

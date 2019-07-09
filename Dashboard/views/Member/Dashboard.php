@@ -15,7 +15,7 @@
         #verifybtn:hover{background:#149dc9;}
         input:focus{border:1px solid #ccc;}
         #errormsg{text-align:center;color:red;padding-bottom:5px;padding-top:5px;}
-        #resCon_a002 a:hover{color: blue;}
+        #resCon_a002 a:hover{color: #337ab7;}
     </style>                                                 
     <script>
         function myFunction() {
@@ -43,7 +43,7 @@
                     <div id="resCon_a002" style="background:white;width:97%;text-align:left">
                     <?php if (sizeof($response['data'])==0) {      ?>
                         <div style="text-align:center;">
-                            <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5>
+                            <h5 style="margin-top:84px;color: #aaa;">No Profiles Found<br><br> <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a> </h5>
                         </div>
                     <?php } else {?>
                     <?php if (sizeof($response['data'])>0) { ?>
@@ -52,7 +52,7 @@
                             <div class="col-sm-3" style="text-align:center">
                                 <img src="<?php echo SiteUrl?>assets/images/prof1.jpg" style="height: 159px;margin-bottom: -18px;">
                             </div>
-                            <div class="col-sm-9" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
+                            <div class="col-sm-9">
                                 <div style="border-bottom:1px solid #d7d7d7;width:100%;padding-bottom: 10px;font-size: 21px;color: #514444cc;text-align:left"> 
                                     <?php echo $Profile['ProfileName'];?>
                                 </div>

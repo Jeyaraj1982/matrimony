@@ -51,7 +51,7 @@ class Admin extends Master {
                                                            "CountryName"    => CodeMaster::getData('CountryName'),
                                                            "StateName"      => CodeMaster::getData('StateName'),
                                                            "DistrictName"   => CodeMaster::getData('DistrictName'),
-                                                           "BankName"       => CodeMaster::getData('AvailableBankName'),
+                                                           "BankName"       => CodeMaster::getData('BANKNAMES'),
                                                            "AccountType"    => CodeMaster::getData('AccountType'),
                                                            "Gender"         => CodeMaster::getData('Gender')));
         }
@@ -428,6 +428,15 @@ class Admin extends Master {
                 return Response::returnSuccess("success",$Franchisees);
                                                             
     }
+    function GetDraftedProfiles() {
+           global $mysql;    
+              $Profiles     = $mysql->select("select * from _tbl_Profile_Draft");
+              $MemberName   = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['CreatedBy']."'");
+              
+                return Response::returnSuccess("success",array("Profiles"   => $Profiles,
+                                                                "Member"    => $MemberName));
+                                                            
+    }
     
     function GetManageActiveFranchisee() {
            global $mysql;    
@@ -455,7 +464,7 @@ class Admin extends Master {
                                                        "CountryNames"        => CodeMaster::getData('CountryName'),
                                                        "StateName"          => CodeMaster::getData('StateName'),
                                                        "DistrictName"       => CodeMaster::getData('DistrictName'),
-                                                       "BankNames"          => CodeMaster::getData('AvailableBankName'),
+                                                       "BankNames"          => CodeMaster::getData('BANKNAMES'),
                                                        "AccountType"        => CodeMaster::getData('AccountType'),
                                                        "PrimaryBankAccount" => $PrimaryBankAccount[0],
                                                        "Gender"             => CodeMaster::getData('Gender')));
@@ -810,8 +819,9 @@ class Admin extends Master {
         if (sizeof($data)>0) {
             return Response::returnError("Account Number Already Exists");
         }
-        
-         $id = $mysql->insert("_tbl_settings_bankdetails",array("BankName"                => $_POST['BankName'],
+        $BankName = CodeMaster::getData("BANKNAMES",$_POST['BankName']);
+         $id = $mysql->insert("_tbl_settings_bankdetails",array("BankCode"             => $BankName[0]['SoftCode'],
+                                                                "BankName"             => $BankName[0]['CodeValue'],
                                                                 "AccountName"             => $_POST['AccountName'],
                                                                 "AccountNumber"           => $_POST['AccountNumber'],
                                                                 "IFSCode"                 => $_POST['IFSCode'] ));
@@ -823,14 +833,14 @@ class Admin extends Master {
             }
     }
     function GetBank(){
-            return Response::returnSuccess("success",array("BankName"    => CodeMaster::getData('AvailableBankName')));
+            return Response::returnSuccess("success",array("BankName"    => CodeMaster::getData('BANKNAMES')));
         }
     function BankDetailsForView() {
            global $mysql;    
         $Banks = $mysql->select("select * from _tbl_settings_bankdetails where BankID='".$_POST['Code']."'");
               
         return Response::returnSuccess("success",array("ViewBankDetails"    => $Banks[0],
-                                                       "BankName"           => CodeMaster::getData('AvailableBankName')));
+                                                       "BankName"           => CodeMaster::getData('BANKNAMES')));
     }
     function EditBankDetails(){
               global $mysql,$loginInfo;
@@ -860,7 +870,19 @@ class Admin extends Master {
          
          return Response::returnSuccess("success",array());
                                                             
-    }  
+    }
+     function GetListMemberBankRequests() {
+             global $mysql,$loginInfo;
+             return Response::returnSuccess("success",$mysql->select("select * from  `_tbl_wallet_bankrequests` order by `ReqID` DESC "));
+         }
+     function GetListMemberPaypalRequests() {
+             global $mysql,$loginInfo;
+             return Response::returnSuccess("success",$mysql->select("select * from  `_tbl_wallet_paypalrequests` order by `PaypalID` DESC "));
+         }
+     function GetListMemberDocuments() {
+             global $mysql,$loginInfo;
+             return Response::returnSuccess("success",$mysql->select("select * from  `_tbl_member_documents` order by `DocID` DESC "));
+         }
     }
 ?> 
 

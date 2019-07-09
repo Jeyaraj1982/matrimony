@@ -73,7 +73,7 @@ function SubmitNewBank() {
                           <div class="col-sm-9">
                           <select class="form-control" id="BankName"  name="BankName" >
                           <?php foreach($Bank['data']['BankName'] as $BankName) { ?>
-                                <option value="<?php echo $BankName['CodeValue'];?>" <?php echo ($BankName[ 'CodeValue']==$_POST[ 'BankName']) ? ' selected="selected" ' : '';?>>
+                                <option value="<?php echo $BankName['SoftCode'];?>" <?php echo ($BankName[ 'SoftCode']==$_POST[ 'BankName']) ? ' selected="selected" ' : '';?>>
                                     <?php echo $BankName['CodeValue'];?>
                                 </option>
                                 <?php } ?>
