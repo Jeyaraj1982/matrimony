@@ -151,11 +151,11 @@
              }
              
              $otp=rand(1000,9999);
-             $securitycode = $mysql->insert("_tbl_fp_securitycode",array("MemberId"     => $data[0]['MemberID'],
+             $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"     => $data[0]['MemberID'],
                                                                          "SecurityCode" => $otp,
-                                                                         "Requested"    => date("Y-m-d h:i:s"), 
-                                                                         "EmailId"      => $data[0]['EmailID'],
-                                                                         "IsCompleted"  => 0)) ; 
+                                                                         "messagedon"    => date("Y-m-d h:i:s"), 
+                                                                         "EmailTo"      => $data[0]['EmailID'],
+                                                                         "Type"      => "Forget Password")) ; 
            
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberPasswordForget'");
              $content  = str_replace("#MemberName#",$data[0]['MemberName'],$mContent[0]['Content']);
@@ -177,7 +177,7 @@
          function forgotPasswordOTPvalidation() {
              
              global $mysql;                  
-             $data = $mysql->select("Select * from `_tbl_fp_securitycode` where `id`='".$_POST['reqID']."' ");
+             $data = $mysql->select("Select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqID']."' ");
              if (sizeof($data)>0) {
                  if ($data[0]['SecurityCode']==$_POST['scode']) {
                     return Response::returnSuccess("email sent successfully",array("reqID"=>$_POST['reqID'],"email"=>$data[0]['EmailID'])); 
@@ -192,7 +192,7 @@
          function forgotPasswordchangePassword() {
              
              global $mysql;
-             $data = $mysql->select("Select * from `_tbl_fp_securitycode` where `id`='".$_POST['reqID']."' ");
+             $data = $mysql->select("Select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqID']."' ");
              
              if (!(strlen(trim($_POST['newpassword']))>=6)) {
                 return Response::returnError("Please enter valid new password must have 6 characters");
@@ -582,9 +582,10 @@
              } else {
                  if ($error=="") {
                      $otp=rand(1111,9999);
-                     $securitycode = $mysql->insert("_tbl_verification_otp",array("MemberID" =>$memberdata[0]['MemberID'],
+                     $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" =>$memberdata[0]['MemberID'],
                                                                                   "SMSTo" =>$memberdata[0]['MobileNumber'],
                                                                                   "SecurityCode" =>$otp,
+                                                                                  "Type" =>"Mobile Verification",
                                                                                   "messagedon"=>date("Y-m-d h:i:s"))) ; 
                      MobileSMSController::sendSMS($memberdata[0]['MobileNumber'],"Mobile Verification Security Code is ".$otp);
                  }  else {
@@ -623,7 +624,7 @@
              
              global $mysql;
              
-             $otpInfo = $mysql->select("select * from `_tbl_verification_otp` where RequestID='".$_POST['reqId']."'");
+             $otpInfo = $mysql->select("select * from `_tbl_verification_code` where RequestID='".$_POST['reqId']."'");
              if (strlen(trim($_POST['mobile_otp_2']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['mobile_otp_2']))  {
                  $sql = "update `_tbl_members` set `IsMobileVerified`='1', `MobileVerifiedOn`='".date("Y-m-d H:i:s")."' where `MemberID`='".$otpInfo[0]['MemberID']."'";
                  $mysql->execute($sql);  
@@ -782,9 +783,10 @@
                         return "Mailer Error: " . $mail->ErrorInfo.
                         "Error. unable to process your request.";
                      } else {
-                        $securitycode = $mysql->insert("_tbl_verification_otp",array("MemberID" =>$memberdata[0]['MemberID'],
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" =>$memberdata[0]['MemberID'],
                                                                                      "EmailTo" =>$memberdata[0]['EmailID'],
                                                                                      "SecurityCode" =>$otp,
+                                                                                     "Type" =>"EmailVerification",
                                                                                      "messagedon"=>date("Y-m-d h:i:s"))) ;
                         $formid = "frmMobileNoVerification_".rand(30,3000);
                         $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
@@ -853,7 +855,7 @@
          function EmailOTPVerification() {
              
              global $mysql;
-             $otpInfo = $mysql->select("select * from `_tbl_verification_otp` where `RequestID`='".$_POST['reqId']."'");
+             $otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
              if (strlen(trim($_POST['email_otp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['email_otp']))  {
                  $sql = "update `_tbl_members` set `IsEmailVerified`='1', `EmailVerifiedOn`='".date("Y-m-d H:i:s")."' where `MemberID`='".$otpInfo[0]['MemberID']."'";
                  $mysql->execute($sql); 

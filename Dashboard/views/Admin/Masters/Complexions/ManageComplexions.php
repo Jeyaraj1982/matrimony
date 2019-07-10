@@ -22,13 +22,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                             <?php $ComplexionNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='COMPLEXIONS'"); ?>
-                        <?php foreach($ComplexionNames as $ComplexionName) { ?>
+                          <?php $BloodGroups = $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($BloodGroups['data']['Complexion'] as $ComplexionName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($ComplexionName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $ComplexionName['SoftCode'];?></td>
                                 <td><?php echo $ComplexionName['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Complexions/Manage/Edit/". $ComplexionName['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/Complexions/Manage/View/". $ComplexionName['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td> 
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Complexions/Manage/Edit/". $ComplexionName['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/Complexions/Manage/View/". $ComplexionName['SoftCode'].".html");?>">View</a></td> 
                                 </tr>
                         <?php } ?>   
                             </tbody>

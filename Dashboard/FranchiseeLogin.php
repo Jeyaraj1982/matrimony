@@ -1,10 +1,11 @@
 <!DOCTYPE html>
     <html lang="en">
     <?php
-        include_once("config.php");
+        
         if (isset($_POST['btnsubmit'])) {
-            $response = $webservice->FLogin($_POST);
-            if ($response['status']=="success")  {
+            include_once("config.php");
+            $response = $webservice->getData("Franchisee","Login",$_POST); 
+                     if ($response['status']=="success")  {
                 $_SESSION['UserDetails'] = $response['data'];
                 echo "<script>location.href='".SiteUrl."';</script>";
             } else {
@@ -15,12 +16,12 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Franchisee Login :: <?php echo SITE_TITLE; ?></title>
-        <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
-        <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/style.css">
-        <script src="<?php echo SiteUrl?>assets/vendors/js/vendor.bundle.base.js"></script>
-        <script src="<?php echo SiteUrl?>assets/js/misc.js"></script>
-        <script src="<?php echo SiteUrl?>assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
+        <title>Franchisee Login</title>
+        <link rel="stylesheet" href="assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <script src="assets/vendors/js/vendor.bundle.base.js"></script>
+        <script src="assets/js/misc.js"></script>
+        <script src="assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
         <script>
         
             function SubmitLogin() {     
@@ -49,6 +50,7 @@
           <div class="col-lg-4 mx-auto">
             <div class="auto-form-wrapper">
               <form method="POST" action="" onsubmit="return SubmitLogin();">
+               <input type="hidden" name="login">
                 <div class="form-group">
                 <div align="center"><h5>Franchisee Login</h5></div>
                   <label class="label">Login Name</label>
@@ -63,8 +65,8 @@
                 <div class="form-group">
                   <button ttype="submit" class="btn btn-primary submit-btn btn-block" name="btnsubmit">Login</button>
                   <?php
-                      if (isset($status)) {
-                          echo'<span class="errorstring" id="server_error">'.$status.'</span>';
+                      if (isset($loginError)) {
+                          echo'<span class="errorstring" id="server_error">'.$loginError.'</span>';
                       }
                   ?>
                 </div>

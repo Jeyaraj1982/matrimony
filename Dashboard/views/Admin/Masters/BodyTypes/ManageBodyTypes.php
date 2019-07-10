@@ -22,13 +22,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                             <?php $BodyTypes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BODYTYPES'"); ?>
-                        <?php foreach($BodyTypes as $BodyType) { ?>
+                            <?php $BodyTypes = $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($BodyTypes['data']['BodyType'] as $BodyType) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($BodyType['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $BodyType['SoftCode'];?></td>
                                 <td><?php echo $BodyType['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/BodyTypes/Manage/Edit/". $BodyType['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/BodyTypes/Manage/View/". $BodyType['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td> 
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/BodyTypes/Manage/Edit/". $BodyType['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/BodyTypes/Manage/View/". $BodyType['SoftCode'].".html");?>">View</a></td> 
                                 </tr>
                         <?php } ?>   
                       </tbody>

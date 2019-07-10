@@ -23,13 +23,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $Heights = $mysql->select("select * from _tbl_master_codemaster Where HardCode='HEIGHTS'"); ?>
-                        <?php foreach($Heights as $Height) { ?>
+                        <?php $Heights = $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($Heights['data']['Height'] as $Height) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($Height['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $Height['SoftCode'];?></td>
                                 <td><?php echo $Height['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Heights/Manage/Edit/". $Height['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/Heights/Manage/View/". $Height['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Heights/Manage/Edit/". $Height['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/Heights/Manage/View/". $Height['SoftCode'].".html");?>">View</a></td>
                                 </tr>
                         <?php } ?> 
                      </tbody>

@@ -82,8 +82,8 @@
                 </a>
                 <div class="collapse" id="requests">
                     <ul class="nav flex-column sub-menu">                             
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ViewBankRequests");?>">Member Wallet Bank Requests</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ViewPaypalRequests");?>">Member Wallet Paypal Request</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ListOfAllBankRequests");?>">Member Wallet Bank Requests</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ListOfAllPaypalRequests");?>">Member Wallet Paypal Request</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ViewDocumentsVerification");?>">Member Document Verification Request</a></li>
                     </ul>
                 </div>

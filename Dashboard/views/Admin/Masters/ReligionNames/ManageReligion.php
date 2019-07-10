@@ -29,8 +29,8 @@
                           <th width="80px"></th>        
                         </tr>
                       </thead>            
-                      <tbody>  
-                        <?php $ReligionNames = $webservice->GetMastersManageDetails(); ?>
+                      <tbody>                      
+                        <?php $ReligionNames = $webservice->getData("Admin","GetMastersManageDetails"); ?>
                         <?php foreach($ReligionNames['data']['ReligionNames'] as $ReligionName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($ReligionName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $ReligionName['SoftCode'];?></td>

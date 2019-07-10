@@ -239,14 +239,6 @@
             $this->serverURL .= "LoginID=".$loginID."&"; 
         }
         
-        function Login($param) {
-            return json_decode($this->_callUrl("Login",$param),true);
-        }
-        
-        function FLogin($param) {
-            return json_decode($this->_callUrl("m=Franchisee&a=Login",$param),true);
-        }
-        
         function FranchiseeInfo($param) {
             return json_decode($this->_callUrl("m=Franchisee&a=GetMyProfile",$param),true);
         }

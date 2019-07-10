@@ -18,7 +18,7 @@
         
         function Login() {
             
-            global $mysql;  
+            global $mysql,$j2japplication;  
         
             if (!(strlen(trim($_POST['UserName']))>0)) {
                 return Response::returnError("Please enter username ");
@@ -31,10 +31,17 @@
             $data=$mysql->select("select * from _tbl_franchisees_staffs where LoginName='".$_POST['UserName']."' and LoginPassword='".$_POST['Password']."'") ;
             
             if (sizeof($data)>0) {
-                
-                $loginid = $mysql->insert("_tbl_franchisee_login",array("LoginOn"      => date("Y-m-d H:i:s"),
-                                                                        "FranchiseeID" => $data[0]['FranchiseeID'],
-                                                                        "StaffID" => $data[0]['PersonID']));
+                $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
+             $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"       => date("Y-m-d H:i:s"),
+                                                                 "LoginFrom"     => "Web",
+                                                                 "Device"        => $clientinfo['Device'],
+                                                                 "FranchiseeID"  => $data[0]['FranchiseeID'],
+                                                                 "LoginName"     => $_POST['UserName'],
+                                                                 "BrowserIP"     => $clientinfo['query'],
+                                                                 "CountryName"   => $clientinfo['country'],
+                                                                 "BrowserName"   => $clientinfo['UserAgent'],
+                                                                 "APIResponse"   => json_encode($clientinfo),
+                                                                 "LoginPassword" => $_POST['Password']));
                 $data[0]['LoginID']=$loginid;
                 
                 if ($data[0]['IsActive']==1) {

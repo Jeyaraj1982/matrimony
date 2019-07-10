@@ -22,13 +22,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                             <?php $BloodGroupNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BLOODGROUPS'"); ?>
-                        <?php foreach($BloodGroupNames as $BloodGroupName) { ?>
+                             <?php $BloodGroups = $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($BloodGroups['data']['BloodGroup'] as $BloodGroupName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($BloodGroupName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $BloodGroupName['SoftCode'];?></td>
                                 <td><?php echo $BloodGroupName['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/BloodGroups/Manage/Edit/". $BloodGroupName['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/BloodGroups/Manage/View/". $BloodGroupName['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td> 
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/BloodGroups/Manage/Edit/". $BloodGroupName['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/BloodGroups/Manage/View/". $BloodGroupName['SoftCode'].".html");?>">View</a></td> 
                                 </tr>
                         <?php } ?>   
                             </tbody>

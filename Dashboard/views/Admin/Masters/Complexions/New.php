@@ -1,34 +1,3 @@
-<?php
-    if (isset($_POST['BtnSaveComplexions'])) {
-        
-        $ErrorCount =0;
-            
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='COMPLEXIONS' and SoftCode='".trim($_POST['ComplexionCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrComplexionCode="Complexion Code Alreay Exists";    
-             echo $ErrComplexionCode;
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='COMPLEXIONS' and SoftCode='".trim($_POST['ComplexionName'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrComplexionName="Complexion Name Alreay Exists";    
-             echo $ErrComplexionName;
-             $ErrorCount++;
-        }
-        
-        if ($ErrorCount==0) {
-        $ComplexionsID = $mysql->insert("_tbl_master_codemaster",array("HardCode"   => "COMPLEXIONS",
-                                                                       "SoftCode"   => trim($_POST['ComplexionCode']),
-                                                                       "CodeValue"  => trim($_POST['ComplexionName'])));
-       if ($ComplexionsID>0) {
-            echo "Successfully Added";
-            unset($_POST);
-        } else {
-            echo "Error occured. Couldn't save Complexions";
-        }
-   }
-    }
-?>
 <script>
  function SubmitComplexions() {
                          $('#ErrComplexionCode').html("");
@@ -48,7 +17,23 @@
                  }
     
 </script>
-
+<?php                   
+  if (isset($_POST['BtnSaveComplexions'])) {   
+    $response = $webservice->getData("Admin","CreateComplexion",$_POST);
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    } 
+  $ComplexionCode = $webservice->GetMastersManageDetails(); 
+     $GetNextComplexionCode="";
+        if ($ComplexionCode['status']=="success") {
+            $GetNextComplexionCode  =$ComplexionCode['data']['ComplexionCode'];
+        }
+        {     
+?>
 <form method="post" action="" onsubmit="return SubmitComplexions();">
   <div class="main-panel">
        <div class="content-wrapper">
@@ -59,9 +44,9 @@
                              <h4 class="card-title">Create Complexions</h4>
                                  <form class="forms-sample">
                                         <div class="form-group row">
-                                                <label for="Complexion Code" class="col-sm-3 col-form-label"><small>Complexion Code<span id="star">*</span></small></label>
+                                                <label for="Complexion Code" class="col-sm-3 col-form-label">Complexion Code<span id="star">*</span></label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="ComplexionCode" name="ComplexionCode" maxlength="10" value="<?php echo (isset($_POST['ComplexionCode']) ? $_POST['ComplexionCode'] : GetNextNumber('COMPLEXIONS'));?>" placeholder="Complexion Code">
+                                                <input type="text" class="form-control" id="ComplexionCode" name="ComplexionCode" maxlength="10" value="<?php echo (isset($_POST['ComplexionCode']) ? $_POST['ComplexionCode'] : $GetNextComplexionCode);?>" placeholder="Complexion Code">
                                                 <span class="errorstring" id="ErrComplexionCode"><?php echo isset($ErrComplexionCode)? $ErrComplexionCode : "";?></span>
                                             </div>
                                         </div>
@@ -72,9 +57,12 @@
                                                 <span class="errorstring" id="ErrComplexionName"><?php echo isset($ErrComplexionName)? $ErrComplexionName : "";?></span>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-6">
-                                                <button type="submit" name="BtnSaveComplexions" id="BtnSaveComplexions"  class="btn btn-success mr-2">Save Complexion</button> </div>
+                                         <div class="form-group row">
+                                            <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
+                                         </div>
+                                         <div class="form-group row">
+                                            <div class="col-sm-4">
+                                                <button type="submit" name="BtnSaveComplexions" id="BtnSaveComplexions"  class="btn btn-primary mr-2">Save Complexion</button> </div>
                                            <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageComplexions"><small>List of Complexions</small> </a>  </div>
                                         </div>
                                  </form>
@@ -84,3 +72,4 @@
        </div>
   </div>
 </form>
+<?php }?>

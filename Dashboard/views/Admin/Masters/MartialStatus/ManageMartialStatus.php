@@ -22,13 +22,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $MartialStatuss = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MARTIALSTATUS'"); ?>
-                        <?php foreach($MartialStatuss as $MartialStatus) { ?>
+                       <?php $MaritalStatuss = $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($MaritalStatuss['data']['MaritalStatus'] as  $MartialStatus) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($MartialStatus['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $MartialStatus['SoftCode'];?></td>
                                 <td><?php echo $MartialStatus['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/MartialStatus/Manage/Edit/". $MartialStatus['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/MartialStatus/Manage/View/". $MartialStatus['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/MartialStatus/Manage/Edit/". $MartialStatus['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/MartialStatus/Manage/View/". $MartialStatus['SoftCode'].".html");?>">View</a></td>
                                 </tr>
                         <?php } ?>            
                       </tbody>

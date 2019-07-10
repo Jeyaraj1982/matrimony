@@ -69,11 +69,14 @@ $(document).ready(function () {
                           </div>
                         </div>
                         <div class="form-group row">
+                            <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
+                        </div>
+                        <div class="form-group row">
                         <div class="col-sm-3">
                        <button type="submit" name="BtnReligionName" id="BtnReligionName"  class="btn btn-primary mr-2">Save Religion Name</button> </div>
                        <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageReligion"><small>List of Religion Names</small> </a>  </div>
                        </div>
-                       <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
+                       
                         </form>
                     </div>
                   </div>

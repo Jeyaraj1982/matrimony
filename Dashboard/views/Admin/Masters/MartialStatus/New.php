@@ -1,40 +1,3 @@
-<?php
-    if (isset($_POST['BtnMartialStatus'])) {
-        
-        $ErrorCount =0;
-            
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='MARTIALSTATUS' and CodeValue='".trim($_POST['MartialStatus'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrMartialStatus="Marital Status Alreay Exists";    
-             echo $ErrMartialStatus;
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='MARTIALSTATUS' and SoftCode='".trim($_POST['MartialStatusCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrMartialStatusCode="Marital Status Code Alreay Exists";    
-             echo $ErrMartialStatusCode;
-             $ErrorCount++;
-        }
-        
-        if ($ErrorCount==0) {
-        $MartialStatusID = $mysql->insert("_tbl_master_codemaster",array("HardCode"   => "MARTIALSTATUS",
-                                                                         "SoftCode"   => $_POST['MartialStatusCode'],
-                                                                         "CodeValue"  => $_POST['MartialStatus']));
-                                                                  
-        if ($MartialStatusID>0) {
-            echo "Successfully Added";
-            unset($_POST);
-        } else {
-            echo "Error occured. Couldn't save Martial Status";
-        }
-    
-    }
-    
-}    
-    
-    
-?>
 <script>
  function SubmitMarital() {
                          $('#ErrMartialStatusCode').html("");
@@ -55,7 +18,23 @@
                  }
     
 </script>
-
+<?php                   
+  if (isset($_POST['BtnMartialStatus'])) {   
+    $response = $webservice->getData("Admin","CreateMaritalStatus",$_POST);
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    } 
+  $MaritalStatusCode = $webservice->GetMastersManageDetails(); 
+     $GetNextMaritalStatusCode="";
+        if ($MaritalStatusCode['status']=="success") {
+            $GetNextMaritalStatusCode  =$MaritalStatusCode['data']['MaritalStatusCode'];
+        }
+        {     
+?>
 <form method="post" action="" onsubmit="return SubmitMarital();">
         <div class="main-panel">
         <div class="content-wrapper">
@@ -66,14 +45,14 @@
                       <h4 class="card-title">Create Marital Status</h4>
                       <form class="forms-sample">
                       <div class="form-group row">
-                          <label for="MartialStatusCode" class="col-sm-3 col-form-label"><small>Marital Status Code<span id="star">*</span> </small></label>
+                          <label for="MartialStatusCode" class="col-sm-3 col-form-label">Marital Status Code<span id="star">*</span> </label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" id="MartialStatusCode" name="MartialStatusCode" maxlength="10" value="<?php echo isset($_POST['MartialStatusCode']) ? $_POST['MartialStatusCode'] : GetNextNumber('MARTIALSTATUS');?>" placeholder="MartialStatusCode">
+                            <input type="text" class="form-control" id="MartialStatusCode" name="MartialStatusCode" maxlength="10" value="<?php echo isset($_POST['MartialStatusCode']) ? $_POST['MartialStatusCode'] : $GetNextMaritalStatusCode;?>" placeholder="MartialStatusCode">
                             <span class="errorstring" id="ErrMartialStatusCode"><?php echo isset($ErrMartialStatusCode)? $ErrMartialStatusCode : "";?></span>
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label for="Martial Status" class="col-sm-3 col-form-label"><small>Marital Status<span id="star">*</span></small></label>
+                          <label for="Martial Status" class="col-sm-3 col-form-label">Marital Status<span id="star">*</span></label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" id="MartialStatus" name="MartialStatus" maxlength="100" value="<?php echo (isset($_POST['MartialStatus']) ? $_POST['MartialStatus'] : "");?>" placeholder="Martial Status">
                             <span class="errorstring" id="ErrMartialStatus"><?php echo isset($ErrMartialStatus)? $ErrMartialStatus : "";?></span>
@@ -81,13 +60,14 @@
                         </div>      
                         <div class="form-group row">
                         <div class="col-sm-6">
-                       <button type="submit" name="BtnMartialStatus" id="BtnMartialStatus"  class="btn btn-success mr-2">Save Marital Status</button> </div>
-                       <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageMartialStatus"><small>List of Marital Status</small> </a>  </div>
+                       <button type="submit" name="BtnMartialStatus" id="BtnMartialStatus"  class="btn btn-primary mr-2">Save Marital Status</button> </div>
+                       <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageMartialStatus">List of Marital Status</a>  </div>
                        </div>
+                       <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
                       </form>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-</form>
+</form><?php }?>

@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php
+<?php  
         if (isset($_POST['btnsubmit'])) {
             include_once("config.php");
-            $response = $webservice->getData("Admin","AdminLogin",$_POST);
+            $response = $webservice->getData("Admin","AdminLogin",$_POST);           
             if ($response['status']=="success")  {
                 $_SESSION['AdminDetails'] = $response['data'];
-                echo "<script>location.href='".SiteUrl."';</script>";
+                echo "<script>location.href='".SiteUrl."';</script>";   
             } else {
                 $loginError=$response['message'];
             }
-        }
+        }             
     ?>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Admin Login</title>
-  <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/style.css">
-  <script src="<?php echo SiteUrl?>assets/vendors/js/vendor.bundle.base.js"></script>
-  <script src="<?php echo SiteUrl?>assets/js/misc.js"></script>
-  <script src="<?php echo SiteUrl?>assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
+  <link rel="stylesheet" href="assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/vendors/js/vendor.bundle.base.js"></script>
+  <script src="assets/js/misc.js"></script>
+  <script src="assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
 </head>
 <script>
 $(document).ready(function () {
@@ -33,7 +33,7 @@ $("#Password").blur(function () {
 });
  function SubmitLogin() { 
                          ErrorCount=0;       
-                         $('#ErrUserName').html("");
+                         $('#ErrUserName').html("");            
                          $('#ErrPassword').html("");
                          $('#server_error').html("");
                        IsNonEmpty("UserName","ErrUserName","Please Enter Login Name");

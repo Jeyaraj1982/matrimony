@@ -22,13 +22,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $DietsNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='DIETS'"); ?>
-                        <?php foreach($DietsNames as $DietsName) { ?>
+                        <?php $DietsNames = $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($DietsNames['data']['Diet'] as $DietsName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($DietsName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $DietsName['SoftCode'];?></td>
                                 <td><?php echo $DietsName['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Diets/Manage/Edit/". $DietsName['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/Diets/Manage/View/". $DietsName['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Diets/Manage/Edit/". $DietsName['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/Diets/Manage/View/". $DietsName['SoftCode'].".html");?>">View</a></td>
                                 </tr>
                         <?php } ?> 
                  </tbody>

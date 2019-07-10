@@ -4,7 +4,7 @@ class Admin extends Master {
     
     function AdminLogin() {
             
-            global $mysql;  
+            global $mysql,$j2japplication;  
         
             if (!(strlen(trim($_POST['UserName']))>0)) {
                 return Response::returnError("Please enter username ");
@@ -18,8 +18,18 @@ class Admin extends Master {
             
             if (sizeof($data)>0) {
                 
-                $loginid = $mysql->insert("_tbl_admin_login",array("LoginOn"      => date("Y-m-d H:i:s"),
-                                                                   "AdminID" => $data[0]['AdminID']));
+                
+                $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
+             $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"       => date("Y-m-d H:i:s"),
+                                                                 "LoginFrom"     => "Web",
+                                                                 "Device"        => $clientinfo['Device'],
+                                                                 "AdminID"      => $data[0]['AdminID'],
+                                                                 "LoginName"     => $_POST['UserName'],
+                                                                 "BrowserIP"     => $clientinfo['query'],
+                                                                 "CountryName"   => $clientinfo['country'],
+                                                                 "BrowserName"   => $clientinfo['UserAgent'],
+                                                                 "APIResponse"   => json_encode($clientinfo),
+                                                                 "LoginPassword" => $_POST['Password']));
                 $data[0]['LoginID']=$loginid;
                 
                 if ($data[0]['IsActive']==1) {
@@ -29,7 +39,7 @@ class Admin extends Master {
                 }
                 
             } else {
-                return Response::returnError("Invalid username and password");
+                return Response::returnError("Invalid username and password"."select * from _tbl_admin where AdminLogin='".$_POST['UserName']."' and AdminPassword='".$_POST['Password']."'");
             }
         }
         
@@ -619,25 +629,37 @@ class Admin extends Master {
     function GetMastersManageDetails() {
            global $mysql;
             return Response::returnSuccess("success",array("ReligionCode"        => SeqMaster::GetNextCode('RELINAMES'),
-                                                           "ReligionNames"       => CodeMaster::getData('Religion'),
+                                                           "ReligionNames"       => CodeMaster::getData('RELINAMES'),
                                                            "CasteCode"           => SeqMaster::GetNextCode('CASTNAMES'),
-                                                           "CasteNames"          => CodeMaster::getData('Caste'),
+                                                           "CasteNames"          => CodeMaster::getData('CASTNAMES'),
                                                            "StarCode"            => SeqMaster::GetNextCode('STARNAMES'),
-                                                           "StarNames"           => CodeMaster::getData('StarName'),
+                                                           "StarNames"           => CodeMaster::getData('STARNAMES'),
                                                            "NationalityNameCode" => SeqMaster::GetNextCode('NATIONALNAMES'),
-                                                           "NationalityNames"    => CodeMaster::getData('Nationality'),
+                                                           "NationalityNames"    => CodeMaster::getData('NATIONALNAMES'),
                                                            "IncomeRangeCode"     => SeqMaster::GetNextCode('INCOMERANGE'),
-                                                           "IncomeRange"         => CodeMaster::getData('IncomeRange'),
+                                                           "IncomeRange"         => CodeMaster::getData('INCOMERANGE'),
                                                            "CountryCode"         => SeqMaster::GetNextCode('CONTNAMES'),
-                                                           "CountryName"         => CodeMaster::getData('CountryName'),
+                                                           "CountryName"         => CodeMaster::getData('CONTNAMES'),
                                                            "DistrictCode"        => SeqMaster::GetNextCode('DISTNAMES'),
-                                                           "DistrictName"        => CodeMaster::getData('DistrictName'),
+                                                           "DistrictName"        => CodeMaster::getData('DISTNAMES'),
                                                            "StateCode"           => SeqMaster::GetNextCode('STATNAMES'),
-                                                           "StateName"           => CodeMaster::getData('StateName'),
+                                                           "StateName"           => CodeMaster::getData('STATNAMES'),
                                                            "ProfileSignInForCode"=> SeqMaster::GetNextCode('PROFILESIGNIN'),
-                                                           "ProfileSignInFor"    => CodeMaster::getData('ProfileFor'),
+                                                           "ProfileSignInFor"    => CodeMaster::getData('PROFILESIGNIN'),
                                                            "LanguageNameCode"    => SeqMaster::GetNextCode('LANGUAGENAMES'),
-                                                           "LanguageName"        => CodeMaster::getData('Language')));    
+                                                           "LanguageName"        => CodeMaster::getData('LANGUAGENAMES'),
+                                                           "MaritalStatusCode"    => SeqMaster::GetNextCode('MARTIALSTATUS'),
+                                                           "MaritalStatus"        => CodeMaster::getData('MARTIALSTATUS'),
+                                                           "BloodGroupCode"    => SeqMaster::GetNextCode('BLOODGROUPS'),
+                                                           "BloodGroup"        => CodeMaster::getData('BLOODGROUPS'),
+                                                           "ComplexionCode"    => SeqMaster::GetNextCode('COMPLEXIONS'),
+                                                           "Complexion"        => CodeMaster::getData('COMPLEXIONS'),
+                                                           "BodyTypeCode"    => SeqMaster::GetNextCode('BODYTYPES'),
+                                                           "BodyType"        => CodeMaster::getData('BODYTYPES'),
+                                                           "DietCode"    => SeqMaster::GetNextCode('DIETS'),
+                                                           "Diet"        => CodeMaster::getData('DIETS'),
+                                                           "HeightCode"    => SeqMaster::GetNextCode('HEIGHTS'),
+                                                           "Height"        => CodeMaster::getData('HEIGHTS')));    
     }                                                                          
     
    
@@ -875,10 +897,131 @@ class Admin extends Master {
              global $mysql,$loginInfo;
              return Response::returnSuccess("success",$mysql->select("select * from  `_tbl_wallet_bankrequests` order by `ReqID` DESC "));
          }
-     function GetListMemberPaypalRequests() {
+         
+     function PaypalRequests() {
+             
              global $mysql,$loginInfo;
-             return Response::returnSuccess("success",$mysql->select("select * from  `_tbl_wallet_paypalrequests` order by `PaypalID` DESC "));
+             
+             $sql = "SELECT PaypalID,TransactionOn,Amount, 
+                            CASE
+                                WHEN   ((IsSuccess=0) AND (IsFailure=0)) THEN 'Pending'
+                                WHEN   ((IsSuccess=1) AND (IsFailure=0)) THEN 'Success'
+                                WHEN   ((IsSuccess=0) AND (IsFailure=1)) THEN 'Failure'
+                            END AS TxnStatus
+                     FROM _tbl_wallet_paypalrequests ";
+                     
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql." order by `PaypalID` DESC "));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Pending") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE IsSuccess='0' AND IsFailure='0'ORDER BY `PaypalID` DESC "));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Success") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE IsSuccess='1' AND IsFailure='0'ORDER BY `PaypalID` DESC "));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Failure") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE IsSuccess='0' AND IsFailure='1'ORDER BY `PaypalID` DESC "));
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Report") {
+                 
+                 $fromDate = $_POST['FromDate'];
+                 $toDate   = $_POST['ToDate'];
+                 
+                 switch ($_POST['filter']) {
+                     
+                     case 'All'     : $sql .= " where ( date(`TransactionOn`)>=date('".$fromDate."') and date(`TransactionOn`)<=date('".$toDate."'))";
+                                      break;
+                     case 'Pending' : $sql .= "  where `IsSuccess`='0' and `IsFailure`='0' and ( date(`TransactionOn`)>=date('".$fromDate."') and date(`TransactionOn`)<=date('".$toDate."'))   ";
+                                      break;
+                     case 'Success' : $sql .= "  where `IsSuccess`='1' and `IsFailure`='0' and ( date(`TransactionOn`)>=date('".$fromDate."') and date(`TransactionOn`)<=date('".$toDate."'))   ";
+                                      break;
+                     case 'Failure' : $sql .= "  where `IsSuccess`='0' and `IsFailure`='1' and ( date(`TransactionOn`)>=date('".$fromDate."') and date(`TransactionOn`)<=date('".$toDate."'))   ";
+                                      break;
+                     default :  Response::returnSuccess("success",array());  
+                                  break; 
+                 }
+                 if (isset($_POST['MemberCode']) && strlen(trim($_POST['MemberCode']))>0 ) {
+                    $mem = $mysql->select("select * from _tbl_members where `MemberCode`='".$_POST['MemberCode']."'");
+                    if (sizeof($mem)>0) {
+                        $sql .=  ($_POST['filter']=="All")  ? " where `MemberID`='".$mem[0]['MemberID']."' "         
+                                                            : " and `MemberID`='".$mem[0]['MemberID']."' " ;
+                    } else {
+                       Response::returnSuccess("success",array());
+                    }
+                 }
+                 $sql .= "  order by `PaypalID` DESC ";
+                 
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             } 
+             //return error
          }
+         
+     function BankRequests() {
+             
+             global $mysql,$loginInfo;
+             
+             $sql = "SELECT ReqID,RequestedOn,BankName,RefillAmount,TransferedOn,TransferMode, 
+                            CASE
+                                WHEN   ((IsApproved=0) AND (IsRejected=0)) THEN 'Pending'
+                                WHEN   ((IsApproved=1) AND (IsRejected=0)) THEN 'Success'
+                                WHEN   ((IsApproved=0) AND (IsRejected=1)) THEN 'Failure'
+                            END AS TxnStatus
+                     FROM _tbl_wallet_bankrequests ";
+                     
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql." order by `ReqID` DESC "));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Pending") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE IsApproved='0' AND IsRejected='0' ORDER BY `ReqID` DESC "));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Success") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE IsApproved='1' AND IsRejected='0' ORDER BY `ReqID` DESC "));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Failure") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE IsApproved='0' AND IsRejected='1' ORDER BY `ReqID` DESC "));
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Report") {
+                 
+                 $fromDate = $_POST['FromDate'];
+                 $toDate   = $_POST['ToDate'];
+                 
+                 switch ($_POST['filter']) {
+                     
+                     case 'All'     : $sql .= " where ( date(`RequestedOn`)>=date('".$fromDate."') and date(`RequestedOn`)<=date('".$toDate."'))";
+                                      break;
+                     case 'Pending' : $sql .= "  where `IsApproved`='0' and `IsRejected`='0' and ( date(`RequestedOn`)>=date('".$fromDate."') and date(`RequestedOn`)<=date('".$toDate."'))   ";
+                                      break;
+                     case 'Success' : $sql .= "  where `IsApproved`='1' and `IsRejected`='0' and ( date(`RequestedOn`)>=date('".$fromDate."') and date(`RequestedOn`)<=date('".$toDate."'))   ";
+                                      break;
+                     case 'Failure' : $sql .= "  where `IsApproved`='0' and `IsRejected`='1' and ( date(`RequestedOn`)>=date('".$fromDate."') and date(`RequestedOn`)<=date('".$toDate."'))   ";
+                                      break;
+                     default :  Response::returnSuccess("success",array());  
+                                  break; 
+                 }
+                 if (isset($_POST['MemberCode']) && strlen(trim($_POST['MemberCode']))>0 ) {
+                    $mem = $mysql->select("select * from _tbl_members where `MemberCode`='".$_POST['MemberCode']."'");
+                    if (sizeof($mem)>0) {
+                        $sql .=  ($_POST['filter']=="All")  ? " where `MemberID`='".$mem[0]['MemberID']."' "         
+                                                            : " and `MemberID`='".$mem[0]['MemberID']."' " ;
+                    } else {
+                       Response::returnSuccess("success",array());
+                    }
+                 }
+                 $sql .= "  order by `ReqID` DESC ";
+                 
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             } 
+             //return error
+         }
+     
      function GetListMemberDocuments() {
              global $mysql,$loginInfo;
              return Response::returnSuccess("success",$mysql->select("select * from  `_tbl_member_documents` order by `DocID` DESC "));
