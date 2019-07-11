@@ -232,11 +232,11 @@
      
     class Webservice {
         
-        var $serverURL="http://nahami.online/sl/Webservice/webservice.php?rand=2&";
+        var $serverURL="";
         
         function Webservice() {
             global $loginID;
-            $this->serverURL .= "LoginID=".$loginID."&"; 
+            $this->serverURL  = WebServiceUrl. "webservice.php?rand=2&LoginID=".$loginID."&"; 
         }
         
         function FranchiseeInfo($param) {

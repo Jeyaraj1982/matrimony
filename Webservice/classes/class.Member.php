@@ -151,11 +151,12 @@
              }
              
              $otp=rand(1000,9999);
-             $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"     => $data[0]['MemberID'],
-                                                                         "SecurityCode" => $otp,
+             $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"    => $data[0]['MemberID'],
+                                                                         "RequestSentOn" => date("Y-m-d H:i:s"),
+                                                                         "SecurityCode"  => $otp,
                                                                          "messagedon"    => date("Y-m-d h:i:s"), 
-                                                                         "EmailTo"      => $data[0]['EmailID'],
-                                                                         "Type"      => "Forget Password")) ; 
+                                                                         "EmailTo"       => $data[0]['EmailID'],
+                                                                         "Type"          => "Forget Password")) ; 
            
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberPasswordForget'");
              $content  = str_replace("#MemberName#",$data[0]['MemberName'],$mContent[0]['Content']);
@@ -583,6 +584,7 @@
                  if ($error=="") {
                      $otp=rand(1111,9999);
                      $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" =>$memberdata[0]['MemberID'],
+                                                                                  "RequestSentOn" =>date("Y-m-d H:i:s"),
                                                                                   "SMSTo" =>$memberdata[0]['MobileNumber'],
                                                                                   "SecurityCode" =>$otp,
                                                                                   "Type" =>"Mobile Verification",
@@ -784,6 +786,7 @@
                         "Error. unable to process your request.";
                      } else {
                         $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" =>$memberdata[0]['MemberID'],
+                                                                                     "RequestSentOn" =>date("Y-m-d H:i:s"),
                                                                                      "EmailTo" =>$memberdata[0]['EmailID'],
                                                                                      "SecurityCode" =>$otp,
                                                                                      "Type" =>"EmailVerification",
