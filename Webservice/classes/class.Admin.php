@@ -1027,47 +1027,23 @@ class Admin extends Master {
              
              global $mysql,$loginInfo;
              
-             $sql = "SELECT * From _tbl_settings_paypal ";
+             $sql = "SELECT * From `_tbl_settings_paypal` ";
                      
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql));    
              }
              
              if (isset($_POST['Request']) && $_POST['Request']=="Active") {
-                 return Response::returnSuccess("success",$mysql->select($sql." WHERE IsActive='1'"));    
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive`='1'"));    
              }
              
              if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
-                 return Response::returnSuccess("success",$mysql->select($sql." WHERE IsActive='0'"));    
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive`='0'"));    
              }
-             
-             
-             if (isset($_POST['Request']) && $_POST['Request']=="Report") {
-                 
-                 $fromDate = $_POST['FromDate'];
-                 $toDate   = $_POST['ToDate'];
-                 
-                 switch ($_POST['filter']) {
-                     
-                     case 'All'     : $sql .= " where ( date(`CreatedOn`)>=date('".$fromDate."') and date(`CreatedOn`)<=date('".$toDate."'))";
-                                      break;
-                     case 'Active' : $sql .= "  where `IsActive`='1' and ( date(`CreatedOn`)>=date('".$fromDate."') and date(`CreatedOn`)<=date('".$toDate."'))   ";
-                                      break;
-                     case 'Deactive' : $sql .= "  where `IsActive`='0' and ( date(`CreatedOn`)>=date('".$fromDate."') and date(`CreatedOn`)<=date('".$toDate."'))   ";
-                                      break;
-                    
-                     default :  Response::returnSuccess("success",array());  
-                                  break; 
-                 }
-                 $sql .= "  order by `ReqID` DESC ";
-                 
-                return Response::returnSuccess("success",$mysql->select($sql));    
-             } 
-             //return error
          }
-         function PaypalDetailsForView() {
+    function PaypalDetailsForView() {
            global $mysql;    
-        $Paypals = $mysql->select("select * from _tbl_settings_paypal where PaypalID='".$_POST['Code']."'");
+        $Paypals = $mysql->select("select * from `_tbl_settings_paypal` where `PaypalID`='".$_POST['Code']."'");
               
         return Response::returnSuccess("success",array("ViewPaypalDetails"    => $Paypals[0]));
     }
@@ -1116,18 +1092,224 @@ class Admin extends Master {
     function EditPaypal(){
               global $mysql,$loginInfo;
      
-    $mysql->execute("update _tbl_settings_paypal set Remarks='".$_POST['Remarks']."',
+    $mysql->execute("update `_tbl_settings_paypal` set Remarks='".$_POST['Remarks']."',
                                                  IsActive='".$_POST['Status']."'
                                                  where  PaypalID='".$_POST['Code']."'");
                                                  
                 return Response::returnSuccess("success",array());
                                                             
     }
-     
-     function GetListMemberDocuments() {
+    function ManageSettingsMobileSms() {    
+             
+             global $mysql,$loginInfo;
+             
+             $sql = "SELECT * From `_tbl_settings_mobilesms` ";
+                     
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive`='1'"));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive`='0'"));    
+             }
+         }
+    function GetSettingsMobileApiCode(){     
+            return Response::returnSuccess("success",array("MobileApiCode" => SeqMaster::GetNextMobileApiNumber(),
+                                                           "SMSMethod"        => CodeMaster::getData('SMSMETHOD'),
+                                                           "Timedout"        => CodeMaster::getData('TIMEDOUT')));
+    }
+     function CreateSettingsMobileSms() {
+                                                                            
+        global $mysql,$loginInfo;
+        if (!(strlen(trim($_POST['ApiCode']))>0)) {
+            return Response::returnError("Please enter api code");
+        }
+        if (!(strlen(trim($_POST['ApiName']))>0)) {
+            return Response::returnError("Please enter api name");
+        }
+        if (!(strlen(trim($_POST['ApiUrl']))>0)) {
+            return Response::returnError("Please enter api url");
+        }
+        if (!(strlen(trim($_POST['MobileNumber']))>0)) {
+            return Response::returnError("Please enter mobile number");
+        }
+        if (!(strlen(trim($_POST['MessageText']))>0)) {
+            return Response::returnError("Please enter message");
+        }
+        if (!(strlen(trim($_POST['Method']))>0)) {
+            return Response::returnError("Please enter method");
+        }
+        if (!(strlen(trim($_POST['TimedOut']))>0)) {
+            return Response::returnError("Please enter timed out");
+        }
+        if (!(strlen(trim($_POST['Remarks']))>0)) {
+            return Response::returnError("Please enter remarks");
+        }
+        
+        $data = $mysql->select("select * from  `_tbl_settings_mobilesms` where `ApiCode`='".trim($_POST['ApiCode'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Api Code Already Exists");
+        }
+        $data = $mysql->select("select * from  `_tbl_settings_mobilesms` where `ApiName`='".trim($_POST['ApiName'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Api Name Already Exists");
+        }
+        $data = $mysql->select("select * from  `_tbl_settings_mobilesms` where `ApiUrl`='".trim($_POST['ApiUrl'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Api url Already Exists");
+        }
+        $data = $mysql->select("select * from  `_tbl_settings_mobilesms` where `MobileNumber`='".trim($_POST['MobileNumber'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Api Mobile Number Already Exists");
+        }
+        
+         $id =  $mysql->insert("_tbl_settings_mobilesms",array("ApiCode"      => $_POST['ApiCode'],
+                                                          "ApiName"      => $_POST['ApiName'],
+                                                          "ApiUrl"       => $_POST['ApiUrl'],
+                                                          "MobileNumber" => $_POST['MobileNumber'],
+                                                          "MessageText"  => $_POST['MessageText'],
+                                                          "Method"       => $_POST['Method'],
+                                                          "TimedOut"     => $_POST['TimedOut'],
+                                                          "CreatedOn"   => date("Y-m-d H:i:s"),
+                                                          "Remarks"      => $_POST['Remarks']));  
+        if (sizeof($id)>0) {
+                return Response::returnSuccess("success",array());
+            } else{
+                return Response::returnError("Access denied. Please contact support");     
+            }
+    }
+    function EditSettingsMobileApi(){
+              global $mysql,$loginInfo;
+        if (!(strlen(trim($_POST['ApiName']))>0)) {
+            return Response::returnError("Please enter api name");
+        }
+        if (!(strlen(trim($_POST['ApiUrl']))>0)) {
+            return Response::returnError("Please enter api url");
+        }
+        if (!(strlen(trim($_POST['MobileNumber']))>0)) {
+            return Response::returnError("Please enter mobile number");
+        }
+        $data = $mysql->select("select * from  `_tbl_settings_mobilesms` where `ApiName`='".trim($_POST['ApiName'])."' and `ApiID` <>'".$_POST['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Api Name Already Exists");
+        }
+        $data = $mysql->select("select * from  `_tbl_settings_mobilesms` where `ApiUrl`='".trim($_POST['ApiUrl'])."' and `ApiID` <>'".$_POST['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Api Url Already Exists");
+        }
+        $data = $mysql->select("select * from  `_tbl_settings_mobilesms` where `MobileNumber`='".trim($_POST['MobileNumber'])."' and `ApiID` <>'".$_POST['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("mobile number Already Exists");
+        } 
+        $mysql->execute("update _tbl_settings_mobilesms set ApiName='".$_POST['ApiName']."',
+                                                        ApiUrl='".$_POST['ApiUrl']."',
+                                                        MobileNumber='".$_POST['MobileNumber']."',
+                                                        MessageText='".$_POST['MessageText']."',
+                                                        Method='".$_POST['Method']."',
+                                                        TimedOut='".$_POST['TimedOut']."',
+                                                        Remarks='".$_POST['Remarks']."',
+                                                        IsActive='".$_POST['Status']."'
+                                                        where  ApiID='".$_POST['Code']."'");
+         
+         return Response::returnSuccess("success",array());
+                                                            
+    }
+    function SettingsMobileApiDetailsForView() {
+           global $mysql;    
+        $MobileApis = $mysql->select("select * from `_tbl_settings_mobilesms` where `ApiID`='".$_POST['Code']."'");
+              
+        return Response::returnSuccess("success",array("ViewMobileApiDetails"    => $MobileApis[0],
+                                                        "SMSMethod"        => CodeMaster::getData('SMSMETHOD'),
+                                                        "Timedout"        => CodeMaster::getData('TIMEDOUT')));
+    }
+    function GetListMemberDocuments() {
              global $mysql,$loginInfo;
              return Response::returnSuccess("success",$mysql->select("select * from  `_tbl_member_documents` order by `DocID` DESC "));
          }
+     function GetManageMembers() {    
+             
+             global $mysql,$loginInfo;
+             
+             $sql = "SELECT `_tbl_members`.MemberID AS MemberID,
+                            _tbl_members.MemberName AS MemberName,
+                            _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
+                            _tbl_franchisees.FranchiseName AS FranchiseeName,
+                            _tbl_members.CreatedOn AS CreatedOn,
+                            _tbl_members.IsActive AS IsActive
+                        FROM _tbl_members
+                        INNER JOIN _tbl_franchisees
+                        ON _tbl_members.ReferedBy=`_tbl_franchisees`.FranchiseeID ";
+                     
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `_tbl_members`.`IsActive`='1'"));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `_tbl_members`.`IsActive`='0'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="FranchiseeWise") {
+                 return Response::returnSuccess("success",$mysql->select("SELECT t1.*,  COUNT(t2.MemberID) AS MemberCount FROM _tbl_franchisees AS t1
+                                                                            LEFT OUTER JOIN _tbl_members AS t2 ON t1.FranchiseeID = t2.ReferedBy GROUP BY t1.FranchiseeID"));    
+             }
+         }    
+     
+         function GetMemberInfo() {
+           global $mysql;    
+        $Members = $mysql->select("SELECT 
+                                     _tbl_members.MemberID AS MemberID,
+                                     _tbl_members.MemberCode AS MemberCode,
+                                     _tbl_members.MemberName AS MemberName,
+                                     _tbl_members.MobileNumber AS MobileNumber,
+                                     _tbl_members.EmailID AS EmailID,
+                                     _tbl_members.MemberLogin AS MemberLogin,
+                                     _tbl_members.MemberPassword AS MemberPassword,
+                                     _tbl_members.AadhaarNumber AS AadhaarNumber,
+                                     _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
+                                     _tbl_franchisees.FranchiseName AS FranchiseName,
+                                     _tbl_franchisees.FranchiseeID AS FranchiseeID,
+                                     _tbl_members.CreatedOn AS CreatedOn,
+                                     _tbl_franchisees.IsActive AS FIsActive,
+                                     _tbl_members.IsActive AS IsActive
+                                    FROM _tbl_members
+                                    INNER JOIN _tbl_franchisees
+                                    ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.MemberID='".$_POST['Code']."'");
+              
+        return Response::returnSuccess("success",array("MemberInfo"    => $Members[0]));
+    }
+    function EditMemberInfo(){
+              global $mysql,$loginInfo;
+
+        $data = $mysql->select("select * from  `_tbl_members` where `MemberName`='".trim($_POST['MemberName'])."' and `MemberID` <>'".$_POST['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Member Name Already Exists");
+        }
+        $data = $mysql->select("select * from  `_tbl_members` where `EmailID`='".trim($_POST['EmailID'])."' and `MemberID` <>'".$_POST['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Email ID Already Exists");
+        }
+        $data = $mysql->select("select * from  `_tbl_members` where `MobileNumber`='".trim($_POST['MobileNumber'])."' and `MemberID` <>'".$_POST['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Mobile Number Already Exists");
+        } 
+        $mysql->execute("update _tbl_members set MemberName='".$_POST['MemberName']."',
+                                                    EmailID='".$_POST['EmailID']."',
+                                                    MobileNumber='".$_POST['MobileNumber']."',
+                                                    MemberPassword='".$_POST['MemberPassword']."',
+                                                    IsActive='".$_POST['Status']."' where  MemberID='".$_POST['Code']."'");
+         
+         return Response::returnSuccess("success",array());
+                                                            
+    }
+     
+     
     }
 ?> 
-
+                                
