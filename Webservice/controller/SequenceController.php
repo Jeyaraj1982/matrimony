@@ -42,6 +42,13 @@
             $prefix = "EAPI";
             $Rows   = $mysql->select("select count(*) as rCount from `_tbl_settings_emailapi`");
             return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
+        }
+        function GetNextPaypalNumber() {
+            global $mysql;
+            $prefix = "PAL";
+            $length = 4;
+            $Rows   = $mysql->select("select count(*) as rCount from `_tbl_settings_paypal`");
+            return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
         } 
    
    /* Admin Master  */

@@ -96,15 +96,8 @@
     
     $mysql   = new MySql($db[0],$db[1],$db[2],$db[3]);
     $loginid = isset($_GET['LoginID']) ? $_GET['LoginID'] : "";
-      
-    if (isset($_GET['m']) && $_GET['m']=="Franchisee") {
-       $loginInfo = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'"); 
-    }  else if (isset($_GET['m']) && $_GET['m']=="Member") { 
-        $loginInfo = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");    
-        $mysql->execute("update _tbl_member_login set LastAccessOn='".date("Y-m-d H:i:s")."' where LoginID='".$loginid."'"); 
-    } else {
-       $loginInfo = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
-    }
+    $loginInfo = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'"); 
+    $mysql->execute("update _tbl_logs_logins set LastAccessOn='".date("Y-m-d H:i:s")."' where LoginID='".$loginid."'"); 
     
     if (isset($_GET['action'])) {
        echo json_encode($_GET['action']()); 

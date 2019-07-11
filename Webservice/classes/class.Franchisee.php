@@ -3,11 +3,8 @@
         
         function GetMyProfile() {
             
-            global $mysql,$loginid;  
-
-            $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
-
-            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."'");
+            global $mysql,$loginInfo;  
+            $franchiseedata = $mysql->select("select * from `_tbl_franchisees_staffs` where `PersonID`='".$loginInfo[0]['FranchiseeStaffID']."'");
           
             if (sizeof($franchiseedata)>0) {
                 return Response::returnSuccess("success",$franchiseedata[0]);
@@ -28,24 +25,26 @@
                 return Response::returnError("Please enter password ");
             }
         
-            $data=$mysql->select("select * from _tbl_franchisees_staffs where LoginName='".$_POST['UserName']."' and LoginPassword='".$_POST['Password']."'") ;
+            $data=$mysql->select("select * from `_tbl_franchisees_staffs` where `LoginName`='".$_POST['UserName']."' and `LoginPassword`='".$_POST['Password']."'") ;
+            $fdata=$mysql->select("select * from `_tbl_franchisees` where `FranchiseeID`='".$data[0]['FranchiseeID']."'");
             
             if (sizeof($data)>0) {
                 $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
-             $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"       => date("Y-m-d H:i:s"),
-                                                                 "LoginFrom"     => "Web",
-                                                                 "Device"        => $clientinfo['Device'],
-                                                                 "FranchiseeID"  => $data[0]['FranchiseeID'],
-                                                                 "LoginName"     => $_POST['UserName'],
-                                                                 "BrowserIP"     => $clientinfo['query'],
-                                                                 "CountryName"   => $clientinfo['country'],
-                                                                 "BrowserName"   => $clientinfo['UserAgent'],
-                                                                 "APIResponse"   => json_encode($clientinfo),
-                                                                 "LoginPassword" => $_POST['Password']));
+                $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"             => date("Y-m-d H:i:s"),
+                                                                 "LoginFrom"          => "Web",
+                                                                 "Device"             => $clientinfo['Device'],
+                                                                 "FranchiseeID"       => $data[0]['FranchiseeID'],
+                                                                 "FranchiseeStaffID"  => $data[0]['PersonID'],
+                                                                 "LoginName"          => $_POST['UserName'],
+                                                                 "BrowserIP"          => $clientinfo['query'],
+                                                                 "CountryName"        => $clientinfo['country'],
+                                                                 "BrowserName"        => $clientinfo['UserAgent'],
+                                                                 "APIResponse"        => json_encode($clientinfo),
+                                                                 "LoginPassword"      => $_POST['Password']));
                 $data[0]['LoginID']=$loginid;
                 
                 if ($data[0]['IsActive']==1) {
-                    return Response::returnSuccess("success",$data[0]);
+                    return Response::returnSuccess("success"."select * from `_tbl_franchisees` where `FranchiseeID`='".$data[0]['FranchiseeID']."'",array("UserDetails"=>$data[0],"FranchiseeDetails"=>$fdata[0]));
                 } else{
                     return Response::returnError("Access denied. Please contact support");   
                 }
@@ -114,7 +113,7 @@
         if (!(strlen(trim($_POST['LoginPassword']))>0)) {
             return Response::returnError("Please enter MemberPassword");    
         }
-        $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
+        $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
        $id =  $mysql->insert("_tbl_members",array("MemberCode"              => $_POST['MemberCode'],
                                                            "MemberName"               => $_POST['MemberName'],  
                                                            "DateofBirth"              => $_POST['DateofBirth'],
@@ -136,12 +135,11 @@
        
         function CheckVerification() {
             
-            global $mysql,$loginid;
+            global $mysql,$loginInfo;
             
-            $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
-            $sql="select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."' and PersonID='".$login[0]['StaffID']."'";
+            $sql="select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'";
            
-            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."' and PersonID='".$login[0]['StaffID']."'");
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['StaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==0) {
                return $this->ChangeMobileNumberFromVerificationScreen("",$loginid,"","");
@@ -156,32 +154,32 @@
         
         function VisitedWelcomeMsg(){
             global $mysql;
-            $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$_GET['LoginID']."'");     
+            $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$_GET['LoginID']."'");     
             $welcome=$mysql->execute("update _tbl_franchisees_staffs set WelcomeMsg='1' where  FranchiseeID='".$login[0]['FranchiseeID']."' and PersonID='".$login[0]['StaffID']."'");
             return true;
         }
         
         function ChangeMobileNumberFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
             
-            if ($loginid=="") {
-                $loginid = $_GET['LoginID'];
-            }
+            //if ($loginid=="") {
+              //  $loginid = $_GET['LoginID'];
+            //}
             
-            global $mysql;
+            global $mysql,$loginInfo;
+                                                                                                                               
+           // $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
             
-            $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
-            
-            if (sizeof($login)==0) {
+            if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
             }   
             
-            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."' and PersonID='".$login[0]['StaffID']."'");
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==1) {
                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="FEmailVerificationForm()">Continue</a>
+                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
             } else {
                 
@@ -211,25 +209,25 @@
         
         function ChangeMobileNumber($error="",$loginid="",$scode="",$reqID="") {
             
-            if ($loginid=="") {
-                $loginid = $_GET['LoginID'];
-            }
+            //if ($loginid=="") {
+               // $loginid = $_GET['LoginID'];
+            //}
             
-            global $mysql;
+            global $mysql,$loginInfo;
             
-            $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
+           // $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
             
-            if (sizeof($login)==0) {
+            if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
             }   
             
-            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."'");
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==1) {
                 return '<div style="background:white;width:100%;padding:20px;">
                             <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="FEmailVerificationForm()">Continue</a>
+                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
             } else {
                 $formid = "frmChangeMobileNo_".rand(30,3000);
@@ -267,15 +265,15 @@
         
         function MobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
             
-            if ($loginid=="") {
-                $loginid = $_GET['LoginID'];
-            }
+          //  if ($loginid=="") {
+           //     $loginid = $_GET['LoginID'];
+           // }
             
-            global $mysql;
+            global $mysql,$loginInfo;
             
-            $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
+           // $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
             
-            if (sizeof($login)==0) {
+            if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
             } 
             
@@ -291,26 +289,28 @@
                    return $this->ChangeMobileNumber("Mobile Number already in use.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
                 }
                 
-                $mysql->execute("update _tbl_franchisees_staffs set MobileNumber='".$_POST['new_mobile_number']."' , CountryCode='".$_POST['CountryCode']."' where FranchiseeID='".$login[0]['FranchiseeID']."'");
+                $mysql->execute("update _tbl_franchisees_staffs set MobileNumber='".$_POST['new_mobile_number']."' , CountryCode='".$_POST['CountryCode']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             }
             
-            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."'");
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==1) {
                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="FEmailVerificationForm()">Continue</a>
+                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
             } else {
                           
                 if ($error=="") {
                     $otp=rand(1111,9999);
                     MobileSMSController::sendSMS($franchiseedata[0]['MobileNumber'],"Mobile Verification Security Code is ".$otp);
-                    $securitycode = $mysql->insert("_tbl_franchisee_verification_otp",array("FranchiseeID" =>$franchiseedata[0]['FranchiseeID'],
+                    $securitycode = $mysql->insert("_tbl_verification_code",array("FranchiseeID" =>$franchiseedata[0]['FranchiseeID'],
+                                                                                  "StaffID" =>$franchiseedata[0]['PersonID'],
                                                                                  "SMSTo" =>$franchiseedata[0]['MobileNumber'],
                                                                                  "SecurityCode" =>$otp,
-                                                                                 "messagedon"=>date("Y-m-d h:i:s"))) ; 
+                                                                                 "Type" =>"Franchisee Mobile Verificatiom",
+                                                                                 "Messagedon"=>date("Y-m-d h:i:s"))) ; 
                 }  else {
                     $securitycode = $reqID;
                 }
@@ -347,7 +347,7 @@
             
             global $mysql;  
             
-            $otpInfo = $mysql->select("select * from _tbl_franchisee_verification_otp where RequestID='".$_POST['reqId']."'");
+            $otpInfo = $mysql->select("select * from _tbl_verification_code where RequestID='".$_POST['reqId']."'");
             if (strlen(trim($_POST['mobile_otp_2']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['mobile_otp_2']))  {
                 
                 $sql = "update _tbl_franchisees_staffs set IsMobileVerified='1', MobileVerifiedOn='".date("Y-m-d H:i:s")."' where FranchiseeID='".$otpInfo[0]['FranchiseeID']."'";
@@ -358,7 +358,7 @@
                                 Great! Your number has been<br>
                                 successfully verified.
                             </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="FCheckVerification()">Continue</a> <h5>
+                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a> <h5>
                        </div>';
             } else {
                 return $this->MobileNumberVerificationForm("You entered, invalid pin.",$_POST['loginId'],$_POST['mobile_otp_2'],$_POST['reqId']);
@@ -367,25 +367,25 @@
         
         function ChangeEmailFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
             
-            if ($loginid=="") {
-                $loginid = $_GET['LoginID'];
-            }
+           // if ($loginid=="") {
+           //     $loginid = $_GET['LoginID'];
+           // }
             
-            global $mysql;                                
+            global $mysql,$loginInfo;                                
             
-            $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
+           // $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
             
-            if (sizeof($login)==0) {
+            if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
             }   
             
-            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."' and PersonID='".$login[0]['StaffID']."' and PersonID='".$login[0]['StaffID']."'");
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
              if ($franchiseedata[0]['IsEmailVerified']==1) {
                 return '<div style="background:white;padding:20px;">
                             <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
+                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="FCheckVerification()">Continue</a>
                        </div>';    
             } else {
                 
@@ -413,19 +413,19 @@
         
         function ChangeEmailID($error="",$loginid="",$scode="",$reqID="") {
             
-            if ($loginid=="") {
-                $loginid = $_GET['LoginID'];
-            }
+            //if ($loginid=="") {
+           ///     $loginid = $_GET['LoginID'];
+           // }
             
-            global $mysql;
+            global $mysql,$loginInfo;
             
-            $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
+            //$login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
             
-            if (sizeof($login)==0) {
+            if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
             }   
             
-            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."'");
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsEmailVerified']==1) {
                 return '<div style="background:white;width:100%;padding:20px;">
@@ -466,15 +466,15 @@
         
         function EmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
             
-            if ($loginid=="") {
-                $loginid = $_GET['LoginID'];
-            }
+          //  if ($loginid=="") {
+          //      $loginid = $_GET['LoginID'];
+          //  }
             
-            global $mysql,$mail;
+            global $mysql,$mail,$loginInfo;
            
-            $login = $mysql->select("Select * from _tbl_franchisee_login where LoginID='".$loginid."'");
+           // $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
               
-            if (sizeof($login)==0) {
+            if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
             }   
             if (isset($_POST['new_email'])) {
@@ -487,9 +487,9 @@
                    return $this->ChangeEmailID("Email already in use.",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']); 
                 }
                 
-                $mysql->execute("update _tbl_franchisees_staffs set EmailID='".$_POST['new_email']."' where FranchiseeID='".$login[0]['FranchiseeID']."'");
+                $mysql->execute("update _tbl_franchisees_staffs set EmailID='".$_POST['new_email']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             }
-            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."'");
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
            
             if ($franchiseedata[0]['IsEmailVerified']==1) {
                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
@@ -501,43 +501,32 @@
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
             } else {
-                 
                 if ($error=="") {
-                    
-                    $otp  = rand(1111,9999);
-                    $cart = '<div style="width:650px;margin:0px auto">
-                                <table style="width:100%">
-                                    <tr>
-                                        <td colspan="2">Dear '.$franchiseedata[0]['PersonName'].', <Br><Br>Email Verification Security Code is '.$otp.'</td>
-                                    </tr>
-                                </table>
-                             </div>';
-                             
-                    $mail->isSMTP(); 
-                    $mail->SMTPDebug = 0;
-                    $mail->Host = "mail.nahami.online";
-                    $mail->Port = 465;
-                    $mail->SMTPSecure = 'ssl';
-                    $mail->SMTPAuth = true;
-                    $mail->Username = "support@nahami.online";
-                    $mail->Password = "welcome@@82";
-                    $mail->setFrom("support@nahami.online", "Support nahami");
-                    $mail->addAddress($franchiseedata[0]['EmailID'],"Support");
-                    $mail->Subject = 'Email Verifications';
-                    $mail->msgHTML($cart);
-                    $mail->Body=$cart;
-                    $mail->AltBody = $cart;
-
-                    if(!$mail->send()){
+                     $otp=rand(1111,9999);
+                     
+                     $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeEmailVerification'");
+                     $content  = str_replace("#FranchiseeName#",$franchiseedata[0]['PersonName'],$mContent[0]['Content']);
+                     $content  = str_replace("#otp#",$otp,$content);
+                     
+                     MailController::Send(array("MailTo"   => $franchiseedata[0]['EmailID'],
+                                                "Category" => "Email Verifications",
+                                                "FranchiseeID" => $franchiseedata[0]['FranchiseeID'],
+                                                "Subject"  => $mContent[0]['Title'],
+                                                "Message"  => $content),$mailError);
+                                                
+                     if($mailError){
                         return "Mailer Error: " . $mail->ErrorInfo.
-                             "Error. unable to process your request.";
-                    } else {
-                        $securitycode = $mysql->insert("_tbl_franchisee_verification_otp",array("FranchiseeID" => $franchiseedata[0]['FranchiseeID'],
-                                                                                                "EmailTo"      => $franchiseedata[0]['EmailID'],
-                                                                                                "SecurityCode" => $otp,
-                                                                                                "messagedon"   => date("Y-m-d h:i:s"))) ;
-                        $formid = "frmMobileNoVerification_".rand(30,3000);
-                        $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."'");                                                          
+                        "Error. unable to process your request.";
+                     } else {
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("FranchiseeID"  => $franchiseedata[0]['FranchiseeID'],
+                                                                                      "StaffID"  => $franchiseedata[0]['PersonID'],
+                                                                                      "EmailTo"      => $franchiseedata[0]['EmailID'],
+                                                                                      "SecurityCode" => $otp,
+                                                                                      "Type"         => "Franchisee Email Verification",
+                                                                                      "Messagedon"   => date("Y-m-d h:i:s"))) ;
+                        $formid = "frmMobileNoVerification_".rand(30,3000); 
+                
+                        $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");                                                          
                         
                         return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
                                     <form method="POST" id="'.$formid.'">
@@ -569,7 +558,7 @@
                     $securitycode = $reqID;
                     
                     $formid = "frmMobileNoVerification_".rand(30,3000);
-                    $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$login[0]['FranchiseeID']."'");                                                          
+                    $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");                                                           
                     
                     return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
                                 <form method="POST" id="'.$formid.'">
@@ -601,7 +590,7 @@
         function EmailOTPVerification() {
             global $mysql;  
             
-            $otpInfo = $mysql->select("select * from _tbl_franchisee_verification_otp where RequestID='".$_POST['reqId']."'");
+            $otpInfo = $mysql->select("select * from _tbl_verification_code where RequestID='".$_POST['reqId']."'");
             
            if (strlen(trim($_POST['email_otp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['email_otp']))  {
                 $sql = "update _tbl_franchisees_staffs set IsEmailVerified='1', EmailVerifiedOn='".date("Y-m-d H:i:s")."' where FranchiseeID='".$otpInfo[0]['FranchiseeID']."'";

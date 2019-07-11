@@ -1021,6 +1021,108 @@ class Admin extends Master {
              } 
              //return error
          }
+         
+         
+         function ManagePaypal() {
+             
+             global $mysql,$loginInfo;
+             
+             $sql = "SELECT * From _tbl_settings_paypal ";
+                     
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE IsActive='1'"));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE IsActive='0'"));    
+             }
+             
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Report") {
+                 
+                 $fromDate = $_POST['FromDate'];
+                 $toDate   = $_POST['ToDate'];
+                 
+                 switch ($_POST['filter']) {
+                     
+                     case 'All'     : $sql .= " where ( date(`CreatedOn`)>=date('".$fromDate."') and date(`CreatedOn`)<=date('".$toDate."'))";
+                                      break;
+                     case 'Active' : $sql .= "  where `IsActive`='1' and ( date(`CreatedOn`)>=date('".$fromDate."') and date(`CreatedOn`)<=date('".$toDate."'))   ";
+                                      break;
+                     case 'Deactive' : $sql .= "  where `IsActive`='0' and ( date(`CreatedOn`)>=date('".$fromDate."') and date(`CreatedOn`)<=date('".$toDate."'))   ";
+                                      break;
+                    
+                     default :  Response::returnSuccess("success",array());  
+                                  break; 
+                 }
+                 $sql .= "  order by `ReqID` DESC ";
+                 
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             } 
+             //return error
+         }
+         function PaypalDetailsForView() {
+           global $mysql;    
+        $Paypals = $mysql->select("select * from _tbl_settings_paypal where PaypalID='".$_POST['Code']."'");
+              
+        return Response::returnSuccess("success",array("ViewPaypalDetails"    => $Paypals[0]));
+    }
+    function GetPaypalCode(){
+            return Response::returnSuccess("success",array("PaypalCode" => SeqMaster::GetNextPaypalNumber()));
+    }
+    function CreatePaypal() {
+                                                                            
+        global $mysql,$loginInfo;
+        if (!(strlen(trim($_POST['PaypalName']))>0)) {
+            return Response::returnError("Please enter paypal name");
+        }
+        if (!(strlen(trim($_POST['PaypalEmailID']))>0)) {
+            return Response::returnError("Please enter paypal email id");
+        }
+        if (!(strlen(trim($_POST['Remarks']))>0)) {
+            return Response::returnError("Please enter remarks");
+        }
+        if (!(strlen(trim($_POST['PaypalCode']))>0)) {
+            return Response::returnError("Please enter paypal code");
+        }
+        
+        $data = $mysql->select("select * from  _tbl_settings_paypal where PaypalCode='".trim($_POST['PaypalCode'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Paypal Code Already Exists");
+        }
+        $data = $mysql->select("select * from  _tbl_settings_paypal where PaypalName='".trim($_POST['PaypalName'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Paypal Name Already Exists");
+        }
+        $data = $mysql->select("select * from  _tbl_settings_paypal where PaypalEmailID='".trim($_POST['PaypalEmailID'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Paypal Email ID Already Exists");
+        }
+        
+         $id =  $mysql->insert("_tbl_settings_paypal",array("PaypalCode"     => $_POST['PaypalCode'],
+                                                            "PaypalName"     => $_POST['PaypalName'],
+                                                            "PaypalEmailID"  => $_POST['PaypalEmailID'],
+                                                            "Remarks"        => $_POST['Remarks']));  
+        if (sizeof($id)>0) {
+                return Response::returnSuccess("success",array());
+            } else{
+                return Response::returnError("Access denied. Please contact support");   
+            }
+    }
+    function EditPaypal(){
+              global $mysql,$loginInfo;
+     
+    $mysql->execute("update _tbl_settings_paypal set Remarks='".$_POST['Remarks']."',
+                                                 IsActive='".$_POST['Status']."'
+                                                 where  PaypalID='".$_POST['Code']."'");
+                                                 
+                return Response::returnSuccess("success",array());
+                                                            
+    }
      
      function GetListMemberDocuments() {
              global $mysql,$loginInfo;
