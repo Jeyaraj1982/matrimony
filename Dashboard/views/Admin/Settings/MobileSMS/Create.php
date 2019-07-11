@@ -131,7 +131,7 @@ function SubmitNewApi() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
                           <div class="col-sm-3">
-                            <input type="text" class="form-control" id="MobileNumber" maxlength="10" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>">
+                            <input type="text" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>">
                             <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
                           </div>
                         </div>
