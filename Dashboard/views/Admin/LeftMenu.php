@@ -9,7 +9,7 @@
              <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#managemembers" aria-expanded="false" aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>
-                    <span class="menu-title"><?php echo $_LABELS['Members'];?></span>
+                    <span class="menu-title">Members</span>
                     <i class="menu-arrow"></i>
                 </a>
                 <div class="collapse" id="managemembers">

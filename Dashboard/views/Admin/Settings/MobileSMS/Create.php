@@ -1,175 +1,6 @@
-<?php     /*
-if (isset($_POST['BtnSaveSms'])) {
-         
-        $ErrorCount =0;
-        
-        if (isset($_POST['ApiCode'])) {
-            
-            if (strlen(trim($_POST['ApiCode']))>0) {
-            
-            } else {
-                $ErrApiCode="Please enter Api Code";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrApiCode="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['ApiName'])) {
-            
-            if (strlen(trim($_POST['ApiName']))>0) {
-            
-            } else {
-                $ErrApiName="Please enter Api Name";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrApiName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['ApiUrl'])) {
-            
-            if (strlen(trim($_POST['ApiUrl']))>0) {
-            
-            } else {
-                $ErrApiUrl="Please enter Api Url";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrApiUrl="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['MobileNumber'])) {
-            
-            if (strlen(trim($_POST['MobileNumber']))>0) {
-            
-            } else {
-                $ErrMobileNumber="Please enter Mobile Number";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrMobileNumber="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['MessageText'])) {
-            
-            if (strlen(trim($_POST['MessageText']))>0) {
-            
-            } else {
-                $ErrMessageText="Please enter Message Text";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrMessageText="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['Method'])) {
-            
-            if (strlen(trim($_POST['Method']))>0) {
-            
-            } else {
-                $ErrMethod="Please enter Method";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrMethod="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['TimedOut'])) {
-            
-            if (strlen(trim($_POST['TimedOut']))>0) {
-            
-            } else {
-                $ErrTimedOut="Please enter Timed Out";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrTimedOut="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['Remarks'])) {
-            
-            if (strlen(trim($_POST['Remarks']))>0) {
-            
-            } else {
-                $ErrRemarks="Please enter Remarks";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrRemarks="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-            
-        
-        $duplicate = $mysql->select("select * from _tbl_settings_mobilesms where ApiCode='".trim($_POST['ApiCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrApiCode="Api Code Already Exists";    
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from _tbl_settings_mobilesms where ApiName='".trim($_POST['ApiName'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrApiName="Api Name Already Exists";    
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from _tbl_settings_mobilesms where ApiUrl='".trim($_POST['ApiUrl'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrApiUrl="Api Url Already Exists";    
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from _tbl_settings_mobilesms where MobileNumber='".trim($_POST['MobileNumber'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrMobileNumber="Mobile Number Already Exists";    
-             $ErrorCount++;
-        }
-               
-        
-  if ($ErrorCount==0) {
-
-$MobileSms = $mysql->insert("_tbl_settings_mobilesms",array("ApiCode"      => $_POST['ApiCode'],
-                                                          "ApiName"      => $_POST['ApiName'],
-                                                          "ApiUrl"       => $_POST['ApiUrl'],
-                                                          "MobileNumber" => $_POST['MobileNumber'],
-                                                          "MessageText"  => $_POST['MessageText'],
-                                                          "Method"       => $_POST['Method'],
-                                                          "TimedOut"     => $_POST['TimedOut'],
-                                                          "CreatedOn"   => date("Y-m-d H:i:s"),
-                                                          "Remarks"      => $_POST['Remarks']));
-                                                              
-        if ($MobileSms>0) {
-            echo "Successfully Created ";
-            unset($_POST);                                              
-        } else {
-            echo "Error occured. Couldn't save Bank Details";
-        }
-          
-    }
-    }      */
-?>
 
 <script>
 $(document).ready(function () {
-  $("#MobileNumber").keypress(function (e) {
-     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-        $("#ErrMobileNumber").html("Digits Only").fadeIn().fadeIn("fast");
-               return false;
-    }
-   });
    $("#ApiCode").blur(function () {
     
         IsNonEmpty("ApiCode","ErrApiCode","Please Enter Api Code");
@@ -187,17 +18,12 @@ $(document).ready(function () {
    });
    $("#MobileNumber").blur(function () {
     
-        IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter MobileNumber");
+        IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter MobileNumber Param");
                         
    });
    $("#MessageText").blur(function () {
     
-        IsNonEmpty("MessageText","ErrMessageText","Please Enter Message Text");
-                        
-   });
-   $("#Remarks").blur(function () {
-    
-        IsNonEmpty("Remarks","ErrRemarks","Please Enter Remarks");
+        IsNonEmpty("MessageText","ErrMessageText","Please Enter Message Text Param");
                         
    });
 });       
@@ -207,7 +33,6 @@ function SubmitNewApi() {
                          $('#ErrApiUrl').html("");
                          $('#ErrMobileNumber').html("");
                          $('#ErrMessageText').html("");
-                         $('#ErrRemarks').html("");
                          
                          ErrorCount=0;
         
@@ -218,11 +43,12 @@ function SubmitNewApi() {
                         IsAlphabet("ApiName","ErrApiName","Please Enter Alpha Numeric characters only");
                         }
                         IsNonEmpty("ApiUrl","ErrApiUrl","Please Enter Api Url");
-                        if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter Mobile Number")) {
-                        IsMobileNumber("MobileNumber","ErrMobileNumber","Please Enter Valid Mobile Number");
+                        if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter Mobile Number Param")) {
+                        IsAlphaNumerics("MobileNumber","ErrMobileNumber","Please Enter Alpha Numeric Characters");
                         }
-                        IsNonEmpty("MessageText","ErrMessageText","Please Enter Message Text");
-                        IsNonEmpty("Remarks","ErrRemarks","Please Enter Remarks");
+                        if (IsNonEmpty("MessageText","ErrMessageText","Please Enter Message Text Param")){
+                        IsAlphaNumerics("MessageText","ErrMessageText","Please Enter Alpha Numeric Characters");
+                        }
                         if (ErrorCount==0) {
                             return true;
                         } else{
@@ -358,7 +184,6 @@ function SubmitNewApi() {
                           <label class="col-sm-2 col-form-label">Remarks<span id="star">*</span></label>
                           <div class="col-sm-8">
                             <textarea  rows="2" class="form-control" id="Remarks" name="Remarks"><?php echo (isset($_POST['Remarks']) ? $_POST['Remarks'] : "");?></textarea>
-                            <span class="errorstring" id="ErrRemarks"><?php echo isset($ErrRemarks)? $ErrRemarks : "";?></span>
                           </div>
                         </div>
                       </div>

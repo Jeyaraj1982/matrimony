@@ -32,7 +32,7 @@ $("#ApiCode").blur(function () {
    }); 
    $("#Password").blur(function () {
     
-        IsPassword("Password","ErrPassword","Please Enter Password");
+        IsNonEmpty("Password","ErrPassword","Please Enter Password");
                         
    });
    $("#SendersName").blur(function () {
@@ -78,9 +78,8 @@ function SubmitNewApi() {
                         if (IsNonEmpty("UserName","ErrUserName","Please Enter the user name")) {
                         //IsEmail("UserName","ErrUserName","Please Enter Valid ");
                         }
-                        if (IsPassword("Password","ErrPassword","Please Enter More than 8 characters")) {
-                        IsAlphaNumeric("Password","ErrPassword","Alpha Numeric Characters only");
-                        }
+                        IsPassword("Password","ErrPassword","Please Enter Password");
+                        
                         IsNonEmpty("SendersName","ErrSendersName","Please Enter Senders Name");
                         IsNonEmpty("Remarks","ErrRemarks","Please Enter Remarks");
                         if (ErrorCount==0) {

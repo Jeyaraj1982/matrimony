@@ -70,14 +70,7 @@
     $Api= $response['data']['ViewMobileApiDetails'];
 ?> 
 <script>
-
 $(document).ready(function () {
-  $("#MobileNumber").keypress(function (e) {
-     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-        $("#ErrMobileNumber").html("Digits Only").fadeIn().fadeIn("fast");
-               return false;
-    }
-   });
    $("#ApiCode").blur(function () {
     
         IsNonEmpty("ApiCode","ErrApiCode","Please Enter Api Code");
@@ -90,22 +83,17 @@ $(document).ready(function () {
    });
    $("#ApiUrl").blur(function () {
     
-        IsNonEmpty("ApiUrl","ErrApiUrl","Please Select a Api Url");
+        IsNonEmpty("ApiUrl","ErrApiUrl","Please Enter a Api Url");
                         
    });
    $("#MobileNumber").blur(function () {
     
-        IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter MobileNumber");
+        IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter MobileNumber Param");
                         
    });
    $("#MessageText").blur(function () {
     
-        IsNonEmpty("MessageText","ErrMessageText","Please Enter Message Text");
-                        
-   });
-   $("#Remarks").blur(function () {
-    
-        IsNonEmpty("Remarks","ErrRemarks","Please Enter Remarks");
+        IsNonEmpty("MessageText","ErrMessageText","Please Enter Message Text Param");
                         
    });
 });       
@@ -115,7 +103,6 @@ function SubmitNewApi() {
                          $('#ErrApiUrl').html("");
                          $('#ErrMobileNumber').html("");
                          $('#ErrMessageText').html("");
-                         $('#ErrRemarks').html("");
                          
                          ErrorCount=0;
         
@@ -126,11 +113,12 @@ function SubmitNewApi() {
                         IsAlphabet("ApiName","ErrApiName","Please Enter Alpha Numeric characters only");
                         }
                         IsNonEmpty("ApiUrl","ErrApiUrl","Please Enter Api Url");
-                        if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter Mobile Number")) {
-                        IsMobileNumber("MobileNumber","ErrMobileNumber","Please Enter Valid Mobile Number");
+                        if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter Mobile Number Param")) {
+                        IsAlphaNumerics("MobileNumber","ErrMobileNumber","Please Enter Alpha Numeric Characters");
                         }
-                        IsNonEmpty("MessageText","ErrMessageText","Please Enter Message Text");
-                        IsNonEmpty("Remarks","ErrRemarks","Please Enter Remarks");
+                        if (IsNonEmpty("MessageText","ErrMessageText","Please Enter Message Text Param")){
+                        IsAlphaNumerics("MessageText","ErrMessageText","Please Enter Alpha Numeric Characters");
+                        }
                         if (ErrorCount==0) {
                             return true;
                         } else{
@@ -258,7 +246,6 @@ function SubmitNewApi() {
                           <label class="col-sm-2 col-form-label">Remarks<span id="star">*</span></label>
                           <div class="col-sm-8">
                             <textarea  rows="2" class="form-control" id="Remarks" name="Remarks"><?php echo (isset($_POST['Remarks']) ? $_POST['Remarks'] : $Api['Remarks']);?></textarea>
-                            <span class="errorstring" id="ErrRemarks"><?php echo isset($ErrRemarks)? $ErrRemarks : "";?></span>
                           </div>
                         </div>
                       </div>
