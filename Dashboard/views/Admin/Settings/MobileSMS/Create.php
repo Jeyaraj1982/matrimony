@@ -1,4 +1,4 @@
-<?php
+<?php     /*
 if (isset($_POST['BtnSaveSms'])) {
          
         $ErrorCount =0;
@@ -159,7 +159,7 @@ $MobileSms = $mysql->insert("_tbl_settings_mobilesms",array("ApiCode"      => $_
         }
           
     }
-    }
+    }      */
 ?>
 
 <script>
@@ -244,10 +244,10 @@ function SubmitNewApi() {
         $errormessage = $response['message']; 
     }
     }
-  $MobileSmsCode =$webservice->getData("Admin","GetMobileSmsCode"); 
+  $MobileSmsCode =$webservice->getData("Admin","GetSettingsMobileApiCode"); 
      $GetNextMobileSMSNumber="";
         if ($MobileSmsCode['status']=="success") {
-            $GetNextMobileSMSNumber  =$MobileSmsCode['data']['MobileCode'];
+            $GetNextMobileSMSNumber  =$MobileSmsCode['data']['MobileApiCode'];
         }
         {
 ?>   
@@ -328,9 +328,8 @@ function SubmitNewApi() {
                           <label class="col-sm-2 col-form-label">Method<span id="star">*</span></label>
                           <div class="col-sm-2">
                             <select name="Method" id="Method" class="form-control">
-                              <?php $Methods = $mysql->select("select * from _tbl_master_codemaster Where HardCode='SMSMETHOD'");  ?>
-                              <?php foreach($Methods as $Method) { ?>
-                              <option value="<?php echo $Method['CodeValue'];?>" <?php echo ($_POST['Method']==$Method['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Method['CodeValue'];?></option>
+                              <?php foreach($MobileSmsCode['data']['SMSMethod'] as $Method) { ?>
+                              <option value="<?php echo $Method['CodeValue'];?>" <?php echo ($_POST['Method']==$Method['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $Method['CodeValue'];?></option>
                              <?php } ?>
                             </select>
                             <span class="errorstring" id="ErrMethod"><?php echo isset($ErrMethod)? $ErrMethod : "";?></span>
@@ -343,10 +342,9 @@ function SubmitNewApi() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Time out<span id="star">*</span></label>
                           <div class="col-sm-2">
-                            <select name="TimedOut" id="TimedOut" class="form-control">
-                                    <?php $TimedOuts = $mysql->select("select * from _tbl_master_codemaster Where HardCode='TIMEDOUT'");  ?>
-                              <?php foreach($TimedOuts as $TimedOut) { ?>
-                              <option value="<?php echo $TimedOut['CodeValue'];?>" <?php echo ($_POST['TimedOut']==$TimedOut['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $TimedOut['CodeValue'];?></option>
+                            <select name="TimedOut" id="TimedOut" class="form-control">  
+                             <?php foreach($MobileSmsCode['data']['Timedout'] as $TimedOut) { ?>
+                              <option value="<?php echo $TimedOut['CodeValue'];?>" <?php echo ($_POST['TimedOut']==$TimedOut['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $TimedOut['CodeValue'];?></option>
                              <?php } ?>
                             </select>  
                             <span class="errorstring" id="ErrTimedOut"><?php echo isset($ErrTimedOut)? $ErrTimedOut : "";?></span>
@@ -364,7 +362,8 @@ function SubmitNewApi() {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> 
+                    <div class="form-group row"><div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div></div>
                    <div class="form-group row">
                         <div class="col-sm-2"><button type="submit" name="BtnSaveSms" class="btn btn-primary mr-2">Save</button></div>
                         <div class="col-sm-2"><a href="MobileSms" style="text-decoration: underline;">List of Api</a></div>
@@ -373,5 +372,6 @@ function SubmitNewApi() {
              </div>                                        
           </div>
 </div>
-</form>                                                  
+</form>
+<?Php }?>                                                  
  

@@ -1,6 +1,8 @@
 <?php
-    $Api =$mysql->select("select * from _tbl_settings_mobilesms where ApiID='".$_REQUEST['Code']."'");
-?>
+    $response = $webservice->getData("Admin","SettingsMobileApiDetailsForView");
+    $Api= $response['data']['ViewMobileApiDetails'];
+?> 
+
 <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
@@ -18,7 +20,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <div class="col-sm-2">Api Code</div>
-                          <div class="col-sm-2"><small style="color:#737373;"><?php echo $Api[0]['ApiCode'];?></small></div>
+                          <div class="col-sm-2"><small style="color:#737373;"><?php echo $Api['ApiCode'];?></small></div>
                         </div>
                       </div>
                       </div>
@@ -26,7 +28,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <div class="col-sm-2">Api Name</div>
-                          <div class="col-sm-8"><small style="color:#737373;"><?php echo $Api[0]['ApiName'];?></small></div>
+                          <div class="col-sm-8"><small style="color:#737373;"><?php echo $Api['ApiName'];?></small></div>
                         </div>
                       </div>
                     </div>
@@ -34,7 +36,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <div class="col-sm-2">Api Url</div>
-                          <div class="col-sm-8"><small style="color:#737373;"><?php echo $Api[0]['ApiUrl'];?></small></div>
+                          <div class="col-sm-8"><small style="color:#737373;"><?php echo $Api['ApiUrl'];?></small></div>
                         </div>
                       </div>
                     </div>
@@ -51,7 +53,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <div class="col-sm-2">Mobile Number</div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Api[0]['MobileNumber'];?></small></div>
+                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Api['MobileNumber'];?></small></div>
                         </div>
                       </div>
                     </div>
@@ -59,7 +61,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <div class="col-sm-2">Message Text</div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Api[0]['MessageText'];?></small></div>
+                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Api['MessageText'];?></small></div>
                         </div>
                       </div>
                     </div>
@@ -67,7 +69,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <div class="col-sm-2">Method</div>
-                          <div class="col-sm-2"><small style="color:#737373;"><?php echo $Api[0]['Method'];?></small></div>
+                          <div class="col-sm-2"><small style="color:#737373;"><?php echo $Api['Method'];?></small></div>
                       </div>                                          
                     </div>
                     </div> 
@@ -75,7 +77,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <div class="col-sm-2">Time out</div>
-                          <div class="col-sm-2"><small style="color:#737373;"><?php echo $Api[0]['TimedOut'];?></small></div>
+                          <div class="col-sm-2"><small style="color:#737373;"><?php echo $Api['TimedOut'];?></small></div>
                         </div>
                       </div>                                          
                     </div> 
@@ -83,7 +85,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-2">Remarks</label>
-                          <div class="col-sm-8"><small style="color:#737373;"><?php echo $Api[0]['Remarks'];?></small></div>
+                          <div class="col-sm-8"><small style="color:#737373;"><?php echo $Api['Remarks'];?></small></div>
                         </div>
                       </div>
                     </div>
@@ -92,7 +94,7 @@
                         <div class="form-group row">
                           <div class="col-sm-2">Status</div>
                           <div class="col-sm-3"><small style="color:#737373;">
-                              <?php if($Api[0]['IsActive']==1){
+                              <?php if($Api['IsActive']==1){
                                   echo "Active";
                               }                                  
                               else{
@@ -108,7 +110,7 @@
                       <div class="col-md-12">
                       <div class="Form-group row">
                           <div class="col-sm-2" >Created On</div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo PutDateTime($Api[0]['CreatedOn']);?></small></div>
+                          <div class="col-sm-3"><small style="color:#737373;"><?php echo PutDateTime($Api['CreatedOn']);?></small></div>
                         </div>
                       </div>
                     </div>

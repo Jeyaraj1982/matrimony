@@ -96,9 +96,7 @@ function SubmitNewPaypal() {
                                 </select>
                           </div>
                         </div>
-                    <div class="form-group row">
-                        <?php echo $errormessage;?><?php echo $successmessage;?>
-                        </div>
+                    <div class="form-group row"><div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div></div>
                    <div class="form-group row">
                         <div class="col-sm-2"><button type="submit" name="BtnUpdatePaypal" class="btn btn-primary mr-2">Create</button></div>
                         <div class="col-sm-2"><a href="../Paypal" style="text-decoration: underline;">List of Paypal</a></div>

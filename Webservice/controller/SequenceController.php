@@ -40,6 +40,7 @@
         function GetNextEmailApiNumber() {
             global $mysql;
             $prefix = "EAPI";
+            $length = 4;
             $Rows   = $mysql->select("select count(*) as rCount from `_tbl_settings_emailapi`");
             return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
         }
