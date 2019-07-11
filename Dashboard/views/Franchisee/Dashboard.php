@@ -416,17 +416,8 @@ chart.render();
   </script> 
 
    
-   <!--<div id="MemberWelcome" style="display:none;">
-    <form method="POST" action="" >
-        <div style="padding:10px;">
-            <h3 style="text-align:left;margin-top:0px">Welcome <?php // echo "<b style='color:red'>";echo $_Member['MemberName'] ; echo "</b>";?></h3><br>
-            <input type="submit" class="btn btn-primary" name="welcomebutton" value="Continue"/>
-        </div>
-     </form>    
-   </div> 
-        
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
+    
+         
         
    <div class="modal fade" id="FranchiseeWelcome" role="dialog" data-backdrop="static" style="padding-top:200px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
     <div class="modal-dialog" style="width: 367px;">
@@ -441,157 +432,28 @@ chart.render();
     </div>
 </div>
 
-<div class="modal fade" id="myModal" role="dialog" data-backdrop="static" style="padding-top:200px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-    <div class="modal-dialog" style="width: 367px;">
-        <div class="modal-content">
-            <div class="modal-body">
-                    <div id="Mobile_VerificationBody" style="height: 315px;">
-                   Loading ....
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-    
+
+  <?php    $fInfo = $webservice->getData("Franchisee","GetMyProfile");  ?>   
 <script>
-var API_URL = "<?php echo WebServiceUrl;?>webservice.php?LoginID=<?php echo $_Franchisee['LoginID'];?>&";
-     function VisitedWelcomeMsg() {
-         $('#FranchiseeWelcome').modal('hide'); 
-        $.ajax({
-                        url: API_URL + "m=Franchisee&a=VisitedWelcomeMsg", 
-                        success: function(result2){
-                           FCheckVerification();
-                               
-                        }
-                    });
-    }
-   
-    function MobileNumberVerificationForm(frmid1) {
-        
-        var param = $( "#"+frmid1).serialize();
-        
-        $('#Mobile_VerificationBody').html(preloader);
-        $('#myModal').modal('show'); 
-        
-        $.post(API_URL + "m=Franchisee&a=MobileNumberVerificationForm", 
-                            param,
-                            function(result2) {
-                                 $('#Mobile_VerificationBody').html(result2);  
-                            }
-                    );
-    }
-    function ChangeMobileNumberF() {
-        $('#Mobile_VerificationBody').html(preloader);
-         $('#myModal').modal('show'); 
-        $.ajax({
-                        url: API_URL + "m=Franchisee&a=ChangeMobileNumber", 
-                        success: function(result2){
-                            $('#Mobile_VerificationBody').html(result2);
-                               
-                        }
-                    });
-    }
-    
-    function EmailVerificationForm(frmid1) {
-        
-        var param = $( "#"+frmid1).serialize();
-        
-        $('#Mobile_VerificationBody').html(preloader);
-        $('#myModal').modal('show'); 
-        
-        $.post(API_URL + "m=Franchisee&a=EmailVerificationForm", 
-                            param,
-                            function(result2) {
-                                 $('#Mobile_VerificationBody').html(result2);  
-                            }
-                    ); 
-    }  
-    
-    function ChangeEmailID() {
-        $('#Mobile_VerificationBody').html(preloader);
-         $('#myModal').modal('show'); 
-        $.ajax({
-                        url: API_URL + "m=Franchisee&a=ChangeEmailID", 
-                        success: function(result2){
-                            $('#Mobile_VerificationBody').html(result2);
-                               
-                        }
-                    });
-    }
-    
-    function FCheckVerification() {
-        $('#Mobile_VerificationBody').html(preloader);
-         $('#myModal').modal('show'); 
-        $.ajax({
-                        url: API_URL + "m=Franchisee&a=CheckVerification", 
-                        success: function(result2){
-                            var v = $.trim(result2).length;
-                            if (parseInt(v)>0) {    
-                                $('#Mobile_VerificationBody').html(result2);
-                            } else {
-                                setTimeout(function(){
-                                  $('#myModal').modal('hide');  
-                                },1000);
-                            }
-                        }
-                    });
-    } 
-     function MobileNumberOTPVerification(frmid) {
-         
-         $('#errormsg').html("");
-         if ($.trim($("#mobile_otp_2").val()).length!=4){
-         $('#errormsg').html("Verification code is invalid");
-         return false;
-         }
-                         
-         var param = $( "#"+frmid).serialize();
-         $('#Mobile_VerificationBody').html(preloader);
-                    $.post(API_URL+"m=Franchisee&a=MobileNumberOTPVerification", 
-                            param,
-                            function(result2) {
-                                $('#Mobile_VerificationBody').html(result2);   
-                            }
-                    );
-              
-    }
-     function EmailOTPVerification(frmid1) {
-         
-         $('#errormsg').html("");
-         if ($.trim($("#email_otp").val()).length!=4){
-         $('#errormsg').html("Verification code is invalid");
-         return false;
-         }
-         
-         var param = $( "#"+frmid1).serialize();
-         $('#Mobile_VerificationBody').html(preloader);
-                    $.post(API_URL+"m=Franchisee&a=EmailOTPVerification", 
-                            param,
-                            function(result2) {
-                                $('#Mobile_VerificationBody').html(result2);   
-                            }
-                    );
-              
-    }
    <?php  
-        $fInfo = $webservice->FranchiseeInfo($_Franchisee['FranchiseeID']);   
-        if ($fInfo['status']=="success") {
-            
-            if($fInfo['data']['WelcomeMsg']==1) {
-                if($fInfo['data']['IsMobileVerified']==0 || $fInfo['data']['IsEmailVerified']==0){
-   ?>
-                    $( document ).ready(function() {FCheckVerification();});
-   <?php 
-                }
-            } else {
-   ?>
-                $( document ).ready(function() {$("#FranchiseeWelcome").modal('show');});
-   <?php 
-            } 
+    if ($fInfo['status']=="success") {
+        if($fInfo['data']['WelcomeMsg']==1) {
+            if($fInfo['data']['IsMobileVerified']==0 || $fInfo['data']['IsEmailVerified']==0){
+            ?>
+                $( document ).ready(function() {FCheckVerification();});
+            <?php 
+            }
         } else {
-            //logout invalid session
-        }
    ?>
-     </script>
+            $( document ).ready(function() {$("#FranchiseeWelcome").modal('show');});
+   <?php 
+        } 
+        
+    } else {
+            //logout invalid session
+    }
+   ?>
+</script>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 

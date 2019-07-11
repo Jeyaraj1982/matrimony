@@ -211,6 +211,7 @@
     
     $loginID = "";
     
+    
     if (isset($_SESSION['UserDetails']) && ($_SESSION['UserDetails']['FranchiseeID']>0)) {
         $_Franchisee     = $_SESSION['UserDetails'];
         $_FranchiseeInfo = $_SESSION['FranchiseeDetails'];
@@ -228,7 +229,7 @@
         if (!(isset($_POST['login']))) {
         echo "<script>alert('session expired. login again');location.href='".DomainName."';</script>";
         }
-    }
+    }                        
      
     class Webservice {
         
@@ -237,10 +238,6 @@
         function Webservice() {
             global $loginID;
             $this->serverURL  = WebServiceUrl. "webservice.php?rand=2&LoginID=".$loginID."&"; 
-        }
-        
-        function FranchiseeInfo($param) {
-            return json_decode($this->_callUrl("m=Franchisee&a=GetMyProfile",$param),true);
         }
         
         function CreateMember($param) {

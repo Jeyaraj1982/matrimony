@@ -18,14 +18,14 @@
                         <tr> 
                         <th>Api Code</th>
                         <th>Api Name</th>
-                        <th>Api Url</th>
+                        <th>Api Url</th> 
                         <th>Created</th>
                         <th></th>
-                        </tr>  
+                        </tr>   
                     </thead>
                     <tbody>  
-                        <?php $MobileSMSs = $mysql->select("select * from _tbl_settings_mobilesms where IsActive='1'"); ?>
-                        <?php foreach($MobileSMSs as $MobileSMS) { ?>
+                        <?php $response = $webservice->getData("Admin","ManageSettingsMobileSms",array("Request"=>"Active")); ?>  
+                        <?php foreach($response['data'] as $MobileSMS) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($MobileSMS['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $MobileSMS['ApiCode'];?></td>
                                 <td><?php echo $MobileSMS['ApiName'];?></td>

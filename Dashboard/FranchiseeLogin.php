@@ -6,8 +6,13 @@
             include_once("config.php");
             $response = $webservice->getData("Franchisee","Login",$_POST); 
                      if ($response['status']=="success")  {
-                $_SESSION['UserDetails'] = $response['data'];
-                echo "<script>location.href='".SiteUrl."';</script>";
+                        if (sizeof($response['data']['FranchiseeDetails'])>0) {
+                            $_SESSION['UserDetails'] = $response['data']['UserDetails']; 
+                            $_SESSION['FranchiseeDetails'] = $response['data']['FranchiseeDetails'];    
+                        } else {
+                            echo "<script>alert('Franchisee not found');location.href='".SiteUrl."';</script>";
+                        }
+                     echo "<script>location.href='".SiteUrl."';</script>";
             } else {
                 $loginError=$response['message'];
             }

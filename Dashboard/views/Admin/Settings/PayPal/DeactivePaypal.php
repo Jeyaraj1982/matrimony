@@ -23,8 +23,8 @@
                         </tr>  
                     </thead>
                     <tbody>  
-                        <?php $Paypals = $mysql->select("select * from _tbl_settings_paypal where IsActive='0'"); ?>
-                        <?php foreach($Paypals as $Paypal) { ?>
+                        <?php $response = $webservice->getData("Admin","ManagePaypal",array("Request"=>"Deactive")); ?>  
+                        <?php foreach($response['data'] as $Paypal) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($Paypal['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Paypal['PaypalName'];?></td>
                                 <td><?php echo $Paypal['PaypalEmailID'];?></td>

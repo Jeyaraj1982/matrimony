@@ -234,7 +234,23 @@ function SubmitNewApi() {
 
 
 
-
+<?php                   
+  if (isset($_POST['BtnSaveSms'])) {   
+    $response = $webservice->getData("Admin","CreateSettingsMobileSms",$_POST);
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    }
+  $MobileSmsCode =$webservice->getData("Admin","GetMobileSmsCode"); 
+     $GetNextMobileSMSNumber="";
+        if ($MobileSmsCode['status']=="success") {
+            $GetNextMobileSMSNumber  =$MobileSmsCode['data']['MobileCode'];
+        }
+        {
+?>   
 <form method="post" action="" onsubmit="return SubmitNewApi();">            
 <div class="col-12 grid-margin">
               <div class="card">
@@ -246,7 +262,7 @@ function SubmitNewApi() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Api Code<span id="star">*</span></label>
                           <div class="col-sm-2">
-                            <input type="text" value="<?php echo isset($_POST['ApiCode']) ? $_POST['ApiCode'] : MobileSMS::GetNextMobileSMSNumber();?>" class="form-control" id="ApiCode" name="ApiCode" maxlength="7">
+                            <input type="text" value="<?php echo isset($_POST['ApiCode']) ? $_POST['ApiCode'] : $GetNextMobileSMSNumber;?>" class="form-control" id="ApiCode" name="ApiCode" maxlength="7">
                             <span class="errorstring" id="ErrApiCode"><?php echo isset($ErrApiCode)? $ErrApiCode : "";?></span>
                           </div>
                         </div>                                                                                                                        

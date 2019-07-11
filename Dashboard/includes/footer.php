@@ -9,6 +9,7 @@
         <script src="<?php echo SiteUrl?>assets/js/off-canvas.js"></script>    
         <script src="<?php echo SiteUrl?>assets/js/misc.js"></script>
         <!-- Member --->
+        <?php if (isset($_Member['LoginID']) && $_Member['LoginID']>0) { ?>
         <script>
             var API_URL = "<?php echo WebServiceUrl;?>webservice.php?LoginID=<?php echo $_Member['LoginID'];?>&";
             var preloader = "<div style='text-align:center;padding-top: 35%;'><img src='<?php echo ImageUrl;?>loader.gif'></div>";
@@ -26,6 +27,28 @@
                 </div>
             </div>
         </div>
-        <!-- Member -->
+        
+        <?php } ?>                  
+        
+        <?php if (isset($_Franchisee['LoginID']) && $_Franchisee['LoginID']>0) { ?>
+         <script>
+            var API_URL = "<?php echo WebServiceUrl;?>webservice.php?LoginID=<?php echo $_Franchisee['LoginID'];?>&";
+            var preloader = "<div style='text-align:center;padding-top: 35%;'><img src='<?php echo ImageUrl;?>loader.gif'></div>";
+        </script>
+        <script src="<?php echo SiteUrl?>assets/js/fcontroller.js?rand=<?php echo rand(3000,3300000);?>"></script>
+        
+        <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" style="padding-top:200px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+    <div class="modal-dialog" style="width: 367px;">
+        <div class="modal-content">
+            <div class="modal-body">
+                    <div id="Mobile_VerificationBody" style="height: 315px;">
+                   Loading ....
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <?php } ?>
+         
     </body>
 </html>

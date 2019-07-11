@@ -1,85 +1,3 @@
-<?php
-if (isset($_POST['BtnSavePaypal'])) {
-         
-        $ErrorCount =0;
-        
-        if (isset($_POST['PaypalName'])) {
-            
-            if (strlen(trim($_POST['PaypalName']))>0) {
-            
-            } else {
-                $ErrPaypalName="Please enter Paypal Name";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrPaypalName="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['PaypalEmailID'])) {
-            
-            if (strlen(trim($_POST['PaypalEmailID']))>0) {
-            
-            } else {
-                $ErrPaypalEmailID="Please enter Paypal EmailID";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrPaypalEmailID="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-        if (isset($_POST['Remarks'])) {
-            
-            if (strlen(trim($_POST['Remarks']))>0) {
-            
-            } else {
-                $ErrRemarks="Please enter Remarks";    
-                $ErrorCount++;  
-            }
-            
-        } else {
-            $ErrRemarks="Param Missing";    
-            $ErrorCount++;  
-        }
-        
-            
-        
-        $duplicate = $mysql->select("select * from _tbl_settings_paypal where PaypalCode='".trim($_POST['PaypalCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrPaypalCode="Paypal Code Already Exists";    
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from _tbl_settings_paypal where PaypalName='".trim($_POST['PaypalName'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrPaypalName="Paypal Name Already Exists";    
-             $ErrorCount++;
-        }
-        $duplicate = $mysql->select("select * from _tbl_settings_paypal where PaypalEmailID='".trim($_POST['PaypalEmailID'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrPaypalEmailID="Paypal Email ID Already Exists";    
-             $ErrorCount++;
-        }
-        
-  if ($ErrorCount==0) {
-
-$Paypal = $mysql->insert("_tbl_settings_paypal",array("PaypalCode"     => $_POST['PaypalCode'],
-                                                      "PaypalName"     => $_POST['PaypalName'],
-                                                      "PaypalEmailID"  => $_POST['PaypalEmailID'],
-                                                      "Remarks"        => $_POST['Remarks']));
-                                                              
-        if ($Paypal>0) {
-            echo "Successfully Created ";
-            unset($_POST);
-        } else {
-            echo "Error occured. Couldn't save ";
-        }
-          
-    }
-    }
-?>
 <script>
 $(document).ready(function () {
 $("#PaypalCode").blur(function () {
@@ -130,7 +48,25 @@ function SubmitNewPaypal() {
                         }
                  
 }
-</script>                                                         
+</script>  
+
+<?php                   
+  if (isset($_POST['BtnSavePaypal'])) {   
+    $response = $webservice->getData("Admin","CreatePaypal",$_POST);
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    }
+  $PaypalCode =$webservice->getData("Admin","GetPaypalCode"); 
+     $GetNextPaypalCode="";
+        if ($PaypalCode['status']=="success") {
+            $GetNextPaypalCode  =$PaypalCode['data']['PaypalCode'];
+        }
+        {
+?>                                                      
 <form method="post" action="" onsubmit="return SubmitNewPaypal();">            
 <div class="col-12 grid-margin">
               <div class="card">
@@ -142,7 +78,7 @@ function SubmitNewPaypal() {
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Paypal Code<span id="star">*</span></label>
                           <div class="col-sm-2">                                                      
-                            <input type="text" class="form-control" id="PaypalCode" name="PaypalCode" value="<?php echo (isset($_POST['PaypalCode']) ? $_POST['PaypalCode'] : Paypal::GetNextPaypalNumber());?>">
+                            <input type="text" class="form-control" id="PaypalCode" name="PaypalCode" value="<?php echo (isset($_POST['PaypalCode']) ? $_POST['PaypalCode'] : $GetNextPaypalCode);?>">
                             <span class="errorstring" id="ErrPaypalCode"><?php echo isset($ErrPaypalCode)? $ErrPaypalCode : "";?></span>
                           </div>
                         </div>
@@ -181,6 +117,7 @@ function SubmitNewPaypal() {
                         </div>
                       </div>
                     </div>
+                    <div class="form-group row"><div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div></div>
                    <div class="form-group row">
                         <div class="col-sm-2"><button type="submit" name="BtnSavePaypal" class="btn btn-primary mr-2">Create</button></div>
                         <div class="col-sm-2"><a href="Paypal" style="text-decoration: underline;">List of Paypal</a></div>
@@ -189,4 +126,5 @@ function SubmitNewPaypal() {
              </div>                                        
           </div>
 </div>
-</form>                                                  
+</form>    
+<?php }?>                                              

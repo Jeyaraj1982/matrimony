@@ -14,9 +14,9 @@
                 </a>
                 <div class="collapse" id="managemembers">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="<?php  echo GetUrl("Members/ManageMember");?>"><?php echo $_LABELS['ManageMembers'];?></a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/News/NewsandEvents");?>"><?php echo $_LABELS['NewsAndEvents'];?></a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/Plan/ManagePlan");?>"><?php echo $_LABELS['ManagePlans'];?></a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php  echo GetUrl("Members/ManageMember");?>">Manage Members</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/News/NewsandEvents");?>">News & Events</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/Plan/ManagePlan");?>">Manage Plans</a></li>
                     </ul>
                 </div>
             </li>
@@ -82,9 +82,9 @@
                 </a>
                 <div class="collapse" id="requests">
                     <ul class="nav flex-column sub-menu">                             
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ListOfAllBankRequests");?>">Member Wallet Bank Requests</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ListOfAllPaypalRequests");?>">Member Wallet Paypal Request</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ViewDocumentsVerification");?>">Member Document Verification Request</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ListOfAllBankRequests");?>">Bank Requests</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ListOfAllPaypalRequests");?>">Paypal Request</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ViewDocumentsVerification");?>">Document Verifications</a></li>
                     </ul>
                 </div>
             </li>
@@ -133,9 +133,9 @@
                     <ul class="nav flex-column sub-menu">              
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/MobileSMS/MobileSms");?>">Mobile SMS</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Email/EmailApi");?>">Email API</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/General/ManageGeneral");?>">General</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Application/ManageApplication");?>">Application</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Invoice/Invoice");?>">Invoice</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/General/ManageGeneral");?>">General</a></li>-->
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Application/ManageApplication");?>">Application</a></li>-->
+                        <!-- <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Invoice/Invoice");?>">Invoice</a></li> -->
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Bank/ListofBanks");?>">Add Bank</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/PayPal/Paypal");?>">Paypal</a></li>
                     </ul>
@@ -161,18 +161,18 @@
                 </a>
                 <div class="collapse" id="website">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageSliders");?>">Manage Sliders</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManagePages");?>">Manage Pages</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageMenus");?>">Manage Menus</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageFAQs");?>">Manage FAQs</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageSuccessStories");?>">Manage Success Stories</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageTestimonials");?>">Manage Testimonials</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageSliders");?>">Manage Sliders</a></li>-->
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManagePages");?>">Manage Pages</a></li>-->
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageMenus");?>">Manage Menus</a></li>-->
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageFAQs");?>">Manage FAQs</a></li>-->
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageSuccessStories");?>">Manage Success Stories</a></li>-->
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageTestimonials");?>">Manage Testimonials</a></li> -->
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageFeatures");?>">Manage Features</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/Settings");?>">Settings</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/Settings");?>">Settings</a></li> -->
                        </ul>
                 </div>
             </li>
-            <li class="nav-item">
+           <!-- <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#Tickets" aria-expanded="false" aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>
                     <span class="menu-title">Support Tickets</span>
@@ -187,7 +187,7 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("SupportTicket/InprocessTicket");?>">Inprocess Tickets</a></li>
                        </ul>
                 </div>
-            </li>
+            </li>  -->
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#Logs" aria-expanded="false" aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>

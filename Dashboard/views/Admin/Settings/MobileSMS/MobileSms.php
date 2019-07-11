@@ -24,8 +24,8 @@
                         </tr>  
                     </thead>
                     <tbody>  
-                        <?php $MobileSMSs = $mysql->select("select * from _tbl_settings_mobilesms"); ?>
-                        <?php foreach($MobileSMSs as $MobileSMS) { ?>
+                        <?php $response = $webservice->getData("Admin","ManageSettingsMobileSms",array("Request"=>"All")); ?>  
+                        <?php foreach($response['data'] as $MobileSMS) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($MobileSMS['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $MobileSMS['ApiCode'];?></td>
                                 <td><?php echo $MobileSMS['ApiName'];?></td>
