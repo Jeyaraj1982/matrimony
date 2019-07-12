@@ -202,5 +202,11 @@
                     </ul>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo GetUrl("Activity");?>">
+                    <i class="menu-icon mdi mdi-content-copy"></i>
+                    <span class="menu-title">Activity</span>
+                </a>
+            </li>
         </ul>
     </nav> 

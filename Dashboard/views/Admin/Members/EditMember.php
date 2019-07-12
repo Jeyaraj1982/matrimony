@@ -1,51 +1,18 @@
-<?php
-    $Member = $mysql->select("select * from _tbl_members where MemberID='".$_REQUEST['Code']."'");
-    
-    $Franchisee = $mysql->select("select * from _tbl_franchisees where FranchiseeID='". $Member[0]['ReferedBy']."'");
-    $duplicate = $mysql->select("select * from  _tbl_members where MemberName='".trim($_POST['MemberName'])."' and MemberID<>'".$_GET['Code']."' ");
-        if (sizeof($duplicate)>0) {
-             $ErrMemberName="Member Name Already Exists";    
-             $ErrorCount++;
-        }
-    if (sizeof($Member)==0) {
-        echo "Error: Access denied. Please contact administrator";
-    } else {
+<?php   
+    if (isset($_POST['Btnupdate'])) {
         
-     if (isset($_POST['Btnupdate'])) {
-           $mysql->execute("update _tbl_members set MemberName='".$_POST['MemberName']."',
-                                                    EmailID='".$_POST['EmailID']."',
-                                                    MobileNumber='".$_POST['MobileNumber']."',
-                                                    MemberPassword='".$_POST['MemberPassword']."',
-                                                    IsActive='".$_POST['Status']."' where  MemberID='".$_REQUEST['Code']."'");
-       unset($_POST);                         
-       echo "Updated Successfully";
-     }
-    }                                   
-    
-    $Member=$mysql->select(" SELECT 
-                                     _tbl_members.MemberID AS MemberID,
-                                     _tbl_members.MemberCode AS MemberCode,
-                                     _tbl_members.MemberName AS MemberName,
-                                     _tbl_members.MobileNumber AS MobileNumber,
-                                     _tbl_members.EmailID AS EmailID,
-                                     _tbl_members.MemberLogin AS MemberLogin,
-                                     _tbl_members.MemberPassword AS MemberPassword,
-                                     _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
-                                     _tbl_franchisees.FranchiseName AS FranchiseName,
-                                     _tbl_franchisees.FranchiseeID AS FranchiseeID,
-                                     _tbl_members.CreatedOn AS CreatedOn,
-                                     _tbl_franchisees.IsActive AS FIsActive,
-                                     _tbl_members.IsActive AS IsActive
-                                    FROM _tbl_members
-                                    INNER JOIN _tbl_franchisees
-                                    ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.MemberID='".$_REQUEST['Code']."'");
-    
-     //$Member = $mysql->select("select * from _tbl_members where MemberID='".$_REQUEST['Code']."'");
-    
-    //$Franchisee = $mysql->select("select * from _tbl_franchisees where FranchiseeID='". $Member[0]['ReferedBy']."'");
-   
-   
-?>
+        $response = $webservice->getData("Admin","EditMemberInfo",$_POST);
+        if ($response['status']=="success") {
+            echo $response['message'];
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+
+    $response = $webservice->getData("Admin","GetMemberInfo");
+    $Member          = $response['data']['MemberInfo'];
+
+ ?>
 <script>
 
 $(document).ready(function () {
@@ -147,46 +114,47 @@ function SubmitNewMember() {
                       <form class="forms-sample">
                       <div class="form-group row">
                           <div class="col-sm-2"><small>Member Code</small> </div>
-                          <div class="col-sm-3"><input type="text" disabled="disabled" class="form-control" id="MemberCode" name="MemberCode" value="<?php echo (isset($_POST['MemberCode']) ? $_POST['MemberCode'] : $Member[0]['MemberCode']);?>" placeholder="Member Code">
+                          <div class="col-sm-3"><input type="text" disabled="disabled" class="form-control" id="MemberCode" name="MemberCode" value="<?php echo (isset($_POST['MemberCode']) ? $_POST['MemberCode'] : $Member['MemberCode']);?>" placeholder="Member Code">
                           <span class="errorstring" id="ErrMemberCode"><?php echo isset($ErrMemberCode)? $ErrMemberCode : "";?></span></div>
                       </div>
                       <div class="form-group row">
                           <div class="col-sm-2"><small>Member Name<span id="star">*</span></small> </div>
-                          <div class="col-sm-8"><input type="text" class="form-control" id="MemberName" name="MemberName" value="<?php echo (isset($_POST['MemberName']) ? $_POST['MemberName'] : $Member[0]['MemberName']);?>" placeholder="Member Name">
+                          <div class="col-sm-8"><input type="text" class="form-control" id="MemberName" name="MemberName" value="<?php echo (isset($_POST['MemberName']) ? $_POST['MemberName'] : $Member['MemberName']);?>" placeholder="Member Name">
                           <span class="errorstring" id="ErrMemberName"><?php echo isset($ErrMemberName)? $ErrMemberName : "";?></span></div>'
                       </div>
                       <div class="form-group row">
                           <div class="col-sm-2"><small>Mobile Number<span id="star">*</span></small></div>
-                          <div class="col-sm-3"><input type="text" class="form-control" maxlength="10" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Member[0]['MobileNumber']);?>" placeholder="Mobile Number">
+                          <div class="col-sm-3"><input type="text" class="form-control" maxlength="10" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Member['MobileNumber']);?>" placeholder="Mobile Number">
                           <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span></div>
                           <div class="col-sm-2"><small>Email ID<span id="star">*</span></small></div>
-                          <div class="col-sm-3"><input type="text" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $Member[0]['EmailID']);?>" placeholder="Email ID">
+                          <div class="col-sm-3"><input type="text" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $Member['EmailID']);?>" placeholder="Email ID">
                           <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span></div>
                       </div>
                       <div class="form-group row">
                           <div class="col-sm-2"><small>Login Name<span id="star">*</span></small></div>
-                          <div class="col-sm-3"><input type="text" disabled="disabled" class="form-control" maxlength="10" id="MemberLogin" name="MemberLogin" value="<?php echo (isset($_POST['MemberLogin']) ? $_POST['MemberLogin'] : $Member[0]['MemberLogin']);?>" placeholder="MemberLogin">
+                          <div class="col-sm-3"><input type="text" disabled="disabled" class="form-control" maxlength="10" id="MemberLogin" name="MemberLogin" value="<?php echo (isset($_POST['MemberLogin']) ? $_POST['MemberLogin'] : $Member['MemberLogin']);?>" placeholder="MemberLogin">
                           <span class="errorstring" id="ErrMemberLogin"><?php echo isset($ErrMemberLogin)? $ErrMemberLogin : "";?></span></div>
                           <div class="col-sm-2"><small>Login Password<span id="star">*</span></small></div>
-                          <div class="col-sm-3"><input type="password" class="form-control" id="MemberPassword" name="MemberPassword" value="<?php echo (isset($_POST['MemberPassword']) ? $_POST['MemberPassword'] : $Member[0]['MemberPassword']);?>" placeholder="Member Password">
+                          <div class="col-sm-3"><input type="password" class="form-control" id="MemberPassword" name="MemberPassword" value="<?php echo (isset($_POST['MemberPassword']) ? $_POST['MemberPassword'] : $Member['MemberPassword']);?>" placeholder="Member Password">
                           <span class="errorstring" id="ErrMemberPassword"><?php echo isset($ErrMemberPassword)? $ErrMemberPassword : "";?></span></div>
                           <div class="col-sm-2"><input type="checkbox" onclick="myFunction()">&nbsp;show</div>
                       </div>
                       <div class="form-group row">
                           <div class="col-sm-2"><small>Created On</small></div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo  putDateTime($Member[0]['CreatedOn']);?></small></div>
+                          <div class="col-sm-3"><small style="color:#737373;"><?php echo  putDateTime($Member['CreatedOn']);?></small></div>
                           <div class="col-sm-2"><small>Status<span id="star">*</span></small></div>
                           <div class="col-sm-3">
                                 <select name="Status" class="form-control" style="width: 140px;" >
-                                    <option value="1" <?php echo ($Member[0]['IsActive']==1) ? " selected='selected' " : "";?>>Active</option>
-                                    <option value="0" <?php echo ($Member[0]['IsActive']==0) ? " selected='selected' " : "";?>>Deactive</option>
+                                    <option value="1" <?php echo ($Member['IsActive']==1) ? " selected='selected' " : "";?>>Active</option>
+                                    <option value="0" <?php echo ($Member['IsActive']==0) ? " selected='selected' " : "";?>>Deactive</option>
                                 </select>
                           </div>
                           </div>
                       <div class="form-group row">
                           <div class="col-sm-2"><small>Franchisee Name</small></div>
-                          <div class="col-sm-3"><span class="<?php echo ($Member[0]['FIsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<small style="color:#737373;"><?php echo  $Member[0]['FranchiseName'];?> (<?php echo  $Member[0]['FranchiseeCode'];?>)</small></div>
+                          <div class="col-sm-3"><span class="<?php echo ($Member['FIsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<small style="color:#737373;"><?php echo  $Member['FranchiseName'];?> (<?php echo  $Member['FranchiseeCode'];?>)</small></div>
                       </div>
+                      <div class="form-group row"><div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div></div>
                       <button type="submit" name="Btnupdate" class="btn btn-primary mr-2">Update Information</button>
                 </div>                                                                                                        
               </div>

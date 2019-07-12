@@ -99,6 +99,7 @@
     $loginInfo = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'"); 
     $mysql->execute("update _tbl_logs_logins set LastAccessOn='".date("Y-m-d H:i:s")."' where LoginID='".$loginid."'"); 
     
+    
     if (isset($_GET['action'])) {
        echo json_encode($_GET['action']()); 
     } else {

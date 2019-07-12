@@ -28,19 +28,8 @@
                         </tr>  
                     </thead>
                     <tbody>
-                    <?php $Members=$mysql->select("
-                                    SELECT 
-                                        _tbl_members.MemberID AS MemberID,
-                                        _tbl_members.MemberName AS MemberName,
-                                        _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
-                                        _tbl_franchisees.FranchiseName AS FranchiseeName,
-                                        _tbl_members.CreatedOn AS CreatedOn,
-                                        _tbl_members.IsActive AS IsActive
-                                    FROM _tbl_members
-                                    INNER JOIN _tbl_franchisees
-                                    ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.IsActive=0"); ?> 
-                        <?php //$Members = $mysql->select("select * from _tbl_members where IsActive='1'"); ?>
-                        <?php foreach($Members as $Member) { ?>
+                    <?php $response = $webservice->getData("Admin","GetManageMembers",array("Request"=>"Deactive")); ?>  
+                        <?php foreach($response['data'] as $Member) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberName'];?></td>
                                 <td><?php echo $Member['FranchiseeCode'];?></td>

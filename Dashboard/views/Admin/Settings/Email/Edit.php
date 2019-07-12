@@ -54,7 +54,7 @@ function myFunction() {
   } else {
     x.type = "password";
   }
-}
+}                                       
 
 function SubmitNewApi() {
                          $('#ErrApiCode').html("");
@@ -230,9 +230,7 @@ function SubmitNewApi() {
                         </div>
                       </div>
                     </div>
-                    <div class="form-group row">
-                        <div class="col-sm-12"><?php echo $errormessage;?><?php echo $successmessage;?></div>
-                   </div>
+                    <div class="form-group row"><div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div></div>
                    <div class="form-group row">
                         <div class="col-sm-2"><button type="submit" name="Btnupdate" class="btn btn-primary mr-2">Update</button></div>
                         <div class="col-sm-2"><a href="../EmailApi" style="text-decoration: underline;">List of Api</a></div>

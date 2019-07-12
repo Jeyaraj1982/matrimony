@@ -1,10 +1,13 @@
-<?php 
-$Franchisees = $mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_REQUEST['Code']."'"); 
-?>                                                                              
-<script>
+  
+<?php
+   $response       = $webservice->getData("Admin","GetFranchiseeInfoInFranchiseeWise");
+   $Franchisees     = $response['data']['FranchiseeInfo'];
+     
+?>                                                                           
+<script>               
 function GetFranchiseeDetails() {
     $.ajax({
-        url: API_URL + "fr=Franchisee&fi=GetDetails&Code="+$('#FranchiseeCode').val(), 
+        url: "http://nahami.online/sl/Dashboard/webservice.php?fr=Franchisee&fi=GetDetails&Code="+$('#FranchiseeCode').val(), 
         success: function(result){
             
             var $fr = jQuery.parseJSON(result);
@@ -39,20 +42,20 @@ function GetFranchiseeDetails() {
                      <h4 class="card-title">Franchisee Information</h4>
                      <div class="form-group row">
                           <label for="Franchisee Code" class="col-sm-2 col-form-label">Franchisee Code:</label>
-                          <label for="Franchisee Code" class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $Franchisees[0]['FranchiseeCode'];?></label>
+                          <label for="Franchisee Code" class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $Franchisees['FranchiseeCode'];?></label>
                           <label for="State" class="col-sm-2 col-form-label">State:</label>
-                          <label for="State" class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $Franchisees[0]['StateName'];?></label>
+                          <label for="State" class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $Franchisees['StateName'];?></label>
                      </div>
                      <div class="form-group row">
                           <label for="Franchisee Name" class="col-sm-2 col-form-label">Franchisee Name:</label>
-                          <label for="Franchisee Name" class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $Franchisees[0]['FranchiseName'];?></label>
+                          <label for="Franchisee Name" class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $Franchisees['FranchiseName'];?></label>
                           <label for="District" class="col-sm-2 col-form-label">District Name:</label>
-                          <label for="District" class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $Franchisees[0]['DistrictName'];?></label>
+                          <label for="District" class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $Franchisees['DistrictName'];?></label>
                      </div>
                      <div class="form-group row">
                           <label for="Status" class="col-sm-2 col-form-label">Status:</label>
-                          <label for="Status" class="col-sm-3 col-form-label" style="color:#737373;"><span class="<?php echo ($Franchisees[0]['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;
-                              <?php if($Franchisees[0]['IsActive']==1){
+                          <label for="Status" class="col-sm-3 col-form-label" style="color:#737373;"><span class="<?php echo ($Franchisees['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;
+                              <?php if($Franchisees['IsActive']==1){
                                   echo "Active";
                               }                                  
                               else{
@@ -61,7 +64,7 @@ function GetFranchiseeDetails() {
                               ?>
                        </label>
                        <label for="Mobile Number" class="col-sm-2 col-form-label">Mobile Number:</label>
-                       <label for="Mobile Number" class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $Franchisees[0]['ContactNumber'];?></label>
+                       <label for="Mobile Number" class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $Franchisees['ContactNumber'];?></label>
                      </div>
                      <button type="button" onclick="GetFranchiseeDetails()" data-toggle="modal" class="btn btn-success mr-2">Franchisee Details</button>
                </div>
@@ -90,8 +93,7 @@ function GetFranchiseeDetails() {
                         </tr>  
                     </thead>
                     <tbody>
-                        <?php $Members = $mysql->select("select * from _tbl_members where ReferedBy='".$_REQUEST['Code']."'"); ?>
-                        <?php foreach($Members as $Member) { ?>
+                        <?php foreach($response['data']['Member'] as $Member) {    ?>
                         <tr>
                         <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberName'];?></td>
                         <td><?php echo  putDateTime($Member['CreatedOn']);?></td>

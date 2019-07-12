@@ -40,11 +40,6 @@ $("#ApiCode").blur(function () {
         IsNonEmpty("SendersName","ErrSendersName","Please Enter Sender's Name");
                         
    });
-   $("#Remarks").blur(function () {
-    
-        IsNonEmpty("Remarks","ErrRemarks","Please Enter Remarks");
-                        
-   });
 });       
 function myFunction() {
   var x = document.getElementById("Password");
@@ -63,7 +58,6 @@ function SubmitNewApi() {
                          $('#ErrUserName').html("");
                          $('#ErrPassword').html("");
                          $('#ErrSendersName').html("");
-                         $('#ErrRemarks').html("");
                          
                          ErrorCount=0;
         
@@ -81,7 +75,6 @@ function SubmitNewApi() {
                         IsPassword("Password","ErrPassword","Please Enter Password");
                         
                         IsNonEmpty("SendersName","ErrSendersName","Please Enter Senders Name");
-                        IsNonEmpty("Remarks","ErrRemarks","Please Enter Remarks");
                         if (ErrorCount==0) {
                             return true;
                         } else{
@@ -216,7 +209,6 @@ function SubmitNewApi() {
                           <label class="col-sm-2 col-form-label">Remarks<span id="star">*</span></label>
                           <div class="col-sm-8">
                             <textarea  rows="2" class="form-control" id="Remarks" name="Remarks"><?php echo (isset($_POST['Remarks']) ? $_POST['Remarks'] : "");?></textarea>
-                            <span class="errorstring" id="ErrRemarks"><?php echo isset($ErrRemarks)? $ErrRemarks : "";?></span>
                           </div>
                         </div>
                       </div>

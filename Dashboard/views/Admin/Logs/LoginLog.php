@@ -13,19 +13,20 @@
                         <th>IP Address</th>
                         <th>Browser</th>
                         <th>Status</th>
-                        <th></th>
                         </tr>  
                     </thead>
                     <tbody> 
+                    <?php $response = $webservice->getData("Admin","GetLoginLogs",array("Request"=>"All")); ?>  
+                        <?php foreach($response['data'] as $log) { ?>
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td><?php echo $log['LoginOn'];?></td>
+                            <td><?php echo $log['MemberID'];?></td>
+                            <td><?php echo $log['FranchiseeID'];?></td>
+                            <td style="text-align: right"><?php echo $log['BrowserIp'];?></td>
+                            <td style="text-align: right"><?php echo $log['BrowserName'];?></td>
+                            <td><?php if($log['LoginStatus']==0){ echo "Failed";}else{ echo "Success"; };?></td>
                         </tr>
+                        <?php } ?>
                       </tbody>                        
                      </table>
                   </div>

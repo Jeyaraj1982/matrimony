@@ -1284,6 +1284,13 @@ class Admin extends Master {
               
         return Response::returnSuccess("success",array("MemberInfo"    => $Members[0]));
     }
+  function GetFranchiseeInfoInFranchiseeWise() {        
+           global $mysql;    
+        $Franchisees = $mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_POST['Code']."'");
+        $Members = $mysql->select("select * from _tbl_members where ReferedBy='".$_POST['Code']."'");
+        return Response::returnSuccess("success",array("FranchiseeInfo"    => $Franchisees[0],
+                                                       "Member"    => $Members));
+    } 
     function EditMemberInfo(){
               global $mysql,$loginInfo;
 
@@ -1308,7 +1315,41 @@ class Admin extends Master {
          return Response::returnSuccess("success",array());
                                                             
     }
-     
+    
+    function GetEmailLogs() {    
+             
+             global $mysql,$loginInfo;    
+             
+             $sql = "select * from _tbl_logs_email ";
+                     
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsSuccess`='1'"));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="DeActive") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsSuccess`='0'"));    
+             }
+         }
+    function GetLoginLogs() {    
+             
+             global $mysql,$loginInfo;    
+             
+             $sql = "select * from _tbl_logs_logins ";
+                     
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }
+             
+         } 
+    function GetActivityHistory() {
+             global $mysql,$loginInfo;
+             $NotificationHistory = $mysql->select("select * from `_tbl_logs_activity` ORDER BY `ActivityID` DESC ");
+                return Response::returnSuccess("success",$NotificationHistory);
+         }
      
     }
 ?> 

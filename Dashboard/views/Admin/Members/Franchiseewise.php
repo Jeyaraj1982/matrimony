@@ -27,9 +27,8 @@
                         </tr>  
                     </thead>
                     <tbody> 
-                    <?php $Franchisees = $mysql->select("SELECT t1.*,  COUNT(t2.MemberID) AS MemberCount FROM _tbl_franchisees AS t1
-LEFT OUTER JOIN _tbl_members AS t2 ON t1.FranchiseeID = t2.ReferedBy GROUP BY t1.FranchiseeID"); ?> 
-                    <?php foreach($Franchisees as $Franchisee) { ?>
+                   <?php $response = $webservice->getData("Admin","GetManageMembers",array("Request"=>"FranchiseeWise")); ?>  
+                        <?php foreach($response['data'] as $Franchisee) { ?> 
                                 <tr>
                                 <td><span class="<?php echo ($Franchisee['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php  echo $Franchisee['FranchiseeCode'];?></td>
                                 <td><?php echo $Franchisee['FranchiseName'];?></td>
