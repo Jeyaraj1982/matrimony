@@ -53,9 +53,23 @@
         }
         function GetNextMobileApiNumber() {
             global $mysql;
-            $prefix = "SMS";
+            $prefix = "SMS"; 
             $length = 4;
             $Rows   = $mysql->select("select count(*) as rCount from `_tbl_settings_mobilesms`");
+            return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
+        }
+        function GetNextDraftProfileCode() {
+            global $mysql;
+            $prefix = "DPID";
+            $length = 6;
+            $Rows   = $mysql->select("select count(*) as rCount from `_tbl_Profile_Draft`");
+            return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
+        }
+        function GetNextProfileCode() {
+            global $mysql;
+            $prefix = "PID";
+            $length = 6;
+            $Rows   = $mysql->select("select count(*) as rCount from `_tbl_profiles`");
             return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
         } 
    

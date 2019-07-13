@@ -1,9 +1,18 @@
 <?php  
-$response = $webservice->getData("Admin","ViewDraftedProfileDetails");
-    $ProfileInfo          = $response['data']['ProfileDetails'];    
-    $EducationAttachment = $response['data']['EducationAttachments'];  
-    $Member = $response['data']['Members'];  
+$response = $webservice->getData("Admin","ViewRequestedProfile");
+    $ProfileInfo          = $response['data'];
  ?>    
+ <?php
+    if (isset($_POST['Approve'])) {
+        
+        $response = $webservice->getData("Admin","ApproveProfile",$_POST);
+        if ($response['status']=="success") {
+             $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+   ?>
  <style>
  .table-bordered > tbody > tr > td{
      width: 75px;
@@ -17,20 +26,20 @@ text-align:center;
     <div class="card-body">
     <div class="form-group row">
     <div class="col-sm-6">
-    <h4 class="card-title">Member Details</h4> </div>
-    <div class="col-sm-6" align="right" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../Drafted");?> <small>List of Profiles</small> </a></div>
+    <h4 class="card-title">Member Details</h4> <?php echo $successmessage;?><?php echo $errormessage;?></div>
+    <div class="col-sm-6" align="right" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../Requested");?> <small>List of Profiles</small> </a></div>
     </div>
         <div class="form-group row">
             <label for="Community" class="col-sm-3 col-form-label">Member Name</label>
-            <div class="col-sm-3"> <small style="color:#737373;"><?php echo $Member['MemberName'];?></small></div>
+            <div class="col-sm-3"> <small style="color:#737373;"><?php echo $ProfileInfo['MemberName'];?></small></div>
             <label for="Member Code" class="col-sm-3 col-form-label">Member Code</label>
-            <div class="col-sm-3"> <small style="color:#737373;"><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberCode'];?></small></div>
+            <div class="col-sm-3"> <small style="color:#737373;"><span class="<?php echo ($ProfileInfo['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $ProfileInfo['MemberCode'];?></small></div>
         </div>
         <div class="form-group row">
             <label for="Community" class="col-sm-3 col-form-label">Email ID</label>
-            <div class="col-sm-3"> <small style="color:#737373;"><?php echo $Member['EmailID'];?></small></div>
+            <div class="col-sm-3"> <small style="color:#737373;"><?php echo $ProfileInfo['EmailID'];?></small></div>
             <label for="Member Code" class="col-sm-3 col-form-label">Mobile Number</label>
-            <div class="col-sm-3"> <small style="color:#737373;"><?php echo $Member['MobileNumber'];?></small></div>
+            <div class="col-sm-3"> <small style="color:#737373;"><?php echo $ProfileInfo['MobileNumber'];?></small></div>
         </div>
     </div>
   </div>
@@ -110,7 +119,7 @@ text-align:center;
     <h4 class="card-title">Education Details</h4>
         <div class="form-group row">
             <label for="Community" class="col-sm-3 col-form-label">Qualification</label>
-            <div class="col-sm-9"> <small style="color:#737373;"><?php echo $EducationAttachment['EducationDetails'];?></small></div>
+            <div class="col-sm-9"> <small style="color:#737373;"><?php echo $ProfileInfo['EducationDetails'];?></small></div>
              </div>
         <div class="form-group row">
             <label for="Name" class="col-sm-3 col-form-label">Attachment</label>
@@ -392,6 +401,11 @@ text-align:center;
         </div>
     </div>
   </div>
+  <div style="text-align: right">
+        <button type="submit" class="btn btn-success" name="Approve" style="font-family:roboto">Approve</button>&nbsp;
+        <button type="submit" class="btn btn-warning" name="Reject" style="font-family:roboto">Reject</button>
+        <button type="submit" class="btn btn-danger" name="Delete" style="font-family:roboto">Delete</button>
+    </div>
 </form>
 
             

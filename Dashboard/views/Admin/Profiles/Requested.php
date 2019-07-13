@@ -10,18 +10,22 @@
                           <th>Requested On</th>
                           <th>Member Name</th>
                           <th>Profile Name</th> 
-                          <th>Plan Name</th> 
                           <th></th>
                         </tr>
                       </thead>
-                      <tbody>  
+                      <tbody>
+                      <?php 
+                         $response = $webservice->getData("Admin","GetProfilesRequestVerify");
+                         if (sizeof($response['data'])>0) {
+                         ?>
+                        <?php foreach($response['data'] as $Profile) { ?>  
                         <tr>
-                           <td></td>
-                           <td></td>
-                           <td></td>
-                           <td></td>
-                           <td></td>
+                           <td><?php echo putDateTime($Profile['RequestVerifyOn']);?></td>
+                           <td><?php echo $Profile['MemberName'];?></td>
+                           <td><?php echo $Profile['ProfileName'];?></td>
+                           <td><a href="<?php echo GetUrl("Profiles/ViewRequestProfile/". $Profile['ProfileID'].".htm");?>"><span>View</span></a></td>
                       </tr>
+                      <?php } }?>
                       </tbody>
                     </table>
                   </div>

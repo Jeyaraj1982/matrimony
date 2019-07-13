@@ -1,55 +1,148 @@
-<?php $Profiles = $mysql->select("select * from _tbl_Profile_Draft where CreatedBy='".$_Member['MemberID']."'"); ?>
-<div class="row">
-    <div class="col-12 grid-margin">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title mb-4">Posted Profile</h5>
-          <?php foreach($Profiles as $Profile) { ?>
-          <div class="fluid-container">
-            <div class="row ticket-card mt-3 pb-2 border-bottom pb-3 mb-3">
-              <div class="col-md-1">
-                <img class="img-sm rounded-circle mb-4 mb-md-0" src="<?php echo SiteUrl?>images/faces/face1.jpg" alt="profile image">
-              </div>
-              <div class="ticket-details col-md-9">
-                <div class="d-flex">
-                  <p class="text-dark font-weight-semibold mr-2 mb-0 no-wrap"><?php echo $Profile['ProfileName'];?></p>
-                  </div>
-                <p class="text-gray ellipsis mb-2">Email Id: <?php echo $Member['EmailID'];?></p>
-                <div class="row text-gray d-md-flex d-none">
-                  <div class="col-4 d-flex">
-                    <small class="mb-0 mr-2 text-muted text-muted">Created:</small>
-                    <small class="Last-responded mr-2 mb-0 text-muted text-muted"><?php echo PrintDateTime($Profile['CreatedOn']);?></small>
-                  </div>
-                   <div class="col-4 d-flex">
-                    <small class="mb-0 mr-2 text-muted text-muted">Modified:</small>
-                    <small class="Last-responded mr-2 mb-0 text-muted text-muted"><?php echo PrintDateTime($Profile['LastUpdatedOn']);?></small>
-                  </div>
-                  <div class="col-4 d-flex">
-                    <small class="mb-0 mr-2 text-muted text-muted">Due in :</small>
-                    <small class="Last-responded mr-2 mb-0 text-muted text-muted">2 Days</small>
-                  </div>
+<style>
+    .bshadow {
+        -webkit-box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);
+        -moz-box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);
+        box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);
+    }
+    
+    .box-shaddow {
+        box-shadow: 0 0 5px #e9e9e9 !important;
+        -moz-box-shadow: 0 0 5px #e9e9e9 !important;
+        -webkit-box-shadow: 0 0 24px #e9e9e9 !important;
+    }
+</style>
+<?php 
+    $response = $webservice->getData("Member","GetMyProfiles",array("ProfileFrom"=>"Posted")); 
+    if (sizeof($response['data'])>0) {
+?>
+    <form method="post" action="<?php echo GetUrl(" MyProfiles/CreateProfile ");?>" onsubmit="">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Manage Profiles</h4>
+                    <h4 class="card-title">Posted Profiles</h4>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <!--<button type="submit" class="btn btn-primary "><i class="mdi mdi-plus"></i>Create Profile</button>-->
+                        </div>
+                        <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
+                            <a href="ManageProfile"><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
+                            <a href="Drafted"><small style="font-weight:bold;text-decoration:underline">Draft</small></a>&nbsp;|&nbsp;
+                            <a href="Posted"><small style="font-weight:bold;text-decoration:underline">Posted</small></a>&nbsp;|&nbsp;
+                            <a href="Published"><small style="font-weight:bold;text-decoration:underline">Published</small></a>
+                            <!-- &nbsp;|&nbsp;
+                    <a href="Expired"><small style="font-weight:bold;text-decoration:underline">Expired</small></a>&nbsp;|&nbsp;
+                    <a href="#"><small style="font-weight:bold;text-decoration:underline">Rejected</small></a>-->
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <?php foreach($response['data'] as $Profile) { ?>
+                        <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
+                            <div class="form-group row">
+                                <div class="col-sm-3" style="text-align:center">
+                                    <img src="<?php echo SiteUrl?>assets/images/prof1.jpg" style="height: 159px;margin-bottom: -18px;">
+                                    <button type="button" class="btn btn-primary" style="padding: 0px 0px;font-size: 13px;margin-top: 8px;">Add a Photo</button>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div style="border-bottom:1px solid #d7d7d7;width:100%;padding-bottom: 10px;font-size: 21px;color: #514444cc;">
+                                        <?php echo $Profile['ProfileName'];?>
+                                    </div>
+                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div>
+                                            <?php echo $Profile['Height'];?>
+                                        </div>
+                                        <div>
+                                            <?php echo $Profile['Religion'];?>
+                                        </div>
+                                        <div>
+                                            <?php echo $Profile['Caste'];?>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div>
+                                            <?php echo $Profile['MaritalStatus'];?>
+                                        </div>
+                                        <div>
+                                            <?php echo $Profile['City'];?>
+                                        </div>
+                                        <div>
+                                            <?php echo $Profile['Occupation'];?>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
+                                        Am a very simple man by nature I love to learn from people I like travelling I love people that love I love to learn from people I like travelling I love people that love......<a href="<?php echo GetUrl(" MyProfiles/View/ ". $Profile['ProfileID'].".htm ");?>">More</a>
+                                    </div>
+                                    <div class="col-sm-2" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div>Created On</div>
+                                        <div>Posted On</div>
+                                    </div>
+                                    <div class="col-sm-3" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div>
+                                            <?php echo putDateTime($Profile['CreatedOn']);?>
+                                        </div>
+                                        <div>
+                                            <?php echo putDateTime($Profile['RequestVerifyOn']);?>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div>Is Published</div>
+                                        <div>Status</div>
+                                    </div>
+                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div>
+                                            <?php echo "No";?>
+                                        </div>
+                                        <div>
+                                            <?php echo "VerificationPending";?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="float:right;line-height: 1px;">
+                                <a href="<?php echo GetUrl(" MyProfiles/View/ ". $Profile['ProfileID'].".htm ");?>">View</a>
+                            </div>
+                        </div>
+                        <br>
+                        <?php }?>
                 </div>
-              </div>
-              <div class="ticket-actions col-md-2">
-                <div class="btn-group dropdown">
-                  <button type="button" class="btn btn-success dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Manage
-                  </button>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">
-                    <a class="dropdown-item" href="<?php echo GetUrl("Profile/Edit/".$Profile['ProfileID'].".htm");?>">
-                      <i class="fa fa-history fa-fw"></i>Edit Profile</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">
-                      <i class="fa fa-times text-danger fa-fw"></i>Delete Profile</a>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
-          <?php } ?>
         </div>
-      </div>
-    </div>
-</div>
-<a href="ManageProfile.php"></a>
+    </form>
+    <?php     } else { ?>
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Manage Profiles</h4>
+                    <h4 class="card-title">Posted Profiles</h4>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
+                            <a href="ManageProfile"><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
+                            <a href="Drafted"><small style="font-weight:bold;text-decoration:underline">Draft</small></a>&nbsp;|&nbsp;
+                            <a href="Posted"><small style="font-weight:bold;text-decoration:underline">Posted</small></a>&nbsp;|&nbsp;
+                            <a href="Published"><small style="font-weight:bold;text-decoration:underline">Published</small></a>
+                            <!-- &nbsp;|&nbsp;
+                    <a href="Expired"><small style="font-weight:bold;text-decoration:underline">Expired</small></a>&nbsp;|&nbsp;
+                    <a href="#"><small style="font-weight:bold;text-decoration:underline">Rejected</small></a>-->
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="card-body" style="padding:80px;text-align:center;color:#aaa">
+                        <img src="<?php echo ImageUrl;?>noprofile.svg" style="height:128px">
+                        <Br> No profiles found in your account
+                        <br>
+                        <Br>
+                        <br>
+                        <Br>
+                        <br>
+                        <Br>
+                        <br>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <?php }?>

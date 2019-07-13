@@ -68,7 +68,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="float:right;line-height: 1px;"><a href="<?php echo GetUrl("MyProfiles/Edit/GeneralInformation/". $Profile['ProfileID'].".htm");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/View/". $Profile['ProfileID'].".htm");?>">View</a>  </div> 
+                        <div style="float:right;line-height: 1px;">
+                    <?php if($Profile['IsApproved']==1){?>
+                        <a href="<?php echo GetUrl("MyProfiles/View/". $Profile['ProfileID'].".htm");?>">View</a>
+                          <?php }else{  ?>
+                                  <a href="<?php echo GetUrl("MyProfiles/Edit/GeneralInformation/". $Profile['ProfileID'].".htm");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/View/". $Profile['ProfileID'].".htm");?>">View</a>
+                         <?php  }    ?>
+                     </div> 
                     <?php } ?>
                 <?php } }?> 
                     </div>                                    
@@ -181,7 +187,7 @@
                </div>-->
          </div>
         </div>
-    <?php $response = $webservice->getData("Member","GetMemberInfo"); ?>
+    <?php $response = $webservice->getData("Member","GetMemberInfo");?>
     <script>
         <?php if($response['data']['WelcomeMsg']==0) { ?>
         $(document).ready(function(){

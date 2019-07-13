@@ -329,8 +329,9 @@
              $Caste         = CodeMaster::getData("CASTNAMES",$_POST["Caste"]);
              $Community     = CodeMaster::getData("COMMUNITY",$_POST["Community"]); 
              $Nationality   = CodeMaster::getData("NATIONALNAMES",$_POST["Nationality"]);
-             
-             $id =  $mysql->insert("_tbl_Profile_Draft",array("ProfileForCode"    => $_POST['ProfileFor'],
+             $ProfileCode   =SeqMaster::GetNextDraftProfileCode();
+             $id =  $mysql->insert("_tbl_Profile_Draft",array("ProfileCode"    => $ProfileCode,
+                                                              "ProfileForCode"    => $_POST['ProfileFor'],
                                                               "ProfileFor"       => $ProfileFors[0]['CodeValue'],
                                                               "ProfileName"       => $_POST['ProfileName'],
                                                               "DateofBirth"       => $_POST['DateofBirth'],        
@@ -641,7 +642,8 @@
                  } else {
                      return $this->MobileNumberVerificationForm("<span style='color:red'>You entered, invalid pin.</span>",$_POST['loginId'],$_POST['mobile_otp_2'],$_POST['reqId']);
                  }
-         }                             
+         }
+                                     
 
          function ChangeEmailFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
              
@@ -874,12 +876,42 @@
              }  
          }
          
-         function GetMyDraftProfiles() {
+         function GetMyProfiles() {
              
              global $mysql,$loginInfo;    
-             $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."'");
-             return Response::returnSuccess("success",$Profiles);
+             
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {
+                 $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."'");
+                 return Response::returnSuccess("success",$Profiles);
+             }
+             
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Draft") {
+                 $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."' and RequestToVerify='0'");
+                 return Response::returnSuccess("success",$Profiles);
+             }
+             
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Posted") {
+                $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."' and RequestToVerify='1'");
+                return Response::returnSuccess("success",$Profiles);
+             }
+             
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {
+                 $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."' and IsApproved='1' ");
+                 return Response::returnSuccess("success",$Profiles);
+             }
          }
+         
+         function VerifyProfileforPublish() {
+             
+             global $mysql;
+             sleep(10);
+             
+                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
+                            <h5 style="text-align:center;"><a  href="#">Yes</a> <h5>
+                       </div>';
+                 } 
          
          function GetDraftProfileInformation() {
              global $mysql,$loginInfo;
@@ -1385,11 +1417,11 @@
              return Response::returnSuccess("success",$SAttachments);
          }
          
-         function GetMyProfiles() {
+        /* function GetMyProfiles() {
              global $mysql,$loginInfo;    
              $MyProfiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("success",$MyProfiles);
-         }
+         }*/
          
          function GetBankNames() {
              global $mysql,$loginInfo;

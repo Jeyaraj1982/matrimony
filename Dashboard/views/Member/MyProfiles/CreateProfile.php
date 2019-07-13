@@ -18,7 +18,81 @@
      $fInfo = $webservice->GetCodeMasterDatas(); 
      
 ?>
-<form method="post" action="" onsubmit="">
+<script>
+
+function submitprofile() {
+                         $('#ErrProfileFor').html("");
+                         $('#ErrProfileName').html("");
+                         $('#ErrDateofBirth').html("");
+                         $('#ErrMaritalStatus').html("");
+                         $('#ErrLanguage').html("");
+                         $('#ErrReligion').html("");
+                         $('#ErrCaste').html("");
+                         $('#ErrCommunity').html("");
+                         $('#ErrNationality').html("");
+                         
+                         ErrorCount=0;
+                         
+                         if($("#ProfileFor").val()=="0"){
+                            document.getElementById("ErrProfileFor").innerHTML="Please select profile for"; 
+                         }
+                         
+                         if (IsNonEmpty("ProfileName","ErrProfileName","Please enter your profile name")) {
+                            IsAlphabet("ProfileName","ErrProfileName","Please enter alpha numeric characters only");
+                         }
+                         
+                        //IsNonEmpty("DateofBirth","ErrDateofBirth","Please enter your date of birth");
+                       
+                         
+                         if($("#Sex").val()=="0"){
+                            document.getElementById("ErrSex").innerHTML="Please select sex"; 
+                         }
+                         
+                         if($("#MaritalStatus").val()=="0"){
+                            document.getElementById("ErrMaritalStatus").innerHTML="Please select marital status"; 
+                         }
+                         
+                         
+                         if($("#Language").val()=="0"){
+                            document.getElementById("ErrLanguage").innerHTML="Please select your maother tongue"; 
+                         }
+                         
+                         if($("#Religion").val()=="0"){
+                            document.getElementById("ErrReligion").innerHTML="Please select your religion";
+                         }
+                         
+                         if($("#Caste").val()=="0"){
+                            document.getElementById("ErrCaste").innerHTML="Please select your caste";
+                         }
+                         
+                         if($("#Community").val()=="0"){
+                            document.getElementById("ErrCommunity").innerHTML="Please select your community"; 
+                         }
+                         
+                         if($("#Community").val()=="0"){
+                            document.getElementById("ErrCommunity").innerHTML="Please select your community";
+                         }
+                         
+                         if($("#Nationality").val()=="0"){
+                            document.getElementById("ErrNationality").innerHTML="Please select your nationality"; 
+                         }
+                         
+                        if (ErrorCount==0) {
+                            return true;
+                        } else{
+                            return false;
+                        }
+                        
+    
+    
+}
+
+
+
+
+</script>
+ 
+<form method="post" action="" name="form" onsubmit="return submitprofile();">
     <div class="col-12 grid-margin">
         <div class="card">
             <div class="card-body">
