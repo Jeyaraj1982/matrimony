@@ -2,6 +2,7 @@
 RewriteRule ^Masters/(.*)/Manage/Edit/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/Edit
 RewriteRule ^Masters/(.*)/Manage/View/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/View
 RewriteRule ^Requests/Member/ViewPaypalRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Member/ViewPaypalRequests
+RewriteRule ^Profiles/ViewDraftProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewDraftProfile
 
 RewriteRule ^MyProfiles/Edit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/GeneralInformation
 RewriteRule ^MyProfiles/Edit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/EducationDetails

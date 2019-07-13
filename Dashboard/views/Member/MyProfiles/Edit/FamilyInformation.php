@@ -51,7 +51,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">FamilyType<span id="star">*</span></label>
+        <label class="col-sm-2 col-form-label">Family Type<span id="star">*</span></label>
         <div class="col-sm-4">
             <select class="selectpicker form-control" data-live-search="true" id="FamilyType" name="FamilyType">
                 <option value="0">Choose Family Type</option>

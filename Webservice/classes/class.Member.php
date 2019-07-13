@@ -321,6 +321,7 @@
                 return Response::returnError("Please select nationality");
              }
 
+             $ProfileFors = CodeMaster::getData("PROFILESIGNIN",$_POST["ProfileFor"]);
              $MaritalStatus = CodeMaster::getData("MARTIALSTATUS",$_POST["MaritalStatus"]);
              $Sex           = CodeMaster::getData("SEX",$_POST["Sex"]); 
              $MotherTongue  = CodeMaster::getData("LANGUAGENAMES",$_POST["Language"]); 
@@ -329,7 +330,8 @@
              $Community     = CodeMaster::getData("COMMUNITY",$_POST["Community"]); 
              $Nationality   = CodeMaster::getData("NATIONALNAMES",$_POST["Nationality"]);
              
-             $id =  $mysql->insert("_tbl_Profile_Draft",array("ProfileFor"        => $_POST['ProfileFor'],
+             $id =  $mysql->insert("_tbl_Profile_Draft",array("ProfileForCode"    => $_POST['ProfileFor'],
+                                                              "ProfileFor"       => $ProfileFors[0]['CodeValue'],
                                                               "ProfileName"       => $_POST['ProfileName'],
                                                               "DateofBirth"       => $_POST['DateofBirth'],        
                                                               "SexCode"           => $_POST['Sex'],      
@@ -357,7 +359,7 @@
          }
          
          function MemberChangePassword(){
-             
+                                                               
              global $mysql,$loginInfo;
              $getpassword = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              if ($getpassword[0]['MemberPassword']!=$_POST['CurrentPassword']) {
@@ -882,7 +884,9 @@
          function GetDraftProfileInformation() {
              global $mysql,$loginInfo;
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");               
+             $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");               
              return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
+                                                            "EducationAttachments"   => $Educationattachments[0],
                                                             "ProfileSignInFor"       => CodeMaster::getData('PROFILESIGNIN'),
                                                             "Gender"                 => CodeMaster::getData('SEX'),
                                                             "MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
@@ -926,7 +930,6 @@
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
                                                             "StateName"              => CodeMaster::getData('STATNAMES')));
          }
-         
          function updateProfilePhoto() {
              global $mysql,$loginInfo;
              $Profiles = $mysql->select("update  `_tbl_members` set `FileName`='".$_POST['filename']."'  where `MemberID`='".$loginInfo[0]['MemberID']."'");
@@ -1288,6 +1291,24 @@
                                                             "Occupation"       => CodeMaster::getData('OCCUPATIONTYPES'),
                                                             "TypeofOccupation" => CodeMaster::getData('TYPEOFOCCUPATIONS'),
                                                             "IncomeRange"      => CodeMaster::getData('INCOMERANGE')));
+         }
+         function MemberProfilePublishNow() {
+             
+             global $mysql,$loginInfo;
+             
+             $updateSql = "update `_tbl_Profile_Draft` set  `RequestToVerify`      = '1',
+                                                            `RequestVerifyOn`      = '".date("Y-m-d H:i:s")."'
+                                                             where  `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'";
+             $mysql->execute($updateSql);  
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'RequestToVerifyPublishProfile.',
+                                                             "ActivityString" => 'Request To Verify PublishProfile.',
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+            
+             
+             return Response::returnSuccess("success",array());
          }
            
          function AddEducationalDetails() {

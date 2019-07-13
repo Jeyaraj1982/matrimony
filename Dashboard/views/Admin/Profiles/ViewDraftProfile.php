@@ -1,7 +1,8 @@
 <?php  
-$response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileID"=>$_GET['Code']));
-$ProfileInfo          = $response['data']['ProfileInfo'];              
-$EducationAttachment = $response['data']['EducationAttachments'];              
+$response = $webservice->getData("Admin","ViewDraftedProfileDetails");
+    $ProfileInfo          = $response['data']['ProfileDetails'];    
+    $EducationAttachment = $response['data']['EducationAttachments'];  
+    $Member = $response['data']['Members'];  
  ?>  
  <style>
  .table-bordered > tbody > tr > td{
@@ -12,13 +13,46 @@ text-align:center;
  </style>
 <form method="post" action="" onsubmit="">
 <div class="col-12 grid-margin">
+  <div class="card">
+    <div class="card-body">
+    <div class="form-group row">
+    <div class="col-sm-6">
+    <h4 class="card-title">Member Details</h4> </div>
+    <div class="col-sm-6" align="right" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../Drafted");?> <small>List of Profiles</small> </a></div>
+    </div>
+        <div class="form-group row">
+            <label for="Community" class="col-sm-3 col-form-label">Member Name</label>
+            <div class="col-sm-3"> <small style="color:#737373;"><?php echo $Member['MemberName'];?></small></div>
+            <label for="Member Code" class="col-sm-3 col-form-label">Member Code</label>
+            <div class="col-sm-3"> <small style="color:#737373;"><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberCode'];?></small></div>
+        </div>
+        <div class="form-group row">
+            <label for="Community" class="col-sm-3 col-form-label">Email ID</label>
+            <div class="col-sm-3"> <small style="color:#737373;"><?php echo $Member['EmailID'];?></small></div>
+            <label for="Member Code" class="col-sm-3 col-form-label">Mobile Number</label>
+            <div class="col-sm-3"> <small style="color:#737373;"><?php echo $Member['MobileNumber'];?></small></div>
+        </div>
+    </div>
+  </div>
+</div>
+<div class="col-12 grid-margin">
+  <div class="card">
+    <div class="card-body">
+        <div class="form-group row">
+            <label for="Community" class="col-sm-2 col-form-label">Created On</label>
+            <div class="col-sm-9"> <small style="color:#737373;"><?php echo PutDateTime($ProfileInfo['CreatedOn']);?></small></div>
+             </div>
+             <div class="form-group row">
+                    <label for="Community" class="col-sm-2 col-form-label">Last saved</label>
+                    <div class="col-sm-3"><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small></div>
+                   </div>
+  </div>
+</div>
+</div>
+<div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                    <div class="form-group row">
-                        <div class="col-sm-3">         
-                            <h4 class="card-title">Profile Information</h4></div>
-                        <div class="col-sm-9" align="right" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../Drafted");?> <small>List of Profiles</small> </a></div>
-                        </div>
+                            <h4 class="card-title">Profile Information</h4>
                     <div class="form-group row">
                         <label for="Community" class="col-sm-3 col-form-label">Profile For</label>
                         <div class="col-sm-9"> <small style="color:#737373;"><?php echo $ProfileInfo['ProfileFor'];?></small></div>
@@ -66,6 +100,7 @@ text-align:center;
                             <small style="color:#737373;"><?php echo $ProfileInfo['Nationality'];?></small>   
                          </div>
                     </div>
+                    
               </div>
          </div>
 </div>
@@ -104,11 +139,10 @@ text-align:center;
     <div class="card-body">
     <h4 class="card-title">Occupation Details</h4>
         <div class="form-group row">
-            <label for="Employed As" class="col-sm-3 col-form-label">Employed As</label>
+            <label for="Community" class="col-sm-3 col-form-label">Employed As</label>
             <div class="col-sm-3"> <small style="color:#737373;"><?php echo $ProfileInfo['EmployedAs'];?></small></div>
-            <label for="Annual Income" class="col-sm-3 col-form-label">Annual Income</label>
-            <div class="col-sm-3" ><small style="color:#737373;"><?php echo $ProfileInfo['AnnualIncome'];?></small>
-             </div>
+            <label for="Sex" class="col-sm-3 col-form-label">Annual Income</label>
+             <div class="col-sm-3" ><small style="color:#737373;"><?php echo $ProfileInfo['AnnualIncome'];?></small></div>
         </div>
         <div class="form-group row">
             <label for="Name" class="col-sm-3 col-form-label">Occupation</label>
@@ -118,9 +152,9 @@ text-align:center;
                 <small style="color:#737373;"><?php echo $ProfileInfo['TypeofOccupation'];?></small>
              </div>
         </div>
-        </div>
     </div>
   </div>
+</div>
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
@@ -284,7 +318,7 @@ text-align:center;
         </div>
         </div>
     </div>
-  </div>                                      
+  </div>
   <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">

@@ -440,11 +440,32 @@ class Admin extends Master {
     }
     function GetDraftedProfiles() {
            global $mysql;    
-              $Profiles     = $mysql->select("select * from _tbl_Profile_Draft");
+              $Profiles     = $mysql->select("select * from `_tbl_Profile_Draft` where `RequestToVerify`='0'");
               $MemberName   = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['CreatedBy']."'");
               
                 return Response::returnSuccess("success",array("Profiles"   => $Profiles,
                                                                 "Member"    => $MemberName));
+                                                            
+    }
+    
+    function GetProfilesRequestVerify() {
+           global $mysql;    
+              $Profiles     = $mysql->select("select * from `_tbl_Profile_Draft`  where `RequestToVerify`='1'");
+              $MemberName   = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['CreatedBy']."'");
+              
+                return Response::returnSuccess("success",array("Profiles"   => $Profiles,
+                                                                "Member"    => $MemberName));
+                                                            
+    }
+    function ViewDraftedProfileDetails() {
+            global $mysql;
+                
+          $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `ProfileID`='".$_POST['Code']."'");
+          $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where ProfileID='".$_POST['Code']."'");               
+          $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['CreatedBy']."'");               
+        return Response::returnSuccess("success",array("ProfileDetails" => $Profiles[0],
+        "EducationAttachments" => $Educationattachments[0],
+        "Members" => $members[0]));
                                                             
     }
     

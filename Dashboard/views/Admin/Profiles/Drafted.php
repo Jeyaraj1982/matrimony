@@ -25,8 +25,7 @@
                                 <td><?php echo $response['data']['Member'][0]['MemberName'];?></td>
                                 <td><?php echo $Profile['ProfileFor'];?></td>
                                 <td><?php echo putDateTime($Profile['CreatedOn']);?></td>
-                                <td><a href="<?php echo GetUrl("Profiles/View/". $Profile['ProfileID'].".html");?>"><span>View</span></a></td>
-                                <td></td>
+                                <td><a href="<?php echo GetUrl("Profiles/ViewDraftProfile/". $Profile['ProfileID'].".htm");?>"><span>View</span></a></td>
                                 </tr>
                         <?php }} ?>            
                       </tbody>                        

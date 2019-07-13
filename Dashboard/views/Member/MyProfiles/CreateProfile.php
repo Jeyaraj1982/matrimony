@@ -1,6 +1,3 @@
-
-
-
 <?php
     $response = $webservice->GetMyDraftProfiles(); 
     if (sizeof($response['data'])==0) {
@@ -9,7 +6,7 @@
   if (isset($_POST['BtnSaveProfile'])) {   
     $response = $webservice->CreateProfile($_POST);
     if ($response['status']=="success") {
-        echo "<script>location.href='Edit/".$ProfileID.".htm?msg=1';</script>";
+        echo "<script>location.href='Edit/GeneralInformation/".$ProfileID.".htm?msg=1';</script>";
         ?>
         <?php
     } else {
