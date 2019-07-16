@@ -35,7 +35,6 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Rejected");?>">Rejected</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/ManageFeatured");?>">Manage Featured</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/DocumentVerification");?>">Document Verification</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/RequestedtoVerify");?>">Requested to verify</a></li>
                     </ul>
                 </div>                                                                
             </li>
@@ -199,14 +198,9 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Logs/SMSLog");?>">SMS Log</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Logs/EmailLog");?>">Email Log</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Logs/LoginLog");?>">Login Log</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Logs/Activity");?>">Activity</a></li>
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php echo GetUrl("Activity");?>">
-                    <i class="menu-icon mdi mdi-content-copy"></i>
-                    <span class="menu-title">Activity</span>
-                </a>
-            </li>
-        </ul>
+         </ul>
     </nav> 

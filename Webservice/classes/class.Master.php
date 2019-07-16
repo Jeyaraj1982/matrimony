@@ -597,7 +597,84 @@ class Master {
         }
         /* End of Diet */
         
-        /* Height  */
+        /* Bank Name  */
+         public function CreateBankName() {
+            global $mysql;
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='BANKNAMES' and SoftCode='".trim($_POST['BankCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Bank Code Alreay Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='BANKNAMES' and CodeValue='".trim($_POST['BankName'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Bank Name Already Exists");
+            }
+            $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"  => "BANKNAMES",
+                                                                "SoftCode"  => trim($_POST['BankCode']),
+                                                                "CodeValue" => trim($_POST['BankName'])));
+            return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
+                                     Response::returnError("Access denied. Please contact support");      
+        }
+        public function EditBankName() {
+            global $mysql;     
+            $data = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['BankName']."' and  HardCode='BANKNAMES' and SoftCode<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Bank Name already exists");    
+            }
+            $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['BankName']."',IsActive='".$_POST['IsActive']."' where HardCode='BANKNAMES' and SoftCode='".$_POST['Code']."'");
+            return Response::returnSuccess("success",array());
+        }
+        
+        public function CreateLakanam() {
+            global $mysql;
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='LAKANAM' and SoftCode='".trim($_POST['LakanamCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Lakanam Code Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='LAKANAM' and CodeValue='".trim($_POST['Lakanam'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Lakanam Already Exists");
+            }
+            $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"  => "LAKANAM",
+                                                                "SoftCode"  => trim($_POST['LakanamCode']),
+                                                                "CodeValue" => trim($_POST['Lakanam'])));
+            return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
+                                     Response::returnError("Access denied. Please contact support");      
+        }
+        public function EditLakanam() {
+            global $mysql;     
+            $data = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['Lakanam']."' and  HardCode='LAKANAM' and SoftCode<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Lakanam already exists");    
+            }
+            $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['Lakanam']."',IsActive='".$_POST['IsActive']."' where HardCode='LAKANAM' and SoftCode='".$_POST['Code']."'");
+            return Response::returnSuccess("success",array());
+        }
+        
+        public function CreateMonsign() {
+            global $mysql;
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='MONSIGNS' and SoftCode='".trim($_POST['MonsignCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Monsign Code Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='MONSIGNS' and CodeValue='".trim($_POST['Monsign'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Monsign Already Exists");
+            }
+            $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"  => "MONSIGNS",
+                                                                "SoftCode"  => trim($_POST['MonsignCode']),
+                                                                "CodeValue" => trim($_POST['Monsign'])));
+            return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
+                                     Response::returnError("Access denied. Please contact support");      
+        }
+        public function EditMonsign() {
+            global $mysql;     
+            $data = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['Monsign']."' and  HardCode='MONSIGNS' and SoftCode<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Monsign already exists");    
+            }
+            $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['Monsign']."',IsActive='".$_POST['IsActive']."' where HardCode='MONSIGNS' and SoftCode='".$_POST['Code']."'");
+            return Response::returnSuccess("success",array());
+        }
         public function GetMasterAllViewInfo(){
         
         global $mysql;

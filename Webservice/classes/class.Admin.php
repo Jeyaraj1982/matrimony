@@ -841,7 +841,13 @@ class Admin extends Master {
                                                            "DietCode"    => SeqMaster::GetNextCode('DIETS'),
                                                            "Diet"        => CodeMaster::getData('DIETS'),
                                                            "HeightCode"    => SeqMaster::GetNextCode('HEIGHTS'),
-                                                           "Height"        => CodeMaster::getData('HEIGHTS')));    
+                                                           "Height"        => CodeMaster::getData('HEIGHTS'),
+                                                           "BankCode"    => SeqMaster::GetNextCode('BANKNAMES'),
+                                                           "BankName"        => CodeMaster::getData('BANKNAMES'),
+                                                           "LakanamCode"    => SeqMaster::GetNextCode('LAKANAM'),
+                                                           "Lakanam"        => CodeMaster::getData('LAKANAM'),
+                                                           "MonsignCode"    => SeqMaster::GetNextCode('MONSIGNS'),
+                                                           "Monsign"        => CodeMaster::getData('MONSIGNS')));    
     }                                                                          
 
     function CreateEmailApi() {
@@ -1459,7 +1465,7 @@ class Admin extends Master {
                                     FROM _tbl_members
                                     INNER JOIN _tbl_franchisees
                                     ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.MemberID='".$_POST['Code']."'");
-
+          $Member[0]['Country'] = CodeMaster::getData('RegisterAllowedCountries');
         return Response::returnSuccess("success",array("MemberInfo"    => $Members[0]));
     }
   function GetFranchiseeInfoInFranchiseeWise() {        
@@ -1496,19 +1502,39 @@ class Admin extends Master {
 
     function GetEmailLogs() {    
 
-             global $mysql,$loginInfo;    
+             global $mysql,$loginInfo;  
+             
+             /*SELECT * FROM _tbl_logs_email
+INNER JOIN _tbl_members
+ON _tbl_members.MemberID = _tbl_logs_email.MemberID
+INNER JOIN _tbl_franchisees
+ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
-             $sql = "select * from _tbl_logs_email ";
+
+             $sql = "SELECT EmailRequestedOn,EmailTo,MemberID,EmailSubject,EmaildFor,FranchiseeID,AdminID, 
+                            CASE
+                                WHEN   ((IsSuccess=1) AND (IsFailure=0)) THEN 'Success'
+                                WHEN   ((IsSuccess=0) AND (IsFailure=1)) THEN 'Failure'
+                            END AS Status
+                     FROM _tbl_logs_email ";
 
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql));    
              }
-
-             if (isset($_POST['Request']) && $_POST['Request']=="Active") {
-                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsSuccess`='1'"));    
+                                                                                                                                
+             if (isset($_POST['Request']) && $_POST['Request']=="Member") {
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE FranchiseeID ='0' and AdminID ='0'"));    
+             }
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Franchisee") {
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE MemberID ='0' and AdminID ='0'"));    
              }
 
-             if (isset($_POST['Request']) && $_POST['Request']=="DeActive") {
+             if (isset($_POST['Request']) && $_POST['Request']=="Success") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsSuccess`='1'"));    
+             }                                                                                                
+
+             if (isset($_POST['Request']) && $_POST['Request']=="Failure") {
                  return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsSuccess`='0'"));    
              }
          }
@@ -1517,17 +1543,49 @@ class Admin extends Master {
              global $mysql,$loginInfo;    
 
              $sql = "select * from _tbl_logs_logins ";
+             /*$sql = SELECT * FROM _tbl_logs_logins
+                                    INNER JOIN _tbl_members
+                                    ON _tbl_members.MemberID = _tbl_logs_logins.MemberID
+                                    INNER JOIN _tbl_franchisees
+                                    ON _tbl_franchisees.FranchiseeID = _tbl_logs_logins.FranchiseeID"; */
 
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql));    
              }
+             if (isset($_POST['Request']) && $_POST['Request']=="Member") {
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE `FranchiseeID` ='0' and `FranchiseeStaffID` ='0' and `AdminID` ='0' and `AdminStaffID`='0'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Franchisee") {
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE `MemberID` ='0' and `FranchiseeStaffID` ='0' and `AdminID` ='0' and `AdminStaffID`='0'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Success") {
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE `LoginStatus`= '1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Failure") {
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE `LoginStatus`= '0'"));    
+             }
 
          } 
-    function GetActivityHistory() {
-             global $mysql,$loginInfo;
-             $NotificationHistory = $mysql->select("select * from `_tbl_logs_activity` ORDER BY `ActivityID` DESC ");
-                return Response::returnSuccess("success",$NotificationHistory);
-         }
+         function GetActivityHistory() {    
+
+             global $mysql,$loginInfo;    
+
+             $sql = "SELECT *
+                        FROM _tbl_logs_activity
+                        LEFT  JOIN _tbl_members  
+                        ON _tbl_logs_activity.MemberID=_tbl_members.MemberID ";
+             
+
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql." ORDER BY `ActivityID` DESC"));    
+             }                                                                                                                                                                            
+             if (isset($_POST['Request']) && $_POST['Request']=="Member") {
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE `FranchiseeID` ='0' ORDER BY `ActivityID` DESC"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Franchisee") {
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE `MemberID` ='0' ORDER BY `ActivityID` DESC"));    
+             }
+         } 
 
     }
 ?>

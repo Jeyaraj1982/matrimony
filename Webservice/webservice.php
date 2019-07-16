@@ -1,7 +1,13 @@
 <?php
     include_once("config_client.php");
-    date_default_timezone_set('Asia/Kolkata');
     
+    $cdata=json_decode(json_encode(array('TimeZone'        => "Asia/Kolkata",
+                                         'DateFormat'      => "",
+                                         'Language'        => "la-en",
+                                         'DateTimeFormat'  => "")));
+              
+    date_default_timezone_set($cdata->TimeZone);
+       
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
@@ -11,7 +17,7 @@
     
     $mail    = new PHPMailer;
     
-    include_once("la-en.php");
+    include_once($cdata->Language.".php");
     
     class J2JApplication {
         
