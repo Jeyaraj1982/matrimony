@@ -23,13 +23,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $Lakanams = $mysql->select("select * from _tbl_master_codemaster Where HardCode='LAKANAM'"); ?>
-                        <?php foreach($Lakanams as $Lakanam) { ?>
+                         <?php $Lakanams = $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($Lakanams['data']['Lakanam'] as $Lakanam) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($Lakanam['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $Lakanam['SoftCode'];?></td>
                                 <td><?php echo $Lakanam['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Lakanam/Manage/Edit/". $Lakanam['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/Lakanam/Manage/View/". $Lakanam['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Lakanam/Manage/Edit/". $Lakanam['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/Lakanam/Manage/View/". $Lakanam['SoftCode'].".html");?>">View</a></td>
                                 </tr>
                         <?php } ?>  
                      </tbody>

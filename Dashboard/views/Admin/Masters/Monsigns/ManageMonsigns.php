@@ -23,13 +23,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $Monsigns = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MONSIGNS'"); ?>
-                        <?php foreach($Monsigns as $Monsign) { ?>
+                        <?php $Monsigns = $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($Monsigns['data']['Monsign'] as  $Monsign) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($Monsign['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $Monsign['SoftCode'];?></td>
                                 <td><?php echo $Monsign['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Monsigns/Manage/Edit/". $Monsign['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/Monsigns/Manage/View/". $Monsign['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td> 
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Monsigns/Manage/Edit/". $Monsign['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/Monsigns/Manage/View/". $Monsign['SoftCode'].".html");?>">View</a></td> 
                                 </tr>
                         <?php } ?>
                      </tbody>

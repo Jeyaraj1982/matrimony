@@ -61,9 +61,12 @@
                                 </select>
                           </div>
                         </div>
+                         <div class="form-group row">
+                                        <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
+                        </div>
                         <div class="form-group row">
                         <div class="col-sm-5">
-                        <button type="submit" name="BtnUpdateMonsign" class="btn btn-success mr-2">Update Monsign</button></div>
+                        <button type="submit" name="BtnUpdateMonsign" class="btn btn-primary mr-2" style="font-family:roboto">Update Monsign</button></div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageMonsigns"><small>List of Monsigns</small></a></div>
                         </div>
                         </form>

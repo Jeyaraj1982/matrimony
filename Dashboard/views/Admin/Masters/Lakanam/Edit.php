@@ -61,6 +61,9 @@
                                 </select>
                           </div>
                         </div>
+                         <div class="form-group row">
+                                        <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
+                        </div>
                         <div class="form-group row">
                         <div class="col-sm-5">
                         <button type="submit" name="BtnUpdateLakanam" class="btn btn-success mr-2">Update Lakanam</button></div>

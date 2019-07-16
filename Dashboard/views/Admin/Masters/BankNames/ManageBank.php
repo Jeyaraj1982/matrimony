@@ -23,13 +23,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $BankNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='BANKNAMES'"); ?>
-                        <?php foreach($BankNames as $BankName) { ?>
+                        <?php $BankNames =$webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($BankNames['data']['BankName'] as $BankName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($BankName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $BankName['SoftCode'];?></td>
                                 <td><?php echo $BankName['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/BankNames/Manage/Edit/". $BankName['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/BankNames/Manage/View/". $BankName['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/BankNames/Manage/Edit/". $BankName['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/BankNames/Manage/View/". $BankName['SoftCode'].".html");?>">View</a></td>
                                 </tr>
                         <?php } ?>            
                       </tbody>
