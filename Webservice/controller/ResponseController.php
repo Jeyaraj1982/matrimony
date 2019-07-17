@@ -2,8 +2,8 @@
 
     class Response {
         
-        function returnError($message) {
-            return json_encode(array("status"=>"failed","message"=>$message));
+        function returnError($message,$data=array()) {
+            return json_encode(array("status"=>"failed","message"=>$message, "data"=>$data));
         }
     
         function returnSuccess($message,$data=array()) {

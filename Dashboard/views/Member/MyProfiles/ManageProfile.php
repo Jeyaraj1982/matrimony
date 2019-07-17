@@ -19,7 +19,6 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Manage Profiles</h4>
-                    <h4 class="card-title">Drafted Profiles</h4>
                     <div class="form-group row">
                         <div class="col-sm-6">
                             <!--<button type="submit" class="btn btn-primary "><i class="mdi mdi-plus"></i>Create Profile</button>-->

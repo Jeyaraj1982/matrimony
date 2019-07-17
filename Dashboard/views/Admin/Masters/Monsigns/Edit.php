@@ -1,17 +1,15 @@
-<?php
+<?php   
     if (isset($_POST['BtnUpdateMonsign'])) {
         
-        $duplicateMonsign = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['RelMonsignigionName']."' and  HardCode='MONSIGNS' and SoftCode<>'".$_GET['Code']."'");
-        
-        if (sizeof($duplicateMonsign)==0) {
-        $MonsignsID = $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['Monsign']."',IsActive='".$_POST['IsActive']."' where HardCode='MONSIGNS' and SoftCode= '".$_GET['Code']."'");
-        echo "Successfully Updated";
+        $response = $webservice->getData("Admin","EditMonsign",$_POST);
+        if ($response['status']=="success") {
+            echo $response['message'];                     
         } else {
-            $errorMonsign = "Monsign already exists";
-            echo "$errorMonsign";
+            $errormessage = $response['message']; 
         }
     }
-    $Monsign = $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$_GET['Code']."'");
+    $response     = $webservice->GetMasterAllViewInfo();
+    $Monsign = $response['data']['ViewInfo'];
 ?>
 <script>
  function SubmitNewMonsign() {
@@ -40,24 +38,24 @@
                       <h4 class="card-title">Edit Monsign</h4>  
                       <form class="forms-sample">
                       <div class="form-group row">
-                          <label for="MonsignCode" class="col-sm-3 col-form-label"><small>Monsign Code<span id="star">*</span></small></label>
+                          <label for="MonsignCode" class="col-sm-3 col-form-label">Monsign Code<span id="star">*</span></label>
                           <div class="col-sm-9">
-                            <input type="text" readonly="readonly" style="width:80px;background:#f1f1f1" maxlength="10" class="form-control" id="MonsignCode" name="MonsignCode" value="<?php echo $Monsign[0]['SoftCode'];?>" placeholder="Monsign Code">
+                            <input type="text" readonly="readonly" style="width:80px;background:#f1f1f1" maxlength="10" class="form-control" id="MonsignCode" name="MonsignCode" value="<?php echo $Monsign['SoftCode'];?>" placeholder="Monsign Code">
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label for="Monsign" class="col-sm-3 col-form-label"><small>Monsign<span id="star">*</span></small></label>
+                          <label for="Monsign" class="col-sm-3 col-form-label">Monsign<span id="star">*</span></label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" id="Monsign" name="Monsign" maxlength="100" value="<?php echo (isset($_POST['Monsign']) ? $_POST['Monsign'] : $Monsign[0]['CodeValue']);?>" placeholder="Monsign">
+                            <input type="text" class="form-control" id="Monsign" name="Monsign" maxlength="100" value="<?php echo (isset($_POST['Monsign']) ? $_POST['Monsign'] : $Monsign['CodeValue']);?>" placeholder="Monsign">
                             <span class="errorstring" id="ErrMonsign"><?php echo isset($ErrMonsign)? $ErrMonsign : "";?></span>
                           </div>
                         </div>
                          <div class="form-group row">
-                          <label for="IsActive" class="col-sm-3 col-form-label"><small>Is Active</small></label>
+                          <label for="IsActive" class="col-sm-3 col-form-label">Is Active</label>
                           <div class="col-sm-9">
                                 <select name="IsActive" class="form-control" style="width:80px">
-                                    <option value="1" <?php echo ($Monsign[0]['IsActive']==1) ? " selected='selected' " : "";?>>Yes</option>
-                                    <option value="0" <?php echo ($Monsign[0]['IsActive']==0) ? " selected='selected' " : "";?>>No</option>
+                                    <option value="1" <?php echo ($Monsign['IsActive']==1) ? " selected='selected' " : "";?>>Yes</option>
+                                    <option value="0" <?php echo ($Monsign['IsActive']==0) ? " selected='selected' " : "";?>>No</option>
                                 </select>
                           </div>
                         </div>
@@ -67,7 +65,7 @@
                         <div class="form-group row">
                         <div class="col-sm-5">
                         <button type="submit" name="BtnUpdateMonsign" class="btn btn-primary mr-2" style="font-family:roboto">Update Monsign</button></div>
-                        <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageMonsigns"><small>List of Monsigns</small></a></div>
+                        <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageMonsigns">List of Monsigns</a></div>
                         </div>
                         </form>
                     </div>

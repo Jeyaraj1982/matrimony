@@ -2,7 +2,7 @@
     if (isset($_POST['welcomebutton'])) {
         $response = $webservice->WelcomeMessage();
     }  
-    $response = $webservice->getData("Member","GetMyDraftProfiles");
+    $response = $webservice->getData("Member","GetMyProfiles",array("ProfileFrom"=>"All"));
    // if (sizeof($response['data'])>0) {
 ?>
     <style>

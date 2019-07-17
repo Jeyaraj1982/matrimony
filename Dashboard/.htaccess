@@ -15,6 +15,7 @@ RewriteRule ^MyProfiles/Edit/DocumentAttachment/(.*)\.htm$ ./index.php?Code=$1&p
 RewriteRule ^MyProfiles/Edit/CommunicationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/CommunicationDetails
 RewriteRule ^MyProfiles/Edit/PartnersExpectation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/PartnersExpectation
 RewriteRule ^MyProfiles/Edit/HoroscopeDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/HoroscopeDetails
+RewriteRule ^MyProfiles/Edit/ProfilePhoto/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/ProfilePhoto
 RewriteRule ^MyAccounts/ViewBankRequest/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewBankRequest
 RewriteRule ^MyAccounts/ViewPaypalRequest/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewPaypalRequest
 RewriteRule ^MyProfiles/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/View

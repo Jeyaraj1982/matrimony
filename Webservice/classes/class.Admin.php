@@ -1585,6 +1585,17 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              if (isset($_POST['Request']) && $_POST['Request']=="Franchisee") {
                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `MemberID` ='0' ORDER BY `ActivityID` DESC"));    
              }
+         }
+         
+         function GetRequestforDocumentVerification() {    
+
+             global $mysql,$loginInfo;    
+
+             $sql = "SELECT * FROM `_tbl_member_documents`";
+
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql." ORDER BY `DocID` DESC"));    
+             }                                                                                                                                                                            
          } 
 
     }

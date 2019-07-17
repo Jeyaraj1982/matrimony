@@ -1,23 +1,79 @@
 <?php
     $page="DocumentAttachment";       
-        if (isset($_POST['BtnSave'])) {
-        
-        $response = $webservice->getData("Member","AttachDocuments",$_POST);
-        if ($response['status']=="success") {
-             $successmessage = $response['message']; 
-        } else {
-            $errormessage = $response['message']; 
-        }
-    }
-    $response = $webservice->GetDraftProfileInformation(array("ProfileID"=>$_GET['Code']));
+    $response = $webservice->GetDraftProfileInformation(array("ProfileID"=>$_GET['Code'])); 
    ?>
 <?php include_once("settings_header.php");?>
+<style>
+.photoview {
+    float: left;
+    margin-right: 10px;
+    text-align: center;
+    border: 1px solid #eaeaea;
+    height: 211px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+.photoview:hover{
+    border:1px solid #9b9a9a;
+}
+</style>
 <div class="col-sm-10" style="margin-top: -8px;">
-<form method="post" action="" onsubmit="">
+<form method="post" action="" enctype="multipart/form-data">
     <h4 class="card-title">Document Attachments</h4>
+    
+    <?php
+                if (isset($_POST['BtnSave'])) {
+                    
+                    $target_dir = "uploads/";
+                    $err=0;
+                    $_POST['File']= "";
+                    $acceptable = array('image/jpeg',
+                                        'image/jpg',
+                                        'image/png'
+                                    );
+                     
+                  if(($_FILES['File']['size'] >= 5000000) || ($_FILES["File"]["size"] == 0)) {
+                    $err++;
+                           echo "File too large. File must be less than 5 megabytes.";
+                    }
+                            
+                    if((!in_array($_FILES['File']['type'], $acceptable)) && (!empty($_FILES["File"]["type"]))) {
+                        $err++;
+                           echo "Invalid file type. Only JPG,PNG,JPEG types are accepted.";
+                    }
+
+                    
+                    if (isset($_FILES["File"]["name"]) && strlen(trim($_FILES["File"]["name"]))>0 ) {
+                        $profilephoto = time().$_FILES["File"]["name"];
+                        if (!(move_uploaded_file($_FILES["File"]["tmp_name"], $target_dir . $profilephoto))) {
+                           $err++;
+                           echo "Sorry, there was an error uploading your file.";
+                        }
+                    }
+                    
+                    if ($err==0) {
+                        $_POST['File']= $profilephoto;
+                        $res =$webservice->getData("Member","AttachDocuments",$_POST);
+                        if ($res['status']=="success") {
+                            echo  $res['message']; 
+                        } else {
+                            $errormessage = $res['message']; 
+                        }
+                    } else {
+                        $res =$webservice->getData("Member","AttachDocuments");
+                    }
+                } else {
+                     $res =$webservice->getData("Member","AttachDocuments");
+                     
+                }
+                $DocumentPhoto = $res['data'];
+              
+            ?>
+    
     <div class="form-group row">
         <label for="Documents" class="col-sm-3 col-form-label">Document Type<span id="star">*</span></label>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <select class="selectpicker form-control" data-live-search="true" id="Documents" name="Documents">
                 <option>Choose Documents</option>
                 <?php foreach($response['data']['DocumentType'] as $Document) { ?>
@@ -28,8 +84,9 @@
     </div>
     <div class="form-group row">
         <label for="Attachment" class="col-sm-3 col-form-label">Attachment<span id="star">*</span></label>
-        <div class="col-sm-3">
-            <input type="File" class="form-control" id="File" name="File" Placeholder="File">
+        <div class="col-sm-9">
+            <input type="File" id="File" name="File" Placeholder="File">
+            <br>supports png, jpg, jpeg and pdf & File size Lessthan 5 MB
         </div>
     </div>
     <div class="form-group row">
@@ -39,11 +96,75 @@
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-3">
-            <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
-            <br>
-            <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
+            <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
         </div>
     </div>
+    <br><br>
+    <br>
     </form>
+    
+<div>
+    <?php if(sizeof($res['data'])==0){  ?>
+         <div style="margin-right:10px;text-align: center;">
+                 No Profile Photos Found   
+        </div>
+   <?php }  else {       ?>
+    <?php
+        foreach($res['data'] as $d) { ?> 
+        <div id="photoview_<?php echo $d['AttachmentID'];?>" class="photoview">
+            <div style="text-align:right;height:22px;">
+                <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $d['AttachmentID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
+            </div>
+            <div><img src="<?php echo AppUrl;?>uploads/<?php echo $d['AttachFileName'];?>" style="height:120px;"></div>
+            <div>
+                <?php if($d['IsVerified']==0){ echo "verification pending" ; } else { echo "Verified" ; }?>
+                <br><?php echo PutDateTime($d['AttachedOn']);?>   
+            </div>
+        </div>
+   
+        <?php }   ?>
+         <div style="clear:both"></div>
+         <?php }?>
+    </div>
 </div>
+<div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+            <div class="modal-dialog" style="width: 367px;">
+                <div class="modal-content" id="model_body" style="height: 150px;">
+            
+                </div>
+            </div>
+        </div>
+<script>
+    function showConfirmDelete(AttachmentID,ProfileID) {
+        $('#Delete').modal('show'); 
+        var content = '<div class="modal-body" style="padding:20px">'
+                        + '<div  style="height: 315px;">'
+                            + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
+                                + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
+                                + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                                + '<div style="text-align:center">Are you sure want to Delete?  <br><br>'
+                                    + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+AttachmentID+'\')">Yes</button>&nbsp;&nbsp;'
+                                    + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
+                                + '</div>'
+                            + '</form>'
+                        + '</div>'
+                     +  '</div>';
+        $('#model_body').html(content);
+    }
+    
+    function ConfirmDelete(AttachmentID) {
+        
+        var param = $( "#form_"+AttachmentID).serialize();
+        $('#model_body').html(preloader);
+        $.post(API_URL + "m=Member&a=DeletDocumentAttachments", param, function(result2) {
+            $('#model_body').html(result2);
+            $('#photoview_'+AttachmentID).hide();
+        }
+    );
+                    
+      
+        //$.ajax({url: API_URL + "m=Member&a=DeletDocumentAttachments",success: function(result2){$('#model_body').html(result2);}});
+}
+
+</script>
 <?php include_once("settings_footer.php");?>                    

@@ -886,7 +886,7 @@
              }
              
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Draft") {
-                 $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."' and RequestToVerify='0'");
+                 $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."' and RequestToVerify='0' and IsApproved='0'");
                  return Response::returnSuccess("success",$Profiles);
              }
              
@@ -904,12 +904,11 @@
          function VerifyProfileforPublish() {
              
              global $mysql;
-             sleep(10);
              
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
-                            <h5 style="text-align:center;"><a  href="#">Yes</a> <h5>
+                            <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer">Continue</a> <h5>
                        </div>';
                  } 
          
@@ -1103,7 +1102,8 @@
                                                            `CommunityCode`     = '".$_POST['Community']."',
                                                            `Community`         = '".$Community[0]['CodeValue']."',
                                                            `NationalityCode`   = '".$_POST['Nationality']."',
-                                                           `Nationality`       = '".$Nationality[0]['CodeValue']."' where  CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'";
+                                                           `Nationality`       = '".$Nationality[0]['CodeValue']."',
+                                                           `AboutMe`           = '".$_POST['AboutMe']."' where  CreatedBy='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'";
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
                                                              "ActivityType"   => 'Generalinformationupdated.',
@@ -1354,13 +1354,57 @@
          }
          
          function AttachDocuments() {
+             
+             global $mysql,$loginInfo;   
+             
+             $photos = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0'");
+             
+             $DocumentType      = CodeMaster::getData("DOCTYPES",$_POST['Documents']) ;
+             
+             if (isset($_POST['File'])) {
+                 if(sizeof($photos)<5){
+                     $mysql->insert("_tbl_member_attachments",array("DocumentTypeCode"  => $_POST['Documents'],
+                                                                    "DocumentType"      => $DocumentType[0]['CodeValue'],
+                                                                    "AttachedOn"        => date("Y-m-d H:i:s"),
+                                                                    "AttachFileName"    => $_POST['File'],
+                                                                    "ProfileID"         => $_POST['Code'],
+                                                                    "MemberID"          => $loginInfo[0]['MemberID']));
+                 } else { 
+                     return Response::returnError("Only 5 phots allowed",$photos);
+                 }
+             }
+             $photos = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0'");
+             return Response::returnSuccess("success",$photos);
+         }    
+         
+         function DeletDocumentAttachments() {
+             
              global $mysql,$loginInfo;
-             $id = $mysql->insert("_tbl_member_attachments",array("DocumentType" => $_POST['Documents'],
-                                                                  "AttachedOn"   => date("Y-m-d H:i:s"),
-                                                                  "ProfileID"    => $_POST['Code'],
-                                                                  "MemberID"     => $loginInfo[0]['MemberID']));
-             return (sizeof($id)>0) ? Response::returnSuccess("success",$_POST) 
-                                    : Response::returnError("Access denied. Please contact support");   
+             
+              
+             $mysql->execute("update `_tbl_member_attachments` set `IsDelete`='1' where `AttachmentID`='".$_POST['AttachmentID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['ProfileID']."'");
+             
+                 return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">Your selected document has been deleted successfully.</h5>
+                            <h5 style="text-align:center;"><a data-dismiss="modal"  >Yes</a> <h5>
+                       </div>';
+                 
+             
+         }
+         function DeletProfilePhoto() {
+             
+             global $mysql,$loginInfo;
+             
+              
+             $mysql->execute("update `_tbl_profiles_photo` set `IsDelete`='1' where `ProfilePhotoID`='".$_POST['ProfilePhotoID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['ProfileID']."'");
+                 return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">Your selected profile photo  has been deleted successfully.</h5>
+                            <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
+                       </div>';
+                 
+             
          }
          function EditDraftHoroscopeDetails() {
              global $mysql,$loginInfo;
@@ -1409,6 +1453,26 @@
                                                             "StarName"    => CodeMaster::getData('STARNAMES'),
                                                             "RasiName"    => CodeMaster::getData('MONSIGNS'),
                                                             "Lakanam"     => CodeMaster::getData('LAKANAM')));
+         }
+         
+         function AddProfilePhoto() {
+             
+             global $mysql,$loginInfo;   
+             
+             $photos = $mysql->select("select * from `_tbl_profiles_photo` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0'");
+             
+             if (isset($_POST['ProfilePhoto'])) {
+                 if(sizeof($photos)<5){
+                     $mysql->insert("_tbl_profiles_photo",array("MemberID"     => $loginInfo[0]['MemberID'],
+                                                                "ProfileID"    => $_POST['Code'],
+                                                                "ProfilePhoto" => $_POST['ProfilePhoto'],
+                                                                "UpdateOn"     => date("Y-m-d H:i:s")));
+                 } else { 
+                     return Response::returnError("Only 5 phots allowed",$photos);
+                 }
+             }
+             $photos = $mysql->select("select * from `_tbl_profiles_photo` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0'");
+             return Response::returnSuccess("success",$photos);
          }
          
          function GetViewAttachments() {

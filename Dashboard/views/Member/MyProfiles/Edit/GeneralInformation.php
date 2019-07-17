@@ -25,7 +25,7 @@
                                 <select class="selectpicker form-control" data-live-search="true" id="ProfileFor" name="ProfileFor">
                                     <option>Choose Profile Sign In</option>
                                     <?php foreach($response['data']['ProfileSignInFor'] as $ProfileFor) { ?>
-                                        <option value="<?php echo $ProfileFor['SoftCode'];?>" <?php echo (isset($_POST[ 'ProfileFor'])) ? (($_POST[ 'ProfileFor']==$ProfileFor[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'ProfileFor']==$ProfileFor[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                        <option value="<?php echo $ProfileFor['CodeValue'];?>" <?php echo (isset($_POST[ 'ProfileFor'])) ? (($_POST[ 'ProfileFor']==$ProfileFor[ 'CodeValue']) ? " selected='selected' " : "") : (($ProfileInfo[ 'ProfileFor']==$ProfileFor[ 'CodeValue']) ? " selected='selected' " : "");?>>
                                             <?php echo $ProfileFor['CodeValue'];?>  </option>
                                                 <?php } ?>
                                 </select>
@@ -129,6 +129,12 @@
                                             <?php echo $Nationality['CodeValue'];?></option>
                                                 <?php } ?>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="AboutMe" class="col-sm-2 col-form-label">About Me<span id="star">*</span></label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="AboutMe" id="AboutMe"><?php echo $ProfileInfo['AboutMe'];?></textarea>
                             </div>
                         </div>
                         <!-- <i class="fa fa-plus"></i> -->

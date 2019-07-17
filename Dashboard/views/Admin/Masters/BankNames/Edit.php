@@ -1,18 +1,3 @@
-<?php
-    if (isset($_POST['BtnUpdateBankName'])) {
-        
-        $duplicateBankName = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['BankName']."' and  HardCode='BANKNAMES' and SoftCode<>'".$_GET['Code']."'");
-        
-        if (sizeof($duplicateBankName)==0) {
-        $BankNamesID = $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['BankName']."',IsActive='".$_POST['IsActive']."' where HardCode='BANKNAMES' and SoftCode= '".$_GET['Code']."'");
-        echo "Successfully Updated";
-        } else {
-            $errorBankName = "Bank Name already exists";
-            echo "$errorBankName";
-        }
-    }
-    $BankName = $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$_GET['Code']."'");
-?>
 <?php   
     if (isset($_POST['BtnUpdateBankName'])) {
         
