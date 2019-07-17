@@ -40,7 +40,7 @@
                         <div class="form-group row">
                         <div class="col-sm-4">
                        <button type="submit" name="BtnNext" class="btn btn-success mr-2">Transfer Now</button></div>
-                       <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"> <a href="../SearchMemberDetails"><small>Cancel</small> </a></div>
+                       <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"> <a href="SearchMemberDetails"><small>Cancel</small> </a></div>
                          </div>
                         </form>
                     </div>

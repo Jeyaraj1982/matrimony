@@ -1,24 +1,15 @@
 <?php
     if (isset($_POST['BtnRefillWallet'])) {
-                                          
-$RefillWalletID = $mysql->insert("_tbl_franchisees_refillwallet",array("RefillAmount"     => $_POST['RefillAmount'],
-                                                                       "BankName"         => $_POST['BankName'],
-                                                                       "DateofBirth"      => $_POST['DateofBirth'],
-                                                                       "TransactionID"    => $_POST['TransactionID'],
-                                                                       "Remarks"          => $_POST['Remarks']));
-                                                                 
-                                                                  
-        if ($RefillWalletID>0) {
-            echo "Successfully Added";
-            unset($_POST);
-        } else {
-            echo "Error occured. Couldn't save Refill Wallet";
-        }
-    
+    $response =$webservice->getData("Franchisee","RefillWallet",$_POST);
+    if ($response['status']=="success") {
+          $Successmessage = $response['message']; 
+    } else {
+        $errormessage = $response['message']; 
     }
- 
+    }
+    $res =$webservice->getData("Franchisee","GetRefillWalletBankNameAndMode");
+    $BankNames=$res['data']['BankName'];
 ?>
-
 <script>
 
 $(document).ready(function () {
@@ -119,10 +110,11 @@ function SubmitRefillWallet() {
                         <div class="form-group row">
                         <div class="col-sm-3">Transfer to</div>
                           <div class="col-sm-3">
-                          <?php $BankNames = $mysql->select("select * from _tbl_bank_details"); ?>
                           <select class="form-control" id="BankName"  name="BankName" >
                           <?php foreach($BankNames as $BankName) { ?>
-                          <option value="<?php echo $BankName['BankName'];?>" <?php echo ($_POST['BankName']==$BankName['BankName']) ? " selected='selected' " : "";?>> <?php echo $BankName['BankName'];?></option>
+                                <option value="<?php echo $BankName['BankName'];?>" <?php echo ($BankName[ 'BankName']==$_POST[ 'BankName']) ? ' selected="selected" ' : '';?>>
+                                    <?php echo $BankName['BankName'];?>
+                                </option>
                           <?php } ?>
                           </select>
                           <span class="errorstring" id="ErrBankName"><?php echo isset($ErrBankName)? $ErrBankName : "";?></span>
@@ -152,10 +144,11 @@ function SubmitRefillWallet() {
                        <div class="form-group row">
                         <div class="col-sm-3">Mode of Transfer</div>
                           <div class="col-sm-3">
-                          <?php $Transfers = $mysql->select("select * from _tbl_master_codemaster Where HardCode='MODEOFTRANSFER'"); ?>
                           <select class="form-control" id="TransferMode"  name="TransferMode" >
-                          <?php foreach($Transfers as $Transfer) { ?>
-                         <option value="<?php echo $Transfer['SoftCode'];?>" <?php echo ($_POST['Sex']==$Transfer['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Transfer['CodeValue'];?></option>
+                          <?php foreach($response['data']['ModeOfTransfer'] as $Transfer) { ?>
+                                <option value="<?php echo $Transfer['SoftCode'];?>" <?php echo ($Transfer[ 'SoftCode']==$_POST[ 'TransferMode']) ? ' selected="selected" ' : '';?>>
+                                    <?php echo $Transfer['CodeValue'];?>
+                                </option>
                           <?php } ?>
                           </select>
                           <span class="errorstring" id="ErrBankName"><?php echo isset($ErrBankName)? $ErrBankName : "";?></span>

@@ -26,7 +26,7 @@
                         <label for="Member Details" class="col-sm-3 col-form-label">Member Details<span id="star">*</span></label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="MemberDetails" name="MemberDetails" value="<?php echo isset($_POST['MemberDetails']) ? $_POST['MemberDetails'] : '';?>" >
-                            <small style="color:#737373; font-size:X-smaller;" >eg: member code or member name or mobile number or member email</small>
+                            <small style="color:#737373; font-size:X-smaller;" >eg: member code or member name or mobile number or member email</small><br>
                             <span class="errorstring" id="ErrMemberDetails"><?php echo isset($ErrMemberDetails)? $ErrMemberDetails : "";?></span>
                         </div>
                     </div>

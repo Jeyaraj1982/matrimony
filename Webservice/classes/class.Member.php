@@ -903,15 +903,28 @@
          
          function VerifyProfileforPublish() {
              
-             global $mysql;
+             global $mysql,$loginInfo;
              
-                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
+              
+             $updateSql = "update `_tbl_Profile_Draft` set  `RequestToVerify`      = '1',
+                                                            `RequestVerifyOn`      = '".date("Y-m-d H:i:s")."'
+                                                             where  `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['ProfileID']."'";
+             $mysql->execute($updateSql);  
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'RequestToVerifyPublishProfile.',
+                                                             "ActivityString" => 'Request To Verify PublishProfile.',
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+                 return  $updateSql.'<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
-                            <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer">Continue</a> <h5>
+                            <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
                        </div>';
-                 } 
-         
+                 
+             
+         }
+             
          function GetDraftProfileInformation() {
              global $mysql,$loginInfo;
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");               
@@ -1324,25 +1337,6 @@
                                                             "TypeofOccupation" => CodeMaster::getData('TYPEOFOCCUPATIONS'),
                                                             "IncomeRange"      => CodeMaster::getData('INCOMERANGE')));
          }
-         function MemberProfilePublishNow() {
-             
-             global $mysql,$loginInfo;
-             
-             $updateSql = "update `_tbl_Profile_Draft` set  `RequestToVerify`      = '1',
-                                                            `RequestVerifyOn`      = '".date("Y-m-d H:i:s")."'
-                                                             where  `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'";
-             $mysql->execute($updateSql);  
-             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
-                                                             "ActivityType"   => 'RequestToVerifyPublishProfile.',
-                                                             "ActivityString" => 'Request To Verify PublishProfile.',
-                                                             "SqlQuery"       => base64_encode($updateSql),
-                                                             //"oldData"        => base64_encode(json_encode($oldData)),
-                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
-            
-             
-             return Response::returnSuccess("success",array());
-         }
-           
          function AddEducationalDetails() {
              global $mysql,$loginInfo;
              $id = $mysql->insert("_tbl_member_attachments",array("EducationDetails" => $_POST['education'],
@@ -1395,8 +1389,6 @@
          function DeletProfilePhoto() {
              
              global $mysql,$loginInfo;
-             
-              
              $mysql->execute("update `_tbl_profiles_photo` set `IsDelete`='1' where `ProfilePhotoID`='".$_POST['ProfilePhotoID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['ProfileID']."'");
                  return  '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>

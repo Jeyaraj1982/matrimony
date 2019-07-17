@@ -52,7 +52,7 @@
                      </div>
                      <div class="navbar-menu-wrapper d-flex align-items-center  bshadow">        
                         <ul class="navbar-nav navbar-nav-right">
-                            <li class="nav-item dropdown">
+                           <!-- <li class="nav-item dropdown">
                                 <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
                                     <i class="mdi mdi-file-document-box"></i>
                                     <span class="count">0</span>
@@ -106,7 +106,7 @@
                     Upcoming board meeting
                   </p>
                 </div>
-              </a>-->
+              </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item preview-item">
                     <div class="preview-item-content flex-grow">
@@ -116,8 +116,8 @@
                 </a>
                 <?php }?>
         </div>
-</li>
-          <li class="nav-item dropdown">
+</li> -->
+      <!--    <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="mdi mdi-bell"></i>
               <span class="count">0</span>
@@ -169,8 +169,8 @@
                     2 days ago
                   </p>
                 </div>
-              </a> -->
-             <div class="dropdown-divider"></div>
+              </a> 
+            < <div class="dropdown-divider"></div>
               <a class="dropdown-item preview-item">
                 <div class="preview-item-content flex-grow">
                   <h6 class="preview-subject ellipsis font-weight-medium text-dark" style="margin-bottom: -7px;">You don't have notifications
@@ -178,7 +178,7 @@
                  </div>
               </a> 
             </div>
-          </li>
+          </li>  -->
                 <li class="nav-item dropdown d-none d-xl-inline-block">
                 <span class="profile-text"><?php echo "<b>";echo $_Member['MemberName'] ; echo "</b>";?></span><br> 
               </li>

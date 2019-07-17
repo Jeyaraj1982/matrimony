@@ -23,6 +23,7 @@
                     <table id="myTable" class="table table-striped">
                       <thead>  
                         <tr> 
+                        <th>Member Code</th>  
                         <th>Member Names</th>  
                         <th>Created</th>
                         <th>No of Profiles</th>
@@ -36,11 +37,12 @@
                     ?>
                         <?php foreach($response['data'] as $Member) { ?>
                                 <tr>
+                                <td><?php echo $Member['MemberCode'];?></td>
                                 <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberName'];?></td>
                                 <td><?php echo putDateTime($Member['CreatedOn']);?></td>
                                 <td></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Members/EditMember/". $Member['MemberID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Members/ViewMember/". $Member['MemberID'].".html"); ?>"><span>View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Members/EditMember/".$Member['MemberID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Members/ViewMember/".$Member['MemberID'].".html"); ?>"><span>View</span></a></td>
                                 </tr>
                         <?php } } else {?>            
                         

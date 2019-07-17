@@ -43,12 +43,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("NewProfile");?>">Create Profile</a>
                         </li> 
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Manage Profile</a>
-                        </li>
-                        <li class="nav-item">                                 
-                            <a class="nav-link" href="<?php echo GetUrl("Profiles/SearchProfile");?>">Search Profile</a>
-                        </li>
                        <!-- <li class="nav-item">
                             <a class="nav-link" href="">Drafted</a>
                         </li>
@@ -122,23 +116,6 @@
                     </ul>
                 </div> 
             </li>                                             
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#GeneralInfo" aria-expanded="false" aria-controls="search">
-                    <i class="menu-icon mdi mdi-content-copy"></i>
-                    <span class="menu-title">General Info</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="GeneralInfo">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Renew Subscription </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Cancel Subscription</a> 
-                        </li>
-                    </ul>
-                </div>
-            </li> 
            <!-- <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#search" aria-expanded="false" aria-controls="search">
                     <i class="menu-icon mdi mdi-content-copy"></i>

@@ -4,6 +4,19 @@ RewriteRule ^Masters/(.*)/Manage/View/(.*)\.html$ ./index.php?Fname=Edit&Module=
 RewriteRule ^Requests/Member/ViewPaypalRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Member/ViewPaypalRequests
 RewriteRule ^Profiles/ViewDraftProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewDraftProfile
 RewriteRule ^Profiles/ViewRequestProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewRequestProfile
+RewriteRule ^ViewMemberProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewMemberProfile
+
+RewriteRule ^MemberProfileEdit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/GeneralInformation
+RewriteRule ^MemberProfileEdit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/EducationDetails
+RewriteRule ^MemberProfileEdit/AddEducationalDetails/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/AddEducationalDetails
+RewriteRule ^MemberProfileEdit/OccupationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/OccupationDetails
+RewriteRule ^MemberProfileEdit/FamilyInformation/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/FamilyInformation
+RewriteRule ^MemberProfileEdit/PhysicalInformation/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/PhysicalInformation
+RewriteRule ^MemberProfileEdit/DocumentAttachment/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/DocumentAttachment
+RewriteRule ^MemberProfileEdit/CommunicationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/CommunicationDetails
+RewriteRule ^MemberProfileEdit/PartnersExpectation/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/PartnersExpectation
+RewriteRule ^MemberProfileEdit/HoroscopeDetails/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/HoroscopeDetails
+RewriteRule ^MemberProfileEdit/ProfilePhoto/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/ProfilePhoto
 
 RewriteRule ^MyProfiles/Edit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/GeneralInformation
 RewriteRule ^MyProfiles/Edit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/EducationDetails

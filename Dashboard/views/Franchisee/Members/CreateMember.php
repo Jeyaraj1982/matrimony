@@ -69,11 +69,6 @@ $(document).ready(function () {
         IsNonEmpty("AadhaarNumber","ErrAadhaarNumber","Please Enter Aadhaar Number");
                         
    });
-   $("#LoginName").blur(function () {
-    
-        IsNonEmpty("LoginName","ErrLoginName","Please Enter Login Name");
-                        
-   });
    $("#LoginPassword").blur(function () {
                   
        if (IsNonEmpty("LoginPassword","ErrLoginPassword","Please Enter Login Password")) {
@@ -101,7 +96,6 @@ function SubmitNewMember() {
                          $('#ErrWhatsappNumber').html("");
                          $('#ErrEmailID').html("");
                          $('#ErrAadhaarNumber').html("");
-                         $('#ErrLoginName').html("");
                          $('#ErrLoginPassword').html("");
                          
                          ErrorCount=0;
@@ -126,9 +120,6 @@ function SubmitNewMember() {
                         if (IsNonEmpty("AadhaarNumber","ErrAadhaarNumber","Please Enter Aadhaar Number")) {
                         IsNumeric("AadhaarNumber","ErrAadhaarNumber","Please Enter Numeric Charactors only");
                         }
-                        if (IsLogin("LoginName","ErrLoginName","Please Enter the character greater than 6 character and less than 9 character")) {
-                        IsAlphaNumeric("LoginName","ErrLoginName","Please Enter Alpha Numeric Character only");
-                        }
                         if (IsNonEmpty("LoginPassword","ErrLoginPassword","Please Enter Login Password")) {
                             IsPassword("LoginPassword","ErrLoginPassword","Please Enter Alpha Numeric Characters and More than 8 characters");  
                         } 
@@ -143,7 +134,6 @@ function SubmitNewMember() {
 </script>
 <?php 
      $fInfo = $webservice->GetMemberCode(); 
-
      $MemCode="";
         if ($fInfo['status']=="success") {
             $MemCode  =$fInfo['data']['MemberCode'];
@@ -181,7 +171,7 @@ function SubmitNewMember() {
                             <div class="col-sm-3">
                           <select class="form-control" id="Sex"  name="Sex">
                             <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
-                            <option value="<?php echo $Sex['SoftCode'];?>" <?php echo ($_POST['Sex']==$Sex['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
+                            <option value="<?php echo $Sex['CodeValue'];?>" <?php echo ($_POST['Sex']==$Sex['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
                             <?php } ?>
                         </select>
                        <span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>
@@ -218,11 +208,11 @@ function SubmitNewMember() {
                           </div>
                         </div>
                        <div class="form-group row">
-                          <label for="LoginName" class="col-sm-2 col-form-label">Login Name<span id="star">*</span></label>
+                          <!--<label for="LoginName" class="col-sm-2 col-form-label">Login Name<span id="star">*</span></label>
                           <div class="col-sm-3">
-                            <input type="text" class="form-control" id="LoginName" name="LoginName" value="<?php echo (isset($_POST['LoginName']) ? $_POST['LoginName'] : "");?>" placeholder="Login Name">
-                            <span class="errorstring" id="ErrLoginName"><?php echo isset($ErrLoginName)? $ErrLoginName : "";?></span>
-                          </div>
+                            <input type="text" class="form-control" id="LoginName" name="LoginName" value="<?php //echo (isset($_POST['LoginName']) ? $_POST['LoginName'] : "");?>" placeholder="Login Name">
+                            <span class="errorstring" id="ErrLoginName"><?php //echo isset($ErrLoginName)? $ErrLoginName : "";?></span>
+                          </div> -->
                           <label for="LoginPassword" class="col-sm-2 col-form-label">Login Password<span id="star">*</span></label>
                           <div class="col-sm-3">
                             <input type="password" class="form-control" id="LoginPassword" name="LoginPassword" value="<?php echo (isset($_POST['LoginPassword']) ? $_POST['LoginPassword'] : "");?>" placeholder="Login Password">
