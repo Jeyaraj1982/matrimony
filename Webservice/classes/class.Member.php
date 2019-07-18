@@ -570,11 +570,18 @@
                      return $this->ChangeMobileNumber("Invalid Mobile Number.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
                  }
 
-                 $duplicate = $mysql->select("select * from `_tbl_members` where `MobileNumber`='".$_POST['new_mobile_number']."'");
+                 $duplicate = $mysql->select("select * from `_tbl_members` where `MobileNumber`='".$_POST['new_mobile_number']."' and MemberID <>'".$login[0]['MemberID']."'");
                  if (sizeof($duplicate)>0) {
                      return $this->ChangeMobileNumber("Mobile Number already in use.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
                  }
-                 $mysql->execute("update `_tbl_members` set `MobileNumber`='".$_POST['new_mobile_number']."' , `CountryCode`='".$_POST['CountryCode']."' where `MemberID`='".$login[0]['MemberID']."'");
+                 $sql="update `_tbl_members` set `MobileNumber`='".$_POST['new_mobile_number']."' , `CountryCode`='".$_POST['CountryCode']."' where `MemberID`='".$login[0]['MemberID']."'" ;
+                 $mysql->execute($sql);
+                 $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $login[0]['MemberID'],
+                                                             "ActivityType"   => 'MonileNumberChanged.',
+                                                             "ActivityString" => 'Mobile Number Changed.',
+                                                             "SqlQuery"       => base64_encode($sql),            
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
              }
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==1) {
@@ -633,6 +640,12 @@
              if (strlen(trim($_POST['mobile_otp_2']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['mobile_otp_2']))  {
                  $sql = "update `_tbl_members` set `IsMobileVerified`='1', `MobileVerifiedOn`='".date("Y-m-d H:i:s")."' where `MemberID`='".$otpInfo[0]['MemberID']."'";
                  $mysql->execute($sql);  
+                 $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $otpInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'MobileVerified.',
+                                                             "ActivityString" => 'Mobile Number Verified.',
+                                                             "SqlQuery"       => base64_encode($sql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
@@ -754,15 +767,23 @@
                  if (strlen(trim($_POST['new_email']))==0) {
                      return $this->ChangeEmailID("Invalid EmailID",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']);
                  }
-                 $duplicate = $mysql->select("select * from _tbl_members where EmailID='".$_POST['new_email']."'");
+                 $duplicate = $mysql->select("select * from _tbl_members where EmailID='".$_POST['new_email']."' and MemberID <>'".$login[0]['MemberID']."'");
                  
                  if (sizeof($duplicate)>0) {
                      return $this->ChangeEmailID("Email already in use.",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']); 
                  }
-                 $mysql->execute("update `_tbl_members` set `EmailID`='".$_POST['new_email']."' where `MemberID`='".$login[0]['MemberID']."'");
+                 $sql="update `_tbl_members` set `EmailID`='".$_POST['new_email']."' where `MemberID`='".$login[0]['MemberID']."'";
+                 $mysql->execute();
+                 $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $login[0]['MemberID'],
+                                                             "ActivityType"   => 'EmailIDChanged.',
+                                                             "ActivityString" => 'Email ID Changed.',
+                                                             "SqlQuery"       => base64_encode($sql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
              }
              
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
+             
              
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
@@ -866,6 +887,12 @@
              if (strlen(trim($_POST['email_otp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['email_otp']))  {
                  $sql = "update `_tbl_members` set `IsEmailVerified`='1', `EmailVerifiedOn`='".date("Y-m-d H:i:s")."' where `MemberID`='".$otpInfo[0]['MemberID']."'";
                  $mysql->execute($sql); 
+                 $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $otpInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'EmailIDVerified.',
+                                                             "ActivityString" => 'Email ID Verified.',
+                                                             "SqlQuery"       => base64_encode($sql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
@@ -1331,14 +1358,24 @@
                                                             "StateName"   => CodeMaster::getData('STATNAMES')));
          }
          
+          function GetPartnersExpectaionInformation() {
+             global $mysql,$loginInfo;
+             return Response::returnSuccess("success",array("MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
+                                                            "Language"               => CodeMaster::getData('LANGUAGENAMES'),
+                                                            "Religion"               => CodeMaster::getData('RELINAMES'),
+                                                            "Caste"                  => CodeMaster::getData('CASTNAMES'),
+                                                            "IncomeRange"                  => CodeMaster::getData('IncomeRange'),
+                                                            "Education"              => CodeMaster::getData('EDUCATETITLES'),
+                                                            "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
+         }
          function EditDraftOccupationDetails() {
              
              global $mysql,$loginInfo;
              
-             $EmployedAs       = CodeMaster::getData("OCCUPATIONS".$_POST["EmployedAs"]) ;
-             $OccupationType   = CodeMaster::getData("OCCUPATIONTYPES".$_POST["OccupationType"]) ;
-             $TypeofOccupation = CodeMaster::getData("TYPEOFOCCUPATIONS".$_POST["TypeofOccupation"]) ;
-             $IncomeRange      = CodeMaster::getData("INCOMERANGE".$_POST["IncomeRange"]) ;
+             $EmployedAs       = CodeMaster::getData("OCCUPATIONS",$_POST["EmployedAs"]) ;
+             $OccupationType   = CodeMaster::getData("Occupation",$_POST["OccupationType"]) ;
+             $TypeofOccupation = CodeMaster::getData("TYPEOFOCCUPATIONS",$_POST["TypeofOccupation"]) ;
+             $IncomeRange      = CodeMaster::getData("INCOMERANGE",$_POST["IncomeRange"]) ;
              
              $updateSql = "update `_tbl_Profile_Draft` set  `EmployedAsCode`       = '".$_POST['EmployedAs']."',
                                                             `EmployedAs`           = '".$EmployedAs[0]['CodeValue']."',
@@ -1351,7 +1388,7 @@
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
                                                              "ActivityType"   => 'Occupationdetailsupdated.',
-                                                             "ActivityString" => 'Occupation Details Updated.',
+                                                             "ActivityString" => 'Occupation Details Updated.',                          
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
@@ -1359,10 +1396,11 @@
              
              return Response::returnSuccess("success",array("ProfileInfo"      => $Profiles[0],
                                                             "EmployedAs"       => CodeMaster::getData('OCCUPATIONS'),
-                                                            "Occupation"       => CodeMaster::getData('OCCUPATIONTYPES'),
+                                                            "Occupation"       => CodeMaster::getData('Occupation'),
                                                             "TypeofOccupation" => CodeMaster::getData('TYPEOFOCCUPATIONS'),
                                                             "IncomeRange"      => CodeMaster::getData('INCOMERANGE')));
          }
+       
          function AddEducationalDetails() {
              global $mysql,$loginInfo;
              $id = $mysql->insert("_tbl_member_attachments",array("EducationDetails" => $_POST['Educationdetails'],

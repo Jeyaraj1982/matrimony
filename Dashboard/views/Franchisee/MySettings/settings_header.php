@@ -49,7 +49,7 @@
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/MyActivities");?>" class="Notification" style="text-decoration:none"><span>My Activities</span></a>
                                         </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="DeleteMember") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
-                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/DeleteMember");?>" class="Notification" style="text-decoration:none"><span>Delete Member</span></a>
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/DeleteMember");?>" class="Notification" style="text-decoration:none"><span>Cancel Member</span></a>
                                         </li>
                                     </ul>
                                 </div>

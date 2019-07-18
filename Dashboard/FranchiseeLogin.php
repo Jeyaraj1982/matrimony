@@ -36,7 +36,9 @@
                 $('#ErrPassword').html("");
                 $('#server_error').html("");
 
-                IsNonEmpty("UserName","ErrUserName","Please Enter Valid Login Name");
+                if(IsNonEmpty("UserName","ErrUserName","Please Enter Valid Login Name")){
+                  IsAlphaNumerics("UserName","ErrUserName","Please Enter Alpha Numeric characters only");  
+                }
                 IsNonEmpty("Password","ErrPassword","Please Enter Valid Password");
                 
                 return (ErrorCount==0) ? true : false;

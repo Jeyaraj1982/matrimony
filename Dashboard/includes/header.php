@@ -324,14 +324,14 @@
                 <span class="profile-text" style="line-height:10px;">
                 <?php echo ($_Franchisee['IsAdmin']==1) ? "<small>Franchisee Admin</small>"  : "Admin"; ?></span>
              </li> 
-             <li class="nav-item dropdown d-none d-xl-inline-block"> 
-                <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"><img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image"></a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-                    <a href="<?php echo GetUrl("MySettings/ChangePassword");?>" class="dropdown-item">Change Password</a>
-                    <a class="dropdown-item">Settings</a>
-                    <a href="<?php echo SiteUrl;?>?action=logout&redirect=FranchiseeLogin" class="dropdown-item">Log Out</a>
-                </div>
-             </li>
+             <li class="nav-item dropdown d-none d-xl-inline-block">
+             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"><img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image"></a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding-top: 10px;padding-bottom: 10px;">
+              <a href="<?php echo GetUrl("MyAccounts/MyWallet");?>" class="dropdown-item">My Accounts</a>
+              <a href="<?php echo GetUrl("MySettings/MyMemberInfo");?>" class="dropdown-item">My Settings</a>
+              <a href="<?php echo SiteUrl;?>?action=logout&redirect=../index" class="dropdown-item">Log Out</a>
+            </div>
+          </li>
           </ul>
     </div>
       

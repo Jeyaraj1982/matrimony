@@ -281,9 +281,16 @@
                    return $this->ChangeMobileNumber("Mobile Number already in use.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
                 }
                 
-                $mysql->execute("update _tbl_franchisees_staffs set MobileNumber='".$_POST['new_mobile_number']."' , CountryCode='".$_POST['CountryCode']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+                $update = "update _tbl_franchisees_staffs set MobileNumber='".$_POST['new_mobile_number']."' , CountryCode='".$_POST['CountryCode']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'";
+                $mysql->execute($update);
+                $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
+                                                             "ActivityType"   => 'MobileNumberChanged.',
+                                                             "ActivityString" => 'Mobile Number Changed.',
+                                                             "SqlQuery"       => base64_encode($sqlQry),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
             }
-            
+                                                                                                                                    
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==1) {
@@ -334,7 +341,7 @@
                         </div>'; 
             }
         }
-        
+                                                                                                                    
         function MobileNumberOTPVerification() {
             
             global $mysql;  
@@ -344,6 +351,12 @@
                 
                 $sql = "update _tbl_franchisees_staffs set IsMobileVerified='1', MobileVerifiedOn='".date("Y-m-d H:i:s")."' where FranchiseeID='".$otpInfo[0]['FranchiseeID']."'";
                 $mysql->execute($sql);
+                $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $otpInfo[0]['FranchiseeID'],
+                                                             "ActivityType"   => 'MobileNumberVerified.',
+                                                             "ActivityString" => 'Mobile Number Verified.',
+                                                             "SqlQuery"       => base64_encode($sql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"></p>
                             <h5 style="text-align:center;color:#ada9a9">
@@ -479,7 +492,14 @@
                    return $this->ChangeEmailID("Email already in use.",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']); 
                 }
                 
-                $mysql->execute("update _tbl_franchisees_staffs set EmailID='".$_POST['new_email']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+                $sql ="update _tbl_franchisees_staffs set EmailID='".$_POST['new_email']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'";
+                $mysql->execute();
+                $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
+                                                             "ActivityType"   => 'EmailIDChanged.',
+                                                             "ActivityString" => 'Email ID Changed.',
+                                                             "SqlQuery"       => base64_encode($sql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
             }
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
            
@@ -587,6 +607,12 @@
            if (strlen(trim($_POST['email_otp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['email_otp']))  {
                 $sql = "update _tbl_franchisees_staffs set IsEmailVerified='1', EmailVerifiedOn='".date("Y-m-d H:i:s")."' where FranchiseeID='".$otpInfo[0]['FranchiseeID']."'";
                 $mysql->execute($sql); 
+                $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $otpInfo[0]['FranchiseeID'],
+                                                             "ActivityType"   => 'EmailIDVerified.',
+                                                             "ActivityString" => 'Email ID Verified.',
+                                                             "SqlQuery"       => base64_encode($sql),                               
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
@@ -791,7 +817,7 @@
     }
     function GetFranchiseeStaffCodeCode(){
             return Response::returnSuccess("success",array("staffCode" => SeqMaster::GetNextFranchiseeStaffNumber(),
-                                                           "Gender"     => CodeMaster::getData('Gender')));
+                                                           "Gender"     => CodeMaster::getData('SEX')));
         }
     function EditFranchiseeStaff(){
               global $mysql,$loginInfo;    
@@ -810,7 +836,7 @@
                                                            DateofBirth='".$dob."',
                                                            CountryCode='".$_POST['CountryCode']."',
                                                            MobileNumber='".$_POST['MobileNumber']."',
-                                                           EmailID='".$_POST['EmailID']."',
+                                                           EmailID='".$_POST['EmailID']."',                                 
                                                            UserRole='".$_POST['UserRole']."',
                                                            LoginPassword='".$_POST['LoginPassword']."'
                                                            where  PersonID='".$Staffs[0]['PersonID']."'");
@@ -1000,6 +1026,16 @@
                                                             "Occupation"       => CodeMaster::getData('OCCUPATIONTYPES'),
                                                             "TypeofOccupation" => CodeMaster::getData('TYPEOFOCCUPATIONS'),
                                                             "IncomeRange"      => CodeMaster::getData('INCOMERANGE')));
+         }                                                              
+         function GetPartnersExpectaionInformation() {
+             global $mysql,$loginInfo;
+             return Response::returnSuccess("success",array("MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
+                                                            "Language"               => CodeMaster::getData('LANGUAGENAMES'),
+                                                            "Religion"               => CodeMaster::getData('RELINAMES'),
+                                                            "Caste"                  => CodeMaster::getData('CASTNAMES'),
+                                                            "IncomeRange"            => CodeMaster::getData('INCOMERANGE'),
+                                                            "Education"              => CodeMaster::getData('EDUCATETITLES'),
+                                                            "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
          }
          
          function EditDraftFamilyInformation() {

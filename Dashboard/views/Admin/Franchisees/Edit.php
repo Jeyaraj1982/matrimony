@@ -11,7 +11,7 @@
 
     $response = $webservice->GetFranchiseeInfo();
     $Franchisee          = $response['data']['Franchisee'];
-    $FranchiseeBank      = $response['data']['PrimaryBankAccount'];
+    $FranchiseeBank      = $response['data']['PrimaryBankAccount'];                                
     $FranchiseeStaff = $response['data']['FranchiseeStaff'];
 ?>
 <style>

@@ -277,7 +277,7 @@ function myFunction() {
                         }
                         //IsNonEmpty("UserName","ErrUserName","Please Enter User Name");
                         if (IsNonEmpty("UserName","ErrUserName","Please Enter Login Name")) {
-                        IsAlphabet("UserName","ErrUserName","Please Enter Alpha Numeric Character only");
+                        IsAlphaNumerics("UserName","ErrUserName","Please Enter Alpha Numeric Character only");
                         }
                         if (IsNonEmpty("Password","ErrPassword","Please Enter Login Password")) {
                         IsAlphaNumeric("Password","ErrPassword","Alpha Numeric Characters only");

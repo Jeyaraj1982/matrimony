@@ -1,7 +1,6 @@
 <?php
     $page="PartnersExpectation";
-     $response = $webservice->getData("Franchisee","PartnerExpectation");     
-     print_r($response);   
+     $response = $webservice->getData("Member","GetPartnersExpectaionInformation");   
    ?>            
 <?php include_once("settings_header.php");?>
 <div class="col-sm-9" style="margin-top: -8px;">
