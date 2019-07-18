@@ -16,9 +16,9 @@
                                <div style="height: 315px;">
                      <h4 class="card-title">Educational Details</h4>
                         <div class="form-group row">
-                           <label class="col-sm-4 col-form-label"></label> 
+                           <label class="col-sm-3 col-form-label">Education</label> 
                            <div class="col-sm-8">
-                            <select class="selectpicker form-control" data-live-search="true">
+                            <select class="selectpicker form-control" data-live-search="true" name="Educationdetails">
                                 <option value="" label="Select">Select</option>
                                 <option value="Doctorate" label="Doctorate">Doctorate</option>
                                 <option value="Masters" label="Masters" selected="selected">Masters</option>
@@ -34,9 +34,9 @@
                            </div>
                         </div>
                         <div class="form-group row">
-                           <label class="col-sm-4 col-form-label"></label> 
+                           <label class="col-sm-3 col-form-label">Education Degree</label> 
                            <div class="col-sm-8">
-                            <select class="selectpicker form-control" data-live-search="true">
+                            <select class="selectpicker form-control" data-live-search="true" name="EducationDegree">
                                 <option value="" label="Select">Select</option>
                                 <option value="Advertising/ Marketing" label="Advertising/ Marketing">Advertising/ Marketing</option>
                                 <option value="Administrative services" label="Administrative services">Administrative services</option>
@@ -63,7 +63,7 @@
                            </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label"></label>
+                            <label class="col-sm-3 col-form-label">Remarks</label>
                             <div class="col-sm-8"><input type="text" class="form-control" name="education" id="education"></div>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">

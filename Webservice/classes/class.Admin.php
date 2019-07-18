@@ -57,12 +57,12 @@ class Admin extends Master {
     function GetFranchiseeCode(){
             return Response::returnSuccess("success",array("FranchiseeCode" => SeqMaster::GetNextFranchiseeNumber(),
                                                            "Plans"          => Plans::GetFranchiseePlans(),
-                                                           "CountryName"    => CodeMaster::getData('CountryName'),
-                                                           "StateName"      => CodeMaster::getData('StateName'),
+                                                           "CountryName"    => CodeMaster::getData('CONTNAMES'),
+                                                           "StateName"      => CodeMaster::getData('STATNAMES'),
                                                            "DistrictName"   => CodeMaster::getData('DistrictName'),
                                                            "BankName"       => CodeMaster::getData('BANKNAMES'),
                                                            "AccountType"    => CodeMaster::getData('AccountType'),
-                                                           "Gender"         => CodeMaster::getData('Gender')));
+                                                           "Gender"         => CodeMaster::getData('SEX')));
         }
 
     function CreateFranchisee() {

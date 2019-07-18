@@ -17,7 +17,7 @@
     } */
     ?>
     <div style="text-align: right" id="">
-        <button type="submit" class="btn btn-primary" name="Preview" style="font-family:roboto">Preview</button>&nbsp;
+        <a href="<?php echo GetUrl("MyProfiles/View/".$_GET['Code'].".htm ");?>" class="btn btn-primary" name="Preview" style="font-family:roboto">Preview</a>&nbsp;
         <a href="javascript:void(0)" onclick="showConfirmPublish()" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
      </div>    
         

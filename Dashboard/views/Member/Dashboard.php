@@ -45,12 +45,12 @@
                         <div style="text-align:center;">
                             <h5 style="margin-top:84px;color: #aaa;">No Profiles Found<br><br> <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a> </h5>
                         </div>
-                    <?php } else {?>
+                    <?php } else {?>                                                                                        
                     <?php if (sizeof($response['data'])>0) { ?>
                     <?php foreach($response['data'] as $Profile) { ?>
                         <div class="form-group row">
                             <div class="col-sm-3" style="text-align:center">
-                                <img src="<?php echo SiteUrl?>assets/images/prof1.jpg" style="height: 159px;margin-bottom: -18px;">
+                               <img src="<?php echo SiteUrl?>assets/images/prof1.jpg" style="height: 159px;margin-bottom: -18px;">
                             </div>
                             <div class="col-sm-9">
                                 <div style="border-bottom:1px solid #d7d7d7;width:100%;padding-bottom: 10px;font-size: 21px;color: #514444cc;text-align:left"> 

@@ -95,7 +95,7 @@ function submitUpload() {
             <span style="color:#888">supports png, jpg, jpeg & File size Lessthan 5 MB </span>
         </div>
     </div>
-    <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#LearnMore">Lean more</a>
+    <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)"  onclick="showLearnMore()">Lean more</a>
         <br><span class="errorstring" id="Errcheck"></span><br><br>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-3">
@@ -104,24 +104,25 @@ function submitUpload() {
     </div><br>
     
     </form>
-    <div class="modal" id="LearnMore" style="padding-top:177px;">
-    <div class="modal-dialog" style="width: 367px;">
-        <div class="modal-content">
-            <div class="modal-body" style="padding:20px">
-                    <h5 style="text-align:center">Please follow the below instructions :</h5><button type="button" class="close" data-dismiss="modal" style="margin-top: -38px;margin-right: 10px;">&times;</button>
-                   <ol>
-                    <li>The image file should be in jpg, jpeg and png formats only. </li>
-                    <li>Size of each photograph must not exceed 5 MB. </li>
-                    <li>Your chosen photograph(s) must be in accordance with the socially acceptable standards.</li>
-                    <li>Administrator reserves the right to remove/delete any photograph that violates socially accepted norms of decency.</li>
-                    <li>Do not post caricatures or copyrighted images. </li>
-                   </ol>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+function showLearnMore() {
+      $('#LearnMore').modal('show'); 
+      var content = '<div class="LearnMore_body" style="padding:20px">'
+                    +   '<div  style="height:500px;">'
+                       +  '<h5 style="text-align:center">Please follow the below instructions :</h5><button type="button" class="close" data-dismiss="modal" style="margin-top: -38px;margin-right: 10px;">&times;</button>'
+                            + '<ol> '
+                               + ' <li>The image file should be in jpg, jpeg and png formats only. </li>'
+                               + '<li>Size of each photograph must not exceed 5 MB. </li>'
+                                + '<li>Your chosen photograph(s) must be in accordance with the socially acceptable standards.</li>'
+                                + '<li>Administrator reserves the right to remove/delete any photograph that violates socially accepted norms of decency.</li>'
+                                 + '<li>Do not post caricatures or copyrighted images. </li>'
+                                + '</ol>'
+                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">close</button>'
+                       +  '</div><br>'
+                +  '</div>'
+            $('#LearnMore_body').html(content);
+}
+</script>
     <div>
     <?php if(sizeof($res['data'])==0){  ?>
          <div style="margin-right:10px;text-align: center;">

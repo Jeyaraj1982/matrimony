@@ -11,10 +11,13 @@
                          if (sizeof($response['data'])>0) {
                     ?>
                         
-            <thead>
+            <thead>                                                                                      
                 <tr>
-                    <th>Document Type</th>
+                    <th>Education</th>
+                    <th>Education Details</th>
                     <th>Attached On</th>
+                    <th>Status</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -22,8 +25,11 @@
                 <?php foreach($response['data'] as $Document) { ?>
                         
                 <tr>    
+                    <td><?php echo $Document['Education'];?></td>
                     <td><?php echo $Document['EducationDetails'];?></td>
                     <td><?php echo putDateTime($Document['AttachedOn']);?></td>
+                    <td></td>
+                    <td><img src="<?php echo SiteUrl?>assets/images/delete.png" style="height: 159px;margin-bottom: -18px;"></td>
                 </tr>
                 <?php }}?>
             </tbody>

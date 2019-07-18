@@ -19,6 +19,7 @@
         function GetNextFranchiseeStaffNumber() {
             global $mysql;
             $prefix = "FS";
+            $length = 4;
             $Rows   = $mysql->select("select count(*) as rCount from `_tbl_franchisees_staffs`");
             return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1);
         }
@@ -26,6 +27,7 @@
         function GetNextFranchiseeNumber() {
             global $mysql,$_Franchisee;
             $prefix = "FR";
+            $length = 4;
             $Rows   = $mysql->select("select count(*) as rCount from `_tbl_franchisees`");
             return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1);
              
@@ -33,6 +35,7 @@
         function GetNextFranchiseePlanNumber() {
             global $mysql;
             $prefix = "FPLN";
+            $length = 4;
             $Rows   = $mysql->select("select count(*) as rCount from `_tbl_franchisees_plans`");
             return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1);
             

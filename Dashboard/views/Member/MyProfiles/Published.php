@@ -44,9 +44,10 @@
                                     <img src="<?php echo SiteUrl?>assets/images/prof1.jpg" style="height: 159px;margin-bottom: -18px;">
                                     <button type="button" class="btn btn-primary" style="padding: 0px 0px;font-size: 13px;margin-top: 8px;">Add a Photo</button>
                                 </div>
-                                <div class="col-sm-9">
-                                    <div style="border-bottom:1px solid #d7d7d7;width:100%;padding-bottom: 10px;font-size: 21px;color: #514444cc;">
-                                        <?php echo $Profile['ProfileName'];?>
+                                 <div class="col-sm-9">
+                                    <div class="colo-sm-12" style="border-bottom:1px solid #d7d7d7;width:100%;padding-bottom: 42px;font-size: 21px;color: #514444cc;">
+                                       <div class="col-sm-7"> <?php echo $Profile['ProfileName'];?></div>
+                                        <div class="col-sm-1"><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left: 23px;"></div><div style="float:right;font-size: 12px;">Created On:&nbsp;&nbsp;<?php echo putDateTime($Profile['CreatedOn']);?><br>Last Update On:<?php echo putDateTime($Profile['LastUpdatedOn']);?></div> 
                                     </div>
                                     <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
                                         <div>
@@ -71,7 +72,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
-                                        Am a very simple man by nature I love to learn from people I like travelling I love people that love I love to learn from people I like travelling I love people that love......<a href="<?php echo GetUrl(" MyProfiles/View/ ". $Profile['ProfileID'].".htm ");?>">More</a>
+                                        <?php echo $Profile['AboutMe'];?><a href="<?php echo GetUrl(" MyProfiles/View/ ". $Profile['ProfileID'].".htm ");?>">More</a>
                                     </div>
                                 </div>
                             </div>

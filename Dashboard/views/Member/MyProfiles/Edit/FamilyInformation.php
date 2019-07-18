@@ -103,7 +103,7 @@
                             <?php } ?>
             </select>
         </div>
-        <label for="elder" class="col-sm-2 col-form-label">younger</label>
+        <label for="elder" class="col-sm-2 col-form-label">Younger</label>
         <div class="col-sm-1">
             <select class="selectpicker form-control" data-live-search="true" id="younger" name="younger" size="width:60px">
                 <?php foreach($response['data']['NumberofYoungerBrother'] as $younger) { ?>
@@ -112,7 +112,7 @@
                             <?php } ?>
             </select>
         </div>
-        <label for="elder" class="col-sm-1 col-form-label">married</label>
+        <label for="elder" class="col-sm-2 col-form-label">Married</label>
         <div class="col-sm-1">
             <select class="selectpicker form-control" data-live-search="true" id="married" name="married" size="width:60px">
                 <?php foreach($response['data']['NumberofMarriedBrother'] as $married) { ?>
@@ -141,7 +141,7 @@
                             <?php } ?>
             </select>
         </div>
-        <label for="elder" class="col-sm-2 col-form-label">younger</label>
+        <label for="elder" class="col-sm-2 col-form-label">Younger</label>
         <div class="col-sm-1" align="left">
             <select class="selectpicker form-control" data-live-search="true" id="youngerSister" name="youngerSister" size="width:60px">
                 <?php foreach($response['data']['NumberofYoungerSisters'] as $youngerSister) { ?>
@@ -150,13 +150,13 @@
                             <?php } ?>
             </select>
         </div>
-        <label for="elder" class="col-sm-1 col-form-label">married</label>
+        <label for="elder" class="col-sm-2 col-form-label">Married</label>
         <div class="col-sm-1" align="left">
             <select class="selectpicker form-control" data-live-search="true" id="marriedSister" name="marriedSister" size="width:60px">
                 <?php foreach($response['data']['NumberofMarriedSisters'] as $marriedSister) { ?>
                     <option value="<?php echo $marriedSister['SoftCode'];?>" <?php echo (isset($_POST[ 'marriedSister'])) ? (($_POST[ 'marriedSister']==$marriedSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MarriedSister']==$marriedSister[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $marriedSister['CodeValue'];?> </option>
-                            <?php } ?>
+                            <?php } ?>                                                                                                              
             </select>
         </div>
     </div>

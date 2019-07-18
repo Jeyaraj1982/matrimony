@@ -19,8 +19,25 @@
 }
 </style>
 <div class="col-sm-10" style="margin-top: -8px;">
-<form method="post" action="" enctype="multipart/form-data">
-    <h4 class="card-title">Document Attachments</h4>
+<script>
+function submitUpload() {
+            $('#Errcheck').html("");
+            ErrorCount==0
+            if (document.form1.check.checked == false) {
+                $("#Errcheck").html("Please read the instruction");
+                return false;
+            }
+            if (ErrorCount==0) {
+                            return true;
+                        } else{
+                            return false;
+                        }
+
+        }
+</script>
+<form method="post" onsubmit="return submitUpload()" name="form1" id="form1" action="" enctype="multipart/form-data">
+    <h4 class="card-title">Document Attachments<br>
+    <span style="float:right;color:green">For administrator purpose only</span><br><span style="float:right;color:grey;font-size:12px">Not show to members or others</span></h4>
     
   <span style="color:#555">  We have implemented certain measures for the safety of our members. registered members must have update      a copy of any specified government issued identity proof to add credibility to their profiles. </span><br><Br><br>
     
@@ -74,7 +91,7 @@
             ?>
     
     <div class="form-group row">
-        <label for="Documents" class="col-sm-3 col-form-label">Document Type<span id="star">*</span></label>
+        <label for="Documents" class="col-sm-2 col-form-label">Document Type<span id="star">*</span></label>
         <div class="col-sm-4">
             <select class="selectpicker form-control" data-live-search="true" id="Documents" name="Documents">
                 <option>Choose Documents</option>
@@ -85,7 +102,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="Attachment" class="col-sm-3 col-form-label">Attachment<span id="star">*</span></label>
+        <label for="Attachment" class="col-sm-2 col-form-label">Attachment<span id="star">*</span></label>
         <div class="col-sm-9">
             <input type="File" id="File" name="File" Placeholder="File">
             <span style="color:#888">supports png, jpg, jpeg and pdf & File size Lessthan 5 MB </span>
@@ -95,6 +112,10 @@
         <div class="col-sm-12">
            <?php echo $errormessage;?><?php echo $successmessage;?>
         </div>
+    </div>
+    <div class="form-group row">                                                                                                                                                
+        <div class="col-sm-12"><input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)"  onclick="showLearnMore()">Lean more</a>
+        <br><span class="errorstring" id="Errcheck"></span></div>
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-3">
@@ -129,6 +150,31 @@
          <?php }?>
     </div>
 </div>
+<div class="modal" id="LearnMore" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+            <div class="modal-dialog" style="width: 367px;">
+                <div class="modal-content" id="LearnMore_body" style="height:300px">
+            
+                </div>
+            </div>
+        </div>
+<script>
+function showLearnMore() {
+      $('#LearnMore').modal('show'); 
+      var content = '<div class="LearnMore_body" style="padding:20px">'
+                    +   '<div  style="height:500px;">'
+                       +  '<h5 style="text-align:center">Please follow the below instructions :</h5><button type="button" class="close" data-dismiss="modal" style="margin-top: -38px;margin-right: 10px;">&times;</button>'
+                            + '<ol> '
+                                + '<li>The ID proof must have related to profile information </li>'
+                                + '<li>The uploaded ID proofs are not displayed in public and it is purely for administrative purposes.</li>'
+                                + '<li>ID proofs once uploaded cannot be edit or delete.</li>'
+                                + '<li>If any changes. You should contact the admin for any updates to these documents with a valid reason.</li>'
+                                + '</ol>'
+                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>'
+                       +  '</div><br>'
+                +  '</div>'
+            $('#LearnMore_body').html(content);
+}
+</script>
 <div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
                 <div class="modal-content" id="model_body" style="height: 150px;">

@@ -205,8 +205,8 @@
                 return Response::returnError("Password do not match"); 
              }
              
-             $mysql->execute("update _tbl_members set `MemberPassword`='".$_POST['newpassword']."' where `EmailID`='".$data[0]['Emailid']."'");  
-             $data = $mysql->select("select * from `_tbl_members` where  EmailID='".$data[0]['Emailid']."'");
+             $mysql->execute("update _tbl_members set `MemberPassword`='".$_POST['newpassword']."' where `MemberID`='".$data[0]['MemberID']."'");  
+             $data = $mysql->select("select * from `_tbl_members` where  MemberID='".$data[0]['MemberID']."'");
              
              return Response::returnSuccess("New Password saved successfully",$data[0]);
          }
@@ -924,6 +924,28 @@
                  
              
          }
+         
+         function DeleteAttach() {
+             
+             global $mysql,$loginInfo;
+             
+              
+             $updateSql = "update `_tbl_member_attachments` set `IsDelete` = '1' where `AttachmentID`='".$_POST['AttachmentID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['ProfileID']."'";
+             $mysql->execute($updateSql);  
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'Delete Attachment',
+                                                             "ActivityString" => 'Delete attachment.',
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+                 return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">Your attachment has been deleted.</h5>
+                            <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
+                       </div>';
+                 
+             
+         }
              
          function GetDraftProfileInformation() {
              global $mysql,$loginInfo;
@@ -1339,8 +1361,10 @@
          }
          function AddEducationalDetails() {
              global $mysql,$loginInfo;
-             $id = $mysql->insert("_tbl_member_attachments",array("EducationDetails" => $_POST['education'],
+             $id = $mysql->insert("_tbl_member_attachments",array("EducationDetails" => $_POST['Educationdetails'],
+                                                                  "EducationDegree"  => $_POST['EducationDegree'],
                                                                   "AttachedOn"       => date("Y-m-d H:i:s"),
+                                                                  "Type"             => "EducationDetails",
                                                                   "ProfileID"        => $_POST['Code'],
                                                                   "MemberID"         => $loginInfo[0]['MemberID']));
              return (sizeof($id)>0) ? Response::returnSuccess("success",$_POST)
@@ -1351,7 +1375,7 @@
              
              global $mysql,$loginInfo;   
              
-             $photos = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0'");
+             $photos = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0' and Type='IDProof'");
              
              $DocumentType      = CodeMaster::getData("DOCTYPES",$_POST['Documents']) ;
              
@@ -1361,13 +1385,14 @@
                                                                     "DocumentType"      => $DocumentType[0]['CodeValue'],
                                                                     "AttachedOn"        => date("Y-m-d H:i:s"),
                                                                     "AttachFileName"    => $_POST['File'],
+                                                                    "Type"              =>'IDProof',
                                                                     "ProfileID"         => $_POST['Code'],
                                                                     "MemberID"          => $loginInfo[0]['MemberID']));
                  } else { 
                      return Response::returnError("Only 5 phots allowed",$photos);
                  }
              }
-             $photos = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0'");
+             $photos = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0' and Type='IDProof'");
              return Response::returnSuccess("success",$photos);
          }    
          
@@ -1469,7 +1494,7 @@
          
          function GetViewAttachments() {
              global $mysql,$loginInfo;    
-             $SAttachments = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'");
+             $SAttachments = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0' and `Type`='EducationDetails'");
              return Response::returnSuccess("success",$SAttachments);
          }
          
