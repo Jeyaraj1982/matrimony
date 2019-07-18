@@ -36,24 +36,36 @@
                     if ($err==0) {
                         $_POST['IDProofFileName']= $idprooffilename;
                         $_POST['AddressProofFileName']= $addressfilename;
-                        $response = $webservice->UpdateKYC($_POST);
-                        if ($response['status']=="success") {
-                            echo  $response['message']; 
+                        $res = $webservice->getData("Member","UpdateKYC",$_POST);
+                        if ($res['status']=="success") {
+                            echo  $res['message']; 
                         } else {
-                            $errormessage = $response['message']; 
+                            $errormessage = $res['message']; 
                         }
-                    }
+                    } else {
+                        $res =$webservice->getData("Member","UpdateKYC");
                 }
-                $Kyc = $webservice->GetKYC(); 
-                
-                $image=$_FILES["IDProofFileName"]["name"]; 
-              $img="uploads/".$image;
-              
+                }
+                  else {
+                     $res =$webservice->getData("Member","UpdateKYC");
+                     
+                }
+               $res =$webservice->getData("Member","UpdateKYC");
+               $Kyc =$webservice->getData("Member","GetKYC");
+                 $KycProof=$Kyc['data']['KYCView'];
             ?>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px">
             <div class="col-sm-3">ID Proof</div>
+            
+            <?php if (sizeof($Kyc['data']['IdProofDocument'])>0) {?>
+            <div class="col-sm-5" style="padding-top: 5px;color: #888;">
+                <img src="<?php echo AppUrl;?>uploads/<?php echo $Kyc['data']['IdProofDocument'][0]['FileName'];?>" style="height:120px;">
+                <br><br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On :<?php echo putDateTime($Kyc['data']['IdProofDocument'][0]['SubmittedOn']);?>
+                <br>&nbsp;&nbsp;&nbsp;&nbsp; Status :<?php if($Kyc['data']['IdProofDocument'][0]['IsVerified']==0){ echo "Not verified";} else { echo "verified";}?>
+            </div>
+            <?php } else { ?>
             <div class="col-sm-3">
                 <select name="IDType" id="IDType"  class="selectpicker form-control" data-live-search="true">
                     <?php foreach($Kyc['data']['IDProof'] as $IDType) { ?>
@@ -62,12 +74,24 @@
                 </select>
             </div>
             <div class="col-sm-3" style="padding-top: 5px;"><input type="file" name="IDProofFileName"></div>
+            <?php } ?>
+            
+            
         </div>
         <div class="form-group row" style="margin-bottom: 0px;" >
             <hr style="border:none;border-bottom:1px solid #eee;width:90%;margin:15px">
         </div>
+        
         <div class="form-group row">
             <div class="col-sm-3">Address Proof</div>
+            
+            <?php if (sizeof($Kyc['data']['AddressProofDocument'])>0) {?>
+            <div class="col-sm-5" style="padding-top: 5px;color: #888;">
+                <img src="<?php echo AppUrl;?>uploads/<?php echo $Kyc['data']['AddressProofDocument'][0]['FileName'];?>" style="height:120px;">
+                <br><br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On :<?php echo putDateTime($Kyc['data']['AddressProofDocument'][0]['SubmittedOn']);?>
+                <br>&nbsp;&nbsp;&nbsp;&nbsp; Status :<?php if($Kyc['data']['AddressProofDocument'][0]['IsVerified']==0){ echo "Not verified";} else { echo "verified";}?>
+            </div>
+            <?php } else { ?>
             <div class="col-sm-3" >
                 <select name="AddressProofType" id="AddressProofType"  class="selectpicker form-control" data-live-search="true">
                     <?php foreach($Kyc['data']['AddressProof'] as $AddressProofTypee) { ?>
@@ -76,7 +100,9 @@
                 </select>
             </div>
             <div class="col-sm-3" style="padding-top: 5px;"><input type="file" name="AddressProofFileName"></div>
+             <?php }?>
         </div>
+        <?php if(sizeof($Kyc['data']['IdProofDocument'])== 0 || (sizeof($Kyc['data']['AddressProofDocument'])== 0)){?>
         <br>
         <br>
         <span style="color:#666;">In order to submit your KYC, your identification documents need to pass a verification process, done by our document authentication team.</span>
@@ -85,7 +111,7 @@
         <div class="form-group row">
             &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary" name="updateKYC" style="font-family:roboto">Submit Documents</button>
         </div>
-    </div>
+        <?php }?>
 </form>
 <script>
  

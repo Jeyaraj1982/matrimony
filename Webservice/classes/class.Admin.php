@@ -38,7 +38,7 @@ class Admin extends Master {
                 }
 
             } else {
-                return Response::returnError("Invalid username and password"."select * from _tbl_admin where AdminLogin='".$_POST['UserName']."' and AdminPassword='".$_POST['Password']."'");
+                return Response::returnError("Invalid username and password");
             }
         }
 

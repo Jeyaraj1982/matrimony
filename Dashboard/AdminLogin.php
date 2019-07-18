@@ -67,11 +67,11 @@ $("#Password").blur(function () {
                 <div class="form-group">
                   <button type="submit" class="btn btn-primary submit-btn btn-block" name="btnsubmit">Login</button>
                   <?php
-                      if (isset($status)) {
-                          echo'<span class="errorstring" id="server_error">'.$status.'</span>';
+                      if (isset($loginError)) {
+                          echo'<span class="errorstring" id="server_error">'.$loginError.'</span>';
                       }
                   ?>
-                </div>
+                  </div>
                 <div class="form-group d-flex justify-content-between">
                   <div class="form-check form-check-flat mt-0">
                     <label class="form-check-label">

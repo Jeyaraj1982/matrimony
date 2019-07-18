@@ -1009,11 +1009,15 @@
          }
             
          function GetKYC() {
-             global $mysql;    
+             global $mysql,$loginInfo;    
              $KYCs = $mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+             $IDproof = $mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."' and DocumentType='Id Proof'");
+             $Addressproof = $mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."' and DocumentType='Address Proof'");
              return Response::returnSuccess("success",array("IDProof"      => CodeMaster::getData('IDPROOF'),
                                                             "AddressProof" => CodeMaster::getData('ADDRESSPROOF'),
-                                                            "KYCView"      => $KYCs[0]));
+                                                            "KYCView"      => $KYCs,
+                                                            "IdProofDocument" => $IDproof,
+                                                            "AddressProofDocument" => $Addressproof));
          }
          
          function UpdateKYC() {
