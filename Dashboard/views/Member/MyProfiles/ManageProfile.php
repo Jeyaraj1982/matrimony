@@ -76,7 +76,7 @@
                                 <?php if($Profile['IsApproved']==1){?>
                                     <a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">View</a>
                                     <?php }else{  ?>
-                                        <a href="<?php echo GetUrl("MyProfiles/Edit/GeneralInformation/".$Profile['ProfileID'].".htm ");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl(" MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">View</a>
+                                        <a href="<?php echo GetUrl("MyProfiles/Edit/GeneralInformation/".$Profile['ProfileID'].".htm ");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">View</a>
                                     <?php  }    ?>
                             </div>
                         </div>

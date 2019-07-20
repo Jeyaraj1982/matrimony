@@ -887,9 +887,11 @@
     function GetDraftProfileInformation() {
              global $mysql,$loginInfo;
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `ProfileID`='".$_POST['ProfileID']."'");               
-             $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where `ProfileID`='".$_POST['ProfileID']."'");               
+             $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where `ProfileID`='".$_POST['ProfileID']."'"); 
+             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['CreatedBy']."'");              
              return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
                                                             "EducationAttachments"   => $Educationattachments[0],
+                                                            "Members"                 => $members[0],
                                                             "ProfileSignInFor"       => CodeMaster::getData('PROFILESIGNIN'),
                                                             "Gender"                 => CodeMaster::getData('SEX'),
                                                             "MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
@@ -1042,11 +1044,11 @@
              
              global $mysql, $loginInfo;
              
-             $FathersOccupation = CodeMaster::getData("OCCUPATIONTYPES",$_POST['FathersOccupation']);  
+             $FathersOccupation = CodeMaster::getData("Occupation",$_POST['FathersOccupation']);  
              $FamilyType        = CodeMaster::getData("FAMILYTYPE",$_POST['FamilyType']); 
              $FamilyValue       = CodeMaster::getData("FAMILYVALUE",$_POST['FamilyValue']);
              $FamilyAffluence   = CodeMaster::getData("FAMILYAFFLUENCE",$_POST['FamilyAffluence']);
-             $MothersOccupation = CodeMaster::getData("OCCUPATIONTYPES",$_POST['MothersOccupation']);  
+             $MothersOccupation = CodeMaster::getData("Occupation",$_POST['MothersOccupation']);  
              $NumberofBrothers  = CodeMaster::getData("NUMBEROFBROTHER",$_POST['NumberofBrothers']);
              $younger           = CodeMaster::getData("YOUNGER",$_POST['younger']);
              $elder             = CodeMaster::getData("ELDER",$_POST['elder']);
@@ -1094,7 +1096,7 @@
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `ProfileID`='".$_POST['Code']."'");      
       
              return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
-                                                            "Occupation"             => CodeMaster::getData('OCCUPATIONTYPES'),
+                                                            "Occupation"             => CodeMaster::getData('Occupation'),
                                                             "FamilyType"             => CodeMaster::getData('FAMILYTYPE'),
                                                             "FamilyValue"            => CodeMaster::getData('FAMILYVALUE'),
                                                             "FamilyAffluence"        => CodeMaster::getData('FAMILYAFFLUENCE'),

@@ -189,7 +189,7 @@
                 return Response::returnError("Invalid access");
              }
          }
-         
+                                                                               
          function forgotPasswordchangePassword() {
              
              global $mysql;
@@ -204,11 +204,17 @@
              if ($_POST['confirmnewpassword']!=$_POST['newpassword']) {
                 return Response::returnError("Password do not match"); 
              }
-             
-             $mysql->execute("update _tbl_members set `MemberPassword`='".$_POST['newpassword']."' where `MemberID`='".$data[0]['MemberID']."'");  
+             $sqlQry ="update _tbl_members set `MemberPassword`='".$_POST['newpassword']."' where `MemberID`='".$data[0]['MemberID']."'";
+             $mysql->execute($sqlQry);  
              $data = $mysql->select("select * from `_tbl_members` where  MemberID='".$data[0]['MemberID']."'");
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $data[0]['MemberID'],
+                                                             "ActivityType"   => 'forgetpasswordchangepassword.',
+                                                             "ActivityString" => 'forget password changed password.',
+                                                             "SqlQuery"       => base64_encode($sqlQry),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
              
-             return Response::returnSuccess("New Password saved successfully",$data[0]);
+             return Response::returnSuccess("New Password saved successfully",$data[0]);  
          }
                          
          function IsMobileVerified() {
@@ -975,10 +981,12 @@
          }
              
          function GetDraftProfileInformation() {
-             global $mysql,$loginInfo;
+             global $mysql,$loginInfo;      
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");               
-             $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");               
+             $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");
+             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['CreatedBy']."'");               
              return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
+                                                            "Members"                => $members[0],
                                                             "EducationAttachments"   => $Educationattachments[0],
                                                             "ProfileSignInFor"       => CodeMaster::getData('PROFILESIGNIN'),
                                                             "Gender"                 => CodeMaster::getData('SEX'),
@@ -1023,6 +1031,7 @@
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
                                                             "StateName"              => CodeMaster::getData('STATNAMES')));
          }
+         
          function updateProfilePhoto() {
              global $mysql,$loginInfo;
              $Profiles = $mysql->select("update  `_tbl_members` set `FileName`='".$_POST['filename']."'  where `MemberID`='".$loginInfo[0]['MemberID']."'");
@@ -1194,11 +1203,11 @@
              
              global $mysql, $loginInfo;
              
-             $FathersOccupation = CodeMaster::getData("OCCUPATIONTYPES",$_POST['FathersOccupation']);  
+             $FathersOccupation = CodeMaster::getData("Occupation",$_POST['FathersOccupation']);  
              $FamilyType        = CodeMaster::getData("FAMILYTYPE",$_POST['FamilyType']); 
              $FamilyValue       = CodeMaster::getData("FAMILYVALUE",$_POST['FamilyValue']);
              $FamilyAffluence   = CodeMaster::getData("FAMILYAFFLUENCE",$_POST['FamilyAffluence']);
-             $MothersOccupation = CodeMaster::getData("OCCUPATIONTYPES",$_POST['MothersOccupation']);  
+             $MothersOccupation = CodeMaster::getData("Occupation",$_POST['MothersOccupation']);  
              $NumberofBrothers  = CodeMaster::getData("NUMBEROFBROTHER",$_POST['NumberofBrothers']);
              $younger           = CodeMaster::getData("YOUNGER",$_POST['younger']);
              $elder             = CodeMaster::getData("ELDER",$_POST['elder']);
@@ -1244,9 +1253,9 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'");      
-      
+                                                                         
              return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
-                                                            "Occupation"             => CodeMaster::getData('OCCUPATIONTYPES'),
+                                                            "Occupation"             => CodeMaster::getData('Occupation'),
                                                             "FamilyType"             => CodeMaster::getData('FAMILYTYPE'),
                                                             "FamilyValue"            => CodeMaster::getData('FAMILYVALUE'),
                                                             "FamilyAffluence"        => CodeMaster::getData('FAMILYAFFLUENCE'),
@@ -1310,7 +1319,7 @@
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'");      
              
-             return Response::returnSuccess("success".$updateSql,array("ProfileInfo"        => $Profiles[0],
+             return Response::returnSuccess("success",array("ProfileInfo"        => $Profiles[0],
                                                                        "PhysicallyImpaired" => CodeMaster::getData('PHYSICALLYIMPAIRED'),
                                                                        "VisuallyImpaired"   => CodeMaster::getData('VISUALLYIMPAIRED'),
                                                                        "VissionImpaired"    => CodeMaster::getData('VISSIONIMPAIRED'),
@@ -1357,14 +1366,14 @@
                                                             "CountryName" => CodeMaster::getData('CONTNAMES'),
                                                             "StateName"   => CodeMaster::getData('STATNAMES')));
          }
-         
+                                                                                                                
           function GetPartnersExpectaionInformation() {
              global $mysql,$loginInfo;
              return Response::returnSuccess("success",array("MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
                                                             "Language"               => CodeMaster::getData('LANGUAGENAMES'),
                                                             "Religion"               => CodeMaster::getData('RELINAMES'),
                                                             "Caste"                  => CodeMaster::getData('CASTNAMES'),
-                                                            "IncomeRange"                  => CodeMaster::getData('IncomeRange'),
+                                                            "IncomeRange"            => CodeMaster::getData('INCOMERANGE'),
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
                                                             "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
          }

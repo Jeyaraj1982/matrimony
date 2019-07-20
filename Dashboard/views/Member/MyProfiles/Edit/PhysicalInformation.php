@@ -3,7 +3,7 @@
    
     if (isset($_POST['BtnSaveProfile'])) {
         
-        $response = $webservice->EditDraftPhysicalInformation($_POST);
+        $response = $webservice->getData("Member","EditDraftPhysicalInformation",$_POST);
         if ($response['status']=="success") {
              $successmessage = $response['message']; 
         } else {
@@ -11,7 +11,7 @@
         }
     }
     
-    $response = $webservice->GetDraftProfileInformation(array("ProfileID"=>$_GET['Code']));
+    $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileID"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
 ?>
 <?php include_once("settings_header.php");?>

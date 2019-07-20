@@ -72,12 +72,12 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
-                                        <?php echo $Profile['AboutMe'];?><a href="<?php echo GetUrl(" MyProfiles/View/ ". $Profile['ProfileID'].".htm ");?>">More</a>
+                                        <?php echo $Profile['AboutMe'];?><a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">More</a>
                                     </div>
                                 </div>
                             </div>
                             <div style="float:right;line-height: 1px;">
-                                <a href="<?php echo GetUrl(" MyProfiles/View/ ". $Profile['ProfileID'].".htm ");?>">View</a>
+                                <a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">View</a>
                             </div>
                         </div>
                         <br>

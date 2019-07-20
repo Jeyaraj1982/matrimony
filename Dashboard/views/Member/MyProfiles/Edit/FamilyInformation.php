@@ -66,7 +66,7 @@
             <select class="selectpicker form-control" data-live-search="true" id="FamilyAffluence" name="FamilyAffluence">
                 <option value="0">Choose Family Value</option>
                 <?php foreach($response['data']['FamilyAffluence'] as $FamilyAffluence) { ?>
-                <option value="<?php echo $FamilyAffluence['SoftCode'];?>" <?php echo (isset($_POST[ 'FamilyAffluence'])) ? (($_POST[ 'FamilyAffluence']==$FamilyAffluence[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'FamilyAffluence']==$FamilyValue[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                <option value="<?php echo $FamilyAffluence['SoftCode'];?>" <?php echo (isset($_POST[ 'FamilyAffluence'])) ? (($_POST[ 'FamilyAffluence']==$FamilyAffluence[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'FamilyAffluence']==$FamilyAffluence[ 'CodeValue']) ? " selected='selected' " : "");?>>
                 <?php echo $FamilyAffluence['CodeValue'];?> </option>
                 <?php } ?> 
             </select>
@@ -86,25 +86,26 @@
     </div>
     <div class="form-group row">
         <label for="No of Brothers" class="col-sm-2 col-form-label">No of Brothers<span id="star">*</span></label>
-        <div class="col-sm-1" align="left">
-            <select class="selectpicker form-control" data-live-search="true" id="NumberofBrother" name="NumberofBrother" size="width:60px">
+        <div class="col-sm-1" style="max-width:100px !important" align="left">
+            <select class="selectpicker form-control" data-live-search="true" id="NumberofBrother" name="NumberofBrother">
+                <option>Brothers</option>
                 <?php foreach($response['data']['NumberofBrother'] as $NumberofBrother) { ?>
                     <option value="<?php echo $NumberofBrother['SoftCode'];?>" <?php echo (isset($_POST[ 'NumberofBrother'])) ? (($_POST[ 'NumberofBrother']==$NumberofBrother[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'NumberofBrothers']==$NumberofBrother[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $NumberofBrother['CodeValue'];?>   </option>
                             <?php } ?>
             </select>
         </div>
-        <label for="Elder" class="col-sm-1 col-form-label">Elder</label>
-        <div class="col-sm-1">
-            <select class="selectpicker form-control" data-live-search="true" id="elder" name="elder" size="width:60px">
+         <label for="Elder" class="col-sm-1 col-form-label" style="text-align:right">Elder</label>
+        <div class="col-sm-1" style="max-width:100px !important">
+            <select class="selectpicker form-control" data-live-search="true" id="elder" name="elder">
                 <?php foreach($response['data']['NumberofElderBrother'] as $elder) { ?>
                     <option value="<?php echo $elder['SoftCode'];?>" <?php echo (isset($_POST[ 'elder'])) ? (($_POST[ 'elder']==$elder[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Elder']==$elder[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $elder['CodeValue'];?></option>
                             <?php } ?>
             </select>
         </div>
-        <label for="elder" class="col-sm-2 col-form-label">Younger</label>
-        <div class="col-sm-1">
+        <label for="elder" class="col-sm-2 col-form-label" style="text-align:right">Younger</label>
+        <div class="col-sm-1" style="max-width:100px !important">
             <select class="selectpicker form-control" data-live-search="true" id="younger" name="younger" size="width:60px">
                 <?php foreach($response['data']['NumberofYoungerBrother'] as $younger) { ?>
                     <option value="<?php echo $younger['SoftCode'];?>" <?php echo (isset($_POST[ 'younger'])) ? (($_POST[ 'younger']==$younger[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Younger']==$younger[ 'CodeValue']) ? " selected='selected' " : "");?>>
@@ -112,19 +113,19 @@
                             <?php } ?>
             </select>
         </div>
-        <label for="elder" class="col-sm-2 col-form-label">Married</label>
-        <div class="col-sm-1">
+        <label for="elder" class="col-sm-2 col-form-label" style="text-align:right">Married</label>
+        <div class="col-sm-1" style="max-width:100px !important">
             <select class="selectpicker form-control" data-live-search="true" id="married" name="married" size="width:60px">
                 <?php foreach($response['data']['NumberofMarriedBrother'] as $married) { ?>
                     <option value="<?php echo $married['SoftCode'];?>" <?php echo (isset($_POST[ 'married'])) ? (($_POST[ 'married']==$married[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Married']==$married[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $married['CodeValue'];?></option>
                             <?php } ?>
             </select>
-        </div>
+        </div>  
     </div>
     <div class="form-group row">
         <label for="No of Sisters" class="col-sm-2 col-form-label">No of Sisters<span id="star">*</span></label>
-        <div class="col-sm-1" align="left">
+        <div class="col-sm-1" align="left" style="max-width:100px !important">
             <select class="selectpicker form-control" data-live-search="true" id="NumberofSisters" name="NumberofSisters" size="width:60px">
                 <?php foreach($response['data']['NumberofSisters'] as $NumberofSister) { ?>
                     <option value="<?php echo $NumberofSister['SoftCode'];?>" <?php echo (isset($_POST[ 'NumberofSisters'])) ? (($_POST[ 'NumberofSisters']==$NumberofSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'NumberofSisters']==$NumberofSister[ 'CodeValue']) ? " selected='selected' " : "");?>>
@@ -132,8 +133,8 @@
                             <?php } ?>
             </select>
         </div>
-        <label for="elder" class="col-sm-1 col-form-label">elder</label>
-        <div class="col-sm-1" align="left">
+        <label for="elder" class="col-sm-1 col-form-label" style="text-align:right">Elder</label>
+        <div class="col-sm-1" align="left" style="max-width:100px !important">
             <select class="selectpicker form-control" data-live-search="true" id="elderSister" name="elderSister" size="width:60px">
                 <?php foreach($response['data']['NumberofElderSisters'] as $elderSister) { ?>
                     <option value="<?php echo $elderSister['SoftCode'];?>" <?php echo (isset($_POST[ 'elderSister'])) ? (($_POST[ 'elderSister']==$elderSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'ElderSister']==$elderSister[ 'CodeValue']) ? " selected='selected' " : "");?>>
@@ -141,8 +142,8 @@
                             <?php } ?>
             </select>
         </div>
-        <label for="elder" class="col-sm-2 col-form-label">Younger</label>
-        <div class="col-sm-1" align="left">
+        <label for="elder" class="col-sm-2 col-form-label" style="text-align:right">Younger</label>
+        <div class="col-sm-1" align="left" style="max-width:100px !important">
             <select class="selectpicker form-control" data-live-search="true" id="youngerSister" name="youngerSister" size="width:60px">
                 <?php foreach($response['data']['NumberofYoungerSisters'] as $youngerSister) { ?>
                     <option value="<?php echo $youngerSister['SoftCode'];?>" <?php echo (isset($_POST[ 'youngerSister'])) ? (($_POST[ 'youngerSister']==$youngerSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'YoungerSister']==$youngerSister[ 'CodeValue']) ? " selected='selected' " : "");?>>
@@ -150,8 +151,8 @@
                             <?php } ?>
             </select>
         </div>
-        <label for="elder" class="col-sm-2 col-form-label">Married</label>
-        <div class="col-sm-1" align="left">
+        <label for="elder" class="col-sm-2 col-form-label" style="text-align:right">Married</label>
+        <div class="col-sm-1" align="left" style="max-width:100px !important">
             <select class="selectpicker form-control" data-live-search="true" id="marriedSister" name="marriedSister" size="width:60px">
                 <?php foreach($response['data']['NumberofMarriedSisters'] as $marriedSister) { ?>
                     <option value="<?php echo $marriedSister['SoftCode'];?>" <?php echo (isset($_POST[ 'marriedSister'])) ? (($_POST[ 'marriedSister']==$marriedSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MarriedSister']==$marriedSister[ 'CodeValue']) ? " selected='selected' " : "");?>>
