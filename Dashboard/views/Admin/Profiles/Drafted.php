@@ -26,7 +26,7 @@
                     </thead>
                      <tbody>  
                         <?php 
-                         $response = $webservice->getData("Admin","GetDraftedProfiles");                        
+                         $response = $webservice->getData("Admin","GetDraftedProfiles",array("Request"=>"Draft"));                         
                          if (sizeof($response['data'])>0) {                                                                 
                          ?>
                         <?php foreach($response['data']as $Profile) { ?>

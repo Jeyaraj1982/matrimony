@@ -1,9 +1,22 @@
-<?php
+   <?php
     $page="PartnersExpectation";
-     $response = $webservice->getData("Member","GetPartnersExpectaionInformation");     
-   ?>            
+    if (isset($_POST['BtnSaveProfile'])) {
+        
+        $response = $webservice->getData("Member","AddPartnersExpectaion",$_POST);
+        if ($response['status']=="success") {
+             $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+    
+    $response = $webservice->getData("Member","GetPartnersExpectaionInformation",array("ProfileID"=>$_GET['Code']));
+    $ProfileInfo          = $response['data']['ProfileInfo'];
+   ?>
+       
 <?php include_once("settings_header.php");?>
 <div class="col-sm-9" style="margin-top: -8px;">
+<form method="post" action="" onsubmit="">
     <h4 class="card-title">Partners Expectation</h4>
     <div class="form-group row">
         <div class="col-sm-3" align="left">Age</div>
@@ -107,9 +120,12 @@
     </div>
     <div class="form-group row">
         <div class="col-sm-3" align="left">Details<span id="star">*</span></div>
-        <div class="col-sm-5"><textarea class="form-control" cols="3" rows="2" name="Details" id="Details"></textarea>
+        <div class="col-sm-5"><textarea class="form-control" cols="3" rows="2" name="Details" id="Details"><?php echo $ProfileInfo['Details'];?></textarea>
         </div>
     </div>
+    <div class="form-group row" style="margin-bottom:0px;">
+                            <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
+                        </div>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-6">
             <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
@@ -117,5 +133,6 @@
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
     </div>
+    </form>
 </div> 
 <?php include_once("settings_footer.php");?>                      

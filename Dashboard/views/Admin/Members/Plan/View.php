@@ -1,9 +1,5 @@
-<?php  
-    $Plan = $mysql->select("select * from _tbl_member_plan where PlanCode='".$_GET['Code']."'");
-?>
-  
-
-
+  <?php $response = $webservice->getData("Admin","GetMemberPlanInfo");
+    $Plan          = $response['data'];?>
 <form method="post" action="" onsubmit="return SubmitNewPlan();">
              <div class="col-12 stretch-card">
                   <div class="card">
@@ -12,44 +8,44 @@
                                  <form class="forms-sample">
                                         <div class="form-group row">
                                             <div class="col-sm-3">Plan Code</div>
-                                            <div class="col-sm-3"><small style="color:#737373;"><?php echo $Plan[0]['PlanCode'];?></small></div>
+                                            <div class="col-sm-3"><small style="color:#737373;"><?php echo $Plan['PlanCode'];?></small></div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-3">Plan Name</div>
-                                            <div class="col-sm-4"><small style="color:#737373;"><?php echo $Plan[0]['PlanName'];?></small></div>
+                                            <div class="col-sm-4"><small style="color:#737373;"><?php echo $Plan['PlanName'];?></small></div>
                                             </div>
                                         <div class="form-group row">
                                             <div class="col-sm-3">Duration</div>
-                                            <div class="col-sm-4"><small style="color:#737373;"><?php echo $Plan[0]['Decreation'];?> &nbsp;&nbsp;days</small></div>
+                                            <div class="col-sm-4"><small style="color:#737373;"><?php echo $Plan['Decreation'];?> &nbsp;&nbsp;days</small></div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-3">Amount</div>
-                                            <div class="col-sm-3"><small style="color:#737373;"><?php echo $Plan[0]['Amount'];?></small></div>
+                                            <div class="col-sm-3"><small style="color:#737373;"><?php echo $Plan['Amount'];?></small></div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-3">Photo</div>
-                                            <div class="col-sm-3"><small style="color:#737373;"><?php echo $Plan[0]['Photos'];?></small></div>
+                                            <div class="col-sm-3"><small style="color:#737373;"><?php echo $Plan['Photos'];?></small></div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-3">Video</div>
-                                            <div class="col-sm-3"><small style="color:#737373;"><?php echo $Plan[0]['Videos'];?></small></div>
+                                            <div class="col-sm-3"><small style="color:#737373;"><?php echo $Plan['Videos'];?></small></div>
                                         </div>
                                         <div class="form-group row">
                                                 <div class="col-sm-3">Free Profiles</div>
-                                            <div class="col-sm-4"><small style="color:#737373;"><?php echo $Plan[0]['FreeProfiles'];?></small></div>
+                                            <div class="col-sm-4"><small style="color:#737373;"><?php echo $Plan['FreeProfiles'];?></small></div>
                                         </div>
                                         <div class="form-group row">
                                                 <div class="col-sm-3">Short Description</div>
-                                            <div class="col-sm-4"><small style="color:#737373;"><?php echo $Plan[0]['ShortDescription'];?></small></div>
+                                            <div class="col-sm-4"><small style="color:#737373;"><?php echo $Plan['ShortDescription'];?></small></div>
                                         </div>
                                         <div class="form-group row">
                                                 <div class="col-sm-3">Detail Description</div>
-                                            <div class="col-sm-4"><small style="color:#737373;"><?php echo $Plan[0]['DetailDescription'];?></small></div>
+                                            <div class="col-sm-4"><small style="color:#737373;"><?php echo $Plan['DetailDescription'];?></small></div>
                                         </div>
                                         <div class="form-group row">
                                                 <div class="col-sm-3">Status</div>
-                                            <div class="col-sm-4"><small style="color:#737373;"><span class="<?php echo ($Plan[0]['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;
-                                            <?php if($Plan[0]['IsActive']==1){
+                                            <div class="col-sm-4"><small style="color:#737373;"><span class="<?php echo ($Plan['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;
+                                            <?php if($Plan['IsActive']==1){
                                                 echo "Active";
                                                 }                                  
                                                 else{
@@ -58,7 +54,7 @@
                                         </div>
                                         <div class="form-group row">
                                                 <div class="col-sm-3">Created On</div>
-                                            <div class="col-sm-4"><small style="color:#737373;"><?php echo $Plan[0]['CreatedOn'];?></small></div>
+                                            <div class="col-sm-4"><small style="color:#737373;"><?php echo $Plan['CreatedOn'];?></small></div>
                                         </div>
                                         <div class="form-group row">
                                                 <div class="col-sm-3">No of Profiles</div>

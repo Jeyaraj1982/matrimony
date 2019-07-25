@@ -28,7 +28,7 @@
                     <td><?php echo $Document['EducationDetails'];?></td>
                     <td><?php echo $Document['EducationDegree'];?></td>
                     <td style="width:140px"><?php echo putDateTime($Document['AttachedOn']);?></td>
-                    <td></td>
+                    <td><?php if($Document['IsVerified']==0 ) { echo "Not Verified";} else { echo "verified";}?></td>
                     <td style="width:20px"><a href="javascript:void(0)" onclick="showConfirmDeleteAttach('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>')"><img src="<?php echo SiteUrl?>assets/images/document_delete.png" style="width:16px;height:16px"></a></td>
                 </tr>
                 <?php }}?>

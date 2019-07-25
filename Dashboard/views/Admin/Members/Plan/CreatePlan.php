@@ -1,5 +1,5 @@
 <?php
-    if (isset($_POST['BtnSavePlan'])) {
+   /* if (isset($_POST['BtnSavePlan'])) {
         
         $ErrorCount =0;
         $duplicate = $mysql->select("select * from  _tbl_member_plan where PlanName='".trim($_POST['PlanName'])."'");
@@ -31,7 +31,7 @@
     
     }      
     
-    
+        */
 ?>
 
 
@@ -171,6 +171,23 @@ function SubmitNewPlan() {
                  }
     
  </script> 
+ <?php                   
+  if (isset($_POST['BtnSavePlan'])) {   
+    $response = $webservice->getData("Admin","CreateMemberPlan",$_POST);
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    }
+   $response = $webservice->getData("Admin","GetMemberPlanCode");
+     $FranchiseeCode="";
+        if ($response['status']=="success") {
+            $PlanCode  =$response['data']['PlanCode'];
+        }
+        {
+?>
 <form method="post" action="" onsubmit="return SubmitNewPlan();">                                                                                     
              <div class="col-12 stretch-card">
                   <div class="card">
@@ -180,7 +197,7 @@ function SubmitNewPlan() {
                                         <div class="form-group row">
                                                 <label for="Plan Code" class="col-sm-3 col-form-label">Plan Code<span id="star">*</span></label>
                                             <div class="col-sm-3">
-                                                <input type="text" class="form-control" id="PlanCode" maxlength="7" name="PlanCode" value="<?php echo isset($_POST['PlanCode']) ? $_POST['PlanCode'] : MemberPlan::GetNextMemberPlanNumber();?>" placeholder="Plan Code">
+                                                <input type="text" class="form-control" id="PlanCode" maxlength="7" name="PlanCode" value="<?php echo isset($_POST['PlanCode']) ? $_POST['PlanCode'] : $PlanCode;?>" placeholder="Plan Code">
                                                 <span class="errorstring" id="ErrPlanCode"><?php echo isset($ErrPlanCode) ? $ErrPlanCode : "";?></span>
                                             </div>
                                         </div>
@@ -243,6 +260,7 @@ function SubmitNewPlan() {
                                                 <span class="errorstring" id="ErrRemarks"><?php echo isset($ErrRemarks) ? $ErrRemarks : "";?></span>
                                             </div>
                                         </div>
+                                        <div class="form-group row"> <?php echo $errormessage;?><?php echo $successmessage;?></div>
                                         <button type="submit" name="BtnSavePlan" class="btn btn-primary mr-2">Create Plan</button>
                                         <a href="ManagePlan" style="text-decoration: underline;"><small>List of Plans</small> </a>
                                  </form>
@@ -250,3 +268,4 @@ function SubmitNewPlan() {
                   </div>
              </div>
 </form>
+<?php }?>

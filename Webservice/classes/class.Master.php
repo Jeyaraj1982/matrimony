@@ -674,7 +674,32 @@ class Master {
             }
             $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['Monsign']."',IsActive='".$_POST['IsActive']."' where HardCode='MONSIGNS' and SoftCode='".$_POST['Code']."'");
             return Response::returnSuccess("success",array());
+        }          
+        public function CreateEducationDegree() {
+            global $mysql;
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='EDUCATIONDEGREES' and SoftCode='".trim($_POST['EducationDegreeCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Education DegreeCode Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='EDUCATIONDEGREES' and CodeValue='".trim($_POST['EducationDegree'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Education Degree Already Exists");
+            }
+            $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"  => "EDUCATIONDEGREES",
+                                                                "SoftCode"  => trim($_POST['EducationDegreeCode']),
+                                                                "CodeValue" => trim($_POST['EducationDegree'])));
+            return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
+                                     Response::returnError("Access denied. Please contact support");      
         }
+        public function EditEducationDegree() {
+            global $mysql;     
+            $data = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['EducationDegree']."' and  HardCode='EDUCATIONDEGREES' and SoftCode<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Monsign already exists");    
+            }
+            $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['EducationDegree']."',IsActive='".$_POST['IsActive']."' where HardCode='EDUCATIONDEGREES' and SoftCode='".$_POST['Code']."'");
+            return Response::returnSuccess("success",array());
+        } 
         public function GetMasterAllViewInfo(){
         
         global $mysql;

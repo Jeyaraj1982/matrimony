@@ -1,6 +1,15 @@
 <?php
-   $response = $webservice->getData("Admin","GetMemberInfo");
-    $Member          = $response['data']['MemberInfo'];
+  $response = $webservice->getData("Admin","GetMemberInfo"); 
+  $Member          = $response['data']['MemberInfo'];
+  if (isset($_POST['SendMail'])) {
+        
+        $response = $webservice->getData("Admin","MemberResetPasswordSendMail",array("GUID"=>$_GET['Code']));
+        if ($response['status']=="success") {
+             $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
 ?>
 <script>
     function SubmitSearch() {
@@ -23,6 +32,7 @@
 <div class="col-12 stretch-card">                                         
                   <div class="card">
                     <div class="card-body">
+                    <form action="" method="post">
                     <h4 class="card-title">Member Information</h4>
                     <h4 class="card-title">Reset Password</h4>
                         <div class="form-group row">
@@ -53,6 +63,7 @@
                             <div class="col-sm-3"><small>Reason for Reset Password</small></div>
                             <div class="9"><textarea rows="2" cols="33" id="ResetPassword" name="ResetPassword"></textarea></div>
                             </div>
+                            <?php echo $successmessage;?><?php echo $errormessage;?>
                             <div class="form-group row">
                             <button type="submit" name="SendMail" class="btn btn-success mr-2">Send Mail</button>
                         </div>
@@ -62,7 +73,7 @@
                         }   
                         ?> 
                                     
-                    
+      </form>              
   </div>
  </div>
 </div>                                        

@@ -226,7 +226,7 @@
         $loginID = $_Member['LoginID'];
         define("UserRole","Member");
     } else {
-        if (!(isset($_POST['login']))) {
+        if (!( isset($_POST['login']) || isset($_GET['uid']) )) {
         echo "<script>alert('session expired. login again');location.href='".DomainName."';</script>";
         }
     }                        

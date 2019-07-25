@@ -31,8 +31,8 @@
                         </tr>  
                     </thead>
                      <tbody>  
-                        <?php $Plans = $mysql->select("select * from _tbl_member_plan where IsActive='1'"); ?>
-                        <?php foreach($Plans as $Plan) { ?>
+                         <?php $response = $webservice->getData("Admin","GetManageMemberPlan",array("Request"=>"Active")); ?>  
+                        <?php foreach($response['data'] as $Plan) { ?>
                                 <tr>
                                 <td>
                                 <span class="<?php echo ($Plan['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;

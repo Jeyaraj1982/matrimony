@@ -23,13 +23,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $EducationDegrees = $mysql->select("select * from _tbl_master_codemaster Where HardCode='EDUCATIONDEGREES'"); ?>
-                        <?php foreach($EducationDegrees as $EducationDegree) { ?>
+                          <?php $EducationDegrees = $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($EducationDegrees['data']['EducationDegree'] as $EducationDegree) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($EducationDegree['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $EducationDegree['SoftCode'];?></td>
                                 <td><?php echo $EducationDegree['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/EducationDegrees/Manage/Edit/". $EducationDegree['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/EducationDegrees/Manage/View/". $EducationDegree['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td> 
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/EducationDegrees/Manage/Edit/". $EducationDegree['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/EducationDegrees/Manage/View/". $EducationDegree['SoftCode'].".html");?>">View</a></td> 
                                 </tr>
                         <?php } ?> 
                      </tbody>

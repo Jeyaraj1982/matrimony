@@ -23,13 +23,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $EducationTitles = $mysql->select("select * from _tbl_master_codemaster Where HardCode='EDUCATETITLES'"); ?>
-                        <?php foreach($EducationTitles as $EducationTitle) { ?>
+                        <?php $EducationTitles = $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($EducationTitles['data']['EducationTitle'] as $EducationTitle) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($EducationTitle['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $EducationTitle['SoftCode'];?></td>
                                 <td><?php echo $EducationTitle['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/EducationTitles/Manage/Edit/". $EducationTitle['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/EducationTitles/Manage/View/". $EducationTitle['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/EducationTitles/Manage/Edit/". $EducationTitle['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/EducationTitles/Manage/View/". $EducationTitle['SoftCode'].".html");?>">View</a></td>
                                 </tr>
                         <?php } ?> 
                     </tbody>

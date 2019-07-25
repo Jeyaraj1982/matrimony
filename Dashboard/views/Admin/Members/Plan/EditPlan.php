@@ -1,5 +1,5 @@
 <?php  
-    $Plan = $mysql->select("select * from _tbl_member_plan where PlanCode='".$_GET['Code']."'");
+  /*  $Plan = $mysql->select("select * from _tbl_member_plan where PlanCode='".$_GET['Code']."'");
                           
    if (isset($_POST['BtnSavePlan'])) {
     $mysql->execute("update _tbl_member_plan set PlanName='".$_POST['PlanName']."',
@@ -21,9 +21,23 @@
     
     }
    
-    $Plan = $mysql->select("select * from _tbl_member_plan where PlanCode='".$_GET['Code']."'");
+    $Plan = $mysql->select("select * from _tbl_member_plan where PlanCode='".$_GET['Code']."'");   */
 ?>
-  
+<?php   
+    if (isset($_POST['BtnSavePlan'])) {
+
+        $response = $webservice->getData("Admin","EditMemberPlan",$_POST);
+        if ($response['status']=="success") {
+            echo $response['message'];
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+
+    $response = $webservice->getData("Admin","GetMemberPlanInfo");
+    $Plan          = $response['data'];
+
+ ?>  
 
 
 <script>
@@ -156,14 +170,14 @@ function SubmitNewPlan() {
                                         <div class="form-group row">
                                                 <label for="Plan Code" class="col-sm-3 col-form-label">Plan Code<span id="star">*</span></label>
                                             <div class="col-sm-3">
-                                                <input type="text" class="form-control" id="PlanCode" disabled="disabled" name="PlanCode" value="<?php echo (isset($_POST['PlanCode']) ? $_POST['PlanCode'] : $Plan[0]['PlanCode']);?>" placeholder="Plan Code">
+                                                <input type="text" class="form-control" id="PlanCode" disabled="disabled" name="PlanCode" value="<?php echo $Plan['PlanCode'];?>" placeholder="Plan Code">
                                                 <span class="errorstring" id="ErrPlanCode"><?php echo isset($ErrPlanCode) ? $ErrPlanCode : "";?></span>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label for="PlanName" class="col-sm-3 col-form-label">Plan Name<span id="star">*</span></label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" id="PlanName" name="PlanName" value="<?php echo (isset($_POST['PlanName']) ? $_POST['PlanName'] : $Plan[0]['PlanName']);?>" placeholder="Plan Name">
+                                                <input type="text" class="form-control" id="PlanName" name="PlanName" value="<?php echo (isset($_POST['PlanName']) ? $_POST['PlanName'] : $Plan['PlanName']);?>" placeholder="Plan Name">
                                                 <span class="errorstring" id="ErrPlanName"><?php echo isset($ErrPlanName) ? $ErrPlanName : "";?></span>
                                             </div>
                                         </div>
@@ -171,7 +185,7 @@ function SubmitNewPlan() {
                                                 <label for="Decreation" class="col-sm-3 col-form-label">Duration<span id="star">*</span></label>
                                             <div class="col-sm-3">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="Decreation" name="Decreation" value="<?php echo (isset($_POST['Decreation']) ? $_POST['Decreation'] : $Plan[0]['Decreation']);?>" placeholder="Duration">
+                                                <input type="text" class="form-control" id="Decreation" name="Decreation" value="<?php echo (isset($_POST['Decreation']) ? $_POST['Decreation'] : $Plan['Decreation']);?>" placeholder="Duration">
                                                 <div class="input-group-addon">days</div>
                                             </div>
                                                 <span class="errorstring" id="ErrDecreation"><?php echo isset($ErrDecreation) ? $ErrDecreation : "";?></span>
@@ -182,40 +196,40 @@ function SubmitNewPlan() {
                                             <div class="col-sm-3">
                                             <div class="input-group">
                                             <div class="input-group-addon">RS</div>
-                                                <input type="text" class="form-control" id="Amount" name="Amount" value="<?php echo (isset($_POST['Amount']) ? $_POST['Amount'] : $Plan[0]['Amount']);?>" placeholder="Amount"></div> 
+                                                <input type="text" class="form-control" id="Amount" name="Amount" value="<?php echo (isset($_POST['Amount']) ? $_POST['Amount'] : $Plan['Amount']);?>" placeholder="Amount"></div> 
                                                 <span class="errorstring" id="ErrAmount"><?php echo isset($ErrAmount) ? $ErrAmount : "";?></span>
                                              </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="Benefits" class="col-sm-3 col-form-label">Benefits<span id="star">*</span></label>
                                             <label for="Photos" class="col-sm-2 col-form-label">Photos<span id="star">*</span></label>   
-                                            <div class="col-sm-1"><input type="text" class="form-control" id="Photos" name="Photos" value="<?php echo (isset($_POST['Photos']) ? $_POST['Photos'] : $Plan[0]['Photos']);?>" placeholder="0">
+                                            <div class="col-sm-1"><input type="text" class="form-control" id="Photos" name="Photos" value="<?php echo (isset($_POST['Photos']) ? $_POST['Photos'] : $Plan['Photos']);?>" placeholder="0">
                                             <span class="errorstring" id="ErrPhotos"><?php echo isset($ErrPhotos) ? $ErrPhotos : "";?></span></div>   
                                             <label for="Videos" class="col-sm-2 col-form-label">Videos<span id="star">*</span></label>  
-                                            <div class="col-sm-1"><input type="text" class="form-control" id="Videos" name="Videos" value="<?php echo (isset($_POST['Videos']) ? $_POST['Videos'] : $Plan[0]['Videos']);?>" placeholder="0">
+                                            <div class="col-sm-1"><input type="text" class="form-control" id="Videos" name="Videos" value="<?php echo (isset($_POST['Videos']) ? $_POST['Videos'] : $Plan['Videos']);?>" placeholder="0">
                                             <span class="errorstring" id="ErrVideos"><?php echo isset($ErrVideos) ? $ErrVideos : "";?></span></div>    
                                             <label for="Free Profiles" class="col-sm-2 col-form-label">Free Profiles<span id="star">*</span></label>   
-                                            <div class="col-sm-1"><input type="text" class="form-control" id="Freeprofiles" name="Freeprofiles" value="<?php echo (isset($_POST['Freeprofiles']) ? $_POST['Freeprofiles'] : $Plan[0]['FreeProfiles']);?>" placeholder="0">
+                                            <div class="col-sm-1"><input type="text" class="form-control" id="Freeprofiles" name="Freeprofiles" value="<?php echo (isset($_POST['Freeprofiles']) ? $_POST['Freeprofiles'] : $Plan['FreeProfiles']);?>" placeholder="0">
                                             <span class="errorstring" id="ErrFreeprofiles"><?php echo isset($ErrFreeprofiles) ? $ErrFreeprofiles : "";?></span></div>
                                         </div>
                                         <div class="form-group row">
                                                 <label for="ShortDescription" class="col-sm-3 col-form-label">Short Description<span id="star">*</span></label>
                                             <div class="col-sm-7">
-                                                <input type="text" class="form-control" id="ShortDescription" name="ShortDescription" value="<?php echo (isset($_POST['ShortDescription']) ? $_POST['ShortDescription'] : $Plan[0]['ShortDescription']);?>" placeholder="Short Description">
+                                                <input type="text" class="form-control" id="ShortDescription" name="ShortDescription" value="<?php echo (isset($_POST['ShortDescription']) ? $_POST['ShortDescription'] : $Plan['ShortDescription']);?>" placeholder="Short Description">
                                                 <span class="errorstring" id="ErrShortDescription"><?php echo isset($ErrShortDescription) ? $ErrShortDescription : "";?></span>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label for="DetailDescription" class="col-sm-3 col-form-label">Detail Description<span id="star">*</span></label>
                                             <div class="col-sm-7">
-                                                <textarea rows="5" class="form-control" id="DetailDescription" name="DetailDescription"><?php echo (isset($_POST['DetailDescription']) ? $_POST['DetailDescription'] : $Plan[0]['DetailDescription']);?> </textarea>
+                                                <textarea rows="5" class="form-control" id="DetailDescription" name="DetailDescription"><?php echo (isset($_POST['DetailDescription']) ? $_POST['DetailDescription'] : $Plan['DetailDescription']);?> </textarea>
                                                 <span class="errorstring" id="ErrDetailDescription"><?php echo isset($ErrDetailDescription) ? $ErrDetailDescription : "";?></span>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                                 <label for="Remarks" class="col-sm-3 col-form-label">Remarks<span id="star">*</span></label>
                                             <div class="col-sm-7">
-                                                <textarea rows="5" class="form-control" id="Remarks" name="Remarks"><?php echo (isset($_POST['Remarks']) ? $_POST['Remarks'] : $Plan[0]['Remarks']);?> </textarea>
+                                                <textarea rows="5" class="form-control" id="Remarks" name="Remarks"><?php echo (isset($_POST['Remarks']) ? $_POST['Remarks'] : $Plan['Remarks']);?> </textarea>
                                                 <span class="errorstring" id="ErrRemarks"><?php echo isset($ErrRemarks) ? $ErrRemarks : "";?></span>
                                             </div>
                                         </div>
@@ -223,10 +237,13 @@ function SubmitNewPlan() {
                                             <label for="Status" class="col-sm-3 col-form-label">Status<span id="star">*</span></label>
                                               <div class="col-sm-3">
                                                     <select name="Status" class="form-control" style="width: 140px;" >
-                                                        <option value="1" <?php echo ($Plan[0]['Published']==1) ? " selected='selected' " : "";?>>Published</option>
-                                                        <option value="0" <?php echo ($Plan[0]['Published']==0) ? " selected='selected' " : "";?>>Unpublished</option>
+                                                        <option value="1" <?php echo ($Plan['Published']==1) ? " selected='selected' " : "";?>>Published</option>
+                                                        <option value="0" <?php echo ($Plan['Published']==0) ? " selected='selected' " : "";?>>Unpublished</option>
                                                     </select>
                                               </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?>
                                         </div>
                                         <button type="submit" name="BtnSavePlan" class="btn btn-success mr-2">Update Plan</button>
                                         <a href="../ManagePlan" style="text-decoration: underline;"><small>List of Plans</small> </a>

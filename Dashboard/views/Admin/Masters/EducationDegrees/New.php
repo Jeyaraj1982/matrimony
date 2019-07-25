@@ -1,5 +1,5 @@
 <?php
-    if (isset($_POST['BtnSaveEducationDegree'])) {
+   /* if (isset($_POST['BtnSaveEducationDegree'])) {
         
         $ErrorCount =0;
             
@@ -31,7 +31,7 @@
     
     }
     
-    } 
+    }  */
     
     
 ?>
@@ -54,10 +54,24 @@
                  }
     
 </script>
-
+ <?php                   
+  if (isset($_POST['BtnSaveEducationDegree'])) {   
+    $response = $webservice->getData("Admin","CreateEducationDegree",$_POST);
+    if ($response['status']=="success") {
+       $successmessage = $response['message']; 
+       unset($_POST);
+    } else {
+        $errormessage = $response['message']; 
+    }
+    } 
+  $EducationCode = $webservice->GetMastersManageDetails(); 
+     $GetNextEducationDegreeCode="";
+        if ($EducationCode['status']=="success") {
+            $GetNextEducationDegreeCode  =$EducationCode['data']['EducationDegreeCode'];
+        }
+        {     
+?>
 <form method="post" action="" onsubmit="return SubmitEducationDegree();">
-        <div class="main-panel">
-        <div class="content-wrapper">
           <div class="col-12 stretch-card">
                   <div class="card">
                     <div class="card-body">
@@ -65,28 +79,28 @@
                       <h4 class="card-title">Create Education Degree</h4>
                       <form class="forms-sample">
                       <div class="form-group row">
-                          <label for="Education Degree Code" class="col-sm-3 col-form-label"><small>Education Degree Code<span id="star">*</span></small></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="EducationDegreeCode" maxlength="10" name="EducationDegreeCode" value="<?php echo isset($_POST['EducationDegreeCode']) ? $_POST['EducationDegreeCode'] : GetNextNumber('EDUCATIONDEGREES');?>" placeholder="Education Degree Code">
+                          <label for="Education Degree Code" class="col-sm-3 col-form-label">Education Degree Code<span id="star">*</span></label>
+                          <div class="col-sm-2">
+                            <input type="text" class="form-control" id="EducationDegreeCode" maxlength="10" name="EducationDegreeCode" value="<?php echo isset($_POST['EducationDegreeCode']) ? $_POST['EducationDegreeCode'] : $GetNextEducationDegreeCode;?>" placeholder="Education Degree Code">
                             <span class="errorstring" id="ErrEducationDegreeCode"><?php echo isset($ErrEducationDegreeCode)? $ErrEducationDegreeCode : "";?></span>
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label for="Education Degree" class="col-sm-3 col-form-label"><small>Education Degree<span id="star">*</span></small></label>
+                          <label for="Education Degree" class="col-sm-3 col-form-label">Education Degree<span id="star">*</span></label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" id="EducationDegree" maxlength="100" name="EducationDegree" value="<?php echo (isset($_POST['EducationDegree']) ? $_POST['EducationDegree'] : "");?>" placeholder= "EducationDegree">
                             <span class="errorstring" id="ErrEducationDegree"><?php echo isset($ErrEducationDegree)? $ErrEducationDegree : "";?></span>
                           </div>
                         </div>
+                        <div class="form-group row"><div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div></div>
                         <div class="form-group row">
                         <div class="col-sm-5">
-                        <button type="submit" name="BtnSaveEducationDegree" class="btn btn-success mr-2">Save Education Degree</button></div>
+                        <button type="submit" name="BtnSaveEducationDegree" class="btn btn-primary mr-2" style="font-family: roboto;">Save Education Degree</button></div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageEducationDegrees"><small>List of Education Degrees</small> </a></div>
                          </div>
                         </form>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
 </form>
+<?php }?>

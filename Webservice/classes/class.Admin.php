@@ -439,13 +439,22 @@ class Admin extends Master {
     }
     function GetDraftedProfiles() {
            global $mysql;    
-              $Profiles     = $mysql->select("SELECT *
+             $sql = "SELECT *
                                     FROM _tbl_Profile_Draft
                                     LEFT  JOIN _tbl_members
-                                    ON _tbl_Profile_Draft.CreatedBy=_tbl_members.MemberID WHERE _tbl_Profile_Draft.RequestToVerify='0'");
-                return Response::returnSuccess("success",$Profiles);
+                                    ON _tbl_Profile_Draft.CreatedBy=_tbl_members.MemberID";
+             
 
-    }
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }                                                                                                                                                                            
+             if (isset($_POST['Request']) && $_POST['Request']=="Draft") {
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE _tbl_Profile_Draft.RequestToVerify='0'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Publish") {
+                return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_Profile_Draft.IsApproved='1'"));    
+             }
+         }
 
     function GetProfilesRequestVerify() {
            global $mysql;    
@@ -665,7 +674,111 @@ class Admin extends Master {
                                                        "PrimaryBankAccount" => $PrimaryBankAccount[0],
                                                        "Gender"             => CodeMaster::getData('Gender')));
 
-    }
+    }                                                                                  
+    
+    function FranchiseeResetPasswordSendMail() {
+        global $mysql,$mail;
+        
+        $Franchisees = $mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_POST['Code']."'");
+         
+         $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeResetPassword'");
+             $content  = str_replace("#FranchiseeName#",$Franchisees[0]['FranchiseName'],$mContent[0]['Content']);
+             
+             MailController::Send(array("MailTo"   => $Franchisees[0]['ContactEmail'],               
+                                        "Category" => "FranchiseeResetPassword",
+                                        "FranchiseeID" => $Franchisees[0]['FranchiseeID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+         
+             if($mailError){
+                return  Response::returnError("Error: unable to process your request.");
+             } else {
+                return Response::returnSuccess("Email sent successfully",array());
+             }
+         }
+         
+    function MemberResetPasswordSendMail() {
+        global $mysql,$mail,$loginInfo;
+        
+        $members = $mysql->select("select * from _tbl_members where MemberID='".$_POST['Code']."'");
+         
+         $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberResetPassword'");
+         $GUID= md5(time().rand(3000,3000000).time());
+         
+             $content  = str_replace("#MemberName#",$members[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#Link#",WebPath."resetPassword.php?uid=".$GUID,$content);
+             
+             
+             MailController::Send(array("MailTo"   => $members[0]['EmailID'],               
+                                        "Category" => "MemberResetPassword",
+                                        "MemberID" => $members[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+                                        
+            $id= $mysql->insert("_tbl_reset_password",array("MemberID"  => $members[0]['MemberID'],
+                                                     "MemberEmail"  => $members[0]['EmailID'],
+                                                     "ValidUpto"    => date("Y-m-d H:i:s",time() + 24 * 60 * 60),
+                                                     "Mailsent"     => "1",  
+                                                     "GUID"     => $GUID,  
+                                                     "RequestOn"  => date("Y-m-d H:i:s"),
+                                                     "RequestFrom"  => "Admin",
+                                                     "AdminID"      => $loginInfo[0]['AdminID']));
+         
+             if($mailError){
+                return  Response::returnError("Error: unable to process your request.");
+             } else {
+                return Response::returnSuccess("Email sent successfully",array("reqID"=>$GUID));
+             }
+         }
+         
+        
+         function MemberResetPasswordCheck() {
+             
+             global $mysql;
+             $data = $mysql->select("Select * from `_tbl_reset_password` where `GUID`='".$_POST['GUID']."'");
+             
+             if (sizeof($data)>0) {
+                 if ($data[0]['IsPasswordChanged']==0) {
+                     if (strtotime($data[0]['ValidUpto']) > strtotime(date("Y-m-d H:i:s"))) {
+                         return Response::returnSuccess("Valid GUID",array("GUID"=>$_POST['GUID'])); 
+                     } else {
+                        return Response::returnError("Password link has been expired."); 
+                     }
+                 } else {   
+                    return Response::returnError("You already used this link and saved password."); 
+                 }
+             } else {
+                return Response::returnError("Invalid GUID"); 
+             }
+         }
+        function MemberResetPasswordSave(){
+             global $mysql;
+             
+             $data = $mysql->select("Select * from `_tbl_reset_password` where `GUID`='".$_POST['GUID']."' ");
+             
+             if (!(strlen(trim($_POST['NewPassword']))>=6)) {
+                return Response::returnError("Please enter valid new password must have 6 characters.");
+             } 
+             if (!(strlen(trim($_POST['ConfirmNewPassword']))>=6)) {
+                return Response::returnError("Please enter valid confirm new password  must have 6 characters"); 
+             } 
+             if ($_POST['ConfirmNewPassword']!=$_POST['NewPassword']) {
+                return Response::returnError("Password do not match"); 
+             }
+             $sqlQry ="update _tbl_members set `MemberPassword`='".$_POST['NewPassword']."' where `MemberID`='".$data[0]['MemberID']."'";
+             $mysql->execute($sqlQry);  
+             $data = $mysql->select("select * from `_tbl_members` where  MemberID='".$data[0]['MemberID']."'");
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $data[0]['MemberID'],
+                                                             "ActivityType"   => 'MemberResetpassword.',
+                                                             "ActivityString" => 'Member Reset assword.',
+                                                             "SqlQuery"       => base64_encode($sqlQry),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+             $mysql->execute("update _tbl_reset_password set IsPasswordChanged='1',ChangedOn='".date("Y-m-d H:i:s")."' where `GUID`='".$_POST['GUID']."'");                                                
+             
+             return Response::returnSuccess("New Password saved successfully"."update _tbl_members set `MemberPassword`='".$_POST['NewPassword']."' where `MemberID`='".$data[0]['MemberID']."'",$data[0]);  
+        }
+         
 
     function GetManagePlans() {
            global $mysql;    
@@ -847,7 +960,9 @@ class Admin extends Master {
                                                            "LakanamCode"    => SeqMaster::GetNextCode('LAKANAM'),
                                                            "Lakanam"        => CodeMaster::getData('LAKANAM'),
                                                            "MonsignCode"    => SeqMaster::GetNextCode('MONSIGNS'),
-                                                           "Monsign"        => CodeMaster::getData('MONSIGNS')));    
+                                                           "Monsign"        => CodeMaster::getData('MONSIGNS'),
+                                                           "EducationDegreeCode"    => SeqMaster::GetNextCode('EDUCATIONDEGREES'),
+                                                           "EducationDegree"        => CodeMaster::getData('EDUCATIONDEGREES')));    
     }                                                                          
 
     function CreateEmailApi() {
@@ -1586,6 +1701,84 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `MemberID` ='0' ORDER BY `ActivityID` DESC"));    
              }
          }
+         function GetManageMemberPlan() {    
+
+             global $mysql,$loginInfo;    
+
+             $sql = "select * from _tbl_member_plan";
+             
+
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }                                                                                                                                                                            
+             if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive` ='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive` ='0'"));    
+             }
+         }
+         
+         function GetMemberPlanCode() {
+            return Response::returnSuccess("success",array("PlanCode" => SeqMaster::GetNextPlanCode()));
+         }
+    function CreateMemberPlan() {
+
+        global $mysql,$loginInfo;
+      
+        $data = $mysql->select("select * from  _tbl_member_plan where PlanCode='".trim($_POST['PlanCode'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Plan Code Already Exists");
+        }
+        $data = $mysql->select("select * from  _tbl_member_plan where PlanName='".trim($_POST['PlanName'])."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Plan Name Already Exists");
+        }
+        
+         $id =  $mysql->insert("_tbl_member_plan",array("PlanCode"                           => $_POST['PlanCode'],
+                                                           "PlanName"                           => $_POST['PlanName'],
+                                                           "Decreation"                         => $_POST['Decreation'],
+                                                           "Amount"                             => $_POST['Amount'],
+                                                           "Photos"                             => $_POST['Photos'],
+                                                           "Videos"                             => $_POST['Videos'],
+                                                           "Freeprofiles"                       => $_POST['Freeprofiles'],
+                                                           "ShortDescription"                   => $_POST['ShortDescription'],
+                                                           "DetailDescription"                  => $_POST['DetailDescription'],
+                                                           "Remarks"                            => $_POST['Remarks'],
+                                                           "CreatedOn"                          => date("Y-m-d H:i:s"))); 
+
+        if (sizeof($id)>0) {
+                return Response::returnSuccess("success",array());
+            } else{
+                return Response::returnError("Failure");   
+            }
+    }
+    function EditMemberPlan(){
+              global $mysql,$loginInfo;
+        
+        $data = $mysql->select("select * from  _tbl_member_plan where PlanName='".trim($_POST['PlanName'])."' and PlanCode <>'".$_POST['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Plan Name Already Exists");
+        }
+        $mysql->execute("update _tbl_member_plan set PlanName='".$_POST['PlanName']."',
+                                                 Decreation='".$_POST['Decreation']."',
+                                                 Amount='".$_POST['Amount']."',
+                                                 Photos='".$_POST['Photos']."',
+                                                 Videos='".$_POST['Videos']."',
+                                                 FreeProfiles='".$_POST['Freeprofiles']."',
+                                                 ShortDescription='".$_POST['ShortDescription']."',
+                                                 DetailDescription='".$_POST['DetailDescription']."',
+                                                 Remarks='".$_POST['Remarks']."'
+                                                 where  PlanCode='".$_POST['Code']."'");
+
+         return Response::returnSuccess("success",array());
+
+    }
+     function GetMemberPlanInfo() {
+           global $mysql;    
+              $Plans = $mysql->select("select * from _tbl_member_plan where PlanCode='".$_POST['Code']."'");
+                return Response::returnSuccess("success",$Plans[0]);
+    }
          
          function GetRequestforDocumentVerification() {    
 

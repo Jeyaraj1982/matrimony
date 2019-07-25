@@ -74,6 +74,13 @@
             $length = 6;
             $Rows   = $mysql->select("select count(*) as rCount from `_tbl_profiles`");
             return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
+        }
+        function GetNextPlanCode() {
+            global $mysql;
+            $prefix = "PLN";
+            $length = 4;
+            $Rows   = $mysql->select("select count(*) as rCount from `_tbl_member_plan`");
+            return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
         } 
    
    /* Admin Master  */

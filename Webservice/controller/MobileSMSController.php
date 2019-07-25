@@ -1,7 +1,7 @@
 <?php
 	class MobileSMSController {
         
-        function sendSMS($mobileNumber,$text) {
+        function _sendSMS($mobileNumber,$text) {
             $url = "http://j2jsoftwaresolutions.com/sms.php?Key=GOODGW&Text=".base64_encode($text)."&MobileNumber=".$mobileNumber;
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL,$url);
@@ -9,7 +9,7 @@
             $response = curl_exec($ch);
         }
         
-        function _sendSMS($mobileNumber,$text) {
+        function sendSMS($mobileNumber,$text) {
             
             global $mysql;
             
@@ -39,7 +39,6 @@
             curl_setopt($ch,CURLOPT_TIMEOUT, 200);
             $response = curl_exec($ch);
             curl_close ($ch);
-            
               }
         }
     }
