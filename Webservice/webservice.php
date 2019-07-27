@@ -88,7 +88,7 @@
     include_once("controller/MasterController.php");
     include_once("controller/SequenceController.php");
     include_once("controller/ResponseController.php");
-    
+     
     if ($_GET['m']=="Admin") {
         include_once("classes/class.Master.php");    
         include_once("classes/class.Admin.php");    

@@ -57,6 +57,9 @@
                           </div>
                         </div>
                         <div class="form-group row">
+                            <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
+                        </div>
+                        <div class="form-group row">
                             <div class="col-sm-4">
                                 <button type="submit" name="BtnSaveEducationTitle" id="BtnSaveEducationTitle"  class="btn btn-primary mr-2">Save Education Title</button> </div>
                             <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageEducationTitles">List of Education Titles </a>  </div>

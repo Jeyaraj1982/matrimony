@@ -1,19 +1,19 @@
 <?php
 
      class Member {
-         
+
          function Login() {
-             
+
              global $mysql,$loginInfo,$j2japplication;
-             
+
              if (!(strlen(trim($_POST['UserName']))>0)) {
                  return Response::returnError("Please enter login name ");
              }
-             
+
              if (!(strlen(trim($_POST['Password']))>0)) {
                  return Response::returnError("Please enter login password ");
              }
-             
+
              $data=$mysql->select("select * from `_tbl_members` where (`MemberLogin`='".$_POST['UserName']."' or `EmailID`='".$_POST['UserName']."' or `MobileNumber`='".$_POST['UserName']."')");
              $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
              $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"       => date("Y-m-d H:i:s"),
@@ -27,23 +27,23 @@
                                                                  "APIResponse"   => json_encode($clientinfo),
                                                                  "LoginPassword" => $_POST['Password']));
              if (sizeof($data)>0) {
-                 
+
                  if ($data[0]['MemberPassword']==$_POST['Password']) {
-                     
+
                      $mysql->execute("update `_tbl_logs_logins` set `LoginStatus`='1' where `LoginID`='".$loginid."'");
-                 
+
                      if ($data[0]['IsActive']==1) {
-                         
+
                          if($data[0]['WelcomeMsg']==0) {
                             $d=$mysql->select("Select * From `_tbl_welcome_message` where `IsActive`='1' and `UserRole`='Member'");
                             $data[0]['WelcomeMessage']=$d[0]['Message'];  
                          }
                          $data[0]['LoginID']=$loginid;
                          return Response::returnSuccess("success",$data[0]);
-                 
+
                      } else {
                         return Response::returnError("Access denied. Please contact support");   
-                        
+
                      }
                  } else {
                      return Response::returnError("Invalid username or password");
@@ -52,54 +52,54 @@
                 return Response::returnError("Invalid username and password");
              }
          }
-         
+
          function Logout() {
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_logs_logins` set `UserLogout`='".date("Y-m-d H:i:s")."' where `LoginID`='".$loginInfo[0]['LoginID']."'") ;
              return Response::returnSuccess("success",array()); 
          }
-                                                                                    
+
          function GetLoginHistory() {
              global $mysql,$loginInfo;
              $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$loginInfo[0]['MemberID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
                 return Response::returnSuccess("success",$LoginHistory);
          }
-           
+
          function GetNotificationHistory() {
              global $mysql,$loginInfo;
              $NotificationHistory = $mysql->select("select * from `_tbl_logs_activity` where `MemberID`='".$loginInfo[0]['MemberID']."' ORDER BY `ActivityID` DESC LIMIT 0,5");
                 return Response::returnSuccess("success",$NotificationHistory);
          }
-                                                                                              
+
          function Register() {
-             
+
              global $mysql;
-             
+
              if (!(strlen(trim($_POST['Name']))>0)) {
                 return returnError("Please enter your name");
              }
-             
+
              if (!(strlen(trim($_POST['Email']))>0)) {
                 return returnError("Please enter your email");
              }
-             
+
              if (!(strlen(trim($_POST['Gender']))>0)) {
                 return returnError("Please enter password");
              }
-             
+
              if (!(strlen(trim($_POST['MobileNumber']))>0)) {
                 return returnError("Please enter password");
              }
-             
+
              if (!(strlen(trim($_POST['LoginPassword']))>0)) {
                 return returnError("Please enter password");
              }
-             
+
              $data = $mysql->select("select * from `_tbl_members` where  `MobileNumber`='".$_POST['MobileNumber']."'");
              if (sizeof($data)>0) {
                  return Response::returnError("Mobile Number Already Exists");
              }
-             
+
              $data = $mysql->select("select * from `_tbl_members` where  `EmailID`='".$_POST['Email']."'");
              if (sizeof($data)>0) {
                 return Response::returnError("Email Already Exists");
@@ -115,29 +115,29 @@
                                                        "ReferedBy"      => AdminFranchise,
                                                        "CreatedOn"      => date("Y-m-d H:i:s"))); 
              $data = $mysql->select("select * from `_tbl_members` where `MemberID`='".$id."'");
-             
+
              $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"  => date("Y-m-d H:i:s"),
                                                                  "MemberID" => $data[0]['MemberID']));
-                                                                 
+
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='NewMemberCreated'");
              $content  = str_replace("#MemberName#",$_POST['Name'],$mContent[0]['Content']);
              $content  = str_replace("#MemberID#",$MemberCode,$content);
              $content  = str_replace("#LoginPassword#",$_POST['LoginPassword'],$content);
-             
+
              MailController::Send(array("MailTo"   => $_POST['Email'],
                                         "Category" => "NewMemberCreated",
                                         "MemberID" => $id,
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
-                                                               
+
              $data[0]['LoginID']=$loginid;       
              return Response::returnSuccess("Registered successfully",$data[0]);
          }
-            
+
          function forgotPassword() {
-             
+
              global $mysql,$mail;            
-             
+
              if (Validation::isEmail($_POST['FpUserName'])) {
                 $data = $mysql->select("Select * from `_tbl_members` where `EmailID`='".$_POST['FpUserName']."'");
                 if (sizeof($data)==0){
@@ -149,7 +149,7 @@
                     return Response::returnError("Invalid login name");
                 }
              }
-             
+
              $otp=rand(1000,9999);
              $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"    => $data[0]['MemberID'],
                                                                          "RequestSentOn" => date("Y-m-d H:i:s"),
@@ -157,26 +157,26 @@
                                                                          "messagedon"    => date("Y-m-d h:i:s"), 
                                                                          "EmailTo"       => $data[0]['EmailID'],
                                                                          "Type"          => "Forget Password")) ; 
-           
+
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberPasswordForget'");
              $content  = str_replace("#MemberName#",$data[0]['MemberName'],$mContent[0]['Content']);
              $content  = str_replace("#otp#",$otp,$content);
-             
+
              MailController::Send(array("MailTo"   => $data[0]['EmailID'],
                                         "Category" => "MemberPasswordForget",
                                         "MemberID" => $data[0]['MemberID'],
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
-         
+
              if($mailError){
                 return  Response::returnError("Error: unable to process your request.");
              } else {
                 return Response::returnSuccess("Email sent successfully",array("reqID"=>$securitycode,"email"=>$data[0]['EmailID']));
              }
          }
-         
+
          function forgotPasswordOTPvalidation() {
-             
+
              global $mysql;                  
              $data = $mysql->select("Select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqID']."' ");
              if (sizeof($data)>0) {
@@ -189,12 +189,12 @@
                 return Response::returnError("Invalid access");
              }
          }
-                                                                               
+
          function forgotPasswordchangePassword() {
-             
+
              global $mysql;
              $data = $mysql->select("Select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqID']."' ");
-             
+
              if (!(strlen(trim($_POST['newpassword']))>=6)) {
                 return Response::returnError("Please enter valid new password must have 6 characters");
              } 
@@ -213,33 +213,33 @@
                                                              "SqlQuery"       => base64_encode($sqlQry),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-             
+
              return Response::returnSuccess("New Password saved successfully",$data[0]);  
          }
-                         
+
          function IsMobileVerified() {
              return false;
          }
-       
+
          function GetMemberInfo(){
              global $mysql,$loginInfo;
              $Member=$mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
              $Member[0]['Country'] = CodeMaster::getData('RegisterAllowedCountries');
              return Response::returnSuccess("success",$Member[0]);
          }    
-         
+
          function EditMemberInfo() {
-             
+
              global $mysql,$loginInfo;
-             
+
              $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
-             
+
              $sqlQry = " update `_tbl_members` set `MemberName`='".$_POST['MemberName']."'   ";
 
              if($Member[0]['IsMobileVerified']==0) {
                  $sqlQry .= ", MobileNumber='".$_POST['MobileNumber']."' " ;
                  //mobile format
-                 
+
                  //duplicate, 
                  $data = $mysql->select("select * from `_tbl_members` where `MobileNumber`='".trim($_POST['MobileNumber'])."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
                  if (sizeof($data)>0) {
@@ -249,7 +249,7 @@
              if($Member[0]['IsEmailVerified']==0) {
                 $sqlQry .= ", `EmailID`='".$_POST['EmailID']."', `CountryCode`='".$_POST['CountryCode']."' " ;
                 //email format
-                
+
                 //duplicate,
                 $data = $mysql->select("select * from  `_tbl_members` where `EmailID`='".trim($_POST['EmailID'])."' and `MemberID` <>'".$loginInfo[0]['MemberID']."'");
                 if (sizeof($data)>0) {
@@ -267,13 +267,13 @@
                                                              "ActivityOn"     => date("Y-m-d H:i:s"))); 
              return Response::returnSuccess("success",array());
          }
-        
+
          function WelcomeMessage() {
              global $mysql,$loginInfo;
              $welcome=$mysql->execute("update `_tbl_members` set `WelcomeMsg`='1' where  `MemberID`='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("New Password saved successfully",array());
          }
-                                             
+
          function GetCodeMasterDatas() {
              return Response::returnSuccess("success",array("Gender"        => CodeMaster::getData("SEX"),
                                                             "MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
@@ -291,11 +291,11 @@
                                                             "IncomeRange"   => CodeMaster::getData('INCOMERANGE'),
                                                             "EmployedAs"    => CodeMaster::getData('OCCUPATIONS')));
          }
-         
+
          function CreateProfile() {
-             
+
              global $mysql,$loginInfo;
-             
+
              if ((strlen(trim($_POST['ProfileFor']))==0 || $_POST['ProfileFor']=="0" )) {
                 return Response::returnError("Please select ProfileFor");
              }
@@ -364,9 +364,9 @@
                  return Response::returnError("Access denied. Please contact support");   
              }
          }
-         
+
          function MemberChangePassword(){
-                                                               
+
              global $mysql,$loginInfo;
              $getpassword = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              if ($getpassword[0]['MemberPassword']!=$_POST['CurrentPassword']) {
@@ -385,7 +385,7 @@
                  return Response::returnSuccess("Password Changed Successfully",array());
              }
          }
-            
+
          function GetAdvancedSearchElements() {
              return Response::returnSuccess("success",array("SkinType"      => CodeMaster::getData('COMPLEXIONS'),
                                                             "MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
@@ -397,15 +397,15 @@
                                                             "DrinkingHabit" => CodeMaster::getData('DRINKINGHABITS'),
                                                             "BodyType"      => CodeMaster::getData('BODYTYPES')));
          }
-         
+
          function GetBasicSearchElements() {
              return Response::returnSuccess("success",array("MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
                                                             "Religion"      => CodeMaster::getData('RELINAMES'),
                                                             "Community"     => CodeMaster::getData('COMMUNITY')));
          }
-         
+
          function CheckVerification() {
-             
+
              global $mysql,$loginInfo;
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==0) {
@@ -416,9 +416,9 @@
              }
              return "<script>location.href='".AppPath."/MyProfiles/CreateProfile';</script>";
          }
-         
+
          function SaveBasicSearch() {
-             
+
              global $mysql,$loginInfo; 
              $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
              $insertArray = array("MemberID"    => $loginInfo[0]['MemberID'],
@@ -458,21 +458,21 @@
                 }
              }
          }
-      
+
          function ChangeMobileNumberFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
-             
+
              if ($loginid=="") {
                  $loginid = $_GET['LoginID'];
              }
-             
+
              global $mysql;
-             
+
              $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
-             
+
              if (sizeof($login)==0) {
                  return "Invalid request. Please login again.";
              }
-             
+
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
@@ -483,7 +483,7 @@
              } else {
                 $formid = "frmChangeMobileNumber_".rand(30,3000);
                 return '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">
-                            
+
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
@@ -506,21 +506,21 @@
          } 
 
          function ChangeMobileNumber($error="",$loginid="",$scode="",$reqID="") {
-             
+
              if ($loginid=="") {
                 $loginid = $_GET['LoginID'];
              }
-             
+
              global $mysql;
-             
+
              $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
-             
+
              if (sizeof($login)==0) {
                  return "Invalid request. Please login again.";
              }
-             
+
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
-             
+
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
@@ -529,7 +529,7 @@
                        </div>';    
             } else {
                 $formid = "frmChangeMobileNo_".rand(30,3000);
-                
+
                 return '<div id="otpfrm" style="width:100%;padding-bottom: 0px;padding-top:20px;">
                         <form method="POST" id="'.$formid.'">
                         <input type="hidden" value="'.$loginid.'" name="loginId">
@@ -560,9 +560,9 @@
                         </div>'; 
             }
          }
-         
+
          function MobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
-             
+
              if ($loginid=="") {
                  $loginid = $_GET['LoginID'];
              }
@@ -637,11 +637,11 @@
                         </div>'; 
              }
          }
-         
+
          function MobileNumberOTPVerification() {
-             
+
              global $mysql;
-             
+
              $otpInfo = $mysql->select("select * from `_tbl_verification_code` where RequestID='".$_POST['reqId']."'");
              if (strlen(trim($_POST['mobile_otp_2']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['mobile_otp_2']))  {
                  $sql = "update `_tbl_members` set `IsMobileVerified`='1', `MobileVerifiedOn`='".date("Y-m-d H:i:s")."' where `MemberID`='".$otpInfo[0]['MemberID']."'";
@@ -662,20 +662,19 @@
                      return $this->MobileNumberVerificationForm("<span style='color:red'>You entered, invalid pin.</span>",$_POST['loginId'],$_POST['mobile_otp_2'],$_POST['reqId']);
                  }
          }
-                                     
 
          function ChangeEmailFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
-             
+
              if ($loginid=="") {
                  $loginid = $_GET['LoginID'];
              }
-             
+
              global $mysql;
              $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
              if (sizeof($login)==0) {
                  return "Invalid request. Please login again.";
              }
-             
+
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
@@ -705,22 +704,22 @@
                         </div>'; 
              }
          }
-         
+
          function ChangeEmailID($error="",$loginid="",$scode="",$reqID="") {
-             
+
              if ($loginid=="") {
                 $loginid = $_GET['LoginID'];
              }
-             
+
              global $mysql;
-             
+
              $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
              if (sizeof($login)==0) {
                  return "Invalid request. Please login again.";
              }
-             
+
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
-             
+
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
@@ -756,16 +755,16 @@
                         </div>'; 
              }
          }
-         
+
          function EmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
-             
+
              if ($loginid=="") {                     
                 $loginid = $_GET['LoginID'];
              }
-             
+
              global $mysql;
              $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
-             
+
              if (sizeof($login)==0) {
                  return "Invalid request. Please login again.";
              }
@@ -774,7 +773,7 @@
                      return $this->ChangeEmailID("Invalid EmailID",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']);
                  }
                  $duplicate = $mysql->select("select * from _tbl_members where EmailID='".$_POST['new_email']."' and MemberID <>'".$login[0]['MemberID']."'");
-                 
+
                  if (sizeof($duplicate)>0) {
                      return $this->ChangeEmailID("Email already in use.",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']); 
                  }
@@ -787,10 +786,9 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
              }
-             
+
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
-             
-             
+
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
@@ -798,20 +796,20 @@
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
              } else {
-                 
+
                  if ($error=="") {
                      $otp=rand(1111,9999);
-                     
+
                      $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberEmailVerification'");
                      $content  = str_replace("#MemberName#",$memberdata[0]['MemberName'],$mContent[0]['Content']);
                      $content  = str_replace("#otp#",$otp,$content);
-                     
+
                      MailController::Send(array("MailTo"   => $memberdata[0]['EmailID'],
                                                 "Category" => "NewMemberCreated",
                                                 "MemberID" => $memberdata[0]['MemberID'],
                                                 "Subject"  => $mContent[0]['Title'],
                                                 "Message"  => $content),$mailError);
-                                                
+
                      if($mailError){
                         return "Mailer Error: " . $mail->ErrorInfo.
                         "Error. unable to process your request.";
@@ -851,11 +849,10 @@
                         </div>
                         '; 
                           }
-                          
-                     
+
                  }  else {
                     $securitycode = $reqID;
-                    
+
                     $formid = "frmMobileNoVerification_".rand(30,3000);
                  $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
                                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
@@ -885,9 +882,9 @@
                 }
             }                                    
          }
-         
+
          function EmailOTPVerification() {
-             
+
              global $mysql;
              $otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
              if (strlen(trim($_POST['email_otp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['email_otp']))  {
@@ -908,35 +905,44 @@
                  return $this->EmailVerificationForm("<span style='color:red'>Invalid verification code.</span>",$_POST['loginId'],$_POST['email_otp'],$_POST['reqId']);
              }  
          }
-         
+
          function GetMyProfiles() {
-             
+
              global $mysql,$loginInfo;    
-             
+
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {
                  $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."'");
                  return Response::returnSuccess("success",$Profiles);
              }
-             
+
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Draft") {
                  $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."' and RequestToVerify='0' and IsApproved='0'");
                  return Response::returnSuccess("success",$Profiles);
              }
-             
+
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Posted") {
                 $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."' and RequestToVerify='1'");
                 return Response::returnSuccess("success",$Profiles);
              }
-             
+
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {
                  $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."' and IsApproved='1' ");
                  return Response::returnSuccess("success",$Profiles);
              }
          }
-         function BasicSearchProfile() {
+         
+         
+         
+         function DownloadedProfiles() {
                 global $mysql,$loginInfo;
-                
-                  $Profiles = $mysql->select("select * from _tbl_profiles");
+
+                  $DownloadProfiles = $mysql->select("select * from _tbl_profile_download where MemberID='".$loginInfo[0]['MemberID']."'");
+                  // $Profiles = $mysql->select("Select * from `_tbl_profiles` where `ProfileCode`='".$DownloadProfiles[0]['PartnerProfileCode']."'");  
+                $Profiles = $mysql->select("SELECT *
+                                                FROM _tbl_profiles
+                                                LEFT JOIN _tbl_profile_download
+                                                ON _tbl_profiles.ProfileCode = _tbl_profile_download.PartnerProfileCode"); 
+
                   $result = array();
                   foreach($Profiles as $p) {
                       $p['profileImage']= $p['SexCode']=="SX002" ? "assets/images/noprofile_female.png" : "assets/images/noprofile_male.png";
@@ -944,37 +950,33 @@
                   }
                 return Response::returnSuccess("success",$result);
          }   
-          
+
          function  BasicSearchViewMemberPlan() {
           global $mysql,$loginInfo;
                   $Plans = $mysql->select("select * from _tbl_member_plan");
                 return Response::returnSuccess("success",$Plans);
          }
-       function OverallSendOtp() {
-           
+       function OverallSendOtp($errormessage="",$otpdata="",$reqID="",$PProfileID="") {
+
         global $mysql,$mail,$loginInfo;            
-           
-           //$data = $mysql->select("Select * from `_tbl_profiles` where `ProfileID`='".$_POST['ProfileID']."'");   
+
+           $data = $mysql->select("Select * from `_tbl_profiles` where `ProfileCode`='".$_POST['PProfileCode']."'");   
+
            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
-             
+        if ($reqID=="")      {
              $otp=rand(1000,9999);
-             $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"    => $loginInfo[0]['MemberID'],
-                                                                         "RequestSentOn" => date("Y-m-d H:i:s"),
-                                                                         "SecurityCode"  => $otp,
-                                                                         "messagedon"    => date("Y-m-d h:i:s"), 
-                                                                         "EmailTo"       => $member[0]['EmailID'],
-                                                                         "Type"          => "Otp")) ; 
-           
+
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='ProfileOverAllOTP'");
              $content  = str_replace("#ProfileName#",$data[0]['ProfileName'],$mContent[0]['Content']);
              $content  = str_replace("#otp#",$otp,$content);
-             
+
              MailController::Send(array("MailTo"   => $member[0]['EmailID'],
                                         "Category" => "ProfileOverAllOTP",
                                         "MemberID" => $member[0]['MemberID'],
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
-              
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Mobile Verification Security Code is ".$otp);
+
             if($mailError){
                         return "Mailer Error: " . $mail->ErrorInfo.
                         "Error. unable to process your request.";
@@ -982,8 +984,9 @@
                         $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" =>$member[0]['MemberID'],
                                                                                      "RequestSentOn" =>date("Y-m-d H:i:s"),
                                                                                      "EmailTo" =>$member[0]['EmailID'],
+                                                                                     "SMSTo" =>$member[0]['MobileNumber'],
                                                                                      "SecurityCode" =>$otp,
-                                                                                     "Type" =>"EmailVerification",
+                                                                                     "Type" =>"ProfileOverAllOTP",
                                                                                      "messagedon"=>date("Y-m-d h:i:s"))) ;
                         $formid = "frmOverAllOTPVerification_".rand(30,3000);
                         $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
@@ -991,12 +994,13 @@
                         <form method="POST" id="'.$formid.'" name="'.$formid.'">
                             <div class="form-group">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
+                            <input type="hidden" value="'.$_POST['PProfileCode'].'" name="PProfileCode">
                             <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                 <div class="input-group">
                                     <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                     <h4 style="text-align:center;color:#6c6969;">OTP</h4>
                                 </div>
-                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'</h4>
+                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
@@ -1012,28 +1016,63 @@
                         </div>
                         '; 
                           }
-                                   
+        } else {
+            $formid = "frmOverAllOTPVerification_".rand(30,3000);
+                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                        <form method="POST" id="'.$formid.'" name="'.$formid.'">
+                            <div class="form-group">
+                            <input type="hidden" value="'.$reqID.'" name="reqId">
+                              <input type="hidden" value="'.$PProfileID.'" name="CProfileID">
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
+                                <div class="input-group">
+                                    <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
+                                    <h4 style="text-align:center;color:#6c6969;">OTP</h4>
+                                </div>
+                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'</h4>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-7"><input type="text"  class="form-control" value="'.$otpdata.'" id="otpcheck" maxlength="4" name="otpcheck" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-5"><button type="button" onclick="ViewProfileOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                    </div>
+                                    <div class="col-sm-12">'.$errormessage.'</div>
+                                </div>
+                            </div>
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the PIN?<a href="#">&nbsp;Resend</a></h5> 
+                        </form>                                                                                                       
+                        </div>
+                        '; 
+        }
+
          }
          function ViewProfileOTPVerification() {
-             
-             global $mysql;
-             //return "select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'";
+
+             global $mysql,$loginInfo ;
+             $data = $mysql->select("Select * from `_tbl_profiles` where `ProfileCode`='".$_POST['PProfileCode']."'");   
+             $Profiles = $mysql->select("Select * from `_tbl_profiles` where `CreatedBy`='".$loginInfo[0]['MemberID']."'");   
              $otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
              if (strlen(trim($_POST['otpcheck']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['otpcheck']))  {
+
+                     $Did = $mysql->insert("_tbl_profile_download",array("MemberID" =>$otpInfo[0]['MemberID'],
+                                                                          "ProfileCode" =>$Profiles[0]['ProfileCode'],
+                                                                          "PartnerProfileCode" =>$data[0]['ProfileCode'],
+                                                                          "DownLoadOn" =>date("Y-m-d H:i:s"))) ;  
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">successfully verified. </h5>
                             <p style="text-align:center"><a href="BasicSearchResult" class="btn btn-primary">Continue</a></p>
                        </div>';
+             } else {
+                 return $this->OverallSendOtp("<span style='color:red'>Invalid verification code.</span>",$_POST['otpcheck'],$_POST['reqId'],$_POST['PProfileCode']);
              } 
+
          }
-         
-        
+
          function VerifyProfileforPublish() {
-             
+
              global $mysql,$loginInfo;
-             
-              
+
              $updateSql = "update `_tbl_Profile_Draft` set  `RequestToVerify`      = '1',
                                                             `RequestVerifyOn`      = '".date("Y-m-d H:i:s")."'
                                                              where  `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['ProfileID']."'";
@@ -1049,15 +1088,135 @@
                             <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
                             <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
                        </div>';
-                 
-             
+
          }
-         
+        function SendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
+
+        global $mysql,$mail,$loginInfo;            
+
+           $data = $mysql->select("Select * from `_tbl_Profile_Draft` where `ProfileID`='".$_POST['ProfileID']."'");   
+
+           $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
+        if ($reqID=="")      {
+             $otp=rand(1000,9999);
+
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToVerifyPublishProfile'");
+             $content  = str_replace("#ProfileName#",$data[0]['ProfileName'],$mContent[0]['Content']);
+             $content  = str_replace("#otp#",$otp,$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "RequestToVerifyPublishProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Mobile Verification Security Code is ".$otp);
+
+            if($mailError){
+                        return "Mailer Error: " . $mail->ErrorInfo.
+                        "Error. unable to process your request.";
+                     } else {
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" =>$member[0]['MemberID'],
+                                                                                     "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                                     "EmailTo" =>$member[0]['EmailID'],
+                                                                                     "SMSTo" =>$member[0]['MobileNumber'],
+                                                                                     "SecurityCode" =>$otp,
+                                                                                     "Type" =>"RequestToVerifyPublishProfile",
+                                                                                     "messagedon"=>date("Y-m-d h:i:s"))) ;
+                        $formid = "frmPuplishOTPVerification_".rand(30,3000);
+                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
+                                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                        <form method="POST" id="'.$formid.'" name="'.$formid.'">
+                            <div class="form-group">
+                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                            <input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
+                                <div class="input-group">
+                                    <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
+                                    <h4 style="text-align:center;color:#6c6969;">OTP</h4>
+                                </div>
+                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-7"><input type="text"  class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-5"><button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                    </div>
+                                    <div class="col-sm-12">'.$error.'</div>
+                                </div>
+                            </div>
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the PIN?<a href="#">&nbsp;Resend</a></h5> 
+                        </form>                                                                                                       
+                        </div>
+                        '; 
+                          }
+        } else {
+            $formid = "frmPuplishOTPVerification_".rand(30,3000);
+                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                        <form method="POST" id="'.$formid.'" name="'.$formid.'">
+                            <div class="form-group">
+                            <input type="hidden" value="'.$reqID.'" name="reqId">
+                              <input type="hidden" value="'.$ProfileID.'" name="ProfileID">
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
+                                <div class="input-group">
+                                    <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
+                                    <h4 style="text-align:center;color:#6c6969;">OTP</h4>
+                                </div>
+                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-7"><input type="text"  class="form-control" value="'.$otpdata.'" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-5"><button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                    </div>
+                                    <div class="col-sm-12">'.$errormessage.'</div>
+                                </div>
+                            </div>
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the PIN?<a href="#">&nbsp;Resend</a></h5> 
+                        </form>                                                                                                       
+                        </div>
+                        '; 
+        }
+
+         }
+        function ProfilePublishOTPVerification() {
+
+             global $mysql,$loginInfo ;
+             
+             $data = $mysql->select("Select * from `_tbl_Profile_Draft` where `ProfileID`='".$_POST['ProfileID']."'");   
+           $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
+             $otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
+             if (strlen(trim($_POST['PublishOtp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['PublishOtp']))  {
+
+                    $updateSql = "update `_tbl_Profile_Draft` set  `RequestToVerify`      = '1',
+                                                            `RequestVerifyOn`      = '".date("Y-m-d H:i:s")."'
+                                                             where  `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['ProfileID']."'";
+             $mysql->execute($updateSql);  
+           /*  $mysql->execute("update `_tbl_profiles_photo` set  `IsPublished`      = '1',
+                                                            `PublishedOn`      = '".date("Y-m-d H:i:s")."'
+                                                             where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$data[0]['ProfileID']."'");  */
+                                                             
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'RequestToVerifyPublishProfile.',
+                                                             "ActivityString" => 'Request To Verify PublishProfile.',
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+                 return  $updateSql.'<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
+                            <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
+                       </div>';
+             } else {
+                 return $this->SendOtpForProfileforPublish("<span style='color:red'>Invalid verification code.</span>",$_POST['PublishOtp'],$_POST['reqId'],$_POST['ProfileID']);
+             } 
+
+         }
          function DeleteAttach() {
-             
+
              global $mysql,$loginInfo;
-             
-              
+
              $updateSql = "update `_tbl_member_attachments` set `IsDelete` = '1' where `AttachmentID`='".$_POST['AttachmentID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['ProfileID']."'";
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
@@ -1071,18 +1230,21 @@
                             <h5 style="text-align:center;color:#ada9a9">Your attachment has been deleted.</h5>
                             <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
                        </div>';
-                 
-             
+
          }
-             
+
          function GetDraftProfileInformation() {
              global $mysql,$loginInfo;      
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");               
              $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");
-             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['CreatedBy']."'");               
-             return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
+             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['CreatedBy']."'");     
+             $PartnersExpectations = $mysql->select("select * from `_tbl_partners_expectation` where `ProfileID`='".$_POST['ProfileID']."'");
+             $ProfilePhoto = $mysql->select("select * from `_tbl_profiles_photo` where `ProfileID`='".$_POST['ProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");                                        
+             return Response::returnSuccess("success"."select * from `_tbl_profiles_photo` where `ProfileID`='".$_POST['ProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'",array("ProfileInfo"            => $Profiles[0],
                                                             "Members"                => $members[0],
                                                             "EducationAttachments"   => $Educationattachments[0],
+                                                            "PartnerExpectation"     => $PartnersExpectations[0],
+                                                            "ProfilePhoto"           => $ProfilePhoto,
                                                             "ProfileSignInFor"       => CodeMaster::getData('PROFILESIGNIN'),
                                                             "Gender"                 => CodeMaster::getData('SEX'),
                                                             "MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
@@ -1126,19 +1288,87 @@
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
                                                             "StateName"              => CodeMaster::getData('STATNAMES')));
          }
-         
+         function GetDownloadProfileInformation() {
+             global $mysql,$loginInfo;        
+             $Profiles = $mysql->select("select * from `_tbl_profiles` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileID']."'");               
+             $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileID='".$Profiles[0]['DraftProfileID']."'");
+             $PartnersExpectations = $mysql->select("select * from `_tbl_partners_expectation` where `ProfileID`='".$Profiles[0]['DraftProfileID']."'");               
+             $ProfilePhoto = $mysql->select("select * from `_tbl_profiles_photo` where `ProfileID`='".$Profiles[0]['DraftProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");               
+
+               $IsDownload= $mysql->select("select * from `_tbl_profile_download` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileID']."'");
+              if (sizeof($IsDownload)>0) {              
+                     $id = $mysql->insert("_tbl_profile_viewlog",array("MemberID"        => $loginInfo[0]['MemberID'],
+                                                                 "ProfileID"    => $Profiles[0]['ProfileID'],
+                                                                 "LoginOn"      => date("Y-m-d H:i:s")));
+             return Response::returnSuccess("success"."select * from `_tbl_profiles_photo` where `ProfileID`='".$Profiles[0]['DraftProfileID']."'",array("ProfileInfo"            => $Profiles[0],
+                                                            "PartnerExpectation"     => $PartnersExpectations[0],
+                                                            "ProfilePhoto"     => $ProfilePhoto,
+                                                            "EducationAttachments"   => $Educationattachments[0]));
+         }
+         else{
+             return Response::returnError("not authenticated");
+         }
+         }
+         function SelectPlanAndContinue() {
+
+             global $mysql,$loginInfo;
+             $Profiles = $mysql->select("select * from `_tbl_profiles` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");               
+              $plan =$mysql->select("select * from `_tbl_member_plan` where `PlanID`='".$_POST['PlanID']."'"); 
+              $orderid=SeqMaster::GetNextOrderCode() ;     
+            /* $id = $mysql->insert("_tbl_orders",array("ProfileID"       => $_POST['Code'],
+                                                      "Plan"       => $plan[0]['PlanName'],
+                                                      "Amount"       => $plan[0]['Amount'],
+                                                      "Duration"       => $plan[0]['Decreation'],
+                                                      "OrderOn"     => date("Y-m-d H:i:s")));   */
+
+            $id = $mysql->insert("_tbl_orders",array("OrderDate"            => DATE("Y-m-d H:i:s"),
+                                                     "OrderNumber"          => $orderid,
+                                                     "ProfileID"            =>  $Profiles[0]['ProfileCode'],
+                                                     "ProfileName"          => $Profiles[0]['ProfileName'],
+                                                     "EmailID"              => $Profiles[0]['EmailID'],
+                                                     "MobileNumber"         => $Profiles[0]['MobileNumber'],
+                                                     "AddressLine1"         => $Profiles[0]['AddressLine1'],
+                                                     "AddressLine2"         => $Profiles[0]['AddressLine2'],
+                                                     "AddressLine3"         => $Profiles[0]['AddressLine3'],
+                                                     "Pincode"              => $Profiles[0]['Pincode'],
+                                                     "OrderValue"           => $plan[0]['Amount'],
+                                                     "Createdon"            => DATE("Y-m-d H:i:s"),
+                                                     "OrderedOn"            => "0000-00-00 00:00:00",
+                                                     "OrderByMemberID"      => $loginInfo[0]['MemberID'],
+                                                     "OrderedByProfileID"   => $Profiles[0]['ProfileID'],
+                                                     "OrderByFranchisee"    => "0",
+                                                     "InvoiceNumber"        => "",
+                                                     "InvoiceID"            => "0"));
+                   $mysql->insert("_tbl_orders_items",array("OrderID"       => $orderid,
+                                                            "AddedOn"       => date("Y-m-d H:i:s"),
+                                                            "ProfileID"     => $Profiles[0]['ProfileID'],
+                                                            "ProfileCode"   => $Profiles[0]['ProfileCode'],
+                                                            "ProfileName"   => $Profiles[0]['ProfileName'],
+                                                            "ProductID"     => $plan[0]['PlanID'],
+                                                            "ProductCode"   => $plan[0]['PlanCode'],
+                                                            "ProductName"   => $plan[0]['PlanName'],
+                                                            "Qty"           => "1",
+                                                            "Amount"        => $plan[0]['Amount'],
+                                                            "TAmount"       => "0",
+                                                            "ServiceCharge" => "0",
+                                                            "TsAmount"      => "0",
+                                                            "Remarks"       => "0"));   
+
+             return Response::returnSuccess("succss",array());
+         }
+
          function updateProfilePhoto() {
              global $mysql,$loginInfo;
              $Profiles = $mysql->select("update  `_tbl_members` set `FileName`='".$_POST['filename']."'  where `MemberID`='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("success",array());
          }
-         
+
          function GetMyEmails() {
              global $mysql,$loginInfo;
              $MyEmails = $mysql->select("select * from `_tbl_logs_email` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("success",$MyEmails);
          }
-            
+
          function GetKYC() {
              global $mysql,$loginInfo;    
              $KYCs = $mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."'");
@@ -1150,15 +1380,15 @@
                                                             "IdProofDocument" => $IDproof,
                                                             "AddressProofDocument" => $Addressproof));
          }
-         
+
          function UpdateKYC() {
              global $mysql,$loginInfo;
              $returnA = 0;
              $returnB = 0;
              $FileTypeA = CodeMaster::getData("IDPROOF",$_POST['IDType']); 
-             
+
              if (isset($_POST['IDProofFileName']) && strlen($_POST['IDProofFileName'])>0) {
-                 
+
                  $id = $mysql->insert("_tbl_member_documents",array("MemberID"     => $loginInfo[0]['MemberID'],
                                                                     "DocumentType" => 'Id Proof',
                                                                     "FileName"     => $_POST['IDProofFileName'],
@@ -1172,7 +1402,7 @@
                                                                  "ActivityOn"      => date("Y-m-d H:i:s"))); 
                  $returnA = 1;
              }
-             
+
              $FileTypeB = CodeMaster::getData("ADDRESSPROOF",$_POST['AddressProofType']);
              if (isset($_POST['AddressProofFileName']) && strlen($_POST['AddressProofFileName'])>0) {
                  $id = $mysql->insert("_tbl_member_documents",array("MemberID"     => $loginInfo[0]['MemberID'],
@@ -1192,22 +1422,22 @@
              if ($returnA==1 && $returnB==1) {
                  return Response::returnSuccess("successfully updated idproof and address proof",array());
              }
-             
+
              if ($returnA==1 && $returnB==0) {
                 return Response::returnSuccess("successfully updated idproof",array());
              }
-             
+
              if ($returnA==0 && $returnB==1) {
                 return Response::returnSuccess("successfully updated address proof",array());
              }
-             
+
              if ($returnA==0 && $returnB==0) {
                 return Response::returnSuccess("Please choose document",array());
              }
          }
-         
+
          function UpdateNotification() {
-             
+
              global $mysql,$loginInfo;
              $sqlQry = "update `_tbl_members` set `SMSNotification`='".(($_POST['Sms']=="on") ? '1' : '0')."',`EmailNotification`='".(($_POST['Email']=="on")? '1':'0')."' where `MemberID`='".$loginInfo[0]['MemberID']."'";
              $mysql->execute($sqlQry);
@@ -1220,9 +1450,9 @@
              $Member=$mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
              return Response::returnSuccess("Notifications are updated.",$Member[0]);
          }
-         
+
          function UpdatePrivacy() {
-             
+
              global $mysql,$loginInfo;
              $sqlQry="update `_tbl_members` set `PrivacyVerifiedMember`='".(($_POST['VerfiedMembers']=="on") ? '1' : '0')."',`PrivacyNonVerifiedMember`='".(($_POST['nonVerfiedMembers']=="on")? '1':'0')."' where `MemberID`='".$loginInfo[0]['MemberID']."'";
              $mysql->execute($sqlQry);
@@ -1235,14 +1465,14 @@
              $Member=$mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
              return Response::returnSuccess("Privacy information updated.",$Member[0]);
          }
-         
+
          function EditDraftGeneralInformation() {
-             
+
              global $mysql, $loginInfo;
-             
+
              $dob = strtotime($_POST['DateofBirth']);
              $dob = date("Y",$dob)."-".date("m",$dob)."-".date("d",$dob);
-             
+
              $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
              $Sex            = CodeMaster::getData("SEX",$_POST['Sex']);
              $MotherTongue   = CodeMaster::getData("LANGUAGENAMES",$_POST['Language']); 
@@ -1251,7 +1481,7 @@
              $Community      = CodeMaster::getData("COMMUNITY",$_POST['Community']);  
              $Nationality    = CodeMaster::getData("NATIONALNAMES",$_POST['Nationality']);
              $Childrens     = CodeMaster::getData("NUMBEROFBROTHER",$_POST['HowManyChildren']);  
-       
+
              $updateSql = "update `_tbl_Profile_Draft` set `ProfileFor`        = '".$_POST['ProfileFor']."',
                                                            `ProfileName`       = '".$_POST['ProfileName']."',
                                                            `DateofBirth`       = '".$dob."',
@@ -1287,8 +1517,8 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'");      
-   
-             return Response::returnSuccess("success".$updateSql,array("ProfileInfo"      => $Profiles[0],
+
+             return Response::returnSuccess("success",array("ProfileInfo"      => $Profiles[0],
                                                             "ProfileSignInFor" => CodeMaster::getData('PROFILESIGNIN'),
                                                             "Gender"           => CodeMaster::getData('SEX'),
                                                             "MaritalStatus"    => CodeMaster::getData('MARTIALSTATUS'),
@@ -1298,11 +1528,11 @@
                                                             "Community"        => CodeMaster::getData('COMMUNITY'),
                                                             "Nationality"      => CodeMaster::getData('NATIONALNAMES')));
          }
-         
+
          function EditDraftFamilyInformation() {
-             
+
              global $mysql, $loginInfo;
-             
+
              $FathersOccupation = CodeMaster::getData("Occupation",$_POST['FathersOccupation']);  
              $FamilyType        = CodeMaster::getData("FAMILYTYPE",$_POST['FamilyType']); 
              $FamilyValue       = CodeMaster::getData("FAMILYVALUE",$_POST['FamilyValue']);
@@ -1316,7 +1546,7 @@
              $elderSister       = CodeMaster::getData("ELDERSIS",$_POST['elderSister']);
              $youngerSister     = CodeMaster::getData("YOUNGERSIS",$_POST['youngerSister']);
              $marriedSister     = CodeMaster::getData("MARRIEDSIS",$_POST['marriedSister']);
-             
+
              $updateSql = "update `_tbl_Profile_Draft` set `FathersName`           = '".$_POST['FatherName']."',
                                                            `FathersOccupationCode` = '".$_POST['FathersOccupation']."',
                                                            `FathersOccupation`     = '".$FathersOccupation[0]['CodeValue']."',
@@ -1353,7 +1583,7 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'");      
-                                                                         
+
              return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
                                                             "Occupation"             => CodeMaster::getData('Occupation'),
                                                             "FamilyType"             => CodeMaster::getData('FAMILYTYPE'),
@@ -1368,11 +1598,11 @@
                                                             "NumberofYoungerSisters" => CodeMaster::getData('YOUNGERSIS'),
                                                             "NumberofMarriedSisters" => CodeMaster::getData('MARRIEDSIS')));
          }
-         
+
          function EditDraftPhysicalInformation() {
-             
+
              global $mysql,$loginInfo;
-             
+
              $PhysicallyImpaired = CodeMaster::getData("PHYSICALLYIMPAIRED",$_POST['PhysicallyImpaired']); 
              $VisuallyImpaired   = CodeMaster::getData("VISUALLYIMPAIRED",$_POST['VisuallyImpaired']); 
              $VissionImpaired    = CodeMaster::getData("VISSIONIMPAIRED",$_POST['VissionImpaired']);
@@ -1385,7 +1615,7 @@
              $Diet               = CodeMaster::getData("DIETS",$_POST['Diet']);
              $SmookingHabit      = CodeMaster::getData("SMOKINGHABITS",$_POST['SmookingHabit']);
              $DrinkingHabit      = CodeMaster::getData("DRINKINGHABITS",$_POST['DrinkingHabit']);
-             
+
              $updateSql = "update `_tbl_Profile_Draft` set `PhysicallyImpairedCode` = '".$_POST['PhysicallyImpaired']."',
                                                            `PhysicallyImpaired`     = '".$PhysicallyImpaired[0]['CodeValue']."',
                                                            `VisuallyImpairedCode`   = '".$_POST['VisuallyImpaired']."',
@@ -1418,7 +1648,7 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'");      
-             
+
              return Response::returnSuccess("success",array("ProfileInfo"        => $Profiles[0],
                                                                        "PhysicallyImpaired" => CodeMaster::getData('PHYSICALLYIMPAIRED'),
                                                                        "VisuallyImpaired"   => CodeMaster::getData('VISUALLYIMPAIRED'),
@@ -1433,14 +1663,14 @@
                                                                        "SmookingHabit"      => CodeMaster::getData('SMOKINGHABITS'),
                                                                        "DrinkingHabit"      => CodeMaster::getData('DRINKINGHABITS')));
          }
-          
+
          function EditDraftCommunicationDetails() {
-             
+
              global $mysql,$loginInfo;
-             
+
              $Country = CodeMaster::getData("CONTNAMES",$_POST['Country']);
              $State   = CodeMaster::getData("STATNAMES",$_POST['StateName']);
-             
+
              $updateSql = "update `_tbl_Profile_Draft` set  `EmailID`        = '".$_POST['EmailID']."',
                                                             `MobileNumber`   = '".$_POST['MobileNumber']."',
                                                             `WhatsappNumber` = '".$_POST['WhatsappNumber']."',
@@ -1461,25 +1691,12 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'");      
-             
+
              return Response::returnSuccess("success",array("ProfileInfo" => $Profiles[0],
                                                             "CountryName" => CodeMaster::getData('CONTNAMES'),
                                                             "StateName"   => CodeMaster::getData('STATNAMES')));
          }
-         
-         function SelectPlanAndContinue() {
-             
-             global $mysql,$loginInfo;
-              $plan =$mysql->select("select * from `_tbl_member_plan` where `PlanID`='".$_POST['PlanID']."'");       
-             $id = $mysql->insert("_tbl_orders",array("ProfileID"       => $_POST['Code'],
-                                                      "Plan"       => $plan[0]['PlanName'],
-                                                      "Amount"       => $plan[0]['Amount'],
-                                                      "Duration"       => $plan[0]['Decreation'],
-                                                      "OrderOn"     => date("Y-m-d H:i:s")));
-             
-             return Response::returnSuccess("succss",array());
-         }
-                                                                                                                
+
           function GetPartnersExpectaionInformation() {
              global $mysql,$loginInfo;
              $PartnersExpectation = $mysql->select("select * from `_tbl_partners_expectation` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");               
@@ -1493,17 +1710,37 @@
                                                             "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
          }
          function AddPartnersExpectaion() {
-             
+
              global $mysql,$loginInfo;    
-             
+
              $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
              $Religion       = CodeMaster::getData("RELINAMES",$_POST['Religion']); 
              $Caste          = CodeMaster::getData("CASTNAMES",$_POST['Caste']);  
              $Education          = CodeMaster::getData("EDUCATETITLES",$_POST['Education']);  
              $EmployedAs       = CodeMaster::getData("OCCUPATIONS",$_POST["EmployedAs"]) ;
-             $IncomeRange      = CodeMaster::getData("INCOMERANGE",$_POST["IncomeRange"]) ;        
+             $IncomeRange      = CodeMaster::getData("INCOMERANGE",$_POST["IncomeRange"]) ;
              
-            $id = $mysql->insert("_tbl_partners_expectation",array("AgeFrom"             => $_POST['age'],
+             $check =  $mysql->select("select * from `_tbl_partners_expectation` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");                      
+             if (sizeof($check)>0) {
+                   $updateSql = "update `_tbl_partners_expectation` set  `AgeFrom`           = '".$_POST['age']."',
+                                                                         `AgeTo`             = '".$_POST['toage']."',
+                                                                         `MaritalStatusCode` = '".$_POST['MaritalStatus']."',
+                                                                         `MaritalStatus`     = '".$MaritalStatus[0]['CodeValue']."',
+                                                                         `ReligionCode`      = '".$_POST['Religion']."',
+                                                                         `Religion`          = '".$Religion[0]['CodeValue']."',
+                                                                         `CasteCode`         = '".$_POST['Caste']."',
+                                                                         `Caste`             = '". $Caste[0]['CodeValue']."',
+                                                                         `EducationCode`     = '".$_POST['Education']."',
+                                                                         `Education`         = '".$Education[0]['CodeValue']."',
+                                                                         `AnnualIncomeCode`  = '".$_POST['IncomeRange']."',
+                                                                         `AnnualIncome`      = '".$IncomeRange[0]['CodeValue']."',
+                                                                         `EmployedAsCode`    = '".$_POST['EmployedAs']."',
+                                                                         `EmployedAs`        = '".$EmployedAs[0]['CodeValue']."',
+                                                                         `Details`           = '".$_POST['Details']."'
+                                                                            where  `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'";
+             $mysql->execute($updateSql);  
+             } else {
+                   $id = $mysql->insert("_tbl_partners_expectation",array("AgeFrom"             => $_POST['age'],
                                                                    "AgeTo"               => $_POST['toage'],
                                                                    "MaritalStatusCode"   => $_POST['MaritalStatus'],
                                                                    "MaritalStatus"       => $MaritalStatus[0]['CodeValue'],
@@ -1519,7 +1756,8 @@
                                                                    "EmployedAs"          => $EmployedAs[0]['CodeValue'],
                                                                    "Details"             => $_POST['Details'],
                                                                    "CreatedBy"           => $loginInfo[0]['MemberID'],
-                                                                   "ProfileID"           => $_POST['Code'])) ; 
+                                                                   "ProfileID"           => $_POST['Code'])) ;
+             }
             return Response::returnSuccess("success",array("MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
                                                             "Language"               => CodeMaster::getData('LANGUAGENAMES'),
                                                             "Religion"               => CodeMaster::getData('RELINAMES'),
@@ -1528,16 +1766,16 @@
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
                                                             "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
          }
-         
+
          function EditDraftOccupationDetails() {
-             
+
              global $mysql,$loginInfo;
-             
+
              $EmployedAs       = CodeMaster::getData("OCCUPATIONS",$_POST["EmployedAs"]) ;
              $OccupationType   = CodeMaster::getData("Occupation",$_POST["OccupationType"]) ;
              $TypeofOccupation = CodeMaster::getData("TYPEOFOCCUPATIONS",$_POST["TypeofOccupation"]) ;
              $IncomeRange      = CodeMaster::getData("INCOMERANGE",$_POST["IncomeRange"]) ;
-             
+
              $updateSql = "update `_tbl_Profile_Draft` set  `EmployedAsCode`       = '".$_POST['EmployedAs']."',
                                                             `EmployedAs`           = '".$EmployedAs[0]['CodeValue']."',
                                                             `OccupationTypeCode`   = '".$_POST['OccupationType']."',
@@ -1554,14 +1792,14 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'");      
-             
+
              return Response::returnSuccess("success",array("ProfileInfo"      => $Profiles[0],
                                                             "EmployedAs"       => CodeMaster::getData('OCCUPATIONS'),
                                                             "Occupation"       => CodeMaster::getData('Occupation'),
                                                             "TypeofOccupation" => CodeMaster::getData('TYPEOFOCCUPATIONS'),
                                                             "IncomeRange"      => CodeMaster::getData('INCOMERANGE')));
          }
-       
+
          function AddEducationalDetails() {
              global $mysql,$loginInfo;
              $id = $mysql->insert("_tbl_member_attachments",array("EducationDetails" => $_POST['Educationdetails'],
@@ -1573,15 +1811,15 @@
              return (sizeof($id)>0) ? Response::returnSuccess("success",$_POST)
                                     : Response::returnError("Access denied. Please contact support");   
          }
-         
+
          function AttachDocuments() {
-             
+
              global $mysql,$loginInfo;   
-             
+
              $photos = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0' and Type='IDProof'");
-             
+
              $DocumentType      = CodeMaster::getData("DOCTYPES",$_POST['Documents']) ;
-             
+
              if (isset($_POST['File'])) {
                  if(sizeof($photos)<5){
                      $mysql->insert("_tbl_member_attachments",array("DocumentTypeCode"  => $_POST['Documents'],
@@ -1598,24 +1836,22 @@
              $photos = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0' and Type='IDProof'");
              return Response::returnSuccess("success",$photos);
          }    
-         
+
          function DeletDocumentAttachments() {
-             
+
              global $mysql,$loginInfo;
-             
-              
+
              $mysql->execute("update `_tbl_member_attachments` set `IsDelete`='1' where `AttachmentID`='".$_POST['AttachmentID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['ProfileID']."'");
-             
+
                  return  '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Your selected document has been deleted successfully.</h5>
                             <h5 style="text-align:center;"><a data-dismiss="modal"  >Yes</a> <h5>
                        </div>';
-                 
-             
+
          }
          function DeletProfilePhoto() {
-             
+
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_profiles_photo` set `IsDelete`='1' where `ProfilePhotoID`='".$_POST['ProfilePhotoID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['ProfileID']."'");
                  return  '<div style="background:white;width:100%;padding:20px;height:100%;">
@@ -1623,8 +1859,7 @@
                             <h5 style="text-align:center;color:#ada9a9">Your selected profile photo  has been deleted successfully.</h5>
                             <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
                        </div>';
-                 
-             
+
          }
          function EditDraftHoroscopeDetails() {
              global $mysql,$loginInfo;
@@ -1674,13 +1909,13 @@
                                                             "RasiName"    => CodeMaster::getData('MONSIGNS'),
                                                             "Lakanam"     => CodeMaster::getData('LAKANAM')));
          }
-         
+
          function AddProfilePhoto() {
-             
+
              global $mysql,$loginInfo;   
-             
+
              $photos = $mysql->select("select * from `_tbl_profiles_photo` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0'");
-             
+
              if (isset($_POST['ProfilePhoto'])) {
                  if(sizeof($photos)<5){
                      $mysql->insert("_tbl_profiles_photo",array("MemberID"     => $loginInfo[0]['MemberID'],
@@ -1694,33 +1929,33 @@
              $photos = $mysql->select("select * from `_tbl_profiles_photo` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0'");
              return Response::returnSuccess("success",$photos);
          }
-         
+
          function GetViewAttachments() {
              global $mysql,$loginInfo;    
              $SAttachments = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."' and `IsDelete`='0' and `Type`='EducationDetails'");
              return Response::returnSuccess("success",$SAttachments);
          }
-         
+
         /* function GetMyProfiles() {
              global $mysql,$loginInfo;    
              $MyProfiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("success",$MyProfiles);
          }*/
-         
+
          function GetBankNames() {
              global $mysql,$loginInfo;
              $BankNames = $mysql->select("select * from  `_tbl_settings_bankdetails` where `IsActive`='1'");                    
              return Response::returnSuccess("success",array("BankName" => $BankNames,
                                                             "Mode"     => CodeMaster::getData('MODE')));
          }
-         
+
          function DeleteMember() {
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_members` set `IsDeleted`='1', `DeletedOn`='".date("Y-m-d H:i:s")."'  where  `MemberID`='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("successfully",array());
          }
          function SaveBankRequest() {
-             
+
              global $mysql,$loginInfo;
              $BankNames = $mysql->select("select * from  `_tbl_settings_bankdetails` where BankID='".$_POST['BankName']."'"); 
              $TransferMode= CodeMaster::getData("MODE",$_POST['Mode']); 
@@ -1743,7 +1978,7 @@
              }
          }
          function SavePayPalRequest() {
-             
+
              global $mysql,$loginInfo;
              $PayPal = $mysql->select("select * from  `_tbl_settings_paypal` where `IsActive`='1'"); 
              $id =  $mysql->insert("_tbl_wallet_paypalrequests",array("TransactionOn" => date("Y-m-d H:i:s"),
@@ -1777,12 +2012,12 @@
              $Paypal = $mysql->select("select * from  `_tbl_wallet_bankrequests` where `MemberID`='". $loginInfo[0]['MemberID']."' and `ReqID`='".$_POST['Code']."'");                    
              return Response::returnSuccess("success",$Paypal[0]);
          }
-         
+
          function IsPaypalTransferAllowed() {
              global $mysql,$loginInfo;
               $paypal = $mysql->select("select * from  `_tbl_settings_paypal` where `IsActive`='1'");   
-              
+
              return Response::returnSuccess("success",array("IsAllowed"=>sizeof($paypal))); 
          }
      }
-?>  
+?>

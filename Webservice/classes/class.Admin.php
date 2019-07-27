@@ -437,6 +437,7 @@ class Admin extends Master {
                 return Response::returnSuccess("success",$Franchisees);
 
     }
+    
     function GetDraftedProfiles() {
            global $mysql;    
              $sql = "SELECT *
@@ -466,6 +467,7 @@ class Admin extends Master {
                 return Response::returnSuccess("success",$Profiles);
 
     }
+    
     function ViewDraftedProfileDetails() {
             global $mysql;
 
@@ -477,6 +479,7 @@ class Admin extends Master {
         "Members" => $members[0]));
 
     }
+    
      function ViewRequestedProfile() {         
          global $mysql;
 
@@ -487,6 +490,7 @@ class Admin extends Master {
                                     ON _tbl_member_attachments.ProfileID = _tbl_Profile_Draft.ProfileID where _tbl_Profile_Draft.ProfileID='".$_POST['Code']."'");
          return Response::returnSuccess("success",$Profiles[0]);
      }
+     
      function ApproveProfile() {
 
              global $mysql,$loginInfo;
@@ -730,7 +734,6 @@ class Admin extends Master {
                 return Response::returnSuccess("Email sent successfully",array("reqID"=>$GUID));
              }
          }
-         
         
          function MemberResetPasswordCheck() {
              
@@ -751,6 +754,7 @@ class Admin extends Master {
                 return Response::returnError("Invalid GUID"); 
              }
          }
+         
         function MemberResetPasswordSave(){
              global $mysql;
              
@@ -778,7 +782,6 @@ class Admin extends Master {
              
              return Response::returnSuccess("New Password saved successfully"."update _tbl_members set `MemberPassword`='".$_POST['NewPassword']."' where `MemberID`='".$data[0]['MemberID']."'",$data[0]);  
         }
-         
 
     function GetManagePlans() {
            global $mysql;    
@@ -962,7 +965,21 @@ class Admin extends Master {
                                                            "MonsignCode"    => SeqMaster::GetNextCode('MONSIGNS'),
                                                            "Monsign"        => CodeMaster::getData('MONSIGNS'),
                                                            "EducationDegreeCode"    => SeqMaster::GetNextCode('EDUCATIONDEGREES'),
-                                                           "EducationDegree"        => CodeMaster::getData('EDUCATIONDEGREES')));    
+                                                           "EducationDegree"        => CodeMaster::getData('EDUCATIONDEGREES'),
+                                                           "EducationTitleCode"    => SeqMaster::GetNextCode('EDUCATETITLES'),
+                                                           "EducationTitle"        => CodeMaster::getData('EDUCATETITLES'),
+                                                           "OccupationTypesCode"    => SeqMaster::GetNextCode('OCCUPATIONTYPES'),
+                                                           "OccupationTypes"        => CodeMaster::getData('Occupation'),
+                                                           "OccupationCode"    => SeqMaster::GetNextCode('OCCUPATIONS'),          
+                                                           "Occupation"        => CodeMaster::getData('OCCUPATIONS'),
+                                                           "WeightCode"    => SeqMaster::GetNextCode('WEIGHTS'),
+                                                           "Weight"        => CodeMaster::getData('WEIGHTS'),
+                                                           "FamilyTypeCode"    => SeqMaster::GetNextCode('FAMILYTYPE'),
+                                                           "FamilyType"        => CodeMaster::getData('FAMILYTYPE'),
+                                                           "FamilyValueCode"    => SeqMaster::GetNextCode('FAMILYVALUE'),          
+                                                           "FamilyValue"        => CodeMaster::getData('FAMILYVALUE'),
+                                                           "FamilyAffluenceCode"    => SeqMaster::GetNextCode('FAMILYAFFLUENCE'),          
+                                                           "FamilyAffluence"        => CodeMaster::getData('FAMILYAFFLUENCE')));    
     }                                                                          
 
     function CreateEmailApi() {
@@ -1033,10 +1050,12 @@ class Admin extends Master {
                 return Response::returnError("Access denied. Please contact support");   
             }
     }
+    
     function GetEmailApiCode(){
             return Response::returnSuccess("success",array("EmailApiCode"   => SeqMaster::GetNextEmailApiNumber(),
                                                            "Secure"         => CodeMaster::getData('Secure')));
     }
+    
     function GetManageEmailApi() {
            global $mysql;    
               $EmailApi = $mysql->select("select * from _tbl_settings_emailapi");
@@ -1701,6 +1720,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `MemberID` ='0' ORDER BY `ActivityID` DESC"));    
              }
          }
+         
          function GetManageMemberPlan() {    
 
              global $mysql,$loginInfo;    
@@ -1722,6 +1742,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
          function GetMemberPlanCode() {
             return Response::returnSuccess("success",array("PlanCode" => SeqMaster::GetNextPlanCode()));
          }
+         
     function CreateMemberPlan() {
 
         global $mysql,$loginInfo;
@@ -1753,6 +1774,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnError("Failure");   
             }
     }
+    
     function EditMemberPlan(){
               global $mysql,$loginInfo;
         
@@ -1774,6 +1796,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
          return Response::returnSuccess("success",array());
 
     }
+    
      function GetMemberPlanInfo() {
            global $mysql;    
               $Plans = $mysql->select("select * from _tbl_member_plan where PlanCode='".$_POST['Code']."'");

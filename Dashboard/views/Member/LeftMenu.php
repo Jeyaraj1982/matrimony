@@ -132,7 +132,28 @@
                 </li>
               </ul>
             </div>
-        </li>   
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#Accounts" aria-expanded="false" aria-controls="Support">
+              <i class="menu-icon mdi mdi-content-copy"></i>
+              <span class="menu-title"  style="font-size:14px">My Accounts</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="Accounts">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Accounts/MyOrders");?>">My Orders</a>
+                </li>
+                 <li class="nav-item">
+                  <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Accounts/MyInvoices");?>">My Invoices</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Accounts/MyReceipts");?>">My Receipts</a>
+                </li>
+              </ul>
+            </div>
+        </li> 
+           
         
        <!-- <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#others" aria-expanded="false" aria-controls="others">

@@ -119,6 +119,9 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Masters/Monsigns/ManageMonsigns");?>">Monsign</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Masters/Lakanam/ManageLakanam");?>">Lakanam</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Masters/BankNames/ManageBank");?>">Bank Names</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Masters/FamilyType/ManageFamilyType");?>">Family Type</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Masters/FamilyValue/ManageFamilyValue");?>">Family Value</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Masters/FamilyAffluence/ManageAffluence");?>">Family Affluence</a></li>
                     </ul>
                 </div>
             </li>

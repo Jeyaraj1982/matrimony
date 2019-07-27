@@ -52,3 +52,54 @@
          
     </body>
 </html>
+<script>
+ function showUpgrades(ProfileID) {
+      $('#Upgrades').modal('show'); 
+      var content = '<div class="Upgrades_body" style="padding:20px">'
+                    +   '<div  style="height: 315px;">'
+                    
+                     + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                       +  '<div style="text-align:center">Please Upgrade<br><br>No credits &nbsp;:&nbsp;0<br><br>' 
+                        +  '<button type="button" class="btn btn-primary" name="Continue"  onclick="Continue()">Continue</button>&nbsp;'
+                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>'
+                       +  '</div><br>'
+                    +  '</form>'
+                +  '</div>'
+            +  '</div>';
+            $('#Upgrades_body').html(content);
+}
+   
+function showOverAll(PProfileCode) {
+      $('#OverAll').modal('show'); 
+      var content = '<div class="OverAll_body" style="padding:20px">'
+                    + '<div  style="height: 315px;">'
+                    +  '<form method="post" id="frm_'+PProfileCode+'" name="frm_'+PProfileCode+'" action="" > '
+                    + '<input type="hidden" value="'+PProfileCode+'" name="PProfileCode">'
+                       +  '<div style="text-align:center">Overall Profile&nbsp;:&nbsp;0<br><br>Viewed&nbsp;:&nbsp;0<br><br>Remail&nbsp;:&nbsp;0<br><br>' 
+                        +  '<button type="button" class="btn btn-primary" name="Continue"  onclick="OverallSendOTP(\''+PProfileCode+'\')">Continue</button>&nbsp;'
+                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>'
+                       +  '</div><br>'
+                    + '</form>';
+                +  '</div>'
+            +  '</div>';
+            $('#OverAll_body').html(content);
+}
+
+function OverallSendOTP(formid) {
+        
+        var param = $("#frm_"+formid).serialize();
+        $('#OverAll_body').html(preloader);
+        $.post(API_URL + "m=Member&a=OverallSendOtp",param,function(result2) {$('#OverAll_body').html(result2);});
+    }
+function ViewProfileOTPVerification(frmid) {
+         var param = $( "#"+frmid).serialize();
+         $('#OverAll_body').html(preloader);
+                    $.post( API_URL + "m=Member&a=ViewProfileOTPVerification", 
+                            param,
+                            function(result2) {
+                                $('#OverAll_body').html(result2);   
+                            }
+                    );
+              
+    } 
+</script>

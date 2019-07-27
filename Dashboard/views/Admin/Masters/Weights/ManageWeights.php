@@ -23,13 +23,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $Weights = $mysql->select("select * from _tbl_master_codemaster Where HardCode='WEIGHTS'"); ?>
-                        <?php foreach($Weights as $Weight) { ?>
+                        <?php $Weights = $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($Weights['data']['Weight'] as $Weight) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($Weight['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $Weight['SoftCode'];?></td>
                                 <td><?php echo $Weight['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Weights/Manage/Edit/". $Weight['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/Weights/Manage/View/". $Weight['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Weights/Manage/Edit/". $Weight['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/Weights/Manage/View/". $Weight['SoftCode'].".html");?>">View</a></td>
                                 </tr>
                         <?php } ?> 
                      </tbody>

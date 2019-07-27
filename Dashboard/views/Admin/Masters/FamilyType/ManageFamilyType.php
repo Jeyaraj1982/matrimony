@@ -1,11 +1,11 @@
-<form method="post" action="<?php echo GetUrl("Masters/Occupations/New");?>" onsubmit="">      
+<form method="post" action="<?php echo GetUrl("Masters/FamilyType/New");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Masters</h4>
-                <h4 class="card-title">Manage Occupation</h4>
+                <h4 class="card-title">Manage Family Type</h4>
                 <button type="submit" class="btn btn-primary ">
-                          <i class="mdi mdi-plus"></i>Occupation</button>
+                          <i class="mdi mdi-plus"></i>Family Type</button>
                           <button type="submit" class="btn btn-success dropdown-toggle"  data-toggle="dropdown">Export</button>
                 <ul class="dropdown-menu">
                     <li><a href="#">To Excel</a></li>
@@ -18,18 +18,18 @@
                       <thead>
                         <tr>
                           <th>ID</th>  
-                          <th>Occupation</th>
+                          <th>Family Type</th>
                           <th></th> 
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $Occupations = $webservice->getData("Admin","GetMastersManageDetails"); ?>
-                        <?php foreach($Occupations['data']['Occupation'] as $Occupation) { ?>
+                        <?php $FamilyTypes = $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($FamilyTypes['data']['FamilyType'] as $FamilyType) { ?>
                                 <tr>
-                                <td><span class="<?php echo ($Occupation['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $Occupation['SoftCode'];?></td>
-                                <td><?php echo $Occupation['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/Occupations/Manage/Edit/". $Occupation['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/Occupations/Manage/View/". $Occupation['SoftCode'].".html");?>">View</a></td> 
+                                <td><span class="<?php echo ($FamilyType['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $FamilyType['SoftCode'];?></td>
+                                <td><?php echo $FamilyType['CodeValue'];?></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/FamilyType/Manage/Edit/". $FamilyType['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/FamilyType/Manage/View/". $FamilyType['SoftCode'].".html");?>">View</a></td> 
                                 </tr>
                         <?php } ?> 
                      </tbody>

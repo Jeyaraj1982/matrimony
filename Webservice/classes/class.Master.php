@@ -695,11 +695,197 @@ class Master {
             global $mysql;     
             $data = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['EducationDegree']."' and  HardCode='EDUCATIONDEGREES' and SoftCode<>'".$_POST['Code']."'");
             if (sizeof($data)>0) {
-                return Response::returnError("Monsign already exists");    
+                return Response::returnError("Education already exists");    
             }
             $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['EducationDegree']."',IsActive='".$_POST['IsActive']."' where HardCode='EDUCATIONDEGREES' and SoftCode='".$_POST['Code']."'");
             return Response::returnSuccess("success",array());
         } 
+    public function CreateEducationTitle() {
+            global $mysql;
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='EDUCATETITLES' and SoftCode='".trim($_POST['EducationTitleCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Education Title Code Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='EDUCATETITLES' and CodeValue='".trim($_POST['EducationTitle'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Education Title Already Exists");
+            }
+            $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"  => "EDUCATETITLES",
+                                                                "SoftCode"  => trim($_POST['EducationTitleCode']),
+                                                                "CodeValue" => trim($_POST['EducationTitle'])));
+            return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
+                                     Response::returnError("Access denied. Please contact support");      
+        }
+             
+     public function EditEducationTitle() {
+            global $mysql;     
+            $data = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['EducationTitle']."' and  HardCode='EDUCATETITLES' and SoftCode<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Education Title already exists");    
+            }
+            $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['EducationTitle']."',IsActive='".$_POST['IsActive']."' where HardCode='EDUCATETITLES' and SoftCode='".$_POST['Code']."'");
+            return Response::returnSuccess("success",array());
+        }
+        public function CreateOccupationType() {
+            global $mysql;
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='OCCUPATIONTYPES' and SoftCode='".trim($_POST['OccupationTypeCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Occupation Type Code Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='OCCUPATIONTYPES' and CodeValue='".trim($_POST['OccupationType'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Occupation Type Already Exists");
+            }
+            $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"  => "OCCUPATIONTYPES",
+                                                                "SoftCode"  => trim($_POST['OccupationTypeCode']),
+                                                                "CodeValue" => trim($_POST['OccupationType'])));
+            return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
+                                     Response::returnError("Access denied. Please contact support");      
+        }
+             
+     public function EditOccupationType() {
+            global $mysql;     
+            $data = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['OccupationType']."' and  HardCode='OCCUPATIONTYPES' and SoftCode<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Occupation Type already exists");    
+            }
+            $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['OccupationType']."',IsActive='".$_POST['IsActive']."' where HardCode='OCCUPATIONTYPES' and SoftCode='".$_POST['Code']."'");
+            return Response::returnSuccess("success",array());
+        } 
+        public function CreateOccupation() {
+            global $mysql;
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='OCCUPATIONS' and SoftCode='".trim($_POST['OccupationCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Occupation Code Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='OCCUPATIONS' and CodeValue='".trim($_POST['OccupationName'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Occupation Name Already Exists");
+            }
+            $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"  => "OCCUPATIONS",
+                                                                "SoftCode"  => trim($_POST['OccupationCode']),
+                                                                "CodeValue" => trim($_POST['OccupationName'])));
+            return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
+                                     Response::returnError("Access denied. Please contact support");      
+        }
+             
+     public function EditOccupation() {
+            global $mysql;     
+            $data = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['Occupation']."' and  HardCode='OCCUPATIONS' and SoftCode<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Occupation Name already exists");    
+            }
+            $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['Occupation']."',IsActive='".$_POST['IsActive']."' where HardCode='OCCUPATIONS' and SoftCode='".$_POST['Code']."'");
+            return Response::returnSuccess("success",array());
+        }
+        
+        public function CreateWeight() {
+            global $mysql;
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='WEIGHTS' and SoftCode='".trim($_POST['WeightCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Weight Code Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='WEIGHTS' and CodeValue='".trim($_POST['Weight'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Weight Already Exists");
+            }
+            $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"  => "WEIGHTS",
+                                                                "SoftCode"  => trim($_POST['WeightCode']),
+                                                                "CodeValue" => trim($_POST['Weight'])));
+            return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
+                                     Response::returnError("Access denied. Please contact support");      
+        }
+             
+     public function EditWeight() {
+            global $mysql;     
+            $data = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['Weight']."' and  HardCode='WEIGHTS' and SoftCode<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Weight already exists");    
+            }
+            $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['Weight']."',IsActive='".$_POST['IsActive']."' where HardCode='WEIGHTS' and SoftCode='".$_POST['Code']."'");
+            return Response::returnSuccess("success",array());
+        }
+        
+        public function CreateFamilyType() {
+            global $mysql;
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='FAMILYTYPE' and SoftCode='".trim($_POST['FamilyTypeCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Family Type Code Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='FAMILYTYPE' and CodeValue='".trim($_POST['FamilyType'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Family Type Name Already Exists");
+            }
+            $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"  => "FAMILYTYPE",
+                                                                "SoftCode"  => trim($_POST['FamilyTypeCode']),
+                                                                "CodeValue" => trim($_POST['FamilyType'])));
+            return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
+                                     Response::returnError("Access denied. Please contact support");      
+        }                                                                                                              
+             
+     public function EditFamilyType() {
+            global $mysql;     
+            $data = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['FamilyType']."' and  HardCode='FAMILYTYPE' and SoftCode<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Family Type already exists");    
+            }
+            $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['FamilyType']."',IsActive='".$_POST['IsActive']."' where HardCode='FAMILYTYPE' and SoftCode='".$_POST['Code']."'");
+            return Response::returnSuccess("success",array());
+        }
+        
+        public function CreateFamilyValue() {
+            global $mysql;
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='FAMILYVALUE' and SoftCode='".trim($_POST['FamilyValueCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Family Value Code Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='FAMILYVALUE' and CodeValue='".trim($_POST['FamilyValue'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Family Value Name Already Exists");
+            }
+            $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"  => "FAMILYVALUE",
+                                                                "SoftCode"  => trim($_POST['FamilyValueCode']),
+                                                                "CodeValue" => trim($_POST['FamilyValue'])));
+            return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
+                                     Response::returnError("Access denied. Please contact support");      
+        }                                                                                                              
+             
+     public function EditFamilyValue() {
+            global $mysql;     
+            $data = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['FamilyValue']."' and  HardCode='FAMILYVALUE' and SoftCode<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Family Value already exists");    
+            }
+            $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['FamilyValue']."',IsActive='".$_POST['IsActive']."' where HardCode='FAMILYVALUE' and SoftCode='".$_POST['Code']."'");
+            return Response::returnSuccess("success",array());
+        }
+        public function CreateFamilyAffluence() {
+            global $mysql;
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='FAMILYAFFLUENCE' and SoftCode='".trim($_POST['FamilyAffluenceCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Family Affluence Code Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='FAMILYAFFLUENCE' and CodeValue='".trim($_POST['FamilyAffluence'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Family Affluence Name Already Exists");
+            }
+            $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"  => "FAMILYAFFLUENCE",
+                                                                "SoftCode"  => trim($_POST['FamilyAffluenceCode']),
+                                                                "CodeValue" => trim($_POST['FamilyAffluenceName'])));
+            return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
+                                     Response::returnError("Access denied. Please contact support");      
+        }                                                                                                              
+             
+     public function EditFamilyAffluence() {
+            global $mysql;     
+            $data = $mysql->select("select * from _tbl_master_codemaster where  CodeValue='".$_POST['FamilyAffluence']."' and  HardCode='FAMILYAFFLUENCE' and SoftCode<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Family Affluence already exists");    
+            }
+            $mysql->execute("update _tbl_master_codemaster set CodeValue='".$_POST['FamilyAffluence']."',IsActive='".$_POST['IsActive']."' where HardCode='FAMILYAFFLUENCE' and SoftCode='".$_POST['Code']."'");
+            return Response::returnSuccess("success",array());
+        }
+        
         public function GetMasterAllViewInfo(){
         
         global $mysql;

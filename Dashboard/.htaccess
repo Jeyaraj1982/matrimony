@@ -7,6 +7,9 @@ RewriteRule ^Profiles/ViewRequestProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profil
 RewriteRule ^ViewMemberProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewMemberProfile
 
 RewriteRule ^Matches/Search/ViewPlans/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ViewPlans
+RewriteRule ^Matches/Search/ViewSearchProfile/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ViewSearchProfile
+RewriteRule ^MyContacts/ViewProfileDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyContacts/ViewProfileDetails
+RewriteRule ^MyContacts/ViewProfileDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyContacts/ViewProfileDetails
 
 RewriteRule ^MemberProfileEdit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/GeneralInformation
 RewriteRule ^MemberProfileEdit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/EducationDetails

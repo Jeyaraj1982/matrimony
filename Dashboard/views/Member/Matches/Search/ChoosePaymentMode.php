@@ -45,15 +45,15 @@
 <script>
  function loadPaymentOption(pOption){
      $("#resdiv").html("Bankdiv");
-     if (pOption=="BankDeposite") {
+     if (pOption=="BankDeposite") {                  
         $("#resdiv").html($('#Bankdiv').html());
-        $('#BankDeposite').css({"background":"Transparent","border-right":"none"});
-        $('#Paypal').css({"background":"#ccc"});
+        $('#BankDeposite').css({"background":"#95abfb"});
+        $('#Paypal').css({"background":"Transparent"});
      }
      if (pOption=="Paypal") {
         $("#resdiv").html($('#Paypaldiv').html());
-        $('#BankDeposite').css({"background":"#ccc"});
-        $('#Paypal').css({"background":"Transparent","border-right":"none"});
+        $('#BankDeposite').css({"background":"Transparent"});
+        $('#Paypal').css({"background":"#95abfb"});
      }
  }
 </script>

@@ -81,6 +81,14 @@
             $length = 4;
             $Rows   = $mysql->select("select count(*) as rCount from `_tbl_member_plan`");
             return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
+        }
+        
+        function GetNextOrderCode() {
+            global $mysql;
+            $prefix = "ORD";
+            $length = 4;
+            $Rows   = $mysql->select("select count(*) as rCount from `_tbl_orders`");
+            return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
         } 
    
    /* Admin Master  */

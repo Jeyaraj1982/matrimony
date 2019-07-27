@@ -23,13 +23,13 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $OccupationTypes = $mysql->select("select * from _tbl_master_codemaster Where HardCode='OCCUPATIONTYPES'"); ?>
-                        <?php foreach($OccupationTypes as $OccupationType) { ?>
+                       <?php $OccupationTypes =  $webservice->getData("Admin","GetMastersManageDetails"); ?>
+                        <?php foreach($OccupationTypes['data']['OccupationTypes'] as $OccupationType) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($OccupationType['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $OccupationType['SoftCode'];?></td>
                                 <td><?php echo $OccupationType['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/OccupationTypes/Manage/Edit/". $OccupationType['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/OccupationTypes/Manage/View/". $OccupationType['SoftCode'].".html");?>"><span class="glyphicon glyphicon-pencil">View</span></a></td> 
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/OccupationTypes/Manage/Edit/". $OccupationType['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Masters/OccupationTypes/Manage/View/". $OccupationType['SoftCode'].".html");?>">View</a></td> 
                                 </tr>
                         <?php } ?> 
                       </tbody>

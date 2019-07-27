@@ -46,7 +46,7 @@
             <select class="selectpicker form-control" data-live-search="true" id="MaritalStatus" name="MaritalStatus"> 
                 <option value="All">All</option>
                 <?php foreach($response['data']['MaritalStatus'] as $MaritalStatus) { ?>
-                    <option value="<?php echo $MaritalStatus['SoftCode'];?>"<?php echo (isset($_POST[ 'MaritalStatus'])) ? (($_POST[ 'MaritalStatus']==$MaritalStatus[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MaritalStatus']==$MaritalStatus[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                    <option value="<?php echo $MaritalStatus['SoftCode'];?>" <?php echo (isset($_POST[ 'MaritalStatus'])) ? (($_POST[ 'MaritalStatus']==$MaritalStatus[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MaritalStatusCode']==$MaritalStatus[ 'SoftCode']) ? " selected='selected' " : "");?>>
                         <?php echo $MaritalStatus['CodeValue'];?>   
                     </option>
                     <?php } ?>
@@ -85,7 +85,7 @@
             <select class="selectpicker form-control" data-live-search="true" id="Education" name="Education">
                 <option value="0">Choose Education</option>
                 <?php foreach($response['data']['Education'] as $Education) { ?>
-                    <option value="<?php echo $Education['SoftCode'];?>" <?php echo (isset($_POST[ 'Education'])) ? (($_POST[ 'Education']==$Education[ 'SoftCode']) ? " selected='selected' " : "") : (($Education[ 'Education']==$Education[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                    <option value="<?php echo $Education['SoftCode'];?>" <?php echo (isset($_POST[ 'Education'])) ? (($_POST[ 'Education']==$Education[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Education']==$Education[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $Education['CodeValue'];?>
                             <?php } ?>
                     </option>

@@ -11,25 +11,19 @@
                       <form class="forms-sample">
                       <div class="form-group row">
                           <label for="EducationTitleCode" class="col-sm-3 col-form-label">Education Title Code</label>
-                          <div class="col-sm-9">
-                            <input type="text" readonly="readonly" style="width:80px;background:#fff;border:1px solid #fff" class="form-control" id="EducationTitleCode" name="EducationTitleCode" value="<?php echo $EducationTitle['SoftCode'];?>" placeholder="Education Title Code">
-                          </div>
+                          <label for="EducationTitleCode" class="col-sm-3 col-form-label"><?php echo $EducationTitle['SoftCode'];?></label>
                         </div>
                         <div class="form-group row">
                           <label for="EducationTitle" class="col-sm-3 col-form-label">Education Title</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="EducationTitle" readonly="readonly" name="EducationTitle" value="<?php echo  $EducationTitle['CodeValue'];?>" style="background:#fff;border:1px solid #fff">
-                          </div>
+                          <label for="EducationTitle" class="col-sm-3 col-form-label"><?php echo  $EducationTitle['CodeValue'];?></label>
                         </div>
                          <div class="form-group row">
                           <label for="IsActive" class="col-sm-3 col-form-label">Is Active</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="EducationTitle" name="v" value="<?php echo  ($EducationTitle['IsActive']) ? "Active" : "DeActive";?>" style="background:#fff;border:1px solid #fff">
-                          </div>
+                          <label for="IsActive" class="col-sm-3 col-form-label"><?php echo  ($EducationTitle['IsActive']) ? "Active" : "DeActive";?></label>
                         </div>
                         <div class="form-group row">
-                        <div class="col-sm-4" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageEducationTitles"><small>List of Education Titles</small></a></div>
-                        <div class="col-sm-6"><a href="../../New" class="btn btn-success mr-2"><i class="mdi mdi-plus"></i>Add Education Title</a> </div>
+                        <div class="col-sm-3" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageEducationTitles"><small>List of Education Titles</small></a></div>
+                        <div class="col-sm-6"><a href="../../New" class="btn btn-primary mr-2" style="font-family: roboto;"><i class="mdi mdi-plus"></i>Add Education Title</a> </div>
                     </div>
                   </div>
                 </div>
