@@ -30,58 +30,11 @@
                             <a href="Expired"><small style="font-weight:bold;text-decoration:underline">Expired</small></a>&nbsp;|&nbsp;
                             <a href="#"><small style="font-weight:bold;text-decoration:underline">Rejected</small></a>-->
                         </div>
-                    </div>
+                    </div>                                
                     <br>
                     <br>
-                    <?php foreach($response['data'] as $Profile) { ?>
-                        <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
-                            <div class="form-group row">
-                                <div class="col-sm-3" style="text-align:center">
-                                    <img src="<?php echo SiteUrl?>assets/images/prof1.jpg" style="height: 159px;margin-bottom: -18px;">
-                                    <a href="<?php echo GetUrl("MyProfiles/Edit/ProfilePhoto/".$Profile['ProfileID'].".htm");?>" class="btn btn-primary" style="padding: 0px 0px;font-size: 13px;margin-top: 8px;">Add a Photo</a>
-                                </div>
-                                <div class="col-sm-9">
-                                    <div class="colo-sm-12" style="border-bottom:1px solid #d7d7d7;width:100%;padding-bottom: 42px;font-size: 21px;color: #514444cc;">
-                                       <div class="col-sm-7"> <?php echo $Profile['ProfileName'];?></div>
-                                        <div class="col-sm-1"><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left: 23px;"></div><div style="float:right;font-size: 12px;">Created On:&nbsp;&nbsp;<?php echo putDateTime($Profile['CreatedOn']);?><br>Last Update On:<?php echo putDateTime($Profile['LastUpdatedOn']);?></div> 
-                                    </div>
-                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
-                                        <div>
-                                            <?php echo $Profile['Height'];?>
-                                        </div>
-                                        <div>
-                                            <?php echo $Profile['Religion'];?>
-                                        </div>
-                                        <div>
-                                            <?php echo $Profile['Caste'];?>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
-                                        <div>
-                                            <?php echo $Profile['MaritalStatus'];?>
-                                        </div>
-                                        <div>
-                                            <?php echo $Profile['City'];?>
-                                        </div>
-                                        <div>
-                                            <?php echo $Profile['Occupation'];?>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
-                                        <?php echo $Profile['AboutMe'];?><a href="<?php echo GetUrl(" MyProfiles/View/ ". $Profile['ProfileID'].".htm ");?>">More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="float:right;line-height: 1px;">
-                                <?php if($Profile['IsApproved']==1){?>
-                                    <a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">View</a>
-                                    <?php }else{  ?>
-                                        <a href="<?php echo GetUrl("MyProfiles/Edit/GeneralInformation/".$Profile['ProfileID'].".htm ");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">View</a>
-                                    <?php  }    ?>
-                            </div>
-                        </div>
+                        <?php foreach($response['data'] as $Profile) {  echo DisplayManageProfileShortInfo($Profile);   }?>
                         <br>
-                        <?php }?>
                 </div>
             </div>
     </form>

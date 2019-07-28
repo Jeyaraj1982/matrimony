@@ -3,15 +3,29 @@
    ?>
 <?php include_once("settings_header.php");?>
 <style>
+.photoviewFirst {
+    float: left;
+    margin-right: 10px;
+    text-align: center;
+    border: 1px solid #eaeaea;
+    height: 230px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background: #ccc;
+    color:black;
+}
 .photoview {
     float: left;
     margin-right: 10px;
     text-align: center;
     border: 1px solid #eaeaea;
-    height: 211px;
+    height: 230px;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
+    background:green;
+    color:white;
 }
 .photoview:hover{
     border:1px solid #9b9a9a;
@@ -108,7 +122,8 @@ function submitUpload() {
    <?php }  else {       ?>
     <?php
         foreach($res['data'] as $d) { ?> 
-        <div id="photoview_<?php echo $d['ProfilePhotoID'];?>" class="photoview">
+        <?php if($d['PriorityFirst']==0) {?>
+        <div id="photoview_<?php echo $d['ProfilePhotoID'];?>" class="photoviewFirst">
             <div style="text-align:right;height:22px;">
                 <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
             </div>
@@ -116,13 +131,46 @@ function submitUpload() {
             <div>
                 <?php if($d['IsApproved']==0){ echo "verification pending" ; }?>
             <?php if($d['IsApproved']==1){ echo "Approved" ; }?>
-                <br><?php echo PutDateTime($d['UpdateOn']);?>   
+                <br><small><?php echo PutDateTime($d['UpdateOn']);?></small><br>
+                
+                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>')" style="cursor: pointer;">Bring to Front</span>
+                <br/>  
             </div>
         </div>
-   
+        <?php } else {   ?>
+            <div id="photoview_<?php echo $d['ProfilePhotoID'];?>" class="photoview">
+            <div style="text-align:right;height:22px;">
+                <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
+            </div>
+            <div><img src="<?php echo AppUrl;?>uploads/<?php echo $d['ProfilePhoto'];?>" style="height:120px;"></div>
+            <div>
+                <?php if($d['IsApproved']==0){ echo "verification pending" ; }?>
+            <?php if($d['IsApproved']==1){ echo "Approved" ; }?>
+                <br><small><?php echo PutDateTime($d['UpdateOn']);?></small> <br>
+                
+                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>')" style="cursor: pointer;">Bring to Front</span>
+                <br/>  
+            </div>
+        </div>
+       <?php  }?>
         <?php }   ?>
          <div style="clear:both"></div>
          <?php }?>
+         <script>
+          function _select(ProfilePhotoID) {
+         var mvar = "";
+            $(".Profile_photo").each(function() {
+               
+               $(this).css({'color':'red'});
+            });
+              $('#priority_'+ProfilePhotoID).css({'color':'green'});
+                $.ajax({
+                url: API_URL + "m=Member&a=ProfilePhotoBringToFront&ProfilePhotoID="+ProfilePhotoID, 
+                success: function(result){
+            }});
+          }
+         
+         </script>
     </div>
 </div>
 <div class="modal" id="LearnMore" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
@@ -185,6 +233,10 @@ function showLearnMore() {
         }
     );
 }
-
+function changeColor(id)
+{
+  document.getElementById(id).style.color = "#ff0000"; // forecolor
+ 
+}
 </script>
 <?php include_once("settings_footer.php");?>                    

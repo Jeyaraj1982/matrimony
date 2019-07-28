@@ -494,7 +494,57 @@
         
         
         
-        <?php function DisplayProfileShortInfo($Profile) {  ?>
+        <?php function DisplayManageProfileShortInfo($Profile) {  ?>
+                      <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
+                            <div class="form-group row">
+                                <div class="col-sm-3" style="text-align:center">
+                                    <img src="<?php echo SiteUrl.$Profile['profileImage'];?>" style="height: 159px;margin-bottom: -18px;">
+                                </div>
+                                 <div class="col-sm-9">
+                                    <div class="colo-sm-12" style="border-bottom:1px solid #d7d7d7;width:100%;height: 80px;font-size: 21px;color: #514444cc;">                                                                                     
+                                       <div class="col-sm-7"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp;<div style="line-height: 25px;color: #867c7c;font-size:14px">Profile Code:&nbsp;&nbsp; <?php echo $Profile['ProfileCode'];?></div><div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div></div>
+                                        <div class="col-sm-1"><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:40px;"></div><div style="float:right;font-size: 12px;">Published:&nbsp;&nbsp;<?php echo putDateTime($Profile['IsApprovedOn']);?><br>Download:&nbsp;&nbsp;<?php echo putDateTime($Profile['DownloadOn']);?><br>Lastseen:</div> 
+                                    </div>
+                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div>
+                                            <?php echo $Profile['Height'];?>
+                                        </div>
+                                        <div>
+                                            <?php echo $Profile['Religion'];?>
+                                        </div>
+                                        <div>
+                                            <?php echo $Profile['Caste'];?>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div>
+                                            <?php echo $Profile['MaritalStatus'];?>
+                                        </div>
+                                        <div>
+                                            <?php echo $Profile['OccupationType'];?>
+                                        </div>
+                                        <div>
+                                            <?php echo $Profile['AnnualIncome'];?>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
+                                        <?php echo $Profile['AboutMe'];?><a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">More</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="float:right;line-height: 1px;">
+                                <?php if($Profile['IsApproved']==1){?>
+                                    <a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">View</a>
+                                    <?php }else{  ?>
+                                        <a href="<?php echo GetUrl("MyProfiles/Edit/GeneralInformation/".$Profile['ProfileID'].".htm ");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">View</a>
+                                    <?php  }    ?>
+                            </div>
+                        </div>
+                  <?php
+              }
+            ?>
+            
+            <?php function DisplayProfileShortInfo($Profile) {  ?>
                       <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
                             <div class="form-group row">
                                 <div class="col-sm-3" style="text-align:center">
@@ -541,6 +591,8 @@
             ?>
          
           <?php function DisplayProfileShortInfoBrowse($Profile) {  ?>
+          
+          
                       <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
                             <div class="form-group row">
                                 <div class="col-sm-3" style="text-align:center">
@@ -579,12 +631,24 @@
                                 </div>
                             </div>
                             <div style="float:right;line-height: 1px;">
-                                <a href="javascript:void(0)" onclick="showUpgrades('<?php echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <a href="javascript:void(0)" onclick="showOverAll('<?php echo $Profile['ProfileCode'];?>')">Download</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewSearchProfile/".$Profile['ProfileCode'].".htm ");?>">view</a>
+                                <a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <?php
+                                    
+                                    if ($Profile['IsDownloaded']==0) {
+                                        ?>
+                                        <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
+                                        <?php
+                                    } else {
+                                        ?>
+                                        Alredy Downloaded
+                                        <?php
+                                    }
+                                ?>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewSearchProfile/".$Profile['ProfileCode'].".htm ");?>">view</a>
                             </div>
                             <div class="modal" id="Upgrades" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
                                 <div class="modal-dialog" style="width: 367px;">
-                                    <div class="modal-content" id="Upgrades_body" style="height:200px">
+                                    <div class="modal-content" id="Upgrades_body" style="height:335px">
             
                                     </div>
                                 </div>

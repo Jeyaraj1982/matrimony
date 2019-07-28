@@ -7,8 +7,8 @@
     <h4 class="card-title">Education Details</h4>
         <table class="table table-bordered">
         <?php                 
-                         $response = $webservice->getData("Member","GetViewAttachments",(array("ProfileID"=>$_GET['Code'])));
-                         if (sizeof($response['data'])>0) {
+            $response = $webservice->getData("Member","GetViewAttachments",(array("ProfileID"=>$_GET['Code'])));
+                if (sizeof($response['data'])>0) {
                     ?>
                         
             <thead>

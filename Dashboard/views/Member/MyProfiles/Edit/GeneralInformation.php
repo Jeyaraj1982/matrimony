@@ -53,22 +53,22 @@
                                     <input type="date" class="form-control" id="DateofBirth" name="DateofBirth" style="line-height:15px !important" value="<?php echo $dob;?>">
                                     <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth: "";?></span>
                             </div>
-                            <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
+                           <!-- <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
                             <div class="col-sm-4">
-                                <?php if(isset($_POST['ProfileFor']) == 'PSF001' || ($_POST['ProfileFor']=='PSF003') || ($_POST['ProfileFor']=='PSF005')) { ?>
+                                <?php// if(isset($_POST['ProfileFor']) == 'PSF001' || ($_POST['ProfileFor']=='PSF003') || ($_POST['ProfileFor']=='PSF005')) { ?>
                                 <input type="text" name="Sex" class="form-control" id="Sex" value="Male">
-                                <?php } else { ?><input type="text" name="Sex" class="form-control" id="Sex" value="Female"> <?php }?>
-                            </div>
-                            <!--<label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
+                                <?php //} else// { ?><input type="text" name="Sex" class="form-control" id="Sex" value="Female"> <?php // }?> 
+                            </div> -->
+                            <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="selectpicker form-control" data-live-search="true" id="Sex" name="Sex">
                                     <option>Choose Sex</option>
-                                    <?php //foreach($response['data']['Gender'] as $Sex) { ?>
-                                        <option value="<?php //echo $Sex['SoftCode'];?>" <?php //echo (isset($_POST[ 'Sex'])) ? (($_POST[ 'Sex']==$Sex[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Sex']==$Sex[ 'CodeValue']) ? " selected='selected' " : "");?>>
-                                            <?php //echo $Sex['CodeValue'];?>
-                                                <?php //} ?>       </option>
+                                    <?php foreach($response['data']['Gender'] as $Sex) { ?>
+                                        <option value="<?php echo $Sex['SoftCode'];?>" <?php echo (isset($_POST[ 'Sex'])) ? (($_POST[ 'Sex']==$Sex[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Sex']==$Sex[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                                            <?php echo $Sex['CodeValue'];?>
+                                                <?php } ?>       </option>
                                 </select>
-                            </div>-->
+                            </div>
                         </div>
                         <div class="form-group row">
                             <label for="MaritalStatus" class="col-sm-2 col-form-label">Marital Status<span id="star">*</span></label>

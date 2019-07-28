@@ -16,6 +16,12 @@ text-align:center;
   .form-group {
     margin-bottom: 0px;
 }
+.photoview {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
  </style>
 <form method="post" action="" onsubmit="">
 
@@ -24,11 +30,11 @@ text-align:center;
     <div class="card-body">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Created On</label>
-            <div class="col-sm-9"> <small style="color:#737373;"><?php echo PutDateTime($ProfileInfo['CreatedOn']);?></div>
+            <label class="col-sm-8 col-form-label" style="color:#737373;"><?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
              </div>
              <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Last saved</label>
-                    <label class="col-sm-3 col-form-label"  style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></label>
+                    <label class="col-sm-3 col-form-label"  style="color:#888;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></label>
                    </div>
   </div>
 </div>
@@ -40,44 +46,44 @@ text-align:center;
               <div class="form-group row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Profile For</label>
-                        <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['ProfileFor'];?></label>
+                        <label class="col-sm-4 col-form-label">Profile For</label>
+                        <label class="col-sm-8 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['ProfileFor'];?></label>
                          </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Name</label>
-                        <label class="col-sm-9 col-form-label"  style="color:#737373;"><?php echo $ProfileInfo['ProfileName'];?></label>
+                        <label class="col-sm-4 col-form-label">Name</label>
+                        <label class="col-sm-8 col-form-label"  style="color:#737373;"><?php echo $ProfileInfo['ProfileName'];?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label">Date of birth</label>
-                         <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['DateofBirth'];?></label>
+                         <label class="col-sm-4 col-form-label">Date of birth</label>
+                         <label class="col-sm-8 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['DateofBirth'];?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label">Sex</label>
-                         <label class="col-sm-3 col-form-label"  style="color:#737373;"><?php echo $ProfileInfo['Sex'];?></label>   
+                         <label class="col-sm-4 col-form-label">Sex</label>
+                         <label class="col-sm-8 col-form-label"  style="color:#737373;"><?php echo $ProfileInfo['Sex'];?></label>   
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label">Marital Status</label>
-                         <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['MaritalStatus'];?></label>   
+                         <label class="col-sm-4 col-form-label">Marital Status</label>
+                         <label class="col-sm-8 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['MaritalStatus'];?></label>   
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label">Mother Tongue</label>
-                         <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['MotherTongue'];?></label>  
+                         <label class="col-sm-4 col-form-label">Mother Tongue</label>
+                         <label class="col-sm-8 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['MotherTongue'];?></label>  
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label">Religion</label>
-                         <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['Religion'];?></label>   
+                         <label class="col-sm-4 col-form-label">Religion</label>
+                         <label class="col-sm-8 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['Religion'];?></label>   
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label">Caste</label>
-                         <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['Caste'];?></label>   
+                         <label class="col-sm-4 col-form-label">Caste</label>
+                         <label class="col-sm-8 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['Caste'];?></label>   
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label">Community</label>
-                         <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['Community'];?></label>  
+                         <label class="col-sm-4 col-form-label">Community</label>
+                         <label class="col-sm-8 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['Community'];?></label>  
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label">Nationality</label>
-                         <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['Nationality'];?></label>   
+                         <label class="col-sm-4 col-form-label">Nationality</label>
+                         <label class="col-sm-8 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['Nationality'];?></label>   
                     </div>
                     
               </div>
@@ -85,8 +91,8 @@ text-align:center;
               <?php
               ?>
                   <?php foreach($ProfilePhotos as $ProfileP) {?>
-                   <div>
-                    <img src="<?php echo AppUrl;?>uploads/<?php echo $ProfileP['ProfilePhoto'];?>" style="height:120px;">
+                   <div class="photoview">
+                    <img src="<?php echo AppUrl;?>uploads/<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 140px;width: 95px;">
                   </div> 
                   <?php }?>
                   </div>
@@ -98,29 +104,29 @@ text-align:center;
   <div class="card">
     <div class="card-body">
     <h4 class="card-title">Education Details</h4>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Qualification</label>
-            <label class="col-sm-2 col-form-label" style="color:#737373;"><?php echo $EducationAttachment['EducationDetails'];?> </label>
-             </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Education Degree</label>
-            <label class="col-sm-2 col-form-label" style="color:#737373;"><?php echo $EducationAttachment['EducationDegree'];?></label>
-        </div>
-    </div>
-  </div>
-</div>
-<div class="col-12 grid-margin">
-  <div class="card">
-    <div class="card-body">
-    <h4 class="card-title">Document Attachment</h4>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Document Type</label>
-            <label class="col-sm-2 col-form-label" style="color:#737373;"></label>
-             </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Attachment</label>
-            <label class="col-sm-2 col-form-label"></label>
-        </div>
+         <table class="table table-bordered">           
+            <thead>
+                <tr>
+                    <th>Qualification</th>
+                    <th>Education Degree</th>
+                    <th>Attached On</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php   if (sizeof($EducationAttachment)>0) {    ?>
+                <?php foreach($EducationAttachment as $Document) { ?>
+                <tr>    
+                    <td><?php echo $Document['EducationDetails'];?></td>
+                    <td><?php echo $Document['EducationDegree'];?></td>
+                    <td style="width:140px"><?php echo putDateTime($Document['AttachedOn']);?></td>
+                </tr>
+                <?php } } else {?>
+                <tr>    
+                    <td colspan="3" style="text-align:center">No datas found</td>
+                </tr>
+                <?php }?>
+            </tbody>
+        </table>
     </div>
   </div>
 </div>
@@ -259,39 +265,6 @@ text-align:center;
     </div>
   </div>
 </div>
-<div class="col-12 grid-margin">
-  <div class="card">
-    <div class="card-body">
-    <h4 class="card-title">Communication Details</h4>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Email ID</label>
-            <label class="col-sm-9 col-form-label"style="color:#737373;"><?php echo $ProfileInfo['EmailID'];?></label>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Mobile Number</label>
-            <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['MobileNumber'];?></label>
-            <label class="col-sm-2 col-form-label">Whatsapp Number</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['WhatsappNumber'];?></label>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Address</label>
-            <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['AddressLine1'];?>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $ProfileInfo['AddressLine2'];?>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $ProfileInfo['AddressLine3'];?></label>
-        </div> 
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Country</label>
-            <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['Country'];?></label>
-            <label class="col-sm-2 col-form-label">State</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['State'];?></label>
-        </div> 
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">City</label>
-            <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['City'];?></label>
-            <label class="col-sm-2 col-form-label">Other Location</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['OtherLocation'];?></label>
-        </div>
-        </div>
-    </div>
-  </div>
   <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
@@ -396,6 +369,57 @@ text-align:center;
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Employed As</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $PartnerExpectation['EmployedAs'];?></label>
+        </div>
+    </div>
+  </div>
+</div>
+<div class="col-12 grid-margin">
+  <div class="card">
+    <div class="card-body">
+    <h4 class="card-title">Communication Details</h4>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Email ID</label>
+            <label class="col-sm-9 col-form-label"style="color:#737373;"><?php echo $ProfileInfo['EmailID'];?></label>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Mobile Number</label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['MobileNumber'];?></label>
+            <label class="col-sm-2 col-form-label">Whatsapp Number</label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['WhatsappNumber'];?></label>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Address</label>
+            <label class="col-sm-10 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['AddressLine1'];?>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $ProfileInfo['AddressLine2'];?>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $ProfileInfo['AddressLine3'];?></label>
+        </div> 
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Country</label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['Country'];?></label>
+            <label class="col-sm-2 col-form-label">State</label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['State'];?></label>
+        </div> 
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">City</label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['City'];?></label>
+            <label class="col-sm-2 col-form-label">Other Location</label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['OtherLocation'];?></label>
+        </div>
+        </div>
+    </div>
+  </div>
+<div class="col-12 grid-margin">
+  <div class="card">
+    <div class="card-body">
+    <div class="form-group row">
+        <div class="col-sm-6"><h4 class="card-title">Document Attachment</h4></div>
+        <div class="col-sm-6" style="text-align: right;"><h4 class="card-title">For Admnistrative Purpose only</h4></div>
+    </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Document Type</label>
+            <label class="col-sm-2 col-form-label" style="color:#737373;"></label>
+             </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Attachment</label>
+            <label class="col-sm-2 col-form-label"></label>
         </div>
     </div>
   </div>

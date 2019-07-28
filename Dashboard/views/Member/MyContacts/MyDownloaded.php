@@ -12,19 +12,22 @@
     }
 </style>
 <?php
-    $response = $webservice->getData("Member","DownloadedProfiles",array());    
-    if (sizeof($response['data'])>0) {
+    $response = $webservice->getData("Member","DownloadedProfiles",array());
+    $Profiles = $response['data']['Profiles']; 
+    $ProfileDetails = $response['data']['ProfileDetails']; 
+    if (sizeof($Profiles)>0) {
 ?>
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Donload Profiles</h4>
+                    <h4 class="card-title">Download Profiles</h4>
                     <?php foreach($response['data'] as $Profile) { 
                         echo DisplayProfileShortInfo($Profile);
                         ?>
                        
-                        <br>
+                        <br> 
                         <?php }?>
+                        
                 </div>
             </div>
     <?php     } else   { ?>

@@ -53,37 +53,27 @@
     </body>
 </html>
 <script>
- function showUpgrades(ProfileID) {
-      $('#Upgrades').modal('show'); 
-      var content = '<div class="Upgrades_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'
-                    
-                     + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                       +  '<div style="text-align:center">Please Upgrade<br><br>No credits &nbsp;:&nbsp;0<br><br>' 
-                        +  '<button type="button" class="btn btn-primary" name="Continue"  onclick="Continue()">Continue</button>&nbsp;'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>'
-                       +  '</div><br>'
-                    +  '</form>'
-                +  '</div>'
-            +  '</div>';
-            $('#Upgrades_body').html(content);
-}
-   
-function showOverAll(PProfileCode) {
-      $('#OverAll').modal('show'); 
-      var content = '<div class="OverAll_body" style="padding:20px">'
-                    + '<div  style="height: 315px;">'
-                    +  '<form method="post" id="frm_'+PProfileCode+'" name="frm_'+PProfileCode+'" action="" > '
-                    + '<input type="hidden" value="'+PProfileCode+'" name="PProfileCode">'
-                       +  '<div style="text-align:center">Overall Profile&nbsp;:&nbsp;0<br><br>Viewed&nbsp;:&nbsp;0<br><br>Remail&nbsp;:&nbsp;0<br><br>' 
-                        +  '<button type="button" class="btn btn-primary" name="Continue"  onclick="OverallSendOTP(\''+PProfileCode+'\')">Continue</button>&nbsp;'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>'
-                       +  '</div><br>'
-                    + '</form>';
-                +  '</div>'
-            +  '</div>';
-            $('#OverAll_body').html(content);
-}
+function RequestToshowUpgrades(ProfileID) {
+        
+        $('#Upgrades_body').html(preloader);
+        $('#Upgrades').modal('show'); 
+        $.ajax({
+            url: API_URL + "m=Member&a=RequestToshowUpgrades&ProfileID="+ProfileID, 
+            success: function(result){
+               $('#Upgrades_body').html(result); 
+            }});
+    }
+    
+function RequestToDownload(PProfileID) {
+        
+        $('#OverAll_body').html(preloader);
+        $('#OverAll').modal('show'); 
+        $.ajax({
+            url: API_URL + "m=Member&a=RequestToDownload&PProfileID="+PProfileID, 
+            success: function(result){
+               $('#OverAll_body').html(result); 
+            }});
+    }
 
 function OverallSendOTP(formid) {
         

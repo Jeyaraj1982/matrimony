@@ -23,7 +23,7 @@
         <div class="col-sm-2" align="left" style="width:100px">
             <select class="selectpicker form-control" data-live-search="true" id="age" name="age">
                 <?php for($i=18;$i<=70;$i++) {?>
-                    <option value="<?php echo $i; ?>">
+                    <option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'age'])) ? (($_POST[ 'age']==$i) ? " selected='selected' " : "") : (($ProfileInfo[ 'AgeFrom']==$i) ? " selected='selected' " : "");?>>
                         <?php echo $i;?>
                     </option>
                     <?php } ?>
@@ -33,7 +33,7 @@
         <div class="col-sm-2" align="left" style="width:100px">
             <select class="selectpicker form-control" data-live-search="true" id="toage" name="toage">
                 <?php for($i=18;$i<=70;$i++) {?>
-                    <option value="<?php echo $i; ?>">
+                    <option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'toage'])) ? (($_POST[ 'toage']==$i) ? " selected='selected' " : "") : (($ProfileInfo[ 'AgeTo']==$i) ? " selected='selected' " : "");?>>
                         <?php echo $i;?>
                     </option>
                     <?php } ?>
