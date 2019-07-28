@@ -929,6 +929,11 @@
                  $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."' and IsApproved='1' ");
                  return Response::returnSuccess("success",$Profiles);
              }
+             $result = array();
+                  foreach($Profiles as $p) {
+                      $p['profileImage']= $p['SexCode']=="SX002" ? "assets/images/noprofile_female.png" : "assets/images/noprofile_male.png";
+                     $result[]=$p; 
+                  }
          }
          
          
@@ -936,26 +941,30 @@
          function DownloadedProfiles() {
                 global $mysql,$loginInfo;
 
-                  $DownloadProfiles = $mysql->select("select * from _tbl_profile_download where MemberID='".$loginInfo[0]['MemberID']."'");
-                  // $Profiles = $mysql->select("Select * from `_tbl_profiles` where `ProfileCode`='".$DownloadProfiles[0]['PartnerProfileCode']."'");  
+                $DownloadProfiles = $mysql->select("select * from _tbl_profile_download where MemberID='".$loginInfo[0]['MemberID']."'");
                 $Profiles = $mysql->select("SELECT *
                                                 FROM _tbl_profiles
                                                 LEFT JOIN _tbl_profile_download
                                                 ON _tbl_profiles.ProfileCode = _tbl_profile_download.PartnerProfileCode"); 
+                                                
+                $ProdileDetails = $mysql->select("select * from _tbl_profile_credits where MemberID='".$loginInfo[0]['MemberID']."' and ProfileID ='".$_POST_['ProfileID']."'");
 
                   $result = array();
                   foreach($Profiles as $p) {
                       $p['profileImage']= $p['SexCode']=="SX002" ? "assets/images/noprofile_female.png" : "assets/images/noprofile_male.png";
                      $result[]=$p; 
                   }
-                return Response::returnSuccess("success",$result);
-         }   
+                return Response::returnSuccess("success",array("Profiles" => $Profiles,"ProfileDetails" => $ProdileDetails));
+         }  
+         
+          
 
          function  BasicSearchViewMemberPlan() {
           global $mysql,$loginInfo;
                   $Plans = $mysql->select("select * from _tbl_member_plan");
                 return Response::returnSuccess("success",$Plans);
          }
+    
        function OverallSendOtp($errormessage="",$otpdata="",$reqID="",$PProfileID="") {
 
         global $mysql,$mail,$loginInfo;            
@@ -1239,10 +1248,10 @@
              $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");
              $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['CreatedBy']."'");     
              $PartnersExpectations = $mysql->select("select * from `_tbl_partners_expectation` where `ProfileID`='".$_POST['ProfileID']."'");
-             $ProfilePhoto = $mysql->select("select * from `_tbl_profiles_photo` where `ProfileID`='".$_POST['ProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");                                        
+             $ProfilePhoto = $mysql->select("select * from `_tbl_profiles_photo` where `ProfileID`='".$_POST['ProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0'");                                        
              return Response::returnSuccess("success"."select * from `_tbl_profiles_photo` where `ProfileID`='".$_POST['ProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'",array("ProfileInfo"            => $Profiles[0],
                                                             "Members"                => $members[0],
-                                                            "EducationAttachments"   => $Educationattachments[0],
+                                                            "EducationAttachments"   => $Educationattachments,
                                                             "PartnerExpectation"     => $PartnersExpectations[0],
                                                             "ProfilePhoto"           => $ProfilePhoto,
                                                             "ProfileSignInFor"       => CodeMaster::getData('PROFILESIGNIN'),
@@ -1293,7 +1302,7 @@
              $Profiles = $mysql->select("select * from `_tbl_profiles` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileID']."'");               
              $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileID='".$Profiles[0]['DraftProfileID']."'");
              $PartnersExpectations = $mysql->select("select * from `_tbl_partners_expectation` where `ProfileID`='".$Profiles[0]['DraftProfileID']."'");               
-             $ProfilePhoto = $mysql->select("select * from `_tbl_profiles_photo` where `ProfileID`='".$Profiles[0]['DraftProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");               
+             $ProfilePhoto = $mysql->select("select * from `_tbl_profiles_photo` where `ProfileID`='".$Profiles[0]['DraftProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0'");               
 
                $IsDownload= $mysql->select("select * from `_tbl_profile_download` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileID']."'");
               if (sizeof($IsDownload)>0) {              
@@ -1347,12 +1356,23 @@
                                                             "ProductID"     => $plan[0]['PlanID'],
                                                             "ProductCode"   => $plan[0]['PlanCode'],
                                                             "ProductName"   => $plan[0]['PlanName'],
+                                                            "ProfileToView" => $plan[0]['FreeProfiles'],
                                                             "Qty"           => "1",
                                                             "Amount"        => $plan[0]['Amount'],
                                                             "TAmount"       => "0",
                                                             "ServiceCharge" => "0",
                                                             "TsAmount"      => "0",
                                                             "Remarks"       => "0"));   
+                $mysql->insert("_tbl_profile_credits",array("MemberID"      => $loginInfo[0]['MemberID'],
+                                                            "ProfileID"     => $Profiles[0]['ProfileID'],
+                                                            "ProfileCode"   => $Profiles[0]['ProfileCode'],
+                                                            "Particulars"   => "0",
+                                                            "Credits"       => $plan[0]['FreeProfiles'],
+                                                            "CreditsOn"     => date("Y-m-d H:i:s"),
+                                                            "Debits"        => "0",
+                                                            "DebitsOn"      => date("Y-m-d H:i:s"),
+                                                            "Available"     => $plan[0]['FreeProfiles']-"0",
+                                                            "PartnerProfileID" => $Profiles[0]['ProfileID']));   
 
              return Response::returnSuccess("succss",array());
          }
@@ -1538,7 +1558,7 @@
              $FamilyValue       = CodeMaster::getData("FAMILYVALUE",$_POST['FamilyValue']);
              $FamilyAffluence   = CodeMaster::getData("FAMILYAFFLUENCE",$_POST['FamilyAffluence']);
              $MothersOccupation = CodeMaster::getData("Occupation",$_POST['MothersOccupation']);  
-             $NumberofBrothers  = CodeMaster::getData("NUMBEROFBROTHER",$_POST['NumberofBrothers']);
+             $NumberofBrothers  = CodeMaster::getData("NUMBEROFBROTHER",$_POST['NumberofBrother']);
              $younger           = CodeMaster::getData("YOUNGER",$_POST['younger']);
              $elder             = CodeMaster::getData("ELDER",$_POST['elder']);
              $married           = CodeMaster::getData("MARRIED",$_POST['married']);
@@ -2019,5 +2039,133 @@
 
              return Response::returnSuccess("success",array("IsAllowed"=>sizeof($paypal))); 
          }
-     }
+         
+          function GetMyActiveProfile() {
+             global $mysql,$loginInfo;
+              $profile= $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'") ;
+              return $profile;
+          }
+         
+          function RequestToDownload() {
+
+             global $mysql,$loginInfo;
+             
+             $PProfileCode = $_GET['PProfileID'];
+             
+             $ActiveProfileID = $this->GetMyActiveProfile();
+             
+             if (sizeof($ActiveProfileID) > 0) {
+                 
+                 $memberdata = $mysql->select("select * from `_tbl_profile_credits` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID` ='".$_POST['ProfileCode']."'");
+             
+             $BalanceCredits  = $mysql->select("select sum(Credits) as cr, Sum(Debits) as dr,  (sum(Credits) - Sum(Debits)) as bal from `_tbl_profile_credits` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID` ='".$ActiveProfileID[0]['ProfileID']."'");
+             
+             if (isset($BalanceCredits) && $BalanceCredits[0]['bal']>0) {
+             return '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">
+                               <form method="post" id="frm_'.$PProfileCode.'" name="frm_'.$PProfileCode.'" action="" > 
+                               <button type="button" class="close" data-dismiss="modal" style="margin-top: 0px;margin-right: 10px;">&times;</button>
+                                <input type="hidden" value="'.$PProfileCode.'" name="PProfileCode">
+                                <div align="center" style="padding-top: 33px;">
+                                <table>
+                                <tr>
+                                    <td>Your Total Credits &nbsp;&nbsp;'.$BalanceCredits[0]['cr'].'</td>
+                                </tr>
+                                <tr>
+                                    <td>Used Credits &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$BalanceCredits[0]['dr'].'</td>
+                                </tr>
+                                <tr>
+                                    <td>Balance Credits &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$BalanceCredits[0]['bal'].'</td>
+                                </tr>
+                                </table>
+                                <br>
+                                <button type="button" class="btn btn-primary" name="Continue"  onclick="OverallSendOTP(\''.$PProfileCode.'\')">Continue</button>&nbsp;
+                                    <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                                </div><br>
+                            </form>
+                        </div>'; 
+             } else {
+                   return '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">
+                               <form method="post" id="frm_'.$PProfileCode.'" name="frm_'.$PProfileCode.'" action="" > 
+                               <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -12px;">&times;</button>
+                                <input type="hidden" value="'.$PProfileCode.'" name="PProfileCode">
+                                <div style="text-align:center">Overall Profile&nbsp;:&nbsp;0<br><br>Viewed&nbsp;:&nbsp;0<br><br>Remaining&nbsp;:&nbsp;0<br><br> 
+                                    <button type="button" class="btn btn-primary" name="Continue"  onclick="OverallSendOTP(\''.$PProfileCode.'\')">Upgrade</button>&nbsp;
+                                    <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                                </div><br>
+                            </form>
+                        </div>'; 
+             }
+             } else {
+                 return "select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'"."you must create and publish your profile".'     <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>';
+             }
+             }
+             
+          function RequestToshowUpgrades() {
+
+             global $mysql,$loginInfo;
+             
+              $ProfileID = $_GET['ProfileID'];
+             $ActiveProfileID = $this->GetMyActiveProfile();
+             
+             if (sizeof($ActiveProfileID) > 0) {
+                 
+             
+             $BalanceCredits  = $mysql->select("select sum(Credits) as cr, Sum(Debits) as dr,  (sum(Credits) - Sum(Debits)) as bal from `_tbl_profile_credits` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID` ='".$ActiveProfileID[0]['ProfileID']."'");
+             
+             if (isset($BalanceCredits) && $BalanceCredits[0]['bal']>0) {
+                       return '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">
+                               <form method="post" id="frm_'.$ProfileID.'" name="frm_'.$ProfileID.'" action="" > 
+                               <button type="button" class="close" data-dismiss="modal" style="margin-top: -2px;margin-right: 10px;">&times;</button>
+                                <input type="hidden" value="'.$ProfileID.'" name="PProfileCode">
+                                <div align="center" style="padding-top: 33px;">
+                                <table>
+                                <tr>
+                                    <td>Your Total Credits &nbsp;&nbsp;'.$BalanceCredits[0]['cr'].'</td>
+                                </tr>
+                                <tr>
+                                    <td>Used Credits &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$BalanceCredits[0]['dr'].'</td>
+                                </tr>
+                                <tr>
+                                    <td>Balance Credits &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$BalanceCredits[0]['bal'].'</td>
+                                </tr>
+                                </table>
+                                <br>
+                                <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                                </div>
+                                <br>
+                            </form>
+                        </div>';
+             } else {
+                        return '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">
+                               <form method="post" id="frm_'.$ProfileID.'" name="frm_'.$ProfileID.'" action="" > 
+                               <button type="button" class="close" data-dismiss="modal" style="margin-top:0px;margin-right: 10px;">&times;</button>
+                                <input type="hidden" value="'.$ProfileID.'" name="PProfileCode">
+                                <div align="center" style="padding-top: 33px;">
+                                 No credits found please upgrade<br><br> 
+                                 <a href="'.AppPath.'/Matches/Search/ViewPlans/'.$ProfileID.'.htm" class="btn btn-primary">Continue</a>&nbsp;
+                                <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                                </div><br>
+                            </form>
+                        </div>';
+             }
+             } else {
+                 return "select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'"."you must create and publish your profile".'     <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>';
+             }
+             }
+          function ProfilePhotoBringToFront() {
+
+             global $mysql,$loginInfo;
+             
+             $ProfilePhotoID = $_GET['ProfilePhotoID'];
+             $ActiveProfileID = $this->GetMyActiveProfile();
+             
+             $updateSql = "update `_tbl_profiles_photo` set `PriorityFirst`='1' where `MemberID`='".$loginInfo[0]['MemberID']."'";
+             $mysql->execute($updateSql);  
+             
+             $updateSql = "update `_tbl_profiles_photo` set `PriorityFirst` = '1' where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfilePhotoID`='".$ProfilePhotoID."'";
+             $mysql->execute($updateSql);  
+          }
+     
+     }  
+    
 ?>

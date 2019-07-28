@@ -8,7 +8,9 @@
                   $result = array();
                   foreach($Profiles as $p) {
                       $p['profileImage']= $p['SexCode']=="SX002" ? "assets/images/noprofile_female.png" : "assets/images/noprofile_male.png";
-                     $result[]=$p; 
+                      $p['IsDownloaded']= sizeof($mysql->select("select * from _tbl_profile_download where MemberID='".$loginInfo[0]['MemberID']."' and PartnerProfileCode='".$p['ProductCode']."'"))>0 ? 1 : 0;
+                      $p['sql']= "select * from _tbl_profile_download where MemberID='".$loginInfo[0]['MemberID']."' and PartnerProfileCode='".$p['ProductCode']."'";
+                      $result[]=$p; 
                   }
                 return Response::returnSuccess("success",$result);
          }
