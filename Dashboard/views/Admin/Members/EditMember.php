@@ -11,7 +11,8 @@
 
     $response = $webservice->getData("Admin","GetMemberInfo");
     $Member          = $response['data']['MemberInfo'];
-    $CountryCodes=$Member['Country'];
+    $CountryCodes=$response['data']['Countires'];
+ 
 
  ?>
     <script>
@@ -127,7 +128,7 @@
                             <div class="col-sm-2">
                                 <select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="width: 61px;">
                                     <?php foreach($CountryCodes as $CountryCode) { ?>
-                                        <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'CountryCode'])) ? (($_POST[ 'CountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "") : (($Member[ 'CountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                        <option value="<?php echo $CountryCode['ParamB'];?>" <?php echo (isset($_POST[ 'CountryCode'])) ? (($_POST[ 'CountryCode']==$CountryCode[ 'ParamB']) ? " selected='selected' " : "") : (($Member[ 'CountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
                                             <?php echo $CountryCode['str'];?>
                                         </option>
                                         <?php } ?>

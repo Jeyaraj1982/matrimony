@@ -222,6 +222,12 @@ class Master {
             return Response::returnSuccess("success",$CountryNames);
         }
         
+        public function GetManageRegisterAllowCountryNames() {
+            global $mysql;    
+            $CountryNames = $mysql->select("select * from _tbl_master_codemaster Where HardCode='CONTNAMES' and ParamE='1'");
+            return Response::returnSuccess("success",$CountryNames);
+        }
+        
         public function CreateCountryName() {
             global $mysql;  
             $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='CONTNAMES' and SoftCode='".trim($_POST['CountryCode'])."'");
@@ -262,14 +268,9 @@ class Master {
                                                                ParamA='".$_POST['STDCode']."',
                                                                ParamB='".$_POST['CurrencyString']."',
                                                                ParamC='".$_POST['CurrencySubString']."',
-                                                               ParamD='".$_POST['CurrencyShortString']."' where HardCode='CONTNAMES' and SoftCode='".$_POST['Code']."'");
-            $sql="update _tbl_master_codemaster set CodeValue='".$_POST['CountryName']."',
-                                                    IsActive='".$_POST['IsActive']."',
-                                                    ParamA='".$_POST['STDCode']."',
-                                                    ParamB='".$_POST['CurrencyString']."',
-                                                    ParamC='".$_POST['CurrencySubString']."',
-                                                    ParamD='".$_POST['CurrencyShortString']."' where HardCode='CONTNAMES' and SoftCode='".$_POST['Code']."'";
-            return Response::returnSuccess("success".$sql,array());
+                                                               ParamD='".$_POST['CurrencyShortString']."',
+                                                               ParamE='".$_POST['AllowToRegister']."' where HardCode='CONTNAMES' and SoftCode='".$_POST['Code']."'");
+           return Response::returnSuccess("success",array());
         }
         /* End of Country Name*/
     

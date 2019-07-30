@@ -929,7 +929,7 @@
                  $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy` = '".$loginInfo[0]['MemberID']."' and IsApproved='1' ");
                  return Response::returnSuccess("success",$Profiles);
              }
-             $result = array();
+             $result = array();    
                   foreach($Profiles as $p) {
                       $p['profileImage']= $p['SexCode']=="SX002" ? "assets/images/noprofile_female.png" : "assets/images/noprofile_male.png";
                      $result[]=$p; 
@@ -1243,17 +1243,46 @@
          }
 
          function GetDraftProfileInformation() {
+             
              global $mysql,$loginInfo;      
              $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");               
-             $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");
+             
              $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['CreatedBy']."'");     
              $PartnersExpectations = $mysql->select("select * from `_tbl_partners_expectation` where `ProfileID`='".$_POST['ProfileID']."'");
-             $ProfilePhoto = $mysql->select("select * from `_tbl_profiles_photo` where `ProfileID`='".$_POST['ProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0'");                                        
+             $ProfilePhoto =      $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_profiles_photo` where `ProfileID`='".$_POST['ProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
+             
+              if (sizeof($ProfilePhoto)<4) {
+                  for($i=sizeof($ProfilePhoto);$i<4;$i++) {
+                    if ($Profiles[0]['SexCode']=="SX002"){
+                     $ProfilePhoto[$i]['ProfilePhoto'] = AppPath."assets/images/noprofile_female.png";
+                  }
+                  else{
+                        $ProfilePhoto[$i]['ProfilePhoto'] = AppPath."assets/images/noprofile_male.png";
+                  }
+                  }  
+              }
+              
+            
+             $ProfilePhotoFirst = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photo` where `ProfileID`='".$_POST['ProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='1'");                                        
+              $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");
+              $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['ProfileID']."'");
+             if (sizeof($ProfilePhotoFirst)==0) {
+                  for($i=sizeof($ProfilePhoto);$i<4;$i++) {
+                    if ($Profiles[0]['SexCode']=="SX002"){
+                        $ProfilePhotoFirst[0]['ProfilePhoto'] = AppPath."assets/images/noprofile_female.png";
+                        }
+                   else{
+                        $ProfilePhotoFirst[0]['ProfilePhoto'] = AppPath."assets/images/noprofile_male.png";
+                        }
+                  }  
+              }
              return Response::returnSuccess("success"."select * from `_tbl_profiles_photo` where `ProfileID`='".$_POST['ProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'",array("ProfileInfo"            => $Profiles[0],
                                                             "Members"                => $members[0],
                                                             "EducationAttachments"   => $Educationattachments,
+                                                            "Documents"   => $Documents,
                                                             "PartnerExpectation"     => $PartnersExpectations[0],
-                                                            "ProfilePhoto"           => $ProfilePhoto,
+                                                            "ProfilePhotos"           => $ProfilePhoto,
+                                                            "ProfilePhotoFirst"      => $ProfilePhotoFirst[0],
                                                             "ProfileSignInFor"       => CodeMaster::getData('PROFILESIGNIN'),
                                                             "Gender"                 => CodeMaster::getData('SEX'),
                                                             "MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
@@ -1290,7 +1319,8 @@
                                                             "SmookingHabit"          => CodeMaster::getData('SMOKINGHABITS'),
                                                             "DrinkingHabit"          => CodeMaster::getData('DRINKINGHABITS'),
                                                             "DocumentType"           => CodeMaster::getData('DOCTYPES'),
-                                                            "CountryName"            => CodeMaster::getData('CONTNAMES'),
+                                                            "CountryName"           => CodeMaster::getData('RegisterAllowedCountries'),
+                                                            "AllCountryName"        => CodeMaster::getData('CONTNAMES'),
                                                             "RasiName"               => CodeMaster::getData('MONSIGNS'),
                                                             "Lakanam"                => CodeMaster::getData('LAKANAM'),
                                                             "StarName"               => CodeMaster::getData('STARNAMES'),
@@ -1567,6 +1597,11 @@
              $youngerSister     = CodeMaster::getData("YOUNGERSIS",$_POST['youngerSister']);
              $marriedSister     = CodeMaster::getData("MARRIEDSIS",$_POST['marriedSister']);
 
+             
+             if (!(sizeof($_POST['younger']) < sizeof($_POST['NumberofBrother']) - sizeof($_POST['married']))) {
+                return Response::returnError("Please enter valid no of younger brother ");
+             }
+             
              $updateSql = "update `_tbl_Profile_Draft` set `FathersName`           = '".$_POST['FatherName']."',
                                                            `FathersOccupationCode` = '".$_POST['FathersOccupation']."',
                                                            `FathersOccupation`     = '".$FathersOccupation[0]['CodeValue']."',
@@ -1688,7 +1723,7 @@
 
              global $mysql,$loginInfo;
 
-             $Country = CodeMaster::getData("CONTNAMES",$_POST['Country']);
+             $Country = CodeMaster::getData("RegisterAllowedCountries",$_POST['Country']);
              $State   = CodeMaster::getData("STATNAMES",$_POST['StateName']);
 
              $updateSql = "update `_tbl_Profile_Draft` set  `EmailID`        = '".$_POST['EmailID']."',
@@ -1702,6 +1737,7 @@
                                                             `StateCode`      = '".$_POST['StateName']."',
                                                             `State`          = '".$State[0]['CodeValue']."',
                                                             `City`           = '".$_POST['City']."',
+                                                            `Pincode`           = '".$_POST['Pincode']."',
                                                             `OtherLocation`  = '".$_POST['OtherLocation']."' where  `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'";
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
@@ -1795,7 +1831,7 @@
              $OccupationType   = CodeMaster::getData("Occupation",$_POST["OccupationType"]) ;
              $TypeofOccupation = CodeMaster::getData("TYPEOFOCCUPATIONS",$_POST["TypeofOccupation"]) ;
              $IncomeRange      = CodeMaster::getData("INCOMERANGE",$_POST["IncomeRange"]) ;
-
+             $Country          = CodeMaster::getData("CONTNAMES",$_POST['WCountry']);
              $updateSql = "update `_tbl_Profile_Draft` set  `EmployedAsCode`       = '".$_POST['EmployedAs']."',
                                                             `EmployedAs`           = '".$EmployedAs[0]['CodeValue']."',
                                                             `OccupationTypeCode`   = '".$_POST['OccupationType']."',
@@ -1803,6 +1839,8 @@
                                                             `TypeofOccupationCode` = '".$_POST['TypeofOccupation']."',
                                                             `TypeofOccupation`     = '".$TypeofOccupation[0]['CodeValue']."',
                                                             `AnnualIncomeCode`     = '".$_POST['IncomeRange']."',
+                                                            `WorkedCountryCode`     = '".$_POST['WCountry']."',
+                                                            `WorkedCountry`     = '".$Country[0]['CodeValue']."',
                                                             `AnnualIncome`         = '".$IncomeRange[0]['CodeValue']."' where  `CreatedBy`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['Code']."'";
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
@@ -2159,7 +2197,7 @@
              $ProfilePhotoID = $_GET['ProfilePhotoID'];
              $ActiveProfileID = $this->GetMyActiveProfile();
              
-             $updateSql = "update `_tbl_profiles_photo` set `PriorityFirst`='1' where `MemberID`='".$loginInfo[0]['MemberID']."'";
+             $updateSql = "update `_tbl_profiles_photo` set `PriorityFirst`='0' where `MemberID`='".$loginInfo[0]['MemberID']."'";
              $mysql->execute($updateSql);  
              
              $updateSql = "update `_tbl_profiles_photo` set `PriorityFirst` = '1' where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfilePhotoID`='".$ProfilePhotoID."'";

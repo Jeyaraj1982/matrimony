@@ -1599,8 +1599,9 @@ class Admin extends Master {
                                     FROM _tbl_members
                                     INNER JOIN _tbl_franchisees
                                     ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.MemberID='".$_POST['Code']."'");
-          $Member[0]['Country'] = CodeMaster::getData('RegisterAllowedCountries');
-        return Response::returnSuccess("success",array("MemberInfo"    => $Members[0]));
+        
+        return Response::returnSuccess("success",array("MemberInfo"    => $Members[0],
+                                                       "Countires" =>CodeMaster::getData('RegisterAllowedCountries')));
     }
   function GetFranchiseeInfoInFranchiseeWise() {        
            global $mysql;    
@@ -1813,6 +1814,29 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnSuccess("success",$mysql->select($sql." ORDER BY `DocID` DESC"));    
              }                                                                                                                                                                            
          } 
+         function GetDashBoardItems(){
+             global $mysql;
+             $memberCount = $mysql->select("SELECT COUNT(MemberID) AS cnt FROM _tbl_members");
+             $member =  $mysql->select("SELECT * FROM `_tbl_members` ORDER BY `MemberID` DESC LIMIT 3");
+             $profilecount =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM _tbl_profiles");
+             $profile =  $mysql->select("SELECT * FROM `_tbl_Profile_Draft` ORDER BY `ProfileID` DESC LIMIT 3");
+             $profileverification =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM _tbl_profiles where RequestToVerify='1'");
+             $documentverification =  $mysql->select("SELECT COUNT(DocID) AS cnt FROM _tbl_member_documents");
+             $ordercount =  $mysql->select("SELECT COUNT(OrderID) AS cnt FROM _tbl_orders");
+             $invoicecount =  $mysql->select("SELECT COUNT(InvoiceID) AS cnt FROM _tbl_invoices");
+             $paypalcount =  $mysql->select("SELECT COUNT(PaypalID) AS cnt FROM _tbl_settings_paypal");
+                
+                return Response::returnSuccess("success",array("MemberCount"    => $memberCount,
+                                                               "Member"         => $member,
+                                                               "ProfileCount"   => $profilecount,
+                                                               "Profile"        => $profile,
+                                                               "OrderCount"     => $ordercount,
+                                                               "InvoiceCount"     => $invoicecount,
+                                                               "PaypalCount"     => $paypalcount,
+                                                               "Document"     => $documentverification,
+                                                               "ProfileVerification"     => $profileverification,
+                                                               ));
+        }
 
     }
 ?>

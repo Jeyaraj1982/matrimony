@@ -17,19 +17,21 @@
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                     <a href="ManageCountry" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
                     <a href="ManageActiveCountry"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
-                    <a href="ManageDeactiveCountry"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>
+                    <a href="ManageDeactiveCountry"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>&nbsp;|&nbsp;
+                    <a href="ManageRegisterAllowCountry"><small style="font-weight:bold;text-decoration:underline">Register Country</small></a>
                 </div>
                 </div>
                 <div class="table-responsive">
                     <table id="myTable" class="table table-striped">
                       <thead>
                             <tr>
-                                <th>Country Code</th>
+                                <th>Code</th>
                                 <th>Country Names</th>
                                 <th>STD Code</th>
-                                <th>Currency String</th>
+                                <th>Currency</th>
                                 <th>Substring</th>
                                 <th>ShortName</th>
+                                <th>Allow to Register</th>
                                 <th></th>
                             </tr>
                         </thead>   
@@ -39,10 +41,11 @@
                             <tr>
                                 <td><span class="<?php echo ($CountryName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $CountryName['SoftCode'];?></td>
                                 <td><?php echo $CountryName['CodeValue'];?></td>
-                                <td><?php echo $CountryName['ParamA'];?></td>
+                                <td style="text-align: right"><?php echo $CountryName['ParamA'];?></td>
                                 <td><?php echo $CountryName['ParamB'];?></td>
                                 <td><?php echo $CountryName['ParamC'];?></td>
                                 <td><?php echo $CountryName['ParamD'];?></td>
+                                <td><?php if($CountryName['ParamE']==1){ ?><img src="<?php echo SiteUrl?>assets/images/tick.gif" style="height: 23px;width: 31px;"><?php }?></td>
                                 <td style="text-align:right"><a href="<?php echo GetUrl("Masters/CountryNames/Manage/Edit/". $CountryName['SoftCode'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Masters/CountryNames/Manage/View/". $CountryName['SoftCode'].".html");?>"><span>View</span></a></td>
                             </tr>

@@ -77,7 +77,7 @@
                                 </div>
                             </div>
                             <div style="float:right;line-height: 1px;">
-                                <a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">View</a>
+                                <a href="<?php echo GetUrl("MyProfiles/Posted/View/".$Profile['ProfileID'].".htm ");?>">View</a>
                             </div>
                         </div>
                         <br>

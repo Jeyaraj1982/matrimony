@@ -169,6 +169,15 @@ $(document).ready(function () {
                       </div>
                     </div>
                     <div class="form-group row">
+                            <div class="col-sm-3"><small>Allowed to Register<span id="star">*</span></small></div>
+                            <div class="col-sm-3">
+                                <select name="AllowToRegister" class="form-control" style="width: 140px;">
+                                    <option value="1" <?php echo ($CountryName[ 'ParamE']==1) ? " selected='selected' " : "";?>>Yes</option>
+                                    <option value="0" <?php echo ($CountryName[ 'ParamE']==0) ? " selected='selected' " : "";?>>No</option>
+                                </select>
+                            </div>
+                        </div>
+                    <div class="form-group row">
                         <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
                     </div>
                         <div class="form-group row">

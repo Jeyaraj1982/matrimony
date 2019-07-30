@@ -63,7 +63,7 @@
                             "TIMEDOUT"        => "select * from `_tbl_master_codemaster` Where `HardCode`='TIMEDOUT'".$filter,
                             "MODEOFTRANSFER"        => "select * from `_tbl_master_codemaster` Where `HardCode`='MODEOFTRANSFER'".$filter,
                             "EDUCATIONDEGREES"        => "select * from `_tbl_master_codemaster` Where `HardCode`='EDUCATIONDEGREES'".$filter,
-                            "RegisterAllowedCountries" => "select *, CONCAT(CodeValue,' (',ParamA,')') as str FROM `_tbl_master_codemaster`  WHERE `HardCode`='CONTNAMES' and ParamB='1'");
+                            "RegisterAllowedCountries" => "select *, CONCAT(CodeValue,' (',ParamA,')') as str FROM `_tbl_master_codemaster`  WHERE `HardCode`='CONTNAMES' and ParamE='1'");
               return $mysql->select($quries[$Request]);
         }
     }

@@ -15,7 +15,7 @@
                 <div class="collapse" id="managemembers">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="<?php  echo GetUrl("Members/ManageMember");?>">Manage Members</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/News/NewsandEvents");?>">News & Events</a></li>
+                       <!-- <li class="nav-item"><a class="nav-link" href="<?php //echo GetUrl("Members/News/NewsandEvents");?>">News & Events</a></li> -->
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/Plan/ManagePlan");?>">Manage Plans</a></li>
                     </ul>
                 </div>
@@ -50,7 +50,7 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Franchisees/MangeFranchisees");?>">Manage Franchisees</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Franchisees/Plan/ManagePlan");?>">Manage Plans</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Franchisees/Wallet/RefillWallet");?>">Refill Wallet</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Franchisees/News/NewsandEvents");?>">News & Events</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php //echo GetUrl("Franchisees/News/NewsandEvents");?>">News & Events</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="<?php //echo GetUrl("Franchisees/ResetPassword/SearchMember");?>">Reset Password</a></li> -->
                     </ul>
                 </div>                             

@@ -36,7 +36,7 @@
                             </tr>
                         </thead>
                       <tbody>
-                        <?php $CountryNames = $webservice->getData("Admin","GetManageDeactiveCountryNames");  ?>
+                        <?php $CountryNames = $webservice->getData("Admin","GetManageRegisterAllowCountryNames");  ?>
                         <?php foreach($CountryNames['data'] as $CountryName) { ?>
                             <tr>
                                 <td><span class="<?php echo ($CountryName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $CountryName['SoftCode'];?></td>
@@ -45,7 +45,7 @@
                                 <td><?php echo $CountryName['ParamB'];?></td>
                                 <td><?php echo $CountryName['ParamC'];?></td>
                                 <td><?php echo $CountryName['ParamD'];?></td>
-                                <td><?php if($CountryName['ParamE']==1){ ?><img src="<?php echo SiteUrl?>assets/images/tick.gif" style="height: 23px;width: 31px;"><?php }?></td>
+				                <td><?php if($CountryName['ParamE']==1){ ?><img src="<?php echo SiteUrl?>assets/images/tick.gif" style="height: 23px;width: 31px;"><?php }?></td>
                                 <td style="text-align:right"><a href="<?php echo GetUrl("Masters/CountryNames/Manage/Edit/". $CountryName['SoftCode'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Masters/CountryNames/Manage/View/". $CountryName['SoftCode'].".html");?>"><span>View</span></a></td>
                             </tr>

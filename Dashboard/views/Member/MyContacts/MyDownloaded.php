@@ -21,12 +21,12 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Download Profiles</h4>
-                    <?php foreach($response['data'] as $Profile) { 
+                    <?php foreach($Profiles as $Profile) { 
                         echo DisplayProfileShortInfo($Profile);
                         ?>
                        
                         <br> 
-                        <?php }?>
+                        <?php }?>                                                                     
                         
                 </div>
             </div>
