@@ -1,6 +1,6 @@
 <?php
     $page="DocumentAttachment";       
-    $response = $webservice->GetDraftProfileInformation(array("ProfileID"=>$_GET['Code'])); 
+    $response = $webservice->GetDraftProfileInformation(array("ProfileCode"=>$_GET['Code'])); 
    ?>
 <?php include_once("settings_header.php");?>
 <style>
@@ -9,7 +9,7 @@
     margin-right: 10px;
     text-align: center;
     border: 1px solid #eaeaea;
-    height: 211px;
+    height: 253px;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
@@ -22,8 +22,13 @@
 <script>
 function submitUpload() {
             $('#Errcheck').html("");
+            $('#ErrDocuments').html("");
             ErrorCount==0
-            if (document.form1.check.checked == false) {
+            if($("#Documents").val()=="0"){
+                document.getElementById("ErrDocuments").innerHTML="Please select Documents"; 
+                return false;
+                }
+                if (document.form1.check.checked == false) { 
                 $("#Errcheck").html("Please read the instruction");
                 return false;
             }
@@ -54,7 +59,7 @@ function submitUpload() {
                      
                   if(($_FILES['File']['size'] >= 5000000) || ($_FILES["File"]["size"] == 0)) {
                     $err++;
-                           echo "File too large. File must be less than 5 megabytes.";
+                           echo "Please upload file. File must be less than 5 megabytes.";
                     }
                             
                     if((!in_array($_FILES['File']['type'], $acceptable)) && (!empty($_FILES["File"]["type"]))) {
@@ -94,11 +99,12 @@ function submitUpload() {
         <label for="Documents" class="col-sm-2 col-form-label">Document Type<span id="star">*</span></label>
         <div class="col-sm-4">
             <select class="selectpicker form-control" data-live-search="true" id="Documents" name="Documents">
-                <option>Choose Documents</option>
+                <option value="0">Choose Documents</option>
                 <?php foreach($response['data']['DocumentType'] as $Document) { ?>
                  <option value="<?php echo $Document['SoftCode'];?>" <?php echo ($_POST['Documents']==$Document['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Document['CodeValue'];?></option>
                     <?php } ?>
             </select>
+            <span class="errorstring" id="ErrDocuments"></span>
         </div>
     </div>
     <div class="form-group row">
@@ -109,7 +115,8 @@ function submitUpload() {
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-sm-12">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-9">
            <?php echo $errormessage;?><?php echo $successmessage;?>
         </div>
     </div>
@@ -122,14 +129,14 @@ function submitUpload() {
             <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
         </div>
     </div>
-    <br><br>
+    <br><br><div style="text-align: right;" id="x"></div>
     <br>
     </form>
     
 <div>
     <?php if(sizeof($res['data'])==0){  ?>
          <div style="margin-right:10px;text-align: center;">
-                 No Profile Photos Found   
+                 No Documents Found   
         </div>
    <?php }  else {       ?>
     <?php
@@ -140,6 +147,7 @@ function submitUpload() {
             </div>
             <div><img src="<?php echo AppUrl;?>uploads/<?php echo $d['AttachFileName'];?>" style="height:120px;"></div>
             <div>
+            <br><?php echo $d['DocumentType'];?><br> 
                 <?php if($d['IsVerified']==0){ echo "verification pending" ; } else { echo "Verified" ; }?>
                 <br><?php echo PutDateTime($d['AttachedOn']);?>   
             </div>
@@ -157,7 +165,17 @@ function submitUpload() {
                 </div>
             </div>
         </div>
+<div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+            <div class="modal-dialog" style="width: 367px;">
+                <div class="modal-content" id="model_body" style="height: 300px;">
+            
+                </div>
+            </div>
+        </div>
 <script>
+ var available = "<?php echo sizeof($res['data']);?>";
+ $('#x').html( available + " out 2 photos");
+         
 function showLearnMore() {
       $('#LearnMore').modal('show'); 
       var content = '<div class="LearnMore_body" style="padding:20px">'
@@ -174,15 +192,7 @@ function showLearnMore() {
                 +  '</div>'
             $('#LearnMore_body').html(content);
 }
-</script>
-<div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-            <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="model_body" style="height: 150px;">
-            
-                </div>
-            </div>
-        </div>
-<script>
+
     function showConfirmDelete(AttachmentID,ProfileID) {
         $('#Delete').modal('show'); 
         var content = '<div class="modal-body" style="padding:20px">'
@@ -207,6 +217,8 @@ function showLearnMore() {
         $.post(API_URL + "m=Member&a=DeletDocumentAttachments", param, function(result2) {
             $('#model_body').html(result2);
             $('#photoview_'+AttachmentID).hide();
+            available--;
+            $('#x').html( available + " out 2 photos");
         }
     );
                     

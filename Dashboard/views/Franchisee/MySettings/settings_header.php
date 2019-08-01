@@ -27,17 +27,14 @@
                             <div class="col-sm-3" style="width: 15%;">
                                 <div class="sidemenu" style="width: 170px;margin-left: -58px;margin-bottom: -41px;margin-top: -30px;border-right: 1px solid #eee;">
                                     <ul class="ft-left-nav fusmyacc_leftnav" style="padding: 0px;list-style: none;">
-                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="MyMemberInfo") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
-                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/MyMemberInfo");?>" class="Notification" style="text-decoration:none"><span>My Member Info</span></a>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="FranchiseeInfo") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/FranchiseeInfo");?>" class="Notification" style="text-decoration:none"><span>Franchisee Info</span></a>
                                         </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon1 <?php echo ($page=="ChangePassword") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">   
                                             <a id="myaccount_leftnav_a" href="<?php echo GetUrl("MySettings/ChangePassword");?>" class="" style="text-decoration:none"><span>Change Password</span></a>
                                         </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="Notification") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/Notification");?>" class="Notification" style="text-decoration:none"><span>Notifications & actions</span></a>
-                                        </li>
-                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="MyPrivacy") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
-                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/MyPrivacy");?>" class="Notification" style="text-decoration:none"><span>My Privacy</span></a>
                                         </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="KYC") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/KYC");?>" class="Notification" style="text-decoration:none"><span>KYC Process</span></a>
@@ -47,9 +44,6 @@
                                         </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="MyActivities") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/MyActivities");?>" class="Notification" style="text-decoration:none"><span>My Activities</span></a>
-                                        </li>
-                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="DeleteMember") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
-                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/DeleteMember");?>" class="Notification" style="text-decoration:none"><span>Cancel Member</span></a>
                                         </li>
                                     </ul>
                                 </div>

@@ -3,7 +3,7 @@
 
     if (isset($_POST['BtnSaveProfile'])) {
         
-        $response = $webservice->getData("Franchisee","EditDraftGeneralInformation",$_POST);
+        $response = $webservice->EditDraftGeneralInformation($_POST);
         if ($response['status']=="success") {
              $successmessage = $response['message']; 
         } else {
@@ -11,9 +11,8 @@
         }
     }
     
-    $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileID"=>$_GET['Code'])); 
+   $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileID"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
-    
 ?>
     <?php include_once("settings_header.php");?>
     <div class="col-sm-10" style="margin-top: -8px;width:100%;padding-left:16px">
@@ -27,7 +26,7 @@
                                     <?php foreach($response['data']['ProfileSignInFor'] as $ProfileFor) { ?>
                                         <option value="<?php echo $ProfileFor['CodeValue'];?>" <?php echo (isset($_POST[ 'ProfileFor'])) ? (($_POST[ 'ProfileFor']==$ProfileFor[ 'CodeValue']) ? " selected='selected' " : "") : (($ProfileInfo[ 'ProfileFor']==$ProfileFor[ 'CodeValue']) ? " selected='selected' " : "");?>>
                                             <?php echo $ProfileFor['CodeValue'];?>  </option>
-                                                <?php } ?>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>
@@ -53,6 +52,12 @@
                                     <input type="date" class="form-control" id="DateofBirth" name="DateofBirth" style="line-height:15px !important" value="<?php echo $dob;?>">
                                     <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth: "";?></span>
                             </div>
+                           <!-- <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
+                            <div class="col-sm-4">
+                                <?php// if(isset($_POST['ProfileFor']) == 'PSF001' || ($_POST['ProfileFor']=='PSF003') || ($_POST['ProfileFor']=='PSF005')) { ?>
+                                <input type="text" name="Sex" class="form-control" id="Sex" value="Male">
+                                <?php //} else// { ?><input type="text" name="Sex" class="form-control" id="Sex" value="Female"> <?php // }?> 
+                            </div> -->
                             <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="selectpicker form-control" data-live-search="true" id="Sex" name="Sex">
@@ -67,7 +72,7 @@
                         <div class="form-group row">
                             <label for="MaritalStatus" class="col-sm-2 col-form-label">Marital Status<span id="star">*</span></label>
                             <div class="col-sm-4">
-                                <select class="selectpicker form-control" data-live-search="true" id="MaritalStatus" name="MaritalStatus">
+                                <select class="selectpicker form-control" data-live-search="true" id="MaritalStatus" name="MaritalStatus" onchange="getHowmanyChildrenInfo())">
                                     <option>Choose Marital Status</option>
                                     <?php foreach($response['data']['MaritalStatus'] as $MaritalStatus) { ?>
                                         <option value="<?php echo $MaritalStatus['SoftCode'];?>" <?php echo (isset($_POST[ 'MaritalStatus'])) ? (($_POST[ 'MaritalStatus']==$MaritalStatus[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MaritalStatus']==$MaritalStatus[ 'CodeValue']) ? " selected='selected' " : "");?>>
@@ -77,7 +82,7 @@
                             </div>
                             <label for="Caste" class="col-sm-2 col-form-label">Mother Tongue<span id="star">*</span></label>
                             <div class="col-sm-4">
-                                <select class="selectpicker form-control" data-live-search="true" id="Language" name="Language">
+                                <select class="selectpicker form-control" data-live-search="true" id="Language" name="Language" >
                                     <option>Choose Mother Tongue</option>
                                     <?php foreach($response['data']['Language'] as $Language) { ?>
                                         <option value="<?php echo $Language['SoftCode'];?>" <?php echo (isset($_POST[ 'Language'])) ? (($_POST[ 'Language']==$Language[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MotherTongue']==$Language[ 'CodeValue']) ? " selected='selected' " : "");?>>
@@ -86,6 +91,82 @@
                                 </select>
                             </div>
                         </div>
+                                         <script>
+        function getHowmanyChildrenInfo() {
+            
+            if ($('#MaritalStatus').val()=="MST002")  {
+                   $('#HowManyChildren').attr("disabled", "disabled");
+                   $('#howmanychildren').html('How Many Children');
+                  // $('#ChildrenWithYou').attr("disabled", "disabled");
+                  // $('#IsChildrenWithYou').html('Is Children With You?');
+            }else {
+                   $('#HowManyChildren').removeAttr("disabled");
+                   $('#howmanychildren').html('How Many Children<span id="star">*</span>');
+                 //  $('#ChildrenWithYou').removeAttr("disabled");
+                  // $('#IsChildrenWithYou').html('Is Children WithYou?<span id="star">*</span>');
+            }
+        }
+        
+        setTimeout(function(){
+            getHowmanyChildrenInfo()
+        },1000);
+        
+</script>  
+                        <div class="form-group row">
+                            <label for="HowManyChildren" class="col-sm-2 col-form-label" id="howmanychildren"></label>
+                            <div class="col-sm-3" id="childrencount_input">
+                                    <select class="selectpicker form-control" data-live-search="true" id="HowManyChildren" name="HowManyChildren">
+                                    <option>Choose How Many Children</option>
+                                    <?php foreach($response['data']['NumberofBrother'] as $HowManyChildren) { ?>
+                                        <option value="<?php echo $HowManyChildren['SoftCode'];?>" <?php echo (isset($_POST[ 'HowManyChildren'])) ? (($_POST[ 'HowManyChildren']==$HowManyChildren[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'HowManyChildren']==$HowManyChildren[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                                            <?php echo $HowManyChildren['CodeValue'];?></option>
+                                                <?php } ?>
+                                </select>
+                            </div>
+        
+                            <label for="Description" class="col-sm-3 col-form-label" id="IsChildrenWithYou"></label>
+                            <div class="col-sm-3" id="Childrenwithyou_input">
+                                <select class="selectpicker form-control" data-live-search="true" id="ChildrenWithYou" name="ChildrenWithYou">
+                                    <option>Choose Children With You</option>
+                                    <option value="1" <?php echo ($ProfileInfo['ChildrenWithYou']==1) ? " selected='selected' " : "";?>>Yes</option>
+                                    <option value="0" <?php echo ($ProfileInfo['ChildrenWithYou']==0) ? " selected='selected' " : "";?>>No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <script>
+                            function getAdditionalInfo(selVal) {
+                                if(selVal== 'MST002') {
+                                   $('#AdditionalInfo').hide(); 
+                                }else {
+                                   $('#AdditionalInfo').show();   
+                                }
+                            
+                               // alert (selVal);
+                                
+                            }
+                        </script>
+                       
+                       <div class="form-group row" id="AdditionalInfo" style="<?php echo ($_POST['MaritalStatus'] == 'MST002')? "display: none;" : "";?>">
+                            <label for="HowManyChildren" class="col-sm-2 col-form-label">How Many Children<span id="star">*</span></label>
+                            <div class="col-sm-4">
+                                <select class="selectpicker form-control" data-live-search="true" id="HowManyChildren" name="HowManyChildren">
+                                    <option>Choose How Many Children</option>
+                                    <?php foreach($response['data']['NumberofBrother'] as $HowManyChildren) { ?>
+                                        <option value="<?php echo $HowManyChildren['SoftCode'];?>" <?php echo (isset($_POST[ 'HowManyChildren'])) ? (($_POST[ 'HowManyChildren']==$HowManyChildren[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'HowManyChildren']==$HowManyChildren[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                                            <?php echo $HowManyChildren['CodeValue'];?></option>
+                                                <?php } ?>
+                                </select>
+                            </div>                                    
+                            <label for="Caste" class="col-sm-2 col-form-label">Is Children With You?<span id="star">*</span></label>
+                            <div class="col-sm-4">
+                                <select class="selectpicker form-control" data-live-search="true" id="ChildrenWithYou" name="ChildrenWithYou">
+                                    <option>Choose Children With You</option>
+                                    <option value="1" <?php echo ($ProfileInfo['ChildrenWithYou']==1) ? " selected='selected' " : "";?>>Yes</option>
+                                    <option value="0" <?php echo ($ProfileInfo['ChildrenWithYou']==0) ? " selected='selected' " : "";?>>No</option>
+                                </select>
+                            </div>
+                        </div>
+                      
                         <div class="form-group row">
                             <label for="Religion" class="col-sm-2 col-form-label">Religion<span id="star">*</span></label>
                             <div class="col-sm-4">
@@ -148,5 +229,6 @@
                                 <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
                             </div>
                         </div>
-                    </div>
+</form>
+</div>
 <?php include_once("settings_footer.php");?>                    

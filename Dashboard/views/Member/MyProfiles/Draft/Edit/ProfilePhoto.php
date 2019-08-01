@@ -24,8 +24,8 @@
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
-    background:green;
-    color:white;
+    background: #ccc;
+    color:black;
 }
 .photoview:hover{
     border:1px solid #9b9a9a;
@@ -112,7 +112,10 @@ function submitUpload() {
         <div class="col-sm-3">
             <button type="submit" name="UpdateProfilePhoto" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
         </div>
-    </div><br><br><br><br>
+    </div><br>
+    <div style="text-align: right;" id="x"></div>
+    <br>
+    <br>
     </form>
     <div>
     <?php if(sizeof($res['data'])==0){  ?>
@@ -123,7 +126,7 @@ function submitUpload() {
     <?php
         foreach($res['data'] as $d) { ?> 
         <?php if($d['PriorityFirst']==0) {?>
-        <div id="photoview_<?php echo $d['ProfilePhotoID'];?>" class="photoviewFirst">
+        <div id="photoview_<?php echo $d['ProfilePhotoID'];?>" class="photoview">
             <div style="text-align:right;height:22px;">
                 <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
             </div>
@@ -133,7 +136,7 @@ function submitUpload() {
             <?php if($d['IsApproved']==1){ echo "Approved" ; }?>
                 <br><small><?php echo PutDateTime($d['UpdateOn']);?></small><br>
                 
-                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>')" style="cursor: pointer;">Bring to Front</span>
+                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>')" style="cursor: pointer;border: 1px;padding: 3px 10px;background:#eee;color:#353535">set as default</span>
                 <br/>  
             </div>
         </div>
@@ -148,7 +151,7 @@ function submitUpload() {
             <?php if($d['IsApproved']==1){ echo "Approved" ; }?>
                 <br><small><?php echo PutDateTime($d['UpdateOn']);?></small> <br>
                 
-                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>')" style="cursor: pointer;">Bring to Front</span>
+                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>')" style="cursor: pointer;border: 1px ;padding: 3px 10px;background:green;color:white">set as default</span>
                 <br/>  
             </div>
         </div>
@@ -156,21 +159,8 @@ function submitUpload() {
         <?php }   ?>
          <div style="clear:both"></div>
          <?php }?>
-         <script>
-          function _select(ProfilePhotoID) {
-         var mvar = "";
-            $(".Profile_photo").each(function() {
-               
-               $(this).css({'color':'red'});
-            });
-              $('#priority_'+ProfilePhotoID).css({'color':'green'});
-                $.ajax({
-                url: API_URL + "m=Member&a=ProfilePhotoBringToFront&ProfilePhotoID="+ProfilePhotoID, 
-                success: function(result){
-            }});
-          }
          
-         </script>
+         
     </div>
 </div>
 <div class="modal" id="LearnMore" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
@@ -205,7 +195,26 @@ function showLearnMore() {
                 </div>
             </div>
         </div>
-<script>
+        
+        <script>
+         var available = "<?php echo sizeof($res['data']);?>";
+         
+         $('#x').html( available + " out 5 photos");
+         
+          function _select(ProfilePhotoID) {
+         var mvar = "";
+            $(".Profile_photo").each(function() {
+               
+               $(this).css({'background':'#eee','color':'#353535'});
+            });
+              $('#priority_'+ProfilePhotoID).css({'background':'green','color':'White'});
+                $.ajax({
+                url: API_URL + "m=Member&a=ProfilePhotoBringToFront&ProfilePhotoID="+ProfilePhotoID, 
+                success: function(result){
+            }});
+          }
+         
+ 
     function showConfirmDelete(ProfilePhotoID,ProfileID) {
         $('#Delete').modal('show'); 
         var content = '<div class="modal-body" style="padding:20px">'
@@ -230,6 +239,8 @@ function showLearnMore() {
         $.post(API_URL + "m=Member&a=DeletProfilePhoto", param, function(result2) {
             $('#model_body').html(result2);
             $('#photoview_'+ProfilePhotoID).hide();
+            available--;
+            $('#x').html( available + " out 5 photos");
         }
     );
 }

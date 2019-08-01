@@ -10,7 +10,7 @@
         }
     }
     
-    $response = $webservice->GetDraftProfileInformation(array("ProfileID"=>$_GET['Code']));
+    $response = $webservice->GetDraftProfileInformation(array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
    ?>
 <?php include_once("settings_header.php");?>

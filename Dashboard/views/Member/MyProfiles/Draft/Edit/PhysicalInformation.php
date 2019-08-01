@@ -11,27 +11,27 @@
         }
     }
     
-    $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileID"=>$_GET['Code']));
+    $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
 ?>
 <?php include_once("settings_header.php");?>
 <div class="col-sm-10" style="margin-top: -8px;">
  <form method="post" action="" onsubmit="">
     <h4 class="card-title">Physical Information</h4>
+                    
     <div class="form-group row">
         <label for="PhysicallyImpaired" class="col-sm-3 col-form-label">Physically Impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
-            <select class="selectpicker form-control" data-live-search="true" id="PhysicallyImpaired" name="PhysicallyImpaired">
+            <select class="selectpicker form-control" data-live-search="true" id="PhysicallyImpaired" name="PhysicallyImpaired" onchange="getAdditionalPhysicalInfo()">
                 <option value="0">Choose Physically Impaired</option>
                 <?php foreach($response['data']['PhysicallyImpaired'] as $PhysicallyImpaired) { ?>
-                    <option value="<?php echo $PhysicallyImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'PhysicallyImpaired'])) ? (($_POST[ 'PhysicallyImpaired']==$PhysicallyImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'PhysicallyImpaired']==$PhysicallyImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>>
-                        <?php echo $PhysicallyImpaired['CodeValue'];?>    </option>
-                            <?php } ?>
+                    <option value="<?php echo $PhysicallyImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'PhysicallyImpaired'])) ? (($_POST[ 'PhysicallyImpaired']==$PhysicallyImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'PhysicallyImpaired']==$PhysicallyImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $PhysicallyImpaired['CodeValue'];?></option>
+                <?php } ?>
             </select>
         </div>
         <label for="VisuallyImpaired" class="col-sm-3 col-form-label">Visually Impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
-            <select class="selectpicker form-control" data-live-search="true" id="VisuallyImpaired" name="VisuallyImpaired">
+            <select class="selectpicker form-control" data-live-search="true" id="VisuallyImpaired" name="VisuallyImpaired" onchange="getAdditionalVisualInfo()">
                 <option value="0">Choose Visually Impaired</option>
                 <?php foreach($response['data']['VisuallyImpaired'] as $VisuallyImpaired) { ?>
                     <option value="<?php echo $VisuallyImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'VisuallyImpaired'])) ? (($_POST[ 'VisuallyImpaired']==$VisuallyImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'VisuallyImpaired']==$VisuallyImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>>
@@ -41,9 +41,22 @@
         </div>
     </div>
     <div class="form-group row">
+        <label for="Description" class="col-sm-3 col-form-label" id="pm_description"></label>
+        <div class="col-sm-3" id="pm_input">
+            <input type="text" class="form-control" name="PhysicallyImpairedDescription" id="PhysicallyImpairedDescription" value="<?php echo (isset($_POST['PhysicallyImpairedDescription']) ? $_POST['PhysicallyImpairedDescription'] : $ProfileInfo['PhysicallyImpaireddescription']);?>">
+        </div>
+        
+        <label for="Description" class="col-sm-3 col-form-label" id="vs_description"></label>
+        <div class="col-sm-3" id="vs_input">
+            <input type="text" class="form-control" name="VisuallyImpairedDescription" id="VisuallyImpairedDescription" value="<?php echo (isset($_POST['VisuallyImpairedDescription']) ? $_POST['VisuallyImpairedDescription'] : $ProfileInfo['VisuallyImpairedDescription']);?>">
+        </div>
+    </div>
+    
+   
+    <div class="form-group row">
         <label for="VissionImpaired" class="col-sm-3 col-form-label">Vission Impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
-            <select class="selectpicker form-control" data-live-search="true" id="VissionImpaired" name="VissionImpaired">
+            <select class="selectpicker form-control" data-live-search="true" id="VissionImpaired" name="VissionImpaired" onchange="getAdditionalVissionInfo()">
                 <option value="0"> Vission Impaired</option>
                 <?php foreach($response['data']['VissionImpaired'] as $VissionImpaired) { ?>
                     <option value="<?php echo $VissionImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'VissionImpaired'])) ? (($_POST[ 'VissionImpaired']==$VissionImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'VissionImpaired']==$VissionImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>>
@@ -53,13 +66,24 @@
         </div>
         <label for="SpeechImpaired" class="col-sm-3 col-form-label">Speech Impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
-            <select class="selectpicker form-control" data-live-search="true" id="SpeechImpaired" name="SpeechImpaired">
+            <select class="selectpicker form-control" data-live-search="true" id="SpeechImpaired" name="SpeechImpaired" onchange="getAdditionalSpeechInfo()">
                 <option value="0">Choose Speech Impaired</option>
                 <?php foreach($response['data']['SpeechImpaired'] as $SpeechImpaired) { ?>
                     <option value="<?php echo $SpeechImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'SpeechImpaired'])) ? (($_POST[ 'SpeechImpaired']==$SpeechImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'SpeechImpaired']==$SpeechImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $SpeechImpaired['CodeValue'];?>    </option>
                             <?php } ?>
             </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Description" class="col-sm-3 col-form-label" id="vn_description"></label>
+        <div class="col-sm-3" id="vn_input">
+            <input type="text" class="form-control" name="VissionImpairedDescription" id="VissionImpairedDescription" value="<?php echo (isset($_POST['VissionImpairedDescription']) ? $_POST['VissionImpairedDescription'] : $ProfileInfo['VissionImpairedDescription']);?>">
+        </div>
+        
+        <label for="Description" class="col-sm-3 col-form-label" id="si_description"></label>
+        <div class="col-sm-3" id="si_input">
+            <input type="text" class="form-control" name="SpeechImpairedDescription" id="SpeechImpairedDescription" value="<?php echo (isset($_POST['SpeechImpairedDescription']) ? $_POST['SpeechImpairedDescription'] : $ProfileInfo['SpeechImpairedDescription']);?>">
         </div>
     </div>
     <div class="form-group row">
@@ -162,5 +186,59 @@
     </div>
     </form>
 </div>
- 
+      <script>
+        function getAdditionalPhysicalInfo() {
+            
+            if ($('#PhysicallyImpaired').val()=="PI001")  {
+                   $('#PhysicallyImpairedDescription').attr("disabled", "disabled");
+                   $('#pm_description').html('Description');
+            }else {
+                   $('#PhysicallyImpairedDescription').removeAttr("disabled");
+                   $('#pm_description').html('Description<span id="star">*</span>');
+            }
+        }
+        function getAdditionalVisualInfo() {
+            
+            if ($('#VisuallyImpaired').val()=="VI001")  {
+                   $('#VisuallyImpairedDescription').attr("disabled", "disabled");
+                   $('#vs_description').html('Description');
+            }else {
+                   $('#VisuallyImpairedDescription').removeAttr("disabled");
+                   $('#vs_description').html('Description<span id="star">*</span>');
+            }
+        }
+        function getAdditionalVissionInfo() {
+            
+            if ($('#VissionImpaired').val()=="VS001")  {
+                   $('#VissionImpairedDescription').attr("disabled", "disabled");
+                   $('#vn_description').html('Description');
+            }else {
+                   $('#VissionImpairedDescription').removeAttr("disabled");
+                   $('#vn_description').html('Description<span id="star">*</span>');
+            }
+        }
+        function getAdditionalSpeechInfo() {
+            
+            if ($('#SpeechImpaired').val()=="SI001")  {
+                   $('#SpeechImpairedDescription').attr("disabled", "disabled");
+                   $('#si_description').html('Description');
+            }else {
+                   $('#SpeechImpairedDescription').removeAttr("disabled");
+                   $('#si_description').html('Description<span id="star">*</span>');
+            }
+        }
+        
+        setTimeout(function(){
+            getAdditionalPhysicalInfo()
+        },1000);
+        setTimeout(function(){
+            getAdditionalVisualInfo()
+        },1000);
+        setTimeout(function(){
+            getAdditionalVissionInfo()
+        },1000);
+        setTimeout(function(){
+            getAdditionalSpeechInfo()
+        },1000);
+    </script>
 <?php include_once("settings_footer.php");?>                    

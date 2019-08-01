@@ -41,42 +41,14 @@
              <div class="card"  style="background:#dee9ea">
                 <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:258px">
                     <div id="resCon_a002" style="background:white;width:97%;text-align:left">
-                    <?php if (sizeof($response['data'])==0) {      ?>
-                        <div style="text-align:center;">
-                            <h5 style="margin-top:84px;color: #aaa;">No Profiles Found<br><br> <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a> </h5>
-                        </div>
-                    <?php } else {?>                                                                                        
-                    <?php if (sizeof($response['data'])>0) { ?>
-                    <?php foreach($response['data'] as $Profile) { ?>
-                        <div class="form-group row">
-                            <div class="col-sm-3" style="text-align:center">
-                               <img src="<?php echo SiteUrl?>assets/images/prof1.jpg" style="height: 159px;margin-bottom: -18px;">
+                        <?php if (sizeof($response['data'])==0) {      ?>
+                            <div style="text-align:center;">
+                                <h5 style="margin-top:84px;color: #aaa;">No Profiles Found<br><br> <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a> </h5>
                             </div>
-                            <div class="col-sm-9">
-                                <div style="border-bottom:1px solid #d7d7d7;width:100%;padding-bottom: 10px;font-size: 21px;color: #514444cc;text-align:left"> 
-                                    <?php echo $Profile['ProfileName'];?>
-                                </div>
-                                <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
-                                    <div><?php echo $Profile['Height'];?></div>
-                                    <div><?php echo $Profile['Religion'];?></div>
-                                    <div><?php echo $Profile['Caste'];?></div>
-                                </div>   
-                                <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
-                                    <div><?php echo $Profile['MaritalStatus'];?></div>
-                                    <div><?php echo $Profile['City'];?></div>
-                                    <div><?php echo $Profile['Occupation'];?></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="float:right;line-height: 1px;">
-                    <?php if($Profile['IsApproved']==1){?>
-                        <a href="<?php echo GetUrl("MyProfiles/Draft/View/". $Profile['ProfileID'].".htm");?>">View</a>
-                          <?php }else{  ?>
-                                  <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/". $Profile['ProfileID'].".htm");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/Draft/View/". $Profile['ProfileID'].".htm");?>">View</a>
-                         <?php  }    ?>
-                     </div> 
-                    <?php } ?>
-                <?php } }?> 
+                        <?php } else { ?>                                                                                        
+                            <?php foreach($response['data'] as $Profile) { 
+                         echo  DisplayManageProfileShortInfo($Profile); ?> <br>
+                         <?php    } } ?>
                     </div>                                    
                    </div> 
                 </div>

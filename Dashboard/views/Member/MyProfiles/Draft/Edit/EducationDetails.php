@@ -5,9 +5,15 @@
 <?php include_once("settings_header.php");?> 
 <div class="col-sm-10" style="margin-top: -8px;">
     <h4 class="card-title">Education Details</h4>
+    <div align="right">
+            <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/AddEducationalDetails/". $_GET['Code'].".htm");?>" class="btn btn-success mr-2" >Add Education Details</a>
+        </div>
+        <br>
         <table class="table table-bordered">
-        <?php                 
-            $response = $webservice->getData("Member","GetViewAttachments",(array("ProfileID"=>$_GET['Code'])));
+        <?php  
+        
+        $response = $webservice->getData("Member","GetViewAttachments",(array("ProfileCode"=>$_GET['Code'])));
+          
                 if (sizeof($response['data'])>0) {
                     ?>
                         
@@ -15,29 +21,25 @@
                 <tr>
                     <th>Education</th>
                     <th>Education Details</th>
-                    <th>Attached On</th>
-                    <th>Status</th>
+                    <th>Remarks</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                
-                <?php foreach($response['data'] as $Document) { ?>
+                <?php foreach($response['data']['Attachments'] as $Document) { ?>
                         
                 <tr id="Documentview_<?php echo $Document['AttachmentID'];?>">    
                     <td><?php echo $Document['EducationDetails'];?></td>
                     <td><?php echo $Document['EducationDegree'];?></td>
-                    <td style="width:140px"><?php echo putDateTime($Document['AttachedOn']);?></td>
-                    <td><?php if($Document['IsVerified']==0 ) { echo "Not Verified";} else { echo "verified";}?></td>
+                    <td><?php echo $Document['EducationRemarks'];?></td>
                     <td style="width:20px"><a href="javascript:void(0)" onclick="showConfirmDeleteAttach('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>')"><img src="<?php echo SiteUrl?>assets/images/document_delete.png" style="width:16px;height:16px"></a></td>
                 </tr>
                 <?php }}?>
             </tbody>
         </table>
         <br>
-        <div align="right">
-            <a href="<?php echo GetUrl("MyProfiles/Edit/AddEducationalDetails/". $_GET['Code'].".htm");?>" class="btn btn-success mr-2" >add</a>
-        </div>
+        
         
     </div>  
     

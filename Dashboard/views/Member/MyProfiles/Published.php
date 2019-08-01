@@ -19,8 +19,8 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Manage Profiles</h4>
-                    <h4 class="card-title">Published</h4>
+                    <h4 class="card-title" style="margin-bottom: 5px;">Manage Profiles</h4>
+                    <h4 class="card-title" style="margin-bottom: 0px;margin-top: 0px;font-weight: normal;font-size: 13px;">Published</h4>
                     <div class="form-group row">
                         <div class="col-sm-6">
                             <!--<button type="submit" class="btn btn-primary "><i class="mdi mdi-plus"></i>Create Profile</button>-->
@@ -35,8 +35,6 @@
                     <a href="#"><small style="font-weight:bold;text-decoration:underline">Rejected</small></a>-->
                         </div>
                     </div>
-                    <br>
-                    <br>
                     <?php foreach($response['data'] as $Profile) { ?>
                         <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
                             <div class="form-group row">
@@ -72,12 +70,12 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
-                                        <?php echo $Profile['AboutMe'];?><a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">More</a>
+                                        <?php echo $Profile['AboutMe'];?><a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileCode'].".htm ");?>">More</a>
                                     </div>
                                 </div>
                             </div>
                             <div style="float:right;line-height: 1px;">
-                                <a href="<?php echo GetUrl("MyProfiles/Published/View/".$Profile['ProfileID'].".htm ");?>">View</a>
+                                <a href="<?php echo GetUrl("MyProfiles/Published/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
                             </div>
                         </div>
                         <br>
@@ -89,9 +87,10 @@
     <?php     } else   { ?>
         <div class="col-12 grid-margin" style="padding:0px !important">
             <div class="card" style="padding:15px;">
+            <h4 class="card-title" style="margin-bottom: 5px;">Manage Profiles</h4>
+            <h4 class="card-title" style="margin-bottom: 0px;margin-top: 0px;font-weight: normal;font-size: 13px;">Published Profiles</h4>
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        <h4 class="card-title">Posted Profiles</h4>
                     </div>
                     <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                         <a href="ManageProfile"><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;

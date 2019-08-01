@@ -61,9 +61,19 @@
             
             <?php if (sizeof($Kyc['data']['IdProofDocument'])>0) {?>
             <div class="col-sm-5" style="padding-top: 5px;color: #888;">
-                <img src="<?php echo AppUrl;?>uploads/<?php echo $Kyc['data']['IdProofDocument'][0]['FileName'];?>" style="height:120px;">
-                <br><br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On :<?php echo putDateTime($Kyc['data']['IdProofDocument'][0]['SubmittedOn']);?>
-                <br>&nbsp;&nbsp;&nbsp;&nbsp; Status :<?php if($Kyc['data']['IdProofDocument'][0]['IsVerified']==0){ echo "Not verified";} else { echo "verified";}?>
+                <img src="<?php echo AppUrl;?>uploads/<?php echo $Kyc['data']['IdProofDocument'][0]['FileName'];?>" style="height:120px;"><br><br>
+                 Document Type&nbsp;&nbsp;:<?php echo $Kyc['data']['IdProofDocument'][0]['FileType'];?>
+                <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:<?php echo putDateTime($Kyc['data']['IdProofDocument'][0]['SubmittedOn']);?>
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:
+                <?php if($Kyc['data']['IdProofDocument'][0]['IsVerified']==0 && $Kyc['data']['IdProofDocument'][0]['IsRejected']==0){ 
+                    echo "Verification pending";
+                } if($Kyc['data']['IdProofDocument'][0]['IsVerified']==1 && $Kyc['data']['IdProofDocument'][0]['IsRejected']==0) { 
+                    echo "verified";
+                }
+                  if($Kyc['data']['IdProofDocument'][0]['IsRejected']==1) { 
+                    echo "Rejected";
+                }
+                ?>
             </div>
             <?php } else { ?>
             <div class="col-sm-3">
@@ -87,9 +97,19 @@
             
             <?php if (sizeof($Kyc['data']['AddressProofDocument'])>0) {?>
             <div class="col-sm-5" style="padding-top: 5px;color: #888;">
-                <img src="<?php echo AppUrl;?>uploads/<?php echo $Kyc['data']['AddressProofDocument'][0]['FileName'];?>" style="height:120px;">
-                <br><br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On :<?php echo putDateTime($Kyc['data']['AddressProofDocument'][0]['SubmittedOn']);?>
-                <br>&nbsp;&nbsp;&nbsp;&nbsp; Status :<?php if($Kyc['data']['AddressProofDocument'][0]['IsVerified']==0){ echo "Not verified";} else { echo "verified";}?>
+                <img src="<?php echo AppUrl;?>uploads/<?php echo $Kyc['data']['AddressProofDocument'][0]['FileName'];?>" style="height:120px;"><br><br>
+                 Document Type&nbsp;&nbsp;:<?php echo $Kyc['data']['AddressProofDocument'][0]['FileType'];?>
+                <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:<?php echo putDateTime($Kyc['data']['AddressProofDocument'][0]['SubmittedOn']);?>
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:
+                <?php if($Kyc['data']['AddressProofDocument'][0]['IsVerified']==0 && $Kyc['data']['AddressProofDocument'][0]['IsRejected']==0){ 
+                    echo "Verification pending";
+                } if($Kyc['data']['AddressProofDocument'][0]['IsVerified']==1 && $Kyc['data']['AddressProofDocument'][0]['IsRejected']==0) { 
+                    echo "verified";
+                }
+                  if($Kyc['data']['AddressProofDocument'][0]['IsRejected']==1) { 
+                    echo "Rejected";
+                }
+                ?>
             </div>
             <?php } else { ?>
             <div class="col-sm-3" >

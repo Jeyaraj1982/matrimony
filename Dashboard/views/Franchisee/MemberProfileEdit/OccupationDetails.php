@@ -61,6 +61,18 @@
             </select>
         </div>
     </div>
+    <div class="form-group row">
+         <label for="Country" class="col-sm-2 col-form-label">Country<span id="star">*</span></label>
+            <div class="col-sm-4">
+                <select class="selectpicker form-control" data-live-search="true" id="WCountry" name="WCountry">
+                    <option value="0">Choose Country</option>
+                    <?php foreach($response['data']['AllCountryName'] as $Country) { ?>
+                        <option value="<?php echo $Country['SoftCode'];?>" <?php echo (isset($_POST[ 'WCountry'])) ? (($_POST[ 'WCountry']==$Country[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'WorkedCountry']==$Country['CodeValue']) ? " selected='selected' " : "");?>>
+                            <?php echo $Country['CodeValue'];?>  </option>
+                                <?php } ?>
+                </select>
+            </div>
+    </div>
     <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
                         </div>

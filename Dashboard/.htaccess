@@ -11,6 +11,8 @@ RewriteRule ^Matches/Search/ViewSearchProfile/(.*)\.htm$ ./index.php?Code=$1&p=M
 RewriteRule ^MyContacts/ViewProfileDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyContacts/ViewProfileDetails
 RewriteRule ^MyContacts/MyDownloaded/ViewProfileDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyContacts/MyDownloaded/ViewProfileDetails
 
+RewriteRule ^Members/KYC/ViewKyc/(.*)\.htm$ ./index.php?Code=$1&p=Members/KYC/ViewKyc
+
 RewriteRule ^MemberProfileEdit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/GeneralInformation
 RewriteRule ^MemberProfileEdit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/EducationDetails
 RewriteRule ^MemberProfileEdit/AddEducationalDetails/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/AddEducationalDetails
@@ -33,7 +35,8 @@ RewriteRule ^MyProfiles/Draft/Edit/DocumentAttachment/(.*)\.htm$ ./index.php?Cod
 RewriteRule ^MyProfiles/Draft/Edit/CommunicationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/CommunicationDetails
 RewriteRule ^MyProfiles/Draft/Edit/PartnersExpectation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/PartnersExpectation
 RewriteRule ^MyProfiles/Draft/Edit/HoroscopeDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/HoroscopeDetails
-RewriteRule ^MyProfiles/Draft/Edit/ProfilePhoto/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Edit/Draft/ProfilePhoto
+RewriteRule ^MyProfiles/Draft/Edit/ProfilePhoto/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/ProfilePhoto
+
 RewriteRule ^MyProfiles/Draft/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/View
 RewriteRule ^MyProfiles/Posted/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Posted/View
 RewriteRule ^MyProfiles/Published/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/View
