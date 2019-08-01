@@ -1,4 +1,4 @@
-<?php
+<?php  
     include_once("config_client.php");
     
     $cdata=json_decode(json_encode(array('TimeZone'        => "Asia/Kolkata",
@@ -88,6 +88,7 @@
     include_once("controller/MasterController.php");
     include_once("controller/SequenceController.php");
     include_once("controller/ResponseController.php");
+    include_once("classes/class.Profiles.php");
      
     if ($_GET['m']=="Admin") {
         include_once("classes/class.Master.php");    
@@ -98,6 +99,10 @@
     }
     if ($_GET['m']=="Member") {
         include_once("classes/class.Member.php");    
+    }
+    
+    if ($_GET['m']=="Matches") {
+        include_once("classes/class.Matches.php");    
     }
     
     $mysql   = new MySql($db[0],$db[1],$db[2],$db[3]);

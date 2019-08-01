@@ -441,28 +441,28 @@ class Admin extends Master {
     function GetDraftedProfiles() {
            global $mysql;    
              $sql = "SELECT *
-                                    FROM _tbl_Profile_Draft
+                                    FROM _tbl_draft_profiles
                                     LEFT  JOIN _tbl_members
-                                    ON _tbl_Profile_Draft.CreatedBy=_tbl_members.MemberID";
+                                    ON _tbl_draft_profiles.CreatedBy=_tbl_members.MemberID";
              
 
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql));    
              }                                                                                                                                                                            
              if (isset($_POST['Request']) && $_POST['Request']=="Draft") {
-                return Response::returnSuccess("success",$mysql->select($sql." WHERE _tbl_Profile_Draft.RequestToVerify='0'"));    
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE _tbl_draft_profiles.RequestToVerify='0'"));    
              }
              if (isset($_POST['Request']) && $_POST['Request']=="Publish") {
-                return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_Profile_Draft.IsApproved='1'"));    
+                return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_draft_profiles.IsApproved='1'"));    
              }
          }
 
     function GetProfilesRequestVerify() {
            global $mysql;    
               $Profiles = $mysql->select("SELECT *
-                               FROM _tbl_Profile_Draft
+                               FROM _tbl_draft_profiles
                                LEFT  JOIN _tbl_members
-                               ON _tbl_Profile_Draft.CreatedBy=_tbl_members.MemberID WHERE _tbl_Profile_Draft.RequestToVerify='1'");
+                               ON _tbl_draft_profiles.CreatedBy=_tbl_members.MemberID WHERE _tbl_draft_profiles.RequestToVerify='1'");
 
                 return Response::returnSuccess("success",$Profiles);
 
@@ -471,8 +471,8 @@ class Admin extends Master {
     function ViewDraftedProfileDetails() {
             global $mysql;
 
-          $Profiles = $mysql->select("select * from `_tbl_Profile_Draft` where `ProfileID`='".$_POST['Code']."'");
-          $Educationattachments = $mysql->select("select * from `_tbl_member_attachments` where ProfileID='".$_POST['Code']."'");               
+          $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileID`='".$_POST['Code']."'");
+          $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where ProfileID='".$_POST['Code']."'");               
           $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['CreatedBy']."'");               
         return Response::returnSuccess("success",array("ProfileDetails" => $Profiles[0],
         "EducationAttachments" => $Educationattachments[0],
@@ -483,11 +483,11 @@ class Admin extends Master {
      function ViewRequestedProfile() {         
          global $mysql;
 
-         $Profiles = $mysql->select("SELECT * FROM _tbl_Profile_Draft
+         $Profiles = $mysql->select("SELECT * FROM _tbl_draft_profiles
                                     INNER JOIN _tbl_members
-                                    ON _tbl_members.MemberID = _tbl_Profile_Draft.CreatedBy
+                                    ON _tbl_members.MemberID = _tbl_draft_profiles.CreatedBy
                                     INNER JOIN _tbl_member_attachments
-                                    ON _tbl_member_attachments.ProfileID = _tbl_Profile_Draft.ProfileID where _tbl_Profile_Draft.ProfileID='".$_POST['Code']."'");
+                                    ON _tbl_member_attachments.ProfileCode = _tbl_draft_profiles.ProfileID where _tbl_draft_profiles.ProfileCode='".$_POST['Code']."'");
          return Response::returnSuccess("success",$Profiles[0]);
      }
      
@@ -495,13 +495,13 @@ class Admin extends Master {
 
              global $mysql,$loginInfo;
 
-             $updateSql = "update `_tbl_Profile_Draft` set  `IsApproved`      = '1',
+             $updateSql = "update `_tbl_draft_profiles` set  `IsApproved`      = '1',
                                                             `RequestToVerify` = '0',
                                                             `IsApprovedOn`    = '".date("Y-m-d H:i:s")."'
                                                              where `ProfileID`='".$_POST['Code']."'";
              $mysql->execute($updateSql);  
                                                              //approved by   //admin remarks
-             $draft = $mysql->select("select * from `_tbl_Profile_Draft` where `ProfileID`='".$_POST['Code']."'");
+             $draft = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileID`='".$_POST['Code']."'");
              $ProfileCode   = SeqMaster::GetNextProfileCode();
              $mysql->insert("_tbl_profiles",array("ProfileCode"             => $ProfileCode,
                                                   "DraftProfileID"          => $draft[0]['ProfileID'],
@@ -1812,14 +1812,14 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql." ORDER BY `DocID` DESC"));    
-             }                                                                                                                                                                            
+             }
          } 
          function GetDashBoardItems(){
              global $mysql;
              $memberCount = $mysql->select("SELECT COUNT(MemberID) AS cnt FROM _tbl_members");
              $member =  $mysql->select("SELECT * FROM `_tbl_members` ORDER BY `MemberID` DESC LIMIT 3");
              $profilecount =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM _tbl_profiles");
-             $profile =  $mysql->select("SELECT * FROM `_tbl_Profile_Draft` ORDER BY `ProfileID` DESC LIMIT 3");
+             $profile =  $mysql->select("SELECT * FROM `_tbl_draft_profiles` ORDER BY `ProfileID` DESC LIMIT 3");
              $profileverification =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM _tbl_profiles where RequestToVerify='1'");
              $documentverification =  $mysql->select("SELECT COUNT(DocID) AS cnt FROM _tbl_member_documents");
              $ordercount =  $mysql->select("SELECT COUNT(OrderID) AS cnt FROM _tbl_orders");
@@ -1834,9 +1834,157 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                                                "InvoiceCount"     => $invoicecount,
                                                                "PaypalCount"     => $paypalcount,
                                                                "Document"     => $documentverification,
-                                                               "ProfileVerification"     => $profileverification,
+                                                               "ProfileVerification"     => $profileverification
                                                                ));
         }
+     function ViewMemberKYCDoc() {
+           global $mysql;    
+              $sql = "SELECT *
+                                    FROM _tbl_member_documents
+                                    LEFT  JOIN _tbl_members
+                                    ON _tbl_member_documents.MemberID=_tbl_members.MemberID";
+                                    
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }                       
+             if (isset($_POST['Request']) && $_POST['Request']=="Verified") {
+                return Response::returnSuccess("success",$mysql->select($sql." where `IsVerified`='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Rejected") {
+                return Response::returnSuccess("success",$mysql->select($sql." where `IsRejected`='1'"));    
+             }  
+                return Response::returnSuccess("success",$KYCs);
+                
+
+    }
+    function GetViewMemberKYCDoc() {
+             global $mysql,$loginInfo;        
+          
+             $Documents = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['MemberID']."'");               
+             $IDProofs = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['MemberID']."' and DocumentType='Id Proof'");               
+             $AddressProofs = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['MemberID']."' and DocumentType='Address Proof'");               
+             
+             $Members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Documents[0]['MemberID']."'");               
+
+             
+             return Response::returnSuccess("success",array("IDProof"            => $IDProofs,
+                                                            "AddressProof"            => $AddressProofs,
+                                                            "Member"     => $Members[0]));
+      
+       
+         }
+         function AproveMemberIDProof() {
+
+            global $mysql,$mail,$loginInfo;      
+       
+                $data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
+
+                $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='IDProofApproved'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "IDProofApproved",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your ID Proof Approved"); 
+
+           $mysql->execute("update _tbl_member_documents set IsVerified='1',
+                                                 VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
+
+         return $mailError.'<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">successfully Approved. </h5>
+                            <p style="text-align:center"><a  href="javascript:void(0)" onclick="location.href=location.href">Continue</a></p>
+                       </div>';
+
+    }
+    function AproveMemberAddressProof() {
+
+            global $mysql,$mail,$loginInfo;      
+       
+                $data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
+
+                $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddressProofApproved'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "AddressProofApproved",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your Address Proof Approved"); 
+
+           $mysql->execute("update _tbl_member_documents set IsVerified='1',
+                                                 VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
+
+         return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">successfully Approved. </h5>
+                            <p style="text-align:center"><a  href="javascript:void(0)" onclick="location.href=location.href">Continue</a></p>
+                       </div>';
+
+    }
+    function RejectMemberIDProof() {
+
+            global $mysql,$mail,$loginInfo;      
+       
+                $data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
+
+                $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='IdProofRejected'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "IdProofRejected",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your ID Proof Rejected"); 
+
+           $mysql->execute("update _tbl_member_documents set IsRejected='1',
+                                                 RejectedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
+
+         return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">successfully Approved. </h5>
+                            <p style="text-align:center"><a  href="javascript:void(0)" onclick="location.href=location.href">Continue</a></p>
+                       </div>';
+
+    }
+    function RejectMemberAddressProof() {
+
+            global $mysql,$mail,$loginInfo;      
+       
+                $data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
+
+                $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddressProofRejected'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "AddressProofRejected",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your Address Proof Rejected"); 
+
+           $mysql->execute("update _tbl_member_documents set IsRejected='1',
+                                                 RejectedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
+
+         return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">successfully Approved. </h5>
+                            <p style="text-align:center"><a  href="javascript:void(0)" onclick="location.href=location.href">Continue</a></p>
+                       </div>';
+
+    }
 
     }
 ?>
