@@ -474,11 +474,14 @@ class Admin extends Master {
           $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileID`='".$_POST['Code']."'");
           $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where ProfileID='".$_POST['Code']."'");               
           $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['CreatedBy']."'");               
-        return Response::returnSuccess("success",array("ProfileDetails" => $Profiles[0],
-        "EducationAttachments" => $Educationattachments[0],
-        "Members" => $members[0]));
+          $PartnerExpectation = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `MemberID`='".$Profiles[0]['CreatedBy']."' and ProfileID='".$_POST['Code']."'");               
+          
+          return Response::returnSuccess("success",array("ProfileDetails" => $Profiles[0],
+                                                         "EducationAttachments" => $Educationattachments,
+                                                         "PartnersExpectation" => $PartnerExpectation[0],
+                                                         "Members" => $members[0]));
 
-    }
+    } 
     
      function ViewRequestedProfile() {         
          global $mysql;
@@ -486,24 +489,56 @@ class Admin extends Master {
          $Profiles = $mysql->select("SELECT * FROM _tbl_draft_profiles
                                     INNER JOIN _tbl_members
                                     ON _tbl_members.MemberID = _tbl_draft_profiles.CreatedBy
-                                    INNER JOIN _tbl_member_attachments
-                                    ON _tbl_member_attachments.ProfileCode = _tbl_draft_profiles.ProfileID where _tbl_draft_profiles.ProfileCode='".$_POST['Code']."'");
+                                    INNER JOIN _tbl_draft_profiles_education_details
+                                    ON _tbl_draft_profiles_education_details.ProfileID = _tbl_draft_profiles.ProfileID WHERE _tbl_draft_profiles.ProfileID=".$_POST['Code']."'");
          return Response::returnSuccess("success",$Profiles[0]);
      }
+     
+     function ViewMemberProfiles() {
+
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+             $Position = "";   
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
+
+                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileID` = '".$_POST['Code']."' and  RequestToVerify='1'");
+                
+                 if (sizeof($PostProfiles)>0) {
+                      foreach($PostProfiles as $PostProfile) {
+                        $Profiles[]=Profiles::getProfileInformation($PostProfile['ProfileID']);     
+                     }
+                 }
+             }
+              
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Posted") {    /* Profile => Posted */
+                  $PostProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileID` = '".$_POST['Code']."' and RequestToVerify='1'");
+
+                  if (sizeof($PostProfiles)>0) {
+                      foreach($PostProfiles as $PostProfile) {
+                        $Profiles[]=Profiles::getProfileInformation($PostProfile['ProfileID']);     
+                     }
+                 }
+                 
+                return Response::returnSuccess("success",$Profiles);
+             }
+
+         }
      
      function ApproveProfile() {
 
              global $mysql,$loginInfo;
 
              $updateSql = "update `_tbl_draft_profiles` set  `IsApproved`      = '1',
-                                                            `RequestToVerify` = '0',
-                                                            `IsApprovedOn`    = '".date("Y-m-d H:i:s")."'
-                                                             where `ProfileID`='".$_POST['Code']."'";
-             $mysql->execute($updateSql);  
+                                                             `RequestToVerify` = '0',
+                                                             `IsApprovedOn`    = '".date("Y-m-d H:i:s")."'
+                                                              where `ProfileID`='".$_POST['Code']."'";
+             $mysql->execute($updateSql); 
+               
                                                              //approved by   //admin remarks
              $draft = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileID`='".$_POST['Code']."'");
              $ProfileCode   = SeqMaster::GetNextProfileCode();
-             $mysql->insert("_tbl_profiles",array("ProfileCode"             => $ProfileCode,
+             $pid =  $mysql->insert("_tbl_profiles",array("ProfileCode"             => $ProfileCode,
                                                   "DraftProfileID"          => $draft[0]['ProfileID'],
                                                   "DraftProfileCode"        => $draft[0]['ProfileCode'],
                                                   "ProfileForCode"          => $draft[0]['ProfileForCode'],
@@ -641,9 +676,80 @@ class Admin extends Master {
                                                   "ReferBy"                 => $draft[0]['ReferBy'],
                                                   "RequestToVerify"         => $draft[0]['RequestToVerify'],
                                                   "RequestVerifyOn"         => $draft[0]['RequestVerifyOn'],
-                                                  "IsApproved"              => $draft[0]['IsApproved'],
-                                                  "IsApprovedOn"            => $draft[0]['IsApprovedOn']));
-
+                                                  "IsApproved"              => "1",                                   
+                                                  "IsApprovedOn"            => date("Y-m-d H:i:s")));
+                                                  
+     $draftEducationDetails = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileID`='".$_POST['Code']."'");   
+       foreach($draftEducationDetails as $ded) {
+     $mysql->insert("_tbl_profiles_education_details",array("EducationDetails"  => $ded['EducationDetails'],
+                                                                  "EducationDegree"   => $ded['EducationDegree'],
+                                                                  "EducationRemarks"  => $ded['EducationRemarks'],
+                                                                  "DraftProfileID"    => $ded['ProfileID'],
+                                                                  "DraftProfileCode"  => $ded['ProfileCode'],
+                                                                  "ProfileID"         => $pid,
+                                                                  "ProfileCode"       => $ProfileCode,
+                                                                  "MemberID"          => $draft[0]['CreatedBy'],
+                                                                  "IsApproved"        => "1",
+                                                                  "IsApprovedOn"      => date("Y-m-d H:i:s")));
+       }
+       
+       $draftProfilePhotos = $mysql->select("select * from `_tbl_draft_profiles_photos` where `ProfileID`='".$_POST['Code']."'");   
+       foreach($draftProfilePhotos as $dPp) {
+                      $mysql->insert("_tbl_profiles_photos",array("ProfilePhoto"      => $dPp['ProfilePhoto'],
+                                                                  "UpdateOn"          => $dPp['UpdateOn'],
+                                                                  "PriorityFirst"     => $dPp['PriorityFirst'],
+                                                                  "IsPublished"       => $dPp['IsPublished'],
+                                                                  "PublishedOn"       => $dPp['PublishedOn'],
+                                                                  "DraftProfileID"    => $dPp['ProfileID'],
+                                                                  "DraftProfileCode"  => $dPp['ProfileCode'],
+                                                                  "ProfileID"         => $pid,
+                                                                  "ProfileCode"       => $ProfileCode,
+                                                                  "MemberID"          => $draft[0]['CreatedBy'],
+                                                                  "IsApproved"        => "1",
+                                                                  "IsApprovedOn"      => date("Y-m-d H:i:s")));
+       }
+       $draftProfilePartnersExpectatipns = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `IsDelete`='0' and ProfileID`='".$_POST['Code']."'");   
+       foreach($draftProfilePartnersExpectatipns as $dPE) {
+                      $mysql->insert("_tbl_profiles_partnerexpectation",array("AgeFrom"             => $dPE['AgeFrom'],
+                                                                              "AgeTo"               => $dPE['AgeTo'],
+                                                                              "MaritalStatusCode"   => $dPE['MaritalStatusCode'],
+                                                                              "MaritalStatus"       => $dPE['MaritalStatus'],
+                                                                              "ReligionCode"        => $dPE['ReligionCode'],
+                                                                              "Religion"            => $dPE['Religion'],
+                                                                              "CasteCode"           => $dPE['CasteCode'],
+                                                                              "Caste"               => $dPE['Caste'],
+                                                                              "EducationCode"       => $dPE['EducationCode'],
+                                                                              "Education"           => $dPE['Education'],
+                                                                              "AnnualIncomeCode"    => $dPE['AnnualIncomeCode'],
+                                                                              "AnnualIncome"        => $dPE['AnnualIncome'],
+                                                                              "EmployedAsCode"      => $dPE['EmployedAsCode'],
+                                                                              "EmployedAs"          => $dPE['EmployedAs'],
+                                                                              "Details"             => $dPE['Details'],
+                                                                              "DraftProfileID"      => $dPE['DraftProfileID'],
+                                                                              "DraftProfileCode"    => $dPE['DraftProfileCode'],
+                                                                              "ProfileID"           => $pid,
+                                                                              "ProfileCode"         => $ProfileCode,
+                                                                              "CreatedBy"           => $draft[0]['CreatedBy'],
+                                                                              "IsApproved"          => "1",
+                                                                              "IsApprovedOn"        => date("Y-m-d H:i:s")));
+       }
+       $draftdocuments = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where `IsVerified`='1' and `IsRejected`='0' and `ProfileID`='".$_POST['Code']."'");   
+       foreach($draftdocuments as $dPD) {
+                        $mysql->insert("_tbl_profiles_verificationdocs",array("DocumentTypeCode"    => $dPD['DocumentTypeCode'],
+                                                                              "DocumentType"        => $dPD['DocumentType'],
+                                                                              "AttachFileName"      => $dPD['AttachFileName'],
+                                                                              "AttachedOn"          => $dPD['AttachedOn'],
+                                                                              "IsVerified"          => $dPD['IsVerified'],
+                                                                              "IsDelete"            => $dPD['IsDelete'],
+                                                                              "TYPE"                => $dPD['TYPE'],
+                                                                              "DraftProfileID"      => $dPD['DraftProfileID'],
+                                                                              "DraftProfileCode"    => $dPD['DraftProfileCode'],
+                                                                              "ProfileID"           => $pid,
+                                                                              "ProfileCode"         => $ProfileCode,
+                                                                              "MemberID"            => $draft[0]['CreatedBy'],
+                                                                              "IsApproved"          => "1",
+                                                                              "IsApprovedOn"        => date("Y-m-d H:i:s")));
+       }
              return Response::returnSuccess("success",array());
          }
 
@@ -1847,8 +1953,11 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql));    
              }                       
+             if (isset($_POST['Request']) && $_POST['Request']=="Requested") {
+                return Response::returnSuccess("success",$mysql->select($sql." where `IsVerified`='0' and`IsRejected`='0'"));    
+             }                       
              if (isset($_POST['Request']) && $_POST['Request']=="Verified") {
-                return Response::returnSuccess("success",$mysql->select($sql." where `IsVerified`='1'"));    
+                return Response::returnSuccess("success",$mysql->select($sql." where `IsVerified`='1' and`IsRejected`='0'"));    
              }
              if (isset($_POST['Request']) && $_POST['Request']=="Rejected") {
                 return Response::returnSuccess("success",$mysql->select($sql." where `IsRejected`='1'"));    
@@ -1861,8 +1970,8 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              global $mysql,$loginInfo;        
           
              $Documents = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['MemberID']."'");               
-             $IDProofs = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['MemberID']."' and DocumentType='Id Proof'");               
-             $AddressProofs = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['MemberID']."' and DocumentType='Address Proof'");               
+             $IDProofs = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['MemberID']."' and DocumentType='Id Proof' order by `DocID` DESC ");               
+             $AddressProofs = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['MemberID']."' and DocumentType='Address Proof' order by `DocID` DESC ");               
              
              $Members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Documents[0]['MemberID']."'");               
 
@@ -1891,7 +2000,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your ID Proof Approved"); 
 
-           $mysql->execute("update _tbl_member_documents set IsVerified='1',
+           $mysql->execute("update _tbl_member_documents set IsVerified='1',ApproveRemarks='".$_POST['ApproveRemarks']."',
                                                  VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
 
          return $mailError.'<div style="background:white;width:100%;padding:20px;height:100%;">
@@ -1919,7 +2028,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your Address Proof Approved"); 
 
-           $mysql->execute("update _tbl_member_documents set IsVerified='1',
+           $mysql->execute("update _tbl_member_documents set IsVerified='1',ApproveRemarks='".$_POST['AddressProofApproveRemarks']."',
                                                  VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
 
          return '<div style="background:white;width:100%;padding:20px;height:100%;">
@@ -1936,6 +2045,10 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 $data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
 
                 $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+                
+                if (!(strlen(trim($_POST['RejectRemarks']))>0)) {
+                return Response::returnError("Please enter Rejected Remarks");
+                }
 
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='IdProofRejected'");
              $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
@@ -1946,9 +2059,12 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your ID Proof Rejected"); 
-
+             
            $mysql->execute("update _tbl_member_documents set IsRejected='1',
-                                                 RejectedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
+                                                             RejectedOn='".date("Y-m-d H:i:s")."'
+                                                             RejectedRemarks='".$_POST['RejectRemarks']."',
+                                                             IsVerified='1',
+                                                             VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
 
          return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
@@ -1976,7 +2092,10 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your Address Proof Rejected"); 
 
            $mysql->execute("update _tbl_member_documents set IsRejected='1',
-                                                 RejectedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
+                                                             RejectedRemarks='".$_POST['AddressProofRejectRemarks']."',
+                                                             RejectedOn='".date("Y-m-d H:i:s")."',
+                                                             IsVerified='1',
+                                                             VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
 
          return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>

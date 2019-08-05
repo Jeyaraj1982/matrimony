@@ -50,88 +50,109 @@
                      $res =$webservice->getData("Member","UpdateKYC");
                      
                 }
-               $res =$webservice->getData("Member","UpdateKYC");
                $Kyc =$webservice->getData("Member","GetKYC");
-                 $KycProof=$Kyc['data']['KYCView'];
             ?>
             </div>
         </div>
-        <div class="form-group row" style="margin-bottom:0px">
+        
+        <div class="form-group row">
             <div class="col-sm-3">ID Proof</div>
-            
-            <?php if (sizeof($Kyc['data']['IdProofDocument'])>0) {?>
-            <div class="col-sm-5" style="padding-top: 5px;color: #888;">
-                <img src="<?php echo AppUrl;?>uploads/<?php echo $Kyc['data']['IdProofDocument'][0]['FileName'];?>" style="height:120px;"><br><br>
-                 Document Type&nbsp;&nbsp;:<?php echo $Kyc['data']['IdProofDocument'][0]['FileType'];?>
-                <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:<?php echo putDateTime($Kyc['data']['IdProofDocument'][0]['SubmittedOn']);?>
-                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:
-                <?php if($Kyc['data']['IdProofDocument'][0]['IsVerified']==0 && $Kyc['data']['IdProofDocument'][0]['IsRejected']==0){ 
-                    echo "Verification pending";
-                } if($Kyc['data']['IdProofDocument'][0]['IsVerified']==1 && $Kyc['data']['IdProofDocument'][0]['IsRejected']==0) { 
-                    echo "verified";
-                }
-                  if($Kyc['data']['IdProofDocument'][0]['IsRejected']==1) { 
-                    echo "Rejected";
-                }
-                ?>
-            </div>
-            <?php } else { ?>
-            <div class="col-sm-3">
-                <select name="IDType" id="IDType"  class="selectpicker form-control" data-live-search="true">
-                    <?php foreach($Kyc['data']['IDProof'] as $IDType) { ?>
-                        <option value="<?php echo $IDType['SoftCode'];?>" <?php echo ($_POST['IDType']==$IDType['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $IDType['CodeValue'];?></option>
-                    <?php } ?>
-                </select>
-            </div>
-            <div class="col-sm-3" style="padding-top: 5px;"><input type="file" name="IDProofFileName"></div>
-            <?php } ?>
-            
-            
-        </div>
+              <?php 
+              
+              if ($Kyc['data']['isAllowToUploadIDproof']==1) { ?>
+                <div class="col-sm-3" >
+                    <select name="IDType" id="IDType"  class="selectpicker form-control" data-live-search="true">
+                        <?php foreach($Kyc['data']['IDProof'] as $IDType) { ?>
+                            <option value="<?php echo $IDType['SoftCode'];?>" <?php echo ($_POST['IDType']==$IDType['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $IDType['CodeValue'];?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div class="col-sm-3" style="padding-top: 5px;"><input type="file" name="IDProofFileName"></div>
+                <br>
+                <br>
+                <div class="form-group row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-9" style="margin-top: 12px;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666;">In order to submit your KYC, your identification documents need to pass a verification process, done by our document authentication team.</span><br>
+                    <button type="submit" class="btn btn-primary" name="updateKYC" style="font-family:roboto;margin-top: 10px;">Submit Documents</button></div>
+                </div>
+                 
+              <?php } 
+              foreach($Kyc['data']['IdProofDocument'] as $idProof)  { ?>
+              
+              <div class="col-sm-7" style="padding-top: 5px;color: #888;margin-top:10px">  
+                    <img src="<?php echo AppUrl;?>uploads/<?php echo $idProof['FileName'];?>" style="height:120px;"><br><br>
+                    Document Type&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $idProof['FileType'];?>
+                    <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($Kyc['data']['AddressProofDocument'][0]['SubmittedOn']);?>
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:&nbsp;&nbsp;
+                    <?php 
+                        if($idProof['IsVerified']==0 && $idProof['IsRejected']==0){ 
+                            echo "Verification pending";
+                        } else if ($idProof['IsVerified']==1 && $idProof['IsRejected']==0) { 
+                            echo "verified";
+                        } else if($idProof['IsRejected']==1) { 
+                            echo '<span style="color:red">Rejected</span><br>';    ?>
+                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reason &nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $idProof['RejectedRemarks'];?>  
+                       <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Rejected On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($idProof['RejectedOn']);?>
+                      <?php }  ?>                                                               
+              </div>
+              <?php  } ?>
+              
+              </div>
         <div class="form-group row" style="margin-bottom: 0px;" >
             <hr style="border:none;border-bottom:1px solid #eee;width:90%;margin:15px">
         </div>
         
         <div class="form-group row">
             <div class="col-sm-3">Address Proof</div>
+              <?php if ($Kyc['data']['isAllowToUploadAddressproof']==1) { ?>
+                <div class="col-sm-3" >
+                    <select name="AddressProofType" id="AddressProofType"  class="selectpicker form-control" data-live-search="true">
+                        <?php foreach($Kyc['data']['AddressProof'] as $AddressProofTypee) { ?>
+                            <option value="<?php echo $AddressProofTypee['SoftCode'];?>" <?php echo ($_POST['AddressProofType']==$AddressProofTypee['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $AddressProofTypee['CodeValue'];?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div class="col-sm-3" style="padding-top: 5px;"><input type="file" name="AddressProofFileName"></div>
+                <br>
+                <br>
+                <div class="form-group row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-9" style="margin-top: 12px;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666;">In order to submit your KYC, your identification documents need to pass a verification process, done by our document authentication team.</span></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-9"><button type="submit" class="btn btn-primary" name="updateKYC" style="font-family:roboto">Submit Documents</button></div>
+                </div>  
+              <?php } 
+              foreach($Kyc['data']['AddressProofDocument'] as $addressProof)  { ?>
+              
+              <div class="col-sm-7" style="padding-top: 5px;color: #888;">  
+                    <img src="<?php echo AppUrl;?>uploads/<?php echo $addressProof['FileName'];?>" style="height:120px;"><br><br>
+                    Document Type&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $addressProof['FileType'];?>
+                    <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($Kyc['data']['AddressProofDocument'][0]['SubmittedOn']);?>
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:&nbsp;&nbsp;
+                    <?php 
+                        if($addressProof['IsVerified']==0 && $addressProof['IsRejected']==0){ 
+                            echo "Verification pending";
+                        } else if ($addressProof['IsVerified']==1 && $addressProof['IsRejected']==0) { 
+                            echo "verified";
+                        } else if($addressProof['IsRejected']==1) { 
+                            echo '<span style="color:red">Rejected</span><br>';    ?>
+                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reason &nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $addressProof['RejectedRemarks'];?>  
+                       <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Rejected On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($addressProof['RejectedOn']);?>
+                      <?php }  ?>                                                               
+              </div>
+              <?php  } ?>
+              
+              </div> 
+           
+                 
+               
+           
             
-            <?php if (sizeof($Kyc['data']['AddressProofDocument'])>0) {?>
-            <div class="col-sm-5" style="padding-top: 5px;color: #888;">
-                <img src="<?php echo AppUrl;?>uploads/<?php echo $Kyc['data']['AddressProofDocument'][0]['FileName'];?>" style="height:120px;"><br><br>
-                 Document Type&nbsp;&nbsp;:<?php echo $Kyc['data']['AddressProofDocument'][0]['FileType'];?>
-                <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:<?php echo putDateTime($Kyc['data']['AddressProofDocument'][0]['SubmittedOn']);?>
-                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:
-                <?php if($Kyc['data']['AddressProofDocument'][0]['IsVerified']==0 && $Kyc['data']['AddressProofDocument'][0]['IsRejected']==0){ 
-                    echo "Verification pending";
-                } if($Kyc['data']['AddressProofDocument'][0]['IsVerified']==1 && $Kyc['data']['AddressProofDocument'][0]['IsRejected']==0) { 
-                    echo "verified";
-                }
-                  if($Kyc['data']['AddressProofDocument'][0]['IsRejected']==1) { 
-                    echo "Rejected";
-                }
-                ?>
-            </div>
-            <?php } else { ?>
-            <div class="col-sm-3" >
-                <select name="AddressProofType" id="AddressProofType"  class="selectpicker form-control" data-live-search="true">
-                    <?php foreach($Kyc['data']['AddressProof'] as $AddressProofTypee) { ?>
-                        <option value="<?php echo $AddressProofTypee['SoftCode'];?>" <?php echo ($_POST['AddressProofType']==$AddressProofTypee['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $AddressProofTypee['CodeValue'];?></option>
-                    <?php } ?>
-                </select>
-            </div>
-            <div class="col-sm-3" style="padding-top: 5px;"><input type="file" name="AddressProofFileName"></div>
-             <?php }?>
-        </div>
-        <?php if(sizeof($Kyc['data']['IdProofDocument'])== 0 || (sizeof($Kyc['data']['AddressProofDocument'])== 0)){?>
-        <br>
-        <br>
-        <span style="color:#666;">In order to submit your KYC, your identification documents need to pass a verification process, done by our document authentication team.</span>
-        <br>
-        <br>
-        <div class="form-group row">
-            &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary" name="updateKYC" style="font-family:roboto">Submit Documents</button>
-        </div>
-        <?php }?>
+            
+     
+       
 </form>
 <script>
  

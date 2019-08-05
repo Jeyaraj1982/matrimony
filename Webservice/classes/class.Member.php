@@ -921,20 +921,16 @@
                  
                  if (sizeof($DraftProfiles)>0) {
                      foreach($DraftProfiles as $DraftProfile) {
-                        //$Profiles[]=$DraftProfile;     
                         $Profiles[]=Profiles::getDraftProfileInformation($DraftProfile['ProfileCode']);     
                      }
-                 }
-                 
-                 if (sizeof($PostProfiles)>0) {
+                 } else if (sizeof($PostProfiles)>0) {
                       foreach($PostProfiles as $PostProfile) {
                         $Profiles[]=Profiles::getDraftProfileInformation($PostProfile['ProfileCode']);     
                      }
-                 }
-                 
-                 if (sizeof($PublishedProfiles)>0) {
-                    $Profiles = $PublishedProfiles;
-                    $Profiles['Position']="Publish";
+                 } else if (sizeof($PublishedProfiles)>0) {
+                      foreach($PublishedProfiles as $PublishedProfile) {
+                        $Profiles[]=Profiles::getProfileInformation($PublishedProfile['ProfileCode']);     
+                     }
                  }
                   
                   return Response::returnSuccess("success",$Profiles);
@@ -967,9 +963,15 @@
                 return Response::returnSuccess("success",$Profiles);
              }
 
-             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {
-                 $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedBy` = '".$loginInfo[0]['MemberID']."' and IsApproved='1' ");
-                 return Response::returnSuccess("success",$Profiles);
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {    /* Profile => Posted */
+                
+                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `CreatedBy` = '".$loginInfo[0]['MemberID']."' and IsApproved='1'");
+                if (sizeof($PublishedProfiles)>0) {
+                    foreach($PublishedProfiles as $PublishedProfile) {
+                        $Profiles[]=Profiles::getProfileInformation($PublishedProfile['ProfileCode']);     
+                     }
+                }
+                return Response::returnSuccess("success",$Profiles);
              }
          }
          
@@ -1138,7 +1140,7 @@
 
         global $mysql,$mail,$loginInfo;      
         $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
-         return $data[0]['ProfileName'].strlen(trim($data[0]['ProfileName'])); 
+        /* return $data[0]['ProfileName'].strlen(trim($data[0]['ProfileName'])); 
           /*   if (sizeof($data)==0) {
                 return "Record not found.<a data-dismiss='modal' style='cursor:pointer'>Continue</a>"; 
              }
@@ -1275,7 +1277,7 @@
              
              $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
              
-             if (sizeof($data)==0) {
+           /*  if (sizeof($data)==0) {
                 return "Record not found.<a data-dismiss='modal' style='cursor:pointer'>Continue</a>"; 
              }
              
@@ -1290,7 +1292,7 @@
              if (strlen(trim($data[0]['ProfileName']))>0) {
                 return "Please choose Profile for .<a data-dismiss='modal' style='cursor:pointer'>Continue</a>"; 
              }
-             
+                  */ 
                
              
            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
@@ -1342,13 +1344,22 @@
          }
          
          
-           function GetDraftProfileInfo() {
+         function GetDraftProfileInfo() {
                
                 global $mysql,$loginInfo;      
              $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileCode']."'");               
             
             
                $result =  Profiles::getDraftProfileInformation($Profiles[0]['ProfileCode']);
+               return Response::returnSuccess("success",$result);
+           }
+         function GetPublishProfileInfo() {
+               
+                global $mysql,$loginInfo;      
+             $Profiles = $mysql->select("select * from `_tbl_profiles` where `CreatedBy`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileCode']."'");               
+            
+            
+               $result =  Profiles::getProfileInformation($Profiles[0]['ProfileCode']);
                return Response::returnSuccess("success",$result);
            }
 
@@ -1543,13 +1554,52 @@
 
          function GetKYC() {
              global $mysql,$loginInfo;    
-             $KYCs = $mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."'");
-             $IDproof = $mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."' and DocumentType='Id Proof'");
-             $Addressproof = $mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."' and DocumentType='Address Proof'");
+             $KYCs = $mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."' order by `DocID` DESC ");
+             $IDproof = $mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."' and DocumentType='Id Proof' order by DocID Desc");
+             $Addressproof = $mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."' and DocumentType='Address Proof' order by DocID Desc");
+             
+             if (sizeof($IDproof)==0) {         
+                $isAllowToUploadIDproof = 1;    
+             } else {
+                 
+                 if ($IDproof[0]['IsVerified']==0 && $IDproof[0]['IsRejected']==0) {
+                   $isAllowToUploadIDproof = 0;    
+                 }
+                 
+                if ($IDproof[0]['IsVerified']==1 && $IDproof[0]['IsRejected']==1) {
+                   $isAllowToUploadIDproof = 1;    
+                 } 
+                 
+                 if ($IDproof[0]['IsVerified']==1 && $IDproof[0]['IsRejected']==0) {
+                   $isAllowToUploadIDproof = 0;    
+                 } 
+             }
+             
+             
+             if (sizeof($Addressproof)==0) {
+                $isAllowToUploadAddressproof = 1;    
+             } else {
+                 
+                 if ($Addressproof[0]['IsVerified']==0 && $Addressproof[0]['IsRejected']==0) {
+                   $isAllowToUploadAddressproof = 0;    
+                 }
+                 
+                if ($Addressproof[0]['IsVerified']==1 && $Addressproof[0]['IsRejected']==1) {
+                   $isAllowToUploadAddressproof = 1;    
+                 } 
+                 
+                 if ($Addressproof[0]['IsVerified']==1 && $Addressproof[0]['IsRejected']==0) {
+                   $isAllowToUploadAddressproof = 0;    
+                 } 
+             }
+             
+             
              return Response::returnSuccess("success",array("IDProof"      => CodeMaster::getData('IDPROOF'),
                                                             "AddressProof" => CodeMaster::getData('ADDRESSPROOF'),
                                                             "KYCView"      => $KYCs,
                                                             "IdProofDocument" => $IDproof,
+                                                            "isAllowToUploadAddressproof" => $isAllowToUploadAddressproof,
+                                                            "isAllowToUploadIDproof" => $isAllowToUploadIDproof,
                                                             "AddressProofDocument" => $Addressproof));
          }
 
@@ -2140,12 +2190,6 @@
                                                             "EducationDetail" => CodeMaster::getData('EDUCATETITLES'),
                                                             "EducationDegree"  => CodeMaster::getData('EDUCATIONDEGREES')));
          }
-
-        /* function GetMyProfiles() {
-             global $mysql,$loginInfo;    
-             $MyProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedBy`='".$loginInfo[0]['MemberID']."'");
-             return Response::returnSuccess("success",$MyProfiles);
-         }*/
 
          function GetBankNames() {
              global $mysql,$loginInfo;

@@ -9,6 +9,7 @@
                         </div>
                         <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                             <a href="KYCVerification"><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
+                            <a href="RequestedKYC"><small style="font-weight:bold;text-decoration:underline">Requested</small></a>&nbsp;|&nbsp;
                             <a href="VerifiedKYC"><small style="font-weight:bold;text-decoration:underline">Verified</small></a>&nbsp;|&nbsp;
                             <a href="RejectedKYC"><small style="font-weight:bold;text-decoration:underline">Rejected</small></a>
                         </div>

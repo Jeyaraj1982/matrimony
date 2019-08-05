@@ -23,7 +23,7 @@
                            <td><?php echo putDateTime($Profile['RequestVerifyOn']);?></td>
                            <td><?php echo $Profile['MemberName'];?></td>
                            <td><?php echo $Profile['ProfileName'];?></td>
-                           <td><a href="<?php echo GetUrl("Profiles/ViewRequestProfile/". $Profile['ProfileCode'].".htm");?>"><span>View</span></a></td>
+                           <td><a href="<?php echo GetUrl("Profiles/ViewRequestProfile/". $Profile['ProfileID'].".htm");?>"><span>View</span></a></td>
                       </tr>
                       <?php } }?>
                       </tbody>

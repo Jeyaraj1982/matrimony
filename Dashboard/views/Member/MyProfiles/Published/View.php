@@ -1,13 +1,10 @@
 <?php
-    //$response = $webservice->GetDraftProfileInformation(array("ProfileCode"=>$_GET['Code']));
-    $response = $webservice->getData("Member","GetDraftProfileInfo",array("ProfileCode"=>$_GET['Code']));
+    $response = $webservice->getData("Member","GetPublishProfileInfo",array("ProfileCode"=>$_GET['Code']));
+    print_r($response);
     $ProfileInfo          = $response['data']['ProfileInfo'];
-     
     $Member = $response['data']['Members'];
     $EducationAttachment = $response['data']['EducationAttachments'];
     $PartnerExpectation = $response['data']['PartnerExpectation'];
-    
-      
 ?>
  <style>
  .table-bordered > tbody > tr > td{
@@ -20,6 +17,9 @@ text-align:center;
 height: 33px;
 text-align: left;
  }
+ #doctable {
+    border-top: 2px solid #ddd;
+}
   .form-group {
     margin-bottom: 0px;
 }
@@ -40,12 +40,6 @@ text-align: left;
 
  </style>
 <form method="post" action="" onsubmit="">
- 
-<div style="text-align: right" id="">
-        <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
-        <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
-</div>
-<br>
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
@@ -136,7 +130,7 @@ text-align: left;
     <div class="card-body">
     <h4 class="card-title">Education Details</h4>
          <table class="table table-bordered" id="doctable">           
-            <thead>
+            <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">
                 <tr>
                     <th>Qualification</th>
                     <th>Education Degree</th>
@@ -179,6 +173,10 @@ text-align: left;
             <label  class="col-sm-2 col-form-label">Occupation Type</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['TypeofOccupation'];?>
              </label>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Country</label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['WorkedCountry'];?></label>
         </div>
     </div>
   </div>
@@ -493,49 +491,6 @@ text-align: left;
   </div>
 </div>
 </form>
- <div class="modal" id="PubplishNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-            <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="Publish_body" style="height:315px">
-            
-                </div>
-            </div>
-        </div>
-
-<script>
-function showConfirmPublish(ProfileID) {
-      $('#PubplishNow').modal('show'); 
-      var content = '<div class="Publish_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'
-                    +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
-                     + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                       +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
-                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="SendOtpForProfileforPublish(\''+ProfileID+'\')">Yes</button>&nbsp;'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
-                       +  '</div><br>'
-                    +  '</form>'
-                +  '</div>'
-            +  '</div>';
-            $('#Publish_body').html(content);
-}
-function SendOtpForProfileforPublish(formid) {
-     var param = $("#frm_"+formid).serialize();
-     $('#Publish_body').html(preloader);
-        $.post(API_URL + "m=Member&a=SendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
-}
-
-function ProfilePublishOTPVerification(frmid) {
-         var param = $( "#"+frmid).serialize();
-         $('#Publish_body').html(preloader);
-                    $.post( API_URL + "m=Member&a=ProfilePublishOTPVerification", 
-                            param,
-                            function(result2) {
-                                $('#Publish_body').html(result2);   
-                            }
-                    );
-              
-    } 
-
-</script>
-   
+ 
             
                
