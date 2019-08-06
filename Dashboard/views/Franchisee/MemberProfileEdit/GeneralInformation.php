@@ -2,8 +2,8 @@
     $page="GeneralInformation";
 
     if (isset($_POST['BtnSaveProfile'])) {
-        
-        $response = $webservice->EditDraftGeneralInformation($_POST);
+        $response = $webservice->getData("Franchisee","EditDraftGeneralInformation",$_POST);
+                         
         if ($response['status']=="success") {
              $successmessage = $response['message']; 
         } else {
@@ -17,6 +17,8 @@
     <?php include_once("settings_header.php");?>
     <div class="col-sm-10" style="margin-top: -8px;width:100%;padding-left:16px">
     <form method="post" action="" onsubmit="">
+        
+        <input type="hidden" value="<?php echo $_GET['Code'];?>"  name="ProfileCode">
         <h4 class="card-title">General Iformation</h4>
             <div class="form-group row">
                 <label for="Community" class="col-sm-2 col-form-label">Profile For<span id="star">*</span></label>
@@ -145,28 +147,6 @@
                                 
                             }
                         </script>
-                       
-                       <div class="form-group row" id="AdditionalInfo" style="<?php echo ($_POST['MaritalStatus'] == 'MST002')? "display: none;" : "";?>">
-                            <label for="HowManyChildren" class="col-sm-2 col-form-label">How Many Children<span id="star">*</span></label>
-                            <div class="col-sm-4">
-                                <select class="selectpicker form-control" data-live-search="true" id="HowManyChildren" name="HowManyChildren">
-                                    <option>Choose How Many Children</option>
-                                    <?php foreach($response['data']['NumberofBrother'] as $HowManyChildren) { ?>
-                                        <option value="<?php echo $HowManyChildren['SoftCode'];?>" <?php echo (isset($_POST[ 'HowManyChildren'])) ? (($_POST[ 'HowManyChildren']==$HowManyChildren[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'HowManyChildren']==$HowManyChildren[ 'CodeValue']) ? " selected='selected' " : "");?>>
-                                            <?php echo $HowManyChildren['CodeValue'];?></option>
-                                                <?php } ?>
-                                </select>
-                            </div>                                    
-                            <label for="Caste" class="col-sm-2 col-form-label">Is Children With You?<span id="star">*</span></label>
-                            <div class="col-sm-4">
-                                <select class="selectpicker form-control" data-live-search="true" id="ChildrenWithYou" name="ChildrenWithYou">
-                                    <option>Choose Children With You</option>
-                                    <option value="1" <?php echo ($ProfileInfo['ChildrenWithYou']==1) ? " selected='selected' " : "";?>>Yes</option>
-                                    <option value="0" <?php echo ($ProfileInfo['ChildrenWithYou']==0) ? " selected='selected' " : "";?>>No</option>
-                                </select>
-                            </div>
-                        </div>
-                      
                         <div class="form-group row">
                             <label for="Religion" class="col-sm-2 col-form-label">Religion<span id="star">*</span></label>
                             <div class="col-sm-4">

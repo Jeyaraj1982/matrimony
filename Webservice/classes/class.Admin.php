@@ -675,11 +675,12 @@ class Admin extends Master {
                                                   "A16"                     => $draft[0]['A16'],
                                                   "CreatedOn"               => $draft[0]['CreatedOn'],
                                                   "LastUpdatedOn"           => $draft[0]['LastUpdatedOn'],
-                                                  "CreatedBy"               => $draft[0]['CreatedBy'],
-                                                  "FranchiseBy"             => $draft[0]['FranchiseBy'],
+                                                  "MemberID"               => $draft[0]['MemberID'],
+                                                  "MemberCode"             => $draft[0]['MemberCode'],
                                                   "ReferBy"                 => $draft[0]['ReferBy'],
                                                   "RequestToVerify"         => $draft[0]['RequestToVerify'],
                                                   "RequestVerifyOn"         => $draft[0]['RequestVerifyOn'],
+                                                  "CreatedByMemberID"         => $draft[0]['CreatedByMemberID'],
                                                   "IsApproved"              => "1",                                   
                                                   "IsApprovedOn"            => date("Y-m-d H:i:s")));
                                                   

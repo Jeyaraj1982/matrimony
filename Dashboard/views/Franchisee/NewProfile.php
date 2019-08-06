@@ -65,7 +65,8 @@
                     <?php
                     $Members = array();
                         if (isset($_POST['MemberDetails'])) {  
-                        $response = $webservice->getData("Franchisee","SearchMemberDetails",$_POST); 
+                        $response = $webservice->getData("Franchisee","SearchMemberDetails",$_POST);
+                        print_r($response); 
                     ?> 
                     <?php foreach($response['data'] as $Member) {  ?>
                         <tr>

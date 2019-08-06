@@ -42,7 +42,7 @@ text-align: left;
 <form method="post" action="" onsubmit="">
  
 <div style="text-align: right" id="">
-        <a href="<?php echo GetUrl("MyProfiles/MemberProfileEdit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
+        <a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
         <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
 </div>
 <br>
@@ -396,7 +396,7 @@ text-align: left;
   <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
-    <h4 class="card-title">Parners Expectation</h4>
+    <h4 class="card-title">Partner's Expectation</h4>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Age </label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeFrom'];?> &nbsp;&nbsp;to&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeTo'];?></label>
@@ -506,14 +506,14 @@ text-align: left;
         </div>
 
 <script>
-function showConfirmPublish(ProfileID) {
+function showConfirmPublish(ProfileCode) {
       $('#PubplishNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
                     +   '<div  style="height: 315px;">'
-                    +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
-                     + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                    +  '<form method="post" id="frm_'+ProfileCode+'" name="frm_'+ProfileCode+'" action="" >'
+                     + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
                        +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
-                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="SendOtpForProfileforPublish(\''+ProfileID+'\')">Yes</button>&nbsp;'
+                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="PublishMemberProfile(\''+ProfileCode+'\')">Yes</button>&nbsp;'
                         +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
                        +  '</div><br>'
                     +  '</form>'
@@ -521,23 +521,11 @@ function showConfirmPublish(ProfileID) {
             +  '</div>';
             $('#Publish_body').html(content);
 }
-function SendOtpForProfileforPublish(formid) {
+function PublishMemberProfile(formid) {
      var param = $("#frm_"+formid).serialize();
      $('#Publish_body').html(preloader);
-        $.post(API_URL + "m=Member&a=SendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
+        $.post(API_URL + "m=Franchisee&a=PublishMemberProfile",param,function(result2) {$('#Publish_body').html(result2);});
 }
-
-function ProfilePublishOTPVerification(frmid) {
-         var param = $( "#"+frmid).serialize();
-         $('#Publish_body').html(preloader);
-                    $.post( API_URL + "m=Member&a=ProfilePublishOTPVerification", 
-                            param,
-                            function(result2) {
-                                $('#Publish_body').html(result2);   
-                            }
-                    );
-              
-    } 
 
 </script>
    

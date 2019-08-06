@@ -83,6 +83,12 @@
                 <input type="text" class="form-control" id="OtherLocation" name="OtherLocation" Placeholder="Other Location" value="<?php echo (isset($_POST['OtherLocation']) ? $_POST['OtherLocation'] : $ProfileInfo['OtherLocation']);?>">
             </div>
         </div>
+        <div class="form-group row">
+            <label for="Pincode" class="col-sm-2 col-form-label">Pincode<span id="star">*</span></label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="Pincode" name="Pincode" Placeholder="Pincode" value="<?php echo (isset($_POST['Pincode']) ? $_POST['Pincode'] : $ProfileInfo['Pincode']);?>">
+            </div>
+        </div>
         <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
                         </div>
