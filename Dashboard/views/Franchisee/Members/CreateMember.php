@@ -3,7 +3,7 @@
     $response = $webservice->CreateMember($_POST);
     if ($response['status']=="success") {
         ?>
-        <script>location.href='<?php echo AppUrl;?>Members/Created';</script>
+        <script>location.href='<?php echo AppUrl;?>Members/Created/<?php echo $response['data']['MemberCode'].".htm";?>';</script>
         <?php
     } else {
         $errormessage = $response['message']; 

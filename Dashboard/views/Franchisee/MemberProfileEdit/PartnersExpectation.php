@@ -17,6 +17,7 @@
 <?php include_once("settings_header.php");?>
 <div class="col-sm-9" style="margin-top: -8px;">
 <form method="post" action="" onsubmit="">
+ <input type="hidden" value="<?php echo $_GET['Code'];?>"  name="ProfileCode">
     <h4 class="card-title">Partners Expectation</h4>
     <div class="form-group row">
         <div class="col-sm-3" align="left">Age</div>
@@ -72,7 +73,7 @@
             <select class="selectpicker form-control" data-live-search="true" id="Caste" name="Caste">
                 <option value="0">Choose Caste</option>
                 <?php foreach($response['data']['Caste'] as $Caste) { ?>
-                    <option value="<?php echo $Caste['SoftCode'];?>" <?php echo (isset($_POST[ 'Caste'])) ? (($_POST[ 'Caste']==$Caste[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Caste']==$Caste[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                    <option value="<?php echo $Caste['SoftCode'];?>" <?php echo (isset($_POST[ 'Caste'])) ? (($_POST[ 'Caste']==$Caste[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'CasteCode']==$Caste[ 'SoftCode']) ? " selected='selected' " : "");?>>
                         <?php echo $Caste['CodeValue'];?>
                     </option>
                     <?php } ?>

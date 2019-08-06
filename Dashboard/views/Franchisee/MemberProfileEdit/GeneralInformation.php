@@ -163,8 +163,8 @@
                                 <select class="selectpicker form-control" data-live-search="true" id="Caste" name="Caste">
                                     <option value="0">Choose Caste</option>
                                     <?php foreach($response['data']['Caste'] as $Caste) { ?>
-                                        <option value="<?php echo $Caste['SoftCode'];?>" <?php echo (isset($_POST[ 'Caste'])) ? (($_POST[ 'Caste']==$Caste[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Caste']==$Caste[ 'CodeValue']) ? " selected='selected' " : "");?>>
-                                            <?php echo $Caste['CodeValue'];?> </option>
+                                        <option value="<?php echo $Caste['SoftCode'];?>" <?php echo (isset($_POST[ 'Caste'])) ? (($_POST[ 'Caste']==$Caste[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo['CasteCode']==$Caste[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                            <?php echo trim($Caste['CodeValue']);?> </option>
                                                 <?php } ?>
                                 </select>
                             </div>
@@ -186,8 +186,8 @@
                                 <select class="selectpicker form-control" data-live-search="true" id="Nationality" name="Nationality">
                                     <option>Choose Nationality</option>
                                     <?php foreach($response['data']['Nationality'] as $Nationality) { ?>
-                                        <option value="<?php echo $Nationality['SoftCode'];?>" <?php echo (isset($_POST[ 'Nationality'])) ? (($_POST[ 'Nationality']==$Nationality[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Nationality']==$Nationality[ 'CodeValue']) ? " selected='selected' " : "");?>>
-                                            <?php echo $Nationality['CodeValue'];?></option>
+                                        <option value="<?php echo $Nationality['SoftCode'];?>" <?php echo (isset($_POST[ 'Nationality'])) ? (($_POST[ 'Nationality']==$Nationality[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'NationalityCode']==$Nationality[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                            <?php echo trim($Nationality['CodeValue']);?></option>
                                                 <?php } ?>
                                 </select>
                             </div>

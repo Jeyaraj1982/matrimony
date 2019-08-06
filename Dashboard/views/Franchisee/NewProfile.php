@@ -66,7 +66,7 @@
                     $Members = array();
                         if (isset($_POST['MemberDetails'])) {  
                         $response = $webservice->getData("Franchisee","SearchMemberDetails",$_POST);
-                        print_r($response); 
+                       // print_r($response); 
                     ?> 
                     <?php foreach($response['data'] as $Member) {  ?>
                         <tr>
@@ -82,7 +82,7 @@
                                         &nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/".$Member['ProfilesID'].".htm"); ?>"><span>Edit</span></a>
                                     <?php } ?>
                                 <?php } else {?>
-                                    <a href="<?php echo GetUrl("CreateProfile");?>"><span>Create</span></a>  
+                                    <a href="<?php echo GetUrl("CreateProfile/".$Member['MemberCode'].".htm");?>"><span>Create</span></a>  
                                 <?php }  ?>
                             </td>
                         </tr>

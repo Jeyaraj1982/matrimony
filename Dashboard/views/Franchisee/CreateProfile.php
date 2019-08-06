@@ -2,7 +2,7 @@
   if (isset($_POST['BtnSaveProfile'])) {   
     $response = $webservice->getData("Franchisee","CreateProfile",$_POST);
     if ($response['status']=="success") {
-        echo "<script>location.href='MemberProfileEdit/GeneralInformation/".$response['data']['Code'].".htm?msg=1';</script>";
+        echo "<script>location.href='../MemberProfileEdit/GeneralInformation/".$response['data']['Code'].".htm?msg=1';</script>";
         ?>
         <?php
     } else {
@@ -39,6 +39,7 @@ function submitprofile() {
 </script>
  
 <form method="post" action="" name="form" onsubmit="return submitprofile();">
+<input type="hidden" value="<?php echo $_GET['Code'];?>" name="MemberCode">
     <div class="col-12 grid-margin">
         <div class="card">
             <div class="card-body">
