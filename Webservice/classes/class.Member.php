@@ -130,7 +130,8 @@
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
 
-             $data[0]['LoginID']=$loginid;       
+             $data[0]['LoginID']=$loginid; 
+             $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Member'");      
              return Response::returnSuccess("Registered successfully",$data[0]);
          }
 
@@ -1342,7 +1343,6 @@
                        </div>';
 
          }
-         
          
          function GetDraftProfileInfo() {
                

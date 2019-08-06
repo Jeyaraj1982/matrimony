@@ -545,28 +545,31 @@
                                     </div>
                                 </div>
                             </div>
-                            <div style="float:right;line-height: 1px;">
-                                <?php if($Profile['IsApproved']==1 || $Profile['RequestToVerify']==1){ ?>
-                                    <a href="<?php echo GetUrl("MyProfiles/Draft/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
-                                    <?php }else{  ?>
+                           <div style="float:right;line-height: 1px;">
+                                <?php if($Profile['RequestToVerify']==1){ ?>
+                                    <a href="<?php echo GetUrl("MyProfiles/Posted/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <?php } elseif($Profile['IsApproved']==1){  ?>
+                                    <a href="<?php echo GetUrl("MyProfiles/Published/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <?php } else {?>
                                         <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$Profile['ProfileCode'].".htm ");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/Draft/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
-                                        <?php  }    ?>
+                                        <?php  }    ?>  
                             </div>
                         </div>
                   <?php
               }
             ?>
-            
-            <?php 
+       <?php 
             function DisplayManageProfileShortInfoforDashboard($ProfileInformation) {
               
                 $Profile = $ProfileInformation['ProfileInfo'];
         ?>
             <div class="form-group row">
-                            <div class="col-sm-3" style="text-align:center">
-                               <img src="<?php echo $Profile['ProfileThumb'];?>" style="height: 159px;margin-bottom: -18px;">
+                            <div class="col-sm-4" style="text-align:center">
+                               <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #555;background:#fff;padding:6px">
+                    <div style="line-height: 25px;color: #867c7c;font-size:14px;"><?php echo $ProfileInformation['Position'];?></div>
                             </div>
-                            <div class="col-sm-9">
+                            <div class="col-sm-8">
                                 <div style="border-bottom:1px solid #d7d7d7;width:100%;padding-bottom: 10px;font-size: 21px;color: #514444cc;text-align:left"> 
                                     <?php echo $Profile['ProfileName'];?>
                                 </div>
@@ -583,12 +586,14 @@
                             </div>
                         </div>
                         <div style="float:right;line-height: 1px;">
-                                <?php if($Profile['IsApproved']==1 || $Profile['RequestToVerify']==1){ ?>
-                                    <a href="<?php echo GetUrl("MyProfiles/Draft/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
-                                    <?php }else{  ?>
+                                <?php if($Profile['RequestToVerify']==1){ ?>
+                                    <a href="<?php echo GetUrl("MyProfiles/Posted/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <?php } elseif($Profile['IsApproved']==1){  ?>
+                                    <a href="<?php echo GetUrl("MyProfiles/Published/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <?php } else {?>
                                         <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$Profile['ProfileCode'].".htm ");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/Draft/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
-                                        <?php  }    ?>
-                            </div>
+                                        <?php  }    ?>  
+                    </div> 
                   <?php
               }
             ?>
@@ -774,3 +779,51 @@
                   <?php
               }
             ?>
+            
+<?php 
+    function PublishedProfileList($ProfileInformation) {
+        $Profile = $ProfileInformation['ProfileInfo'];
+?>
+    <div style="min-height:200px;width:100%;background:white;padding:20px" class="box-shaddow">
+        <div class="form-group row">
+            <div class="col-sm-3" style="text-align:center;max-width: 182px;">
+                <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
+                    <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #555;background:#fff;padding:6px">
+                <div style="line-height: 25px;color: #867c7c;font-size:14px;">
+                    <?php echo $ProfileInformation['Position'];?>
+                </div>    
+            </div>
+            <div class="col-sm-9">
+                <div class="colo-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
+                    <div class="col-sm-7">
+                        <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp;
+                        <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div>
+                    </div>
+                    <div class="col-sm-1">
+                        <img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:52px;">
+                    </div>
+                    <div style="float:right;font-size: 12px;">
+                        <?php echo "Published On: ".PutDateTime($Profile['IsApprovedOn']); ?><br>
+                        <?php echo ($ProfileInformation['LastSeen']!="0") ? "Last seen: ".PutDateTime($ProfileInformation['LastSeen']) : ""; ?>
+                    </div> 
+                </div>
+                <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                    <div><?php echo $Profile['Height'];?></div>
+                    <div><?php echo $Profile['Religion'];?></div>
+                    <div><?php echo $Profile['Caste'];?></div>
+                </div>
+                <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                    <div><?php echo $Profile['MaritalStatus'];?></div>
+                    <div><?php echo $Profile['OccupationType'];?></div>
+                    <div><?php echo $Profile['AnnualIncome'];?></div>
+                </div>
+                <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
+                    <?php echo $Profile['AboutMe'];?>
+                </div>
+            </div>
+        </div>
+        <div style="float:right;line-height: 1px;">
+            <a href="<?php echo GetUrl("MyProfiles/Published/View/".$Profile['ProfileCode'].".htm");?>">View</a>
+        </div>
+    </div>
+<?php } ?>

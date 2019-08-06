@@ -11,7 +11,7 @@
         }
     }
     
-   $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileID"=>$_GET['Code']));
+   $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
 ?>
     <?php include_once("settings_header.php");?>

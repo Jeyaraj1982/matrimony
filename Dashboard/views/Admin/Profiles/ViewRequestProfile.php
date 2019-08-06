@@ -1,22 +1,10 @@
-<?php  
-$response = $webservice->getData("Admin","ViewMemberProfiles",array("ProfileID"=>$_GET['Code']));
-    $ProfileInfo          = $response['data']['ProfileInfo'];
+ <?php  
+$response = $webservice->getData("Admin","GetDraftProfileInfo",array("ProfileCode"=>$_GET['Code']));   
+     $ProfileInfo          = $response['data']['ProfileInfo'];
     $Member = $response['data']['Members'];
     $EducationAttachment = $response['data']['EducationAttachments'];
     $PartnerExpectation = $response['data']['PartnerExpectation'];
- ?>    
- <?php
-    if (isset($_POST['Approve'])) {
-        
-        $response = $webservice->getData("Admin","ApproveProfile",$_POST);
-        if ($response['status']=="success") {
-             $successmessage = $response['message']; 
-        } else {
-            $errormessage = $response['message']; 
-        }
-    }
-   ?>
-
+?>
  <style>
  .table-bordered > tbody > tr > td{
      width: 75px;
@@ -66,7 +54,7 @@ text-align: left;
 </div>
 </div>
 <div class="col-12 grid-margin">
-    <div class="card">
+    <div class="card">                                                                                           
         <div class="card-body">
             <h4 class="card-title">Profile Information</h4>
               <div class="form-group row">
@@ -501,14 +489,60 @@ text-align: left;
     </div>
   </div>
 </div>
- 
+</form>
+
+   
             
-               
+                           
   <div style="text-align: right">
-        <button type="submit" class="btn btn-success" name="Approve" style="font-family:roboto">Approve</button>&nbsp;
+     <?php if($ProfileInfo['IsApproved']==1){?>
+         Profile Already Published
+     <?php } else {?>
+        <a href="javascript:void(0)" onclick="showConfirmApprove('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Approve" style="font-family:roboto">Approve</a>&nbsp;
         <button type="submit" class="btn btn-warning" name="Reject" style="font-family:roboto">Reject</button>
         <button type="submit" class="btn btn-danger" name="Delete" style="font-family:roboto">Delete</button>
+        <?php }?>
     </div>
-</form>
+  
+    
+        
+        <div class="modal" id="ApproveNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+            <div class="modal-dialog" style="width: 367px;">
+                <div class="modal-content" id="Approve_body" style="height:315px">
+            
+                </div>
+            </div>
+        </div>
+                                                                                                                      
+<script>
+function showConfirmApprove(ProfileCode) {
+      $('#ApproveNow').modal('show'); 
+      var content = '<div class="Approve_body" style="padding:20px">'
+                    +   '<div  style="height: 315px;">'
+                    +  '<form method="post" id="frm_'+ProfileCode+'" name="frm_'+ProfileCode+'" action="" >'
+                     + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
+                       +  '<div style="text-align:center">Are you sure want to Approve?  <br><br>'
+                        +  '<button type="button" class="btn btn-primary" name="Approve"  onclick="ApproveProfile(\''+ProfileID+'\')">Yes</button>&nbsp;'
+                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
+                       +  '</div><br>'
+                    +  '</form>'
+                +  '</div>'
+            +  '</div>';
+            $('#Approve_body').html(content);
+}
+
+function ApproveProfile(frmid) {
+         var param = $( "#"+frmid).serialize();
+         $('#Approve_body').html(preloader);
+                    $.post( API_URL + "m=Admin&a=ApproveProfile", 
+                            param,
+                            function(result2) {
+                                $('#Approve_body').html(result2);   
+                            }
+                    );
+              
+    } 
+
+</script>
 
             

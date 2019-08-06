@@ -28,7 +28,7 @@
                     </thead>
                      <tbody>  
                         <?php 
-                         $response = $webservice->getData("Admin","GetDraftedProfiles",array("Request"=>"Publish"));                        
+                         $response = $webservice->getData("Admin","GetPublishedProfiles",array("Request"=>"Publish"));                        
                          if (sizeof($response['data'])>0) {                                                                 
                          ?>
                         <?php foreach($response['data']as $Profile) { ?>
@@ -38,7 +38,7 @@
                                 <td><?php echo $Profile['MemberName'];?></td>
                                 <td><?php echo $Profile['ProfileName'];?></td>                                         
                                 <td><?php //echo putDateTime($Profile['CreatedOn']);?></td>
-                                <td><a href="<?php echo GetUrl("Profiles/ViewDraftProfile/". $Profile['ProfileID'].".htm");?>"><span>View</span></a></td>
+                                <td><a href="<?php echo GetUrl("Profiles/ViewPublishProfile/". $Profile['ProfileCode'].".htm");?>"><span>View</span></a></td>
                                 </tr>
                         <?php }} ?>                                                                                    
                       </tbody>                        

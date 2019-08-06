@@ -1,6 +1,6 @@
 <?php
     $page="DocumentAttachment";       
-    $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileID"=>$_GET['Code']));
+    $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
    ?>
 <?php include_once("settings_header.php");?>
 <style>
@@ -122,7 +122,7 @@ function submitUpload() {
             <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
         </div>
     </div>
-    <br><br>
+    <br><br><div style="text-align: right;" id="x"></div>
     <br>
     </form>
     
@@ -158,6 +158,8 @@ function submitUpload() {
             </div>
         </div>
 <script>
+var available = "<?php echo sizeof($res['data']);?>";
+ $('#x').html( available + " out 2 photos");
 function showLearnMore() {
       $('#LearnMore').modal('show'); 
       var content = '<div class="LearnMore_body" style="padding:20px">'
@@ -207,6 +209,8 @@ function showLearnMore() {
         $.post(API_URL + "m=Franchisee&a=DeletDocumentAttachments", param, function(result2) {
             $('#model_body').html(result2);
             $('#photoview_'+AttachmentID).hide();
+            available--;
+            $('#x').html( available + " out 2 photos");
         }
     );
                     

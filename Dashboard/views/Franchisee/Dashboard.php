@@ -434,10 +434,10 @@ chart.render();
 
 
 
-  <?php    $fInfo = $webservice->getData("Franchisee","GetMyProfile");  ?>   
+  <?php //   $fInfo = $webservice->getData("Franchisee","GetMyProfile");  ?>   
 <script>
    <?php  
-    if ($fInfo['status']=="success") {
+  /*  if ($fInfo['status']=="success") {
         if($fInfo['data']['WelcomeMsg']==1) {
             if($fInfo['data']['IsMobileVerified']==0 || $fInfo['data']['IsEmailVerified']==0){
             ?>
@@ -452,7 +452,7 @@ chart.render();
         
     } else {
             //logout invalid session
-    }
+    } */
    ?>
 </script>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>

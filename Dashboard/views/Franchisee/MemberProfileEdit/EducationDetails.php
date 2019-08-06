@@ -6,7 +6,7 @@
 <div class="col-sm-10" style="margin-top: -8px;">
     <h4 class="card-title">Education Details</h4>
     <div align="right">
-            <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/AddEducationalDetails/". $_GET['Code'].".htm");?>" class="btn btn-success mr-2" >Add Education Details</a>
+            <a href="<?php echo GetUrl("MemberProfileEdit/AddEducationalDetails/". $_GET['Code'].".htm");?>" class="btn btn-success mr-2" >Add Education Details</a>
         </div>
         <br>
         <table class="table table-bordered">

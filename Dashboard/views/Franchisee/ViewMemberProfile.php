@@ -1,5 +1,5 @@
 <?php
-     $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileID"=>$_GET['Code']));
+     $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
     $Member = $response['data']['Members'];
     $EducationAttachment = $response['data']['EducationAttachments'];
@@ -115,12 +115,12 @@ text-align: left;
               <div class="form-group row">
              <div class="col-sm-12" style="text-align:right">
                    <div class="photoview">
-                    <img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 200px;width: 150px;">
+                    <img src="<?php echo $response['data']['ProfilePhotoFirst']['ProfilePhoto'];?>" style="height: 200px;width: 150px;">
                   </div>
               </div> 
              </div>
              <div style="text-align:right">
-             <?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
+             <?php  foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
                    <div class="photoview">
                     <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 96px;width: 72px;">
                   </div>

@@ -47,7 +47,7 @@
                             </div>
                         <?php } else { ?>                                                                                        
                             <?php foreach($response['data'] as $Profile) { 
-                         echo  DisplayManageProfileShortInfo($Profile); ?> <br>
+                         echo  DisplayManageProfileShortInfoforDashboard($Profile); ?> <br>
                          <?php    } } ?>
                     </div>                                    
                    </div> 

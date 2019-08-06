@@ -22,7 +22,7 @@
                         <th>Profile For</th>
                         <th>Created On</th>
                         <th></th>
-                        </tr>  
+                        </tr>                                                                                           
                     </thead>
                      <tbody>  
                         <?php 
@@ -35,7 +35,7 @@
                                 <td><?php echo $Profile['MemberName'];?></td>
                                 <td><?php echo $Profile['ProfileFor'];?></td>                                         
                                 <td><?php echo putDateTime($Profile['CreatedOn']);?></td>
-                                <td><a href="<?php echo GetUrl("Profiles/ViewDraftProfile/". $Profile['ProfileID'].".htm");?>"><span>View</span></a></td>
+                                <td><a href="<?php echo GetUrl("Profiles/ViewDraftProfile/". $Profile['ProfileCode'].".htm");?>"><span>View</span></a></td>
                                 </tr>
                         <?php }} ?>                                                                                    
                       </tbody>                        

@@ -1,5 +1,5 @@
  <?php  
-$response = $webservice->getData("Admin","GetDraftProfileInfo",array("ProfileCode"=>$_GET['Code']));   
+$response = $webservice->getData("Admin","GetPublishProfileInfo",array("ProfileCode"=>$_GET['Code']));   
      $ProfileInfo          = $response['data']['ProfileInfo'];
     $Member = $response['data']['Members'];
     $EducationAttachment = $response['data']['EducationAttachments'];
