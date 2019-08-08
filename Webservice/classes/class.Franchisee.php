@@ -100,9 +100,9 @@
         if (!(strlen(trim($_POST['EmailID']))>0)) {
             return Response::returnError("Please enter your email");
         }
-        if (!(strlen(trim($_POST['AadhaarNumber']))>0)) {
-            return Response::returnError("Please enter AadhaarNumber");
-        }
+        //if (!(strlen(trim($_POST['AadhaarNumber']))>0)) {
+           // return Response::returnError("Please enter AadhaarNumber");
+        //}
         if (!(strlen(trim($_POST['LoginPassword']))>0)) {
             return Response::returnError("Please enter MemberPassword");    
         }
