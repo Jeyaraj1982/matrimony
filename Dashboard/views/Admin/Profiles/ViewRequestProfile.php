@@ -1,5 +1,6 @@
  <?php  
 $response = $webservice->getData("Admin","GetDraftProfileInfo",array("ProfileCode"=>$_GET['Code']));   
+print_r($response);
      $ProfileInfo          = $response['data']['ProfileInfo'];
     $Member = $response['data']['Members'];
     $EducationAttachment = $response['data']['EducationAttachments'];
@@ -489,8 +490,20 @@ text-align: left;
     </div>
   </div>
 </div>
-</form>
 
+ <?php 
+     if (isset($_POST['Approve'])) {
+        
+        $response = $webservice->getData("Admin","ApproveProfile",array("ProfileCode"=>$_GET['Code']));   
+        if ($response['status']=="success") {   ?>
+        <script>location.href='<?php echo AppUrl;?>Profiles/Approved';</script>
+        <?php     
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+    
+ ?>
    
             
                            
@@ -498,13 +511,14 @@ text-align: left;
      <?php if($ProfileInfo['IsApproved']==1){?>
          Profile Already Published
      <?php } else {?>
-        <a href="javascript:void(0)" onclick="showConfirmApprove('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Approve" style="font-family:roboto">Approve</a>&nbsp;
+      <!--  <a href="javascript:void(0)" onclick="showConfirmApprove('<?php //echo $_GET['Code'];?>')" class="btn btn-success" name="Approve" style="font-family:roboto">Approve</a>&nbsp;-->
+        <button type="submit" class="btn btn-success" name="Approve" style="font-family:roboto">Approve</button>&nbsp;
         <button type="submit" class="btn btn-warning" name="Reject" style="font-family:roboto">Reject</button>
         <button type="submit" class="btn btn-danger" name="Delete" style="font-family:roboto">Delete</button>
         <?php }?>
     </div>
   
-    
+ </form>   
         
         <div class="modal" id="ApproveNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">

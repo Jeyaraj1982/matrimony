@@ -81,10 +81,6 @@
             return Response::returnError("WhatsappNumber Already Exists");
         }
         }
-        $data = $mysql->select("select * from _tbl_members where  AadhaarNumber='".$_POST['AadhaarNumber']."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("AadhaarNumber Already Exists");
-        }
         if (!(strlen(trim($_POST['MemberName']))>0)) {
             return Response::returnError("Please enter your name");
         }
