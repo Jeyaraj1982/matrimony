@@ -686,11 +686,13 @@
                if ( sizeof($v)>0) {
                $Members[$index]['IsEditable']= ($v[0]['IsApproved']==0 && $v[0]['RequestToVerify']==0) ? 1 : 0 ;
                $Members[$index]['ProfilesID']= $v[0]['ProfileID']  ;
+               $Members[$index]['ProfilesCode']= $v[0]['ProfileCode']  ;
                $Members[$index]['NoOfProfile']= sizeof($v)  ;
                    
                } else {
                 $Members[$index]['IsEditable']=  0;
                 $Members[$index]['ProfilesID']= 0;
+                $Members[$index]['ProfilesCode']= 0;
                 $Members[$index]['NoOfProfile']= 0;
                    
                }
@@ -925,7 +927,7 @@
                   }  
               }
                                                           
-             return Response::returnSuccess("success"."select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileCode`='".$_POST['ProfileCode']."'",array("ProfileInfo"            => $Profiles[0],
+             return Response::returnSuccess("success"."select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where `ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'",array("ProfileInfo"            => $Profiles[0],
                                                             "ProfilePhotos"          => $ProfilePhoto,
                                                             "ProfilePhotoFirst"      => $ProfilePhotoFirst[0],        
                                                             "EducationAttachments"   => $Educationattachments,
@@ -1117,6 +1119,8 @@
                                                                          `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                                          `ProfileID`           = '".$Profiles['ProfileID']."',
                                                                          `Details`           = '".$_POST['Details']."'
+                                                                         `DraftProfileID`           = '".$Profiles[0]['ProfileID']."'
+                                                                         `DraftProfileCode`           = '".$Profiles[0]['ProfileCode']."'
                                                                             where  `ProfileCode`='".$_POST['ProfileCode']."'";
              $mysql->execute($updateSql);  
              } else {
@@ -1138,7 +1142,7 @@
                                                                    "CreatedBy"   => $Profiles[0]['MemberID'],
                                                                    "ProfileCode"         => $_POST['ProfileCode'])) ;
              }
-            return Response::returnSuccess("success",array("MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
+            return Response::returnSuccess("success".$updateSql,array("MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
                                                             "Language"               => CodeMaster::getData('LANGUAGENAMES'),
                                                             "Religion"               => CodeMaster::getData('RELINAMES'),
                                                             "Caste"                  => CodeMaster::getData('CASTNAMES'),
@@ -1364,22 +1368,24 @@
              
              global $mysql,$loginInfo;   
              
-             $photos = $mysql->select("select * from `_tbl_draft_profiles_photos` where `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
-              
-             $MemberID =$mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'"); 
+             $ProfileInfo =$mysql->select("select * from `_tbl_draft_profiles` where   `ProfileCode`='".$_POST['Code']."'"); 
+             
+             $photos = $mysql->select("select * from `_tbl_draft_profiles_photos` where   MemberID='".$ProfileInfo[0]['MemberID']."' and `ProfileCode`='".$ProfileInfo[0]['ProfileCode']."' and `IsDelete`='0'");
              
              if (isset($_POST['ProfilePhoto'])) {
                  if(sizeof($photos)<5){
-                     $mysql->insert("_tbl_draft_profiles_photos",array("ProfileCode"    => $_POST['Code'],
-                                                                "MemberID"    => $MemberID[0]['MemberID'],
-                                                                "ProfilePhoto" => $_POST['ProfilePhoto'],   
-                                                                "UpdateOn"     => date("Y-m-d H:i:s")));     
+                     $mysql->insert("_tbl_draft_profiles_photos",array("ProfileID"    => $ProfileInfo[0]['ProfileID'],
+                                                                       "ProfileCode"  => $ProfileInfo[0]['ProfileCode'],
+                                                                       "MemberID"     => $ProfileInfo[0]['MemberID'],
+                                                                       "ProfilePhoto" => $_POST['ProfilePhoto'],   
+                                                                       "UpdateOn"     => date("Y-m-d H:i:s")));     
                  } else { 
                      return Response::returnError("Only 5 phots allowed",$photos);
                  }
              }
              
-             $photos = $mysql->select("select * from `_tbl_draft_profiles_photos` where `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
+             $photos = $mysql->select("select * from `_tbl_draft_profiles_photos` where `ProfileCode`='".$ProfileInfo[0]['ProfileCode']."' and MemberID='".$ProfileInfo[0]['MemberID']."' and `IsDelete`='0'");
+                                       
              return Response::returnSuccess("success",$photos);
          }
          function DeletProfilePhoto() {

@@ -120,7 +120,7 @@ text-align: left;
               </div> 
              </div>
              <div style="text-align:right">
-             <?php  foreach($response['data']['ProfilePhotos'] as $ProfileP) print_r($response['data']['ProfilePhotos']); {?>
+             <?php  foreach($response['data']['ProfilePhotos'] as $ProfileP)  {?>
                    <div class="photoview">
                     <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 96px;width: 72px;">
                   </div>

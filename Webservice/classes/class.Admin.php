@@ -691,6 +691,7 @@ class Admin extends Master {
                                                                   "EducationRemarks"  => $ded['EducationRemarks'],
                                                                   "DraftProfileID"    => $ded['ProfileID'],
                                                                   "DraftProfileCode"  => $ded['ProfileCode'],
+                                                                  "DraftEducationID"  => $ded['AttachmentID'],
                                                                   "ProfileID"         => $pid,
                                                                   "ProfileCode"       => $ProfileCode,
                                                                   "MemberID"          => $draft[0]['CreatedBy'],

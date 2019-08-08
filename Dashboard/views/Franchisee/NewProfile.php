@@ -77,9 +77,9 @@
                             <td><?php echo $Member['NoOfProfile'];?></td>
                             <td>
                                 <?php if($Member['NoOfProfile']>0) {?>
-                                    <a href="<?php echo GetUrl("ViewMemberProfile/".$Member['ProfilesID'].".htm"); ?>"><span>View</span></a>
+                                    <a href="<?php echo GetUrl("ViewMemberProfile/".$Member['ProfilesCode'].".htm"); ?>"><span>View</span></a>
                                     <?php if ($Member['IsEditable']==1) { ?>
-                                        &nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/".$Member['ProfilesID'].".htm"); ?>"><span>Edit</span></a>
+                                        &nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/".$Member['ProfilesCode'].".htm"); ?>"><span>Edit</span></a>
                                     <?php } ?>
                                 <?php } else {?>
                                     <a href="<?php echo GetUrl("CreateProfile/".$Member['MemberCode'].".htm");?>"><span>Create</span></a>  

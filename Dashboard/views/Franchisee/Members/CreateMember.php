@@ -64,11 +64,6 @@ $(document).ready(function () {
         IsNonEmpty("EmailID","ErrEmailID","Please Enter Email ID");
                         
    }); 
-   $("#AadhaarNumber").blur(function () {
-    
-        IsNonEmpty("AadhaarNumber","ErrAadhaarNumber","Please Enter Aadhaar Number");
-                        
-   });
    $("#LoginPassword").blur(function () {
                   
        if (IsNonEmpty("LoginPassword","ErrLoginPassword","Please Enter Login Password")) {
@@ -95,7 +90,6 @@ function SubmitNewMember() {
                          $('#ErrMobileNumber').html("");
                          $('#ErrWhatsappNumber').html("");
                          $('#ErrEmailID').html("");
-                         $('#ErrAadhaarNumber').html("");
                          $('#ErrLoginPassword').html("");
                          
                          ErrorCount=0;
@@ -117,12 +111,9 @@ function SubmitNewMember() {
                         if (IsNonEmpty("EmailID","ErrEmailID","Please Enter EmailID")) {
                             IsEmail("EmailID","ErrEmailID","Please Enter Valid EmailID");    
                         }
-                        if (IsNonEmpty("AadhaarNumber","ErrAadhaarNumber","Please Enter Aadhaar Number")) {
-                        IsNumeric("AadhaarNumber","ErrAadhaarNumber","Please Enter Numeric Charactors only");
-                        }
                         if (IsNonEmpty("LoginPassword","ErrLoginPassword","Please Enter Login Password")) {
                             IsPassword("LoginPassword","ErrLoginPassword","Please Enter Alpha Numeric Characters and More than 8 characters");  
-                        } 
+                        }                                                                                                                                
                         
                         if (ErrorCount==0) {
                             return true;
@@ -197,17 +188,6 @@ function SubmitNewMember() {
                           </div>
                         </div>
                        <div class="form-group row">
-                          <label for="AadhaarNumber" class="col-sm-2 col-form-label">Aadhaar Number<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" class="form-control" id="AadhaarNumber" name="AadhaarNumber" value="<?php echo (isset($_POST['AadhaarNumber']) ? $_POST['AadhaarNumber'] : "");?>" placeholder="Aadhaar Number">
-                            <span class="errorstring" id="ErrAadhaarNumber"><?php echo isset($ErrAadhaarNumber)? $ErrAadhaarNumber : "";?></span>
-                          </div>
-                          <label for="AadhaarFile" class="col-sm-2 col-form-label">Aadhaar File<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="file"  id="AadhaarFile" name="AadhaarFile">
-                          </div>
-                        </div>
-                       <div class="form-group row">
                           <!--<label for="LoginName" class="col-sm-2 col-form-label">Login Name<span id="star">*</span></label>
                           <div class="col-sm-3">
                             <input type="text" class="form-control" id="LoginName" name="LoginName" value="<?php //echo (isset($_POST['LoginName']) ? $_POST['LoginName'] : "");?>" placeholder="Login Name">
@@ -222,7 +202,7 @@ function SubmitNewMember() {
                           
                        <div class="form-group row">
                         <div class="col-sm-2">
-                        <button type="submit" name="BtnMember" class="btn btn-success mr-2">Create Member</button></div>
+                        <button type="submit" name="BtnMember" class="btn btn-primary mr-2" style="font-family:roboto">Create Member</button></div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"> <a href="ManageMembers">List of Members </a></div>
                         </div> 
                         </form> 
