@@ -500,4 +500,10 @@
         }
     }
     $dashboard = new J2JDashboard();
+    
+    /* CData */
+    $_Month = array("Jan","Feb","Mar");
+    $_DOB_Year_Start = date("Y")-18;
+    $_DOB_Year_End = (date("Y")-18)-55;
+     
 ?>

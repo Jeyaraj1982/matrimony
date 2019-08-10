@@ -512,22 +512,23 @@ class Admin extends Master {
      
      function ApproveProfile() {
 
-             global $mysql,$loginInfo;
+             global $mysql,$loginInfo;                                                      
              
-             /*$draft = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");
+             $draft = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'");
              
              $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$draft[0]['MemberID']."'");
              
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='ProfilePublished'");
              $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
-             $content  = str_replace("#ProfileID#",$draft[0]['ProfileID'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$draft[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$draft[0]['PersonName'],$content);
 
              MailController::Send(array("MailTo"   => $member[0]['EmailID'],
                                         "Category" => "ProfilePublished",
                                         "MemberID" => $member[0]['MemberID'],
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
-             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your Profile ID '".$draft[0]['ProfileID']."' has been published");  */
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$draft[0]['PersonName'].") has been published. Your Profile ID is ".$draft[0]['ProfileCode']);  
              
              $updateSql = "update `_tbl_draft_profiles` set  `IsApproved`      = '1',
                                                              `RequestToVerify` = '0',
@@ -694,16 +695,17 @@ class Admin extends Master {
      $draftEducationDetails = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['Code']."'");   
        foreach($draftEducationDetails as $ded) {
      $mysql->insert("_tbl_profiles_education_details",array("EducationDetails"  => $ded['EducationDetails'],
-                                                                  "EducationDegree"   => $ded['EducationDegree'],
-                                                                  "EducationRemarks"  => $ded['EducationRemarks'],
-                                                                  "DraftProfileID"    => $ded['ProfileID'],
-                                                                  "DraftProfileCode"  => $ded['ProfileCode'],
-                                                                  "DraftEducationID"  => $ded['AttachmentID'],
-                                                                  "ProfileID"         => $pid,
-                                                                  "ProfileCode"       => $ProfileCode,
-                                                                  "MemberID"          => $draft[0]['MemberID'],
-                                                                  "IsApproved"        => "1",
-                                                                  "IsApprovedOn"      => date("Y-m-d H:i:s")));
+                                                            "EducationDegree"   => $ded['EducationDegree'],
+                                                            "EducationRemarks"  => $ded['EducationRemarks'],
+                                                            "DraftProfileID"    => $ded['ProfileID'],
+                                                            "DraftProfileCode"  => $ded['ProfileCode'],
+                                                            "DraftEducationID"  => $ded['AttachmentID'],
+                                                            "IsDeleted"         => $ded['IsDeleted'],
+                                                            "ProfileID"         => $pid,
+                                                            "ProfileCode"       => $ProfileCode,
+                                                            "MemberID"          => $draft[0]['MemberID'],
+                                                            "IsApproved"        => "1",
+                                                            "IsApprovedOn"      => date("Y-m-d H:i:s")));
        }
        
        $draftProfilePhotos = $mysql->select("select * from `_tbl_draft_profiles_photos` where  `ProfileCode`='".$_POST['Code']."'");   
@@ -2136,7 +2138,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             
             
                $result =  Profiles::getDraftProfileInformationforAdmin($Profiles[0]['ProfileCode']);
-               return Response::returnSuccess("success",$result);
+               return Response::returnSuccess("success".$Educationattachments,$result);
            }
     function GetPublishedProfiles() {
            global $mysql;    

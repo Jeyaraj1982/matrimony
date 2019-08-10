@@ -9,8 +9,8 @@
         <div class="card-body">
             <?php 
                 foreach($response['data'] as $Profile) {   
-                    echo DisplayProfileShortInfoBrowse($Profile); 
-                }
+                    echo DisplayProfileShortInformation($Profile); ?><br>
+             <?php    }
             ?>
         </div>
     </div>

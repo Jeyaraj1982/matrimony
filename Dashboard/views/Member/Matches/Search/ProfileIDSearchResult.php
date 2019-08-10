@@ -12,7 +12,11 @@
                         <div class="col-sm-6"><h4 class="card-title">Search Result</h4></div>
                         <div class="col-sm-6" style="text-align:right;"><h4 class="card-title"><a href="AdvancedSearch">Modify Search</a></h4></div>
                     </div>
-                    <?php foreach($response['data'] as $Profile) {  echo DisplayProfileShortInfoBrowse($Profile);   }?>
+                    <?php 
+                foreach($response['data'] as $Profile) {   
+                    echo DisplayProfileShortInformation($Profile); ?><br>
+             <?php    }
+            ?>
                 </div>
             </div>
         </div>

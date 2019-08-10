@@ -1112,11 +1112,9 @@
                                                                          `AnnualIncome`      = '".$IncomeRange[0]['CodeValue']."',
                                                                          `EmployedAsCode`    = '".$_POST['EmployedAs']."',
                                                                          `EmployedAs`        = '".$EmployedAs[0]['CodeValue']."',
-                                                                         `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
-                                                                         `ProfileID`           = '".$Profiles['ProfileID']."',
+                                                                         `ProfileID`           = '".$Profiles[0]['ProfileID']."',
+                                                                         `MemberID`           = '".$Profiles[0]['MemberID']."',
                                                                          `Details`           = '".$_POST['Details']."'
-                                                                         `DraftProfileID`           = '".$Profiles[0]['ProfileID']."'
-                                                                         `DraftProfileCode`           = '".$Profiles[0]['ProfileCode']."'
                                                                             where  `ProfileCode`='".$_POST['ProfileCode']."'";
              $mysql->execute($updateSql);  
              } else {
@@ -1136,9 +1134,11 @@
                                                                    "EmployedAs"          => $EmployedAs[0]['CodeValue'],
                                                                    "Details"             => $_POST['Details'],
                                                                    "CreatedBy"   => $Profiles[0]['MemberID'],
+                                                                   "MemberID"   => $Profiles[0]['MemberID'],
+                                                                   "ProfileID"   => $Profiles[0]['ProfileID'],
                                                                    "ProfileCode"         => $_POST['ProfileCode'])) ;
              }
-            return Response::returnSuccess("success".$updateSql,array("MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
+            return Response::returnSuccess("success",array("MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
                                                             "Language"               => CodeMaster::getData('LANGUAGENAMES'),
                                                             "Religion"               => CodeMaster::getData('RELINAMES'),
                                                             "Caste"                  => CodeMaster::getData('CASTNAMES'),
@@ -1318,7 +1318,7 @@
                                                                     "ProfileID"         => $profiles[0]['ProfileID'],
                                                                     "ProfileCode"         => $_POST['Code'],
                                                                     "MemberID"          => $profiles[0]['MemberID']));
-                 } else { 
+                 } else {                                                                  
                      return Response::returnError("Only 2 phots allowed",$photos);
                  }
              }
@@ -1525,7 +1525,7 @@
                                                                   "EducationRemarks"  => $_POST['EducationRemarks'],
                                                                   "ProfileID"        => $profile[0]['ProfileID'],
                                                                   "ProfileCode"        => $_POST['Code'],
-                                                                  "MemberID"         => $loginInfo[0]['MemberID']));
+                                                                  "MemberID"         => $profile[0]['MemberID']));
              return (sizeof($id)>0) ? Response::returnSuccess("success",$_POST)
                                     : Response::returnError("Access denied. Please contact support");   
          }

@@ -1,6 +1,6 @@
 <?php
     $page="DocumentAttachment";       
-    $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
+    $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code'])); 
    ?>
 <?php include_once("settings_header.php");?>
 <style>
@@ -73,20 +73,21 @@ function submitUpload() {
                     
                     if ($err==0) {
                         $_POST['File']= $profilephoto;
-                        $res =$webservice->getData("Member","AttachDocuments",$_POST);
+                        $res =$webservice->getData("Franchisee","AttachDocuments",$_POST);
                         if ($res['status']=="success") {
                             echo  $res['message']; 
                         } else {
                             $errormessage = $res['message']; 
                         }
                     } else {
-                        $res =$webservice->getData("Member","AttachDocuments");
+                        $res =$webservice->getData("Franchisee","AttachDocuments");
                     }
                 } else {
-                     $res =$webservice->getData("Member","AttachDocuments");
+                     $res =$webservice->getData("Franchisee","AttachDocuments");
                      
                 }
                 $DocumentPhoto = $res['data'];
+                
               
             ?>
     

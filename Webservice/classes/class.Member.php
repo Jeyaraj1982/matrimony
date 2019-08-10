@@ -1463,14 +1463,14 @@
                  return  $result;
              }
          }
-         function GetDownloadProfileInformation() {
+       /*  function GetDownloadProfileInformation() {
              global $mysql,$loginInfo;        
-             $Profiles = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileID']."'");               
+             $Profiles = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileCode']."'");               
              $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileID='".$Profiles[0]['DraftProfileID']."'");
              $PartnersExpectations = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['DraftProfileID']."'");               
              $ProfilePhoto = $mysql->select("select * from `_tbl_draft_profiles_photos` where `ProfileID`='".$Profiles[0]['DraftProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0'");               
 
-               $IsDownload= $mysql->select("select * from `_tbl_profile_download` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileID']."'");
+               $IsDownload= $mysql->select("select * from `_tbl_profile_download` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileCode']."'");
               if (sizeof($IsDownload)>0) {              
                      $id = $mysql->insert("_tbl_profile_viewlog",array("MemberID"        => $loginInfo[0]['MemberID'],
                                                                  "ProfileID"    => $Profiles[0]['ProfileID'],
@@ -1483,7 +1483,7 @@
          else{
              return Response::returnError("not authenticated");
          }
-         }
+         } */
          function SelectPlanAndContinue() {
 
              global $mysql,$loginInfo;
@@ -1695,9 +1695,6 @@
 
              global $mysql, $loginInfo;
 
-             $dob = strtotime($_POST['DateofBirth']);
-             $dob = date("Y",$dob)."-".date("m",$dob)."-".date("d",$dob);
-
              $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
              $Sex            = CodeMaster::getData("SEX",$_POST['Sex']);
              $MotherTongue   = CodeMaster::getData("LANGUAGENAMES",$_POST['Language']); 
@@ -1707,6 +1704,8 @@
              $Nationality    = CodeMaster::getData("NATIONALNAMES",$_POST['Nationality']);
              $Childrens     = CodeMaster::getData("NUMBEROFBROTHER",$_POST['HowManyChildren']);  
 
+             $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
+             
              $updateSql = "update `_tbl_draft_profiles` set `ProfileFor`        = '".$_POST['ProfileFor']."',
                                                            `ProfileName`       = '".$_POST['ProfileName']."',
                                                            `DateofBirth`       = '".$dob."',
@@ -2397,6 +2396,81 @@
              $updateSql = "update `_tbl_draft_profiles_photos` set `PriorityFirst` = '1' where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfilePhotoID`='".$ProfilePhotoID."'";
              $mysql->execute($updateSql);  
           }
+          
+          function GetDownloadProfileInformation() {
+               
+                global $mysql,$loginInfo;      
+             $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$_POST['ProfileCode']."'"); 
+             $visitorsDetails =$mysql->select("select * from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+                           
+               $id = $mysql->insert("_tbl_profiles_lastseen",array("MemberID"       => $Profiles[0]['MemberID'],
+                                                                   "ProfileID"      => $Profiles[0]['ProfileID'],
+                                                                   "ProfileCode"    => $Profiles[0]['ProfileCode'],
+                                                                   "VisterMemberID"       => $visitorsDetails[0]['MemberID'],
+                                                                   "VisterProfileID"      => $visitorsDetails[0]['ProfileID'],
+                                                                   "VisterProfileCode"    => $visitorsDetails[0]['ProfileCode'],
+                                                                   "ViewedOn"       => date("Y-m-d H:i:s")));
+            
+               $result =  Profiles::getDownloadProfileInformation($Profiles[0]['ProfileCode']);
+               return Response::returnSuccess("success",$result);
+           }
+           
+          /*fixed*/ 
+           function GetFullProfileInformation() {
+               
+               global $mysql,$loginInfo;      
+               $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$_POST['ProfileCode']."'"); 
+               $member =$mysql->select("select * from `_tbl_members` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+               $visitorsDetails =$mysql->select("select * from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+                           
+               $id = $mysql->insert("_tbl_profiles_lastseen",array("MemberID"           => $Profiles[0]['MemberID'],
+                                                                   "ProfileID"          => $Profiles[0]['ProfileID'],
+                                                                   "ProfileCode"        => $Profiles[0]['ProfileCode'],
+                                                                   "VisterMemberID"     => $member[0]['MemberID'],
+                                                                   "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
+                                                                   "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                                   "ViewedOn"           => date("Y-m-d H:i:s")));
+            
+               $result =  Profiles::getDownloadProfileInformation($Profiles[0]['ProfileCode']);
+               return Response::returnSuccess("success",$result);
+          }
+          /*fixed*/
+          
+         function GetRecentlyViewedProfiles() {
+
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
+                 $RecentProfiles = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$loginInfo[0]['MemberID']."'");
+                 
+                   if (sizeof($RecentProfiles)>0) {
+                      foreach($RecentProfiles as $RecentProfile) {
+                        $Profiles[]=Profiles::getProfileInfo($RecentProfile['ProfileCode'],1);     
+                     }
+                 }
+                  
+                  return Response::returnSuccess("success",$Profiles);
+             }
+         }
+         function GetRecentlyWhoViewedProfiles() {
+
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
+             $myProfile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+                 $RecentProfiles = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$myProfile[0]['ProfileCode']."' group by VisterProfileCode");
+                 
+                   if (sizeof($RecentProfiles)>0) {
+                      foreach($RecentProfiles as $RecentProfile) {
+                        $Profiles[]=Profiles::getProfileInfo($RecentProfile['VisterProfileCode'],1);     
+                     }
+                 }
+                  
+                  return Response::returnSuccess("success",$Profiles);
+             }
+         }
      
      }  
     

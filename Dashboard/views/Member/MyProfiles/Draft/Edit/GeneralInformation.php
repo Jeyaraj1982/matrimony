@@ -39,19 +39,33 @@
                         </div>
                         <div class="form-group row">
                             <label for="Name" class="col-sm-2 col-form-label">Date of Birth<span id="star">*</span></label>
-                            <div class="col-sm-4">
-                                <?php
-
-                          if (isset($_POST['DateofBirth'])) {
-                            $dob=$_POST['DateofBirth']  ;
-                          } else {
-                              $dob=strtotime($ProfileInfo['DateofBirth'])  ;  
-                               $dob = date("Y",$dob)."-".date("m",$dob)."-".date("d",$dob);
-                          } 
-
-                          ?>
-                                    <input type="date" class="form-control" id="DateofBirth" name="DateofBirth" style="line-height:15px !important" value="<?php echo $dob;?>">
-                                    <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth: "";?></span>
+                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+                                <?php $dob=strtotime($ProfileInfo['DateofBirth'])  ; ?>
+                                    <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
+                                        <?php for($i=1;$i<=31;$i++) {?>
+                                            <option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'date'])) ? (($_POST[ 'date']==$i) ? " selected='selected' " : "") : ((date("d",$dob)==$i) ? " selected='selected' " : "");?>>
+                                            <?php echo $i;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                            </div>
+                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">        
+                                    <select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px">
+                                        <?php foreach($_Month as $key=>$value) {?>
+                                            <option value="<?php echo $key+1; ?>" <?php echo (isset($_POST[ 'month'])) ? (($_POST[ 'month']==$key+1) ? " selected='selected' " : "") : ((date("m",$dob)==$key+1) ? " selected='selected' " : "");?>>
+                                            <?php echo $value;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                            </div>
+                            <div class="col-sm-2">
+                                    <select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
+                                        <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
+                                            <option value="<?php echo $i; ?>" <?php echo (isset($_POST['year'])) ? (($_POST['year']==$i) ? " selected='selected' " : "") : ((date("Y",$dob)==$i) ? " selected='selected' " : "");?>>
+                                            <?php echo $i;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
                             </div>
                            <!-- <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
                             <div class="col-sm-4">
@@ -59,13 +73,13 @@
                                 <input type="text" name="Sex" class="form-control" id="Sex" value="Male">
                                 <?php //} else// { ?><input type="text" name="Sex" class="form-control" id="Sex" value="Female"> <?php // }?> 
                             </div> -->
-                            <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
-                            <div class="col-sm-4">
+                            <label for="Sex" class="col-sm-2 col-form-label" style="text-align: right;">Sex<span id="star">*</span></label>
+                            <div class="col-sm-3">
                                 <select class="selectpicker form-control" data-live-search="true" id="Sex" name="Sex">
                                     <option>Choose Sex</option>
                                     <?php foreach($response['data']['Gender'] as $Sex) { ?>
                                         <option value="<?php echo $Sex['SoftCode'];?>" <?php echo (isset($_POST[ 'Sex'])) ? (($_POST[ 'Sex']==$Sex[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Sex']==$Sex[ 'CodeValue']) ? " selected='selected' " : "");?>>
-                                            <?php echo $Sex['CodeValue'];?>
+                                            <?php echo trim($Sex['CodeValue']);?>
                                                 <?php } ?>       </option>
                                 </select>
                             </div>
@@ -81,12 +95,12 @@
                                                 <?php } ?>
                                 </select>
                             </div>
-                            <label for="Caste" class="col-sm-2 col-form-label">Mother Tongue<span id="star">*</span></label>
+                            <label for="Caste" class="col-sm-2 col-form-label" style="text-align: right;">Mother Tongue<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="selectpicker form-control" data-live-search="true" id="Language" name="Language" >
                                     <option>Choose Mother Tongue</option>
                                     <?php foreach($response['data']['Language'] as $Language) { ?>
-                                        <option value="<?php echo $Language['SoftCode'];?>" <?php echo (isset($_POST[ 'Language'])) ? (($_POST[ 'Language']==$Language[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MotherTongue']==$Language[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                                        <option value="<?php echo $Language['SoftCode'];?>" <?php echo (isset($_POST[ 'Language'])) ? (($_POST[ 'Language']==$Language[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MotherTongueCode']==$Language[ 'SoftCode']) ? " selected='selected' " : "");?>>
                                             <?php echo $Language['CodeValue'];?> </option>
                                                 <?php } ?>
                                 </select>
@@ -97,12 +111,12 @@
             
             if ($('#MaritalStatus').val()=="MST002")  {
                    $('#HowManyChildren').attr("disabled", "disabled");
-                   $('#howmanychildren').html('How Many Children');
+                   $('#howmanychildren').html('Children');
                   // $('#ChildrenWithYou').attr("disabled", "disabled");
                   // $('#IsChildrenWithYou').html('Is Children With You?');
             }else {
                    $('#HowManyChildren').removeAttr("disabled");
-                   $('#howmanychildren').html('How Many Children<span id="star">*</span>');
+                   $('#howmanychildren').html('Children<span id="star">*</span>');
                  //  $('#ChildrenWithYou').removeAttr("disabled");
                   // $('#IsChildrenWithYou').html('Is Children WithYou?<span id="star">*</span>');
             }
@@ -115,7 +129,7 @@
 </script>                  
                         <div class="form-group row">
                             <label for="HowManyChildren" class="col-sm-2 col-form-label" id="howmanychildren"></label>
-                            <div class="col-sm-3" id="childrencount_input">
+                            <div class="col-sm-4" id="childrencount_input">
                                     <select class="selectpicker form-control" data-live-search="true" id="HowManyChildren" name="HowManyChildren">
                                     <option>Choose How Many Children</option>
                                     <?php foreach($response['data']['NumberofBrother'] as $HowManyChildren) { ?>
@@ -125,8 +139,8 @@
                                 </select>
                             </div>
         
-                            <label for="Description" class="col-sm-3 col-form-label" id="IsChildrenWithYou"></label>
-                            <div class="col-sm-3" id="Childrenwithyou_input">
+                            <label for="Description" class="col-sm-2 col-form-label" id="IsChildrenWithYou" style="text-align: right;">Is Children with you?</label>
+                            <div class="col-sm-4" id="Childrenwithyou_input">
                                 <select class="selectpicker form-control" data-live-search="true" id="ChildrenWithYou" name="ChildrenWithYou">
                                     <option>Choose Children With You</option>
                                     <option value="1" <?php echo ($ProfileInfo['ChildrenWithYou']==1) ? " selected='selected' " : "";?>>Yes</option>
@@ -145,14 +159,15 @@
                                                 <?php } ?>
                                 </select>
                             </div>
-                            <label for="Caste" class="col-sm-2 col-form-label">Caste<span id="star">*</span></label>
+                            <label for="Caste" class="col-sm-2 col-form-label" style="text-align: right;">Caste<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="selectpicker form-control" data-live-search="true" id="Caste" name="Caste">
-                                    <option>Choose Caste</option>
-                                    <?php foreach($response['data']['Caste'] as $Caste) { ?>
-                                        <option value="<?php echo $Caste['SoftCode'];?>" <?php echo (isset($_POST[ 'Caste'])) ? (($_POST[ 'Caste']==$Caste[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Caste']==$Caste[ 'CodeValue']) ? " selected='selected' " : "");?>>
-                                            <?php echo $Caste['CodeValue'];?> </option>
-                                                <?php } ?>
+                                <option  value="">Choose Caste</option>
+                                <?php foreach($response['data']['Caste'] as $Caste) { ?>
+                                <option value="<?php echo $Caste['SoftCode'];?>" <?php echo (isset($_POST[ 'Caste'])) ? (($_POST[ 'Caste']==$Caste[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'CasteCode']==$Caste[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                    <?php echo trim($Caste['CodeValue']);?>
+                                </option>
+                                <?php } ?>
                                 </select>
                             </div>
                         </div>
@@ -161,20 +176,20 @@
                             <label for="Community" class="col-sm-2 col-form-label">Community<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="selectpicker form-control" data-live-search="true" id="Community" name="Community">
-                                    <option>Choose Community</option>
+                                    <option value="">Choose Community</option>
                                     <?php foreach($response['data']['Community'] as $Community) { ?>
-                                        <option value="<?php echo $Community['SoftCode'];?>" <?php echo (isset($_POST[ 'Community'])) ? (($_POST[ 'Community']==$Community[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Community']==$Community[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                                        <option value="<?php echo $Community['SoftCode'];?>" <?php echo (isset($_POST[ 'Community'])) ? (($_POST[ 'Community']==$Community[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'CommunityCode']==$Community[ 'SoftCode']) ? " selected='selected' " : "");?>>
                                             <?php echo $Community['CodeValue'];?>  </option>
                                                 <?php } ?>
                                 </select>
                             </div>
-                            <label for="Nationality" class="col-sm-2 col-form-label">Nationality<span id="star">*</span></label>
+                            <label for="Nationality" class="col-sm-2 col-form-label" style="text-align: right;">Nationality<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="selectpicker form-control" data-live-search="true" id="Nationality" name="Nationality">
                                     <option>Choose Nationality</option>
                                     <?php foreach($response['data']['Nationality'] as $Nationality) { ?>
-                                        <option value="<?php echo $Nationality['SoftCode'];?>" <?php echo (isset($_POST[ 'Nationality'])) ? (($_POST[ 'Nationality']==$Nationality[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Nationality']==$Nationality[ 'CodeValue']) ? " selected='selected' " : "");?>>
-                                            <?php echo $Nationality['CodeValue'];?></option>
+                                        <option value="<?php echo $Nationality['SoftCode'];?>" <?php echo (isset($_POST[ 'Nationality'])) ? (($_POST[ 'Nationality']==$Nationality[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'NationalityCode']==$Nationality[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                            <?php echo trim($Nationality['CodeValue']);?></option>
                                                 <?php } ?>
                                 </select>
                             </div>
