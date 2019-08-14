@@ -2435,43 +2435,126 @@
                return Response::returnSuccess("success",$result);
           }
           /*fixed*/
-          
+        
          function GetRecentlyViewedProfiles() {
-
-             global $mysql,$loginInfo; 
+          global $mysql,$loginInfo; 
              $Profiles = array();
-
-             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
-                 $RecentProfiles = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$loginInfo[0]['MemberID']."'");
-                 
-                   if (sizeof($RecentProfiles)>0) {
-                      foreach($RecentProfiles as $RecentProfile) {
-                        $Profiles[]=Profiles::getProfileInfo($RecentProfile['ProfileCode'],1);     
-                     }
-                 }
-                  
-                  return Response::returnSuccess("success",$Profiles);
+             $sql = "";
+             if (isset($_POST['requestfrom'])) {
+                 $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
+             } else {
+                $_POST['requestfrom']=0; 
+                $_POST['requestto']=5; 
              }
+
+             //$myProfile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+             //$RecentProfiles = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$loginInfo[0]['MemberID']."' group by ProfileCode order by LastSeenID DESC ".$sql);
+             $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$loginInfo[0]['MemberID']."' order by LastSeenID DESC");
+             $profileCodes  = array();
+             foreach($RecentProfiles as $RecentProfile) {
+                 if (!(in_array($RecentProfile['ProfileCode'], $profileCodes)))
+                 {
+                    $profileCodes[]=$RecentProfile['ProfileCode'];
+                 }
+             }
+             if (sizeof($profileCodes)>0) {
+                for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) {  
+                    $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                }
+             }
+                  
+             return Response::returnSuccess("success",$Profiles);
          }
+         
+          /*fixed*/
          function GetRecentlyWhoViewedProfiles() {
 
              global $mysql,$loginInfo; 
              $Profiles = array();
-
-             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
-             $myProfile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
-                 $RecentProfiles = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$myProfile[0]['ProfileCode']."' group by VisterProfileCode");
-                 
-                   if (sizeof($RecentProfiles)>0) {
-                      foreach($RecentProfiles as $RecentProfile) {
-                        $Profiles[]=Profiles::getProfileInfo($RecentProfile['VisterProfileCode'],1);     
-                     }
-                 }
-                  
-                  return Response::returnSuccess("success",$Profiles);
+             $sql = "";
+             if (isset($_POST['requestfrom'])) {
+                 $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
+             } else {
+                $_POST['requestfrom']=0; 
+                $_POST['requestto']=5; 
              }
+
+             $myProfile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+             //$RecentProfiles = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$myProfile[0]['ProfileCode']."' group by VisterProfileCode order by LastSeenID DESC ".$sql);
+              $RecentProfiles = $mysql->select("select VisterProfileCode from `_tbl_profiles_lastseen` where `ProfileCode` = '".$myProfile[0]['ProfileCode']."'   order by LastSeenID DESC ");
+              $profileCodes  = array();
+             foreach($RecentProfiles as $RecentProfile) {
+                 if (!(in_array($RecentProfile['VisterProfileCode'], $profileCodes)))
+                 {
+                    $profileCodes[]=$RecentProfile['VisterProfileCode'];
+                 }
+             }
+
+             if (sizeof($profileCodes)>0) {
+                 for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) {  
+                    $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,2);     
+                }
+             }
+                  
+             return Response::returnSuccess("success",$Profiles);
+         }
+         function AddToFavourite() {
+
+             global $mysql,$loginInfo;
+             
+             $ProfileCode = $_GET['ProfileCode'];
+             
+             $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$ProfileCode."'"); 
+               $member =$mysql->select("select * from `_tbl_members` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+               $visitorsDetails =$mysql->select("select * from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+               
+                $isFavourite = $mysql->select("select * from `_tbl_profiles_favourites` where `IsHidden`='0' and ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by FavProfileID desc limit 0,1");           
+                 if (sizeof($isFavourite)==0)           {
+               $id = $mysql->insert("_tbl_profiles_favourites",array("MemberID"           => $Profiles[0]['MemberID'],
+                                                                   "ProfileID"          => $Profiles[0]['ProfileID'],
+                                                                   "ProfileCode"        => $Profiles[0]['ProfileCode'],
+                                                                   "VisterMemberID"     => $member[0]['MemberID'],
+                                                                   "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
+                                                                   "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                                   "ViewedOn"           => date("Y-m-d H:i:s")));
+               return Response::returnSuccess($Profiles[0]['ProfileCode']." has been added to your favourites");                                               
+                 } else {
+                     $mysql->execute("update _tbl_profiles_favourites set IsHidden='1', HiddenOn='".date("Y-m-d H:i:s")."' where FavProfileID='".$isFavourite[0]['FavProfileID']."'");
+                     return Response::returnSuccess($Profiles[0]['ProfileCode']." has been removed from your favourites");                                               
+                 }
+          }
+          
+          function GetFavouritedProfiles() {
+              
+          global $mysql,$loginInfo; 
+             $Profiles = array();
+             $sql = "";
+             if (isset($_POST['requestfrom'])) {
+                 $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
+             } else {
+                $_POST['requestfrom']=0; 
+                $_POST['requestto']=5; 
+             }
+
+             $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_favourites` where `IsHidden` ='0' and`VisterMemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC");
+             $profileCodes  = array();
+             foreach($RecentProfiles as $RecentProfile) {
+                 if (!(in_array($RecentProfile['ProfileCode'], $profileCodes)))
+                 {
+                    $profileCodes[]=$RecentProfile['ProfileCode'];
+                 }
+             }
+             if (sizeof($profileCodes)>0) {
+                for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
+                    if (strlen(trim($profileCodes[$i]))>0)  {
+                        $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                    }
+                }
+             }
+                  
+             return Response::returnSuccess("success",$Profiles);
          }
      
      }  
-    
+   
 ?>

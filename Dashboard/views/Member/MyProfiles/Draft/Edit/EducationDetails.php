@@ -61,20 +61,22 @@ function showConfirmDeleteAttach(AttachmentID,ProfileID) {
                         + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
                         + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
                         + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                        +  '<div style="text-align:center">Confirmation Remove  <br><br>'
+                        + '<button type="button" class="close" data-dismiss="modal" style="margin-top: -40px;margin-right: -18px;">&times;</button>'
                         +  '<div style="text-align:center">Are you sure want to Delete?  <br><br>'
                         +  '<button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteAttach(\''+AttachmentID+'\')">Yes</button>&nbsp;'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
+                        +  '<a data-dismiss="modal" style="cursor:pointer">No</a>'
                        +  '</div><br>'
                     +  '</form>'
                 +  '</div>'
-            +  '</div>';                                                                                               
+            +  '</div>';                                                                                                
             $('#DeleteNow_body').html(content);
 }
  function DeleteAttach(AttachmentID) {
         
         var param = $("#form_"+AttachmentID).serialize();
         $('#DeleteNow_body').html(preloader);
-        $.post(API_URL + "m=Member&a=DeleteAttach", param, function(result2) {
+        $.post(API_URL + "m=Member&a=DeleteAttach", param, function(result2) {                                             
             $('#DeleteNow_body').html(result2);
             $('#Documentview_'+AttachmentID).hide();
         }

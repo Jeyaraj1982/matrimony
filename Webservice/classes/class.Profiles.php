@@ -507,7 +507,7 @@
         
         
          /* fixed */
-          public function getProfileInfo($ProfileCode,$IsOther=0) {
+          public function getProfileInfo($ProfileCode,$IsOther=0,$myrecentviewed=1) {
             
             global $mysql,$loginInfo;  
                 
@@ -518,9 +518,8 @@
                 $Educationattachments = $mysql->select("select * from `_tbl_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDeleted`='0' ProfileID='".$Profiles[0]['ProfileID']."'");            
                 $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
                 $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
-                   $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
+                $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
             
-         
             } else {
                 $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$ProfileCode."'");               
                 $PartnersExpectations = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `ProfileCode`='".$ProfileCode."'");
@@ -528,9 +527,13 @@
                 $Educationattachments = $mysql->select("select * from `_tbl_profiles_education_details` where  ProfileCode='".$ProfileCode."' and `IsDeleted`='0'");            
                 $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
                 $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
-                   $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where VisterProfileID='".$Profiles[0]['ProfileID']."' and MemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
-            
-         
+                if ($myrecentviewed==1) {
+                    $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
+                    $isFavourite = $mysql->select("select * from `_tbl_profiles_favourites` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' and `IsHidden`='0' order by FavProfileID desc limit 0,1");
+                } else {
+                $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where VisterProfileID='".$Profiles[0]['ProfileID']."' and MemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
+                //$isFavourite = $mysql->select("select * from `_tbl_profiles_favourites` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' and `IsHidden`='0' order by FavProfileID desc limit 0,1");
+                }
             }
             
             if (sizeof($ProfilePhotos)<4) {
@@ -550,23 +553,52 @@
                     $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
                 }
             } else {
-                 $ProfileThumbnail = $ProfileThumb[0]['ProfilePhoto'];                                              
+                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
             } 
             
             $Position = "Published";
+            
             $Profiles[0]['LastSeen']=(isset($lastseen[0]['ViewedOn']) ? $lastseen[0]['ViewedOn'] : 0);
+            $Profiles[0]['isFavourited']=(isset($isFavourite[0]['ViewedOn']) ? $isFavourite[0]['ViewedOn'] : 0);
+            
             $result = array("ProfileInfo"          => $Profiles[0],
                             "Position"             => $Position,
                             "EducationAttachments" => $Educationattachments,
                             "Documents"            => $Documents,
                             "PartnerExpectation"   => $PartnersExpectations[0],
                             "ProfilePhotos"        => $ProfilePhotos,  /*array*/
-                            "ProfileThumb"         => $ProfileThumbnail,
-                            "sql"         => "select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
+                            "ProfileThumb"         => $ProfileThumbnail);
             return  $result;
                                                                                                            
         }
         
                    
+} 
+
+
+function getDataURI($image, $mime = '') {
+    
+     // Create Image From Existing File
+     // $jpg_image = imagecreatefromjpeg($image);
+
+      // Allocate A Color For The Text
+     // $white = imagecolorallocate($jpg_image, 255, 255, 255);
+
+      // Set Path to Font File
+      //$font_path = 'font.TTF';
+
+      // Set Text to Be Printed On Image
+     $text = "This is a sunset!";
+
+      // Print Text On Image
+      //imagettftext($jpg_image, 25, 0, 75, 300, $white, "", $text);
+
+      // Send Image to Browser
+      //imagejpeg($jpg_image);
+      //$image=  $jpg_image;
+      // Clear Memory
+     // imagedestroy($jpg_image);
+      
+    return 'data: '.(function_exists('mime_content_type') ? mime_content_type($image) : $mime).';base64,'.base64_encode(file_get_contents($image));
 } 
 ?>

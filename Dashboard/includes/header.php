@@ -4,49 +4,37 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Matrimony Software</title>
-         
-            <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/css/vendor.bundle.base.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/css/vendor.bundle.addons.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/style.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/selectboxstyle.css?rnd=<?php echo rand(10,1000);?>">
-            <link rel="shortcut icon" href="<?php echo SiteUrl?>assets/images/favicon.png" /> 
-            <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/puse-icons-feather/feather.css?rnd=<?php echo rand(10,1000);?>">
-            <script src="<?php echo SiteUrl?>assets/vendors/jquery-3.1.1.min.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
-            <link href='<?php echo SiteUrl?>assets/vendors/bootstrap/css/bootstrap.min.css?rnd=<?php echo rand(10,1000);?>' rel='stylesheet' type='text/css'>
-            <!--
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>    
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>   
-            --> 
-            <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js?rnd=<?php echo rand(10,1000);?>"></script>
-            <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css?rnd=<?php echo rand(10,1000);?>">
-            <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>   
-            <script src="<?php echo SiteUrl?>assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
-            <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-            <style>
-                .Activedot {height:10px;width:10px;background-color:#20e512;border-radius:50%;display:inline-block;}
-                .Deactivedot {height:10px;width:10px;background-color:#888;border-radius:50%;display:inline-block;}
-                #star{color:red;}
-                .errorstring {font-size:10px;color:red}
-                div.scrollmenu {background:#fff;border-bottom:2px solid #e5e5e5;white-space: nowrap;padding-left:25px;padding-top:5px;}
-                div.scrollmenu a {display: inline-block;color: #333;text-align: center;padding: 10px 10px;font-family:'Roboto';text-decoration: none;border-bottom:3px solid #fff;margin-right:15px;}
-                div.scrollmenu a:hover {border-bottom:3px solid #fff;color:#ff007b;}
-                .linkactive{border-bottom:3px solid #ff007b !important;color:#ff007b  !important;}
-                .shadow {-webkit-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);-moz-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
-               .bshadow {
-        -webkit-box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);
-        -moz-box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);
-        box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);
-    }
-    .box-shaddow {
-        box-shadow: 0 0 5px #e9e9e9 !important;
-        -moz-box-shadow: 0 0 5px #e9e9e9 !important;                         
-        -webkit-box-shadow: 0 0 24px #e9e9e9 !important;
-    }
-            </style>
+        <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+        <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/css/vendor.bundle.base.css">
+        <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/css/vendor.bundle.addons.css">
+        <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/style.css">
+        <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/selectboxstyle.css">
+        <link rel="shortcut icon" href="<?php echo SiteUrl?>assets/images/favicon.png" /> 
+        <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/puse-icons-feather/feather.css">
+        <script src="<?php echo SiteUrl?>assets/vendors/jquery-3.1.1.min.js" type='text/javascript'></script>
+        <link href='<?php echo SiteUrl?>assets/vendors/bootstrap/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>   
+        <script src="<?php echo SiteUrl?>assets/js/app.js" type='text/javascript'></script>
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+        <style>
+            .Activedot {height:10px;width:10px;background-color:#20e512;border-radius:50%;display:inline-block;}
+            .Deactivedot {height:10px;width:10px;background-color:#888;border-radius:50%;display:inline-block;}
+            #star{color:red;}
+            .errorstring {font-size:10px;color:red}
+            div.scrollmenu {background:#fff;border-bottom:2px solid #e5e5e5;white-space: nowrap;padding-left:25px;padding-top:5px;}
+            div.scrollmenu a {display: inline-block;color: #333;text-align: center;padding: 10px 10px;font-family:'Roboto';text-decoration: none;border-bottom:3px solid #fff;margin-right:15px;}
+            div.scrollmenu a:hover {border-bottom:3px solid #fff;color:#ff007b;}
+            .linkactive{border-bottom:3px solid #ff007b !important;color:#ff007b  !important;}
+            .shadow {-webkit-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);-moz-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
+           .bshadow {-webkit-box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);-moz-box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);}
+           .box-shaddow {box-shadow: 0 0 5px #e9e9e9 !important;-moz-box-shadow: 0 0 5px #e9e9e9 !important;-webkit-box-shadow: 0 0 24px #e9e9e9 !important;}
+           .profile_horizontal_row {box-shadow: 0 0 5px #e9e9e9 !important;-moz-box-shadow: 0 0 5px #e9e9e9 !important;-webkit-box-shadow: 0 0 24px #e9e9e9 !important;min-height: 200px;width:100%;background:white;padding:20px;border:1px solid transparent;cursor:poiner;}
+           .profile_horizontal_row:hover {background:#f4fbfc;border:1px solid #e5e5e5}
+        </style>
         </head>
     <body>
         <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="margin-bottom:0px !important;border-radius:0px !important">
@@ -207,125 +195,9 @@
    <?php if (UserRole=="Franchisee") { ?>
     <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
      <img src="<?php echo $config->logoPath?>" alt="logo" style="height:50px;height:60px;margin-top: 2px;"/>
-        <!--<a class="navbar-brand brand-logo" href="../Dashboard">
-          <img src="<?php //echo SiteUrl?>images/logo.svg" alt="logo" />
-        </a>
-        <a class="navbar-brand brand-logo-mini" href="../Dashboard">
-          <img src="<?php //echo SiteUrl?>images/logo-mini.svg" alt="logo" />
-        </a> -->
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center">        
         <ul class="navbar-nav navbar-nav-right">
-          <!--<li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <i class="mdi mdi-file-document-box"></i>
-              <span class="count">7</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-              <div class="dropdown-item">
-                <p class="mb-0 font-weight-normal float-left">You have 7 unread mails
-                </p>
-                <span class="badge badge-info badge-pill float-right">View all</span>
-              </div>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <img src="<?php //echo SiteUrl?>images/faces/face4.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium text-dark">David Grey
-                    <span class="float-right font-weight-light small-text">1 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    The meeting is cancelled
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <img src="<?php // echo SiteUrl?>images/faces/face2.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium text-dark">Tim Cook
-                    <span class="float-right font-weight-light small-text">15 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    New product launch
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <img src="<?php // echo SiteUrl?>images/faces/face3.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium text-dark"> Johnson
-                    <span class="float-right font-weight-light small-text">18 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    Upcoming board meeting
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-              <i class="mdi mdi-bell"></i>
-              <span class="count">4</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <a class="dropdown-item">
-                <p class="mb-0 font-weight-normal float-left">You have 4 new notifications
-                </p>
-                <span class="badge badge-pill badge-warning float-right">View all</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-success">
-                    <i class="mdi mdi-alert-circle-outline mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium text-dark">Application Error</h6>
-                  <p class="font-weight-light small-text">
-                    Just now
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-warning">
-                    <i class="mdi mdi-comment-text-outline mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium text-dark">Settings</h6>
-                  <p class="font-weight-light small-text">
-                    Private message
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="mdi mdi-email-outline mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium text-dark">New user registration</h6>
-                  <p class="font-weight-light small-text">
-                    2 days ago
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>-->
              <li class="nav-item dropdown d-none d-xl-inline-block">
                 <span class="profile-text" style="line-height:10px;" >         
                 <?php echo "Franchisee Name";?></span><br>
@@ -349,125 +221,9 @@
       <?php if (UserRole=="Admin") { ?>
     <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
      <img src="<?php echo $config->logoPath?>" alt="logo" style="height:50px;height:60px;margin-top: 2px;"/>
-        <!--<a class="navbar-brand brand-logo" href="../Dashboard">
-          <img src="<?php // echo SiteUrl?>images/logo.svg" alt="logo" />
-        </a>
-        <a class="navbar-brand brand-logo-mini" href="../Dashboard">
-          <img src="<?php // echo SiteUrl?>images/logo-mini.svg" alt="logo" />
-        </a> -->
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center">        
         <ul class="navbar-nav navbar-nav-right">
-         <!-- <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <i class="mdi mdi-file-document-box"></i>
-              <span class="count">7</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-              <div class="dropdown-item">
-                <p class="mb-0 font-weight-normal float-left">You have 7 unread mails
-                </p>
-                <span class="badge badge-info badge-pill float-right">View all</span>
-              </div>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <img src="<?php // echo SiteUrl?>images/faces/face4.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium text-dark">David Grey
-                    <span class="float-right font-weight-light small-text">1 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    The meeting is cancelled
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <img src="<?php // echo SiteUrl?>images/faces/face2.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium text-dark">Tim Cook
-                    <span class="float-right font-weight-light small-text">15 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    New product launch
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <img src="<?php // echo SiteUrl?>images/faces/face3.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium text-dark"> Johnson
-                    <span class="float-right font-weight-light small-text">18 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    Upcoming board meeting
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-              <i class="mdi mdi-bell"></i>
-              <span class="count">4</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <a class="dropdown-item">
-                <p class="mb-0 font-weight-normal float-left">You have 4 new notifications
-                </p>
-                <span class="badge badge-pill badge-warning float-right">View all</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-success">
-                    <i class="mdi mdi-alert-circle-outline mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium text-dark">Application Error</h6>
-                  <p class="font-weight-light small-text">
-                    Just now
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-warning">
-                    <i class="mdi mdi-comment-text-outline mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium text-dark">Settings</h6>
-                  <p class="font-weight-light small-text">
-                    Private message
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="mdi mdi-email-outline mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium text-dark">New user registration</h6>
-                  <p class="font-weight-light small-text">
-                    2 days ago
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>-->
               <li class="nav-item dropdown d-none d-xl-inline-block">
                 <span class="profile-text" >
                     <?php echo "<b>";echo $_Admin['AdminName'] ; echo "</b>";?></span><br> 
@@ -491,17 +247,15 @@
     <?php include_once("views/".UserRole."/LeftMenu.php"); ?>
     <div class="main-panel">
         <div class="content-wrapper">
-        
         <?php 
             function DisplayManageProfileShortInfo($ProfileInformation) {
-              
                 $Profile = $ProfileInformation['ProfileInfo'];
         ?>
             <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
                 <div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #555;background:#fff;padding:6px">
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;"><?php echo $ProfileInformation['Position'];?></div>    
                     </div>
                     <div class="col-sm-9">
@@ -515,7 +269,6 @@
                                             echo "Last seen: ".PutDateTime($ProfileInformation['LastSeen']); 
                                         }
                                         ?>
-                                        
                                         </div> 
                                     </div>
                                     <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
@@ -606,7 +359,7 @@
                 <div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #555;background:#fff;padding:6px">
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #555;background:#fff;padding:6px">&nbsp;&nbsp;
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;"><?php echo $ProfileInformation['Position'];?></div>    
                     </div>
                     <div class="col-sm-9">
@@ -676,44 +429,43 @@
             /*fixed*/
             function DisplayProfileShortInformation($ProfileInformation) {
                       $Profile = $ProfileInformation['ProfileInfo'];
-                      
             ?>
-            <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
+            <div class="profile_horizontal_row" id="div_<?php echo $Profile['ProfileCode']; ?>">
                 <div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #555;background:#fff;padding:6px">
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
                     </div>
                     <div class="col-sm-9">
                                     <div class="colo-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">                                                                                     
-                                       <div class="col-sm-7"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp;<div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div></div>
-                                        <div class="col-sm-1"><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:64px;"></div>
+                                       <div class="col-sm-7"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp;
+                                       <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div>
+                                       
+                                    </div>
+                                        <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:64px;"></span></div>
                                         <div style="float:right;font-size: 12px;">
                                         <?php  echo "Published: ".putDateTime($Profile['IsApprovedOn']); ?><br>
                                         <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".putDateTime($Profile['LastSeen']) : ""; ?>
                                         </div> 
+                                        <div style="float:right;font-size: 12px;text-align:right;margin-top: 5px;border: 1px solid transparent;">
+                                       <?php  if ($Profile['isFavourited']==0) { ?>
+                                       <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">N/A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                       <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>')" id="img_<?php echo $Profile['ProfileCode']; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important">
+                                       <?php } else {?>
+                                       <span style="font-size: 12px;cursor:ponter;color:#aaa"><?php echo putDateTime($Profile['isFavourited']); ?>&nbsp;</span>
+                                       <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>')" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important">
+                                       <?php }?>
+                                       </div>
                                     </div>
                                     <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
-                                        <div>
-                                            <?php echo $Profile['Height'];?>
-                                        </div>
-                                        <div>
-                                            <?php echo $Profile['Religion'];?>
-                                        </div>
-                                        <div>
-                                            <?php echo $Profile['Caste'];?>
-                                        </div>
+                                        <div><?php echo $Profile['Height'];?></div>
+                                        <div><?php echo $Profile['Religion'];?></div>
+                                        <div><?php echo $Profile['Caste'];?></div>
                                     </div>
                                     <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
-                                        <div>
-                                            <?php echo $Profile['MaritalStatus'];?>
-                                        </div>
-                                        <div>
-                                            <?php echo $Profile['OccupationType'];?>
-                                        </div>
-                                        <div>
-                                            <?php echo $Profile['AnnualIncome'];?>
-                                        </div>
+                                        <div><?php echo $Profile['MaritalStatus'];?></div>
+                                        <div><?php echo $Profile['OccupationType'];?></div>
+                                        <div><?php echo $Profile['AnnualIncome'];?></div>
                                     </div>
                                     <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
                                         <?php echo $Profile['AboutMe'];?><a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">More</a>
@@ -722,32 +474,21 @@
                             </div>
                            <div style="float:right;line-height: 1px;">
                                 <a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <?php
-                                    
-                                    if ($Profile['IsDownloaded']==0) {
-                                        ?>
-                                        <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
-                                        <?php
-                                    } else {
-                                        ?>
-                                        Alredy Downloaded
-                                        <?php
-                                    }
-                                ?>
+                                <?php if ($Profile['IsDownloaded']==0) { ?>
+                                    <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
+                                <?php } else { ?>
+                                    Alredy Downloaded
+                                <?php } ?>
                                 &nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewSearchProfile/".$Profile['ProfileCode'].".htm ");?>">view</a>
                             </div>
                             <div class="modal" id="Upgrades" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
                                 <div class="modal-dialog" style="width: 367px;">
-                                    <div class="modal-content" id="Upgrades_body" style="height:335px">
-            
-                                    </div>
+                                    <div class="modal-content" id="Upgrades_body" style="height:335px"></div>
                                 </div>
                             </div>
                             <div class="modal" id="OverAll" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
                                 <div class="modal-dialog" style="width: 367px;">
-                                    <div class="modal-content" id="OverAll_body" style="height:335px">
-            
-                                    </div>
+                                    <div class="modal-content" id="OverAll_body" style="height:335px"></div>
                                 </div>
                             </div>
                         </div>
@@ -755,7 +496,33 @@
               }
             ?> 
             
-            
+           <?php
+                function dashboard_view_1($ProfileInformation) {
+                      $Profile = $ProfileInformation['ProfileInfo'];
+                    ?>
+                       <div id="resCon_a002">
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;"><br>
+                        <h5 style="margin-bottom:-10px"><?php echo $Profile['ProfileName'];?></h5><br>
+                        <span style="color:#bfacac;"><?php echo $Profile['City'];?></span><br>
+                        <a href="<?php echo SiteUrl?>MyContacts/RecentlyWhoViewed" class="btn btn-primary" style="background:transparent;color:#00c1ff;padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</a> 
+                    </div>
+                    <?php
+                }
+            ?>
+            <?php
+                function dashboard_view_2($ProfileInformation) {
+                      $Profile = $ProfileInformation['ProfileInfo'];
+                    ?>
+                    <div class="col-sm-12" id="resCon_a001">
+                      <div class="col-sm-2"><img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;"></div>
+                        <div class="col-sm-10">
+                          <div style="margin-top:0px;margin-left: 97px;"><?php echo $Profile['ProfileName'];?></div>
+                          <span style="color:#999 !important;margin-left: 97px;"><?php echo $Profile['City'];?></span>
+                        </div>
+                    </div>
+                    <?php
+                }
+            ?> 
             
             
             
@@ -826,11 +593,11 @@
     function PublishedProfileList($ProfileInformation) {
         $Profile = $ProfileInformation['ProfileInfo'];
 ?>
-    <div style="min-height:200px;width:100%;background:white;padding:20px" class="box-shaddow">
+    <div style="min-height:200px;width:100%;background:white;padding:20px" class="box-shaddow ">
         <div class="form-group row">
             <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                 <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                    <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #555;background:#fff;padding:6px">
+                    <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
                 <div style="line-height: 25px;color: #867c7c;font-size:14px;">
                     <?php echo $ProfileInformation['Position'];?>
                 </div>    

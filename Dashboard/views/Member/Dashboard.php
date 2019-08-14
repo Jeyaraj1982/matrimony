@@ -54,26 +54,55 @@
                 </div>
               <br>
             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recent Visitors</div>
-             <div class="card"  style="background:#dee9ea">
-                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:158px">
-                    <div id="resCon_a002" style="background:white;width:97%;height:136px">
+    
+              <div class="card"  style="background:#dee9ea">
+                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:258px">
+                <?php
+                    $recentlyviewedprofiles = $webservice->getData("Member","GetRecentlyWhoViewedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
+                    //print_r($recentlyviewedprofiles);
+                    $Profiles = $recentlyviewedprofiles['data']; 
+                    if (sizeof($Profiles)>0) {
+                ?>
+                <div>
+                 <?php
+                     foreach($Profiles as $Profile) { 
+                       echo dashboard_view_1($Profile);
+                    }?> 
+                   </div> 
+                
+                <?php } else { ?>
+                  <div id="resCon_a002" style="background:white;width:97%">
                         <div style="text-align:center;">
-                            <h5 style="margin-top:35px;color: #aaa;">No Visitors Found </h5>
+                            <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5>
                         </div>
                     </div>
-                   </div> 
-                </div>
+                <?php } ?>
+              </div>
             </div>
-         
+        </div> 
         <div class="col-5 grid-margin" style="max-width: 35.667%;">
             <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recomended Profiles</div>
             <div class="card"  style="background:#dee9ea;">
                 <div class="card-body" style="padding:10px !important;">
+                    <?php
+                    $recentlyviewedprofiles = $webservice->getData("Member","GetRecentlyViewedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
+                    //print_r($recentlyviewedprofiles);
+                    $Profiles = $recentlyviewedprofiles['data']; 
+                    if (sizeof($Profiles)>0) {
+                ?>
+                <div>
+                    <?php
+                     foreach($Profiles as $Profile) { 
+                       echo dashboard_view_2($Profile);
+                    }?> 
+                </div>
+                 <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
                         <div style="text-align:center;">
                             <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
                         </div>
                     </div>
+                    <?php } ?>
                 </div>
             </div>
             <!-- <div class="card"  style="background:#dee9ea;">

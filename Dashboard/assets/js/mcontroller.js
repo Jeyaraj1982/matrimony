@@ -116,3 +116,28 @@
     }
     //var obj = jQuery.parseJSON(result);
     //$('#myModal').modal('show');
+    
+     
+function AddtoFavourite(ProfileCode) {
+                $.ajax({
+                url: API_URL + "m=Member&a=AddToFavourite&ProfileCode="+ProfileCode, 
+                success: function(result){
+                    $('#img_'+ProfileCode).attr("src",$('#img_'+ProfileCode).attr("src_a"));
+                    $('#img_'+ProfileCode).attr("onclick","removeFavourited('"+ProfileCode+"')");
+            }});
+          }
+          
+          function removeFavourited(ProfileCode) {
+                $.ajax({
+                url: API_URL + "m=Member&a=AddToFavourite&ProfileCode="+ProfileCode, 
+                success: function(result){
+                    
+                    if (MyFavoritedPage==1) {
+                        $('#div_'+ProfileCode).hide(500);
+                    } else {
+                        $('#img_'+ProfileCode).attr("src",$('#img_'+ProfileCode).attr("src_a")); 
+                        $('#img_'+ProfileCode).attr("onclick","AddtoFavourite('"+ProfileCode+"')");
+                    }
+                    
+            }});
+          }
