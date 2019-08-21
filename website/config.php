@@ -1,12 +1,12 @@
 <?php
     session_start();
-    define("SiteUrl","http://nahami.online/sl/");
+    define("SiteUrl","http://nahami.online/demo/matrimony/");
     define("SITE_TITLE","Matrimony") ;
     $__Global = $_SERVER;
     
     class Webservice {
         
-        var $serverURL="http://nahami.online/sl/Webservice/webservice.php?";
+        var $serverURL="http://nahami.online/demo/matrimony/Webservice/webservice.php?";
         
         function Login($param) {
             return json_decode($this->_callUrl("m=Member&a=Login",$param),true);
@@ -22,6 +22,13 @@
         }
         function forgotPasswordchangePassword($param) {
             return json_decode($this->_callUrl("m=Member&a=forgotPasswordchangePassword",$param),true);
+        }
+        
+         function GetLandingPageProfiles($param) {
+            return json_decode($this->_callUrl("m=Member&a=GetLandingPageProfiles",$param),true);
+        }
+        function GetFullProfileInformation($param) {
+            return json_decode($this->_callUrl("m=Member&a=GetFullProfileInformation",$param),true);
         }
         function _callUrl($method,$param) {
             global $__Global;

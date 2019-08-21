@@ -236,7 +236,7 @@ function SubmitPassword() {
                <input type="hidden"  value="<?php echo $_POST['reqEmail'];?>" name="reqEmail">
                 <input type="hidden"  value="<?php echo $_POST['reqID'];?>" name="reqID">
               
-                <input type="password" placeholder="  New Password" name="newpassword" id="newpassword" style="width: 100%;padding:7px;margin-bottom:10px" value="<?php echo isset($_POST['newpassword']) ? $_POST['newpassword'] : '';?>">
+                <input type="password" placeholder="New Password" name="newpassword" id="newpassword" style="width: 100%;padding:7px;margin-bottom:10px" value="<?php echo isset($_POST['newpassword']) ? $_POST['newpassword'] : '';?>">
                 <span class="errorstring" id="Errnewpassword"><?php echo isset($Errnewpassword)? $Errnewpassword : "";?>  </span>
                 <input type="password" placeholder="  Confrim New Password" name="confirmnewpassword" id="confirmnewpassword" style="width: 100%;padding:7px;margin-bottom:10px" value="<?php echo isset($_POST['confirmnewpassword']) ? $_POST['confirmnewpassword'] : '';?>">
                  <span class="errorstring" id="Errconfirmnewpassword"><?php echo isset($Errconfirmnewpassword)? $Errconfirmnewpassword : "";?> </span>
@@ -256,3 +256,26 @@ function SubmitPassword() {
                 </div>
         </div>
          <?php include_once("footer.php");?>
+         
+        <?php
+               
+            /*if (isset($_POST['btnResetPassword'])) {
+                
+                 $response = $webservice->forgotPasswordchangePassword($_POST);
+                    if ($response['status']=="success") {
+                         ?>
+                          <form action="password-changed" id="reqFrm" method="post">
+                                        <input type="hidden" value="<?php echo $response['data']['reqID'];?>" name="reqID">
+                                        <input type="hidden" value="<?php echo $response['data']['reqEmail'];?>" name="reqEmail">
+                                    </form>
+                                    <script>
+                                        document.getElementById("reqFrm").submit();
+                                    </script>
+                         <?php
+                    } 
+                    else{
+                        $errormessage = $response['message']; 
+                    }
+              }    */                           
+                 
+               ?>

@@ -130,7 +130,7 @@ function submitregform() {
                                     ?>
                                     
                                     <script>
-                                    setTimeout(function(){location.href='http://nahami.online/sl/Dashboard/'; },1000);
+                                    setTimeout(function(){location.href='http://nahami.online/demo/matrimony/Dashboard/'; },1000);
                                     </script>
                                     <?php
                                 } else {
@@ -390,47 +390,41 @@ $rand=substr(rand(),0,4);//only show 4 numbers
             <div class="col-sm-3" class="Reg" style="text-align: center;"><div class="memberinner"><img src="assets/images/bt-icon-free-to-talk.png"><br><h3>Contact</h3><p>Talk them directly <br>through phone</p></div></div>
         </div>
     </div>
-    <div style="background:#F2F2F2;height:1005px;margin-top:-5px;padding-top:30px">
+    <div style="background:#F2F2F2;height:1297px;margin-top:-5px;padding-top:30px">
           <h2 style="text-align:center;font-size: 37px;color: #BF3280;">Brides & Grooms</h2>
           <p style="text-align: center;color:#333333;margin-bottom: -2px;display: block;font-weight: 300;color: #333;font-size: 24px;">Find your Life Partner from thousands of profiles.</p>
           <div class="kvline-1"></div>
           <div class="kvline-2"></div>
           <div class="kvline-3"></div>
           <div style="padding-left:15px;padding-right:15px">
-          <?php                
-     for($i=1;$i<4;$i++) { ?>
+          
           <div class="col-sm-12" style="margin-left: 17px;">
-            <div class="col-sm-4" style="background: white;height: 221px;width:365px;margin-right: 30px;margin-bottom: 35px;">
-                <div class="col-sm-2" style="margin-right: 76px;"><img src="assets/images/girl1.jpg" style="margin-left: -23px;width: 533%;margin-top: 6px;"></div>
-                <div class="col-sm-2" style="width:35.667%; ;">
-                <h3 style="color: #81187f;">ISWARIYA</h3>
-                <h5 style="padding-bottom: 10px;">23 years</h5>
-                <h4 style="font-size: 17px;line-height: 22px">BDS ,</h4><h4 style="font-size: 17px;line-height:0px">Madurai</h4>
-                <a style="color:#3897f0;font-size: 17px;line-height:46px">View Profile</a>
+          <?php  $response = $webservice->GetLandingPageProfiles(array("Gender"=>"Male"));
+              
+                   foreach($response['data'] as $p){ 
+                       $Profile=$p['ProfileInfo']
+            ?>
+          <?php                
+    // for($i=1;$i<4;$i++) { ?>
+            
+            <div class="col-sm-3" style="background: white;height: 375px;margin-right: 30px;margin-bottom: 35px;padding:15px;width:270px">
+                <div class="col-sm-12">
+                    <div class="col-sm-12" style="padding-right: 0px;padding-left: 0px;"><img src="<?php echo $p['ProfileThumb'];?>" style="height: 170px;background:#fff;padding:5px"></div>
+                    <div class="col-sm-12" style="text-align:center">
+                        <h4 style="color: #81187f;"><?php echo $Profile['ProfileCode'];?></h4>
+                        <h5 style="color: #81187f;"><?php echo $Profile['ProfileName'];?>(<?php echo $Profile['Age'];?>)&nbsp;yrs</h5>
+                        <h5><?php echo $Profile['AnnualIncome'];?></h5>                                                  
+                        <h5><?php echo $Profile['City'];?></h5>
+                        <h5><?php echo $Profile['Religion'];?>/<?php echo $Profile['Caste'];?></h5>
+                        <a href="Profile.php?Code=<?php echo $Profile['ProfileCode']?>" style="color:#3897f0;font-size: 17px;line-height:46px">View Profile</a>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-4" style="background: white;height: 221px;width:365px;margin-right: 30px;margin-bottom: 35px;">
-                <div class="col-sm-2" style="margin-right: 76px;"><img src="assets/images/boy1.jpg" style="margin-left: -23px;width:533%;height:195px; margin-top: 6px;"></div>
-                <div class="col-sm-2" style="width:35.667%; ;">
-                <h3 style="color: #81187f;">Akash</h3>
-                <h5 style="padding-bottom: 10px;">28 years</h5>
-                <h4 style="font-size: 17px;line-height: 22px">BDS ,</h4><h4 style="font-size: 17px;line-height:0px">Madurai</h4>
-                <a style="color:#3897f0;font-size: 17px;line-height:46px">View Profile</a>
-                </div>
-            </div>
-            <div class="col-sm-4" style="background: white;height: 221px;width:365px;margin-right: 30px;margin-bottom: 35px;">
-                <div class="col-sm-2" style="margin-right: 76px;"><img src="assets/images/girl1.jpg" style="margin-left: -23px;width: 533%;margin-top: 6px;"></div>
-                <div class="col-sm-2" style="width:35.667%; ;">
-                <h3 style="color: #81187f;">ISWARIYA</h3>
-                <h5 style="padding-bottom: 10px;">23 years</h5>
-                <h4 style="font-size: 17px;line-height: 22px">BDS ,</h4><h4 style="font-size: 17px;line-height:0px">Madurai</h4>
-                <a style="color:#3897f0;font-size: 17px;line-height:46px">View Profile</a>
-                </div>
-            </div>
-          </div>
+         
           
           <?php
      } ?>
+     </div>
     </div> 
 </div>
 <div class="backgroundbanersection">
@@ -515,4 +509,4 @@ Best of Luck, Thanks a lot for helping me find my best life partner. We really b
 
   <?php include_once("footer.php");?>
    
-  
+   

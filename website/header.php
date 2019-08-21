@@ -4,10 +4,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Matrimony Software</title>
-            <link rel="stylesheet" href="http://nahami.online/sl/assets/css/style.css">
-            <script src="http://nahami.online/sl/assets/vendors/jquery-3.1.1.min.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
-            <link href='http://nahami.online/sl/assets/vendors/bootstrap/css/bootstrap.min.css?rnd=<?php echo rand(10,1000);?>' rel='stylesheet' type='text/css'>
-           <script src="http://nahami.online/sl/assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
+            <link rel="stylesheet" href="assets/css/style.css">
+            <script src="assets/vendors/jquery-3.1.1.min.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
+            <link href='assets/vendors/bootstrap/css/bootstrap.min.css?rnd=<?php echo rand(10,1000);?>' rel='stylesheet' type='text/css'>
+           <script src="assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
         </head>
      <style>
       .navbar{
@@ -24,7 +24,7 @@ if (isset($_POST['btnsubmit'])) {
        ?>
        
         <script>
-            location.href='http://nahami.online/sl/Dashboard/';
+            location.href='http://nahami.online/demo/matrimony/Dashboard/';
          </script>
          
        <?php
