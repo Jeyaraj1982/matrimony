@@ -9,13 +9,16 @@
         div, label,a,h1,h2,h3,h4,h5,h6 {font-family:'Roboto' !important;}
         #resCon_a001 {background:white;padding:10px;border-bottom: 1px solid #d5d5d5;cursor:pointer;}
         #resCon_a002 {float:left;width:143px;height: 235px;background:white;margin-left:6px;margin-top: -19px;padding: 25px;text-align:center;cursor:pointer;}
+        #resCon_a0021 {float:left;width:143px;height: 235px;background:white;margin-left:6px;margin-top: -19px;padding: 25px;text-align:center;cursor:pointer;}
         #resCon_a001:hover {background:#f1f1f1;}
         #resCon_a002:hover {background:#f1f1f1;}
+        #resCon_a0021:hover {background:#f1f1f1;}
         #verifybtn{background: #0eb1db;border:1px#32cbf3;box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
         #verifybtn:hover{background:#149dc9;}
         input:focus{border:1px solid #ccc;}
         #errormsg{text-align:center;color:red;padding-bottom:5px;padding-top:5px;}
         #resCon_a002 a:hover{color: #337ab7;}
+        #resCon_a0021 a:hover{color: #337ab7;}
     </style>                                                 
     <script>
         function myFunction() {
@@ -24,6 +27,16 @@
                 $('#verifydiv').hide(1000);
             }
         }
+       
+    </script>
+    <script>
+        function HideLatestUpadte() {
+            var x = document.getElementById("resCon_a0021");
+            if (!(x.style.display === "none")) {
+                $('#resCon_a0021').hide(1000);
+            }
+        }
+       
     </script>
     <div class="row" id="verifydiv" style="display: none;">
         <div class="col-sm-12 grid-margin stretch-card">
@@ -37,30 +50,74 @@
     </div>
     <div class="row">
     <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
-            <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">My Recent Profiles</div>
+            <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Latest Updates</div>
              <div class="card"  style="background:#dee9ea">
-                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:258px">
-                    <div id="resCon_a002" style="background:white;width:97%;text-align:left">
-                        <?php if (sizeof($response['data'])==0) {      ?>
+                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:328px">
+                <?php // for ($x = 0; $x <=2; $x++) { ?>   
+                 <?php  $latestupdates = $webservice->getData("Member","GetLatestUpdates");
+                                                 foreach($latestupdates['data'] as $Row) { ?>                      
+                    <div id="resCon_a0021" class="col-sm-12" style="background:white;width:97%;text-align:left;height:116px;border-bottom:1px solid #d5d5d5;">
+                           <?php //}?>
+                           <!-- <table class="table-bordered">
+                                  <thead>
+                                    <tr>
+                                        <th>Member Code</th>
+                                        <th>Profile Code</th>
+                                        <th>Updates</th>
+                                        <th>Update On</th>
+                                    </tr> 
+                                  </thead>
+                                  <tbody>
+                                    <?php // $latestupdates = $webservice->getData("Member","GetLatestUpdates");
+                                                // foreach($latestupdates['data'] as $Row) { ?>
+                                    <tr>
+                                        <td><?php //echo $Row['VisterMemberID'];?></td>
+                                        <td><?php //echo $Row['VisterProfileCode'];?></td>
+                                        <td><?php //echo $Row['Subject'];?></td>
+                                        <td><?php //echo putDateTime($Row['CreatedOn']);?></td>
+                                    </tr>
+                                    <?php //} ?>
+                                  </tbody>
+                            </table>  -->
+                             
+                            <div class="col-sm-2" style="border:1px solid black">
+                                <img src="<?php  echo SiteUrl?>assets/images/userimage.jpg" style="width:100%">
+                            </div> 
+                            <div class="col-sm-9"><?php echo $Row['VisterProfileCode'];?> has <?php echo $Row['Subject'];?> your Profile</div>
+                            <div class="col-sm-1"><a href="javascript:void(0)" onclick="HideLatestUpadte()" class="close" style="outline:none" >&times;</a></div>
+                   </div> 
+                   <?php }?>                       
+             </div>   
+        </div>
+        </div>
+        <div class="col-5 grid-margin" style="max-width: 35.667%;">
+            <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">My Recent Profiles</div>
+            <div class="card"  style="background:#dee9ea;">
+                <div class="card-body" style="padding:10px !important;">
+                    <?php if (sizeof($response['data'])==0) {      ?>
                             <div style="text-align:center;">
                                 <h5 style="margin-top:84px;color: #aaa;">No Profiles Found<br><br> <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a> </h5>
                             </div>
-                        <?php } else { ?>                                                                                        
+                        <?php } else { ?>
+                <div>
                             <?php foreach($response['data'] as $Profile) { 
                          echo  DisplayManageProfileShortInfoforDashboard($Profile); ?> <br>
                          <?php    } } ?>
-                    </div>                                    
-                   </div> 
                 </div>
-              <br>
+                </div>
+            </div>
+         </div>                                                 
+        </div>
+    <div class="row">
+    <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recent Visitors</div>
     
               <div class="card"  style="background:#dee9ea">
-                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:258px">
+                <div class="card-body" id="slideshow" style="padding-left: 4px;padding-right: 0px;height:315px">
                 <?php
                     $recentlyviewedprofiles = $webservice->getData("Member","GetRecentlyWhoViewedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
-                    //print_r($recentlyviewedprofiles);
-                    $Profiles = $recentlyviewedprofiles['data']; 
+                    
+                    $Profiles = $recentlyviewedprofiles['data'];       
                     if (sizeof($Profiles)>0) {
                 ?>
                 <div>
@@ -68,10 +125,12 @@
                      foreach($Profiles as $Profile) { 
                        echo dashboard_view_1($Profile);
                     }?> 
+                    <button class="btn btn-primary leftLst"><</button>
+            <button class="btn btn-primary rightLst">></button>
                    </div> 
                 
                 <?php } else { ?>
-                  <div id="resCon_a002" style="background:white;width:97%">
+                  <div id="resCon_a002" class="resCon_a002"  style="background:white;width:97%">
                         <div style="text-align:center;">
                             <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5>
                         </div>
@@ -81,13 +140,84 @@
             </div>
         </div> 
         <div class="col-5 grid-margin" style="max-width: 35.667%;">
-            <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recomended Profiles</div>
+            <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">My Recently Viewed</div>
             <div class="card"  style="background:#dee9ea;">
                 <div class="card-body" style="padding:10px !important;">
                     <?php
                     $recentlyviewedprofiles = $webservice->getData("Member","GetRecentlyViewedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
                     //print_r($recentlyviewedprofiles);
                     $Profiles = $recentlyviewedprofiles['data']; 
+                    if (sizeof($Profiles)>0) {
+                ?>
+                <div>
+                    <?php
+                     foreach($Profiles as $Profile) { 
+                       echo dashboard_view_2($Profile);
+                    }?> 
+                </div>
+                 <?php } else { ?>
+                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
+                        <div style="text-align:center;">
+                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+            <!-- <div class="card"  style="background:#dee9ea;">
+                 <div class="card-body" style="padding:10px !important;">    
+                  <?php // for ($x = 0; $x <= 4; $x++) { ?>
+                   <div class="col-sm-12" id="resCon_a001">
+                      <div class="col-sm-2"><img src="<?php // echo SiteUrl?>assets/images/userimage.jpg" style="border-radius:115px;width:30px"></div>
+                        <div class="col-sm-10">
+                          <div style="margin-top:0px">Conard G</div>
+                          <span style="color:#999 !important">39 yrs, 5' 6',Konkani, Mumbai Hotel & Hospitality Proffession</span>
+                        </div>
+                    </div>
+                   <?php// }?>
+                  <div class="col-sm-12" style="padding:10px;text-align:center;background:#fff"><a href="#" >View More</a></div> 
+                </div>
+               </div>--> 
+         </div>
+        </div>
+    <div class="row">
+    <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
+             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recent Favouriters</div>
+              <div class="card"  style="background:#dee9ea">
+                <div class="card-body" id="slideshow" style="padding-left: 4px;padding-right: 0px;height:315px">
+                <?php
+                    $recentlyviewedprofiles = $webservice->getData("Member","GetWhoFavouriteMyProfiles",array("requestfrom"=>"0","requestto"=>"5"));
+                    //print_r($recentlyviewedprofiles);
+                    $Profiles = $recentlyviewedprofiles['data']; 
+                    if (sizeof($Profiles)>0) {
+                ?>                            
+                <div>
+                 <?php
+                     foreach($Profiles as $Profile) { 
+                       echo dashboard_view_1_Recent_Favouriters($Profile);
+                    }?> 
+                    <button class="btn btn-primary leftLst"><</button>
+            <button class="btn btn-primary rightLst">></button>
+                   </div> 
+                
+                <?php } else { ?>
+                  <div id="resCon_a002" class="resCon_a002"  style="background:white;width:97%;height:293px">
+                        <div style="text-align:center;">
+                            <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5>
+                        </div>
+                    </div>                                                        
+                <?php } ?>
+              </div>
+            </div>
+        </div> 
+        <div class="col-5 grid-margin" style="max-width: 35.667%;">
+            <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">My Favourited</div>
+            <div class="card"  style="background:#dee9ea;">
+                <div class="card-body" style="padding:10px !important;">
+                    <?php
+                    $favouritedprofiles = $webservice->getData("Member","GetFavouritedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
+                    //print_r($recentlyviewedprofiles);
+                    $Profiles = $favouritedprofiles['data']; 
                     if (sizeof($Profiles)>0) {
                 ?>
                 <div>
@@ -224,3 +354,111 @@
         </div>
     </div>
     <?php } ?>
+<script>
+$(document).ready(function () {
+    var itemsMainDiv = ('#slideshow');
+    var itemsDiv = ('.resCon_a002');
+    var itemWidth = "";
+
+    $('.leftLst, .rightLst').click(function () {
+        var condition = $(this).hasClass("leftLst");
+        if (condition)
+            click(0, this);
+        else
+            click(1, this)
+    });
+
+    ResCarouselSize();
+
+
+
+
+    $(window).resize(function () {
+        ResCarouselSize();
+    });
+
+    //this function define the size of the items
+    function ResCarouselSize() {
+        var incno = 0;
+        var dataItems = ("data-items");
+        var itemClass = ('.item');
+        var id = 0;
+        var btnParentSb = '';
+        var itemsSplit = '';
+        var sampwidth = $(itemsMainDiv).width();
+        var bodyWidth = $('body').width();
+        $(itemsDiv).each(function () {
+            id = id + 1;
+            var itemNumbers = $(this).find(itemClass).length;
+            btnParentSb = $(this).parent().attr(dataItems);
+            itemsSplit = btnParentSb.split(',');
+            $(this).parent().attr("id", "resCon_a002" + id);
+
+
+            if (bodyWidth >= 1200) {
+                incno = itemsSplit[3];
+                itemWidth = sampwidth / incno;
+            }
+            else if (bodyWidth >= 992) {
+                incno = itemsSplit[2];
+                itemWidth = sampwidth / incno;
+            }
+            else if (bodyWidth >= 768) {
+                incno = itemsSplit[1];
+                itemWidth = sampwidth / incno;
+            }
+            else {
+                incno = itemsSplit[0];
+                itemWidth = sampwidth / incno;
+            }
+            $(this).css({ 'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers });
+            $(this).find(itemClass).each(function () {
+                $(this).outerWidth(itemWidth);
+            });
+
+            $(".leftLst").addClass("over");
+            $(".rightLst").removeClass("over");
+
+        });
+    }
+
+
+    //this function used to move the items
+    function ResCarousel(e, el, s) {
+        var leftBtn = ('.leftLst');
+        var rightBtn = ('.rightLst');
+        var translateXval = '';
+        var divStyle = $(el + ' ' + itemsDiv).css('transform');
+        var values = divStyle.match(/-?[\d\.]+/g);
+        var xds = Math.abs(values[4]);
+        if (e == 0) {
+            translateXval = parseInt(xds) - parseInt(itemWidth * s);
+            $(el + ' ' + rightBtn).removeClass("over");
+
+            if (translateXval <= itemWidth / 2) {
+                translateXval = 0;
+                $(el + ' ' + leftBtn).addClass("over");
+            }
+        }
+        else if (e == 1) {
+            var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
+            translateXval = parseInt(xds) + parseInt(itemWidth * s);
+            $(el + ' ' + leftBtn).removeClass("over");
+
+            if (translateXval >= itemsCondition - itemWidth / 2) {
+                translateXval = itemsCondition;
+                $(el + ' ' + rightBtn).addClass("over");
+            }
+        }
+        $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
+    }
+
+    //It is used to get some elements from btn
+    function click(ell, ee) {
+        var Parent = "#" + $(ee).parent().attr("id");
+        var slide = $(Parent).attr("data-slide");
+        ResCarousel(ell, Parent, slide);
+    }
+
+});
+</script>
