@@ -53,7 +53,7 @@ function SubmitRefillWallet() {
                  
 function GetFranchiseeDetails() {
     $.ajax({
-        url: API_URL + "m=Franchisee&a=GetDetails&Code="+$('#FranchiseeCode').val(), 
+        url: "http://nahami.online/sl/Dashboard/webservice.php?m=Franchisee&a=GetDetails&Code="+$('#FranchiseeCode').val(), 
         success: function(result){
             
             var obj = jQuery.parseJSON(result);
