@@ -499,10 +499,11 @@
             return "<div style='border:1px solid #d5d5d5;background:#ff0000;color:green;padding:10px 20px;border-radius: 10px;margin-bottom: 20px;'>".$message."</div>";
         }
     }
-    $dashboard = new J2JDashboard();
+    $dashboard = new J2JDashboard();                                 
     
     /* CData */
-    $_Month = array("Jan","Feb","Mar");
+    $_Month = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
+    $_SES = array("AM","PM");
     $_DOB_Year_Start = date("Y")-18;
     $_DOB_Year_End = (date("Y")-18)-55;
      
