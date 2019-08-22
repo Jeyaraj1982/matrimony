@@ -23,7 +23,7 @@
         <div class="col-sm-4">
             <input type="text" class="form-control" id="FatherName" name="FatherName" value="<?php echo (isset($_POST['FatherName']) ? $_POST['FatherName'] : $ProfileInfo['FathersName']);?>" placeholder="Name">
         </div>
-        <label for="FathersOccupation" class="col-sm-3 col-form-label">Fathers Occupation<span id="star">*</span></label>
+        <label for="FathersOccupation" class="col-sm-3 col-form-label">Father's Occupation<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="FathersOccupation" name="FathersOccupation">
                 <option value="0">Choose Father Occupation</option>
@@ -35,17 +35,69 @@
         </div>
     </div>
     <div class="form-group row">
+        <label for="FatherContact" class="col-sm-2 col-form-label">Father's Contact<span id="star">*</span></label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="FathersContact" name="FathersContact" value="<?php echo (isset($_POST['FathersContact']) ? $_POST['FathersContact'] : $ProfileInfo['FathersContact']);?>" placeholder="Father Contact">
+        </div>
+        <label for="FathersIncome" class="col-sm-3 col-form-label">Father's Income<span id="star">*</span></label>
+        <div class="col-sm-3">
+            <select class="selectpicker form-control" data-live-search="true" id="FathersIncome" name="FathersIncome">
+                <option value="0">Choose IncomeRange</option>
+                <?php foreach($response['data']['IncomeRange'] as $IncomeRange) { ?>
+                    <option value="<?php echo $IncomeRange['SoftCode'];?>" <?php echo (isset($_POST[ 'FathersIncome'])) ? (($_POST[ 'FathersIncome']==$IncomeRange[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'FathersIncome']==$IncomeRange[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                        <?php echo $IncomeRange['CodeValue'];?>
+                            <?php } ?> </option>
+            </select>
+        </div>
+    </div>                                                                                                          
+    <div class="form-group row">
         <label for="MotherName" class="col-sm-2 col-form-label">Mother's Name<span id="star">*</span></label>
         <div class="col-sm-4">
             <input type="text" class="form-control" id="MotherName" name="MotherName" Placeholder="Mother Name" value="<?php echo (isset($_POST['MotherName']) ? $_POST['MotherName'] : $ProfileInfo['MothersName']);?>">
         </div>
-        <label for="MothersOccupation" class="col-sm-3 col-form-label">Mothers Occupation<span id="star">*</span></label>
+        <label for="MothersOccupation" class="col-sm-3 col-form-label">Mother's Occupation<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="MothersOccupation" name="MothersOccupation">
                 <option value="0">Choose Mother Occupation</option>
                 <?php foreach($response['data']['Occupation'] as $MothersOccupation) { ?>
                     <option value="<?php echo $MothersOccupation['SoftCode'];?>" <?php echo (isset($_POST[ 'MothersOccupation'])) ? (($_POST[ 'MothersOccupation']==$MothersOccupation[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MothersOccupation']==$MothersOccupation[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $MothersOccupation['CodeValue'];?>   </option>
+                            <?php } ?>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="MotherContact" class="col-sm-2 col-form-label">Mother's Contact<span id="star">*</span></label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="MotherContact" name="MotherContact" value="<?php echo (isset($_POST['MotherContact']) ? $_POST['MotherContact'] : $ProfileInfo['MothersContact']);?>" placeholder="Mother Contact">
+        </div>
+        <label for="MothersIncome" class="col-sm-3 col-form-label">Mother's Income<span id="star">*</span></label>
+        <div class="col-sm-3">
+                 <select class="selectpicker form-control" data-live-search="true" id="MothersIncome" name="MothersIncome">
+                <option value="0">Choose IncomeRange</option>
+                <?php foreach($response['data']['IncomeRange'] as $IncomeRange) { ?>
+                    <option value="<?php echo $IncomeRange['SoftCode'];?>" <?php echo (isset($_POST[ 'MothersIncome'])) ? (($_POST[ 'MothersIncome']==$IncomeRange[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MothersIncome']==$IncomeRange[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                        <?php echo $IncomeRange['CodeValue'];?>
+                            <?php } ?> </option>
+            </select>
+        </div>                                                           
+    </div>
+    <div class="form-group row">
+        <label for="FatherAlive" class="col-sm-2 col-form-label">Father Alive<span id="star">*</span></label>
+        <div class="col-sm-4">
+            <select class="selectpicker form-control" data-live-search="true" id="FathersAlive" name="FathersAlive">
+                <?php foreach($response['data']['ParentsAlive'] as $Alive) { ?>
+                    <option value="<?php echo $Alive['SoftCode'];?>" <?php echo (isset($_POST[ 'FathersAlive'])) ? (($_POST[ 'FathersAlive']==$Alive[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'FathersAlive']==$Alive[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                        <?php echo $Alive['CodeValue'];?>   </option>
+                            <?php } ?>
+            </select>
+       </div>
+        <label for="MotherAlive" class="col-sm-3 col-form-label">Mother Alive<span id="star">*</span></label>
+        <div class="col-sm-3">
+                <select class="selectpicker form-control" data-live-search="true" id="MothersAlive" name="MothersAlive">
+                <?php foreach($response['data']['ParentsAlive'] as $MAlive) { ?>
+                    <option value="<?php echo $MAlive['SoftCode'];?>" <?php echo (isset($_POST[ 'MothersAlive'])) ? (($_POST[ 'MothersAlive']==$MAlive[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MothersAlive']==$MAlive[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                        <?php echo $MAlive['CodeValue'];?>   </option>
                             <?php } ?>
             </select>
         </div>

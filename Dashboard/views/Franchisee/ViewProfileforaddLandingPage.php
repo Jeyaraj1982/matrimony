@@ -40,12 +40,6 @@ text-align: left;
 
  </style>
 <form method="post" action="" onsubmit="">
- 
-<div style="text-align: right" id="">
-        <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
-        <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
-</div>
-<br>
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
@@ -99,10 +93,6 @@ text-align: left;
                          <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['Caste'];?></label>   
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Sub Caste</label>
-                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['SubCaste'];?></label>   
-                    </div>
-                    <div class="form-group row">
                          <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Community</label>
                          <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['Community'];?></label>  
                     </div>
@@ -119,12 +109,12 @@ text-align: left;
               <div class="form-group row">
              <div class="col-sm-12" style="text-align:right">
                    <div class="photoview">
-                    <img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 200px;width: 150px;">
+                    <img src="<?php echo $response['data']['ProfilePhotoFirst']['ProfilePhoto'];?>" style="height: 200px;width: 150px;">
                   </div>
               </div> 
              </div>
              <div style="text-align:right">
-             <?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
+             <?php  foreach($response['data']['ProfilePhotos'] as $ProfileP)  {?>
                    <div class="photoview">
                     <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 96px;width: 72px;">
                   </div>
@@ -198,33 +188,17 @@ text-align: left;
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's Name</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersName'];?></label>
-             <label class="col-sm-2 col-form-label">Father Alive</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersAlive'];?></label> 
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Father's Occupation</label>
+             <label class="col-sm-2 col-form-label">Father's Occupation</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersOccupation'];?></label>
-            <label class="col-sm-2 col-form-label">Father's Income</label>
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersIncome'];?></label>
         </div>
         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Mother's Name</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersName'];?> </label>
-             <label class="col-sm-2 col-form-label">Mother Alive</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersAlive'];?></label>
-         </div>
-        <div class="form-group row">
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersName'];?>
+             </label>
              <label class="col-sm-2 col-form-label">Mother's Occupation</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersOccupation'];?></label>
-             <label class="col-sm-2 col-form-label">Mother's Income</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersIncome'];?></label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersOccupation'];?>   
+             </label>
         </div>
-        <div class="form-group row">
-             <label class="col-sm-2 col-form-label">Father's Contact</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersContact'];?></label>
-             <label class="col-sm-2 col-form-label">Mother's Contact</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersContact'];?></label>
-        </div>                                                              
         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Family Type</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FamilyType'];?>
@@ -345,22 +319,14 @@ text-align: left;
     <div class="card-body">
     <h4 class="card-title">Horoscope Details</h4>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Time Of Birth</label>
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['TimeOfBirth'];?></label>
-            <label class="col-sm-2 col-form-label">Place Of Birth</label>
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['PlaceOfBirth'];?></label>
-        </div>
-        <div class="form-group row">
             <label class="col-sm-2 col-form-label">Star Name</label>
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['StarName'];?></label>
-            <label class="col-sm-2 col-form-label">Rasi Name</label>
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['RasiName'];?></label>
+            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['StarName'];?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Rasi Name</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['RasiName'];?></label>
-            <label class="col-sm-2 col-form-label">Chevvai Dhosham</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['ChevvaiDhosham'];?></label>
+            <label class="col-sm-2 col-form-label">Lakanam</label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['Lakanam'];?></label>
         </div>
         <div class="form-group row">
             <div class="col-sm-6">
@@ -424,7 +390,7 @@ text-align: left;
   <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
-    <h4 class="card-title">Parners Expectation</h4>
+    <h4 class="card-title">Partner's Expectation</h4>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Age </label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeFrom'];?> &nbsp;&nbsp;to&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeTo'];?></label>
@@ -532,30 +498,22 @@ text-align: left;
                 </div>
             </div>
         </div>
+<div class="form-group row">
+    <div class="col-sm-12">
+        <div class="col-sm-6"><button type="submit" name="addtolandingpage" class="btn btn-success">Add To Landing Page</button></div>
+    </div>
+</div>
+<?php                   
+  if (isset($_POST['addtolandingpage'])) {         
+    $response = $webservice->getData("Franchisee","AddToLandingPage",array("ProfileCode"=>$_GET['Code'])); 
+    if ($response['status']=="success") {
+         $successmessage=$response['message'];
+    } else {
+        $errormessage = $response['message']; 
+    }
+    }
+?>  
 
-<script>
-function showConfirmPublish(ProfileCode) {
-      $('#PubplishNow').modal('show'); 
-      var content = '<div class="Publish_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'
-                    +  '<form method="post" id="frm_'+ProfileCode+'" name="frm_'+ProfileCode+'" action="" >'
-                     + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
-                       +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
-                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="PublishMemberProfile(\''+ProfileCode+'\')">Yes</button>&nbsp;'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
-                       +  '</div><br>'
-                    +  '</form>'
-                +  '</div>'
-            +  '</div>';
-            $('#Publish_body').html(content);
-}
-function PublishMemberProfile(formid) {
-     var param = $("#frm_"+formid).serialize();
-     $('#Publish_body').html(preloader);
-        $.post(API_URL + "m=Franchisee&a=PublishMemberProfile",param,function(result2) {$('#Publish_body').html(result2);});
-}
-
-</script>
    
             
                

@@ -18,7 +18,49 @@
     <div class="col-sm-10" style="margin-top: -8px;width:100%;padding-left:16px">
     <form method="post" action="" onsubmit="">
         <h4 class="card-title">Horoscope Details</h4>
+        <div class="form-group row">
+                <label for="Time Of Birth" class="col-sm-2 col-form-label">Time Of Birth<span id="star">*</span></label>
+                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+                                <?php $tob=explode(":",$ProfileInfo['TimeOfBirth'])  ; ?>
+                                    <select class="selectpicker form-control" data-live-search="true" id="hour" name="hour" style="width:56px">
+                                        <?php for($i=0;$i<=23;$i++) {?>
+                                            <option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'hour'])) ? (($_POST[ 'hour']==$i) ? " selected='selected' " : "") : (($tob[0]==$i) ? " selected='selected' " : "");?>>
+                                            <?php echo $i;?>
+                                            </option>
+                                        <?php } ?>                                      
+                                    </select>
+                            </div>
+                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">        
+                                    <select class="selectpicker form-control" data-live-search="true" id="minute" name="minute" style="width:56px">
+                                        <?php for($i=0;$i<=59;$i++) {?>
+                                            <option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'minute'])) ? (($_POST[ 'minute']==$i) ? " selected='selected' " : "") : (($tob[1]==$i) ? " selected='selected' " : "");?>>
+                                            <?php echo $i;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                            </div>
+                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+                                    <select class="selectpicker form-control" data-live-search="true" id="Second" name="Second" style="width:56px">
+                                         <?php for($i=0;$i<=59;$i++) {?>
+                                            <option value="<?php echo $i; ?>" <?php echo (isset($_POST['Second'])) ? (($_POST['Second']==$i) ? " selected='selected' " : "") : (($tob[2]==$i) ? " selected='selected' " : "");?>>
+                                            <?php echo $i;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                            </div>
+                            <!--<div class="col-sm-2" style="max-width:100px !important;">
+                                    <select class="selectpicker form-control" data-live-search="true" id="SES" name="SES" style="width:56px">
+                                          <?php // foreach($_SES as $key=>$value) {?>
+                                            <option value="<?php //echo $key+1; ?>" <?php // echo (isset($_POST[ 'SES'])) ? (($_POST[ 'SES']==$key+1) ? " selected='selected' " : "") : ((date("a",$dob)==$key+1) ? " selected='selected' " : "");?>>
+                                            <?php //echo $value;?>
+                                            </option>
+                                        <?php// } ?>
+                                    </select> 
+                            </div>--> 
+        </div>
             <div class="form-group row">
+                <label for="Time Of Birth" class="col-sm-2 col-form-label">Place Of Birth<span id="star">*</span></label>
+                <div class="col-sm-4"><input type="text" name="PlaceOfBirth" id="PlaceOfBirth" class="form-control" value="<?php echo (isset($_POST['PlaceOfBirth']) ? $_POST['PlaceOfBirth'] : $ProfileInfo['PlaceOfBirth']);?>" placeholder="Place Of Birth"> </div>
                 <label for="Community" class="col-sm-2 col-form-label">Star Name<span id="star">*</span></label>
                 <div class="col-sm-4">
                     <select class="selectpicker form-control" data-live-search="true" id="StarName" name="StarName">
@@ -28,7 +70,7 @@
                                     <?php } ?>
                     </select>
                     </div>
-                        </div>
+            </div>
                         <div class="form-group row">
                             <label for="MaritalStatus" class="col-sm-2 col-form-label">Rasi Name<span id="star">*</span></label>
                             <div class="col-sm-4">
@@ -38,7 +80,7 @@
                                             <?php echo $RasiName['CodeValue'];?></option>
                                                 <?php } ?>
                                 </select>
-                            </div>
+                            </div>  
                             <label for="Caste" class="col-sm-2 col-form-label">Lakanam<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="selectpicker form-control" data-live-search="true" id="Lakanam" name="Lakanam">
@@ -50,10 +92,21 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="Caste" class="col-sm-2 col-form-label">Chevvai Dhosham<span id="star">*</span></label>
+                            <div class="col-sm-4">
+                                <select class="selectpicker form-control" data-live-search="true" id="ChevvaiDhosham" name="ChevvaiDhosham">
+                                    <?php foreach($response['data']['ChevvaiDhosham'] as $ChevvaiDhosham) { ?>
+                                        <option value="<?php echo $ChevvaiDhosham['SoftCode'];?>" <?php echo (isset($_POST[ 'ChevvaiDhosham'])) ? (($_POST[ 'ChevvaiDhosham']==$ChevvaiDhosham[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo['ChevvaiDhosham']==$ChevvaiDhosham[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                                            <?php echo $ChevvaiDhosham['CodeValue'];?> </option>
+                                                <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <div class="col-sm-6">
                                 <table class="table table-bordered">
                                 <tbody>
-                                  <tr>
+                                  <tr>                                                                     
                                     <td><textarea cols="1" rows="2" style="width: 100%;height: 100%;" name="RA1"><?php echo (isset($_POST['RA1']) ? $_POST['RA1'] : $ProfileInfo['R1']);?></textarea></td>
                                     <td><textarea cols="1" rows="2" style="width: 100%;height: 100%;" name="RA2"><?php echo (isset($_POST['RA2']) ? $_POST['RA2'] : $ProfileInfo['R2']);?></textarea></td>
                                     <td><textarea cols="1" rows="2" style="width: 100%;height: 100%;" name="RA3"><?php echo (isset($_POST['RA3']) ? $_POST['RA3'] : $ProfileInfo['R3']);?></textarea></td>

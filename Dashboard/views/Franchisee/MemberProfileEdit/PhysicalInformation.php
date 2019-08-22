@@ -134,7 +134,7 @@
         <label for="BodyType" class="col-sm-3 col-form-label">Body Type<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="BodyType" name="BodyType">
-                <option value="0">Choose Body Type</option>
+                <option value="0">Choose Diet</option>
                 <?php foreach($response['data']['BodyType'] as $BodyType) { ?>
                     <option value="<?php echo $BodyType['SoftCode'];?>" <?php echo (isset($_POST[ 'BodyType'])) ? (($_POST[ 'BodyType']==$BodyType[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'BodyType']==$BodyType[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $BodyType['CodeValue'];?></option>
@@ -153,10 +153,10 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="SmookingHabit" class="col-sm-3 col-form-label">Smooking Habit<span id="star">*</span></label>
+        <label for="SmookingHabit" class="col-sm-3 col-form-label">Smoking Habit<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="SmookingHabit" name="SmookingHabit">
-                <option value="0">Choose Smiking Habits</option>
+                <option value="0">Choose Smoking Habits</option>
                 <?php foreach($response['data']['SmookingHabit'] as $SmookingHabit) { ?>
                     <option value="<?php echo $SmookingHabit['SoftCode'];?>" <?php echo (isset($_POST[ 'SmookingHabit'])) ? (($_POST[ 'SmookingHabit']==$SmookingHabit[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'SmokingHabit']==$SmookingHabit[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $SmookingHabit['CodeValue'];?>  </option>

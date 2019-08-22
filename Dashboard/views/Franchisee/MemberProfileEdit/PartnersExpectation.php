@@ -18,7 +18,7 @@
 <div class="col-sm-9" style="margin-top: -8px;">
 <form method="post" action="" onsubmit="">
  <input type="hidden" value="<?php echo $_GET['Code'];?>"  name="ProfileCode">
-    <h4 class="card-title">Partners Expectation</h4>
+    <h4 class="card-title">Partner's Expectation</h4>
     <div class="form-group row">
         <div class="col-sm-3" align="left">Age</div>
         <div class="col-sm-2" align="left" style="width:100px">

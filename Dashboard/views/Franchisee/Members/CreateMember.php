@@ -175,12 +175,12 @@ function SubmitNewMember() {
                                         <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
                                             <option value="<?php echo $i; ?>" <?php echo ($_POST['year']==$i) ? " selected='selected' " : "";?>><?php echo $i;?>
                                             </option>
-                                        <?php } ?>
+                                        <?php } ?>                                 
                                     </select>
                             </div>
                            <label for="Sex" class="col-sm-2 col-form-label" style="text-align: right;">Sex<span id="star">*</span></label>
                             <div class="col-sm-3">
-                                <select class="form-control" id="Sex"  name="Sex">
+                                <select class="selectpicker form-control" data-live-search="true" id="Sex"  name="Sex">
                             <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
                             <option value="<?php echo $Sex['CodeValue'];?>" <?php echo ($_POST['Sex']==$Sex['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
                             <?php } ?>
