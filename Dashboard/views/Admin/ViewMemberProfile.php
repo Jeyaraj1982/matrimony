@@ -48,7 +48,7 @@ text-align: left;
 }
 
  </style>
-<form method="post" action="" onsubmit="">
+<form method="post" action="" >
  
 <div style="text-align: right" id="">
         <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
@@ -505,23 +505,12 @@ text-align: left;
     </div>
   </div>
 </div>
-</form>
 <div class="form-group row">
     <div class="col-sm-12">
         <div class="col-sm-6"><button type="submit" name="addtolandingpage" class="btn btn-success">Add To Landing Page</button></div>
     </div>
 </div>
-<?php                   
-  if (isset($_POST['addtolandingpage'])) {         
-    $response = $webservice->getData("Admin","AddToLandingPage",array("ProfileCode"=>$_GET['Code'])); 
-    if ($response['status']=="success") {
-         $successmessage=$response['message'];
-    } else {
-        $errormessage = $response['message']; 
-    }
-    }
-?>  
+</form>
 
-   
             
                
