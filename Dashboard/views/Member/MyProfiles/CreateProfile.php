@@ -23,7 +23,6 @@
 function submitprofile() {
                          $('#ErrProfileFor').html("");
                          $('#ErrProfileName').html("");
-                         $('#ErrDateofBirth').html("");
                          $('#ErrMaritalStatus').html("");
                          $('#ErrLanguage').html("");
                          $('#ErrReligion').html("");
@@ -41,8 +40,6 @@ function submitprofile() {
                             IsAlphabet("ProfileName","ErrProfileName","Please enter alpha numeric characters only");
                          }
                          
-                        //IsNonEmpty("DateofBirth","ErrDateofBirth","Please enter your date of birth");
-                       
                          
                          if($("#Sex").val()=="0"){
                             document.getElementById("ErrSex").innerHTML="Please select sex"; 
@@ -64,7 +61,7 @@ function submitprofile() {
                          if($("#Caste").val()=="0"){
                             document.getElementById("ErrCaste").innerHTML="Please select your caste";
                          }
-                         
+                                                                                                                             
                          if($("#Community").val()=="0"){
                             document.getElementById("ErrCommunity").innerHTML="Please select your community"; 
                          }
@@ -116,9 +113,33 @@ function submitprofile() {
                 </div>
                 <div class="form-group row">
                      <label for="Date of birth" class="col-sm-2 col-form-label">Date of birth<span id="star">*</span></label>
-                     <div class="col-sm-3">
-                          <input type="date" class="form-control" id="DateofBirth" name="DateofBirth"  value="<?php echo (isset($_POST['DateofBirth']) ? $_POST['DateofBirth'] : "");?>" style="line-height:15px !important" placeholder="Date of Birth">
-                          <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth : "";?></span></div>
+                     <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+                                <?php $dob=strtotime($ProfileInfo['DateofBirth'])  ; ?>
+                                    <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
+                                        <?php for($i=1;$i<=31;$i++) {?>
+                                            <option value="<?php echo $i; ?>" <?php echo ($_POST[ 'date']==$i) ? " selected='selected' " : "";?>>
+                                            <?php echo $i;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                            </div>
+                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">        
+                                    <select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px">
+                                        <?php foreach($_Month as $key=>$value) {?>
+                                            <option value="<?php echo $key+1; ?>" <?php echo ($_POST[ 'month']==$key+1) ? " selected='selected' " : "";?>>
+                                            <?php echo $value;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                            </div>
+                            <div class="col-sm-2">
+                                    <select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
+                                        <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
+                                            <option value="<?php echo $i; ?>" <?php echo ($_POST['year']==$i) ? " selected='selected' " : "";?>><?php echo $i;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                     </div>
                      <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
                      <div class="col-sm-3">
                         <select class="selectpicker form-control" data-live-search="true" id="Sex"  name="Sex">
@@ -132,7 +153,7 @@ function submitprofile() {
                 </div>
                 <div class="form-group row">
                      <label for="MaritalStatus" class="col-sm-2 col-form-label">Marital Status<span id="star">*</span></label>
-                     <div class="col-sm-3">
+                     <div class="col-sm-4">
                         <select class="selectpicker form-control" data-live-search="true" id="MaritalStatus"  name="MaritalStatus">
                             <option value="0">Choose Marital Status</option>
                             <?php foreach($fInfo['data']['MaritalStatus'] as $MaritalStatus) { ?>
@@ -154,7 +175,7 @@ function submitprofile() {
                 </div>
                 <div class="form-group row">
                      <label for="Religion" class="col-sm-2 col-form-label">Religion<span id="star">*</span></label>
-                     <div class="col-sm-3">
+                     <div class="col-sm-4">
                         <select class="selectpicker form-control" data-live-search="true" id="Religion"  name="Religion">
                             <option value="0">Choose Religion</option>
                             <?php foreach($fInfo['data']['Religion'] as $Religion) { ?>
@@ -176,7 +197,7 @@ function submitprofile() {
                 </div>
                 <div class="form-group row">
                     <label for="Community" class="col-sm-2 col-form-label">Community<span id="star">*</span></label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <select class="selectpicker form-control" data-live-search="true" id="Community"  name="Community"> 
                             <option value="0">Choose Community</option>
                             <?php foreach($fInfo['data']['Community'] as $Community) { ?>
