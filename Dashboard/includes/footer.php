@@ -8,6 +8,8 @@
         <script src="<?php echo SiteUrl?>assets/vendors/js/vendor.bundle.addons.js"></script>
         <script src="<?php echo SiteUrl?>assets/js/off-canvas.js"></script>    
         <script src="<?php echo SiteUrl?>assets/js/misc.js"></script>
+        <script src="<?php echo SiteUrl?>assets/simpletoast/simply-toast.js"></script>                                       
+        
         <!-- Member --->
         <?php if (isset($_Member['LoginID']) && $_Member['LoginID']>0) { ?>
         <script>
