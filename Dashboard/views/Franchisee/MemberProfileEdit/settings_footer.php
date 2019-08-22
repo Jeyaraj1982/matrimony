@@ -18,40 +18,46 @@
     ?>
     <div style="text-align: right" id="">
         <a href="<?php echo GetUrl("ViewMemberProfile/".$_GET['Code'].".htm ");?>"  class="btn btn-primary" name="Preview" style="font-family:roboto">Preview</a>&nbsp;
-        <a href="javascript:void(0)" onclick="showConfirmPublish()" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
+        <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
      </div>    
         
         
         <div class="modal" id="PubplishNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="Publish_body" style="height:200px">
+                <div class="modal-content" id="Publish_body" style="height:315px">
             
                 </div>
             </div>
         </div>
 
 <script>
-function showConfirmPublish() {
+function showConfirmPublish(ProfileID) {
       $('#PubplishNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
                     +   '<div  style="height: 315px;">'
-                    +  '<form method="post" action="" > '
-                     + '<input type="hidden" value="<?php echo $_GET['Code'];?>" name="ProfileID">'
-                       +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
-                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="VerifyProfileforPublish()">Yes</button>&nbsp;'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
+                    +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
+                     + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                      +  '<div style="text-align:center">Profile Publish<br><br>'
+                        + '<button type="button" class="close" data-dismiss="modal" style="margin-top: -40px;margin-right: 0px;">&times;</button>'
+                     //  +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
+                        +'<div style="text-align:left"> Dear ,<br>'
+                        +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). Once our DAT has approved your profile,the profile will live imediately in our portal, so please verify all data<br><br>'
+                        + '<input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I agree the terms and conditions  </label><br><br>'
+                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="VerifyProfileforPublish(\''+ProfileID+'\')">Yes,send request</button>&nbsp;'
+                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No, i will do later</button>'
                        +  '</div><br>'
                     +  '</form>'
                 +  '</div>'
             +  '</div>';
             $('#Publish_body').html(content);
 }
-function VerifyProfileforPublish() {
-    
+function VerifyProfileforPublish(formid) {
+     var param = $("#frm_"+formid).serialize();
      $('#Publish_body').html(preloader);
-        $.ajax({url: API_URL + "m=Member&a=VerifyProfileforPublish",success: function(result2){$('#Publish_body').html(result2);}});
+        $.post(API_URL + "m=Franchisee&a=PublishMemberProfile",param,function(result2) {$('#Publish_body').html(result2);});
 }
 
 </script>
    
 
+ 
