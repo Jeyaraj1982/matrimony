@@ -84,9 +84,6 @@
         if (!(strlen(trim($_POST['MemberName']))>0)) {
             return Response::returnError("Please enter your name");
         }
-        if (!(strlen(trim($_POST['DateofBirth']))>0)) {
-            return Response::returnError("Please enter your DateofBirth");
-        }
         if (!(strlen(trim($_POST['Sex']))>0)) {
             return Response::returnError("Please enter your Sex");
         }
@@ -103,9 +100,10 @@
             return Response::returnError("Please enter MemberPassword");    
         }
         $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
+         $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
        $id =  $mysql->insert("_tbl_members",array("MemberCode"              => $_POST['MemberCode'],
                                                            "MemberName"               => $_POST['MemberName'],  
-                                                           "DateofBirth"              => $_POST['DateofBirth'],
+                                                           "DateofBirth"              => $dob,
                                                            "Sex"                      => $_POST['Sex'],
                                                            "MobileNumber"             => $_POST['MobileNumber'],
                                                            "WhatsappNumber"           => $_POST['WhatsappNumber'],
