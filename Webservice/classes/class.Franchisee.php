@@ -911,19 +911,19 @@
              $ProfilePhotoFirst = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where `ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='1'");   
              
              if (sizeof($ProfilePhotoFirst)==0) {
-                  for($i=sizeof($ProfilePhoto);$i<4;$i++) {
+                
                     if ($Profiles[0]['SexCode']=="SX002"){
                         $ProfilePhotoFirst[0]['ProfilePhoto'] = AppPath."assets/images/noprofile_female.png";
-                        }
-                   else{
+                        }else{
+                
                         $ProfilePhotoFirst[0]['ProfilePhoto'] = AppPath."assets/images/noprofile_male.png";
                         }
-                  }  
+                   
               }
                                                           
              return Response::returnSuccess("success"."select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where `ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'",array("ProfileInfo"            => $Profiles[0],
                                                             "ProfilePhotos"          => $ProfilePhoto,
-                                                            "ProfilePhotoFirst"      => $ProfilePhotoFirst[0],        
+                                                            "ProfilePhotoFirst"      => $ProfilePhotoFirst[0]['ProfilePhoto'],        
                                                             "EducationAttachments"   => $Educationattachments,
                                                             "Documents"              => $Documents,
                                                             "Members"                => $members[0],
@@ -970,6 +970,8 @@
                                                             "StarName"               => CodeMaster::getData('STARNAMES'),
                                                             "AllCountryName"        => CodeMaster::getData('CONTNAMES'),
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
+                                                            "ParentsAlive"              => CodeMaster::getData('PARENTSALIVE'),
+                                                            "ChevvaiDhosham"              => CodeMaster::getData('CHEVVAIDHOSHAM'),
                                                             "StateName"              => CodeMaster::getData('STATNAMES')));
          }   
           
@@ -977,16 +979,15 @@
              
              global $mysql, $loginInfo;
              
-             $dob = strtotime($_POST['DateofBirth']);
-             $dob = date("Y",$dob)."-".date("m",$dob)."-".date("d",$dob);
-             
-             $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
+            $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
              $Sex            = CodeMaster::getData("SEX",$_POST['Sex']);
              $MotherTongue   = CodeMaster::getData("LANGUAGENAMES",$_POST['Language']); 
              $Religion       = CodeMaster::getData("RELINAMES",$_POST['Religion']); 
              $Caste          = CodeMaster::getData("CASTNAMES",$_POST['Caste']);  
              $Community      = CodeMaster::getData("COMMUNITY",$_POST['Community']);  
              $Nationality    = CodeMaster::getData("NATIONALNAMES",$_POST['Nationality']);  
+             
+             $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
           
              $updateSql =  "update `_tbl_draft_profiles` set `ProfileFor`        = '".$_POST['ProfileFor']."',
                                                            `ProfileName`       = '".$_POST['ProfileName']."',
@@ -1001,6 +1002,7 @@
                                                            `Religion`          = '".trim($Religion[0]['CodeValue'])."',
                                                            `CasteCode`         = '".$_POST['Caste']."',
                                                            `Caste`             = '".trim($Caste[0]['CodeValue'])."', 
+                                                           `SubCaste`             = '".$_POST['SubCaste']."',
                                                            `CommunityCode`     = '".$_POST['Community']."',  
                                                            `Community`         = '".trim($Community[0]['CodeValue'])."',
                                                            `NationalityCode`   = '".$_POST['Nationality']."',   
@@ -1162,19 +1164,33 @@
              $elderSister       = CodeMaster::getData("ELDERSIS",$_POST['elderSister']);
              $youngerSister     = CodeMaster::getData("YOUNGERSIS",$_POST['youngerSister']);
              $marriedSister     = CodeMaster::getData("MARRIEDSIS",$_POST['marriedSister']);
+             $FathersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['FathersAlive']);
+             $MothersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['MothersAlive']);
+             $MothersIncome     = CodeMaster::getData("INCOMERANGE",$_POST['MothersIncome']);
+             $FathersIncome     = CodeMaster::getData("INCOMERANGE",$_POST['FathersIncome']);
              
              $updateSql = "update `_tbl_draft_profiles` set `FathersName`           = '".$_POST['FatherName']."',
                                                            `FathersOccupationCode` = '".$_POST['FathersOccupation']."',
                                                            `FathersOccupation`     = '".$FathersOccupation[0]['CodeValue']."',
+                                                           `FathersContact`        = '".$_POST['FathersContact']."',
+                                                           `FathersIncomeCode`         = '".$_POST['FathersIncome']."',
+                                                           `FathersIncome`         = '".$FathersIncome[0]['CodeValue']."',
+                                                           `FatherAliveCode`       = '".$_POST['FathersAlive']."',
+                                                           `FathersAlive`           = '".$FathersAlive[0]['CodeValue']."',
                                                            `MothersName`           = '".$_POST['MotherName']."',
+                                                           `MothersContact`        = '".$_POST['MotherContact']."',
+                                                           `MothersIncomeCode`     = '".$_POST['MothersIncome']."',
+                                                           `MothersIncome`         = '".$MothersIncome[0]['CodeValue']."',
+                                                           `MothersOccupationCode`     = '".$_POST['MothersOccupationCode']."',
+                                                           `MothersOccupation`         = '".$MothersOccupation[0]['CodeValue']."',
+                                                           `MothersAliveCode`       = '".$_POST['MothersAlive']."',
+                                                           `MothersAlive`           = '".$MothersAlive[0]['CodeValue']."',
                                                            `FamilyTypeCode`        = '".$_POST['FamilyType']."',
                                                            `FamilyType`            = '".$FamilyType[0]['CodeValue']."',
                                                            `FamilyValueCode`       = '".$_POST['FamilyValue']."',
                                                            `FamilyValue`           = '".$FamilyValue[0]['CodeValue']."',
                                                            `FamilyAffluenceCode`   = '".$_POST['FamilyAffluence']."',
                                                            `FamilyAffluence`       = '".$FamilyAffluence[0]['CodeValue']."',
-                                                           `MothersOccupationCode` = '".$_POST['MothersOccupation']."',
-                                                           `MothersOccupation`     = '".$MothersOccupation[0]['CodeValue']."',
                                                            `NumberofBrothersCode`  = '".$_POST['NumberofBrother']."',
                                                            `NumberofBrothers`      = '".$NumberofBrothers[0]['CodeValue']."',
                                                            `YoungerCode`           = '".$_POST['younger']."',
@@ -1399,12 +1415,18 @@
              $StarName  = CodeMaster::getData("STARNAMES",$_POST['StarName']);
              $RasiName  = CodeMaster::getData("MONSIGNS",$_POST['RasiName']);
              $Lakanam   = CodeMaster::getData("LAKANAM",$_POST['Lakanam']);
+              $ChevvaiDhosham   = CodeMaster::getData("CHEVVAIDHOSHAM",$_POST['ChevvaiDhosham']);
+              $tob = $_POST['hour'].":".$_POST['minute'].":".$_POST['Second'];
              $updateSql = "update `_tbl_draft_profiles` set  `StarNameCode`  = '".$_POST['StarName']."',
                                                             `StarName`      = '".$StarName[0]['CodeValue']."',
                                                             `LakanamCode`   = '".$_POST['Lakanam']."',
                                                             `Lakanam`       = '".$Lakanam[0]['CodeValue']."',
                                                             `RasiNameCode`  = '".$_POST['RasiName']."',
                                                             `RasiName`      = '".$RasiName[0]['CodeValue']."',
+                                                            `TimeOfBirth`      = '".$tob."',
+                                                            `PlaceOfBirth`      = '".$_POST['PlaceOfBirth']."',
+                                                            `ChevvaiDhoshamCode`      = '".$_POST['ChevvaiDhosham']."',
+                                                            `ChevvaiDhosham`      = '".$ChevvaiDhosham[0]['CodeValue']."',
                                                             `R1`            = '".$_POST['RA1']."',
                                                             `R2`            = '".$_POST['RA2']."',
                                                             `R3`            = '".$_POST['RA3']."',
@@ -1486,9 +1508,9 @@
              if (!(strlen(trim($_POST['ProfileName']))>0)) {
                 return Response::returnError("Please enter your name");
              }
-             if (!(strlen(trim($_POST['DateofBirth']))>0)) {
-                return Response::returnError("Please enter your date of birth");
-             }
+             //if (!(strlen(trim($_POST['DateofBirth']))>0)) {
+             //   return Response::returnError("Please enter your date of birth");
+            // }
              if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0" )) {
                 return Response::returnError("Please select sex");
              }
@@ -1497,9 +1519,10 @@
              if (sizeof($member)>0)  {
              $Sex           = CodeMaster::getData("SEX",$_POST["Sex"]); 
              $ProfileCode   =SeqMaster::GetNextDraftProfileCode();
+             $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
              $id =  $mysql->insert("_tbl_draft_profiles",array("ProfileCode"      => $ProfileCode,
                                                               "ProfileName"       => $_POST['ProfileName'],
-                                                              "DateofBirth"       => $_POST['DateofBirth'],        
+                                                              "DateofBirth"       => $dob,        
                                                               "SexCode"           => $_POST['Sex'],      
                                                               "Sex"               => $Sex[0]['CodeValue'],      
                                                               "CreatedOn"         => date("Y-m-d H:i:s"), 
