@@ -4,7 +4,7 @@
         
         $response = $webservice->getData("Franchisee","AddEducationalDetails",$_POST);
         if ($response['status']=="success") {
-             $successmessage = $response['message']; 
+              echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm'</script>";
         } else {
             $errormessage = $response['message']; 
         }
