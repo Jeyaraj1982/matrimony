@@ -178,7 +178,9 @@ function SubmitNewMember() {
                                         <?php } ?>                                 
                                     </select>
                             </div>
-                           <label for="Sex" class="col-sm-2 col-form-label" style="text-align: right;">Sex<span id="star">*</span></label>
+                            </div>
+                            <div class="form-group row">
+                           <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
                             <div class="col-sm-3">
                                 <select class="selectpicker form-control" data-live-search="true" id="Sex"  name="Sex">
                             <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
