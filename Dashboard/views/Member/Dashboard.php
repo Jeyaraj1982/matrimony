@@ -80,10 +80,14 @@
                                   </tbody>
                             </table>  -->
                              
-                            <div class="col-sm-2" style="border:1px solid black">
-                                <img src="<?php  echo SiteUrl?>assets/images/userimage.jpg" style="width:100%">
+                            <div class="col-sm-2" style="border:1px solid black;">
+                                <img src="<?php  echo SiteUrl?>assets/images/userimage.jpg" style="width:40px">
                             </div> 
-                            <div class="col-sm-9"><?php echo $Row['VisterProfileCode'];?> has <?php echo $Row['Subject'];?> your Profile</div>
+                            <div class="col-sm-9">
+                                <?php echo $Row['VisterProfileCode'];?> has <?php echo $Row['Subject'];?> your Profile  <br>
+                                <a href="#">View</a>
+                                <span style="float:right">Date&nbsp;:&nbsp;<?php echo putDateTime($Row['ViewedOn']);?></span>
+                            </div>
                             <div class="col-sm-1"><a href="javascript:void(0)" onclick="HideLatestUpadte()" class="close" style="outline:none" >&times;</a></div>
                    </div> 
                    <?php }?>                       

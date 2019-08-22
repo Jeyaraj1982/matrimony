@@ -29,10 +29,6 @@
               <a href="javascript:changeMemberStatus('Invisible')" class="dropdown-item">
                 Invisible
               </a></li>
-        <li class="nav-item" style="text-align: center;padding-right:25px;padding-left:20px;padding-bottom:10px;padding-top: 0px;">
-            <img class="rounded-circle" src="<?php echo ImageUrl?>userimage.jpg" alt="Profile image" style="height:100px">
-            <img data-toggle="modal" data-target="#UploadImage" data-backdrop="false" src="<?php echo ImageUrl?>camera.png" style="height: 25px;margin-top: 58px;margin-left: -35px;border: 1px solid #fff;border-radius: 50%;cursor:pointer"><br>
-        </li>
         <li class="nav-item">
             <a class="nav-link" href="<?php echo SiteUrl;?>">
               <i class="menu-icon mdi mdi-television"></i>
@@ -172,82 +168,5 @@
     </ul>
 </nav>
 
-<div class="modal fade" id="UploadImage" role="dialog" data-backdrop="static" style="margin-left: -85px;padding-top: 108px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-    <div class="modal-dialog" style="width:500px">
-        <div class="modal-content" style="width: 120%;">
-            <div class="modal-body">
-                  <div class="row">
-              <div class="col-sm-12" style="float:right;"><button type="button" class="close" data-dismiss="modal" style="margin-top: -10px;margin-bottom: 10px;float:right">&times;</button></div>
-              <div class="col-sm-3" style="margin-right: -58px;"><strong>Select Image:</strong></div>
-              <div class="col-sm-9"><input type="file" id="upload"></div>
-              <div class="col-sm-6" style="text-align:center;margin-top: 10px;">
-                <div id="upload-demo" style="width:350px"></div>
-              </div>
-              <div class="col-sm-6" style="text-align:center;margin-top: 10px;">
-                <div id="upload-demo-i" style="background:#e1e1e1;width:275px;padding:30px;height:300px;"></div>
-              </div>
-              <?php echo $errormessage ;?><?php echo $successmessage?>
-                <div class="col-sm-12" style="text-align:center;margin-top: 10px;"><button class="btn btn-primary upload-result"  name="btnSaveFileName"style="outline:0;font-family: roboto;">Upload Image</button> &nbsp;<a class="close" data-dismiss="modal" style="color:black;font-size: 14px;font-weight:100;opacity:1">Cancel</a>
-              </div>
-          </div>
-            </div>
-        </div>
-    </div>
-</div>
- <script type="text/javascript">
-$uploadCrop = $('#upload-demo').croppie({
-    enableExif: true,
-    viewport: {
-        width: 200,
-        height: 200,
-        type: 'circle'
-    },
-    boundary: {
-        width: 300,
-        height: 300
-    }
-});
-
-
-$('#upload').on('change', function () { 
-    var reader = new FileReader();
-    reader.onload = function (e) {
-        $uploadCrop.croppie('bind', {
-            url: e.target.result
-        }).then(function(){
-            console.log('jQuery bind complete');
-        });
-        
-    }
-    reader.readAsDataURL(this.files[0]);
-});
-
-
-$('.upload-result').on('click', function (ev) {
-    $uploadCrop.croppie('result', {
-        type: 'canvas',
-        size: 'viewport'
-    }).then(function (resp) {
-
-
-        $.ajax({
-            url: "ajaxpro.php",
-            type: "POST",
-            data: {"image":resp},
-            success: function (data) {
-                html = '<div style="text-align:center"><img src="' + resp + '" />';
-                html += '<form action="" method="post">';
-                    html += '<input type="hidden" value="'+data+'" name="filename"><br>';
-                    html += '<input type="submit" class="btn btn-primary" style="outline:0;" value=" Save " name="btnSaveFileName">';
-                html += '</form></div>';
-                $("#upload-demo-i").html(html);
-            }
-        });
-    });
-});
- $("#btnClosePopup").click(function () {
-            $("#upload-demo").modal("hide");
-        });
-</script>
  
   
