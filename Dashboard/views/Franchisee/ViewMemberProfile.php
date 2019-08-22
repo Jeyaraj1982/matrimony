@@ -42,7 +42,7 @@ text-align: left;
 <form method="post" action="" onsubmit="">
  
 <div style="text-align: right" id="">
-        <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
+        <a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
         <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
 </div>
 <br>
@@ -119,9 +119,9 @@ text-align: left;
               <div class="form-group row">
              <div class="col-sm-12" style="text-align:right">
                    <div class="photoview">
-                    <img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 200px;width: 150px;">
+                    <img src="<?php echo $response['data']['ProfilePhotoFirst'];?>" style="height: 200px;width: 150px;">
                   </div>
-              </div> 
+              </div>                                
              </div>
              <div style="text-align:right">
              <?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
