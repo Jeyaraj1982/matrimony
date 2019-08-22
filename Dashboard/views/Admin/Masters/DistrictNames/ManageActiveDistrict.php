@@ -1,4 +1,3 @@
-
 <form method="post" action="<?php echo GetUrl("Masters/DistrictNames/New");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
