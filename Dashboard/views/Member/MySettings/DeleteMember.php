@@ -33,9 +33,9 @@ function submitdelete() {
 <form method="post" action="" onsubmit="return submitdelete()" name="form1" id="form1">
     <div class="col-sm-9" style="margin-top: -8px;">
         <h4 class="card-title">Delete Member</h4>
-        <span style="color:#666;">if you delete a member it will all immediately and permanently delete all associated data. This will also affect your analytics, so we only recommend deleteing members that never used in future.</span><br><br>
+        <span style="color:#666;">If you delete a member it will all immediately and permanently delete all associated data. This will also affect your analytics, so we only recommend deleteing members that never used in future.</span><br><br>
         <br><br><br><br><br>
-        <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal">I understand that all content will be delete  </label>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#condition">Lean more</a>
+        <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal">I understand that all content will be delete  </label>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#condition">Learn more</a>
         <br><span class="errorstring" id="Errcheck"></span><br><br>
         <div class="form-group row">
             <div class="col-sm-4">
@@ -80,7 +80,7 @@ function submitdelete() {
     <div class="modal-dialog" style="width: 367px;">
         <div class="modal-content">
             <div class="modal-body" style="padding:20px">
-                    <div  style="height: 315px;">
+                    <div  style="height: 125px;">
                     <form method="post" action="" > 
                     <h5 style="text-align:center">Delete Member</h5>    <button type="button" class="close" data-dismiss="modal" style="margin-top: -38px;margin-right: 10px;">&times;</button>
                    <div style="text-align:center">Are you sure want to delete?  <br><br>
@@ -95,8 +95,8 @@ function submitdelete() {
     <div class="modal-dialog" style="width: 367px;">
         <div class="modal-content">
             <div class="modal-body" style="padding:20px">
-                    <div  style="height: 315px;">
-                    <h5 style="text-align:center">Delete Member</h5>
+                    <div  style="height: 125px;">
+                    <h5 style="text-align:center">Delete Member</h5> <button type="button" class="close" data-dismiss="modal" style="margin-top: -38px;margin-right: 10px;">&times;</button>
                         Your account was deleted successfully       <br> <br>
                   <div style="text-align: center;"><a href="<?php echo SiteUrl;?>?action=logout&redirect=../index" class="btn btn-primary">Continue</a></div>
                 </div>

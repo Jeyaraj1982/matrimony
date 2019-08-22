@@ -117,7 +117,7 @@ $page="MyMemberInfo";
                     <div class="col-sm-4">
                         <button type="submit" name="Btnupdate" class="btn btn-primary mr-2" style="font-family: roboto;">Update Information</button>
                     </div>
-                    <div class="col-sm-3" style="margin-left: -60px;margin-top: 6px;"><a href="../MyMemberInfo" style="color: #424141">Cancel</a></div>
+                    <div class="col-sm-3" style="margin-left: -60px;margin-top: 6px;"><a href="MyMemberInfo" style="color: #424141">Cancel</a></div>
                 </div>
             </div>
 
