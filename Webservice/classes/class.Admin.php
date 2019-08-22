@@ -556,13 +556,14 @@ class Admin extends Master {
                                                   "Religion"                => $draft[0]['Religion'],
                                                   "CasteCode"               => $draft[0]['CasteCode'],
                                                   "Caste"                   => $draft[0]['Caste'],
+                                                  "SubCaste"                   => $draft[0]['SubCaste'],
                                                   "AboutMe"                 => $draft[0]['AboutMe'],
                                                   "CountryCode"             => $draft[0]['CountryCode'],
                                                   "Country"                 => $draft[0]['Country'],
                                                   "StateCode"               => $draft[0]['StateCode'],
                                                   "State"                   => $draft[0]['State'],
                                                   "City"                    => $draft[0]['City'],
-                                                  "Pincode"                    => $draft[0]['Pincode'],
+                                                  "Pincode"                 => $draft[0]['Pincode'],
                                                   "OtherLocation"           => $draft[0]['OtherLocation'],
                                                   "CommunityCode"           => $draft[0]['CommunityCode'],
                                                   "Community"               => $draft[0]['Community'],
@@ -615,11 +616,21 @@ class Admin extends Master {
                                                   "DrinkingHabitCode"       => $draft[0]['DrinkingHabitCode'],
                                                   "DrinkingHabit"           => $draft[0]['DrinkingHabit'],
                                                   "FathersName"             => $draft[0]['FathersName'],
+                                                  "FathersAliveCode"             => $draft[0]['FathersAliveCode'],
+                                                  "FathersAlive"             => $draft[0]['FathersAlive'],
                                                   "FathersOccupationCode"   => $draft[0]['FathersOccupationCode'],
                                                   "FathersOccupation"       => $draft[0]['FathersOccupation'],
+                                                  "FathersIncomeCode"   => $draft[0]['FathersIncomeCode'],
+                                                  "FathersIncome"       => $draft[0]['FathersIncome'],
+                                                  "FathersContact"       => $draft[0]['FathersContact'],
                                                   "MothersName"             => $draft[0]['MothersName'],
+                                                  "MothersAliveCode"   => $draft[0]['MothersAliveCode'],
+                                                  "MothersAlive"       => $draft[0]['MothersAlive'],
                                                   "MothersOccupationCode"   => $draft[0]['MothersOccupationCode'],
                                                   "MothersOccupation"       => $draft[0]['MothersOccupation'],
+                                                  "MothersIncomeCode"   => $draft[0]['MothersIncomeCode'],
+                                                  "MothersIncome"       => $draft[0]['MothersIncome'],
+                                                  "MothersContact"       => $draft[0]['MothersContact'],
                                                   "FamilyTypeCode"          => $draft[0]['FamilyTypeCode'],
                                                   "FamilyType"              => $draft[0]['FamilyType'],
                                                   "FamilyValueCode"         => $draft[0]['FamilyValueCode'],
@@ -650,12 +661,16 @@ class Admin extends Master {
                                                   "AddressLine3"            => $draft[0]['AddressLine3'],
                                                   "WhatsappNumber"          => $draft[0]['WhatsappNumber'],
                                                   "WhatsappCountryCode"     => $draft[0]['WhatsappCountryCode'],
+                                                  "TimeOfBirth"            => $draft[0]['TimeOfBirth'],
+                                                  "PlaceOfBirth"            => $draft[0]['PlaceOfBirth'],
                                                   "StarNameCode"            => $draft[0]['StarNameCode'],
                                                   "StarName"                => $draft[0]['StarName'],
                                                   "RasiNameCode"            => $draft[0]['RasiNameCode'],
                                                   "RasiName"                => $draft[0]['RasiName'],
                                                   "LakanamCode"             => $draft[0]['LakanamCode'],
                                                   "Lakanam"                 => $draft[0]['Lakanam'],
+                                                  "ChevvaiDhoshamCode"             => $draft[0]['ChevvaiDhoshamCode'],
+                                                  "ChevvaiDhosham"                 => $draft[0]['ChevvaiDhosham'],
                                                   "R1"                      => $draft[0]['R1'],                    
                                                   "R2"                      => $draft[0]['R2'],
                                                   "R3"                      => $draft[0]['R3'],
@@ -2214,7 +2229,45 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             $Members=$mysql->select($sql);   
             $index = 0;
             foreach($Members as $Member) {
-               $v = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$Member['MemberID']."'");   
+               $v = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$Member['MemberID']."'");    
+               //if ($v[0]['ProfileID']>0) {
+               if ( sizeof($v)>0) {
+               $Members[$index]['IsEditable']= ($v[0]['IsApproved']==0 && $v[0]['RequestToVerify']==0) ? 1 : 0 ;
+               $Members[$index]['ProfilesID']= $v[0]['ProfileID']  ;
+               $Members[$index]['ProfilesCode']= $v[0]['ProfileCode']  ;
+               $Members[$index]['NoOfProfile']= sizeof($v)  ;
+                   
+               } else {
+                $Members[$index]['IsEditable']=  0;
+                $Members[$index]['ProfilesID']= 0;
+                $Members[$index]['ProfilesCode']= 0;
+                $Members[$index]['NoOfProfile']= 0;
+                   
+               }
+               $index++;
+            } 
+            return Response::returnSuccess("success".$sql."select * from _tbl_draft_profiles where MemberID='".$Member['MemberID']."'",$Members);
+        }
+        function SearchMemberProfileDetails() {
+            global $mysql,$loginInfo;                                                                      
+            $sql="SELECT tb1_1.MemberID AS MemberID,
+                         tb1_1.MemberName AS MemberName,
+                         tb1_1.MemberCode AS MemberCode,
+                         tb1_1.MobileNumber AS MobileNumber,
+                         _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
+                         _tbl_franchisees.FranchiseName AS FranchiseeName,
+                         tb1_1.CreatedOn AS CreatedOn,
+                         tb1_1.IsActive AS IsActive
+                   FROM 
+                        (select * from _tbl_members where  MemberCode like '%".$_POST['MemberDetails']."%' or MemberName like '%".$_POST['MemberDetails']."%' or MobileNumber like '%".$_POST['MemberDetails']."%' or EmailID like '%".$_POST['MemberDetails']."%') AS tb1_1
+                   INNER JOIN 
+                        _tbl_franchisees 
+                   ON 
+                        tb1_1.ReferedBy=_tbl_franchisees.FranchiseeID";
+            $Members=$mysql->select($sql);   
+            $index = 0;
+            foreach($Members as $Member) {
+               $v = $mysql->select("select * from `_tbl_profiles` where `MemberID` = '".$Member['MemberID']."'");    
                //if ($v[0]['ProfileID']>0) {
                if ( sizeof($v)>0) {
                $Members[$index]['IsEditable']= ($v[0]['IsApproved']==0 && $v[0]['RequestToVerify']==0) ? 1 : 0 ;

@@ -1505,12 +1505,14 @@
                                                             "Lakanam"                => CodeMaster::getData('LAKANAM'),
                                                             "StarName"               => CodeMaster::getData('STARNAMES'),
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
+                                                            "ParentsAlive"              => CodeMaster::getData('PARENTSALIVE'),
+                                                            "ChevvaiDhosham"              => CodeMaster::getData('CHEVVAIDHOSHAM'),
                                                             "StateName"              => CodeMaster::getData('STATNAMES'));
              if ($rtype=="")  {
              return Response::returnSuccess("success",$result);
              } else {
                  return  $result;
-             }
+             }                                                    
          }
        /*  function GetDownloadProfileInformation() {
              global $mysql,$loginInfo;        
@@ -1768,6 +1770,7 @@
                                                            `Religion`          = '".$Religion[0]['CodeValue']."',
                                                            `CasteCode`         = '".$_POST['Caste']."',
                                                            `Caste`             = '".$Caste[0]['CodeValue']."',
+                                                           `SubCaste`             = '".$_POST['SubCaste']."',
                                                            `CommunityCode`     = '".$_POST['Community']."',
                                                            `Community`         = '".$Community[0]['CodeValue']."',
                                                            `NationalityCode`   = '".$_POST['Nationality']."',
@@ -1815,14 +1818,28 @@
              $elderSister       = CodeMaster::getData("ELDERSIS",$_POST['elderSister']);
              $youngerSister     = CodeMaster::getData("YOUNGERSIS",$_POST['youngerSister']);
              $marriedSister     = CodeMaster::getData("MARRIEDSIS",$_POST['marriedSister']);
+             $FathersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['FathersAlive']);
+             $MothersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['MothersAlive']);
+             $MothersIncome     = CodeMaster::getData("INCOMERANGE",$_POST['MothersIncome']);
+             $FathersIncome     = CodeMaster::getData("INCOMERANGE",$_POST['FathersIncome']);
 
              
              $updateSql = "update `_tbl_draft_profiles` set `FathersName`           = '".$_POST['FatherName']."',
                                                            `FathersOccupationCode` = '".$_POST['FathersOccupation']."',
                                                            `FathersOccupation`     = '".$FathersOccupation[0]['CodeValue']."',
+                                                           `FathersContact`        = '".$_POST['FathersContact']."',
+                                                           `FathersIncomeCode`         = '".$_POST['FathersIncome']."',
+                                                           `FathersIncome`         = '".$FathersIncome[0]['CodeValue']."',
+                                                           `FatherAliveCode`       = '".$_POST['FathersAlive']."',
+                                                           `FathersAlive`           = '".$FathersAlive[0]['CodeValue']."',
                                                            `MothersName`           = '".$_POST['MotherName']."',
+                                                           `MothersContact`        = '".$_POST['MotherContact']."',
+                                                           `MothersIncomeCode`     = '".$_POST['MothersIncome']."',
+                                                           `MothersIncome`         = '".$MothersIncome[0]['CodeValue']."',
+                                                           `MothersAliveCode`       = '".$_POST['MothersAlive']."',
+                                                           `MothersAlive`           = '".$MothersAlive[0]['CodeValue']."',
                                                            `FamilyTypeCode`        = '".$_POST['FamilyType']."',
-                                                           `FamilyType`            = '".$FamilyType[0]['CodeValue']."',
+                                                           `FamilyType`            = '".$FamilyType[0]['CodeValue']."',              
                                                            `FamilyValueCode`       = '".$_POST['FamilyValue']."',
                                                            `FamilyValue`           = '".$FamilyValue[0]['CodeValue']."',
                                                            `FamilyAffluenceCode`   = '".$_POST['FamilyAffluence']."',
@@ -2166,13 +2183,21 @@
              global $mysql,$loginInfo;
              $StarName  = CodeMaster::getData("STARNAMES",$_POST['StarName']);
              $RasiName  = CodeMaster::getData("MONSIGNS",$_POST['RasiName']);
-             $Lakanam   = CodeMaster::getData("LAKANAM",$_POST['Lakanam']);
+             $Lakanam   = CodeMaster::getData("LAKANAM",$_POST['Lakanam']);                                          
+             $ChevvaiDhosham   = CodeMaster::getData("CHEVVAIDHOSHAM",$_POST['ChevvaiDhosham']);
+              $tob = $_POST['hour'].":".$_POST['minute'].":".$_POST['Second'];
              $updateSql = "update `_tbl_draft_profiles` set  `StarNameCode`  = '".$_POST['StarName']."',
                                                             `StarName`      = '".$StarName[0]['CodeValue']."',
                                                             `LakanamCode`   = '".$_POST['Lakanam']."',
                                                             `Lakanam`       = '".$Lakanam[0]['CodeValue']."',
                                                             `RasiNameCode`  = '".$_POST['RasiName']."',
                                                             `RasiName`      = '".$RasiName[0]['CodeValue']."',
+                                                            `RasiNameCode`  = '".$_POST['RasiName']."',
+                                                            `RasiName`      = '".$RasiName[0]['CodeValue']."',
+                                                            `TimeOfBirth`      = '".$tob."',
+                                                            `PlaceOfBirth`      = '".$_POST['PlaceOfBirth']."',
+                                                            `ChevvaiDhoshamCode`      = '".$_POST['ChevvaiDhosham']."',
+                                                            `ChevvaiDhosham`      = '".$ChevvaiDhosham[0]['CodeValue']."',
                                                             `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                             `R1`            = '".$_POST['RA1']."',
                                                             `R2`            = '".$_POST['RA2']."',
@@ -2180,7 +2205,7 @@
                                                             `R4`            = '".$_POST['RA4']."',
                                                             `R5`            = '".$_POST['RB1']."',
                                                             `R8`            = '".$_POST['RB4']."',
-                                                            `R9`            = '".$_POST['RC1']."',
+                                                            `R9`            = '".$_POST['RC1']."',                               
                                                             `R12`            = '".$_POST['RC4']."',
                                                             `R13`            = '".$_POST['RD1']."',
                                                             `R14`            = '".$_POST['RD2']."',
@@ -2858,8 +2883,8 @@
          function GetLatestUpdates() {
              
              global $mysql,$loginInfo;
-             $Latestupdates = $mysql->select("select * from `_tbl_latest_updates` where MemberID='".$loginInfo['MemberID']."'"); 
-                 return Response::returnSuccess("success".$loginInfo['MemberID'],$Latestupdates);                                               
+             $Latestupdates = $mysql->select("select * from `_tbl_latest_updates` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+                 return Response::returnSuccess("success",$Latestupdates);                                               
      }
      }  
    
