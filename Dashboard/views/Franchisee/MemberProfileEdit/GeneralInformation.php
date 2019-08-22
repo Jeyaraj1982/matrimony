@@ -134,7 +134,7 @@
                                 </select>
                             </div>
         
-                            <label for="Description" class="col-sm-3 col-form-label" id="IsChildrenWithYou">IsChildrenWithYou</label>
+                            <label for="Description" class="col-sm-3 col-form-label" id="IsChildrenWithYou" style="text-align:right">IsChildrenWithYou</label>
                             <div class="col-sm-3" id="Childrenwithyou_input">
                                 <select class="selectpicker form-control" data-live-search="true" id="ChildrenWithYou" name="ChildrenWithYou">
                                     <option>Choose Children With You</option>
@@ -142,9 +142,9 @@
                                     <option value="0" <?php echo ($ProfileInfo['ChildrenWithYou']==0) ? " selected='selected' " : "";?>>No</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>                                                            
                         <script>
-                            function getAdditionalInfo(selVal) {
+                            function getAdditionalInfo(selVal) {             
                                 if(selVal== 'MST002') {
                                    $('#AdditionalInfo').hide(); 
                                 }else {
