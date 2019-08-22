@@ -140,11 +140,11 @@
                         <?php echo $BodyType['CodeValue'];?></option>
                             <?php } ?>
             </select>
-        </div>
+        </div>                                                             
         <label for="Diet" class="col-sm-3 col-form-label">Diet<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="Diet" name="Diet">
-                <option value="0">Choose Body Type</option>
+                <option value="0">Choose Diet Type</option>
                 <?php foreach($response['data']['Diet'] as $Diet) { ?>
                     <option value="<?php echo $Diet['SoftCode'];?>" <?php echo (isset($_POST[ 'Diet'])) ? (($_POST[ 'Diet']==$Diet[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Diet']==$Diet[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $Diet['CodeValue'];?> </option>
@@ -153,10 +153,10 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="SmookingHabit" class="col-sm-3 col-form-label">Smooking Habit<span id="star">*</span></label>
+        <label for="SmookingHabit" class="col-sm-3 col-form-label">Smoking Habit<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="SmookingHabit" name="SmookingHabit">
-                <option value="0">Choose Smiking Habits</option>
+                <option value="0">Choose Smoking Habits</option>
                 <?php foreach($response['data']['SmookingHabit'] as $SmookingHabit) { ?>
                     <option value="<?php echo $SmookingHabit['SoftCode'];?>" <?php echo (isset($_POST[ 'SmookingHabit'])) ? (($_POST[ 'SmookingHabit']==$SmookingHabit[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'SmokingHabit']==$SmookingHabit[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $SmookingHabit['CodeValue'];?>  </option>

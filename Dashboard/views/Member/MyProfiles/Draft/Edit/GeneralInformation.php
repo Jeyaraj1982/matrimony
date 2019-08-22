@@ -5,7 +5,7 @@
         
         $response = $webservice->EditDraftGeneralInformation($_POST);
         if ($response['status']=="success") {
-             $successmessage = $response['message']; 
+           echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm'</script>";
         } else {
             $errormessage = $response['message']; 
         }
@@ -159,21 +159,7 @@
                                                 <?php } ?>
                                 </select>
                             </div>
-                            <label for="Caste" class="col-sm-2 col-form-label" style="text-align: right;">Caste<span id="star">*</span></label>
-                            <div class="col-sm-4">
-                                <select class="selectpicker form-control" data-live-search="true" id="Caste" name="Caste">
-                                <option  value="">Choose Caste</option>
-                                <?php foreach($response['data']['Caste'] as $Caste) { ?>
-                                <option value="<?php echo $Caste['SoftCode'];?>" <?php echo (isset($_POST[ 'Caste'])) ? (($_POST[ 'Caste']==$Caste[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'CasteCode']==$Caste[ 'SoftCode']) ? " selected='selected' " : "");?>>
-                                    <?php echo trim($Caste['CodeValue']);?>
-                                </option>
-                                <?php } ?>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="Community" class="col-sm-2 col-form-label">Community<span id="star">*</span></label>
+                            <label for="Caste" class="col-sm-2 col-form-label" style="text-align: right;">Community<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="selectpicker form-control" data-live-search="true" id="Community" name="Community">
                                     <option value="">Choose Community</option>
@@ -183,7 +169,27 @@
                                                 <?php } ?>
                                 </select>
                             </div>
-                            <label for="Nationality" class="col-sm-2 col-form-label" style="text-align: right;">Nationality<span id="star">*</span></label>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="Community" class="col-sm-2 col-form-label">Caste<span id="star">*</span></label>
+                            <div class="col-sm-4">
+                                   <select class="selectpicker form-control" data-live-search="true" id="Caste" name="Caste">
+                                <option  value="">Choose Caste</option>
+                                <?php foreach($response['data']['Caste'] as $Caste) { ?>
+                                <option value="<?php echo $Caste['SoftCode'];?>" <?php echo (isset($_POST[ 'Caste'])) ? (($_POST[ 'Caste']==$Caste[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'CasteCode']==$Caste[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                    <?php echo trim($Caste['CodeValue']);?>
+                                </option>
+                                <?php } ?>
+                                </select>
+                            </div>
+                            <label for="SubCaste" class="col-sm-2 col-form-label" style="text-align: right;">Sub Caste<span id="star">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="SubCaste" id="SubCaste" value="<?php echo (isset($_POST['SubCaste']) ? $_POST['SubCaste'] : $ProfileInfo['SubCaste']);?>" placeholder="Sub Caste">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="Nationality" class="col-sm-2 col-form-label">Nationality<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="selectpicker form-control" data-live-search="true" id="Nationality" name="Nationality">
                                     <option>Choose Nationality</option>
@@ -206,10 +212,11 @@
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-3">
-                                <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
+                                <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save and Next</button>
                                 <br>
                                 <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
                             </div>
+                            <div class="col-sm-3"><a href="<?php echo SiteUrl;?>" class="btn btn-primary">I'll do later</a></div>
                         </div>
 </form>
 </div>

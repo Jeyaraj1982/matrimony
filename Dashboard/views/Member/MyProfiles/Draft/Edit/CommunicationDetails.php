@@ -12,8 +12,31 @@
     
     $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
+    $CountryCodes =$response['data']['ContactCountrycode'];
    ?>
 <?php include_once("settings_header.php");?>
+<script>
+$(document).ready(function () {
+     $("#MobileNumber").keypress(function (e) {
+     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        $("#ErrMobileNumber").html("Digits Only").fadeIn("fast");
+               return false;
+    }
+   });
+   $("#WhatsappNumber").keypress(function (e) {
+     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        $("#ErrWhatsappNumber").html("Digits Only").fadeIn("fast");
+               return false;
+    }
+   });
+   $("#Pincode").keypress(function (e) {
+     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        $("#ErrPincode").html("Digits Only").fadeIn("fast");
+               return false;
+    }
+   });
+   });
+   </script>
 <div class="col-sm-10" style="margin-top: -8px;">
 <form method="post" action="" onsubmit="">
         <h4 class="card-title">Communication Details</h4>
@@ -25,12 +48,30 @@
         </div>
         <div class="form-group row">
             <label for="Mobile Number" class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
+             <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+                <select class="selectpicker form-control" data-live-search="true" name="MobileNumberCountryCode" id="MobileNumberCountryCode" style="width: 61px;">
+                   <?php foreach($response['data']['CountryName'] as $CountryCode) { ?>
+                  <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'MobileNumberCountryCode'])) ? (($_POST[ 'MobileNumberCountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MobileNumberCountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                            <?php echo $CountryCode['str'];?>
+                   <?php } ?>
+                </select>
+            </div>                                                                                     
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="MobileNumber" maxlength="10" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $ProfileInfo['MobileNumber']);?>" placeholder="Mobile Number">
+                <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
             </div>
-            <label for="WhatsappNumber" class="col-sm-3 col-form-label">Whatsapp Number</label>
-            <div class="col-sm-3">
+           <label for="WhatsappNumber" class="col-sm-2 col-form-label" >Whatsapp</label>
+            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+                <select name="WhatsappCountryCode" class="selectpicker form-control" data-live-search="true" id="WhatsappCountryCode"> 
+                     <?php foreach($response['data']['CountryName'] as $CountryCode) { ?>
+                  <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'WhatsappCountryCode'])) ? (($_POST[ 'WhatsappCountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "") : (($ProfileInfo[ 'WhatsappCountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                            <?php echo $CountryCode['str'];?>
+                   <?php } ?>
+                </select>
+            </div>  
+            <div class="col-sm-2">
                 <input type="text" class="form-control" id="WhatsappNumber" maxlength="10" name="WhatsappNumber" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : $ProfileInfo['WhatsappNumber']);?>" placeholder="Whatsapp Number">
+                <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
             </div>
         </div>
         <div class="form-group row">
@@ -54,7 +95,8 @@
         <div class="form-group row">
             <label for="Pincode" class="col-sm-2 col-form-label">Pincode</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" id="Pincode" name="Pincode" maxlength="6" value="<?php echo (isset($_POST['Pincode']) ? $_POST['Pincode'] : $ProfileInfo['Pincode']);?>" placeholder="Pincode">
+                <input type="text" class="form-control" id="Pincode" name="Pincode" maxlength="10" value="<?php echo (isset($_POST['Pincode']) ? $_POST['Pincode'] : $ProfileInfo['Pincode']);?>" placeholder="Pincode">
+                <span class="errorstring" id="ErrPincode"><?php echo isset($ErrPincode)? $ErrPincode : "";?></span>
             </div>
         </div>
         <div class="form-group row">

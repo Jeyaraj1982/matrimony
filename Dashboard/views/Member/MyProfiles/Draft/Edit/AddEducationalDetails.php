@@ -3,8 +3,8 @@
     if (isset($_POST['BtnSave'])) {
         
         $response = $webservice->getData("Member","AddEducationalDetails",$_POST);
-        if ($response['status']=="success") {
-             $successmessage = $response['message']; 
+        if ($response['status']=="success") {                
+             echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm'</script>";
         } else {
             $errormessage = $response['message']; 
         }
@@ -39,7 +39,7 @@
                                     <option value="<?php echo $EducationDegree['CodeValue'];?>" <?php echo ($_POST['EducationDegree']==$EducationDegree['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $EducationDegree['CodeValue'];?></option>
                             <?php } ?>   
                             </select>
-                           </div>
+                           </div>                                                
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Remarks</label>
