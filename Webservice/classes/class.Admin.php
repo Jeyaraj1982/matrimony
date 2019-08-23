@@ -2286,23 +2286,91 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             } 
             return Response::returnSuccess("success".$sql."select * from _tbl_draft_profiles where MemberID='".$Member['MemberID']."'",$Members);
         }
-        function AddToLandingPage() {
+     function AddToLandingPage() {
 
         global $mysql;  
         
         $data = $mysql->select("select * from _tbl_profiles where ProfileCode='".$_POST['ProfileCode']."'");
+        $fromdate=$_POST['year']."-".$_POST['month']."-".$_POST['date'];
+        $todate=$_POST['toyear']."-".$_POST['tomonth']."-".$_POST['todate'];
         
-       $id =  $mysql->insert("_tbl_landingpage_profiles",array("ProfileID"     => $data[0]['ProfileID'],
-                                                               "ProfileCode"   => $data[0]['ProfileCode']));
+       $id =  $mysql->insert("_tbl_landingpage_profiles",array("ProfileID"                 => $data[0]['ProfileID'],
+                                                               "ProfileCode"               => $data[0]['ProfileCode'],
+                                                               "DateFrom"                  => $fromdate,
+                                                               "DateTo"                    => $todate,
+                                                               "IsShow"                    => $_POST['IsShow'],
+                                                               "ShowCommunicationDetails"  => $_POST['ShowCommunicationDetails'],
+                                                               "ShowHoroscopeDetails"      => $_POST['ShowHoroscopeDetails'],
+                                                               "AddOn"                     => date("Y-m-d H:i:s")));
 
         if (sizeof($id)>0) {
-                return Response::returnSuccess("success",array());
+                return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
+                            <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
+                       </div>';
             } else{
                 return Response::returnError("Access denied. Please contact support");   
             }
     }
+    function GetLandingPageProfiles() {                  
+             
+             global $mysql;
+             $Profiles = array();
+             $landingpageProfiles = $mysql->select("select * from `_tbl_landingpage_profiles` where `IsShow`='1'"); 
+               foreach($landingpageProfiles as $profile) {
+                 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+                 $tmp['DateTo']=$profile['DateTo'];
+                 $tmp['DateFrom']=$profile['DateFrom'];
+                 $Profiles[] =$tmp;
+             }
+             
+                 return Response::returnSuccess("success",$Profiles);                                               
+                 }
+   function GetActiveLandingPageProfiles() {                  
+             
+             global $mysql;
+             $Profiles = array();
+             $landingpageProfiles = $mysql->select("select * from `_tbl_landingpage_profiles` where Date(`DateTo`)>=Date('".date("Y-m-d")."') and `IsShow`='1'"); 
+             foreach($landingpageProfiles as $profile) {
+                 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+                 $tmp['DateTo']=$profile['DateTo'];
+                 $tmp['DateFrom']=$profile['DateFrom'];
+                 $Profiles[] =$tmp;
+             }
+             
+                 return Response::returnSuccess("success",$Profiles);                                               
+                 }
+  function GetExpiredLandingPageProfiles() {                  
+             
+             global $mysql;
+             $Profiles = array();
+             $landingpageProfiles = $mysql->select("select * from `_tbl_landingpage_profiles` where Date(`DateTo`)<=Date('".date("Y-m-d")."') and `IsShow`='1'"); 
+             foreach($landingpageProfiles as $profile) {
+                 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+                 $tmp['DateTo']=$profile['DateTo'];
+                 $tmp['DateFrom']=$profile['DateFrom'];
+                 $Profiles[] =$tmp;
+             }
+             
+                 return Response::returnSuccess("success",$Profiles);                                               
+                 }
+                 
+  function GetLandingpageProfileInfo() {
+               
+                global $mysql,$loginInfo;      
+                
+             $Profiles = $mysql->select("select * from `_tbl_landingpage_profiles` where Date(`DateTo`)>=Date('".date("Y-m-d")."') and `IsShow`='1' where ProfileCode='".$_POST['ProfileCode']."'");               
+              $tmp = Profiles::getProfileInformationforAdmin($Profiles[0]['ProfileCode']);
+                 $tmp['DateTo']=$Profiles[0]['DateTo'];
+                 $tmp['DateFrom']=$Profiles[0]['DateFrom'];
+                 $tmp['ShowCommunicationDetails']=$Profiles[0]['ShowCommunicationDetails'];
+                 $Profiles[] =$tmp;
+            
+               return Response::returnSuccess("success",$Profiles);
+           }
     
         
 
     }
-?>
+?> 
