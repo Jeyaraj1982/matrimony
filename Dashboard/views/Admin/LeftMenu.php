@@ -46,6 +46,14 @@
                     <i class="menu-arrow"></i>
                 </a>
             </li>
+            <li
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo GetUrl("ListOfLandingPageProfiles");?>" >
+                    <i class="menu-icon mdi mdi-content-copy "></i>                    
+                    <span class="menu-title">Landing Page Profiles</span>
+                    <i class="menu-arrow"></i>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#managefranchisees" aria-expanded="false" aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>

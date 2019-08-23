@@ -30,7 +30,7 @@ text-align: left;
     border-top: 2px solid #ddd;
 }
   .form-group {
-    margin-bottom: 0px;
+    margin-bottom: 0px;                             
 }
 .photoview {
     float: right;
@@ -49,12 +49,6 @@ text-align: left;
 
  </style>
 <form method="post" action="" >
- 
-<div style="text-align: right" id="">
-        <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
-        <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
-</div>
-<br>
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
@@ -440,11 +434,11 @@ text-align: left;
         </div>
     </div>
   </div>
-</div>
+</div>     
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
-    <h4 class="card-title">Communication Details</h4>
+    <h4 class="card-title">Communication Details</h4>     
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Email ID</label>
             <label class="col-sm-9 col-form-label"style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['EmailID'];?></label>
@@ -482,10 +476,10 @@ text-align: left;
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['State'];?></label>
             <label class="col-sm-2 col-form-label">Country</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['Country'];?></label>
-        </div> 
+        </div>     
         </div>
     </div>
-  </div>
+  </div>   
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
@@ -507,10 +501,170 @@ text-align: left;
 </div>
 <div class="form-group row">
     <div class="col-sm-12">
-        <div class="col-sm-6"><button type="submit" name="addtolandingpage" class="btn btn-success">Add To Landing Page</button></div>
+        <div class="col-sm-6"> <a href="javascript:void(0)" onclick="showAddToLandingPage('<?php echo $_GET['Code'];?>')" name="addtolandingpage" class="btn btn-success">Add To Landing Page</a></div>
     </div>
 </div>
 </form>
-
+   <div class="modal" id="PubplishNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+            <div class="modal-dialog" style="width: 367px;">
+                <div class="modal-content" id="Publish_body" style="height:376px">
             
-               
+                </div>
+            </div>
+        </div>
+                                                                       
+<script>
+function showAddToLandingPage(ProfileCode) {
+      $('#PubplishNow').modal('show'); 
+      var content = '<div class="Publish_body" style="padding:20px">'
+                    +   '<div  style="height: 315px;">'
+                    +  '<form method="post" id="frm_'+ProfileCode+'" name="frm_'+ProfileCode+'" action="" >'
+                     + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
+                      +  '<div style="text-align:center">Profile Add To Landing Page<br><br>'
+                        + '<button type="button" class="close" data-dismiss="modal" style="margin-top: -40px;margin-right: 0px;">&times;</button>'
+                        +'<div class="form-group row">'
+                            +'<div class="col-sm-3">From </div>'
+                            +'<div class="col-sm-2"><select class="form-control" id="date" name="date" style="width:58px;">'
+                            +'<option value="1">1</option>'
+                            +'<option value="2">2</option>'
+                            +'<option value="3">3</option>'
+                            +'<option value="4">4</option>'
+                            +'<option value="5">5</option>'
+                            +'<option value="6">6</option>'
+                            +'<option value="7">7</option>'
+                            +'<option value="8">8</option>'                                                 
+                            +'<option value="9">9</option>'
+                            +'<option value="10">10</option>'
+                            +'<option value="11">11</option>'
+                            +'<option value="12">12</option>'
+                            +'<option value="13">13</option>'
+                            +'<option value="14">14</option>'
+                            +'<option value="15">15</option>'
+                            +'<option value="16">16</option>'
+                            +'<option value="17">17</option>'
+                            +'<option value="18">18</option>'
+                            +'<option value="19">19</option>'
+                            +'<option value="20">20</option>'
+                            +'<option value="21">21</option>'
+                            +'<option value="22">22</option>'
+                            +'<option value="23">23</option>'
+                            +'<option value="24">24</option>'
+                            +'<option value="25">25</option>'
+                            +'<option value="26">26</option>'
+                            +'<option value="27">27</option>'
+                            +'<option value="28">28</option>'
+                            +'<option value="29">29</option>'
+                            +'<option value="30">30</option>'
+                            +'<option value="31">31</option>'
+                            +'</select></div>'
+                        +'<div class="col-sm-3" style="margin-right: -12px;"><select class="form-control" id="month" name="month" style="width:75px;">'
+                            +'<option value="1">Jan</option>'
+                            +'<option value="2">Feb</option>'
+                            +'<option value="3">Mar</option>'
+                            +'<option value="4">Apr</option>'
+                            +'<option value="5">May</option>'
+                            +'<option value="6">Jun</option>'
+                            +'<option value="7">Jul</option>'
+                            +'<option value="8">Aug</option>'                                                 
+                            +'<option value="9">Sep</option>'
+                            +'<option value="10">Oct</option>'
+                            +'<option value="11">Nov</option>'
+                            +'<option value="12">Dec</option>'
+                            +'</select></div>'
+                        +'<div class="col-sm-3"><select class="form-control" id="year" name="year" style="width:75px">'
+                            +'<option value="2019">2019</option>'
+                            +'<option value="2020">2020</option>'
+                            +'<option value="2021">2021</option>'
+                            +'<option value="2022">2022</option>'
+                            +'</select></div>'
+                        +'</div><br>'
+                         +'<div class="form-group row">'
+                            +'<div class="col-sm-3">To </div>'
+                            +'<div class="col-sm-2"><select class="form-control" id="todate" name="todate" style="width:58px;">'
+                            +'<option value="1">1</option>'
+                            +'<option value="2">2</option>'
+                            +'<option value="3">3</option>'
+                            +'<option value="4">4</option>'
+                            +'<option value="5">5</option>'
+                            +'<option value="6">6</option>'
+                            +'<option value="7">7</option>'
+                            +'<option value="8">8</option>'                                                 
+                            +'<option value="9">9</option>'
+                             +'<option value="10">10</option>'
+                            +'<option value="11">11</option>'
+                            +'<option value="12">12</option>'
+                            +'<option value="13">13</option>'
+                            +'<option value="14">14</option>'
+                            +'<option value="15">15</option>'
+                            +'<option value="16">16</option>'
+                            +'<option value="17">17</option>'
+                            +'<option value="18">18</option>'
+                            +'<option value="19">19</option>'
+                            +'<option value="20">20</option>'
+                            +'<option value="21">21</option>'
+                            +'<option value="22">22</option>'
+                            +'<option value="23">23</option>'
+                            +'<option value="24">24</option>'
+                            +'<option value="25">25</option>'
+                            +'<option value="26">26</option>'
+                            +'<option value="27">27</option>'
+                            +'<option value="28">28</option>'
+                            +'<option value="29">29</option>'
+                            +'<option value="30">30</option>'
+                            +'<option value="31">31</option>'
+                            +'</select></div>'
+                        +'<div class="col-sm-3" style="margin-right: -12px;"><select class="form-control" id="tomonth" name="tomonth" style="width:75px;">'
+                            +'<option value="1">Jan</option>'
+                            +'<option value="2">Feb</option>'
+                            +'<option value="3">Mar</option>'
+                            +'<option value="4">Apr</option>'
+                            +'<option value="5">May</option>'
+                            +'<option value="6">Jun</option>'
+                            +'<option value="7">Jul</option>'
+                            +'<option value="8">Aug</option>'                                                 
+                            +'<option value="9">Sep</option>'
+                            +'<option value="10">Oct</option>'
+                            +'<option value="11">Nov</option>'
+                            +'<option value="12">Dec</option>'
+                            +'</select></div>'
+                        +'<div class="col-sm-3"><select class="form-control" id="toyear" name="toyear" style="width:75px">'
+                            +'<option value="2019">2019</option>'
+                            +'<option value="2020">2020</option>'
+                            +'<option value="2021">2021</option>'
+                            +'<option value="2022">2022</option>'
+                            +'</select></div>'
+                        +'</div><br>'
+                        +'<div class="form-group row">'
+                        +'<div class="col-sm-3">Is Show </div>'
+                         +'<div class="col-sm-3"><select class="form-control" id="IsShow" name="IsShow" style="width:75px">'
+                            +'<option value="1">Yes</option>'
+                            +'<option value="0">No</option>'
+                            +'</select></div>'
+                        +'</div><br>'
+                        +'<div class="form-group row">'
+                        +'<div class="col-sm-3">Show Contact Details</div>'
+                         +'<div class="col-sm-3"><select class="form-control" id="ShowCommunicationDetails" name="ShowCommunicationDetails" style="width:75px">'
+                            +'<option value="1">Yes</option>'
+                            +'<option value="0">No</option>'
+                            +'</select></div>'
+                       +'<div class="col-sm-3">Show Horoscope Details</div>'
+                         +'<div class="col-sm-3"><select class="form-control" id="ShowHoroscopeDetails" name="ShowHoroscopeDetails" style="width:75px">'
+                            +'<option value="1">Yes</option>'
+                            +'<option value="0">No</option>'
+                            +'</select></div>'
+                        +'</div><br>'
+                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="AddToLandingPage(\''+ProfileCode+'\')">Submit</button>&nbsp;'
+                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No, i will do later</button>'
+                       +  '</div><br>'
+                    +  '</form>'
+                +  '</div>'                                                   
+            +  '</div>';                                                  
+            $('#Publish_body').html(content);
+}
+function AddToLandingPage(formid) {
+     var param = $("#frm_"+formid).serialize();
+     $('#Publish_body').html(preloader);
+        $.post(API_URL + "m=Admin&a=AddToLandingPage",param,function(result2) {$('#Publish_body').html(result2);});
+}
+
+</script>
