@@ -2356,19 +2356,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                  return Response::returnSuccess("success",$Profiles);                                               
                  }
                  
-  function GetLandingpageProfileInfo() {
-               
-                global $mysql,$loginInfo;      
-                
-             $Profiles = $mysql->select("select * from `_tbl_landingpage_profiles` where Date(`DateTo`)>=Date('".date("Y-m-d")."') and `IsShow`='1' where ProfileCode='".$_POST['ProfileCode']."'");               
-              $tmp = Profiles::getProfileInformationforAdmin($Profiles[0]['ProfileCode']);
-                 $tmp['DateTo']=$Profiles[0]['DateTo'];
-                 $tmp['DateFrom']=$Profiles[0]['DateFrom'];
-                 $tmp['ShowCommunicationDetails']=$Profiles[0]['ShowCommunicationDetails'];
-                 $Profiles[] =$tmp;
-            
-               return Response::returnSuccess("success",$Profiles);
-           }
+   
     
         
 

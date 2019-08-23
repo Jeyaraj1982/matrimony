@@ -1569,13 +1569,13 @@
 
              global $mysql,$loginInfo ;
              
-             $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'"); 
+             $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
              
               $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
 
                     $updateSql = "update `_tbl_draft_profiles` set  `RequestToVerify`      = '1',
                                                             `RequestVerifyOn`      = '".date("Y-m-d H:i:s")."'
-                                                             where  `MemberID`='".$member[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'";
+                                                             where  `MemberID`='".$member[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
              $mysql->execute($updateSql);  
                                                              
              $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"   => $loginInfo[0]['FranchiseeID'],
@@ -1584,7 +1584,7 @@
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                 return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                 return  $updateSql.'<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
                             <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
@@ -1606,12 +1606,22 @@
         global $mysql;  
         
         $data = $mysql->select("select * from _tbl_profiles where ProfileCode='".$_POST['ProfileCode']."'");
+        $fromdate=$_POST['year']."-".$_POST['month']."-".$_POST['date'];
+        $todate=$_POST['toyear']."-".$_POST['tomonth']."-".$_POST['todate'];
         
        $id =  $mysql->insert("_tbl_landingpage_profiles",array("ProfileID"     => $data[0]['ProfileID'],
-                                                               "ProfileCode"   => $data[0]['ProfileCode']));
+                                                               "ProfileCode"   => $data[0]['ProfileCode'],
+                                                               "DateFrom"      => $fromdate,
+                                                               "DateTo"        => $todate,
+                                                               "IsShow"        => $_POST['IsShow'],
+                                                               "AddOn"        => date("Y-m-d H:i:s")));
 
         if (sizeof($id)>0) {
-                return Response::returnSuccess("success",array());
+                return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
+                            <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
+                       </div>';
             } else{
                 return Response::returnError("Access denied. Please contact support");   
             }

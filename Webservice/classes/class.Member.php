@@ -2880,12 +2880,32 @@
              
                  return Response::returnSuccess("success".$Profiles,$Profiles);                                               
                  }
+         
+         function GetLandingpageProfileInfo() {
+               
+               global $mysql,$loginInfo;      
+               $Profiles = $mysql->select("select * from `_tbl_landingpage_profiles` where Date(DateTo)>=Date('".date("Y-m-d")."') and `IsShow`='1' and ProfileCode='".$_POST['ProfileCode']."'"); 
+            
+                $tmp = Profiles::getProfileInfo($_POST['ProfileCode'],2);
+                 $tmp['DateTo']=$Profiles[0]['DateTo'];
+                 $tmp['DateFrom']=$Profiles[0]['DateFrom'];
+                 $tmp['ShowCommunicationDetails']=$Profiles[0]['ShowCommunicationDetails'];
+                 $tmp['ShowHoroscopeDetails']=$Profiles[0]['ShowHoroscopeDetails'];
+                 $Profiles =$tmp;
+            
+               return Response::returnSuccess("success",$Profiles);
+            
+                    
+          }
+         
          function GetLatestUpdates() {
              
              global $mysql,$loginInfo;
              $Latestupdates = $mysql->select("select * from `_tbl_latest_updates` where MemberID='".$loginInfo[0]['MemberID']."'"); 
                  return Response::returnSuccess("success",$Latestupdates);                                               
      }
+     
+     
      }  
    
 ?>
