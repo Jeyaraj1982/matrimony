@@ -1166,7 +1166,7 @@
 
          }
 
-         function VerifyProfileforPublish() {
+         function VerifyProfileforPublish() {                          
 
              global $mysql,$loginInfo;
 
@@ -1273,8 +1273,8 @@
                             <input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
                             <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                 <div class="input-group">
-                                    <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
-                                    <h4 style="text-align:center;color:#6c6969;">OTP</h4>
+                                   <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                   <h4 class="modal-title">Profile Publish</h4> <br>
                                 </div>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
                             </div>
@@ -1286,8 +1286,8 @@
                                     </div>
                                     <div class="col-sm-12">'.$error.'</div>
                                 </div>
-                            </div>
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the PIN?<a href="#">&nbsp;Resend</a></h5> 
+                            </div>                                                                      
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the PIN?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
                         </form>                                                                                                       
                         </div>
                         '; 
@@ -1315,7 +1315,7 @@
                                     <div class="col-sm-12">'.$errormessage.'</div>
                                 </div>
                             </div>
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the PIN?<a href="#">&nbsp;Resend</a></h5> 
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the PIN?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
                         </form>                                                                                                       
                         </div>
                         '; 
@@ -2172,10 +2172,12 @@
 
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_draft_profiles_photos` set `IsDelete`='1' where `ProfilePhotoID`='".$_POST['ProfilePhotoID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'");
-                 return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                       return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirmation For Delete</h4>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
                             <h5 style="text-align:center;color:#ada9a9">Your selected profile photo  has been deleted successfully.</h5>
-                            <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
+                            <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';
 
          }
@@ -2192,13 +2194,11 @@
                                                             `Lakanam`       = '".$Lakanam[0]['CodeValue']."',
                                                             `RasiNameCode`  = '".$_POST['RasiName']."',
                                                             `RasiName`      = '".$RasiName[0]['CodeValue']."',
-                                                            `RasiNameCode`  = '".$_POST['RasiName']."',
-                                                            `RasiName`      = '".$RasiName[0]['CodeValue']."',
                                                             `TimeOfBirth`      = '".$tob."',
                                                             `PlaceOfBirth`      = '".$_POST['PlaceOfBirth']."',
                                                             `ChevvaiDhoshamCode`      = '".$_POST['ChevvaiDhosham']."',
                                                             `ChevvaiDhosham`      = '".$ChevvaiDhosham[0]['CodeValue']."',
-                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
+                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',                
                                                             `R1`            = '".$_POST['RA1']."',
                                                             `R2`            = '".$_POST['RA2']."',
                                                             `R3`            = '".$_POST['RA3']."',
