@@ -31,7 +31,7 @@
             $mail->Username   = $emailSettings[0]["SMTPUserName"];
             $mail->Password   = $emailSettings[0]["SMTPPassword"];
             $mail->Subject    = $param['Subject'];
-            $mail->setFrom("noreply@nahami.online", $emailSettings[0]["SendersName"]);
+            $mail->setFrom($emailSettings[0]["SendersName"].".".$emailSettings[0]["SMTPUserName"], $emailSettings[0]["SendersName"]);
             $mail->addAddress($param['MailTo'],"");
             $mail->msgHTML($param['Message']);
             $mailError = $mail->ErrorInfo;
