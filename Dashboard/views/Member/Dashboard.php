@@ -3,7 +3,6 @@
         $response = $webservice->WelcomeMessage();
     }  
     $response = $webservice->getData("Member","GetMyProfiles",array("ProfileFrom"=>"All"));
-   // if (sizeof($response['data'])>0) {
 ?>
     <style>
         div, label,a,h1,h2,h3,h4,h5,h6 {font-family:'Roboto' !important;}
@@ -49,48 +48,34 @@
         </div>
     </div>
     <div class="row">
-    <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
+    <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">                                                                     
             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Latest Updates</div>
              <div class="card"  style="background:#dee9ea">
                 <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:328px">
-                <?php // for ($x = 0; $x <=2; $x++) { ?>   
-                 <?php  $latestupdates = $webservice->getData("Member","GetLatestUpdates");
-                                                 foreach($latestupdates['data'] as $Row) { ?>                      
-                    <div id="resCon_a0021" class="col-sm-12" style="background:white;width:97%;text-align:left;height:116px;border-bottom:1px solid #d5d5d5;">
-                           <?php //}?>
-                           <!-- <table class="table-bordered">
-                                  <thead>
-                                    <tr>
-                                        <th>Member Code</th>
-                                        <th>Profile Code</th>
-                                        <th>Updates</th>
-                                        <th>Update On</th>
-                                    </tr> 
-                                  </thead>
-                                  <tbody>
-                                    <?php // $latestupdates = $webservice->getData("Member","GetLatestUpdates");
-                                                // foreach($latestupdates['data'] as $Row) { ?>
-                                    <tr>
-                                        <td><?php //echo $Row['VisterMemberID'];?></td>
-                                        <td><?php //echo $Row['VisterProfileCode'];?></td>
-                                        <td><?php //echo $Row['Subject'];?></td>
-                                        <td><?php //echo putDateTime($Row['CreatedOn']);?></td>
-                                    </tr>
-                                    <?php //} ?>
-                                  </tbody>
-                            </table>  -->
-                             
-                            <div class="col-sm-2" style="border:1px solid black;">
-                                <img src="<?php  echo SiteUrl?>assets/images/userimage.jpg" style="width:40px">
-                            </div> 
-                            <div class="col-sm-9">
-                                <?php echo $Row['VisterProfileCode'];?> has <?php echo $Row['Subject'];?> your Profile  <br>
-                                <a href="#">View</a>
-                                <span style="float:right">Date&nbsp;:&nbsp;<?php echo putDateTime($Row['ViewedOn']);?></span>
-                            </div>
-                            <div class="col-sm-1"><a href="javascript:void(0)" onclick="HideLatestUpadte()" class="close" style="outline:none" >&times;</a></div>
-                   </div> 
-                   <?php }?>                       
+                    <div id="resCon_a002" style="background:white;width:97%;text-align:left">
+                    <?php
+                        $latestupdates = $webservice->getData("Member","GetLatestUpdates");
+                        foreach($latestupdates['data'] as $Row) { 
+                    ?>   
+                    <div style="border:1px solid red;margin:5px 5px;">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width:64px">
+                                    <img src="<?php  echo $Row['ProfilePhoto']?>" style="border-radius: 50%;width: 64px;border: 1px solid #ddd !important;height: 64px;padding: 5px;background: #fff;">
+                                </td>
+                                <td>
+                                    <?php echo $Row['VisterProfileCode'];?> &nbsp;<?php echo $Row['Subject'];?><br>
+                                     <a href="#">View</a>
+                                     <span style="float:right;font-size: 12px;color: #514444cc;"><?php echo putDateTime($Row['ViewedOn']);?></span>
+                                </td>
+                                <td style="width:10px;">
+                                 <div class="col-sm-1"><a href="javascript:void(0)" onclick="HideLatestUpadte()" class="close" style="outline:none" >&times;</a></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>              
+                   <?php }?>  
+                  </div>                     
              </div>   
         </div>
         </div>
@@ -115,12 +100,10 @@
     <div class="row">
     <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recent Visitors</div>
-    
               <div class="card"  style="background:#dee9ea">
                 <div class="card-body" id="slideshow" style="padding-left: 4px;padding-right: 0px;height:315px">
                 <?php
                     $recentlyviewedprofiles = $webservice->getData("Member","GetRecentlyWhoViewedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
-                    
                     $Profiles = $recentlyviewedprofiles['data'];       
                     if (sizeof($Profiles)>0) {
                 ?>
@@ -130,7 +113,7 @@
                        echo dashboard_view_1($Profile);
                     }?> 
                     <button class="btn btn-primary leftLst"><</button>
-            <button class="btn btn-primary rightLst">></button>
+                    <button class="btn btn-primary rightLst">></button>
                    </div> 
                 
                 <?php } else { ?>
@@ -168,20 +151,6 @@
                     <?php } ?>
                 </div>
             </div>
-            <!-- <div class="card"  style="background:#dee9ea;">
-                 <div class="card-body" style="padding:10px !important;">    
-                  <?php // for ($x = 0; $x <= 4; $x++) { ?>
-                   <div class="col-sm-12" id="resCon_a001">
-                      <div class="col-sm-2"><img src="<?php // echo SiteUrl?>assets/images/userimage.jpg" style="border-radius:115px;width:30px"></div>
-                        <div class="col-sm-10">
-                          <div style="margin-top:0px">Conard G</div>
-                          <span style="color:#999 !important">39 yrs, 5' 6',Konkani, Mumbai Hotel & Hospitality Proffession</span>
-                        </div>
-                    </div>
-                   <?php// }?>
-                  <div class="col-sm-12" style="padding:10px;text-align:center;background:#fff"><a href="#" >View More</a></div> 
-                </div>
-               </div>--> 
          </div>
         </div>
     <div class="row">
@@ -191,7 +160,6 @@
                 <div class="card-body" id="slideshow" style="padding-left: 4px;padding-right: 0px;height:315px">
                 <?php
                     $recentlyviewedprofiles = $webservice->getData("Member","GetWhoFavouriteMyProfiles",array("requestfrom"=>"0","requestto"=>"5"));
-                    //print_r($recentlyviewedprofiles);
                     $Profiles = $recentlyviewedprofiles['data']; 
                     if (sizeof($Profiles)>0) {
                 ?>                            
@@ -466,3 +434,48 @@ $(document).ready(function () {
 
 });
 </script>
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner">
+    <div class="item active">
+      <img src="la.jpg" alt="Chania">
+      <div class="carousel-caption">
+        <h3>Los Angeles</h3>
+        <p>LA is always so much fun!</p>
+      </div>
+    </div>
+
+    <div class="item">
+      <img src="chicago.jpg" alt="Chicago">
+      <div class="carousel-caption">
+        <h3>Chicago</h3>
+        <p>Thank you, Chicago!</p>
+      </div>
+    </div>
+
+    <div class="item">
+      <img src="ny.jpg" alt="New York">
+      <div class="carousel-caption">
+        <h3>New York</h3>
+        <p>We love the Big Apple!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Left and right controls -->
+  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
