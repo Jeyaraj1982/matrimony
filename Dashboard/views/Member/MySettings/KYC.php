@@ -10,13 +10,11 @@
         <div class="form-group row">
             <div class="col-sm-12">
             <?php
-                if (isset($_POST['updateKYC'])) {
+                if (isset($_POST['updateIDProof'])) {
                     
                     $target_dir = "uploads/";
                     $err=0;
                     $_POST['IDProofFileName']= "";
-                    $_POST['AddressProofFileName']= "";
-                    
                     if (isset($_FILES["IDProofFileName"]["name"]) && strlen(trim($_FILES["IDProofFileName"]["name"]))>0 ) {
                         $idprooffilename = time().basename($_FILES["IDProofFileName"]["name"]);
                         if (!(move_uploaded_file($_FILES["IDProofFileName"]["tmp_name"], $target_dir . $idprooffilename))) {
@@ -25,17 +23,8 @@
                         }
                     }
                     
-                    if (isset($_FILES["AddressProofFileName"]["name"]) && strlen(trim($_FILES["AddressProofFileName"]["name"]))>0 ) {
-                        $addressfilename = time().basename($_FILES["AddressProofFileName"]["name"]);
-                        if (!(move_uploaded_file($_FILES["AddressProofFileName"]["tmp_name"], $target_dir . $addressfilename))) {
-                            $err++;
-                            echo "Sorry, there was an error uploading your file..";
-                        }
-                    }
-                    
                     if ($err==0) {
                         $_POST['IDProofFileName']= $idprooffilename;
-                        $_POST['AddressProofFileName']= $addressfilename;
                         $res = $webservice->getData("Member","UpdateKYC",$_POST);
                         if ($res['status']=="success") {
                             echo  $res['message']; 
@@ -73,7 +62,7 @@
                 <div class="form-group row">
                     <div class="col-sm-3"></div>
                     <div class="col-sm-9" style="margin-top: 12px;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666;">In order to submit your KYC, your identification documents need to pass a verification process, done by our document authentication team.</span><br>
-                    <button type="submit" class="btn btn-primary" name="updateKYC" style="font-family:roboto;margin-top: 10px;">Submit Documents</button></div>
+                    <button type="submit" class="btn btn-primary" name="updateIDProof" style="font-family:roboto;margin-top: 10px;">Submit Documents</button></div>
                 </div>
                  
               <?php } 
@@ -98,10 +87,44 @@
               <?php  } ?>
               
               </div>
+        </form>
         <div class="form-group row" style="margin-bottom: 0px;" >
             <hr style="border:none;border-bottom:1px solid #eee;width:90%;margin:15px">
         </div>
-        
+        <form method="post" action=""  enctype="multipart/form-data">
+         <?php
+                if (isset($_POST['updateKYC'])) {
+                    
+                    $target_dir = "uploads/";
+                    $err=0;
+                    $_POST['AddressProofFileName']= "";
+                    
+                    if (isset($_FILES["AddressProofFileName"]["name"]) && strlen(trim($_FILES["AddressProofFileName"]["name"]))>0 ) {
+                        $addressfilename = time().basename($_FILES["AddressProofFileName"]["name"]);
+                        if (!(move_uploaded_file($_FILES["AddressProofFileName"]["tmp_name"], $target_dir . $addressfilename))) {
+                            $err++;
+                            echo "Sorry, there was an error uploading your file..";
+                        }
+                    }
+                    
+                    if ($err==0) {
+                        $_POST['AddressProofFileName']= $addressfilename;
+                        $res = $webservice->getData("Member","UpdateKYC",$_POST);
+                        if ($res['status']=="success") {
+                            echo  $res['message']; 
+                        } else {
+                            $errormessage = $res['message']; 
+                        }
+                    } else {
+                        $res =$webservice->getData("Member","UpdateKYC");
+                }
+                }
+                  else {
+                     $res =$webservice->getData("Member","UpdateKYC");
+                     
+                }
+               $Kyc =$webservice->getData("Member","GetKYC");
+            ?>                                                                       
         <div class="form-group row">
             <div class="col-sm-3">Address Proof</div>
               <?php if ($Kyc['data']['isAllowToUploadAddressproof']==1) { ?>
@@ -117,11 +140,8 @@
                 <br>
                 <div class="form-group row">
                     <div class="col-sm-3"></div>
-                    <div class="col-sm-9" style="margin-top: 12px;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666;">In order to submit your KYC, your identification documents need to pass a verification process, done by our document authentication team.</span></div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-3"></div>
-                    <div class="col-sm-9"><button type="submit" class="btn btn-primary" name="updateKYC" style="font-family:roboto">Submit Documents</button></div>
+                    <div class="col-sm-9" style="margin-top: 12px;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666;">In order to submit your KYC, your identification documents need to pass a verification process, done by our document authentication team.</span><br>
+                    <button type="submit" class="btn btn-primary" name="updateKYC" style="font-family:roboto;margin-top: 10px;">Submit Documents</button></div>
                 </div>  
               <?php } 
               foreach($Kyc['data']['AddressProofDocument'] as $addressProof)  { ?>
