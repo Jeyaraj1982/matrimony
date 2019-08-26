@@ -48,7 +48,7 @@
                             "MODE"               => "select * from `_tbl_master_codemaster` Where `HardCode`='MODE'".$filter,
                             
                              
-                            "STARNAMES"      => "select * from `_tbl_master_codemaster` Where `HardCode`='STARNAMES'".$filter,
+                            "STARNAMES"      => "select * from `_tbl_master_codemaster` Where `HardCode`='STARNAMES'".$filter,                          
                             "MONSIGNS"      => "select * from `_tbl_master_codemaster` Where `HardCode`='MONSIGNS'".$filter,
                             "LAKANAM"      => "select * from `_tbl_master_codemaster` Where `HardCode`='LAKANAM'".$filter,
                             "EDUCATETITLES" => "select * from `_tbl_master_codemaster` Where `HardCode`='EDUCATETITLES'".$filter,
@@ -65,7 +65,7 @@
                             "EDUCATIONDEGREES"        => "select * from `_tbl_master_codemaster` Where `HardCode`='EDUCATIONDEGREES'".$filter,
                             "PARENTSALIVE"        => "select * from `_tbl_master_codemaster` Where `HardCode`='PARENTSALIVE'".$filter,
                             "CHEVVAIDHOSHAM"        => "select * from `_tbl_master_codemaster` Where `HardCode`='CHEVVAIDHOSHAM'".$filter,
-                            "RegisterAllowedCountries" => "select *, CONCAT(CodeValue,' (',ParamA,')') as str FROM `_tbl_master_codemaster`  WHERE `HardCode`='CONTNAMES' and ParamE='1'");
+                            "RegisterAllowedCountries" => "select *, CONCAT(CodeValue,' (+',ParamA,')') as str FROM `_tbl_master_codemaster`  WHERE `HardCode`='CONTNAMES' and ParamE='1'");
               return $mysql->select($quries[$Request]);
         }
     }
