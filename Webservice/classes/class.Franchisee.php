@@ -1349,7 +1349,9 @@
              
              $updateSql = "update `_tbl_draft_profiles` set `EmailID`        = '".$_POST['EmailID']."',
                                                             `MobileNumber`   = '".$_POST['MobileNumber']."',
+                                                            `MobileNumberCountryCode`   = '".$_POST['MobileNumberCountryCode']."',
                                                             `WhatsappNumber` = '".$_POST['WhatsappNumber']."',
+                                                            `WhatsappCountryCode` = '".$_POST['WhatsappCountryCode']."',
                                                             `AddressLine1`   = '".$_POST['AddressLine1']."',
                                                             `AddressLine2`   = '".$_POST['AddressLine2']."',
                                                             `AddressLine3`   = '".$_POST['AddressLine3']."',

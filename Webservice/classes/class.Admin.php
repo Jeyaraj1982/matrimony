@@ -15,46 +15,41 @@ class Admin extends Master {
             }
 
             $data=$mysql->select("select * from _tbl_admin where AdminLogin='".$_POST['UserName']."' and AdminPassword='".$_POST['Password']."'") ;
-
-            if (sizeof($data)>0) {
-
-                $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
-             $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"       => date("Y-m-d H:i:s"),
-                                                                 "LoginFrom"     => "Web",
-                                                                 "Device"        => $clientinfo['Device'],
-                                                                 "AdminID"      => $data[0]['AdminID'],
-                                                                 "LoginName"     => $_POST['UserName'],
-                                                                 "BrowserIP"     => $clientinfo['query'],
-                                                                 "CountryName"   => $clientinfo['country'],
-                                                                 "BrowserName"   => $clientinfo['UserAgent'],
-                                                                 "APIResponse"   => json_encode($clientinfo),
-                                                                 "LoginPassword" => $_POST['Password']));
-                $data[0]['LoginID']=$loginid;
-
-                if ($data[0]['IsActive']==1) {
-                    return Response::returnSuccess("success",$data[0]);
-                } else{
-                    return Response::returnError("Access denied. Please contact support");   
-                }
-
-            } else {
+            if (sizeof($data)==0) {
                 return Response::returnError("Invalid username and password");
             }
+                
+            $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
+            $loginid    = $mysql->insert("_tbl_logs_logins",array("LoginOn"       => date("Y-m-d H:i:s"),
+                                                                  "LoginFrom"     => "Web",
+                                                                  "Device"        => $clientinfo['Device'],
+                                                                  "AdminID"       => $data[0]['AdminID'],
+                                                                  "LoginName"     => $_POST['UserName'],
+                                                                  "BrowserIP"     => $clientinfo['query'],
+                                                                  "CountryName"   => $clientinfo['country'],
+                                                                  "BrowserName"   => $clientinfo['UserAgent'],
+                                                                  "APIResponse"   => json_encode($clientinfo),
+                                                                  "LoginPassword" => $_POST['Password']));
+            $data[0]['LoginID']=$loginid;
+            return ($data[0]['IsActive']==1) ? Response::returnSuccess("success",$data[0]) : Response::returnError("Access denied. Please contact support");
         }
 
-    function AdminChangePassword(){
-         global $mysql,$loginInfo;  
-              $getpassword = $mysql->select("select * from _tbl_admin where AdminID='".$loginInfo[0]['AdminID']."'");  
-              if ($getpassword[0]['AdminPassword']!=$_POST['CurrentPassword']) {
-                return Response::returnError("Incorrect Currentpassword"); } 
-              if ($getpassword[0]['AdminPassword']==$_POST['CurrentPassword']) {                                         
-                    $mysql->execute("update _tbl_admin set AdminPassword='".$_POST['ConfirmNewPassword']."' where AdminID='".$loginInfo[0]['AdminID']."'");
-              return Response::returnSuccess("Password Changed Successfully",array());
-              }
+        function AdminChangePassword(){
+            
+            global $mysql,$loginInfo;
+            
+            $getpassword = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");  
+            
+            if ($getpassword[0]['AdminPassword']!=$_POST['CurrentPassword']) {
+                return Response::returnError("Incorrect Currentpassword"); 
+            }
+            
+            $mysql->execute("update _tbl_admin set AdminPassword='".$_POST['ConfirmNewPassword']."' where AdminID='".$loginInfo[0]['AdminID']."'");
+            return Response::returnSuccess("Password Changed Successfully",array());
+        }
 
-    }
-
-    function GetFranchiseeCode(){
+        function GetFranchiseeCode() {
+            
             return Response::returnSuccess("success",array("FranchiseeCode" => SeqMaster::GetNextFranchiseeNumber(),
                                                            "Plans"          => Plans::GetFranchiseePlans(),
                                                            "CountryName"    => CodeMaster::getData('CONTNAMES'),
@@ -65,90 +60,114 @@ class Admin extends Master {
                                                            "Gender"         => CodeMaster::getData('SEX')));
         }
 
-    function CreateFranchisee() {
+        function CreateFranchisee() {
+            
+            global $mysql,$loginInfo;
+            
+            if (!(strlen(trim($_POST['FranchiseeName']))>0)) {
+                return Response::returnError("Please enter your name");
+            }
+            
+            if (!(strlen(trim($_POST['FranchiseeEmailID']))>0)) {
+                return Response::returnError("Please enter FranchiseeEmailID");
+            }
+            
+            if (!(strlen(trim($_POST['BusinessMobileNumber']))>0)) {
+                return Response::returnError("Please enter BusinessMobileNumber");
+            }
+            
+            if (!(strlen(trim($_POST['BusinessAddress1']))>0)) {
+                return Response::returnError("Please enter BusinessAddress1");
+            }       
+            
+            if (!(strlen(trim($_POST['CityName']))>0)) {
+                return Response::returnError("Please enter CityName");
+            }                        
+            
+            if ((strlen(trim($_POST['CountryName']))==0 || $_POST['CountryName']=="0" )) {
+                return Response::returnError("Please select Country Name");
+            }
+            
+            if ((strlen(trim($_POST['StateName']))==0 || $_POST['StateName']=="0" )) {
+                return Response::returnError("Please select State Name");
+            }
+            
+            if ((strlen(trim($_POST['DistrictName']))==0 || $_POST['DistrictName']=="0")) {
+                return Response::returnError("Please select District Name");
+            }
+            
+            if (!(strlen(trim($_POST['PinCode']))>0)) {
+                return Response::returnError("Please enter PinCode");
+            }
+            
+            if ((strlen(trim($_POST['BankName']))==0 || $_POST['BankName']=="0")) {
+                return Response::returnError("Please select Bank Name");
+            }
+            
+            if (!(strlen(trim($_POST['AccountName']))>0)) {
+                return Response::returnError("Please enter Account Name");
+            }
+            
+            if (!(strlen(trim($_POST['AccountNumber']))>0)) {
+                return Response::returnError("Please enter Account Number");
+            }
+            
+            if (!(strlen(trim($_POST['IFSCode']))>0)) {
+                return Response::returnError("Please enter IFS Code");
+            }
+            
+            if ((strlen(trim($_POST['AccountType']))==0 || $_POST['AccountType']=="0")) {
+                return Response::returnError("Please select Account Type");
+            }
+            
+            if (!(strlen(trim($_POST['AccountType']))>0)) {
+                return Response::returnError("Please enter Account Type");
+            }
+            
+            if (!(strlen(trim($_POST['PersonName']))>0)) {
+                return Response::returnError("Please enter Person Name");
+            }
+            if (!(strlen(trim($_POST['FatherName']))>0)) {
+                return Response::returnError("Please enter Father Name");
+            }
+            if (!(strlen(trim($_POST['DateofBirth']))>0)) {
+                return Response::returnError("Please enter Date of Birth");
+            }
+            
+            if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0")) {
+                return Response::returnError("Please select Sex");
+            }
+            
+            if (!(strlen(trim($_POST['EmailID']))>0)) {
+                return Response::returnError("Please enter EmailID");
+            }
+            
+            if (!(strlen(trim($_POST['MobileNumber']))>0)) {
+                return Response::returnError("Please enter MobileNumber");
+            }
+            
+            if (!(strlen(trim($_POST['Address1']))>0)) {
+                return Response::returnError("Please enter Address1");
+            }
+            
+            if (!(strlen(trim($_POST['AadhaarCard']))>0)) {
+                return Response::returnError("Please enter AadhaarCard");
+            }
+            
+            if (!(strlen(trim($_POST['UserName']))>0)) {
+                return Response::returnError("Please enter UserName");
+            }
+            
+            if (!(strlen(trim($_POST['Password']))>0)) {
+                return Response::returnError("Please enter Password");
+            }  
 
-        global $mysql,$loginInfo;
-        if (!(strlen(trim($_POST['FranchiseeName']))>0)) {
-            return Response::returnError("Please enter your name");
-        }
-        if (!(strlen(trim($_POST['FranchiseeEmailID']))>0)) {
-            return Response::returnError("Please enter FranchiseeEmailID");
-        }
-        if (!(strlen(trim($_POST['BusinessMobileNumber']))>0)) {
-            return Response::returnError("Please enter BusinessMobileNumber");
-        }
-        if (!(strlen(trim($_POST['BusinessAddress1']))>0)) {
-            return Response::returnError("Please enter BusinessAddress1");
-        }
-        if (!(strlen(trim($_POST['CityName']))>0)) {
-            return Response::returnError("Please enter CityName");
-        }                        
-        if ((strlen(trim($_POST['CountryName']))==0 || $_POST['CountryName']=="0" )) {
-            return Response::returnError("Please select Country Name");
-        }
-        if ((strlen(trim($_POST['StateName']))==0 || $_POST['StateName']=="0" )) {
-            return Response::returnError("Please select State Name");
-        }
-        if ((strlen(trim($_POST['DistrictName']))==0 || $_POST['DistrictName']=="0")) {
-            return Response::returnError("Please select District Name");
-        }
-        if (!(strlen(trim($_POST['PinCode']))>0)) {
-            return Response::returnError("Please enter PinCode");
-        }
-        if ((strlen(trim($_POST['BankName']))==0 || $_POST['BankName']=="0")) {
-            return Response::returnError("Please select Bank Name");
-        }
-        if (!(strlen(trim($_POST['AccountName']))>0)) {
-            return Response::returnError("Please enter Account Name");
-        }
-        if (!(strlen(trim($_POST['AccountNumber']))>0)) {
-            return Response::returnError("Please enter Account Number");
-        }
-        if (!(strlen(trim($_POST['IFSCode']))>0)) {
-            return Response::returnError("Please enter IFS Code");
-        }
-        if ((strlen(trim($_POST['AccountType']))==0 || $_POST['AccountType']=="0")) {
-            return Response::returnError("Please select Account Type");
-        }
-        if (!(strlen(trim($_POST['AccountType']))>0)) {
-            return Response::returnError("Please enter Account Type");
-        }
-        if (!(strlen(trim($_POST['PersonName']))>0)) {
-            return Response::returnError("Please enter Person Name");
-        }
-        if (!(strlen(trim($_POST['FatherName']))>0)) {
-            return Response::returnError("Please enter Father Name");
-        }
-        if (!(strlen(trim($_POST['DateofBirth']))>0)) {
-            return Response::returnError("Please enter Date of Birth");
-        }
-        if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0")) {
-            return Response::returnError("Please select Sex");
-        }
-        if (!(strlen(trim($_POST['EmailID']))>0)) {
-            return Response::returnError("Please enter EmailID");
-        }
-        if (!(strlen(trim($_POST['MobileNumber']))>0)) {
-            return Response::returnError("Please enter MobileNumber");
-        }
-        if (!(strlen(trim($_POST['Address1']))>0)) {
-            return Response::returnError("Please enter Address1");
-        }
-        if (!(strlen(trim($_POST['AadhaarCard']))>0)) {
-            return Response::returnError("Please enter AadhaarCard");
-        }
-        if (!(strlen(trim($_POST['UserName']))>0)) {
-            return Response::returnError("Please enter UserName");
-        }
-        if (!(strlen(trim($_POST['Password']))>0)) {
-            return Response::returnError("Please enter Password");
-        }  
-
-        $data = $mysql->select("select * from  _tbl_franchisees where FranchiseeCode='".trim($_POST['FranchiseeCode'])."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Franchisee Code Already Exists");
-        }
-        $data = $mysql->select("select * from  _tbl_franchisees where ContactEmail='".trim($_POST['FranchiseeEmailID'])."'");
+            $data = $mysql->select("select * from  _tbl_franchisees where FranchiseeCode='".trim($_POST['FranchiseeCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Franchisee Code Already Exists");
+            }
+            
+            $data = $mysql->select("select * from  _tbl_franchisees where ContactEmail='".trim($_POST['FranchiseeEmailID'])."'");
         if (sizeof($data)>0) {
             return Response::returnError("EmailID Already Exists");
         }
