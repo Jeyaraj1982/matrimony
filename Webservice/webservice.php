@@ -78,10 +78,23 @@
             curl_close ($ch);
             return $response;
         }
+        
+        function hideMobileNumberWithCharacters($mobileNumber,$char="*") {
+            
+            $times=strlen(trim(substr($mobileNumber,6,4)));
+            $star='';
+            for ($i=0; $i <$times ; $i++) { 
+            $star.=$char;
+            }
+            $result=str_replace(substr($mobileNumber, 6,4), $star, $mobileNumber);
+            return $result;  
+        }
     }
     
     $j2japplication = new J2JApplication() ;
-
+    
+  //  echo J2JApplication::hideMobileNumberWithCharacters("9944872965");
+    
     include_once("controller/MailController.php");  
     include_once("controller/MobileSMSController.php");  
     include_once("controller/DatabaseController.php");
