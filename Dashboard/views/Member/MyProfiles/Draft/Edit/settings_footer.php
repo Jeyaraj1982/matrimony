@@ -37,8 +37,8 @@ function showConfirmPublish(ProfileID) {
                     +   '<div  style="height: 315px;">'
                     +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
                      + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                      +  '<div style="text-align:center">Profile Publish<br><br>'
-                        + '<button type="button" class="close" data-dismiss="modal" style="margin-top: -40px;margin-right: 0px;">&times;</button>'
+                          + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        + '<h4 class="modal-title">Profile Publish</h4> <br>'
                      //  +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
                         +'<div style="text-align:left"> Dear ,<br>'
                         +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). Once our DAT has approved your profile,the profile will live imediately in our portal, so please verify all data<br><br>'
@@ -67,7 +67,12 @@ function ProfilePublishOTPVerification(frmid) {
                             }
                     );
               
-    } 
+    }
+function ResendSendOtpForProfileforPublish(formid) {
+     var param = $("#frm_"+formid).serialize();
+     $('#Publish_body').html(preloader);
+        $.post(API_URL + "m=Member&a=ResendSendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
+} 
 
 </script>
    

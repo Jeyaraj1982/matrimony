@@ -81,6 +81,14 @@ text-align: left;
                          <label class="col-sm-4 col-form-label">Marital Status</label>
                          <label class="col-sm-8 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['MaritalStatus'];?></label>   
                     </div>
+                    <?php if($ProfileInfo['MaritalStatus']=="Widow/Widower"){?>
+                    <div class="form-group row">
+                         <label class="col-sm-4 col-form-label">How Many children</label>
+                         <label class="col-sm-2 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['Children'];?></label>
+                         <label class="col-sm-3 col-form-label">Is Children with you?</label>
+                         <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['IsChildrenWithYou'];?></label>   
+                    </div>
+                    <?php } ?>
                     <div class="form-group row">
                          <label class="col-sm-4 col-form-label">Mother Tongue</label>
                          <label class="col-sm-8 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['MotherTongue'];?></label>  
@@ -102,7 +110,7 @@ text-align: left;
                          <label class="col-sm-8 col-form-label" style="color:#737373;"><?php echo $ProfileInfo['Nationality'];?></label>   
                     </div>
               </div>
-              <div class="col-sm-5">
+              <div class="col-sm-5">                                           
               <div class="form-group row">
              <div class="col-sm-12" style="text-align:right">
                    <div class="photoview">
@@ -358,10 +366,10 @@ text-align: left;
         </div>
     </div>
   </div>
-  <div class="col-12 grid-margin">
+  <div class="col-12 grid-margin">                                                     
   <div class="card">
     <div class="card-body">
-    <h4 class="card-title">Parners Expectation</h4>
+    <h4 class="card-title">Partner's Expectation</h4>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Age </label>
             <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo $PartnerExpectation['AgeFrom'];?> &nbsp;&nbsp;to&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeTo'];?></label>
@@ -473,9 +481,14 @@ function showConfirmPublish(ProfileID) {
                     +   '<div  style="height: 315px;">'
                     +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
                      + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                       +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
-                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="SendOtpForProfileforPublish(\''+ProfileID+'\')">Yes</button>&nbsp;'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
+                          + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        + '<h4 class="modal-title">Profile Publish</h4> <br>'
+                     //  +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
+                        +'<div style="text-align:left"> Dear ,<br>'
+                        +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). Once our DAT has approved your profile,the profile will live imediately in our portal, so please verify all data<br><br>'
+                        + '<input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I agree the terms and conditions  </label><br><br>'
+                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="SendOtpForProfileforPublish(\''+ProfileID+'\')">Yes,send request</button>&nbsp;'
+                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No, i will do later</button>'
                        +  '</div><br>'
                     +  '</form>'
                 +  '</div>'
@@ -498,9 +511,14 @@ function ProfilePublishOTPVerification(frmid) {
                             }
                     );
               
-    } 
+    }
+    function ResendSendOtpForProfileforPublish(formid) {                  
+     var param = $("#frm_"+formid).serialize();
+     $('#Publish_body').html(preloader);
+        $.post(API_URL + "m=Member&a=ResendSendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
+}  
 
 </script>
    
             
-               
+                

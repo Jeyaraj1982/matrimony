@@ -10,7 +10,7 @@
         }
     }
     
-    $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
+    $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
     $CountryCodes =$response['data']['ContactCountrycode'];
    ?>
@@ -31,7 +31,7 @@ $(document).ready(function () {
    });
    $("#Pincode").keypress(function (e) {
      if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-        $("#ErrPincode").html("Digits Only").fadeIn("fast");
+        $("#ErrPincode").html("Digits Only").fadeIn("fast");                   
                return false;
     }
    });
@@ -42,7 +42,7 @@ $(document).ready(function () {
         <h4 class="card-title">Communication Details</h4>
         <div class="form-group row">
             <label for="Email ID" class="col-sm-2 col-form-label">Email ID<span id="star">*</span></label>
-            <div class="col-sm-8">
+            <div class="col-sm-9">
                 <input type="text" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $ProfileInfo['EmailID']);?>" placeholder="Email ID">
             </div>
         </div>
@@ -60,7 +60,7 @@ $(document).ready(function () {
                 <input type="text" class="form-control" id="MobileNumber" maxlength="10" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $ProfileInfo['MobileNumber']);?>" placeholder="Mobile Number">
                 <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
             </div>
-           <label for="WhatsappNumber" class="col-sm-2 col-form-label" >Whatsapp</label>
+           <label for="WhatsappNumber" class="col-sm-2 col-form-label" style="margin-right: -24px;" >Whatsapp</label>
             <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
                 <select name="WhatsappCountryCode" class="selectpicker form-control" data-live-search="true" id="WhatsappCountryCode"> 
                      <?php foreach($response['data']['CountryName'] as $CountryCode) { ?>

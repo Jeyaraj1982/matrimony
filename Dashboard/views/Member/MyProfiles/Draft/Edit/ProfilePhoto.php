@@ -106,7 +106,7 @@ function submitUpload() {
             <span style="color:#888">supports png, jpg, jpeg & File size Lessthan 5 MB </span>
         </div>
     </div>
-    <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="showLearnMore()">Lean more</a>
+    <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="showLearnMore()">Learn more</a>
         <br><span class="errorstring" id="Errcheck"></span><br><br>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-3">
@@ -120,7 +120,7 @@ function submitUpload() {
     <div>
     <?php if(sizeof($res['data'])==0){  ?>
          <div style="margin-right:10px;text-align: center;">
-                 No Profile Photos Found   
+                 No Profile Photos Found                                                                                                                       
         </div>
    <?php }  else {       ?>
     <?php
@@ -175,7 +175,8 @@ function showLearnMore() {
       $('#LearnMore').modal('show'); 
       var content = '<div class="LearnMore_body" style="padding:20px">'
                     +   '<div  style="height:500px;">'
-                       +  '<h5 style="text-align:center">Please follow the below instructions :</h5><button type="button" class="close" data-dismiss="modal" style="margin-top: -38px;margin-right: 10px;">&times;</button>'
+                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        + '<h4 class="modal-title">Please follow the below instructions :</h4> <br>'
                             + '<ol> '
                                 + '<li>The ID proof must have related to profile information </li>'
                                 + '<li>The uploaded ID proofs are not displayed in public and it is purely for administrative purposes.</li>'
@@ -190,7 +191,7 @@ function showLearnMore() {
 </script>
 <div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="model_body" style="height: 150px;">
+                <div class="modal-content" id="model_body" style="height: 220px;">
             
                 </div>
             </div>
@@ -211,17 +212,20 @@ function showLearnMore() {
                 $.ajax({
                 url: API_URL + "m=Member&a=ProfilePhotoBringToFront&ProfilePhotoID="+ProfilePhotoID, 
                 success: function(result){
+                    $.simplyToast("Profile ID: "+ProfilePhotoID+" has been set as Front", 'info');
             }});
           }
          
  
-    function showConfirmDelete(ProfilePhotoID,ProfileID) {
+    function showConfirmDelete(ProfilePhotoID,ProfileID) {                                           
         $('#Delete').modal('show'); 
         var content = '<div class="modal-body" style="padding:20px">'
                         + '<div  style="height: 315px;">'
                             + '<form method="post" id="form_'+ProfilePhotoID+'" name="form_'+ProfilePhotoID+'" > '
                                 + '<input type="hidden" value="'+ProfilePhotoID+'" name="ProfilePhotoID">'
                                 + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                                  + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                   + '<h4 class="modal-title">Confirm delete Profile photo</h4><br>'
                                 + '<div style="text-align:center">Are you sure want to Delete?  <br><br>'
                                     + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+ProfilePhotoID+'\')">Yes</button>&nbsp;&nbsp;'
                                     + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
@@ -251,3 +255,5 @@ function changeColor(id)
 }
 </script>
 <?php include_once("settings_footer.php");?>                    
+
+ 

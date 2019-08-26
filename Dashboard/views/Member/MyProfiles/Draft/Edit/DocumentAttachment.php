@@ -121,7 +121,7 @@ function submitUpload() {
         </div>
     </div>
     <div class="form-group row">                                                                                                                                                
-        <div class="col-sm-12"><input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)"  onclick="showLearnMore()">Lean more</a>
+        <div class="col-sm-12"><input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)"  onclick="showLearnMore()">Learn more</a>
         <br><span class="errorstring" id="Errcheck"></span></div>
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
@@ -175,12 +175,13 @@ function submitUpload() {
 <script>
  var available = "<?php echo sizeof($res['data']);?>";
  $('#x').html( available + " out 2 photos");
-         
+                                                                                                               
 function showLearnMore() {
       $('#LearnMore').modal('show'); 
       var content = '<div class="LearnMore_body" style="padding:20px">'
                     +   '<div  style="height:500px;">'
-                       +  '<h5 style="text-align:center">Please follow the below instructions :</h5><button type="button" class="close" data-dismiss="modal" style="margin-top: -38px;margin-right: 10px;">&times;</button>'
+                       + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        + '<h4 class="modal-title">Please follow the below instructions</h4><br>'
                             + '<ol> '
                                 + '<li>The ID proof must have related to profile information </li>'
                                 + '<li>The uploaded ID proofs are not displayed in public and it is purely for administrative purposes.</li>'
@@ -190,7 +191,7 @@ function showLearnMore() {
                         +  '<button type="button" data-dismiss="modal" class="btn btn-primary">Close</button>'
                        +  '</div><br>'
                 +  '</div>'
-            $('#LearnMore_body').html(content);
+            $('#LearnMore_body').html(content);                                                   
 }
 
     function showConfirmDelete(AttachmentID,ProfileID) {
@@ -200,9 +201,11 @@ function showLearnMore() {
                             + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
                                 + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
                                 + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                                + '<div style="text-align:center">Are you sure want to Delete?  <br><br>'
-                                    + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+AttachmentID+'\')">Yes</button>&nbsp;&nbsp;'
-                                    + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
+                                 + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                 + '<h4 class="modal-title">Confirmation For remove</h4><br>'
+                                + '<div>Are you sure want to Delete?  </div><br>'
+                                    + '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+AttachmentID+'\')">Yes</button>&nbsp;&nbsp;'
+                                    + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button></div>'
                                 + '</div>'
                             + '</form>'
                         + '</div>'
