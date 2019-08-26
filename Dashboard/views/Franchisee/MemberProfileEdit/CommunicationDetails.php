@@ -25,11 +25,27 @@
         </div>
         <div class="form-group row">
             <label for="Mobile Number" class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
+             <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+                <select class="selectpicker form-control" data-live-search="true" name="MobileNumberCountryCode" id="MobileNumberCountryCode" style="width: 61px;">
+                   <?php foreach($response['data']['CountryName'] as $CountryCode) { ?>
+                  <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'MobileNumberCountryCode'])) ? (($_POST[ 'MobileNumberCountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MobileNumberCountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                            <?php echo $CountryCode['str'];?>
+                   <?php } ?>
+                </select>
+            </div> 
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="MobileNumber" maxlength="10" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $ProfileInfo['MobileNumber']);?>" placeholder="Mobile Number">
             </div>
-            <label for="WhatsappNumber" class="col-sm-3 col-form-label">Whatsapp Number</label>
-            <div class="col-sm-3">
+            <label for="WhatsappNumber" class="col-sm-2 col-form-label">Whatsapp</label>                                        
+                <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+                <select name="WhatsappCountryCode" class="selectpicker form-control" data-live-search="true" id="WhatsappCountryCode"> 
+                     <?php foreach($response['data']['CountryName'] as $CountryCode) { ?>
+                  <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'WhatsappCountryCode'])) ? (($_POST[ 'WhatsappCountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "") : (($ProfileInfo[ 'WhatsappCountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                            <?php echo $CountryCode['str'];?>
+                   <?php } ?>
+                </select>
+            </div>
+            <div class="col-sm-2">
                 <input type="text" class="form-control" id="WhatsappNumber" maxlength="10" name="WhatsappNumber" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : $ProfileInfo['WhatsappNumber']);?>" placeholder="Whatsapp Number">
             </div>
         </div>
@@ -52,7 +68,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="Country" class="col-sm-2 col-form-label">Country<span id="star">*</span></label>
+            <label for="Country" class="col-sm-2 col-form-label">Country<span id="star">*</span></label>  
             <div class="col-sm-3">
                 <select class="selectpicker form-control" data-live-search="true" id="Country" name="Country">
                     <option value="0">Choose Country</option>

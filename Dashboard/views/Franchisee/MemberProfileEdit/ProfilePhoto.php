@@ -106,39 +106,21 @@ function submitUpload() {
             <span style="color:#888">supports png, jpg, jpeg & File size Lessthan 5 MB </span>
         </div>
     </div>
-    <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)"  onclick="showLearnMore()">Lean more</a>
+    <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="showLearnMore()">Learn more</a>
         <br><span class="errorstring" id="Errcheck"></span><br><br>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-3">
             <button type="submit" name="UpdateProfilePhoto" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
         </div>
-        
     </div><br>
-      <div style="text-align: right;" id="x"></div>
+    <div style="text-align: right;" id="x"></div>
+    <br>
+    <br>
     </form>
-    <script>
-function showLearnMore() {
-      $('#LearnMore').modal('show'); 
-      var content = '<div class="LearnMore_body" style="padding:20px">'
-                    +   '<div  style="height:500px;">'
-                       +  '<h5 style="text-align:center">Please follow the below instructions :</h5><button type="button" class="close" data-dismiss="modal" style="margin-top: -38px;margin-right: 10px;">&times;</button>'
-                            + '<ol> '
-                               + ' <li>The image file should be in jpg, jpeg and png formats only. </li>'
-                               + '<li>Size of each photograph must not exceed 5 MB. </li>'
-                                + '<li>Your chosen photograph(s) must be in accordance with the socially acceptable standards.</li>'
-                                + '<li>Administrator reserves the right to remove/delete any photograph that violates socially accepted norms of decency.</li>'
-                                 + '<li>Do not post caricatures or copyrighted images. </li>'
-                                + '</ol>'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">close</button>'
-                       +  '</div><br>'
-                +  '</div>'
-            $('#LearnMore_body').html(content);
-}
-</script>
-   <div>
+    <div>
     <?php if(sizeof($res['data'])==0){  ?>
          <div style="margin-right:10px;text-align: center;">
-                 No Profile Photos Found   
+                 No Profile Photos Found                                                                                                                       
         </div>
    <?php }  else {       ?>
     <?php
@@ -181,15 +163,42 @@ function showLearnMore() {
          
     </div>
 </div>
-<div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+<div class="modal" id="LearnMore" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="model_body" style="height: 150px;">
+                <div class="modal-content" id="LearnMore_body" style="height:300px">
             
                 </div>
             </div>
         </div>
 <script>
- var available = "<?php echo sizeof($res['data']);?>";
+function showLearnMore() {
+      $('#LearnMore').modal('show'); 
+      var content = '<div class="LearnMore_body" style="padding:20px">'
+                    +   '<div  style="height:500px;">'
+                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        + '<h4 class="modal-title">Please follow the below instructions :</h4> <br>'
+                            + '<ol> '
+                                + '<li>The ID proof must have related to profile information </li>'
+                                + '<li>The uploaded ID proofs are not displayed in public and it is purely for administrative purposes.</li>'
+                                + '<li>ID proofs once uploaded cannot be edit or delete.</li>'
+                                + '<li>If any changes. You should contact the admin for any updates to these documents with a valid reason.</li>'
+                                + '</ol>'
+                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">close</button>'
+                       +  '</div><br>'
+                +  '</div>'
+            $('#LearnMore_body').html(content);
+}
+</script>
+<div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+            <div class="modal-dialog" style="width: 367px;">
+                <div class="modal-content" id="model_body" style="height: 220px;">
+            
+                </div>
+            </div>
+        </div>
+        
+        <script>
+         var available = "<?php echo sizeof($res['data']);?>";
          
          $('#x').html( available + " out 5 photos");
          
@@ -203,16 +212,20 @@ function showLearnMore() {
                 $.ajax({
                 url: API_URL + "m=Franchisee&a=ProfilePhotoBringToFront&ProfilePhotoID="+ProfilePhotoID, 
                 success: function(result){
+                    $.simplyToast("Profile ID: "+ProfilePhotoID+" has been set as Front", 'info');
             }});
           }
          
-    function showConfirmDelete(ProfilePhotoID,ProfileID) {
+ 
+    function showConfirmDelete(ProfilePhotoID,ProfileID) {                                           
         $('#Delete').modal('show'); 
         var content = '<div class="modal-body" style="padding:20px">'
                         + '<div  style="height: 315px;">'
                             + '<form method="post" id="form_'+ProfilePhotoID+'" name="form_'+ProfilePhotoID+'" > '
                                 + '<input type="hidden" value="'+ProfilePhotoID+'" name="ProfilePhotoID">'
                                 + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                                  + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                   + '<h4 class="modal-title">Confirm delete Profile photo</h4><br>'
                                 + '<div style="text-align:center">Are you sure want to Delete?  <br><br>'
                                     + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+ProfilePhotoID+'\')">Yes</button>&nbsp;&nbsp;'
                                     + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
@@ -230,13 +243,17 @@ function showLearnMore() {
         $.post(API_URL + "m=Franchisee&a=DeletProfilePhoto", param, function(result2) {
             $('#model_body').html(result2);
             $('#photoview_'+ProfilePhotoID).hide();
+            available--;
+            $('#x').html( available + " out 5 photos");
         }
     );
 }
-  function changeColor(id)
+function changeColor(id)
 {
   document.getElementById(id).style.color = "#ff0000"; // forecolor
  
 }
 </script>
 <?php include_once("settings_footer.php");?>                    
+
+ 
