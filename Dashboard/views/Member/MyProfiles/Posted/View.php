@@ -417,7 +417,7 @@ text-align: left;
   <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
-    <h4 class="card-title">Parners Expectation</h4>
+    <h4 class="card-title">Partner's Expectation</h4>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Age </label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeFrom'];?> &nbsp;&nbsp;to&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeTo'];?></label>

@@ -22,7 +22,7 @@
                         </div>
                     </div>
                         <?php foreach($response['data'] as $Profile) { 
-                         echo  PublishedProfileList($Profile); ?> <br> <?php    }?>
+                         echo  DisplayPuplishProfileShortInfo($Profile); ?> <br> <?php    }?>
                         <br>
                 </div>
             </div>

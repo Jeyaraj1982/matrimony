@@ -113,7 +113,7 @@ function submitprofile() {
                 </div>
                 <div class="form-group row">
                      <label for="Date of birth" class="col-sm-2 col-form-label">Date of birth<span id="star">*</span></label>
-                     <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+                     <div class="col-sm-1" style="max-width:160px !important;">
                                 <?php $dob=strtotime($ProfileInfo['DateofBirth'])  ; ?>
                                     <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
                                         <?php for($i=1;$i<=31;$i++) {?>
@@ -130,13 +130,13 @@ function submitprofile() {
                                             <?php echo $value;?>
                                             </option>
                                         <?php } ?>
-                                    </select>
+                                    </select>                                    
                             </div>
                             <div class="col-sm-2">
                                     <select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
                                         <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
                                             <option value="<?php echo $i; ?>" <?php echo ($_POST['year']==$i) ? " selected='selected' " : "";?>><?php echo $i;?>
-                                            </option>
+                                            </option>                             
                                         <?php } ?>
                                     </select>
                      </div>
