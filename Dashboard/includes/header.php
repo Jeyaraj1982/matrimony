@@ -274,18 +274,24 @@
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;"><?php echo $ProfileInformation['Position'];?></div>    
                     </div>
                     <div class="col-sm-9">
-                                    <div class="colo-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">                                                                                     
-                                       <div class="col-sm-7"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp;<div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div></div>
-                                        <div class="col-sm-1"><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:64px;"></div>
-                                        <div style="float:right;font-size: 12px;">
-                                        <?php  echo "Created On: ".PutDateTime($Profile['CreatedOn']); ?><br>
-                                        <?php 
-                                        if ($ProfileInformation['LastSeen']!="0") { 
-                                            echo "Last seen: ".PutDateTime($ProfileInformation['LastSeen']); 
-                                        }
-                                        ?>
-                                        </div> 
-                                    </div>
+                        <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
+                                <div class="form-group row">                                                                                     
+                                       <div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
+                                </div>
+                                <div class="form-group row">
+                                       <div class="col-sm-7">
+                                            <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
+                                       </div>
+                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:27px;"></span></div> 
+                                       <div class="col-sm-4" style="float:right;font-size: 12px;">
+                                                <?php  echo "Created On: ".PutDateTime($Profile['CreatedOn']); ?><br> 
+                                                <?php  echo "Published: ".putDateTime($Profile['IsApprovedOn']); ?><br>
+                                                <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".putDateTime($Profile['LastSeen']) : ""; ?>
+                                                <br>
+                                                <br>
+                                       </div>
+                                </div>
+                                </div>
                                     <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
                                         <div>
                                             <?php echo $Profile['Height'];?>
@@ -320,9 +326,80 @@
                                     <a href="<?php echo GetUrl("MyProfiles/Published/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                     <?php } else {?>
                                         <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$Profile['ProfileCode'].".htm ");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/Draft/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
-                                        <?php  }    ?>  
+                                        <?php  }    ?>     
                             </div>
-                        </div>
+                        </div> 
+                  <?php
+              }
+            ?>
+            
+            <?php 
+            function DisplayPuplishProfileShortInfo($ProfileInformation) {
+                $Profile = $ProfileInformation['ProfileInfo'];
+        ?>
+            <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
+                <div class="form-group row">
+                    <div class="col-sm-3" style="text-align:center;max-width: 182px;">
+                    <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
+                    <div style="line-height: 25px;color: #867c7c;font-size:14px;"><?php echo $ProfileInformation['Position'];?></div>    
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
+                                <div class="form-group row">                                                                                     
+                                       <div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
+                                </div>
+                                <div class="form-group row">
+                                       <div class="col-sm-7">
+                                            <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
+                                       </div>
+                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:27px;"></span></div> 
+                                       <div class="col-sm-4" style="float:right;font-size: 12px;">
+                                                <?php  echo "Created On: ".PutDateTime($Profile['CreatedOn']); ?><br> 
+                                                <?php  echo "Published: ".putDateTime($Profile['IsApprovedOn']); ?><br>
+                                                <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".putDateTime($Profile['LastSeen']) : ""; ?>
+                                                <br>
+                                                <br>
+                                       </div>
+                                </div>
+                                </div>
+                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div>
+                                            <?php echo $Profile['Height'];?>
+                                        </div>
+                                        <div>
+                                            <?php echo $Profile['Religion'];?>
+                                        </div>
+                                        <div>
+                                            <?php echo $Profile['Caste'];?>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div>
+                                            <?php echo $Profile['MaritalStatus'];?>
+                                        </div>
+                                        <div>
+                                            <?php echo $Profile['OccupationType'];?>
+                                        </div>
+                                        <div>
+                                            <?php echo $Profile['AnnualIncome'];?>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
+                                        <?php echo $Profile['AboutMe'];?><a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">More</a>
+                                    </div>
+                                </div>
+                            </div>
+                           <div style="float:right;line-height: 1px;">
+                                <?php if($Profile['RequestToVerify']==1){ ?>
+                                    <a href="<?php echo GetUrl("MyProfiles/Posted/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <?php } elseif($Profile['IsApproved']==1){  ?>
+                                    <a href="<?php echo GetUrl("MyProfiles/Published/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <?php } else {?>
+                                        <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$Profile['ProfileCode'].".htm ");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/Draft/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                        <?php  }    ?>     
+                            </div>
+                        </div> 
                   <?php
               }
             ?>
@@ -459,7 +536,7 @@
                             <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
                                 <div class="form-group row">                                                                                     
                                        <div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
-                                       <div class="col-sm-4" style="float:right;font-size: 12px;">
+                                       <div class="col-sm-4" style="float:right;font-size: 12px;text-align:right">
                                             <?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
                                                 <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
                                                 <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;">
@@ -472,7 +549,7 @@
                                        <div class="col-sm-7">
                                             <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
                                        </div>
-                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:27px;"></span></div> 
+                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:35px;"></span></div> 
                                        <div class="col-sm-4" style="float:right;font-size: 12px;">
                                                 <?php  echo "Published: ".putDateTime($Profile['IsApprovedOn']); ?><br>
                                                 <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".putDateTime($Profile['LastSeen']) : ""; ?>
@@ -483,7 +560,7 @@
                                 </div>
                                     <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
                                         <div><?php echo $Profile['Height'];?></div>
-                                        <div><?php echo $Profile['Religion'];?></div>
+                                        <div><?php echo $Profile['Religion'];?></div>                                                                                      
                                         <div><?php echo $Profile['Caste'];?></div>
                                     </div>
                                     <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
@@ -492,7 +569,7 @@
                                         <div><?php echo $Profile['AnnualIncome'];?></div>
                                     </div>
                                     <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
-                                        <?php echo $Profile['AboutMe'];?>
+                                        <?php echo $Profile['AboutMe'];?><a href="#">More</a>
                                     </div>
                                 </div>
                             </div>
@@ -708,7 +785,7 @@
                                         <div><?php echo $Profile['AnnualIncome'];?></div>
                                     </div>
                                     <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
-                                        <?php echo $Profile['AboutMe'];?>
+                                        <?php echo $Profile['AboutMe'];?> <a href="#">More</a>
                                     </div>
                                 </div>
                             </div>
@@ -718,4 +795,4 @@
                         </div> 
                     <?php }?>
 
- 
+  
