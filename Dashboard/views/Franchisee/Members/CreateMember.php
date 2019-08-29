@@ -9,6 +9,8 @@
         $errormessage = $response['message']; 
     }
     }
+    $response = $webservice->getData("Franchisee","GetCountryCode");
+    $CountryCodes=$response['data']['CountryCode'];
 ?>  
 <script>
 
@@ -191,12 +193,28 @@ function SubmitNewMember() {
                         </div>
                         <div class="form-group row">
                           <label for="MobileNumber" class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
-                          <div class="col-sm-3">
+                          <div class="col-sm-2" style="margin-right:-25px">
+                            <select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="width:84%">
+                                   <?php foreach($CountryCodes as $CountryCode) { ?>
+                                  <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo ($_POST[ 'CountryCode']) ?  " selected='selected' " : "" ;?>>
+                                            <?php echo $CountryCode['str'];?>
+                                   <?php } ?>
+                                </select>
+                          </div>
+                          <div class="col-sm-2">
                             <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>" placeholder="Mobile Number">
                             <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
                           </div>
                           <label for="WhatsappNumber" class="col-sm-2 col-form-label">Whatsapp Number</label>
-                          <div class="col-sm-3">
+                          <div class="col-sm-2" style="margin-right:-25px">
+                            <select name="WhatsappCountryCode" class="selectpicker form-control" data-live-search="true" id="WhatsappCountryCode"> 
+                     <?php foreach($CountryCodes as $CountryCode) { ?>
+                  <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo ($_POST[ 'WhatsappCountryCode']) ? " selected='selected' " : "";?>>
+                            <?php echo $CountryCode['str'];?>
+                   <?php } ?>
+                </select>
+                          </div>
+                          <div class="col-sm-2">
                             <input type="text" maxlength="10" class="form-control" id="WhatsappNumber" name="WhatsappNumber" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : "");?>" placeholder="Whatsapp Number">
                             <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
                           </div>

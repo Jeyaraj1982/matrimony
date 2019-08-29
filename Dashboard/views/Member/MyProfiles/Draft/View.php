@@ -39,15 +39,18 @@ text-align: left;
 
  </style>
 <form method="post" action="" onsubmit="">
- 
+<?php if($ProfileInfo['RequestToVerify']=="0"){?>
 <div style="text-align: right" id="">
-        <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
+        <a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
         <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
 </div>
+<?php }?>
 <br>
+
 <div class="col-12 grid-margin">
-  <div class="card">
+  <div class="card">                                                                                                               
     <div class="card-body">
+        <?php if($ProfileInfo['RequestToVerify']=="0"){?>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Created On</label>
             <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
@@ -56,6 +59,16 @@ text-align: left;
                     <label class="col-sm-2 col-form-label">Last saved</label>
                     <label class="col-sm-3 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></label>
                    </div>
+        <?php } else{?>
+            <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Created On</label>
+            <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
+             </div>
+             <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Puplished On</label>
+                    <label class="col-sm-3 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['RequestVerifyOn']);?></label>
+                   </div>
+        <?php }?>
   </div>
 </div>
 </div>

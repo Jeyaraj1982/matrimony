@@ -1,7 +1,7 @@
 <?php
     $page="ChangePassword";
     if (isset($_POST['BtnUpdatePassword'])) {
-        $response = $webservice->getData("Member","MemberChangePassword",$_POST); 
+        $response = $webservice->getData("Franchisee","ChangePassword",$_POST); 
         if ($response['status']=="success") {
             unset($_POST);
            $sucessmessage=$response['message'];
@@ -34,12 +34,8 @@
         ErrorCount=0;
         
         IsNonEmpty("CurrentPassword","ErrCurrentPassword","Please Enter Current Password");
-        if (IsNonEmpty("NewPassword","ErrNewPassword","Please Enter New Password")) {
-            IsAlphaNumeric("NewPassword","ErrNewPassword","Alpha Numeric Characters only");
-        }
-        if (IsNonEmpty("ConfirmNewPassword","ErrConfirmNewPassword","Please Enter Confirm New Password")) {
-            IsAlphaNumeric("ConfirmNewPassword","ErrConfirmNewPassword","Alpha Numeric Characters only");
-        }
+        IsNonEmpty("NewPassword","ErrNewPassword","Please Enter New Password")
+        IsNonEmpty("ConfirmNewPassword","ErrConfirmNewPassword","Please Enter Confirm New Password")
         
         var password = document.getElementById("NewPassword").value;
         var confirmPassword = document.getElementById("ConfirmNewPassword").value;

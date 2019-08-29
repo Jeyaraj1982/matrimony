@@ -15,14 +15,14 @@
                 </div>
               <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                         <a href="ManageMembers" ><small >All</small></a>&nbsp;|&nbsp;
-                        <a href="ManageActiveMembers"><small style="font-weight:bold;">Active</small></a>&nbsp;|&nbsp;
-                        <a href="ManageDeactiveMembers"><small>Deactive</small></a>
+                        <a href="ManageActiveMembers"><small>Active</small></a>&nbsp;|&nbsp;
+                        <a href="ManageDeactiveMembers"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>
                     </div>
                 </div>
                 <div class="table-responsive">
                     <table id="myTable" class="table table-striped">
                       <thead>  
-                        <tr> 
+                        <tr>                                                                     
                         <th>Member Names</th>  
                         <th>Created</th>
                         <th>No of Profiles</th>

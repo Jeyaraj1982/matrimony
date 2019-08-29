@@ -40,15 +40,18 @@ text-align: left;
 
  </style>
 <form method="post" action="" onsubmit="">
- 
+ <?php if($ProfileInfo['RequestToVerify']=="0"){?>
 <div style="text-align: right" id="">
         <a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
         <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
 </div>
+<?php }?>
 <br>
+
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
+        <?php if($ProfileInfo['RequestToVerify']=="0"){?>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Created On</label>
             <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
@@ -57,6 +60,16 @@ text-align: left;
                     <label class="col-sm-2 col-form-label">Last saved</label>
                     <label class="col-sm-3 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></label>
                    </div>
+        <?php } else{?>
+            <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Created On</label>
+            <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
+             </div>
+             <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Puplished On</label>
+                    <label class="col-sm-3 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['RequestVerifyOn']);?></label>
+                   </div>
+        <?php }?>
   </div>
 </div>
 </div>
@@ -534,28 +547,32 @@ text-align: left;
         </div>
 
 <script>
-function showConfirmPublish(ProfileCode) {
+function showConfirmPublish(ProfileID) {
       $('#PubplishNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
                     +   '<div  style="height: 315px;">'
-                    +  '<form method="post" id="frm_'+ProfileCode+'" name="frm_'+ProfileCode+'" action="" >'
-                     + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
-                       +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
-                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="PublishMemberProfile(\''+ProfileCode+'\')">Yes</button>&nbsp;'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
+                    +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
+                     + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                      +  '<div style="text-align:center">Profile Publish<br><br>'
+                        + '<button type="button" class="close" data-dismiss="modal" style="margin-top: -40px;margin-right: 0px;">&times;</button>'
+                     //  +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
+                        +'<div style="text-align:left"> Dear ,<br>'
+                        +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). Once our DAT has approved your profile,the profile will live imediately in our portal, so please verify all data<br><br>'
+                        + '<input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I agree the terms and conditions  </label><br><br>'
+                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="VerifyProfileforPublish(\''+ProfileID+'\')">Yes,send request</button>&nbsp;'
+                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No, i will do later</button>'
                        +  '</div><br>'
                     +  '</form>'
                 +  '</div>'
             +  '</div>';
             $('#Publish_body').html(content);
 }
-function PublishMemberProfile(formid) {
+function VerifyProfileforPublish(formid) {
      var param = $("#frm_"+formid).serialize();
      $('#Publish_body').html(preloader);
         $.post(API_URL + "m=Franchisee&a=PublishMemberProfile",param,function(result2) {$('#Publish_body').html(result2);});
 }
-
 </script>
    
-            
+                                                                                                                        
                

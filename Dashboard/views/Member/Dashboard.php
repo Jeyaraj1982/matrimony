@@ -18,21 +18,15 @@
         #errormsg{text-align:center;color:red;padding-bottom:5px;padding-top:5px;}
         #resCon_a002 a:hover{color: #337ab7;}
         #resCon_a0021 a:hover{color: #337ab7;}
+        #UpdatesDiv_:hover {
+    background: #c3d1d2;
+}
     </style>                                                 
     <script>
         function myFunction() {
             var x = document.getElementById("verifydiv");
             if (!(x.style.display === "none")) {
                 $('#verifydiv').hide(1000);
-            }
-        }
-       
-    </script>
-    <script>
-        function HideLatestUpadte() {
-            var x = document.getElementById("resCon_a0021");
-            if (!(x.style.display === "none")) {
-                $('#resCon_a0021').hide(1000);
             }
         }
        
@@ -51,31 +45,34 @@
     <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">                                                                     
             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Latest Updates</div>
              <div class="card"  style="background:#dee9ea">
-                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:328px">
-                    <div id="resCon_a002" style="background:white;width:97%;text-align:left">
+                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:435px">
+                    <div id="resCon_a002" style="background:white;width:97%;text-align:left;padding:0px;height:380px">
                     <?php
                         $latestupdates = $webservice->getData("Member","GetLatestUpdates");
                         foreach($latestupdates['data'] as $Row) { 
                     ?>   
-                    <div style="border:1px solid red;margin:5px 5px;">
+                    <div id="UpdatesDiv_<?php echo $Row['LatestID'];?>" name="UpdatesDiv_<?php echo $Row['LatestID'];?>" style="border-bottom:1px solid #c3d1d2;padding: 5px;">
                         <table style="width: 100%;">
                             <tr>
-                                <td style="width:64px">
+                                <td style="width:64px;padding-right: 15px;">
                                     <img src="<?php  echo $Row['ProfilePhoto']?>" style="border-radius: 50%;width: 64px;border: 1px solid #ddd !important;height: 64px;padding: 5px;background: #fff;">
                                 </td>
                                 <td>
                                     <?php echo $Row['VisterProfileCode'];?> &nbsp;<?php echo $Row['Subject'];?><br>
-                                     <a href="#">View</a>
+                                     <a href="<?php echo GetUrl("view/".$Row['VisterProfileCode'].".htm ");?>">View Profile</a>
                                      <span style="float:right;font-size: 12px;color: #514444cc;"><?php echo putDateTime($Row['ViewedOn']);?></span>
                                 </td>
                                 <td style="width:10px;">
-                                 <div class="col-sm-1"><a href="javascript:void(0)" onclick="HideLatestUpadte()" class="close" style="outline:none" >&times;</a></div>
+                                 <div class="col-sm-1"><a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $Row['LatestID'];?>')" name="Hide" style="font-family:roboto"><button type="button" class="close" style="margin-top: -27px;margin-right: -9px;">&times;</button></a></div>
                                 </td>
-                            </tr>
+                            </tr>                                                 
                         </table>
-                    </div>              
+                    </div>                                       
                    <?php }?>  
-                  </div>                     
+                  </div>
+                  <div style="width:97%;text-align:center;">
+                          <a href="<?php echo SiteUrl;?>LatestUpdates">View All</a>
+                  </div>                      
              </div>   
         </div>
         </div>
@@ -95,8 +92,44 @@
                 </div>
                 </div>
             </div>
-         </div>                                                 
+         </div> 
+         <div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+            <div class="modal-dialog" style="width: 367px;">
+                <div class="modal-content" id="model_body" style="height: 220px;">
+            
+                </div>
+            </div>
+        </div>                                                
         </div>
+        <script>
+        function showConfirmDelete(LatestID) {                                           
+        $('#Delete').modal('show'); 
+        var content = '<div class="modal-body" style="padding:20px">'
+                        + '<div  style="height: 315px;">'
+                            + '<form method="post" id="form_'+LatestID+'" name="form_'+LatestID+'" > '
+                                + '<input type="hidden" value="'+LatestID+'" name="LatestID">'
+                                  + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                   + '<h4 class="modal-title">Confirm delete Updates</h4><br>'
+                                + '<div style="text-align:center">Are you sure want to Delete?  <br><br>'
+                                    + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+LatestID+'\')">Yes</button>&nbsp;&nbsp;'
+                                    + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
+                                + '</div>'
+                            + '</form>'
+                        + '</div>'
+                     +  '</div>';
+        $('#model_body').html(content);
+    }
+        function ConfirmDelete(LatestID) {
+        
+        var param = $( "#form_"+LatestID).serialize();
+        $('#model_body').html(preloader);
+        $.post(API_URL + "m=Member&a=HideLatestUpdates", param, function(result2) {
+            $('#model_body').html(result2);
+            $('#UpdatesDiv_'+LatestID).hide();
+        }
+    );
+}
+        </script>
     <div class="row">
     <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recent Visitors</div>
@@ -433,49 +466,136 @@ $(document).ready(function () {
     }
 
 });
-</script>
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
+</script>   
+
+<div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
+
+  <!--Controls-->
+  <div class="controls-top">
+    <a class="btn-floating" href="#carousel-example-multi" data-slide="prev"><i
+        class="fas fa-chevron-left"></i></a>
+    <a class="btn-floating" href="#carousel-example-multi" data-slide="next"><i
+        class="fas fa-chevron-right"></i></a>
+  </div>
+  <!--/.Controls-->
+
   <!-- Indicators -->
   <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    <li data-target="#myCarousel" data-slide-to="1"></li>
-    <li data-target="#myCarousel" data-slide-to="2"></li>
+    <li data-target="#carousel-example-multi" data-slide-to="0" class="active"></li>
+    <li data-target="#carousel-example-multi" data-slide-to="1"></li>
+    <li data-target="#carousel-example-multi" data-slide-to="2"></li>
+    <li data-target="#carousel-example-multi" data-slide-to="3"></li>
+    <li data-target="#carousel-example-multi" data-slide-to="4"></li>
+    <li data-target="#carousel-example-multi" data-slide-to="5"></li>
   </ol>
+  <!--/.Indicators-->
 
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner">
-    <div class="item active">
-      <img src="la.jpg" alt="Chania">
-      <div class="carousel-caption">
-        <h3>Los Angeles</h3>
-        <p>LA is always so much fun!</p>
+  <div class="carousel-inner v-2" role="listbox">
+
+    <div class="carousel-item active">
+      <div class="col-12 col-md-4">
+        <div class="card mb-2">
+          <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/img (36).jpg"
+            alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title font-weight-bold">Card title</h4>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+              card's content.</p>
+            <a class="btn btn-primary btn-md btn-rounded">Button</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="col-12 col-md-4">
+        <div class="card mb-2">
+          <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/img (34).jpg"
+            alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title font-weight-bold">Card title</h4>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+              card's content.</p>
+            <a class="btn btn-primary btn-md btn-rounded">Button</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="col-12 col-md-4">
+        <div class="card mb-2">
+          <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/img (38).jpg"
+            alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title font-weight-bold">Card title</h4>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+              card's content.</p>
+            <a class="btn btn-primary btn-md btn-rounded">Button</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="col-12 col-md-4">
+        <div class="card mb-2">
+          <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/img (29).jpg"
+            alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title font-weight-bold">Card title</h4>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+              card's content.</p>
+            <a class="btn btn-primary btn-md btn-rounded">Button</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="col-12 col-md-4">
+        <div class="card mb-2">
+          <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/img (30).jpg"
+            alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title font-weight-bold">Card title</h4>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+              card's content.</p>
+            <a class="btn btn-primary btn-md btn-rounded">Button</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="col-12 col-md-4">
+        <div class="card mb-2">
+          <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/img (27).jpg"
+            alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title font-weight-bold">Card title</h4>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+              card's content.</p>
+            <a class="btn btn-primary btn-md btn-rounded">Button</a>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="item">
-      <img src="chicago.jpg" alt="Chicago">
-      <div class="carousel-caption">
-        <h3>Chicago</h3>
-        <p>Thank you, Chicago!</p>
-      </div>
-    </div>
-
-    <div class="item">
-      <img src="ny.jpg" alt="New York">
-      <div class="carousel-caption">
-        <h3>New York</h3>
-        <p>We love the Big Apple!</p>
-      </div>
-    </div>
   </div>
 
-  <!-- Left and right controls -->
-  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="right carousel-control" href="#myCarousel" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right"></span>
-    <span class="sr-only">Next</span>
-  </a>
 </div>
+<script>
+$('.carousel.carousel-multi-item.v-2 .carousel-item').each(function(){
+  var next = $(this).next();
+  if (!next.length) {
+    next = $(this).siblings(':first');
+  }
+  next.children(':first-child').clone().appendTo($(this));
+
+  for (var i=0;i<4;i++) {
+    next=next.next();
+    if (!next.length) {
+      next=$(this).siblings(':first');
+    }
+    next.children(':first-child').clone().appendTo($(this));
+  }
+});
+</script>
+
+

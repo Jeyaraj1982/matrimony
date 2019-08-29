@@ -60,6 +60,7 @@
                             <th>Member Name</th>                         
                             <th>Franchisee</th>
                             <th>Mobile Number</th>
+                            <th></th>
                         </tr>                                        
                     </thead>
                     <tbody> 
@@ -76,7 +77,8 @@
                             <td><?php echo $Member['MemberName'];?></td>
                             <td>[<?php echo $Member['FranchiseeCode'];?>]&nbsp;<?php echo $Member['FranchiseeName'];?></td>
                             <td><?php echo $Member['MobileNumber'];?></td>
-                        </tr>
+                            <td><a href="<?php echo GetUrl("Members/ViewMember/". $Member['MemberID'].".html");?>"><span>View</span></a></td>
+                        </tr>                               
                     <?php }} ?>            
                     </tbody>                        
                 </table>
@@ -88,7 +90,7 @@
 <script>
     $(document).ready(function(){
         $('#myTable').dataTable();
-        setTimeout("DataTableStyleUpdate()",500);
+        setTimeout("DataTableStyleUpdate()",500);                                                                                       
     });
 </script>
 <?php }?>

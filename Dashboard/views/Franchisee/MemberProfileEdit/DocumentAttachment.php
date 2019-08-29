@@ -115,7 +115,7 @@ function submitUpload() {
         </div>
     </div>
     <div class="form-group row">                                                                                                                                                
-        <div class="col-sm-12"><input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)"  onclick="showLearnMore()">Lean more</a>
+        <div class="col-sm-12"><input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)"  onclick="showLearnMore()">Learn more</a>
         <br><span class="errorstring" id="Errcheck"></span></div>
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
@@ -130,7 +130,7 @@ function submitUpload() {
 <div>
     <?php if(sizeof($res['data'])==0){  ?>
          <div style="margin-right:10px;text-align: center;">
-                 No Profile Photos Found   
+                 No Documents Found   
         </div>
    <?php }  else {       ?>
     <?php
@@ -180,12 +180,14 @@ function showLearnMore() {
 </script>
 <div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="model_body" style="height: 150px;">
+                <div class="modal-content" id="model_body" style="height: 300px;">
             
                 </div>
             </div>
         </div>
 <script>
+
+    
     function showConfirmDelete(AttachmentID,ProfileID) {
         $('#Delete').modal('show'); 
         var content = '<div class="modal-body" style="padding:20px">'
@@ -193,9 +195,11 @@ function showLearnMore() {
                             + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
                                 + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
                                 + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                                + '<div style="text-align:center">Are you sure want to Delete?  <br><br>'
-                                    + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+AttachmentID+'\')">Yes</button>&nbsp;&nbsp;'
-                                    + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
+                                 + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                 + '<h4 class="modal-title">Confirmation For remove</h4>'
+                                + '<div>Are you sure want to Delete?  </div><br>'
+                                    + '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+AttachmentID+'\')">Yes</button>&nbsp;&nbsp;'
+                                    + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button></div>'
                                 + '</div>'
                             + '</form>'
                         + '</div>'

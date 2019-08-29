@@ -14,9 +14,9 @@
                 </ul>
                 </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                    <a href="ManageStaffs" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
+                    <a href="ManageStaffs" ><small>All</small></a>&nbsp;|&nbsp;
                     <a href="ManageActiveStaffs"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
-                    <a href="ManageDeactiveStaffs"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>
+                    <a href="ManageDeactiveStaffs"><small>Deactive</small></a>
                 </div>
                 </div>
                 <div class="table-responsive">
@@ -33,10 +33,7 @@
                       </thead>
                       <tbody>                      
                         <?php 
-                       // $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where ReferedBy<>'1' and FranchiseeID='".$_Franchisee['FranchiseeID']."' "); ?>
-                        <?php// foreach($Staffs as $Staff) { ?>   
-                        <?php 
-                         $response = $webservice->getData("Franchisee","ManageFranchiseeStaffs",array("Request"=>"All"));
+                         $response = $webservice->getData("Franchisee","ManageFranchiseeStaffs",array("Request"=>"Active"));
                          if (sizeof($response['data'])>0) {
                     ?>
                         <?php foreach($response['data'] as $Staff) { ?>

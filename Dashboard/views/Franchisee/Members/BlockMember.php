@@ -1,4 +1,14 @@
 <?php
+  if (isset($_POST['SendMail'])) {
+        
+        $response = $webservice->getData("Franchisee","BlockMember",$_POST);
+        if ($response['status']=="success") {
+             $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+    
   
  $response = $webservice->GetMemberDetails(array("Code"=>$_GET['Code']));
     $Member=$response['data'];    
@@ -18,10 +28,11 @@
         if (ErrorCount==0) {
             return true;
         } else{
-            return false;
+            return false;                                                                                                   
         }
     }
 </script>
+<form method="post" action="" onsubmit="">
 <div class="col-12 stretch-card">                                         
                   <div class="card">
                     <div class="card-body">
@@ -63,9 +74,11 @@
                           echo "Already Blocked Try again";
                         }   
                         ?> 
-                                    
+                             
+                             <?php echo $successmessage;?><?php echo $errormessage;?>       
                     
   </div>
  </div>
-</div>                                        
+</div>  
+</form>                                      
                       

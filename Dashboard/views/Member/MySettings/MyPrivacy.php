@@ -22,7 +22,7 @@
             </div>
             <div class="form-group row" style="margin-bottom:0px">
                 <div class="col-sm-1" style="margin-right: -23px;"><input type="checkbox"  id="nonVerfiedMembers" name="nonVerfiedMembers" <?php echo ($Member['PrivacyNonVerifiedMember']==1) ? ' checked="checked" ' :'';?> style="margin-top: 0px;"></div>
-                <label for="non-VerfiedMembers" class="col-sm-11" style="margin-top: 2px;padding-left: 3px;color:#444">Show photo for non verified members</label>
+                <label for="nonVerfiedMembers" class="col-sm-11" style="margin-top: 2px;padding-left: 3px;color:#444">Show photo for non verified members</label>
             </div>
             <br><br>
             <div class="form-group row">

@@ -1,7 +1,6 @@
 <?php
     $page="FranchiseeInfo";
     $response = $webservice->getData("Franchisee","GetFranchiseeInfo");
-    print_r($response);
     $Franchisee=$response['data'];
     $CountryCodes=$Member['Country']; 
 ?>
@@ -16,7 +15,7 @@
         <div class="form-group row">
             <div class="col-sm-3" style="margin-right: -47px;"><small>Franchisee Name</small> </div>
             <div class="col-sm-9">:&nbsp;<small style="color:#737373;"><?php echo $Franchisee['PersonName'];?></small></div>
-        </div>
+        </div>                                                                                                                                
         <div class="form-group row">
             <div class="col-sm-3" style="margin-right: -47px;"><small>Sex</small> </div>
             <div class="col-sm-3">:&nbsp;<small style="color:#737373;"><?php echo $Franchisee['Sex'];?></small></div>
@@ -34,7 +33,7 @@
             <div class="col-sm-3">:&nbsp;<small style="color:#737373;"><?php echo  ($Franchisee['IsActive']==1) ? "Active" : "Deactive"; ?></small></div>                              
         </div>
         <div class="col-sm-12" style="text-align:left;color:blue;padding:20px;padding-left:0px;">
-            <a href="<?php echo GetUrl("MySettings/EditMemberInfo");?>"><small style="font-weight:bold;text-decoration:underline">Edit Information</small></a>
+            <a href="<?php echo GetUrl("MySettings/EditFranchiseeInfo");?>"><small style="font-weight:bold;text-decoration:underline">Edit Information</small></a>
         </div>
     </div>
 </form>                

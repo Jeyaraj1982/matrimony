@@ -124,7 +124,7 @@
 </script>  
                         <div class="form-group row">
                             <label for="HowManyChildren" class="col-sm-2 col-form-label" id="howmanychildren"></label>
-                            <div class="col-sm-3" id="childrencount_input">
+                            <div class="col-sm-4" id="childrencount_input">
                                     <select class="selectpicker form-control" data-live-search="true" id="HowManyChildren" name="HowManyChildren">
                                     <option>Choose How Many Children</option>
                                     <?php foreach($response['data']['NumberofBrother'] as $HowManyChildren) { ?>
@@ -134,8 +134,8 @@
                                 </select>
                             </div>
         
-                            <label for="Description" class="col-sm-3 col-form-label" id="IsChildrenWithYou" style="text-align:right">Is Children With You</label>
-                            <div class="col-sm-3" id="Childrenwithyou_input">
+                            <label for="Description" class="col-sm-2 col-form-label" id="IsChildrenWithYou" style="text-align:right">Is Children With You</label>
+                            <div class="col-sm-4" id="Childrenwithyou_input">
                                 <select class="selectpicker form-control" data-live-search="true" id="ChildrenWithYou" name="ChildrenWithYou">
                                     <option>Choose Children With You</option>
                                     <option value="1" <?php echo ($ProfileInfo['ChildrenWithYou']==1) ? " selected='selected' " : "";?>>Yes</option>

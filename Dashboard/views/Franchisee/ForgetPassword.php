@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-        include_once("../../config.php");
+     /*   include_once("../../config.php");
      
         if (isset($_POST['UserName']))  {
             //echo "select * from _tbl_franchisees_staffs where LoginName='".trim($_POST['UserName'])."' or EmailID='".trim($_POST['UserName'])."'";
@@ -22,8 +22,26 @@
             } else {
                 $status = "Invaild Login Name or Registered Email Address";
             }
-        }                                     
+        }*/                                     
     ?>
+<?php
+            include_once("../../config.php");
+            if (isset($_POST['submit'])) {
+                $response = $webservice->getData("Franchisee","forgotPassword",$_POST);
+                if ($response['status']=="success") {
+                    ?>
+                    <form action="forget-password-otp.php" id="reqFrm" method="post">
+                        <input type="hidden" value="<?php echo $response['data']['reqID'];?>" name="reqID">
+                        <input type="hidden" value="<?php echo $response['data']['email'];?>" name="reqEmail">
+                    </form>
+                    <script>document.getElementById("reqFrm").submit();</script>
+                <?php
+                    }
+                    else{
+                        $errormessage = $response['message']; 
+                    } 
+            }
+            ?>
  <head>                                                        
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -88,7 +106,7 @@ function SubmitEmail() {
                  <span class="errorstring" id="ErrUserName"><?php echo isset($ErrUserName)? $ErrUserName : "";?></span>
                 </div>
                 <div class="form-group">
-                  <button type="submit" class="btn btn-primary submit-btn btn-block">Submit</button>
+                  <button type="submit" class="btn btn-primary submit-btn btn-block" name="submit">Submit</button>
                   <?php
                       if (isset($status)) {
                           echo'<span class="errorstring" id="server_error">'.$status.'</span>';
