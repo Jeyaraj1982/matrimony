@@ -83,10 +83,10 @@
             
             $times=strlen(trim(substr($mobileNumber,6,4)));
             $star='';
-            for ($i=0; $i <$times ; $i++) { 
+            for ($i=0; $i <6 ; $i++) { 
             $star.=$char;
             }
-            $result=str_replace(substr($mobileNumber, 6,4), $star, $mobileNumber);
+            $result=str_replace(substr($mobileNumber, 0,6), $star, $mobileNumber);
             return $result;  
         }
     }
