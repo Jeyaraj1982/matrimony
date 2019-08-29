@@ -105,8 +105,10 @@
                                                            "MemberName"               => $_POST['MemberName'],  
                                                            "DateofBirth"              => $dob,
                                                            "Sex"                      => $_POST['Sex'],
+                                                           "CountryCode"             => $_POST['CountryCode'],
                                                            "MobileNumber"             => $_POST['MobileNumber'],
-                                                           "WhatsappNumber"           => $_POST['WhatsappNumber'],
+                                                           "WhatsappCountryCode"           => $_POST['WhatsappCountryCode'],
+                                                           "WhatsappNumberCountryCode"           => $_POST['WhatsappNumber'],
                                                            "EmailID"                  => $_POST['EmailID'],
                                                            "AadhaarNumber"            => $_POST['AadhaarNumber'],
                                                            "CreatedOn"                => date("Y-m-d H:i:s"),
@@ -852,7 +854,13 @@
              global $mysql,$loginInfo;
              $Franchisee=$mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'"); 
              $Franchisee[0]['Country'] = CodeMaster::getData('RegisterAllowedCountries');
-             return Response::returnSuccess("success"."select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'",$Franchisee[0]);
+             return Response::returnSuccess("success",$Franchisee[0]);
+         }
+    function GetFranchiseeInformation(){
+             global $mysql,$loginInfo;
+             $Franchisee=$mysql->select("select * from `_tbl_franchisees` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'"); 
+             $Franchisee[0]['Country'] = CodeMaster::getData('RegisterAllowedCountries');
+             return Response::returnSuccess("success",$Franchisee[0]);
          }
     function GetRefillWalletBankNameAndMode(){
            global $mysql,$loginInfo;    
@@ -864,7 +872,7 @@
     
     function FranchiseeRefillWallet() {
                                                                             
-        global $mysql,$loginInfo;  
+        global $mysql,$loginInfo;                                                                                                          
        
        
        $id =  $mysql->insert("_tbl_franchisees_refillwallet",array("RefillAmount"     => $_POST['RefillAmount'],
@@ -877,12 +885,18 @@
     
     function ChangePassword(){
          global $mysql,$loginInfo;
-              $getpassword = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['StaffID']."'");
+              $getpassword = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
               if ($getpassword[0]['LoginPassword']!=$_POST['CurrentPassword']) {
                 return Response::returnError("Incorrect Currentpassword"); } 
-                                                      
+               
               if ($getpassword[0]['LoginPassword']==$_POST['CurrentPassword']) {                                         
-                    $mysql->execute("update _tbl_franchisees_staffs set LoginPassword='".$_POST['ConfirmNewPassword']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['StaffID']."'");
+                    $mysql->execute("update _tbl_franchisees_staffs set LoginPassword='".$_POST['ConfirmNewPassword']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+                    $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
+                                                             "ActivityType"   => 'PasswordChanged.',
+                                                             "ActivityString" => 'Password Changed.',
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
               return Response::returnSuccess("Password Changed Successfully",array());
               }
                                                             
@@ -1405,9 +1419,11 @@
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_draft_profiles_photos` set `IsDelete`='1' where `ProfilePhotoID`='".$_POST['ProfilePhotoID']."' and `ProfileCode`='".$_POST['ProfileID']."'");
                  return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirmation For Delete</h4>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
                             <h5 style="text-align:center;color:#ada9a9">Your selected profile photo  has been deleted successfully.</h5>
-                            <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
+                            <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';
                  
              
@@ -1473,9 +1489,11 @@
              $mysql->execute("update `_tbl_draft_profiles_verificationdocs` set `IsDelete`='1' where `AttachmentID`='".$_POST['AttachmentID']."' and `ProfileCode`='".$_POST['ProfileID']."'");
 
                  return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirmation For Delete</h4>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
                             <h5 style="text-align:center;color:#ada9a9">Your selected document has been deleted successfully.</h5>
-                            <h5 style="text-align:center;"><a data-dismiss="modal"  >Yes</a> <h5>
+                            <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';
 
          }
@@ -1586,7 +1604,7 @@
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                 return  $updateSql.'<div style="background:white;width:100%;padding:20px;height:100%;">
+                 return  '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
                             <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
@@ -1628,5 +1646,200 @@
                 return Response::returnError("Access denied. Please contact support");   
             }
     }
+     function BlockMember() {
+
+            global $mysql,$mail,$loginInfo;
+        
+        $members = $mysql->select("select * from _tbl_members where MemberID='".$_POST['Code']."'");
+         
+         $mContent = $mysql->select("select * from `mailcontent` where `Category`='BlockMember'");
+         $GUID= md5(time().rand(3000,3000000).time());
+         
+             $content  = str_replace("#MemberName#",$members[0]['MemberName'],$mContent[0]['Content']);
+                                                                                                                       
+             MailController::Send(array("MailTo"   => $members[0]['EmailID'],               
+                                        "Category" => "BlockMember",
+                                        "MemberID" => $members[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);              
+             $updateSql = "update `_tbl_members` set `IsActive`='0' where `MemberID`='".$_POST['Code']."'";
+           $mysql->execute($updateSql); 
+         
+             if($mailError){
+                return  Response::returnError("Error: unable to process your request.");
+             } else {
+                return Response::returnSuccess("Email sent successfully",array());
+             }
+         }
+         function EditFranchiseeInfo() {
+
+             global $mysql,$loginInfo;
+
+             $Franchisee = $mysql->select("select * from `_tbl_franchisees_staffs` where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+
+             $sqlQry = " update `_tbl_franchisees_staffs` set `PersonName`='".$_POST['FranchiseeName']."'   ";
+
+             if($Franchisee[0]['IsMobileVerified']==0) {
+                 $sqlQry .= ", MobileNumber='".$_POST['MobileNumber']."' " ;
+                 //mobile format
+
+                 //duplicate, 
+                 $data = $mysql->select("select * from `_tbl_franchisees_staffs` where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+                 if (sizeof($data)>0) {
+                    return Response::returnError("Mobile Number Already Exists");    
+                 }
+             } 
+             if($Franchisee[0]['IsEmailVerified']==0) {
+                $sqlQry .= ", `EmailID`='".$_POST['EmailID']."', `CountryCode`='".$_POST['CountryCode']."' " ;
+                //email format
+
+                //duplicate,
+                $data = $mysql->select("select * from  `_tbl_franchisees_staffs` where `EmailID`='".trim($_POST['EmailID'])."' and `PersonID` <>'".$loginInfo[0]['FranchiseeStaffID']."'");
+                if (sizeof($data)>0) {
+                    return Response::returnError("EmailID Already Exists");    
+                }
+             }
+
+             $sqlQry .= " where  `PersonID`='".$Franchisee[0]['PersonID']."'" ;  
+             $mysql->execute($sqlQry)  ;
+             $id = $mysql->insert("_tbl_logs_activity",array("PersonID"       => $loginInfo[0]['FranchiseeStaffID'],
+                                                             "ActivityType"   => 'Yourfranchiseeinformationupdated.',
+                                                             "ActivityString" => 'Your franchisee information updated.',
+                                                             "SqlQuery"       => base64_encode($sqlQry),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s"))); 
+             return Response::returnSuccess("success",array());
+         }
+         function UpdateKYC() {
+             global $mysql,$loginInfo;
+             $returnA = 0;
+             $returnB = 0;
+             $FileTypeA = CodeMaster::getData("IDPROOF",$_POST['IDType']); 
+
+             if (isset($_POST['IDProofFileName']) && strlen($_POST['IDProofFileName'])>0) {
+
+                 $id = $mysql->insert("_tbl_franchisee_documents",array("FranchiseeID"     => $loginInfo[0]['FranchiseeID'],
+                                                                        "FranchiseeStaffID"=> $loginInfo[0]['FranchiseeStaffID'],
+                                                                        "DocumentType" => 'Id Proof',
+                                                                        "FileName"     => $_POST['IDProofFileName'],
+                                                                        "FileTypeCode" => $_POST['IDType'],
+                                                                        "FileType"     => $FileTypeA[0]['CodeValue'],
+                                                                        "SubmittedOn"  => date("Y-m-d H:i:s")));
+                        $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"        => $loginInfo[0]['FranchiseeID'],
+                                                                        "ActivityType"    => 'docidproof',
+                                                                        "ActivityString"  => 'KYC Id proof has been submitted',
+                                                                        "SqlQuery"        => '',
+                                                                        "ActivityOn"      => date("Y-m-d H:i:s"))); 
+                 $returnA = 1;
+             }
+
+             $FileTypeB = CodeMaster::getData("ADDRESSPROOF",$_POST['AddressProofType']);
+             if (isset($_POST['AddressProofFileName']) && strlen($_POST['AddressProofFileName'])>0) {
+                 $id = $mysql->insert("_tbl_franchisee_documents",array("FranchiseeID"     => $loginInfo[0]['FranchiseeID'],
+                                                                        "FranchiseeStaffID"=> $loginInfo[0]['FranchiseeStaffID'],
+                                                                        "DocumentType" => 'Address Proof',
+                                                                        "FileName"     => $_POST['AddressProofFileName'],
+                                                                        "FiletypeCode" => $_POST['AddressProofType'],
+                                                                        "FileType"     => $FileTypeB[0]['CodeValue'],
+                                                                        "SubmittedOn"  => date("Y-m-d H:i:s"))); 
+                        $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"        => $loginInfo[0]['FranchiseeID'],
+                                                                        "ActivityType"    => 'docaddressproof',
+                                                                        "ActivityString"  => 'KYC address proof has been submitted',
+                                                                        "SqlQuery"        => '',
+                                                                        "ActivityOn"      => date("Y-m-d H:i:s")));
+                 $returnB = 1;
+             }
+
+             if ($returnA==1 && $returnB==1) {
+                 return Response::returnSuccess("successfully updated idproof and address proof",array());
+             }
+
+             if ($returnA==1 && $returnB==0) {
+                return Response::returnSuccess("successfully updated idproof",array());
+             }
+
+             if ($returnA==0 && $returnB==1) {
+                return Response::returnSuccess("successfully updated address proof",array());
+             }
+
+             if ($returnA==0 && $returnB==0) {
+                return Response::returnSuccess("Please choose document",array());
+             }
+         }
+         function GetKYC() {
+             global $mysql,$loginInfo;    
+             $KYCs = $mysql->select("select * from `_tbl_franchisee_documents` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' order by `DocID` DESC ");
+             $IDproof = $mysql->select("select * from `_tbl_franchisee_documents` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and DocumentType='Id Proof' order by DocID Desc");
+             $Addressproof = $mysql->select("select * from `_tbl_franchisee_documents` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and DocumentType='Address Proof' order by DocID Desc");
+             
+             if (sizeof($IDproof)==0) {         
+                $isAllowToUploadIDproof = 1;    
+             } else {
+                 
+                 if ($IDproof[0]['IsVerified']==0 && $IDproof[0]['IsRejected']==0) {
+                   $isAllowToUploadIDproof = 0;    
+                 }
+                 
+                if ($IDproof[0]['IsVerified']==1 && $IDproof[0]['IsRejected']==1) {
+                   $isAllowToUploadIDproof = 1;    
+                 } 
+                 
+                 if ($IDproof[0]['IsVerified']==1 && $IDproof[0]['IsRejected']==0) {
+                   $isAllowToUploadIDproof = 0;    
+                 } 
+             }
+             
+             
+             if (sizeof($Addressproof)==0) {
+                $isAllowToUploadAddressproof = 1;    
+             } else {
+                 
+                 if ($Addressproof[0]['IsVerified']==0 && $Addressproof[0]['IsRejected']==0) {
+                   $isAllowToUploadAddressproof = 0;    
+                 }
+                 
+                if ($Addressproof[0]['IsVerified']==1 && $Addressproof[0]['IsRejected']==1) {
+                   $isAllowToUploadAddressproof = 1;    
+                 } 
+                 
+                 if ($Addressproof[0]['IsVerified']==1 && $Addressproof[0]['IsRejected']==0) {
+                   $isAllowToUploadAddressproof = 0;    
+                 } 
+             }
+             
+             
+             return Response::returnSuccess("success",array("IDProof"      => CodeMaster::getData('IDPROOF'),
+                                                            "AddressProof" => CodeMaster::getData('ADDRESSPROOF'),
+                                                            "KYCView"      => $KYCs,
+                                                            "IdProofDocument" => $IDproof,
+                                                            "isAllowToUploadAddressproof" => $isAllowToUploadAddressproof,
+                                                            "isAllowToUploadIDproof" => $isAllowToUploadIDproof,
+                                                            "AddressProofDocument" => $Addressproof));
+         }
+         function ManageFranchiseeStaffs() {
+
+             global $mysql,$loginInfo;
+
+             $sql = "SELECT * From `_tbl_franchisees_staffs` ";
+
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }
+
+             if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive`='1'"));    
+             }
+
+             if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive`='0'"));    
+             }
+         }
+         function GetCountryCode(){
+             global $mysql,$loginInfo;
+             $Country = CodeMaster::getData('RegisterAllowedCountries');
+             return Response::returnSuccess("success",array("CountryCode"      =>$Country));
+         } 
+         
+         
         }
-?>
+?> 

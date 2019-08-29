@@ -142,12 +142,12 @@
              if (Validation::isEmail($_POST['FpUserName'])) {
                 $data = $mysql->select("Select * from `_tbl_members` where `EmailID`='".$_POST['FpUserName']."'");
                 if (sizeof($data)==0){
-                    return Response::returnError("Invalid e-mail");
+                    return Response::returnError("E-mail address not available");
                 }
              } else {
                 $data = $mysql->select("Select * from `_tbl_members` where `MemberCode`='".$_POST['FpUserName']."'");    
                 if (sizeof($data)==0){
-                    return Response::returnError("Invalid Member ID");
+                    return Response::returnError("Member ID not available");
                 }
              }
 
@@ -643,30 +643,23 @@
                          <input type="hidden" value="'.$loginid.'" name="loginId">
                          <input type="hidden" value="'.$securitycode.'" name="reqId">                          
                             <div class="form-group">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                             '.(($updatemsg!="") ? $updatemsg : "").'
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
                             </div> 
                             <div style="text-align:left"> Dear '.$memberdata[0]['MemberName'].',<br>
-                                <h5 style="color: #777;line-height:20px;font-weight: 100;">Please enter the verification code which you have received on your mobile number ending with  '.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'</h5>
+                                <h5 style="color: #777;line-height:20px;font-weight: 100;">Please enter the verification code which you have received on your mobile number ending with  +'.$memberdata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'</h5>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="col-sm-12">
-                                        <div class="col-sm-3"></div>
-                                        <div class="col-sm-6"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-7"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-5"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                     </div>
-                                    <div class="col-sm-12" id="errormsg">'.$error.'</div>                                                                                                                                                                                
+                                    <div class="col-sm-12">'.$error.'</div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-6" style="text-align:right"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Verify</button></div>
-                                        <div class="col-sm-6"><button type="button" onclick="ResendMobileNumberVerificationForm(\''.$formid.'\')"class="btn btn-primary" id="verifybtn" name="btnVerify">Resend</button></div>
-                                    </div>
-                            </div>
-                                      
+                            </div>                                                              
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendMobileNumberVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
                         </form>                                                                                                       
                         </div>'; 
              }
@@ -687,7 +680,7 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
                   return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h5>
                             <h5 style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
@@ -876,14 +869,13 @@
                         <input type="hidden" value="'.$loginid.'" name="loginId">
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
-                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                 <div class="input-group">
                                     <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                     '.(($updatemsg!="") ? $updatemsg : "").'
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
                                 </div>
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/emailicon.png" width="10%"></p>
-                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification Code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
+                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digits verification Code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
@@ -947,7 +939,7 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h5>
                             <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
@@ -1377,9 +1369,9 @@
                   return  '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Publish Profile</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>            
                             <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
-                            <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                            <h5 style="text-align:center;"><a href="../../../Dashoard" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';
 
              } else {
@@ -2117,7 +2109,14 @@
 
          function AddEducationalDetails() {
              global $mysql,$loginInfo;
-             $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'"); 
+             
+              if (!(strlen(trim($_POST['Educationdetails']))>0)) {                                                                               
+                 return Response::returnError("Please select education details");
+             }
+             if (!(strlen(trim($_POST['EducationDegree']))>0)) {
+                 return Response::returnError("Please select education degree ");
+             }
+             $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'");                         
              $id = $mysql->insert("_tbl_draft_profiles_education_details",array("EducationDetails" => $_POST['Educationdetails'],
                                                                   "EducationDegree"  => $_POST['EducationDegree'],
                                                                   "EducationRemarks"  => $_POST['EducationRemarks'],
@@ -2293,6 +2292,16 @@
 
          function DeleteMember() {
              global $mysql,$loginInfo;
+             $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='DeleteMember'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "DeleteMember",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Account has been Deleted.");  
              $mysql->execute("update `_tbl_members` set `IsDeleted`='1', `DeletedOn`='".date("Y-m-d H:i:s")."'  where  `MemberID`='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("successfully",array());
          }
@@ -2493,6 +2502,17 @@
                 global $mysql,$loginInfo;      
              $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$_POST['ProfileCode']."'"); 
              $visitorsDetails =$mysql->select("select * from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+             $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$visitorsDetails[0]['ProfileCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
+               
+               if (sizeof($ProfileThumb)==0) {
+                if ($Profiles[0]['SexCode']=="SX002"){
+                    $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
+                } else { 
+                    $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
+                }
+                } else {
+                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
+                 }
                            
                $id = $mysql->insert("_tbl_profiles_lastseen",array("MemberID"       => $Profiles[0]['MemberID'],
                                                                    "ProfileID"      => $Profiles[0]['ProfileID'],
@@ -2507,6 +2527,7 @@
                                                                    "VisterMemberID"     => $member[0]['MemberID'],
                                                                    "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
                                                                    "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                                   "ProfilePhoto"       => $ProfileThumbnail,
                                                                    "Subject"            => "has viewd your profile",
                                                                    "ViewedOn"           => date("Y-m-d H:i:s")));
             
@@ -2630,8 +2651,21 @@
                $member =$mysql->select("select * from `_tbl_members` where MemberID='".$loginInfo[0]['MemberID']."'"); 
                $visitorsDetails =$mysql->select("select * from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
                
+                $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$visitorsDetails[0]['ProfileCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
+               
+               if (sizeof($ProfileThumb)==0) {
+                if ($Profiles[0]['SexCode']=="SX002"){
+                    $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
+                } else { 
+                    $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
+                }
+                } else {
+                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
+                 }
+               
                 $isFavourite = $mysql->select("select * from `_tbl_profiles_favourites` where `IsHidden`='0' and ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by FavProfileID desc limit 0,1");           
-                 if (sizeof($isFavourite)==0)           {
+                 if (sizeof($isFavourite)==0)           {  
+                     
                $id = $mysql->insert("_tbl_profiles_favourites",array("MemberID"           => $Profiles[0]['MemberID'],
                                                                    "ProfileID"          => $Profiles[0]['ProfileID'],
                                                                    "ProfileCode"        => $Profiles[0]['ProfileCode'],
@@ -2645,6 +2679,7 @@
                                                                    "VisterMemberID"     => $member[0]['MemberID'],
                                                                    "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
                                                                    "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                                   "ProfilePhoto"       => $ProfileThumbnail,
                                                                    "Subject"            => "Profile add to favourite",
                                                                    "ViewedOn"           => date("Y-m-d H:i:s")));
                return Response::returnSuccess($Profiles[0]['ProfileCode']." has been added to your favourites");                                               
@@ -2656,6 +2691,7 @@
                                                                    "VisterMemberID"     => $member[0]['MemberID'],
                                                                    "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
                                                                    "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                                   "ProfilePhoto"       => $ProfileThumbnail,
                                                                    "Subject"            => "Profile removed favourite",
                                                                    "ViewedOn"           => date("Y-m-d H:i:s")));
                      return Response::returnSuccess($Profiles[0]['ProfileCode']." has been removed from your favourites");                                               
@@ -2771,25 +2807,18 @@
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
                             </div> 
                             <div style="text-align:left"> Dear '.$memberdata[0]['MemberName'].',<br>
-                                <h5 style="color: #777;line-height:20px;font-weight: 100;">Please enter the verification code which you have received on your mobile number ending with  '.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'</h5>
+                                <h5 style="color: #777;line-height:20px;font-weight: 100;">Please enter the verification code which you have received on your mobile number ending with  +'.$memberdata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'</h5>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="col-sm-12">
-                                        <div class="col-sm-3"></div>
-                                        <div class="col-sm-6"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-7"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-5"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                     </div>
-                                    <div class="col-sm-12" id="errormsg">'.$error.'</div>                                                                                                                                                                                
+                                    <div class="col-sm-12">'.$error.'</div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-6" style="text-align:right"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Verify</button></div>
-                                        <div class="col-sm-6"><button type="button" onclick="ResendMobileNumberVerificationForm(\''.$formid.'\')"class="btn btn-primary" id="verifybtn" name="btnVerify">Resend</button></div>
-                                    </div>
-                            </div>
-                                      
+                            </div>                                                              
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendMobileNumberVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
                         </form>                                                                                                       
                         </div>';
              }
@@ -2866,7 +2895,7 @@
                                     <div class="col-sm-12">'.$error.'</div>
                                 </div>
                             </div>                                                              
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer">&nbsp;Resend</a><h5> 
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
                         </form>                                                                                                       
                         </div>
                         '; 
@@ -2936,9 +2965,9 @@
          function GetLatestUpdates() {
              
              global $mysql,$loginInfo;
-             $Latestupdates = $mysql->select("select * from `_tbl_latest_updates` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+             $Latestupdates = $mysql->select("select * from `_tbl_latest_updates` where MemberID='".$loginInfo[0]['MemberID']."' and IsHide='0' ORDER BY LatestID DESC LIMIT 0,5"); 
                  return Response::returnSuccess("success",$Latestupdates);                                               
-     }
+     } 
        function ResendSendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
 
         global $mysql,$mail,$loginInfo;      
@@ -2984,7 +3013,7 @@
                             <div class="form-group">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
-                                   <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                   <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                    <h4 class="modal-title">Profile Publish</h4> <br>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
                             </div>
@@ -3009,7 +3038,6 @@
                             <div class="form-group">
                             <input type="hidden" value="'.$reqID.'" name="reqId">
                               <input type="hidden" value="'.$ProfileID.'" name="ProfileID">
-                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                 <div class="input-group">
                                     <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                     <h4 style="text-align:center;color:#6c6969;">OTP</h4>
@@ -3032,9 +3060,28 @@
         }
 
          }
+         function HideLatestUpdates() {
+
+             global $mysql,$loginInfo;
+             $mysql->execute("update `_tbl_latest_updates` set `IsHide`='1' where `LatestID`='".$_POST['LatestID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");
+                       return  "update `_tbl_latest_updates` set `IsHide`='1' where `LatestID`='".$_POST['LatestID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'".'<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirmation For Delete</h4>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Your Updates  has been deleted successfully.</h5>
+                            <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                       </div>';
+
+         }
+         function GetAllLatestUpdates() {
+             
+             global $mysql,$loginInfo;
+             $Latestupdates = $mysql->select("select * from `_tbl_latest_updates` where MemberID='".$loginInfo[0]['MemberID']."' ORDER BY LatestID DESC"); 
+                 return Response::returnSuccess("success",$Latestupdates);                                               
+     } 
      
      
      }  
    
-?>
+?>                                                            
   
