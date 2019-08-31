@@ -43,7 +43,6 @@
 
                      } else {
                         return Response::returnError("Access denied. Please contact support");   
-
                      }
                  } else {
                      return Response::returnError("Invalid username or password");
@@ -117,7 +116,7 @@
              $data = $mysql->select("select * from `_tbl_members` where `MemberID`='".$id."'");
 
              $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"  => date("Y-m-d H:i:s"),
-                                                                 "MemberID" => $data[0]['MemberID']));
+                                                                "MemberID" => $data[0]['MemberID']));
 
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='NewMemberCreated'");
              $content  = str_replace("#MemberName#",$_POST['Name'],$mContent[0]['Content']);
@@ -152,12 +151,12 @@
              }
 
              $otp=rand(1000,9999);
-             $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"    => $data[0]['MemberID'],
-                                                                         "RequestSentOn" => date("Y-m-d H:i:s"),
-                                                                         "SecurityCode"  => $otp,
-                                                                         "messagedon"    => date("Y-m-d h:i:s"), 
-                                                                         "EmailTo"       => $data[0]['EmailID'],
-                                                                         "Type"          => "Forget Password")) ; 
+             $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      => $data[0]['MemberID'],
+                                                                           "RequestSentOn" => date("Y-m-d H:i:s"),
+                                                                           "SecurityCode"  => $otp,
+                                                                           "messagedon"    => date("Y-m-d h:i:s"), 
+                                                                           "EmailTo"       => $data[0]['EmailID'],
+                                                                           "Type"          => "Forget Password")) ; 
 
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberPasswordForget'");
              $content  = str_replace("#MemberName#",$data[0]['MemberName'],$mContent[0]['Content']);
@@ -960,7 +959,7 @@
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
 
                  $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and  RequestToVerify='0' and IsApproved='0'");
-                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and  RequestToVerify='1'");
+                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and  RequestToVerify='1' and IsApproved='0'");
                  
                  if (sizeof($DraftProfiles)>0) {
                      
@@ -983,7 +982,7 @@
                          
                      } else {
                         foreach($PostProfiles as $PostProfile) {
-                            $result = Profiles::getDraftProfileInformation($PublishedProfile['ProfileCode']);
+                            $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode']);
                             $result['mode']="Posted";
                             $Profiles[]=$result;     
                         }
@@ -1000,8 +999,9 @@
                  
                  if (sizeof($DraftProfiles)>0) {
                      foreach($DraftProfiles as $DraftProfile) {
-                        //$Profiles[]=$DraftProfile;     
-                        $Profiles[]=Profiles::getDraftProfileInformation($DraftProfile['ProfileCode']);     
+                        $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode']);
+                        $result['mode']="Draft";
+                        $Profiles[]=$result;   
                      }
                  }
                  
@@ -1013,7 +1013,9 @@
 
                   if (sizeof($PostProfiles)>0) {
                       foreach($PostProfiles as $PostProfile) {
-                        $Profiles[]=Profiles::getDraftProfileInformation($PostProfile['ProfileCode']);     
+                        $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode']);
+                        $result['mode']="Posted";
+                        $Profiles[]=$result;  
                      }
                  }
                  
@@ -1025,7 +1027,9 @@
                 $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and IsApproved='1'");
                 if (sizeof($PublishedProfiles)>0) {
                     foreach($PublishedProfiles as $PublishedProfile) {
-                        $Profiles[]=Profiles::getProfileInformation($PublishedProfile['ProfileCode']);     
+                        $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
+                        $result['mode']="Published";
+                        $Profiles[]=$result; 
                      }
                 }
                 return Response::returnSuccess("success",$Profiles);
@@ -1049,19 +1053,18 @@
                      $result[]=$p; 
                   }
                 return Response::returnSuccess("success",array("Profiles" => $Profiles,"ProfileDetails" => $ProdileDetails));
+     
          }  
-         
-          
 
          function  BasicSearchViewMemberPlan() {
-          global $mysql,$loginInfo;
-                  $Plans = $mysql->select("select * from _tbl_member_plan");
-                return Response::returnSuccess("success",$Plans);
+             global $mysql,$loginInfo;
+             $Plans = $mysql->select("select * from _tbl_member_plan");
+             return Response::returnSuccess("success",$Plans);
          }
-    
-       function OverallSendOtp($errormessage="",$otpdata="",$reqID="",$PProfileID="") {
-
-        global $mysql,$mail,$loginInfo;            
+         
+         function OverallSendOtp($errormessage="",$otpdata="",$reqID="",$PProfileID="") {
+             
+             global $mysql,$mail,$loginInfo;            
 
            $data = $mysql->select("Select * from `_tbl_profiles` where `ProfileCode`='".$_POST['PProfileCode']."'");   
 
