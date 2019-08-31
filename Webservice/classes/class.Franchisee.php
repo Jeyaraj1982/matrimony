@@ -96,24 +96,24 @@
         //if (!(strlen(trim($_POST['AadhaarNumber']))>0)) {
            // return Response::returnError("Please enter AadhaarNumber");
         //}
-        if (!(strlen(trim($_POST['LoginPassword']))>0)) {
+        if (!(strlen(trim($_POST['LoginPassword']))>0)) {                                                 
             return Response::returnError("Please enter MemberPassword");    
         }
         $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
          $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
        $id =  $mysql->insert("_tbl_members",array("MemberCode"              => $_POST['MemberCode'],
-                                                           "MemberName"               => $_POST['MemberName'],  
-                                                           "DateofBirth"              => $dob,
-                                                           "Sex"                      => $_POST['Sex'],
-                                                           "CountryCode"             => $_POST['CountryCode'],
-                                                           "MobileNumber"             => $_POST['MobileNumber'],
-                                                           "WhatsappCountryCode"           => $_POST['WhatsappCountryCode'],
-                                                           "WhatsappNumberCountryCode"           => $_POST['WhatsappNumber'],
-                                                           "EmailID"                  => $_POST['EmailID'],
-                                                           "AadhaarNumber"            => $_POST['AadhaarNumber'],
-                                                           "CreatedOn"                => date("Y-m-d H:i:s"),
-                                                           "ReferedBy"                => $login[0]['FranchiseeID'],
-                                                           "MemberPassword"           => $_POST['LoginPassword']));
+                                                  "MemberName"               => $_POST['MemberName'],  
+                                                  "DateofBirth"              => $dob,
+                                                  "Sex"                      => $_POST['Sex'],
+                                                  "CountryCode"             => $_POST['CountryCode'],
+                                                  "MobileNumber"             => $_POST['MobileNumber'],
+                                                  "WhatsappCountryCode"           => $_POST['WhatsappCountryCode'],
+                                                  "WhatsappNumber"           => $_POST['WhatsappNumber'],
+                                                  "EmailID"                  => $_POST['EmailID'],
+                                                  "AadhaarNumber"            => $_POST['AadhaarNumber'],
+                                                  "CreatedOn"                => date("Y-m-d H:i:s"),
+                                                  "ReferedBy"                => $login[0]['FranchiseeID'],
+                                                  "MemberPassword"           => $_POST['LoginPassword']));
         if (sizeof($id)>0) {
             $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Member'");
                 return Response::returnSuccess("success",array("MemberCode"=>$_POST['MemberCode']));
