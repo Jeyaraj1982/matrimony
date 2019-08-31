@@ -76,23 +76,23 @@
              global $mysql;
 
              if (!(strlen(trim($_POST['Name']))>0)) {
-                return returnError("Please enter your name");
+                return Response::returnError("Please enter your name");
              }
 
              if (!(strlen(trim($_POST['Email']))>0)) {
-                return returnError("Please enter your email");
+                return Response::returnError("Please enter your email");
              }
 
              if (!(strlen(trim($_POST['Gender']))>0)) {
-                return returnError("Please enter password");
+                return Response::returnError("Please enter password");
              }
 
              if (!(strlen(trim($_POST['MobileNumber']))>0)) {
-                return returnError("Please enter password");
+                return Response::returnError("Please enter password");
              }
 
              if (!(strlen(trim($_POST['LoginPassword']))>0)) {
-                return returnError("Please enter password");
+                return Response::returnError("Please enter password");
              }
 
              $data = $mysql->select("select * from `_tbl_members` where  `MobileNumber`='".$_POST['MobileNumber']."'");
@@ -404,6 +404,7 @@
          function GetBasicSearchElements() {
              return Response::returnSuccess("success",array("MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
                                                             "Religion"      => CodeMaster::getData('RELINAMES'),
+                                                            "Caste"      => CodeMaster::getData('CASTNAMES'),
                                                             "Community"     => CodeMaster::getData('COMMUNITY')));
          }
 
@@ -3078,7 +3079,34 @@
              global $mysql,$loginInfo;
              $Latestupdates = $mysql->select("select * from `_tbl_latest_updates` where MemberID='".$loginInfo[0]['MemberID']."' ORDER BY LatestID DESC"); 
                  return Response::returnSuccess("success",$Latestupdates);                                               
-     } 
+     }
+     function GetSearchResultProfiles() {
+                global $mysql,$loginInfo;
+             
+             $result = array();
+             
+             $myprofile = $mysql->select("select * from _tbl_profiles");
+             if (sizeof($myprofile)==0) {
+                return Response::returnSuccess("success",$result); 
+             }
+             
+             $sexcode="";
+             if ($myprofile[0]['SexCode']=="SX001") {
+                $sexcode="SX002";  
+             }
+             
+             if ($myprofile[0]['SexCode']=="SX002") {
+                $sexcode="SX001";  
+             }
+             
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".$sexcode."'");
+             
+             foreach($Profiles as $p) {
+                $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
+             }
+             
+             return Response::returnSuccess("success",$result);
+         } 
      
      
      }  

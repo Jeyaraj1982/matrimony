@@ -32,7 +32,7 @@
          function MatchedMyExpectation() {
              
              global $mysql,$loginInfo;
-             
+                                                                                 
              $result = array();
              
              $myprofile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
