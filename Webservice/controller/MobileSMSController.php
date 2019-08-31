@@ -27,14 +27,24 @@
               if (sizeof($active)==1) {
                 
                 $postvars = '';
-                $param = array("number"=>$mobileNumber,"text"=>base64_encode($text));
+                $param = array(
+                    $active[0]['MobileNumber'] => $mobileNumber,
+                    $active[0]['MobileText']   =>  $active[0]['ApiName']=="J2J" ?  base64_encode($text) : urlencode($text));
+                
                 foreach($param as $key=>$value) {
                     $postvars .= $key . "=" . $value . "&";
                 }
             $ch = curl_init();
-            curl_setopt($ch,CURLOPT_URL,$active[0]['ApiUrl']);
-            curl_setopt($ch,CURLOPT_POST, 1);
-            curl_setopt($ch,CURLOPT_POSTFIELDS,$postvars);
+            $apiurl = $active[0]['ApiUrl'];
+             if ($active[0]['Method']=="GET") {
+                 $apiurl.="&".$postvars;
+             }
+            curl_setopt($ch,CURLOPT_URL,$apiurl);
+           
+            if ($active[0]['Method']=="POST") {
+                 curl_setopt($ch,CURLOPT_POST, 1);
+               curl_setopt($ch,CURLOPT_POSTFIELDS,$postvars);  
+            }
             curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch,CURLOPT_TIMEOUT, 200);
             $response = curl_exec($ch);
