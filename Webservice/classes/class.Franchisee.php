@@ -1842,4 +1842,15 @@
          
          
         }
+?>se::returnSuccess("success",$mysql->select($sql." WHERE `IsActive`='0'"));    
+             }
+         }
+         function GetCountryCode(){
+             global $mysql,$loginInfo;
+             $Country = CodeMaster::getData('RegisterAllowedCountries');
+             return Response::returnSuccess("success",array("CountryCode"      =>$Country));
+         } 
+         
+         
+        }
 ?>

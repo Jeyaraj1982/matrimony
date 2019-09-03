@@ -29,7 +29,7 @@
                 $postvars = '';
                 $param = array(
                     $active[0]['MobileNumber'] => $mobileNumber,
-                    $active[0]['MessageText']   =>  $active[0]['ApiName']=="J2J" ?  base64_encode($text) : urlencode($text));
+                    $active[0]['MessageText']   =>  $active[0]['Method']=="POST" ?  base64_encode($text) : urlencode($text));
                 
                 foreach($param as $key=>$value) {
                     $postvars .= $key . "=" . $value . "&";

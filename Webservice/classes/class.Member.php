@@ -959,7 +959,7 @@
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
 
                  $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and  RequestToVerify='0' and IsApproved='0'");
-                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and  RequestToVerify='1' and IsApproved='0'");
+                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and  RequestToVerify='1'");
                  
                  if (sizeof($DraftProfiles)>0) {
                      
@@ -1009,7 +1009,7 @@
              }
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Posted") {    /* Profile => Posted */
-                  $PostProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and RequestToVerify='1'");
+                  $PostProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and RequestToVerify='1' and IsApproved='0'");
 
                   if (sizeof($PostProfiles)>0) {
                       foreach($PostProfiles as $PostProfile) {
@@ -1024,13 +1024,13 @@
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {    /* Profile => Posted */
                 
-                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and IsApproved='1'");
+                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and IsApproved='1' and RequestToVerify='1'");
                 if (sizeof($PublishedProfiles)>0) {
                     foreach($PublishedProfiles as $PublishedProfile) {
                         $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
                         $result['mode']="Published";
                         $Profiles[]=$result; 
-                     }
+                     }                                                                          
                 }
                 return Response::returnSuccess("success",$Profiles);
              }

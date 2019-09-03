@@ -124,6 +124,9 @@
     $mysql->execute("update _tbl_logs_logins set LastAccessOn='".date("Y-m-d H:i:s")."' where LoginID='".$loginid."'"); 
     
     
+    //Cron Job 
+    
+    
     if (isset($_GET['action'])) {
        echo json_encode($_GET['action']()); 
     } else {
