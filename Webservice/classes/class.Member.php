@@ -2517,7 +2517,7 @@
                 } else {
                  $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
                  }
-                           
+               if($Profiles[0]['MemberID']>0 && $Profiles[0]['ProfileID']>0){            
                $id = $mysql->insert("_tbl_profiles_lastseen",array("MemberID"       => $Profiles[0]['MemberID'],
                                                                    "ProfileID"      => $Profiles[0]['ProfileID'],
                                                                    "ProfileCode"    => $Profiles[0]['ProfileCode'],
@@ -2525,6 +2525,7 @@
                                                                    "VisterProfileID"      => $visitorsDetails[0]['ProfileID'],
                                                                    "VisterProfileCode"    => $visitorsDetails[0]['ProfileCode'],
                                                                    "ViewedOn"       => date("Y-m-d H:i:s")));
+               }
                $mysql->insert("_tbl_latest_updates",array("MemberID"           => $Profiles[0]['MemberID'],
                                                                    "ProfileID"          => $Profiles[0]['ProfileID'],
                                                                    "ProfileCode"        => $Profiles[0]['ProfileCode'],
@@ -2558,7 +2559,7 @@
                 } else {
                  $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
                  }
-                           
+                if($Profiles[0]['MemberID']>0 && $Profiles[0]['ProfileID']>0){                
               $id = $mysql->insert("_tbl_profiles_lastseen",array("MemberID"           => $Profiles[0]['MemberID'],
                                                                   "ProfileID"          => $Profiles[0]['ProfileID'],
                                                                    "ProfileCode"        => $Profiles[0]['ProfileCode'],
@@ -2566,6 +2567,7 @@
                                                                    "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
                                                                    "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
                                                                   "ViewedOn"           => date("Y-m-d H:i:s")));
+                }
               $mysql->insert("_tbl_latest_updates",array("MemberID"           => $Profiles[0]['MemberID'],
                                                                    "ProfileID"          => $Profiles[0]['ProfileID'],
                                                                    "ProfileCode"        => $Profiles[0]['ProfileCode'],

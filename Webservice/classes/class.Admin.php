@@ -481,7 +481,7 @@ class Admin extends Master {
               $Profiles = $mysql->select("SELECT *
                                FROM _tbl_draft_profiles
                                LEFT  JOIN _tbl_members
-                               ON _tbl_draft_profiles.MemberID=_tbl_members.MemberID WHERE _tbl_draft_profiles.RequestToVerify='1'");
+                               ON _tbl_draft_profiles.MemberID=_tbl_members.MemberID WHERE _tbl_draft_profiles.RequestToVerify='1' and _tbl_draft_profiles.IsApproved='0'");
 
                 return Response::returnSuccess("success",$Profiles);
 
@@ -497,7 +497,7 @@ class Admin extends Master {
                                     ON _tbl_draft_profiles_education_details.ProfileID = _tbl_draft_profiles.ProfileID WHERE _tbl_draft_profiles.ProfileID=".$_POST['Code']."'");
          return Response::returnSuccess("success",$Profiles[0]);
      }
-     
+                                                                                          
      function ViewMemberProfiles() {
 
              global $mysql,$loginInfo; 
@@ -642,6 +642,7 @@ class Admin extends Master {
                                                   "FathersIncomeCode"   => $draft[0]['FathersIncomeCode'],
                                                   "FathersIncome"       => $draft[0]['FathersIncome'],
                                                   "FathersContact"       => $draft[0]['FathersContact'],
+                                                  "FathersContactCountryCode"       => $draft[0]['FathersContactCountryCode'],
                                                   "MothersName"             => $draft[0]['MothersName'],
                                                   "MothersAliveCode"   => $draft[0]['MothersAliveCode'],
                                                   "MothersAlive"       => $draft[0]['MothersAlive'],
@@ -650,6 +651,7 @@ class Admin extends Master {
                                                   "MothersIncomeCode"   => $draft[0]['MothersIncomeCode'],
                                                   "MothersIncome"       => $draft[0]['MothersIncome'],
                                                   "MothersContact"       => $draft[0]['MothersContact'],
+                                                  "MothersContactCountryCode"       => $draft[0]['MothersContactCountryCode'],
                                                   "FamilyTypeCode"          => $draft[0]['FamilyTypeCode'],
                                                   "FamilyType"              => $draft[0]['FamilyType'],
                                                   "FamilyValueCode"         => $draft[0]['FamilyValueCode'],
