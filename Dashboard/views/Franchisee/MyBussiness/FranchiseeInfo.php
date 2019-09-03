@@ -65,18 +65,6 @@
                           <div class="col-sm-3"><small>Plan</small></div>
                           <div class="col-sm-3"><small style="color:#737373;"><?php echo $Franchisee['Plan'];?></small></div> 
                         </div>
-                        <div class="form-group row"> 
-                          <div class="col-sm-3"><small>Status</small></div>
-                          <div class="col-sm-8"><span class="<?php echo ($Franchisee['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span><small style="color:#737373;">
-                          <?php 
-                          if($Franchisee['IsActive']==1)  {
-                              echo "Active";
-                          }
-                          else{
-                              echo "Deactive";
-                          }
-                          ;?></small></div> 
-                        </div>
                     </div>
                   </div>
                 </div>

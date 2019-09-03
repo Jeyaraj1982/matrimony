@@ -73,7 +73,7 @@
                             <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberCode'];?></td>
                             <td><?php echo $Member['MemberName'];?></td>
                             <td>[<?php echo $Member['FranchiseeCode'];?>]&nbsp;<?php echo $Member['FranchiseeName'];?></td>
-                            <td style="text-align:right"><?php echo $Member['MobileNumber'];?></td>
+                            <td style="text-align:right">+<?php echo $Member['CountryCode'];?>-<?php echo $Member['MobileNumber'];?></td>
                             <td style="text-align:right"><a href="<?php echo GetUrl("Members/ResetPassword/Reset/". $Member['MemberID'].".html");?>"><span>Reset Password</span></a></td>
                         </tr>             
                     <?php }} ?>            

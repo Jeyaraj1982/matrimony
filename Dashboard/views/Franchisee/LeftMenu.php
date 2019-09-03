@@ -43,6 +43,18 @@
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("NewProfile");?>">Create Profile</a>
                         </li> 
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Drafted Profile</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Posted Profile</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Published Profile</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo GetUrl("SearchProfile");?>" >Add Profile to Home Page</a>
+                        </li>
                        <!-- <li class="nav-item">
                             <a class="nav-link" href="">Drafted</a>
                         </li>
@@ -58,13 +70,7 @@
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php echo GetUrl("SearchProfile");?>" >
-                    <i class="menu-icon mdi mdi-content-copy "></i>
-                    <span class="menu-title">Add Profile to Home Page</span>
-                    <i class="menu-arrow"></i>
-                </a>
-            </li>
+            
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#myaccounts" aria-expanded="false" aria-controls="myaccounts">
                     <i class="menu-icon mdi mdi-content-copy"></i>

@@ -13,7 +13,7 @@ input:focus{border:1px solid #ccc;}
                       <i class="mdi mdi-cube text-danger icon-lg"></i>
                     </div>
                     <div class="float-right">
-                      <p class="mb-0 text-right">Member</p>
+                      <p class="mb-0 text-right">My Member</p>
                       <div class="fluid-container">
                         <h3 class="font-weight-medium text-right mb-0">10</h3>
                       </div>
@@ -33,7 +33,7 @@ input:focus{border:1px solid #ccc;}
                       <i class="mdi mdi-cube text-danger icon-lg"></i>
                     </div>
                     <div class="float-right">
-                      <p class="mb-0 text-right">Expired Profiles</p>
+                      <p class="mb-0 text-right">Drafted Profiles</p>
                       <div class="fluid-container">
                         <h3 class="font-weight-medium text-right mb-0">10</h3>
                       </div>
@@ -53,9 +53,9 @@ input:focus{border:1px solid #ccc;}
                       <i class="mdi mdi-poll-box text-success icon-lg"></i>
                     </div>
                     <div class="float-right">                                                                          
-                      <p class="mb-0 text-right">Wallet</p>
+                      <p class="mb-0 text-right">Posted Profile</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0">5000.00</h3>
+                        <h3 class="font-weight-medium text-right mb-0">0</h3>
                       </div>
                     </div>
                   </div>
@@ -74,7 +74,7 @@ input:focus{border:1px solid #ccc;}
                       <i class="mdi mdi-account-location text-info icon-lg"></i>
                     </div>
                     <div class="float-right">
-                      <p class="mb-0 text-right">Franchisee Info</p>
+                      <p class="mb-0 text-right">My Wallet</p>
                       <div class="fluid-container">
                         <h3 class="font-weight-medium text-right mb-0">0</h3>
                       </div>
@@ -103,73 +103,9 @@ input:focus{border:1px solid #ccc;}
      <div class="col-5 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">News & Events</h5>
-                  <div class="table-responsive">
-                  <table id="myTable" class="table">
-                  <thead>
-                        <tr>
-                          
-                        </tr>
-                      </thead>
-                      <tbody> 
-                                 
-                      </tbody>
-                   </table> 
-                </div>
-                <div class=" d-flex" >
-                   <a href=""><small>View More</small></a>
-                </div>
-              </div>
-     </div>
-  
-    
-             <div class="card">
-                <div class="card-body">
                   <h5 class="card-title">Upcomming Renewals
                  </h5>
-                  <div class="fluid-container">
-                    <div class="row ticket-card mt-3 pb-2 border-bottom pb-3 mb-3"> 
-                      <div class="col-sm-2">
-                        <img class="img-sm rounded-circle mb-4 mb-md-0" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="profile image">
-                      </div>  
-                      <div class=" col-sm-3">
-                      <div class="row">
-                        <p class="text-dark font-weight-semibold mr-2 mb-0 no-wrap">Name Of Candidate</p> <br>
-                         <small class="mb-0 mr-2 text-muted text-muted">Age :</small>  
-                         <small class="mb-0 mr-2 text-muted text-muted">xxx</small>
-                        </div>
-                        <div class="row">
-                         <small class="mb-0 mr-2 text-muted text-muted">Sex  :</small>  
-                         <small class="mb-0 mr-2 text-muted text-muted">xxx</small>
-                        </div>
-                      </div>
-                      <div class="col-sm-1">
-                      <i class="menu-arrow"></i>
-                      </div>
-                      </div> 
-                   <div class="row ticket-card mt-3 pb-2 border-bottom pb-3 mb-3">
-                      <div class="col-sm-2">
-                        <img class="img-sm rounded-circle mb-4 mb-md-0" src="<?php echo SiteUrl?>images/userimage.jpg" alt="profile image">
-                      </div>  
-                      <div class=" col-sm-3">
-                      <div class="row">
-                        <p class="text-dark font-weight-semibold mr-2 mb-0 no-wrap">Name Of Candidate</p> <br>
-                         <small class="mb-0 mr-2 text-muted text-muted">Age :</small>  
-                         <small class="mb-0 mr-2 text-muted text-muted">xxx</small>
-                        </div>
-                        <div class="row">
-                         <small class="mb-0 mr-2 text-muted text-muted">Sex  :</small>  
-                         <small class="mb-0 mr-2 text-muted text-muted">xxx</small>
-                        </div>
-                      </div>
-                      <div class="col-sm-1">
-                      <i class="menu-arrow"></i>
-                      </div>
-                      </div>
-                        <div class=" d-flex" >
-                            <a href="#"><small>View More</small></a>
-                          </div>
-                      </div>
+                
                 </div>
               </div>
               </div>
@@ -179,17 +115,17 @@ input:focus{border:1px solid #ccc;}
               <div class="card">
                 <div class="card-body">
                   <div class="row d-none d-sm-flex mb-4">
-                    <div class="col-4">
-                      <h5 class="text-primary">Unique Visitors</h5>
-                      <p>34657</p>
+                    <div class="col-4">                
+                      <h5 class="text-primary">My Orders</h5>
+                      <p>0</p>
                     </div>
                     <div class="col-4">
-                      <h5 class="text-primary">Bounce Rate</h5>
-                      <p>45673</p>
+                      <h5 class="text-primary">My Invoices</h5>
+                      <p>0</p>
                     </div>
                     <div class="col-4">
-                      <h5 class="text-primary">Active session</h5>
-                      <p>45673</p>
+                      <h5 class="text-primary">My Payments</h5>
+                      <p>0</p>
                     </div>
                   </div>
                   <div class="chart-container">
@@ -199,183 +135,7 @@ input:focus{border:1px solid #ccc;}
               </div>
             </div>
           </div> 
-          
-          <div class="row">
-            <div class="col-lg-12 grid-margin">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Orders</h4>
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th>
-                            #
-                          </th>
-                          <th>
-                            First name
-                          </th>
-                          <th>
-                            Progress
-                          </th>
-                          <th>
-                            Amount
-                          </th>
-                          <th>
-                            Sales
-                          </th>
-                          <th>
-                            Deadline
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="font-weight-medium">
-                            1
-                          </td>
-                          <td>
-                            Herman Beck
-                          </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-success progress-bar-striped" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
-                                aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td>
-                            $ 77.99
-                          </td>
-                          <td class="text-danger"> 53.64%
-                            <i class="mdi mdi-arrow-down"></i>
-                          </td>
-                          <td>
-                            May 15, 2015
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="font-weight-medium">
-                            2
-                          </td>
-                          <td>
-                            Messsy Adam
-                          </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-danger progress-bar-striped" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0"
-                                aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td>
-                            $245.30
-                          </td>
-                          <td class="text-success"> 24.56%
-                            <i class="mdi mdi-arrow-up"></i>
-                          </td>
-                          <td>
-                            July 1, 2015
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="font-weight-medium">
-                            3
-                          </td>
-                          <td>
-                            John Richards
-                          </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-warning progress-bar-striped" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0"
-                                aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td>
-                            $138.00
-                          </td>
-                          <td class="text-danger"> 28.76%
-                            <i class="mdi mdi-arrow-down"></i>
-                          </td>
-                          <td>
-                            Apr 12, 2015
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="font-weight-medium">
-                            4
-                          </td>
-                          <td>
-                            Peter Meggik
-                          </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-primary progress-bar-striped" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td>
-                            $ 77.99
-                          </td>
-                          <td class="text-danger"> 53.45%
-                            <i class="mdi mdi-arrow-down"></i>
-                          </td>
-                          <td>
-                            May 15, 2015
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="font-weight-medium">
-                            5
-                          </td>
-                          <td>
-                            Edward
-                          </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-danger progress-bar-striped" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0"
-                                aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td>
-                            $ 160.25
-                          </td>
-                          <td class="text-success"> 18.32%
-                            <i class="mdi mdi-arrow-up"></i>
-                          </td>
-                          <td>
-                            May 03, 2015
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="font-weight-medium">
-                            6
-                          </td>
-                          <td>
-                            Henry Tom
-                          </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-warning progress-bar-striped" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0"
-                                aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td>
-                            $ 150.00
-                          </td>
-                          <td class="text-danger"> 24.67%
-                            <i class="mdi mdi-arrow-down"></i>
-                          </td>
-                          <td>
-                            June 16, 2015
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-             
-          
+       
         
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->

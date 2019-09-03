@@ -1,5 +1,5 @@
 <?php
-
+         
     if (isset($_POST['Btnupdate'])) {
         $_POST['Code'] =$_GET['Code'] ;     
         $response = $webservice->EditMember($_POST);
@@ -12,6 +12,7 @@
     }
     $response = $webservice->GetMemberDetails(array("Code"=>$_GET['Code']));
     $Member=$response['data'];
+     $CountryCodes=$Member['Country'];
 ?>
 <script>
     $(document).ready(function () {
@@ -69,6 +70,14 @@
                       </div>
                       <div class="form-group row">
                           <div class="col-sm-2"><small>Mobile Number<span id="star">*</span></small></div>
+                          <div class="col-sm-2"> 
+                            <select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="width: 61px;">
+                                   <?php foreach($CountryCodes as $CountryCode) { ?>
+                                  <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'CountryCode'])) ? (($_POST[ 'CountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "") : (($Member[ 'CountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                            <?php echo $CountryCode['str'];?>
+                                   <?php } ?>
+                                </select>
+                            </div>
                           <div class="col-sm-3"><input type="text" class="form-control" maxlength="10" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Member['MobileNumber']);?>" placeholder="Mobile Number">
                           <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span></div>
                           <div class="col-sm-2"><small>Email ID<span id="star">*</span></small></div>

@@ -221,9 +221,9 @@ text-align: left;
         </div>
         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Father's Contact</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersContact'];?></label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo "+"; echo $ProfileInfo['FathersContactCountryCode'];?>-<?php echo $ProfileInfo['FathersContact'];?></label>
              <label class="col-sm-2 col-form-label">Mother's Contact</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersContact'];?></label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo "+"; echo $ProfileInfo['MothersContactCountryCode'];?>-<?php echo $ProfileInfo['MothersContact'];?></label>
         </div>                                                              
         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Family Type</label>

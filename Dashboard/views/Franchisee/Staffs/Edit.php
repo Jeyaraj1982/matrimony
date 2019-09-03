@@ -55,10 +55,8 @@
 
     if (isset($_POST['BtnupdateStaff'])) {
         $response = $webservice->EditFranchiseeStaff($_POST);
-         print_r($response);
         if ($response['status']=="success") {
-            echo "aa";
-            echo $response['message'];
+            $successmessage = $response['message'];
         } else {
             $errormessage = $response['message']; 
         }
@@ -74,7 +72,7 @@ $(document).ready(function () {
         $("#ErrMobileNumber").html("Digits Only").fadeIn().fadeIn("fast");
                return false;
     }
-   });
+   });                                                                                                     
    $("#staffCode").blur(function () {
     
         IsNonEmpty("staffCode","ErrstaffCode","Please Enter staff Code");

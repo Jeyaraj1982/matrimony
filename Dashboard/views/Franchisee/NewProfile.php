@@ -73,7 +73,7 @@
                             <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberCode'];?></td>
                             <td><?php echo $Member['MemberName'];?></td>
                             <td>[<?php echo $Member['FranchiseeCode'];?>]&nbsp;<?php echo $Member['FranchiseeName'];?></td>
-                            <td><?php echo $Member['MobileNumber'];?></td>
+                            <td>+<?php echo $Member['MobileNumberCountryCode'];?>-<?php echo $Member['MobileNumber'];?></td>
                             <td><?php echo $Member['NoOfProfile'];?></td>
                             <td>
                                 <?php if($Member['NoOfProfile']>0) {?>
