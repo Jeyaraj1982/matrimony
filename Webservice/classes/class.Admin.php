@@ -537,6 +537,10 @@ class Admin extends Master {
              
              $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$draft[0]['MemberID']."'");
              
+             if ($draft[0]['IsApproved']=="1") {
+                return Response::returnError("Your selected Profile already approvd");
+             }
+             
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='ProfilePublished'");
              $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
              $content  = str_replace("#ProfileCode#",$draft[0]['ProfileCode'],$content);
