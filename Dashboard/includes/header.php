@@ -55,15 +55,7 @@
         <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="margin-bottom:0px !important;border-radius:0px !important">
             <?php if (UserRole=="Member") { ?> 
                      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center " style="overflow:hidden">
-                        <a class="navbar-brand brand-logo" href="<?php echo SiteUrl;?>">
-                        <img src="<?php echo $config->logoPath?>" alt="logo" style="width:100%;margin-top: 2px;"/>
-                        </a>
-                         <!--<a class="navbar-brand brand-logo" href="../Dashboard">
-                         <img src="<?php //echo SiteUrl?>images/logo.svg" alt="logo" />
-                         </a>
-                         <a class="navbar-brand brand-logo-mini" href="../Dashboard">
-                         <img src="<?php //echo SiteUrl?>images/logo-mini.svg" alt="logo" />
-                         </a> -->
+                        <a class="navbar-brand brand-logo" href="<?php echo SiteUrl;?>" style="width:100%;height:100%;"><img src="<?php echo $config->logoPath?>" alt="logo" style="width:100%;height:100%;margin-top: 2px;"/></a>
                      </div>
                      <div class="navbar-menu-wrapper d-flex align-items-center  bshadow">        
                         <ul class="navbar-nav navbar-nav-right">
@@ -195,10 +187,11 @@
             </div>
           </li>  -->
                 <li class="nav-item dropdown d-none d-xl-inline-block">
-                <span class="profile-text"><?php echo "<b>";echo $_Member['MemberName'] ; echo "</b>";?><br><?php echo "<b>";echo $_Member['MemberCode'] ; echo "</b>";?></span><br> 
+                <span class="profile-text"><?php echo "<b>";echo $_Member['MemberName'] ; echo "</b>";?><br><?php echo $_Member['MemberCode'] ; ?></span><br> 
               </li>
              <li class="nav-item dropdown d-none d-xl-inline-block">
-             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"><img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image"></a>
+             <?php $filename = strlen(trim($_Member['FileName'])) >0 ? $_Member['FileName'] : SiteUrl."assets/images/userimage.jpg"; ?>
+             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"><img class="img-xs rounded-circle" src="<?php echo $filename;?>" alt="Profile image"></a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding-top: 10px;padding-bottom: 10px;">
               <a href="<?php echo GetUrl("MyAccounts/MyWallet");?>" class="dropdown-item">My Accounts</a>
               <a href="<?php echo GetUrl("MySettings/MyMemberInfo");?>" class="dropdown-item">My Settings</a>
@@ -794,5 +787,3 @@
                             </div>
                         </div> 
                     <?php }?>
-
-  
