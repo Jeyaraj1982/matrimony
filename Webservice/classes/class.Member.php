@@ -40,13 +40,9 @@
                          }
                          $data[0]['LoginID']=$loginid;
                          
-                         $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `MemberCode`='".$data[0]['MemberCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
+                         $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where    `IsDelete`='0' and `MemberID`='".$data[0]['MemberID']."' and `PriorityFirst`='1'");
                          if (sizeof($ProfileThumb)==0) {
-                            if ($Profiles[0]['SexCode']=="SX002"){
-                               // $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
-                            } else { 
-                                //$ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
-                            }
+                            $ProfileThumbnail="";
                          } else {
                             $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
                          }
