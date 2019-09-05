@@ -6,17 +6,13 @@
             global $mysql,$loginInfo;  
                 
             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");               
-            
             $lastseen = $mysql->select("select * from `_tbl_draft_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' order by LastSeenID desc limit 0,1");
-           
-            
-            
-               $id = $mysql->insert("_tbl_draft_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
-                                                                      "LastSeenBy"   => $loginInfo[0]['MemberID'],
-                                                                      "ProfileID"    => $Profiles[0]['ProfileID'],
-                                                                      "MemberID"     => $loginInfo[0]['MemberID'],
-                                                                      "FranchiseeID" => "0",
-                                                                      "AdminID"      => "0"));
+            $id = $mysql->insert("_tbl_draft_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
+                                                                       "LastSeenBy"   => $loginInfo[0]['MemberID'],
+                                                                       "ProfileID"    => $Profiles[0]['ProfileID'],
+                                                                       "MemberID"     => $loginInfo[0]['MemberID'],
+                                                                       "FranchiseeID" => "0",
+                                                                       "AdminID"      => "0"));
             
             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");     
             $PartnersExpectations = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
@@ -74,7 +70,6 @@
                             "ProfileThumb"         => $ProfileThumbnail);
             
             return  $result;
-
         }
         
         
@@ -83,11 +78,8 @@
             global $mysql,$loginInfo;  
                 
             $Profiles = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");               
-            
             $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' order by LastSeenID desc limit 0,1");
-           
-            
-            
+
                $id = $mysql->insert("_tbl_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
                                                                       "LastSeenBy"   => $loginInfo[0]['MemberID'],
                                                                       "ProfileID"    => $Profiles[0]['ProfileID'],
@@ -110,7 +102,7 @@
                     }
                 }  
             }
-            /* `ProfileCode`='".$ProfileCode."'*/
+            
             $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
             if (sizeof($ProfileThumb)==0) {
                 if ($Profiles[0]['SexCode']=="SX002"){
@@ -149,7 +141,6 @@
                             "PartnerExpectation"   => $PartnersExpectations[0],
                             "ProfilePhotos"        => $ProfilePhotos,  /*array*/
                             "ProfileThumb"         => $ProfileThumbnail);
-            
             return  $result;
                                                                                                            
         }
@@ -158,10 +149,7 @@
             global $mysql,$loginInfo;  
                 
             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where ProfileCode='".$ProfileCode."'");               
-            
             $lastseen = $mysql->select("select * from `_tbl_draft_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' order by LastSeenID desc limit 0,1");
-           
-            
             
                $id = $mysql->insert("_tbl_draft_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
                                                                       "LastSeenBy"   => $loginInfo[0]['AdminID'],
@@ -209,11 +197,11 @@
             
              $Profiles[0]['Age'] =  date("Y")-date("Y",strtotime($Profiles[0]['DateofBirth']));
              $id = $mysql->insert("_tbl_draft_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
-                                                                      "LastSeenBy"   => $loginInfo[0]['AdminID'],
-                                                                      "ProfileID"    => $Profiles[0]['ProfileID'],
-                                                                      "MemberID"     => "0",
-                                                                      "FranchiseeID" => "0",
-                                                                      "AdminID"      => $loginInfo[0][AdminID]));
+                                                                        "LastSeenBy"   => $loginInfo[0]['AdminID'],
+                                                                        "ProfileID"    => $Profiles[0]['ProfileID'],
+                                                                        "MemberID"     => "0",
+                                                                        "FranchiseeID" => "0",
+                                                                        "AdminID"      => $loginInfo[0][AdminID]));
                                                                       
             $result = array("ProfileInfo"          => $Profiles[0],
                             "Position"             => $Position,
@@ -224,9 +212,7 @@
                             "PartnerExpectation"   => $PartnersExpectations[0],
                             "ProfilePhotos"        => $ProfilePhotos,  /*array*/
                             "ProfileThumb"         => $ProfileThumbnail);
-            
             return  $result;
-
         }
    
    
@@ -235,11 +221,8 @@
             global $mysql,$loginInfo;  
                 
             $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$ProfileCode."'");               
-            
             $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' order by LastSeenID desc limit 0,1");
            
-            
-            
                $id = $mysql->insert("_tbl_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
                                                                       "LastSeenBy"   => $loginInfo[0]['AdminID'],
                                                                       "ProfileID"    => $Profiles[0]['ProfileID'],
@@ -262,7 +245,6 @@
                     }
                 }  
             }
-            /* `ProfileCode`='".$ProfileCode."'*/
             $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `MemberID`='".$Profiles[0]['MemberID']."' and `PriorityFirst`='1'");
             if (sizeof($ProfileThumb)==0) {
                 if ($Profiles[0]['SexCode']=="SX002"){
@@ -284,7 +266,6 @@
                 $Position = "Published";
             }
             
-            
              $id = $mysql->insert("_tbl_draft_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
                                                                       "LastSeenBy"   => $loginInfo[0]['AdminID'],
                                                                       "ProfileID"    => $Profiles[0]['ProfileID'],
@@ -303,18 +284,15 @@
                             "ProfileThumb"         => $ProfileThumbnail);
             
             return  $result;
-                                                                                                           
         }
+        
          public function getDownloadProfileInformation($ProfileCode) {
             
             global $mysql,$loginInfo;  
                 
             $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$ProfileCode."'");               
-            
             $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' order by LastSeenID desc limit 0,1");
            
-            
-            
                $id = $mysql->insert("_tbl_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
                                                                       "LastSeenBy"   => $loginInfo[0]['MemberID'],
                                                                       "ProfileID"    => $Profiles[0]['ProfileID'],
@@ -337,7 +315,6 @@
                     }
                 }  
             }
-            /* `ProfileCode`='".$ProfileCode."'*/
             $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='1'");
             if (sizeof($ProfileThumb)==0) {
                 if ($Profiles[0]['SexCode']=="SX002"){
@@ -359,7 +336,6 @@
                 $Position = "Published";
             }
             
-            
              $id = $mysql->insert("_tbl_draft_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
                                                                       "LastSeenBy"   => $loginInfo[0]['MemberID'],
                                                                       "ProfileID"    => $Profiles[0]['ProfileID'],
@@ -378,46 +354,7 @@
                             "ProfileThumb"         => $ProfileThumbnail);
             
             return  $result;
-                                                                                                           
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         public function getRecentlyViewdProfileInformation($ProfileCode,$IsOther=0) {
             
@@ -474,29 +411,6 @@
             return  $result;
                                                                                                            
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
           public function MyActiveProfile() {
               
               global $mysql,$loginInfo;  
@@ -553,7 +467,7 @@
                     $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
                 }
             } else {
-                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
+                 $ProfileThumbnail =  getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
             } 
             
             $Position = "Published";                                             
@@ -573,26 +487,22 @@
             return  $result;
                                                                                                            
         }
-        
-                   
 } 
 
+    function getDataURI($image, $mime = '') {
+        
+        // Create Image From Existing File
+        // $jpg_image = imagecreatefromjpeg($image);
+        // Allocate A Color For The Text
+        // $white = imagecolorallocate($jpg_image, 255, 255, 255);
 
-function getDataURI($image, $mime = '') {
-    
-     // Create Image From Existing File
-     // $jpg_image = imagecreatefromjpeg($image);
+        // Set Path to Font File
+        //$font_path = 'font.TTF';
+        
+        // Set Text to Be Printed On Image
+        // $text = "This is a sunset!";
 
-      // Allocate A Color For The Text
-     // $white = imagecolorallocate($jpg_image, 255, 255, 255);
-
-      // Set Path to Font File
-      //$font_path = 'font.TTF';
-
-      // Set Text to Be Printed On Image
-     $text = "This is a sunset!";
-
-      // Print Text On Image
+        // Print Text On Image
       //imagettftext($jpg_image, 25, 0, 75, 300, $white, "", $text);
 
       // Send Image to Browser
@@ -600,7 +510,21 @@ function getDataURI($image, $mime = '') {
       //$image=  $jpg_image;
       // Clear Memory
      // imagedestroy($jpg_image);
-      
-    return 'data: '.(function_exists('mime_content_type') ? mime_content_type($image) : $mime).';base64,'.base64_encode(file_get_contents($image));
+          //image/jpeg;
+          //image/png
+          $temp = explode(".",$image);
+          $temp = trim(strtolower($temp[sizeof($temp)-1]));
+          if ($temp=="jpeg"  || $temp=="jpg") {
+              return 'data:image/jpeg;ba se64,'.base64_encode(file_get_contents(file_url($image)));   
+          } else if ($temp=="png" ) {
+              return 'data:image/png;base64,'.base64_encode(file_get_contents(file_url($image))); 
+          }
+   // return 'data: '.(function_exists('mime_content_type') ? mime_content_type($image) : $mime).';base64,'.base64_encode(file_get_contents($image));
 } 
+
+function file_url($url){
+  $parts = parse_url($url);
+  $path_parts = array_map('rawurldecode', explode('/', $parts['path']));
+  return $parts['scheme'].'://'.$parts['host'].implode('/', array_map('rawurlencode', $path_parts));
+}
 ?>

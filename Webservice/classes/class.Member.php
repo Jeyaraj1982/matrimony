@@ -501,7 +501,7 @@
                             <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -12px;">&times;</button>
                                 <div class="input-group">
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
-                                    <h5 style="color: #777;line-height:20px;font-weight: 100;padding-top: 21px;">In order to protect the security of your account, we will send you a text message with a verification that you will need to enter the next screen</h4>
+                                    <h5 style="color: #777;line-height:20px;font-weight: 100;padding-top: 21px;">In order to protect the security of your account, we will send you a verification code with a verification that you will need to enter the next screen</h4>
                                 </div> 
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">+'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumber()">Change</h4>
@@ -591,7 +591,7 @@
              }
              if (isset($_POST['new_mobile_number'])) {
                  if (strlen(trim($_POST['new_mobile_number']))==0) {
-                     return $this->ChangeMobileNumber("Please enter mobile number.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
+                     return $this->ChangeMobileNumber("<span style='color:red';>Please enter mobile number</span>.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
                  }
                  if (strlen(trim($_POST['new_mobile_number']))!=10) {
                      return $this->ChangeMobileNumber("Invalid Mobile Number.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
@@ -600,7 +600,7 @@
 
                  $duplicate = $mysql->select("select * from `_tbl_members` where `MobileNumber`='".$_POST['new_mobile_number']."' and MemberID <>'".$login[0]['MemberID']."'");
                  if (sizeof($duplicate)>0) {
-                     return $this->ChangeMobileNumber("Mobile Number already in use.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
+                     return $this->ChangeMobileNumber("<span style='color:red';>Mobile Number already in use</span>.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
                  }
                  $sql="update `_tbl_members` set `MobileNumber`='".$_POST['new_mobile_number']."' , `CountryCode`='".$_POST['CountryCode']."' where `MemberID`='".$login[0]['MemberID']."'" ;
                  $mysql->execute($sql);
@@ -806,12 +806,12 @@
              }
              if (isset($_POST['new_email'])) {
                  if (strlen(trim($_POST['new_email']))==0) {
-                     return $this->ChangeEmailID("Please enter valid email id",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']);
+                     return $this->ChangeEmailID("<span style='color:red';>Please enter valid email id</span>",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']);
                  }
                  $duplicate = $mysql->select("select * from _tbl_members where EmailID='".$_POST['new_email']."' and MemberID <>'".$login[0]['MemberID']."'");
 
                  if (sizeof($duplicate)>0) {
-                     return $this->ChangeEmailID("Email already in use.",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']); 
+                     return $this->ChangeEmailID("<span style='color:red';>Email already in use</span>.",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']); 
                  }
                  $sql="update `_tbl_members` set `EmailID`='".$_POST['new_email']."' where `MemberID`='".$login[0]['MemberID']."'";
                  $mysql->execute($sql);
@@ -2693,10 +2693,10 @@
                                                             "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
                                                             "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
                                                             "ProfilePhoto"       => $ProfileThumbnail,
-                                                            "Subject"            => "Profile add to favourite",
+                                                            "Subject"            => "has favorites your profile",
                                                             "ViewedOn"           => date("Y-m-d H:i:s")));
                                                             
-                 return Response::returnSuccess($Profiles[0]['ProfileCode']." has been added to your favourites");                                               
+                 return Response::returnSuccess($Profiles[0]['ProfileCode']." has favorites your profile.");                                               
                   
                 
              } else {
@@ -2715,10 +2715,10 @@
                                                                "VisterProfileID"   => $visitorsDetails[0]['ProfileID'],
                                                                "VisterProfileCode" => $visitorsDetails[0]['ProfileCode'],
                                                                "ProfilePhoto"      => $ProfileThumbnail,
-                                                               "Subject"           => "Profile removed favourite",
+                                                               "Subject"           => "has unfavorite your profile.",
                                                                "ViewedOn"          => date("Y-m-d H:i:s")));
-                     return Response::returnSuccess($Profiles[0]['ProfileCode']." has been removed from your favourites");                                               
-                 }
+                     return Response::returnSuccess($Profiles[0]['ProfileCode']." has unfavorite your profile.");                                               
+                 }                                                                 
              }
           }
           
@@ -3088,7 +3088,7 @@
 
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_latest_updates` set `IsHide`='1' where `LatestID`='".$_POST['LatestID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");
-                       return  "update `_tbl_latest_updates` set `IsHide`='1' where `LatestID`='".$_POST['LatestID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'".'<div style="background:white;width:100%;padding:20px;height:100%;">
+                       return  '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Confirmation For Delete</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>

@@ -71,7 +71,7 @@
               <div class="col-sm-7" style="padding-top: 5px;color: #888;margin-top:10px">  
                     <img src="<?php echo AppUrl;?>uploads/<?php echo $idProof['FileName'];?>" style="height:120px;"><br><br>
                     Document Type&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $idProof['FileType'];?>
-                    <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($Kyc['data']['AddressProofDocument'][0]['SubmittedOn']);?>
+                    <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($Kyc['data']['IdProofDocument'][0]['SubmittedOn']);?>
                     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:&nbsp;&nbsp;
                     <?php 
                         if($idProof['IsVerified']==0 && $idProof['IsRejected']==0){ 
@@ -165,7 +165,7 @@
               <?php  } ?>
               
               </div> 
-           
+                                                                                                                                                  
                  
                
            

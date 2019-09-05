@@ -505,25 +505,6 @@ text-align: left;
         </div>
     </div>
   </div>
-<div class="col-12 grid-margin">
-  <div class="card">
-    <div class="card-body">
-    <div class="form-group row">
-        <div class="col-sm-6"><h4 class="card-title">Document Attachment</h4></div>
-        <div class="col-sm-6" style="text-align: right;"><h4 class="card-title" style="color:green">For Admnistrative Purpose only</h4></div>
-    </div>
-        <div class="form-group row">
-         <?php foreach($response['data']['Documents'] as $Doc) {?>
-                   <div class="Documentview">
-                    <img src="<?php echo $Doc['AttachFileName'];?>" style="width: 200px;height:150px">   <br>
-                    <label style="color:#737373;"><?php echo $Doc['DocumentType'];?></label> <br>
-                    <label style="color:#737373;">verification pending</label>
-                  </div>
-                  <?php }?>
-         </div>
-    </div>
-  </div>
-</div>
 </form>
  
             

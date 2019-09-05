@@ -87,7 +87,7 @@ function submitprofile() {
                             </div>
                         </div>
                <div class="form-group row">
-                    <div class="col-sm-12"><?php echo $errormessage;?> <?php echo $successmessage;?></div>
+                    <div class="col-sm-12" style="color:red"><?php echo $errormessage;?> <?php echo $successmessage;?></div>
                 </div>
                    <div class="form-group row">
                     <div class="col-sm-3">

@@ -219,7 +219,7 @@
          </div>
         </div>
         
-        <div class="row">
+        <!--<div class="row">
             <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Invited Profiles</div>
              <div class="card"  style="background:#dee9ea">
@@ -255,7 +255,7 @@
                   </div>
                 </div>
          </div>
-        </div>
+        </div>-->
     <?php $response = $webservice->getData("Member","GetMemberInfo");?>
     <script>
         <?php if($response['data']['WelcomeMsg']==0) { ?>

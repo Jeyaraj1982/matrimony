@@ -187,7 +187,7 @@
             </div>
           </li>  -->
                 <li class="nav-item dropdown d-none d-xl-inline-block">
-                <span class="profile-text"><?php echo "<b>";echo $_Member['MemberName'] ; echo "</b>";?><br><?php echo $_Member['MemberCode'] ; ?></span><br> 
+                <span class="profile-text" style="line-height:18px;"><?php echo "<b>".$_Member['MemberName']."</b>";?><br><span style="color:#f9f9f9f"><?php echo $_Member['MemberCode'] ; ?></span></span><br> 
               </li>
              <li class="nav-item dropdown d-none d-xl-inline-block">
              <?php $filename = strlen(trim($_Member['FileName'])) >0 ? $_Member['FileName'] : SiteUrl."assets/images/userimage.jpg"; ?>

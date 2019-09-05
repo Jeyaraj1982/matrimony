@@ -108,7 +108,7 @@ function submitprofile() {
                     </div>
                 <div class="form-group row">
                     <label for="Name" class="col-sm-2 col-form-label">Name<span id="star">*</span></label>
-                    <div class="col-sm-8"><input type="text" class="form-control" id="ProfileName" name="ProfileName"  value="<?php echo (isset($_POST['ProfileName']) ? $_POST['ProfileName'] : "");?>" placeholder="Name">
+                    <div class="col-sm-9"><input type="text" class="form-control" id="ProfileName" name="ProfileName"  value="<?php echo (isset($_POST['ProfileName']) ? $_POST['ProfileName'] : "");?>" placeholder="Name">
                     <span class="errorstring" id="ErrProfileName"><?php echo isset($ErrProfileName)? $ErrProfileName : "";?></span></div>
                 </div>
                 <div class="form-group row">
@@ -132,12 +132,12 @@ function submitprofile() {
                                         <?php } ?>
                                     </select>                                    
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2" style="max-width: 148px;">
                                     <select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
                                         <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
                                             <option value="<?php echo $i; ?>" <?php echo ($_POST['year']==$i) ? " selected='selected' " : "";?>><?php echo $i;?>
                                             </option>                             
-                                        <?php } ?>
+                                        <?php } ?>                                  
                                     </select>
                      </div>
                      <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
@@ -218,7 +218,7 @@ function submitprofile() {
                     </div>
                 </div>  
                 <div class="form-group row">
-                    <div class="col-sm-12"><?php echo $errormessage;?> <?php echo $successmessage;?></div>
+                    <div class="col-sm-12" style="color:red"><?php echo $errormessage;?> <?php echo $successmessage;?></div>
                 </div>
                    <div class="form-group row">
                     <div class="col-sm-3">

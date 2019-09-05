@@ -74,7 +74,7 @@ function submitUpload() {
 
                     
                     if (isset($_FILES["ProfilePhoto"]["name"]) && strlen(trim($_FILES["ProfilePhoto"]["name"]))>0 ) {
-                        $profilephoto = time().$_FILES["ProfilePhoto"]["name"];
+                        $profilephoto = time().str_replace(" ","",$_FILES["ProfilePhoto"]["name"]);
                         if (!(move_uploaded_file($_FILES["ProfilePhoto"]["tmp_name"], $target_dir . $profilephoto))) {
                            $err++;
                            echo "Sorry, there was an error uploading your file.";
@@ -87,7 +87,7 @@ function submitUpload() {
                         if ($res['status']=="success") {
                             echo  $res['message']; 
                         } else {
-                            print_r($photos);
+                           // print_r($photos);
                             echo $res['message']; 
                         }
                     } else {
