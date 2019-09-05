@@ -204,7 +204,7 @@
       <?php } ?>
    <?php if (UserRole=="Franchisee") { ?>
     <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-     <img src="<?php echo $config->logoPath?>" alt="logo" style="height:50px;height:60px;margin-top: 2px;"/>
+      <a class="navbar-brand brand-logo" href="<?php echo SiteUrl;?>" style="width:100%;height:100%;"><img src="<?php echo $config->logoPath?>" alt="logo" style="width:100%;height:100%;margin-top: 2px;"/></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center">        
         <ul class="navbar-nav navbar-nav-right">
@@ -228,7 +228,7 @@
       <?php } ?>
       <?php if (UserRole=="Admin") { ?>
     <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-     <img src="<?php echo $config->logoPath?>" alt="logo" style="height:50px;height:60px;margin-top: 2px;"/>
+      <a class="navbar-brand brand-logo" href="<?php echo SiteUrl;?>" style="width:100%;height:100%;"><img src="<?php echo $config->logoPath?>" alt="logo" style="width:100%;height:100%;margin-top: 2px;"/></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center">        
         <ul class="navbar-nav navbar-nav-right">

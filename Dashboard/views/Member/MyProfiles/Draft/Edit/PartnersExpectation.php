@@ -5,7 +5,7 @@
         $_POST['Code']=$_GET['Code'];
         $response = $webservice->getData("Member","AddPartnersExpectaion",$_POST);
         if ($response['status']=="success") {
-             $successmessage = $response['message']; 
+             echo "<script>location.href='../HoroscopeDetails/".$_GET['Code'].".htm'</script>";
         } else {
             $errormessage = $response['message']; 
         }
@@ -19,7 +19,7 @@
 <div class="col-sm-9" style="margin-top: -8px;">
 <form method="post" action="" onsubmit="">
     
-    <h4 class="card-title">Partner's Expectation</h4>
+    <h4 class="card-title">Partner's Expectations</h4>
     <div class="form-group row">
         <div class="col-sm-3" align="left">Age</div>
         <div class="col-sm-2" align="left" style="width:100px">
@@ -128,13 +128,14 @@
     <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
                         </div>
-    <div class="form-group row" style="margin-bottom:0px;">
-        <div class="col-sm-6">
-            <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
-            <br>
-            <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
+     <div class="form-group row" style="margin-bottom:0px;">
+            <div class="col-sm-3">
+                <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save and Next</button>
+                <br>
+                <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
+            </div>
+            <div class="col-sm-3"><a href="<?php echo SiteUrl;?>" class="btn btn-primary">I'll do later</a></div>
         </div>
-    </div>
     </form>
 </div> 
 <?php include_once("settings_footer.php");?>                      

@@ -29,7 +29,6 @@
                 $('#verifydiv').hide(1000);
             }
         }
-       
     </script>
     <div class="row" id="verifydiv" style="display: none;">
         <div class="col-sm-12 grid-margin stretch-card">
@@ -96,40 +95,11 @@
          <div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
                 <div class="modal-content" id="model_body" style="height: 220px;">
-            
                 </div>
             </div>
         </div>                                                
         </div>
-        <script>
-        function showConfirmDelete(LatestID) {                                           
-        $('#Delete').modal('show'); 
-        var content = '<div class="modal-body" style="padding:20px">'
-                        + '<div  style="height: 315px;">'
-                            + '<form method="post" id="form_'+LatestID+'" name="form_'+LatestID+'" > '
-                                + '<input type="hidden" value="'+LatestID+'" name="LatestID">'
-                                  + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                                   + '<h4 class="modal-title">Confirm delete Updates</h4><br>'
-                                + '<div style="text-align:center">Are you sure want to Delete?  <br><br>'
-                                    + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+LatestID+'\')">Yes</button>&nbsp;&nbsp;'
-                                    + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
-                                + '</div>'
-                            + '</form>'
-                        + '</div>'
-                     +  '</div>';
-        $('#model_body').html(content);
-    }
-        function ConfirmDelete(LatestID) {
         
-        var param = $( "#form_"+LatestID).serialize();
-        $('#model_body').html(preloader);
-        $.post(API_URL + "m=Member&a=HideLatestUpdates", param, function(result2) {
-            $('#model_body').html(result2);
-            $('#UpdatesDiv_'+LatestID).hide();
-        }
-    );
-}
-        </script>
     <div class="row">
     <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recent Visitors</div>
@@ -165,7 +135,6 @@
                 <div class="card-body" style="padding:10px !important;">
                     <?php
                     $recentlyviewedprofiles = $webservice->getData("Member","GetRecentlyViewedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
-                    //print_r($recentlyviewedprofiles);
                     $Profiles = $recentlyviewedprofiles['data']; 
                     if (sizeof($Profiles)>0) {
                 ?>
@@ -175,6 +144,9 @@
                        echo dashboard_view_2($Profile);
                     }?> 
                 </div>
+                <?php if (sizeof($Profiles)>=4) { ?>
+                <div> View All </div>
+                <?php } ?>
                  <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
                         <div style="text-align:center;">
@@ -217,11 +189,10 @@
         </div> 
         <div class="col-5 grid-margin" style="max-width: 35.667%;">
             <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">My Favourited</div>
-            <div class="card"  style="background:#dee9ea;">
+            <div class="card" style="background:#dee9ea;">
                 <div class="card-body" style="padding:10px !important;">
                     <?php
                     $favouritedprofiles = $webservice->getData("Member","GetFavouritedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
-                    //print_r($recentlyviewedprofiles);
                     $Profiles = $favouritedprofiles['data']; 
                     if (sizeof($Profiles)>0) {
                 ?>
@@ -229,8 +200,13 @@
                     <?php
                      foreach($Profiles as $Profile) { 
                        echo dashboard_view_2($Profile);
-                    }?> 
+                     }
+                    ?> 
                 </div>
+                <?php if (sizeof($Profiles)>=4) { ?>
+                <div> View All </div>
+                <?php } ?>
+                
                  <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
                         <div style="text-align:center;">
@@ -240,22 +216,9 @@
                     <?php } ?>
                 </div>
             </div>
-            <!-- <div class="card"  style="background:#dee9ea;">
-                 <div class="card-body" style="padding:10px !important;">    
-                  <?php // for ($x = 0; $x <= 4; $x++) { ?>
-                   <div class="col-sm-12" id="resCon_a001">
-                      <div class="col-sm-2"><img src="<?php // echo SiteUrl?>assets/images/userimage.jpg" style="border-radius:115px;width:30px"></div>
-                        <div class="col-sm-10">
-                          <div style="margin-top:0px">Conard G</div>
-                          <span style="color:#999 !important">39 yrs, 5' 6',Konkani, Mumbai Hotel & Hospitality Proffession</span>
-                        </div>
-                    </div>
-                   <?php// }?>
-                  <div class="col-sm-12" style="padding:10px;text-align:center;background:#fff"><a href="#" >View More</a></div> 
-                </div>
-               </div>--> 
          </div>
         </div>
+        
         <div class="row">
             <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Invited Profiles</div>
@@ -268,22 +231,6 @@
                     </div>
                    </div> 
                 </div>
-              <!--<div class="card"  style="background:#dee9ea">
-                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:258px">
-                <div>
-                 <?php
-                   //for ($x = 0; $x <= 3; $x++) {
-                   ?>
-                    <div id="resCon_a002">
-                        <img src="<?php //echo SiteUrl?>assets/images/userimage.jpg" style="border-radius:115px;width:88%"><br>
-                        <h5 style="margin-bottom:-10px">Justin L</h5><br>
-                        <span style="color:#bfacac;">Bengaluru / Banglore</span><br>
-                        <button type="submit" class="btn btn-primary" style="background:transparent;color:#00c1ff;padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</button> 
-                    </div>
-                    <?php// }?> 
-                   </div> 
-                </div>
-              </div>-->
               <br>
             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recent Visitors</div>
              <div class="card"  style="background:#dee9ea">
@@ -307,20 +254,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="card"  style="background:#dee9ea;">
-                 <div class="card-body" style="padding:10px !important;">    
-                  <?php // for ($x = 0; $x <= 4; $x++) { ?>
-                   <div class="col-sm-12" id="resCon_a001">
-                      <div class="col-sm-2"><img src="<?php // echo SiteUrl?>assets/images/userimage.jpg" style="border-radius:115px;width:30px"></div>
-                        <div class="col-sm-10">
-                          <div style="margin-top:0px">Conard G</div>
-                          <span style="color:#999 !important">39 yrs, 5' 6',Konkani, Mumbai Hotel & Hospitality Proffession</span>
-                        </div>
-                    </div>
-                   <?php// }?>
-                  <div class="col-sm-12" style="padding:10px;text-align:center;background:#fff"><a href="#" >View More</a></div> 
-                </div>
-               </div>-->
          </div>
         </div>
     <?php $response = $webservice->getData("Member","GetMemberInfo");?>
@@ -374,10 +307,6 @@ $(document).ready(function () {
     });
 
     ResCarouselSize();
-
-
-
-
     $(window).resize(function () {
         ResCarouselSize();
     });
@@ -486,5 +415,32 @@ $('.carousel.carousel-multi-item.v-2 .carousel-item').each(function(){
   }
 });
 </script>
-
-
+<script>
+        function showConfirmDelete(LatestID) {                                           
+        $('#Delete').modal('show'); 
+        var content = '<div class="modal-body" style="padding:20px">'
+                        + '<div  style="height: 315px;">'
+                            + '<form method="post" id="form_'+LatestID+'" name="form_'+LatestID+'" > '
+                                + '<input type="hidden" value="'+LatestID+'" name="LatestID">'
+                                  + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                   + '<h4 class="modal-title">Confirm delete Updates</h4><br>'
+                                + '<div style="text-align:center">Are you sure want to Delete?  <br><br>'
+                                    + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+LatestID+'\')">Yes</button>&nbsp;&nbsp;'
+                                    + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
+                                + '</div>'
+                            + '</form>'
+                        + '</div>'
+                     +  '</div>';
+        $('#model_body').html(content);
+    }
+        function ConfirmDelete(LatestID) {
+        
+        var param = $( "#form_"+LatestID).serialize();
+        $('#model_body').html(preloader);
+        $.post(API_URL + "m=Member&a=HideLatestUpdates", param, function(result2) {
+            $('#model_body').html(result2);
+            $('#UpdatesDiv_'+LatestID).hide();
+        }
+    );
+}
+        </script>
