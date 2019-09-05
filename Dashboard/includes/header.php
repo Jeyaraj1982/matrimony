@@ -191,7 +191,7 @@
               </li>
              <li class="nav-item dropdown d-none d-xl-inline-block">
              <?php $filename = strlen(trim($_Member['FileName'])) >0 ? $_Member['FileName'] : SiteUrl."assets/images/userimage.jpg"; ?>
-             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"><img class="img-xs rounded-circle" src="<?php echo $filename;?>" alt="Profile image"></a>
+             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"><img class="img-xs rounded-circle" style="border:2px solid #fff;height:50px !important;width:50px !important;" src="<?php echo $filename;?>" alt="Profile image"></a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding-top: 10px;padding-bottom: 10px;">
               <a href="<?php echo GetUrl("MyAccounts/MyWallet");?>" class="dropdown-item">My Accounts</a>
               <a href="<?php echo GetUrl("MySettings/MyMemberInfo");?>" class="dropdown-item">My Settings</a>
