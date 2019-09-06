@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta charset="utf-8">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Matrimony Software</title>
         <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
@@ -22,30 +22,57 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'> 
         <link href='<?php echo SiteUrl?>assets/simpletoast/simply-toast.css' rel='stylesheet' type='text/css'>
         <style>                                                                                                           
-            .Activedot {height:10px;width:10px;background-color:#20e512;border-radius:50%;display:inline-block;}
-            .Deactivedot {height:10px;width:10px;background-color:#888;border-radius:50%;display:inline-block;}
-            #star{color:red;}
-            .errorstring {font-size:10px;color:red}
-            div.scrollmenu {background:#fff;border-bottom:2px solid #e5e5e5;white-space: nowrap;padding-left:25px;padding-top:5px;}
-            div.scrollmenu a {display: inline-block;color: #333;text-align: center;padding: 10px 10px;font-family:'Roboto';text-decoration: none;border-bottom:3px solid #fff;margin-right:15px;}
-            div.scrollmenu a:hover {border-bottom:3px solid #fff;color:#ff007b;}
-            .linkactive{border-bottom:3px solid #ff007b !important;color:#ff007b  !important;}
-            .shadow {-webkit-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);-moz-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
+           .Activedot {height:10px;width:10px;background-color:#20e512;border-radius:50%;display:inline-block;}
+           .Deactivedot {height:10px;width:10px;background-color:#888;border-radius:50%;display:inline-block;}
+           #star{color:red;}
+           .errorstring {font-size:10px;color:red}
+           div.scrollmenu {background:#fff;border-bottom:2px solid #e5e5e5;white-space: nowrap;padding-left:25px;padding-top:5px;}
+           div.scrollmenu a {display: inline-block;color: #333;text-align: center;padding: 10px 10px;font-family:'Roboto';text-decoration: none;border-bottom:3px solid #fff;margin-right:15px;}
+           div.scrollmenu a:hover {border-bottom:3px solid #fff;color:#ff007b;}
+           .linkactive{border-bottom:3px solid #ff007b !important;color:#ff007b  !important;}
+           .shadow {-webkit-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);-moz-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
            .bshadow {-webkit-box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);-moz-box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);}
            .box-shaddow {box-shadow: 0 0 5px #e9e9e9 !important;-moz-box-shadow: 0 0 5px #e9e9e9 !important;-webkit-box-shadow: 0 0 24px #e9e9e9 !important;}
            .profile_horizontal_row {box-shadow: 0 0 5px #e9e9e9 !important;-moz-box-shadow: 0 0 5px #e9e9e9 !important;-webkit-box-shadow: 0 0 24px #e9e9e9 !important;min-height: 200px;width:100%;background:white;padding:20px;border:1px solid transparent;cursor:poiner;}
            .profile_horizontal_row:hover {background:#f4fbfc;border:1px solid #e5e5e5}
-           
            #slideshow .leftLst, #slideshow .rightLst { position:absolute; border-radius:50%;top:calc(50% - 20px); }
-    #slideshow .leftLst { left:0; }
-    #slideshow .rightLst { right:0; }
-         .successmessage {border:1px solid Green;color:green;padding:5px 10px;border-radius:5px;}
-        #slideshow .leftLst.over, #slideshow .rightLst.over { pointer-events: none; background:#ccc; }
-        
-        .viewbutton:hover{
-            background:#00c1ff;
-            color: #83c25d;
-        }
+           #slideshow .leftLst { left:0; }
+           #slideshow .rightLst { right:0; }
+           .successmessage {border:1px solid Green;color:green;padding:5px 10px;border-radius:5px;}
+           #slideshow .leftLst.over, #slideshow .rightLst.over { pointer-events: none; background:#ccc; }
+           .viewbutton:hover{background:#00c1ff;color: #83c25d;}
+           .member_dashboard_widget_title {width:200px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:14px;padding-top:7px;font-weight:bold;color:#777}
+           .member_dashboard_widget_container {overflow:hidden;height:325px;padding:10px !important;padding-left:5px !important;padding-right:9px !important;}
+           .tblrow {background:#fff}
+           .tblrow:hover {background:#f1f1f1}
+           /*dashboard*/
+           div, label,a,h1,h2,h3,h4,h5,h6 {font-family:'Roboto' !important;}
+           #resCon_a001 {background:white;padding:10px;border-bottom: 1px solid #d5d5d5;cursor:pointer;}
+           #resCon_a002 {float:left;width:143px;height: 235px;background:white;margin-left:6px;margin-top: -19px;padding: 25px;text-align:center;cursor:pointer;}
+           #resCon_a0021 {float:left;width:143px;height: 235px;background:white;margin-left:6px;margin-top: -19px;padding: 25px;text-align:center;cursor:pointer;}
+           #resCon_a001:hover {background:#f1f1f1;}
+           #resCon_a002:hover {background:#f1f1f1;}
+           #resCon_a0021:hover {background:#f1f1f1;}
+           #verifybtn{background: #0eb1db;border:1px#32cbf3;box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
+           #verifybtn:hover{background:#149dc9;}
+           input:focus{border:1px solid #ccc;}
+           #errormsg{text-align:center;color:red;padding-bottom:5px;padding-top:5px;}
+           #resCon_a002 a:hover{color: #337ab7;}
+           #resCon_a0021 a:hover{color: #337ab7;}
+           #UpdatesDiv_:hover {background: #c3d1d2;}
+           /*thumb image preview*/
+           div.enlarge{width:100px;height:100px;margin:0px auto;}
+           div.enlarge div {width:100px;height:100px;}
+           div.enlarge img{background-color:#eae9d4;padding: 6px;-webkit-box-shadow: 0 0 6px rgba(132, 132, 132, .75);-moz-box-shadow: 0 0 6px rgba(132, 132, 132, .75);box-shadow: 0 0 6px rgba(132, 132, 132, .75);-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}
+           div.enlarge span{position:absolute;left: -9999px;background-color:#eae9d4;padding: 10px;font-family: 'Droid Sans', sans-serif;font-size:.9em;text-align: center;color: #495a62;z-index:100000;-webkit-box-shadow: 0 0 20px rgba(0,0,0, .75));-moz-box-shadow: 0 0 20px rgba(0,0,0, .75);box-shadow: 0 0 20px rgba(0,0,0, .75);-webkit-border-radius: 8px;-moz-border-radius: 8px;border-radius:8px;}
+           div.enlarge div:hover{z-index: 50;cursor:pointer;}
+           div.enlarge span img{padding:2px;background:#ccc;height:300px;}
+           div.enlarge div:hover span{top: 0px; /*the distance from the bottom of the thumbnail to the top of the popup image*/left: 100px; /*distance from the left of the thumbnail to the left of the popup image*/}
+           div.enlarge div:hover:nth-child(2) span{left: 0px;}
+           div.enlarge div:hover:nth-child(3) span{left: 0px;}
+           /**IE Hacks - see http://css3pie.com/ for more info on how to use CS3Pie and to download the latest version**/
+           div.enlarge img, div.enlarge span{behavior: url(pie/PIE.htc);}  
+           /* end of Thumb image */
         </style>
         <script>
           var MyFavoritedPage=0;
@@ -253,7 +280,7 @@
   </nav>
     <div class="container-fluid page-body-wrapper">
     <?php include_once("views/".UserRole."/LeftMenu.php"); ?>
-    <div class="main-panel">
+    <div class="main-panel" style="overflow: -moz-hidden-unscrollable;">
         <div class="content-wrapper">
         <?php 
             function DisplayManageProfileShortInfo($ProfileInformation) {
@@ -277,9 +304,9 @@
                                        </div>
                                        <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:27px;"></span></div> 
                                        <div class="col-sm-4" style="float:right;font-size: 12px;">
-                                                <?php  echo "Created On: ".PutDateTime($Profile['CreatedOn']); ?><br> 
-                                                <?php  echo "Published: ".putDateTime($Profile['IsApprovedOn']); ?><br>
-                                                <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".putDateTime($Profile['LastSeen']) : ""; ?>
+                                                <?php  echo "Created On: ".time_elapsed_string($Profile['CreatedOn']); ?><br> 
+                                                <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
+                                                <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?>
                                                 <br>
                                                 <br>
                                        </div>
@@ -348,8 +375,8 @@
                                        </div>
                                        <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:27px;"></span></div> 
                                        <div class="col-sm-4" style="float:right;font-size: 12px;">
-                                                <?php  echo "Created On: ".PutDateTime($Profile['CreatedOn']); ?><br> 
-                                                <?php  echo "Published: ".putDateTime($Profile['IsApprovedOn']); ?><br>
+                                                <?php  echo "Created On: ".time_elapsed_string($Profile['CreatedOn']); ?><br> 
+                                                <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
                                                 <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".putDateTime($Profile['LastSeen']) : ""; ?>
                                                 <br>
                                                 <br>
@@ -408,7 +435,7 @@
             <div class="form-group row">
                             <div class="col-sm-12" style="text-align:center">
                                <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #555;background:#fff;padding:6px">
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;background:#fff;padding:6px">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -417,7 +444,7 @@
                             </div>
                              <div class="col-sm-12" style="text-align:center;color: #514444cc;">
                                <?php if($ProfileInformation['mode']=="Published"){?>
-                                    <?php echo $ProfileInformation['mode'];?>&nbsp;(<?php echo putDateTime($Profile['IsApprovedOn']);?>)
+                                    <?php echo $ProfileInformation['mode'];?>&nbsp;(<?php echo time_elapsed_string($Profile['IsApprovedOn']);?>)
                                <?php }else { echo $ProfileInformation['mode']; }?>
                             </div>
                         </div>
@@ -455,10 +482,10 @@
                                        <div class="col-sm-7"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp;<div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div></div>
                                         <div class="col-sm-1"><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:64px;"></div>
                                         <div style="float:right;font-size: 12px;">
-                                        <?php  echo "Created On: ".PutDateTime($Profile['CreatedOn']); ?><br>
+                                        <?php  echo "Created On: ".time_elapsed_string($Profile['CreatedOn']); ?><br>
                                         <?php 
                                         if ($ProfileInformation['LastSeen']!="0") { 
-                                            echo "Last seen: ".PutDateTime($ProfileInformation['LastSeen']); 
+                                            echo "Last seen: ".time_elapsed_string($ProfileInformation['LastSeen']); 
                                         }
                                         ?>
                                         
@@ -544,8 +571,8 @@
                                        </div>
                                        <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:35px;"></span></div> 
                                        <div class="col-sm-4" style="float:right;font-size: 12px;">
-                                                <?php  echo "Published: ".putDateTime($Profile['IsApprovedOn']); ?><br>
-                                                <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".putDateTime($Profile['LastSeen']) : ""; ?>
+                                                <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
+                                                <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?>
                                                 <br>
                                                 <br>
                                        </div>
@@ -595,21 +622,27 @@
                       $Profile = $ProfileInformation['ProfileInfo'];
                       $rnd = rand(3000,3000000);
                     ?>                                                                                                                                                                                   
-                       <div id="resCon_a002" style="height:290px">
-                        <div style="text-align:left;margin-right: -7px;margin-top:-17px;margin-left: -11px;"><span style="color:#333333 !important;font-size: 12px">ID &nbsp;<?php echo$Profile['ProfileCode'];?></span>
+                       <div id="resCon_a002" style="height:280px;overflow:hidden;width:181px;padding:10px;margin-top:0px !important">
+                        <div style="text-align:left;">
+                        <span style="color:#333333 !important;font-size: 12px;font-weight:Bold;color:#777"><?php echo$Profile['ProfileCode'];?></span>
                             <?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
                                                 <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
-                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;">
+                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">
                                             <?php } else {?>
-                                                <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                                                <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;float:right">
                                             <?php }?>
                         </div>   
-                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;"><br>
+                        <div class="enlarge">
+                        <div>
+                            <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;" alt="" />
+                            <span><img src="<?php echo $ProfileInformation['ProfileThumb'];?>" alt="" /><br /><?php echo $Profile['ProfileName'];?></span>
+                        </div>
+                        </div>
                         <div style="height:20px;"><h5 style="margin-bottom:-10px"><?php echo $Profile['ProfileName'];?></h5></div><br>
                         <span style="color:#bfacac;"><?php echo $Profile['City'];?></span><br>
                         <span style="color:#bfacac;"><?php echo $Profile['Age'];?>&nbsp;yrs</span><br>
                         <a href="<?php echo GetUrl("Profile/".$Profile['ProfileCode'].".htm");?>" class="viewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</a> <br><br>
-                        <div style="text-align:center;margin-left: -11px;"><span style="color:#999 !important;font-size: 12px">Visited &nbsp;<?php echo putDateTime($Profile['LastSeen']);?></span></div>   
+                        <div style="text-align:center;"><span style="color:#999 !important;font-size: 12px">Visited&nbsp;<?php echo time_elapsed_string($Profile['LastSeen']);?></span></div>   
                     </div>
                     <?php
                 }
@@ -619,16 +652,22 @@
                       $Profile = $ProfileInformation['ProfileInfo'];
                       
                     ?>                                                                                                                                                                                   
-                       <div id="resCon_a002" style="height:290px">
-                        <div style="text-align:left;margin-right: -7px;margin-top:-17px;margin-left: -11px;"><span style="color:#333333 !important;font-size: 12px">ID &nbsp;<?php echo$Profile['ProfileCode'];?></span>
-                           <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">
+                       <div id="resCon_a002" style="height:280px;overflow:hidden;width:181px;padding:10px;margin-top:0px !important">
+                        <div style="text-align:left;">
+                        <span style="color:#333333 !important;font-size: 12px;font-weight:Bold;color:#777"><?php echo$Profile['ProfileCode'];?></span>
+                           <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;float:right">
                         </div>   
-                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;"><br>
+                         <div class="enlarge">
+                        <div>
+                            <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;" alt="" />
+                            <span><img src="<?php echo $ProfileInformation['ProfileThumb'];?>" alt="" /><br /><?php echo $Profile['ProfileName'];?></span>
+                        </div>
+                        </div>
                         <div style="height:20px;"><h5 style="margin-bottom:-10px"><?php echo $Profile['ProfileName'];?></h5></div><br>
                         <span style="color:#bfacac;"><?php echo $Profile['City'];?></span><br>
                         <span style="color:#bfacac;"><?php echo $Profile['Age'];?>&nbsp;yrs</span><br>
                         <a href="<?php echo GetUrl("Profile/".$Profile['ProfileCode'].".htm");?>" class="viewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</a> <br><br>
-                        <div style="text-align:center;margin-left: -11px;"><span style="color:#999 !important;font-size: 12px">Visited &nbsp;<?php echo putDateTime($Profile['LastSeen']);?></span></div>   
+                        <div style="text-align:center;"><span style="color:#999 !important;font-size: 12px">Visited &nbsp;<?php echo time_elapsed_string($Profile['LastSeen']);?></span></div>   
                     </div>
                     <?php
                 }
@@ -649,26 +688,27 @@
                                             <?php }?>
                     </div>
                       <div class="col-sm-2" style="margin-left:-15px">
-                      <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;"></div><br>
+                        <div class="enlarge">
+                        <div>
+                            <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;" alt="" />
+                            <span><img src="<?php echo $ProfileInformation['ProfileThumb'];?>" alt="" /><br /><?php echo $Profile['ProfileName'];?></span>
+                        </div>
+                        </div>
+                      </div>
                         <div class="col-sm-10">
                           <div style="margin-top:-17px;margin-left: 73px;"><?php echo $Profile['ProfileName'];?></div>
                           <div style="height: 20px"><span style="color:#999 !important;margin-left: 73px;"><?php echo $Profile['Age'];?>&nbsp;yrs</span><br>
                                                             <span style="color:#999 !important;margin-left: 73px;"><?php echo $Profile['City'];?></span>
                           </div> <br>
                           <a href="<?php echo GetUrl("Profile/".$Profile['ProfileCode'].".htm");?>" class="viewbutton" id="dashviewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;margin-left:73px">View</a> <br>
-                          <div style="height: 20px;float:right;margin-right: -33px;"><span style="color:#999 !important;font-size: 12px">Visited &nbsp;:&nbsp;<?php echo putDateTime($Profile['LastSeen']);?></span></div> <br>
+                          <div style="height: 20px;float:right;margin-right: -33px;"><span style="color:#999 !important;font-size: 12px">Visited &nbsp;:&nbsp;<?php echo time_elapsed_string($Profile['LastSeen']);?></span></div> <br>
                         </div>
                     </div>
                     <?php
                 }
             ?>                                                                                                                                    
             
-            
-            
-            
             <?php function DisplayMyContactsProfileShortInfoBrowse($Profile) {  ?>
-          
-          
                       <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
                             <div class="form-group row">
                                 <div class="col-sm-3" style="text-align:center">
@@ -677,7 +717,7 @@
                                 <div class="col-sm-9">
                                     <div class="colo-sm-12" style="border-bottom:1px solid #d7d7d7;width:100%;height: 80px;font-size: 21px;color: #514444cc;">                                                                                     
                                        <div class="col-sm-7"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp;<div style="line-height: 25px;color: #867c7c;font-size:14px">Profile Code:&nbsp;&nbsp; <?php echo $Profile['ProfileCode'];?></div><div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div></div>
-                                        <div class="col-sm-1"><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:40px;"></div><div style="float:right;font-size: 12px;">Published:&nbsp;&nbsp;<?php echo putDateTime($Profile['IsApprovedOn']);?><br>Lastseen:</div> 
+                                        <div class="col-sm-1"><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:40px;"></div><div style="float:right;font-size: 12px;">Published:&nbsp;&nbsp;<?php echo time_elapsed_string($Profile['IsApprovedOn']);?><br>Lastseen:</div> 
                                     </div>
                                     <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
                                         <div>
@@ -754,8 +794,6 @@
                                             <?php $end_date =strtotime($p['DateTo']); 
                                                  $start_date   = strtotime(date("Y-m-d")); 
                                                 $remainingdate =($end_date - $start_date);////(60*60*24);
-                                                
-                                               // $day = date("d",$remainingdate);
                                                 if ($remainingdate>0) {
                                                  echo '<span style="color:green">'.$remainingdate/(60*60*24). ' days remaining </span>';
                                                 }

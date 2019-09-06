@@ -3,25 +3,21 @@
         $response = $webservice->WelcomeMessage();
     }  
     $response = $webservice->getData("Member","GetMyProfiles",array("ProfileFrom"=>"All"));
+ 
+    $whoviewed = $webservice->getData("Member","GetRecentlyWhoViewedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
+    $WhoViewedYourProfile = $whoviewed['data'];       
+
+    $whofavorited = $webservice->getData("Member","GetWhoFavouriteMyProfiles",array("requestfrom"=>"0","requestto"=>"5"));
+    $WhoFavoritedYourProfiles = $whofavorited['data']; 
+
+    $myrecentviewed = $webservice->getData("Member","GetRecentlyViewedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
+    $MyRecentlyViewed = $myrecentviewed['data'];
+
+    $myfavorited = $webservice->getData("Member","GetFavouritedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
+    $MyFavouritedProfiles = $myfavorited['data'];
+    
+    $latestupdates = $webservice->getData("Member","GetLatestUpdates");
 ?>
-    <style>
-        div, label,a,h1,h2,h3,h4,h5,h6 {font-family:'Roboto' !important;}
-        #resCon_a001 {background:white;padding:10px;border-bottom: 1px solid #d5d5d5;cursor:pointer;}
-        #resCon_a002 {float:left;width:143px;height: 235px;background:white;margin-left:6px;margin-top: -19px;padding: 25px;text-align:center;cursor:pointer;}
-        #resCon_a0021 {float:left;width:143px;height: 235px;background:white;margin-left:6px;margin-top: -19px;padding: 25px;text-align:center;cursor:pointer;}
-        #resCon_a001:hover {background:#f1f1f1;}
-        #resCon_a002:hover {background:#f1f1f1;}
-        #resCon_a0021:hover {background:#f1f1f1;}
-        #verifybtn{background: #0eb1db;border:1px#32cbf3;box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
-        #verifybtn:hover{background:#149dc9;}
-        input:focus{border:1px solid #ccc;}
-        #errormsg{text-align:center;color:red;padding-bottom:5px;padding-top:5px;}
-        #resCon_a002 a:hover{color: #337ab7;}
-        #resCon_a0021 a:hover{color: #337ab7;}
-        #UpdatesDiv_:hover {
-    background: #c3d1d2;
-}
-    </style>                                                 
     <script>
         function myFunction() {
             var x = document.getElementById("verifydiv");
@@ -41,42 +37,39 @@
         </div>
     </div>
     <div class="row">
-    <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">                                                                     
-            <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Latest Updates</div>
+    <div class="col-7 grid-margin" style="flex: 0 0 600px;max-width: 600px;">                                                                     
+            <div class="member_dashboard_widget_title">Latest Updates</div>
              <div class="card"  style="background:#dee9ea">
-                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:435px">
-                    <div id="resCon_a002" style="background:white;width:97%;text-align:left;padding:0px;height:380px">
-                    <?php
-                        $latestupdates = $webservice->getData("Member","GetLatestUpdates");
-                        foreach($latestupdates['data'] as $Row) { 
-                    ?>   
-                    <div id="UpdatesDiv_<?php echo $Row['LatestID'];?>" name="UpdatesDiv_<?php echo $Row['LatestID'];?>" style="border-bottom:1px solid #c3d1d2;padding: 5px;">
+                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:345px">
+                    <div id="resCon_a002" style="background:white;width:97%;text-align:left;padding:0px;height:300px;overflow:auto">
+                    <?php foreach($latestupdates['data'] as $Row) { ?>   
+                    <div id="UpdatesDiv_<?php echo $Row['LatestID'];?>" name="UpdatesDiv_<?php echo $Row['LatestID'];?>" style="border-bottom:1px solid #e5e5e5;padding: 5px;padding-bottom:6px;background:#fff;overflow:auto;">
                         <table style="width: 100%;">
-                            <tr>
-                                <td style="width:64px;padding-right: 15px;">
-                                    <img src="<?php  echo $Row['ProfilePhoto']?>" style="border-radius: 50%;width: 64px;border: 1px solid #ddd !important;height: 64px;padding: 5px;background: #fff;">
+                            <tr class='tblrow'>
+                                <td style="width:60px;text-align:left">
+                                    <img src="<?php  echo $Row['ProfilePhoto']?>" style="border-radius: 50%;width: 48px;border: 1px solid #ddd !important;height: 48px;padding: 1px;background: #fff;">
                                 </td>
-                                <td>
+                                <td style="font-size:13px;color:#555;">
                                     <?php echo $Row['VisterProfileCode'];?> &nbsp;<?php echo $Row['Subject'];?><br>
                                      <a href="<?php echo GetUrl("view/".$Row['VisterProfileCode'].".htm ");?>">View Profile</a>
-                                     <span style="float:right;font-size: 12px;color: #514444cc;"><?php echo putDateTime($Row['ViewedOn']);?></span>
                                 </td>
-                                <td style="width:10px;">
-                                 <div class="col-sm-1"><a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $Row['LatestID'];?>')" name="Hide" style="font-family:roboto"><button type="button" class="close" style="margin-top: -27px;margin-right: -9px;">&times;</button></a></div>
+                                <td style="width:94px;text-align:right;line-height: 24px;padding: 0px;">
+                                 <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $Row['LatestID'];?>')" name="Hide" style="font-family:roboto">&times;</a><br>
+                                  <span style="float:right;font-size: 11px;color: #bbb;"><?php echo time_elapsed_string($Row['ViewedOn']);?></span>
                                 </td>
                             </tr>                                                 
                         </table>
                     </div>                                       
-                   <?php }?>  
-                  </div>
-                  <div style="width:97%;text-align:center;">
+                   <?php }?> 
+                   </div>
+                    <div style="clear:both;padding:7px; text-align:center;">
                           <a href="<?php echo SiteUrl;?>LatestUpdates">View All</a>
-                  </div>                      
+                  </div>
+                  </div>
              </div>   
         </div>
-        </div>
         <div class="col-5 grid-margin" style="max-width: 35.667%;">
-            <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">My Recent Profiles</div>
+            <div class="member_dashboard_widget_title">My Recent Profiles</div>
             <div class="card"  style="background:#dee9ea;">
                 <div class="card-body" style="padding:10px !important;">
                     <?php if (sizeof($response['data'])==0) {      ?>
@@ -100,113 +93,78 @@
         </div>                                                
         </div>
         
-    <div class="row">
-    <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
-            <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recent Visitors</div>
-              <div class="card"  style="background:#dee9ea">
-                <div class="card-body" id="slideshow" style="padding-left: 4px;padding-right: 0px;height:315px">
-                <?php
-                    $recentlyviewedprofiles = $webservice->getData("Member","GetRecentlyWhoViewedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
-                    $Profiles = $recentlyviewedprofiles['data'];       
-                    if (sizeof($Profiles)>0) {
-                ?>
-                <div>
-                 <?php
-                     foreach($Profiles as $Profile) { 
-                       echo dashboard_view_1($Profile);
-                    }?> 
-                    <button class="btn btn-primary leftLst"><</button>
-                    <button class="btn btn-primary rightLst">></button>
-                   </div> 
-                
-                <?php } else { ?>
-                  <div id="resCon_a002" class="resCon_a002"  style="background:white;width:97%">
-                        <div style="text-align:center;">
-                            <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5>
-                        </div>
-                    </div>
-                <?php } ?>
-              </div>
-            </div>
-        </div> 
-        <div class="col-5 grid-margin" style="max-width: 35.667%;">
-            <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">My Recently Viewed</div>
-            <div class="card"  style="background:#dee9ea;">
-                <div class="card-body" style="padding:10px !important;">
-                    <?php
-                    $recentlyviewedprofiles = $webservice->getData("Member","GetRecentlyViewedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
-                    $Profiles = $recentlyviewedprofiles['data']; 
-                    if (sizeof($Profiles)>0) {
-                ?>
-                <div>
-                    <?php
-                     foreach($Profiles as $Profile) { 
-                       echo dashboard_view_2($Profile);
-                    }?> 
-                </div>
-                <?php if (sizeof($Profiles)>=4) { ?>
-                <div> View All </div>
-                <?php } ?>
-                 <?php } else { ?>
-                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
-                        <div style="text-align:center;">
-                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
-                        </div>
-                    </div>
+<div class="row">
+    <div class="col-7 grid-margin" style="flex: 0 0 600px;max-width: 600px;">
+        <div>
+            <div class="member_dashboard_widget_title">Who viewed your profile</div>
+            <div class="card" style="background:#dee9ea">
+                <div class="card-body member_dashboard_widget_container" id="slideshow" >
+                    <?php if (sizeof($WhoViewedYourProfile)>0) { ?>
+                        <div style="height:280px;overflow:hidden">
+                            <?php
+                                foreach($WhoViewedYourProfile as $Profile) {
+                                    echo dashboard_view_1($Profile);
+                                }
+                            ?> 
+                            <button class="btn btn-primary leftLst"><</button>
+                            <button class="btn btn-primary rightLst">></button>
+                         </div> 
+                         <div style="padding:8px;text-align:center;">
+                            <a href="<?php echo SiteUrl;?>MyContacts/RecentlyWhoViewed">View All</a>
+                         </div>
+                    <?php } else { ?>
+                         <div id="resCon_a002" class="resCon_a002"  style="background:white;width:97%">
+                            <div style="text-align:center;">
+                                <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5>
+                            </div>
+                         </div>
                     <?php } ?>
                 </div>
             </div>
-         </div>
         </div>
-    <div class="row">
-    <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
-             <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recent Favouriters</div>
-              <div class="card"  style="background:#dee9ea">
-                <div class="card-body" id="slideshow" style="padding-left: 4px;padding-right: 0px;height:315px">
-                <?php
-                    $recentlyviewedprofiles = $webservice->getData("Member","GetWhoFavouriteMyProfiles",array("requestfrom"=>"0","requestto"=>"5"));
-                    $Profiles = $recentlyviewedprofiles['data']; 
-                    if (sizeof($Profiles)>0) {
-                ?>                            
-                <div>
-                 <?php
-                     foreach($Profiles as $Profile) { 
-                       echo dashboard_view_1_Recent_Favouriters($Profile);
-                    }?> 
-                    <button class="btn btn-primary leftLst"><</button>
-            <button class="btn btn-primary rightLst">></button>
-                   </div> 
-                
-                <?php } else { ?>
-                  <div id="resCon_a002" class="resCon_a002"  style="background:white;width:97%;height:293px">
+        <Br>
+        <div>
+            <div class="member_dashboard_widget_title">Who favorited your profile</div>
+            <div class="card"  style="background:#dee9ea">
+                <div class="card-body member_dashboard_widget_container" id="slideshow">
+                    <?php if (sizeof($WhoFavoritedYourProfiles)>0) { ?>                            
+                    <div style="height:280px;overflow:hidden">
+                        <?php
+                            foreach($WhoFavoritedYourProfiles as $Profile) { 
+                                echo dashboard_view_1_Recent_Favouriters($Profile);
+                            }
+                        ?> 
+                        <button class="btn btn-primary leftLst"><</button>
+                        <button class="btn btn-primary rightLst">></button>
+                    </div> 
+                    <div style="padding:8px;text-align:center;">
+                        <a href="<?php echo SiteUrl;?>LatestUpdates">View All</a>
+                    </div>  
+                    <?php } else { ?>
+                    <div id="resCon_a002" class="resCon_a002"  style="background:white;width:97%;height:293px">
                         <div style="text-align:center;">
                             <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5>
                         </div>
                     </div>                                                        
-                <?php } ?>
-              </div>
+                    <?php } ?>
+                </div>
             </div>
-        </div> 
-        <div class="col-5 grid-margin" style="max-width: 35.667%;">
-            <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">My Favourited</div>
-            <div class="card" style="background:#dee9ea;">
+        </div>
+    </div> 
+    <div class="col-5 grid-margin" style="max-width: 35.667%;">
+            <div class="member_dashboard_widget_title">My Recently Viewed</div>
+            <div class="card"  style="background:#dee9ea;">
                 <div class="card-body" style="padding:10px !important;">
-                    <?php
-                    $favouritedprofiles = $webservice->getData("Member","GetFavouritedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
-                    $Profiles = $favouritedprofiles['data']; 
-                    if (sizeof($Profiles)>0) {
-                ?>
+                    <?php if (sizeof($MyRecentlyViewed)>0) { ?>
                 <div>
                     <?php
-                     foreach($Profiles as $Profile) { 
+                     foreach($MyRecentlyViewed as $Profile) { 
                        echo dashboard_view_2($Profile);
-                     }
-                    ?> 
+                    }?> 
                 </div>
-                <?php if (sizeof($Profiles)>=4) { ?>
+                <?php if (sizeof($MyRecentlyViewed)>=4) { ?>
                 <div> View All </div>
                 <?php } ?>
-                
                  <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
                         <div style="text-align:center;">
@@ -217,46 +175,41 @@
                 </div>
             </div>
          </div>
-        </div>
-        
-        <!--<div class="row">
-            <div class="col-7 grid-margin" style="flex: 0 0 64.333%;max-width: 1000px;">
-            <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Invited Profiles</div>
-             <div class="card"  style="background:#dee9ea">
-                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:258px">
-                    <div id="resCon_a002" style="background:white;width:97%">
-                        <div style="text-align:center;">
-                            <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5>
-                        </div>
-                    </div>
-                   </div> 
-                </div>
-              <br>
-            <div style="width:139px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recent Visitors</div>
-             <div class="card"  style="background:#dee9ea">
-                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:158px">
-                    <div id="resCon_a002" style="background:white;width:97%;height:136px">
-                        <div style="text-align:center;">
-                            <h5 style="margin-top:35px;color: #aaa;">No Profiles Found </h5>
-                        </div>
-                    </div>
-                   </div> 
-                </div>
-            </div>
-        <div class="col-5 grid-margin" style="max-width: 35.667%;">
-              <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">Recent Invitations</div>
-              <div class="card"  style="background:#dee9ea;">
+</div>
+
+
+<div class="row">
+    <div class="col-7 grid-margin" style="flex: 0 0 600px;max-width: 600px;">
+            
+    </div>
+    <div class="col-5 grid-margin" style="max-width: 35.667%;">
+            <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">My Favourited</div>
+            <div class="card" style="background:#dee9ea;">
                 <div class="card-body" style="padding:10px !important;">
+                    <?php if (sizeof($MyFavouritedProfiles)>0) { ?>
+                <div>
+                    <?php
+                     foreach($MyFavouritedProfiles as $Profile) { 
+                       echo dashboard_view_2($Profile);
+                     }
+                    ?> 
+                </div>
+                <?php if (sizeof($MyFavouritedProfiles)>=4) { ?>
+                <div> View All </div>
+                <?php } ?>
+                 <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
                         <div style="text-align:center;">
                             <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
                         </div>
                     </div>
-                  </div>
+                    <?php } ?>
                 </div>
+            </div>
          </div>
-        </div>-->
-    <?php $response = $webservice->getData("Member","GetMemberInfo");?>
+</div>
+
+<?php $response = $webservice->getData("Member","GetMemberInfo");?>
     <script>
         <?php if($response['data']['WelcomeMsg']==0) { ?>
         $(document).ready(function(){
