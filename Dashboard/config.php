@@ -506,5 +506,43 @@
     $_SES = array("AM","PM");
     $_DOB_Year_Start = date("Y")-18;
     $_DOB_Year_End = (date("Y")-18)-55;
+  
+  function time_elapsed_string($datetime, $full = false) {
+      return putDateTime($datetime); 
+                 if ($datetime=="") {
+      return putDateTime($datetime);               
+                 }
+      
+    $now = new DateTime;
+    $datetime = strtotime($datetime);
+    $ago = new DateTime($datetime);
+    $diff = $now->diff($ago);
+
+     if ($diff->d >= 1) {
+         return putDateTime($datetime);
+    }
+    
+    $diff->w = floor($diff->d / 7);
+    $diff->d -= $diff->w * 7;
      
+    $string = array(
+        'y' => 'year',
+        'm' => 'month',
+        'w' => 'week',
+        'd' => 'day',
+        'h' => 'hour',
+        'i' => 'minute',
+        's' => 'second',
+    );
+    foreach ($string as $k => &$v) {
+        if ($diff->$k) {
+            $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+        } else {
+            unset($string[$k]);
+        }
+    }
+
+    if (!$full) $string = array_slice($string, 0, 1);
+    return $string ? implode(', ', $string) . ' ago' : 'just now';
+}   
 ?>
