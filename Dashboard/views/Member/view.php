@@ -199,7 +199,7 @@ text-align: left;
             <label class="col-sm-2 col-form-label">Father's Name</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersName'];?></label>
              <label class="col-sm-2 col-form-label">Father Alive</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersAlive'];?></label> 
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if($ProfileInfo['FathersAlive']=="0"){ echo "Yes";}else { echo "Passed away" ;}?></label> 
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's Occupation</label>
@@ -211,7 +211,7 @@ text-align: left;
              <label class="col-sm-2 col-form-label">Mother's Name</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersName'];?> </label>
              <label class="col-sm-2 col-form-label">Mother Alive</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersAlive'];?></label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if($ProfileInfo['MothersAlive']=="0"){ echo "Yes";}else { echo "Passed away" ;}?></label> 
          </div>
         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Mother's Occupation</label>

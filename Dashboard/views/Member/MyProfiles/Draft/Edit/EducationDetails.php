@@ -39,7 +39,12 @@
             </tbody>
         </table>
         <br>
-        
+        <div class="form-group row" style="margin-bottom:0px;">
+            <div class="col-sm-2">
+                <a href="../GeneralInformation/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Previous</a>
+            </div>
+            <div class="col-sm-2"><a href="../OccupationDetails/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Next</a></div>
+        </div>
         
     </div>  
     

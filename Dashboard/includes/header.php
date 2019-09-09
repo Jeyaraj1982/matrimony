@@ -299,19 +299,22 @@
                                        <div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
                                 </div>
                                 <div class="form-group row">
-                                       <div class="col-sm-7">
+                                       <div class="col-sm-6">
                                             <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
                                        </div>
                                        <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:27px;"></span></div> 
-                                       <div class="col-sm-4" style="float:right;font-size: 12px;">
-                                                <?php  echo "Created On: ".time_elapsed_string($Profile['CreatedOn']); ?><br> 
-                                                <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
+                                       <div class="col-sm-5" style="float:right;font-size: 12px;">
+                                                <?php  echo "Created On: ".time_elapsed_string($Profile['CreatedOn']); ?><br>
+                                                <?php if($Profile['IsApproved']==1 && $Profile['RequestToVerify']==1){  ?> 
+                                                <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br> <?php } ?>
+                                                <?php if($Profile['IsApproved']==0 && $Profile['RequestToVerify']==1){     echo "Submitted On: ".time_elapsed_string($Profile['RequestVerifyOn']); }?>
+                                                 <?php if($Profile['IsApproved']==0 && $Profile['RequestToVerify']==0){    echo "Last Saved: ".time_elapsed_string($Profile['LastUpdatedOn']);  }?>
                                                 <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?>
                                                 <br>
                                                 <br>
                                        </div>
                                 </div>
-                                </div>
+                                </div>                                                                  
                                     <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
                                         <div>
                                             <?php echo $Profile['Height'];?>
@@ -335,12 +338,12 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
-                                        <?php echo $Profile['AboutMe'];?><a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">More</a>
+                                        <?php echo $Profile['AboutMe'];?>
                                     </div>
                                 </div>
                             </div>
                            <div style="float:right;line-height: 1px;">
-                                <?php if($Profile['RequestToVerify']==1){ ?>
+                                <?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==0){ ?>
                                     <a href="<?php echo GetUrl("MyProfiles/Posted/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                     <?php } elseif($Profile['IsApproved']==1){  ?>
                                     <a href="<?php echo GetUrl("MyProfiles/Published/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
@@ -406,12 +409,12 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
-                                        <?php echo $Profile['AboutMe'];?><a href="<?php echo GetUrl("MyProfiles/View/".$Profile['ProfileID'].".htm ");?>">More</a>
+                                        <?php echo $Profile['AboutMe'];?>
                                     </div>
                                 </div>
                             </div>
                            <div style="float:right;line-height: 1px;">
-                                <?php if($Profile['RequestToVerify']==1){ ?>
+                                <?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==0){ ?>
                                     <a href="<?php echo GetUrl("MyProfiles/Posted/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                     <?php } elseif($Profile['IsApproved']==1){  ?>
                                     <a href="<?php echo GetUrl("MyProfiles/Published/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
@@ -563,6 +566,77 @@
                                             <?php } else {?>
                                                 <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
                                             <?php }?>
+                                       </div>
+                                </div>
+                                <div class="form-group row">
+                                       <div class="col-sm-7">
+                                            <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
+                                       </div>
+                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:35px;"></span></div> 
+                                       <div class="col-sm-4" style="float:right;font-size: 12px;">
+                                                <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
+                                                <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?>
+                                                <br>
+                                                <br>
+                                       </div>
+                                </div>
+                                </div>
+                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div><?php echo $Profile['Height'];?></div>
+                                        <div><?php echo $Profile['Religion'];?></div>                                                                                      
+                                        <div><?php echo $Profile['Caste'];?></div>
+                                    </div>
+                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div><?php echo $Profile['MaritalStatus'];?></div>
+                                        <div><?php echo $Profile['OccupationType'];?></div>
+                                        <div><?php echo $Profile['AnnualIncome'];?></div>
+                                    </div>
+                                    <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
+                                        <?php echo $Profile['AboutMe'];?><a href="#">More</a>
+                                    </div>
+                                </div>
+                            </div>
+                           <div style="float:right;line-height: 1px;">
+                                <a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <?php if ($Profile['IsDownloaded']==0) { ?>
+                                    <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
+                                <?php } else { ?>
+                                    Alredy Downloaded
+                                <?php } ?>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewSearchProfile/".$Profile['ProfileCode'].".htm ");?>">view</a>
+                            </div>
+                            <div class="modal" id="Upgrades" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+                                <div class="modal-dialog" style="width: 367px;">
+                                    <div class="modal-content" id="Upgrades_body" style="height:335px"></div>
+                                </div>
+                            </div>
+                            <div class="modal" id="OverAll" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+                                <div class="modal-dialog" style="width: 367px;">
+                                    <div class="modal-content" id="OverAll_body" style="height:335px"></div>
+                                </div>
+                            </div>
+                        </div>
+                  <?php
+              }
+            ?> 
+             <?php 
+            /*fixed*/
+            function DisplayWhoFavoritedProfileShortInformation($ProfileInformation) {
+                      $Profile = $ProfileInformation['ProfileInfo'];
+                      $rnd = rand(3000,3000000);
+            ?>
+            <div class="profile_horizontal_row" id="div_<?php echo $Profile['ProfileCode']; ?>">
+                <div class="form-group row">
+                    <div class="col-sm-3" style="text-align:center;max-width: 182px;">
+                    <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
+                    </div>
+                    <div class="col-sm-9">
+                            <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
+                                <div class="form-group row">                                                                                     
+                                       <div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
+                                       <div class="col-sm-4" style="float:right;font-size: 12px;text-align:right">
+                                          <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;float:right">
                                        </div>
                                 </div>
                                 <div class="form-group row">

@@ -204,9 +204,9 @@ text-align: left;
             <label class="col-sm-2 col-form-label">Father's Name</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersName'];?></label>
             <label class="col-sm-2 col-form-label">Father's Alive</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersAlive'];?></label> 
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if($ProfileInfo['FathersAlive']=="0"){ echo "Yes";}else { echo "Passed away" ;}?></label> 
         </div>
-        <?php if($ProfileInfo['FathersAlive']=="Yes"){?>
+        <?php if($ProfileInfo['FathersAlive']=="0"){?>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's Occupation</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersOccupation'];?></label>
@@ -218,9 +218,9 @@ text-align: left;
              <label class="col-sm-2 col-form-label">Mother's Name</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersName'];?> </label>
              <label class="col-sm-2 col-form-label">Mother's Alive</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersAlive'];?></label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if($ProfileInfo['MothersAlive']=="0"){ echo "Yes";}else { echo "Passed away" ;}?></label>
          </div>
-         <?php if($ProfileInfo['MothersAlive']=="Yes"){?>
+         <?php if($ProfileInfo['MothersAlive']=="0"){?>
         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Mother's Occupation</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersOccupation'];?></label>
@@ -229,11 +229,11 @@ text-align: left;
         </div>
         <?php }?>
         <div class="form-group row">
-            <?php if($ProfileInfo['FathersAlive']=="Yes"){?>
+            <?php if($ProfileInfo['FathersAlive']=="0"){?>
              <label class="col-sm-2 col-form-label">Father's Contact</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo "+"; echo $ProfileInfo['FathersContactCountryCode'];?>-<?php echo $ProfileInfo['FathersContact'];?></label>
             <?php }?>
-            <?php if($ProfileInfo['MothersAlive']=="Yes"){?>
+            <?php if($ProfileInfo['MothersAlive']=="0"){?>
              <label class="col-sm-2 col-form-label">Mother's Contact</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo "+"; echo $ProfileInfo['MothersContactCountryCode'];?>-<?php echo $ProfileInfo['MothersContact'];?></label>
             <?php }?>
@@ -246,7 +246,7 @@ text-align: left;
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FamilyAffluence'];?>   
              </label>
         </div>
-        <div class="form-group row">
+        <div class="form-group row">                                                                                      
              <label class="col-sm-2 col-form-label">Family Value</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FamilyValue'];?>
              </label>

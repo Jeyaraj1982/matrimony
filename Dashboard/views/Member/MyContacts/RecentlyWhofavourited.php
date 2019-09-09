@@ -1,8 +1,8 @@
 <div class="col-12 grid-margin" style="padding:0px !important">
     <div class="card">
         <div class="card-body" style="padding:15px !important">
-            <h4 class="card-title" style="font-size: 22px;margin-top:0px;margin-bottom:15px">Recently Who Viewed My Profile</h4>
-            <h5 style="color:#666">This page gives you quick access to view recently who viewed your profile.</h5>
+            <h4 class="card-title" style="font-size: 22px;margin-top:0px;margin-bottom:15px">Recently Who Favorited My Profile</h4>
+            <h5 style="color:#666">This page gives you quick access to view recently who favorited your profile.</h5>
         </div>
     </div>
 </div> 
@@ -16,7 +16,7 @@
         <div class="card-body">
                 <?php 
                     foreach($Profiles as $Profile) { 
-                        echo DisplayProfileShortInformation($Profile);
+                        echo DisplayWhoFavoritedProfileShortInformation($Profile);
                         echo "<br>";
                     }
                 ?>                                                                     

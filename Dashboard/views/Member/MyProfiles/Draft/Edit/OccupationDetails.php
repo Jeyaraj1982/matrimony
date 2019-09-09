@@ -14,8 +14,49 @@
     $ProfileInfo          = $response['data']['ProfileInfo'];
    ?>
 <?php include_once("settings_header.php");?>
+<script>
+function submitprofile() {
+                         $('#ErrEmployedAs').html("");
+                         $('#ErrOccupationType').html("");
+                         $('#ErrTypeofOccupation').html("");
+                         $('#ErrIncomeRange').html("");
+                         $('#ErrWCountry').html("");
+                       
+                         ErrorCount=0;
+                         
+                           if($("#EmployedAs").val()=="0"){
+                            document.getElementById("ErrEmployedAs").innerHTML="Please select employed as"; 
+                             ErrorCount++;
+                         } 
+                         if($("#OccupationType").val()=="0"){
+                            document.getElementById("ErrOccupationType").innerHTML="Please select occupation"; 
+                             ErrorCount++;
+                         }
+                         if($("#TypeofOccupation").val()=="0"){
+                            document.getElementById("ErrTypeofOccupation").innerHTML="Please select ccupation type"; 
+                             ErrorCount++;
+                         } 
+                         if($("#IncomeRange").val()=="0"){
+                            document.getElementById("ErrIncomeRange").innerHTML="Please select annual income"; 
+                             ErrorCount++;
+                         }
+                         if($("#WCountry").val()=="0"){
+                            document.getElementById("ErrWCountry").innerHTML="Please select country"; 
+                             ErrorCount++;
+                         }
+                         
+                        if (ErrorCount==0) {
+                            return true;                        
+                        } else{
+                            return false;
+                        }
+                        
+    
+    
+}
+</script>
 <div class="col-sm-10" style="margin-top: -8px;">
-<form method="post" action="" onsubmit="">
+<form method="post" action="" onsubmit="return submitprofile();">
     <h4 class="card-title">Occupation Details</h4>
     <div class="form-group row">
         <label for="Employed As" class="col-sm-2 col-form-label">Employed As<span id="star">*</span></label>
@@ -27,6 +68,7 @@
                         <?php echo $EmployedAs['CodeValue'];?>
                             <?php } ?>      </option>
             </select>
+            <span class="errorstring" id="ErrEmployedAs"><?php echo isset($ErrEmployedAs)? $ErrEmployedAs : "";?></span>
         </div>
         <label for="OccupationType" class="col-sm-2 col-form-label">Occupation<span id="star">*</span></label>
         <div class="col-sm-4">
@@ -37,6 +79,7 @@
                         <?php echo $OccupationType['CodeValue'];?>
                             <?php } ?>      </option>
             </select>
+            <span class="errorstring" id="ErrOccupationType"><?php echo isset($ErrOccupationType)? $ErrOccupationType : "";?></span>
         </div>
     </div>
     <div class="form-group row">
@@ -49,6 +92,7 @@
                         <?php echo $TypeofOccupation['CodeValue'];?>
                             <?php } ?>    </option>
             </select>
+            <span class="errorstring" id="ErrTypeofOccupation"><?php echo isset($ErrTypeofOccupation)? $ErrTypeofOccupation : "";?></span>
         </div>
         <label for="IncomeRange" class="col-sm-2 col-form-label">Annual Income<span id="star">*</span></label>
         <div class="col-sm-4">
@@ -59,8 +103,9 @@
                         <?php echo $IncomeRange['CodeValue'];?>
                             <?php } ?> </option>
             </select>
+            <span class="errorstring" id="ErrIncomeRange"><?php echo isset($ErrIncomeRange)? $ErrIncomeRange : "";?></span>
         </div>
-    </div>
+    </div>                                                             
     <div class="form-group row">
          <label for="Country" class="col-sm-2 col-form-label">Country<span id="star">*</span></label>
             <div class="col-sm-4">
@@ -71,6 +116,7 @@
                             <?php echo $Country['CodeValue'];?>  </option>
                                 <?php } ?>
                 </select>
+                <span class="errorstring" id="ErrWCountry"><?php echo isset($ErrWCountry)? $ErrWCountry : "";?></span>
             </div>
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
@@ -82,6 +128,7 @@
             <br>
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
+        <div class="col-sm-3"><a href="../FamilyInformation/<?php echo $_GET['Code'].".htm";?>">Next</a></div>
     </div>
 </form>
 </div>

@@ -1835,26 +1835,28 @@
              $elderSister       = CodeMaster::getData("ELDERSIS",$_POST['elderSister']);
              $youngerSister     = CodeMaster::getData("YOUNGERSIS",$_POST['youngerSister']);
              $marriedSister     = CodeMaster::getData("MARRIEDSIS",$_POST['marriedSister']);
-             $FathersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['FathersAlive']);
-             $MothersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['MothersAlive']);
+             //$FathersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['FathersAlive']);
+             //$MothersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['MothersAlive']);
              $MothersIncome     = CodeMaster::getData("INCOMERANGE",$_POST['MothersIncome']);
              $FathersIncome     = CodeMaster::getData("INCOMERANGE",$_POST['FathersIncome']);
-
-             
+                                                                                                                      
+             $Fathersstatus = ($_POST['FathersAlive']=='on' ? 1 : 0);
+             $Mothersstatus = ($_POST['MothersAlive']=='on' ? 1 : 0);
+                                                                                                          
              $updateSql = "update `_tbl_draft_profiles` set `FathersName`           = '".$_POST['FatherName']."',
                                                            `FathersOccupationCode` = '".$_POST['FathersOccupation']."',
                                                            `FathersOccupation`     = '".$FathersOccupation[0]['CodeValue']."',
+                                                           `FathersContactCountryCode`        = '".$_POST['FathersContactCountryCode']."',
                                                            `FathersContact`        = '".$_POST['FathersContact']."',
                                                            `FathersIncomeCode`         = '".$_POST['FathersIncome']."',
                                                            `FathersIncome`         = '".$FathersIncome[0]['CodeValue']."',
-                                                           `FatherAliveCode`       = '".$_POST['FathersAlive']."',
-                                                           `FathersAlive`           = '".$FathersAlive[0]['CodeValue']."',
+                                                           `FathersAlive`       = '".$Fathersstatus."',
                                                            `MothersName`           = '".$_POST['MotherName']."',
+                                                           `MothersContactCountryCode`= '".$_POST['MotherContactCountryCode']."',
                                                            `MothersContact`        = '".$_POST['MotherContact']."',
                                                            `MothersIncomeCode`     = '".$_POST['MothersIncome']."',
                                                            `MothersIncome`         = '".$MothersIncome[0]['CodeValue']."',
-                                                           `MothersAliveCode`       = '".$_POST['MothersAlive']."',
-                                                           `MothersAlive`           = '".$MothersAlive[0]['CodeValue']."',
+                                                           `MothersAlive`           = '".$Mothersstatus."',
                                                            `FamilyTypeCode`        = '".$_POST['FamilyType']."',
                                                            `FamilyType`            = '".$FamilyType[0]['CodeValue']."',              
                                                            `FamilyValueCode`       = '".$_POST['FamilyValue']."',
@@ -1865,7 +1867,7 @@
                                                            `MothersOccupation`     = '".$MothersOccupation[0]['CodeValue']."',
                                                            `NumberofBrothersCode`  = '".$_POST['NumberofBrother']."',
                                                            `NumberofBrothers`      = '".$NumberofBrothers[0]['CodeValue']."',
-                                                           `YoungerCode`           = '".$_POST['younger']."',
+                                                           `YoungerCode`           = '".$_POST['younger']."',                    
                                                            `Younger`               = '".$younger[0]['CodeValue']."',
                                                            `ElderCode`             = '".$_POST['elder']."',
                                                            `Elder`                 = '".$elder[0]['CodeValue']."',
@@ -2122,10 +2124,10 @@
          function AddEducationalDetails() {
              global $mysql,$loginInfo;
              
-              if (!(strlen(trim($_POST['Educationdetails']))>0)) {                                                                               
+              if (!(trim($_POST['Educationdetails']))>0) {                                                                               
                  return Response::returnError("Please select education details");
              }
-             if (!(strlen(trim($_POST['EducationDegree']))>0)) {
+             if (!(trim($_POST['EducationDegree']))>0) {                                
                  return Response::returnError("Please select education degree ");
              }
              $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'");                         
@@ -2961,10 +2963,17 @@
              
              global $mysql;
              $Profiles = array();
-             $landingpageProfiles = $mysql->select("select * from `_tbl_landingpage_profiles` where Date(`DateTo`)>=Date('".date("Y-m-d")."') and `IsShow`='1'"); 
+            if ($_POST['show']=="male") { 
+             $landingpageProfiles = $mysql->select("select ProfileCode from _tbl_profiles where SexCode='SX001' and  ProfileCode in (select ProfileCode from `_tbl_landingpage_profiles` where Date(`DateTo`)>=Date('".date("Y-m-d")."') and `IsShow`='1')"); 
+            } else  if ($_POST['show']=="female") { 
+             $landingpageProfiles = $mysql->select("select ProfileCode from _tbl_profiles where SexCode='SX002' and  ProfileCode in (select ProfileCode from `_tbl_landingpage_profiles` where Date(`DateTo`)>=Date('".date("Y-m-d")."') and `IsShow`='1')"); 
+            } else {
+             $landingpageProfiles = $mysql->select("select ProfileCode from _tbl_profiles where ProfileCode in (select ProfileCode from `_tbl_landingpage_profiles` where Date(`DateTo`)>=Date('".date("Y-m-d")."') and `IsShow`='1')"); 
+            }
+             
              foreach($landingpageProfiles as $profile) {
                 $Profiles[] =Profiles::getProfileInfo($profile['ProfileCode'],2);
-             }
+             } 
              
                  return Response::returnSuccess("success".$Profiles,$Profiles);                                               
                  }
@@ -3037,7 +3046,7 @@
                             <div class="form-group">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
-                                   <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
+                                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                                    <h4 class="modal-title">Profile Publish</h4> <br>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
                             </div>

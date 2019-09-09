@@ -160,7 +160,7 @@
         
                     $('#img_'+ImgId).attr("src",grey); 
                     $('#img_'+ImgId).attr("src_a",red); 
-                    $('#img_'+ImgId).attr("onclick","AddtoFavourite('"+ImgId+"','"+ImgId+"')");
+                    $('#img_'+ImgId).attr("onclick","AddtoFavourite('"+ProfileCode+"','"+ImgId+"')");
                     $.simplyToast("Profile ID: "+ProfileCode+" has been unfavourited", 'warning');
         }});
     }

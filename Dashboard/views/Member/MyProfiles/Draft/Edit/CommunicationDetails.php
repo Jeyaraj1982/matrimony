@@ -36,14 +36,54 @@ $(document).ready(function () {
     }
    });
    });
-   </script>
+  
+function submitprofile() {
+                         $('#ErrEmailID').html("");
+                         $('#ErrMobileNumber').html("");
+                         $('#ErrAddressLine1').html("");
+                         $('#ErrCity').html("");
+                         $('#ErrStateName').html("");
+                         $('#ErrCountry').html("");
+                         
+                         ErrorCount=0;
+                         
+                         if (IsNonEmpty("EmailID","ErrEmailID","Please enter your Email ID")) {
+                            IsEmail("EmailID","ErrEmailID","Please enter valid EmailID");
+                         }
+                         if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please enter your Mobile Number")) {
+                            IsMobile("MobileNumber","ErrMobileNumber","Please enter valid Mobile Number");
+                         }
+                         IsNonEmpty("AddressLine1","ErrAddressLine1","Please enter your Address Line1");
+                         IsNonEmpty("City","ErrCity","Please enter your City");
+                         
+                         if($("#StateName").val()=="0"){
+                            document.getElementById("ErrStateName").innerHTML="Please select your State Name"; 
+                             ErrorCount++;
+                         }
+                         if($("#Country").val()=="0"){
+                            document.getElementById("ErrCountry").innerHTML="Please select your Country"; 
+                             ErrorCount++;
+                         }
+                        
+                              
+                        if (ErrorCount==0) {
+                            return true;
+                        } else{
+                            return false;
+                        }
+                        
+    
+    
+}
+</script>
 <div class="col-sm-10" style="margin-top: -8px;">
-<form method="post" action="" onsubmit="">
+<form method="post" action="" onsubmit="return submitprofile();">
         <h4 class="card-title">Communication Details</h4>
         <div class="form-group row">
             <label for="Email ID" class="col-sm-2 col-form-label">Email ID<span id="star">*</span></label>
             <div class="col-sm-9">
                 <input type="text" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $ProfileInfo['EmailID']);?>" placeholder="Email ID">
+                <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span>
             </div>
         </div>
         <div class="form-group row">
@@ -78,6 +118,7 @@ $(document).ready(function () {
             <label for="AddressLine1" class="col-sm-2 col-form-label">Address<span id="star">*</span></label>
             <div class="col-sm-9">
                 <input type="text" class="form-control" id="AddressLine1" name="AddressLine1" value="<?php echo (isset($_POST['AddressLine1']) ? $_POST['AddressLine1'] : $ProfileInfo['AddressLine1']);?>" placeholder="AddressLine1">
+                <span class="errorstring" id="ErrAddressLine1"><?php echo isset($ErrAddressLine1)? $ErrAddressLine1 : "";?></span>
             </div>
         </div>
         <div class="form-group row">
@@ -103,6 +144,7 @@ $(document).ready(function () {
             <label for="City" class="col-sm-2 col-form-label">City<span id="star">*</span></label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="City" name="City" Placeholder="City" value="<?php echo (isset($_POST['City']) ? $_POST['City'] : $ProfileInfo['City']);?>">
+                <span class="errorstring" id="ErrCity"><?php echo isset($ErrCity)? $ErrCity : "";?></span>
             </div>
             <label for="OtherLocation" class="col-sm-3 col-form-label">Landmark</label>
             <div class="col-sm-3">
@@ -119,6 +161,7 @@ $(document).ready(function () {
                             <?php echo $StateName['CodeValue'];?>  </option>
                                 <?php } ?>
                 </select>
+                <span class="errorstring" id="ErrStateName"><?php echo isset($ErrStateName)? $ErrStateName : "";?></span>
             </div>
             <label for="Country" class="col-sm-3 col-form-label">Country<span id="star">*</span></label>
             <div class="col-sm-3">
@@ -129,18 +172,20 @@ $(document).ready(function () {
                             <?php echo $Country['CodeValue'];?>  </option>
                                 <?php } ?>
                 </select>
+                <span class="errorstring" id="ErrCountry"><?php echo isset($ErrCountry)? $ErrCountry : "";?></span>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
                         </div>
-        <div class="form-group row" style="margin-bottom:0px;">
-            <div class="col-sm-3">
-                <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
-                <br>
-                <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
-            </div>
+       <div class="form-group row" style="margin-bottom:0px;">
+        <div class="col-sm-3">
+            <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
+            <br>
+            <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
+        <div class="col-sm-3"><a href="../ProfilePhoto/<?php echo $_GET['Code'].".htm";?>">Next</a></div>
+    </div>
 </form>
 </div>
 <?php include_once("settings_footer.php");?>      

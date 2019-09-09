@@ -3,13 +3,14 @@
     if (isset($_POST['BtnSave'])) {
         
         $response = $webservice->getData("Member","AddEducationalDetails",$_POST);
+        //print_r($response);
         if ($response['status']=="success") {                
              echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm'</script>";
         } else {
             $errormessage = $response['message']; 
         }
     }
-   ?>
+   ?>                 
    <?php                 
             $response = $webservice->getData("Member","GetViewAttachments",(array("ProfileCode"=>$_GET['Code'])));
             $Education=$response['data']['Attachments'];
@@ -46,7 +47,7 @@
                             <div class="col-sm-8"><input type="text" class="form-control" name="EducationRemarks" id="EducationRemarks" value="<?php echo (isset($_POST['EducationRemarks']) ? $_POST['EducationRemarks'] : $response['data']['EducationRemarks']);?>"></div>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <div class="col-sm-12" style="text-align:left">
+                            <div class="col-sm-12" style="text-align:center;color:red">
                                 <?php echo $errormessage;?><?php echo $successmessage;?> 
                             </div>
                         </div>

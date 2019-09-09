@@ -41,13 +41,16 @@
               <span class="menu-title" style="font-size:14px">My Profiles</span>
               <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="manageprofiles">
+            <div class="collapse" id="manageprofiles">                                                                                
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
                   <a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyProfiles/ManageProfile");?>">Manage Profiles</a>
                 </li>
                   <li class="nav-item">
                   <a class="nav-link" href="<?php echo GetUrl("MyContacts/RecentlyWhoViewed");?>" style="font-size:13px">Recently who viewed</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="<?php echo GetUrl("MyContacts/RecentlyWhofavourited");?>" style="font-size:13px">Recently who Favorited</a>
                 </li>
               </ul>
             </div>

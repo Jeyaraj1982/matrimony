@@ -5,7 +5,7 @@
         $_POST['Code']=$_GET['Code'];
         $response = $webservice->getData("Member","AddPartnersExpectaion",$_POST);
         if ($response['status']=="success") {
-             echo "<script>location.href='../HoroscopeDetails/".$_GET['Code'].".htm'</script>";
+             $successmessage = $response['message']; 
         } else {
             $errormessage = $response['message']; 
         }
@@ -130,11 +130,11 @@
                         </div>
      <div class="form-group row" style="margin-bottom:0px;">
             <div class="col-sm-3">
-                <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save and Next</button>
+                <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
                 <br>
                 <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
             </div>
-            <div class="col-sm-3"><a href="<?php echo SiteUrl;?>" class="btn btn-primary">I'll do later</a></div>
+            <div class="col-sm-3"><a href="../HoroscopeDetails/<?php echo $_GET['Code'].".htm";?>">Next</a></div>
         </div>
     </form>
 </div> 

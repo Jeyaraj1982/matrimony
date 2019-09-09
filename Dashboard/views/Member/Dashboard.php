@@ -74,7 +74,7 @@
                 <div class="card-body" style="padding:10px !important;">
                     <?php if (sizeof($response['data'])==0) {      ?>
                             <div style="text-align:center;">
-                                <h5 style="margin-top:84px;color: #aaa;">No Profiles Found<br><br> <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a> </h5>
+                                <h5 style="color: #aaa;">No Profiles Found<br><br> <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a> </h5>
                             </div>
                         <?php } else { ?>
                 <div>
@@ -115,7 +115,7 @@
                     <?php } else { ?>
                          <div id="resCon_a002" class="resCon_a002"  style="background:white;width:97%">
                             <div style="text-align:center;">
-                                <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5>
+                                <h5 style="color: #aaa;">No Profiles Found </h5>
                             </div>
                          </div>
                     <?php } ?>
@@ -138,7 +138,7 @@
                         <button class="btn btn-primary rightLst">></button>
                     </div> 
                     <div style="padding:8px;text-align:center;">
-                        <a href="<?php echo SiteUrl;?>LatestUpdates">View All</a>
+                        <a href="<?php echo SiteUrl;?>MyContacts/RecentlyWhofavourited">View All</a>
                     </div>  
                     <?php } else { ?>
                     <div id="resCon_a002" class="resCon_a002"  style="background:white;width:97%;height:293px">

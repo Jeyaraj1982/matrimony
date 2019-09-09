@@ -129,6 +129,13 @@ function submitUpload() {
             <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
         </div>
     </div>
+    <br>
+    <div class="form-group row" style="margin-bottom:0px;">
+            <div class="col-sm-2">
+                <a href="../PhysicalInformation/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Previous</a>
+            </div>
+            <div class="col-sm-2"><a href="../CommunicationDetails/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Next</a></div>
+        </div>
     <br><br><div style="text-align: right;" id="x"></div>
     <br>
     </form>
