@@ -654,6 +654,7 @@
                                     FROM _tbl_members
                                     INNER JOIN _tbl_franchisees
                                     ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.ReferedBy='".$loginInfo[0]['FranchiseeID']."' and _tbl_members.MemberID='".$_POST['Code']."'");
+             $Member[0]['Country'] = CodeMaster::getData('RegisterAllowedCountries');
             return Response::returnSuccess("success",$Member[0]);
         }
         function SearchMemberDetails() {
@@ -732,6 +733,7 @@
                     $mysql->execute("update _tbl_members set MemberName='".$_POST['MemberName']."',
                                                     EmailID='".$_POST['EmailID']."',
                                                     MobileNumber='".$_POST['MobileNumber']."',
+                                                    MobileNumberCountryCode='".$_POST['CountryCode']."',
                                                     IsActive='".$_POST['Status']."' where  MemberID='".$Member[0]['MemberID']."'");
       
      
@@ -1604,10 +1606,12 @@
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                 return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                  return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Publish Profile</h4>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>            
                             <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a><h5>
+                            <h5 style="text-align:center;"><a href="../../Dashoard" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';
 
          } 
@@ -1839,18 +1843,37 @@
              $Country = CodeMaster::getData('RegisterAllowedCountries');
              return Response::returnSuccess("success",array("CountryCode"      =>$Country));
          } 
+          
+         function DashboardCounts() {
+             
+             global $mysql,$loginInfo;
          
-         
-        }
-?>se::returnSuccess("success",$mysql->select($sql." WHERE `IsActive`='0'"));    
+             $Member = $mysql->select("select count(*) as cnt from `_tbl_members`");      
+             $DraftedProfiles = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `RequestToVerify`='0' and `IsApproved`='0'");      
+             $PostedProfiles = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `RequestToVerify`='1' and `IsApproved`='0'");      
+             
+             return Response::returnSuccess("success".$PostedProfiles,array("Member"               =>$Member[0],
+                                                                             "DraftedProfiles"      =>$DraftedProfiles[0],
+                                                                             "PostedProfiles"       =>$PostedProfiles[0]));
+         }
+         function GetDraftedProfiles() {
+           global $mysql,$loginInfo;    
+             $sql = "SELECT *
+                                    FROM _tbl_draft_profiles
+                                    LEFT  JOIN _tbl_members
+                                    ON _tbl_draft_profiles.MemberID=_tbl_members.MemberID where _tbl_draft_profiles.CreatedByFranchiseeStaffID='".$loginInfo[0]['FranchiseeStaffID']."'";
+             
+
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }                                                                                                                                                                            
+             if (isset($_POST['Request']) && $_POST['Request']=="Draft") {
+                return Response::returnSuccess("success".$sql,$mysql->select($sql." WHERE _tbl_draft_profiles.RequestToVerify='0'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Publish") {
+                return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_draft_profiles.IsApproved='1'"));    
              }
          }
-         function GetCountryCode(){
-             global $mysql,$loginInfo;
-             $Country = CodeMaster::getData('RegisterAllowedCountries');
-             return Response::returnSuccess("success",array("CountryCode"      =>$Country));
-         } 
-         
          
         }
-?>
+?> 
