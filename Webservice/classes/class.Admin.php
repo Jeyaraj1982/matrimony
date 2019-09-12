@@ -50,8 +50,10 @@ class Admin extends Master {
 
         function GetFranchiseeCode() {
             
+            
             return Response::returnSuccess("success",array("FranchiseeCode" => SeqMaster::GetNextFranchiseeNumber(),
                                                            "Plans"          => Plans::GetFranchiseePlans(),
+                                                           "CountryCode"    => CodeMaster::getData('RegisterAllowedCountries');
                                                            "CountryName"    => CodeMaster::getData('CONTNAMES'),
                                                            "StateName"      => CodeMaster::getData('STATNAMES'),
                                                            "DistrictName"   => CodeMaster::getData('DistrictName'),

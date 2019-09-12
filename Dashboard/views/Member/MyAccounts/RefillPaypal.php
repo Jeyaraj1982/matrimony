@@ -84,7 +84,7 @@
             <input type="text" placeholder="Enter Amount" name="Amount" id="Amount" style="border:1px solid #ccc;padding:3px;padding-left:10px;"><br>
             <span style="color:#999;font-size:11px;">Multiples of 100 and Minimum ₹ 500 & Maximum ₹ 10000</span><br>
             <span class="errorstring" id="ErrAmount"></span><br><br><br>
-            <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal">I understand terms of wallet udpate </label>&nbsp;&nbsp;<a href="">Lean more</a><Br>
+            <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal">I understand terms of wallet udpate </label>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#termscondition">Learn more</a><Br>
             <span class="errorstring" id="Errcheck"></span><br>
             <?php echo $errormessage ;?><?php echo $successmessage;?>
             <div>
@@ -104,7 +104,7 @@
     <div class="modal" id="termscondition" role="dialog"  style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
         <div class="modal-dialog" style="width: 367px;">
             <div class="modal-content">
-                <div class="modal-body" style="padding:20px">
+                <div class="modal-body" style="padding:20px">                                                                                                                                                  
                     <div  style="height: 315px;">
                         <h5 style="text-align:center">Refill Wallet Terms</h5>
                         <ul>
@@ -115,6 +115,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
      <?php }?>
 <?php include_once("accounts_footer.php");?>                     

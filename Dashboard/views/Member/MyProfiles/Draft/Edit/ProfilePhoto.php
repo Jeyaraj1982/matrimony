@@ -84,12 +84,8 @@ function submitUpload() {
                     if ($err==0) {
                         $_POST['ProfilePhoto']= $profilephoto;
                         $res =$webservice->getData("Member","AddProfilePhoto",$_POST);
-                        if ($res['status']=="success") {
-                            echo  $res['message']; 
-                        } else {
-                           // print_r($photos);
-                            echo $res['message']; 
-                        }
+                        echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
+                                                           : $dashboard->showErrorMsg($res['message']);
                     } else {
                         $res =$webservice->getData("Member","AddProfilePhoto");
                     }
@@ -100,6 +96,7 @@ function submitUpload() {
                 $profile = $res['data'];
               
             ?>
+             
     <div class="form-group row">
         <div class="col-sm-12">
             <input type="File" id="ProfilePhoto" name="ProfilePhoto" Placeholder="File">

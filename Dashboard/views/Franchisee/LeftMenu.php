@@ -44,13 +44,13 @@
                             <a class="nav-link" href="<?php echo GetUrl("NewProfile");?>">Create Profile</a>
                         </li> 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Drafted Profile</a>
+                            <a class="nav-link" href="<?php echo GetUrl("DraftedProfiles");?>">Drafted Profile</a>
                         </li> 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Posted Profile</a>
+                            <a class="nav-link" href="<?php echo GetUrl("PostedProfiles");?>">Posted Profile</a>
                         </li> 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Published Profile</a>
+                            <a class="nav-link" href="<?php echo GetUrl("PublishedProfiles");?>">Published Profile</a>
                         </li> 
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("SearchProfile");?>" >Add Profile to Home Page</a>

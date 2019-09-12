@@ -303,7 +303,8 @@ function myFunction() {
         $errormessage = $response['message']; 
     }
     }
-  $fInfo = $webservice->GetFranchiseeCode(); 
+  $fInfo = $webservice->getData("Admin","GetFranchiseeCode");
+  print_r($fInfo);
      $FranchiseeCode="";
         if ($fInfo['status']=="success") {
             $FranchiseeCode  =$fInfo['data']['FranchiseeCode'];
@@ -347,7 +348,16 @@ function myFunction() {
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
-                    <div class="col-sm-9">
+                    <div class="col-sm-2">
+                        <select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="width: 61px;">
+                                    <?php foreach($fInfo['data']['CountryCode'] as $CountryCode) { ?>
+                                        <option value="<?php echo $CountryCode['ParamB'];?>"<?php echo ($_POST['CountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
+                                            <?php echo $CountryCode['str'];?>
+                                        </option>
+                                        <?php } ?>                       
+                                </select>
+                    </div>
+                    <div class="col-sm-7">
                         <input type="text" maxlength="10" class="form-control" id="BusinessMobileNumber" name="BusinessMobileNumber" Placeholder="Mobile Number" value="<?php echo (isset($_POST['BusinessMobileNumber']) ? $_POST['BusinessMobileNumber'] : "");?>">
                         <span class="errorstring" id="ErrBusinessMobileNumber"><?php echo isset($ErrBusinessMobileNumber)? $ErrBusinessMobileNumber : "";?></span>
                     </div>

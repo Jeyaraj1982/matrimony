@@ -79,11 +79,8 @@ function submitUpload() {
                     if ($err==0) {
                         $_POST['File']= $profilephoto;
                         $res =$webservice->getData("Member","AttachDocuments",$_POST);
-                        if ($res['status']=="success") {
-                            echo  $res['message']; 
-                        } else {
-                            $errormessage = $res['message']; 
-                        }
+                        echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
+                                                           : $dashboard->showErrorMsg($res['message']);
                     } else {
                         $res =$webservice->getData("Member","AttachDocuments");
                     }

@@ -30,7 +30,7 @@
             <div class="col-sm-3" style="margin-right: -47px;"><small>Created on</small></div>
             <div class="col-sm-3">:&nbsp;<small style="color:#737373;"><?php echo  putDateTime($Member['CreatedOn']);?></small></div>
             <div class="col-sm-2" style="margin-right: -47px;"><small>Status</small></div>
-            <div class="col-sm-3">:&nbsp;<small style="color:#737373;"><?php echo  ($Member['IsActive']==1) ? "Active" : "Deactive"; ?></small></div>                              
+            <div class="col-sm-3">:&nbsp;<small style="color:#737373;"><?php echo  ($Member['IsActive']==1) ? "Active" : "Deactive"; ?></small></div>                               
         </div>
         <div class="col-sm-12" style="text-align:left;color:blue;padding:20px;padding-left:0px;">
             <a href="<?php echo GetUrl("MySettings/EditMemberInfo");?>"><small style="font-weight:bold;text-decoration:underline">Edit Information</small></a>                                                                                                                                                  

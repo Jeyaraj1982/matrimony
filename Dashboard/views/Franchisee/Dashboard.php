@@ -4,6 +4,13 @@
 input:focus{border:1px solid #ccc;}
 #errormsg{text-align:center;color:red;padding-bottom:5px;padding-top:5px;}
 </style>
+<?php 
+$response = $webservice->getData("Franchisee","DashboardCounts");
+$MemberCount = $response['data']['Member'];
+$DraftedProfilesCount = $response['data']['DraftedProfiles'];
+$PostedProfilesCount = $response['data']['PostedProfiles'];
+
+?>
           <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
               <div class="card card-statistics">
@@ -15,7 +22,7 @@ input:focus{border:1px solid #ccc;}
                     <div class="float-right">
                       <p class="mb-0 text-right">My Member</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0">10</h3>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $MemberCount['cnt']; ?></h3>
                       </div>
                     </div>
                   </div>
@@ -35,7 +42,7 @@ input:focus{border:1px solid #ccc;}
                     <div class="float-right">
                       <p class="mb-0 text-right">Drafted Profiles</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0">10</h3>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $DraftedProfilesCount['cnt'];?></h3>
                       </div>
                     </div>
                   </div>
@@ -55,13 +62,12 @@ input:focus{border:1px solid #ccc;}
                     <div class="float-right">                                                                          
                       <p class="mb-0 text-right">Posted Profile</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0">0</h3>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $PostedProfilesCount['cnt'];?></h3>
                       </div>
                     </div>
                   </div>
                    <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-bookmark-outline mr-1" aria-hidden="true"></i><a href="<?php echo GetUrl("MyAccounts/RefillWallet");?>">Refill</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <i class="mdi mdi-bookmark-outline mr-1" aria-hidden="true"></i><a href="<?php echo GetUrl("MyAccounts/MyTransactions");?>">View Txn</a>
+                     <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo GetUrl("Member/ManageMembers");?>">View</a>
                   </p>
                   </div>
             </div>
@@ -146,7 +152,7 @@ input:focus{border:1px solid #ccc;}
 <script>
 window.onload = function () {
 
-var chart = new CanvasJS.Chart("chartContainer", {
+var chart = new CanvasJS.Chart("My Earnings", {
     animationEnabled: true,
     theme: "light2",
     title:{

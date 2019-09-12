@@ -57,6 +57,7 @@ function SendOtpForProfileforPublish(formid) {
         $.post(API_URL + "m=Member&a=SendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
 }
 
+ 
 function ProfilePublishOTPVerification(frmid) {
          var param = $( "#"+frmid).serialize();
          $('#Publish_body').html(preloader);
@@ -68,12 +69,12 @@ function ProfilePublishOTPVerification(frmid) {
                     );
               
     }
-function ResendSendOtpForProfileforPublish(formid) {
-     var param = $("#frm_"+formid).serialize();
+function ResendSendOtpForProfileforPublish(frmid) {
+     var param = $("#"+frmid).serialize();
      $('#Publish_body').html(preloader);
         $.post(API_URL + "m=Member&a=ResendSendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
 } 
 
 </script>
    
-
+                                                                 

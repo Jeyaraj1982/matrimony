@@ -2178,7 +2178,7 @@
                  }
              }
              $photos = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
-             return Response::returnSuccess("success",$photos);
+             return Response::returnSuccess("Your Document Information has successfully updated and waiting for verification",$photos);
          }    
 
          function DeletDocumentAttachments() {
@@ -2285,7 +2285,7 @@
                  }
              }
              $photos = $mysql->select("select * from `_tbl_draft_profiles_photos` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
-             return Response::returnSuccess("success",$photos);
+             return Response::returnSuccess("Your profile photo has successfully updated and waiting for verification",$photos);
          }
 
          function GetViewAttachments() {
@@ -3005,7 +3005,7 @@
 
         global $mysql,$mail,$loginInfo;      
         $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
-           $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileID`='".$_POST['ProfileID']."'");   
+           //$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileID`='".$_POST['ProfileID']."'");   
 
            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
            
