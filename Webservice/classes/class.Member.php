@@ -1781,6 +1781,9 @@
                                                            `Sex`               = '".$Sex[0]['CodeValue']."',
                                                            `MaritalStatusCode` = '".$_POST['MaritalStatus']."',
                                                            `MaritalStatus`     = '".$MaritalStatus[0]['CodeValue']."',
+                                                           `ChildrenCode`      ='0',     
+                                                           `Children`          ='0',
+                                                           `IsChildrenWithyou` ='0',
                                                            `MotherTongueCode`  = '".$_POST['Language']."',
                                                            `MotherTongue`      = '".$MotherTongue[0]['CodeValue']."',
                                                            `ReligionCode`      = '".$_POST['Religion']."',
@@ -1794,7 +1797,7 @@
                                                            `Nationality`       = '".$Nationality[0]['CodeValue']."',
                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                            `AboutMe`           = '".$_POST['AboutMe']."'"; 
-        if ($_POST['MaritalStatus'] == "MST004") {
+        if ($_POST['MaritalStatusCode'] != "MST001") {
             $updateSql .= " ,ChildrenCode ='".$_POST['HowManyChildren']."', Children='".$Childrens[0]['CodeValue']."',IsChildrenWithyou='".$_POST['ChildrenWithYou']."'";
         } 
         $updateSql .= " where  MemberID='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['Code']."'";                 

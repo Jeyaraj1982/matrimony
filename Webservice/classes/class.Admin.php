@@ -53,7 +53,7 @@ class Admin extends Master {
             
             return Response::returnSuccess("success",array("FranchiseeCode" => SeqMaster::GetNextFranchiseeNumber(),
                                                            "Plans"          => Plans::GetFranchiseePlans(),
-                                                           "CountryCode"    => CodeMaster::getData('RegisterAllowedCountries');
+                                                           "CountryCode"    => CodeMaster::getData('RegisterAllowedCountries'),
                                                            "CountryName"    => CodeMaster::getData('CONTNAMES'),
                                                            "StateName"      => CodeMaster::getData('STATNAMES'),
                                                            "DistrictName"   => CodeMaster::getData('DistrictName'),
@@ -67,7 +67,7 @@ class Admin extends Master {
             global $mysql,$loginInfo;
             
             if (!(strlen(trim($_POST['FranchiseeName']))>0)) {
-                return Response::returnError("Please enter your name");
+                return Response::returnError("Please enter your name");                                          
             }
             
             if (!(strlen(trim($_POST['FranchiseeEmailID']))>0)) {
@@ -132,10 +132,6 @@ class Admin extends Master {
             if (!(strlen(trim($_POST['FatherName']))>0)) {
                 return Response::returnError("Please enter Father Name");
             }
-            if (!(strlen(trim($_POST['DateofBirth']))>0)) {
-                return Response::returnError("Please enter Date of Birth");
-            }
-            
             if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0")) {
                 return Response::returnError("Please select Sex");
             }
@@ -214,6 +210,7 @@ class Admin extends Master {
             return Response::returnError("Login Name Already Exists");
         }
         $plan = $mysql->select("select * from _tbl_franchisees_plans where PlanID='".$_POST['Plan']."'");
+        $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
          $id =  $mysql->insert("_tbl_franchisees",array("FranchiseeCode"       => $_POST['FranchiseeCode'],
                                                         "FranchiseName"        => $_POST['FranchiseeName'],
                                                         "ContactEmail"         => $_POST['FranchiseeEmailID'],
@@ -258,11 +255,13 @@ class Admin extends Master {
             $mysql->insert("_tbl_franchisees_staffs",array("PersonName"     => $_POST['PersonName'],
                                                            "FatherName"     => $_POST['FatherName'],
                                                            "FranchiseeID"   => $id,
-                                                           "DateofBirth"    => $_POST['DateofBirth'],
+                                                           "DateofBirth"    => $dob,
                                                            "Sex"            => $_POST['Sex'],
                                                            "FrCode"         => $_POST['FranchiseeCode'],
                                                            "EmailID"        => $_POST['EmailID'],
+                                                           "CountryCode"   => $_POST['MobileNumberCountryCode'],
                                                            "MobileNumber"   => $_POST['MobileNumber'],
+                                                           "WhatsappNumberCountryCode" => $_POST['WhatsappNumberCountryCode'],
                                                            "WhatsappNumber" => $_POST['WhatsappNumber'],
                                                            "LandlineNumber" => $_POST['LandlineNumber'],
                                                            "AddressLine1"   => $_POST['Address1'],

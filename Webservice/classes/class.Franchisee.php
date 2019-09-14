@@ -787,12 +787,12 @@
         if (sizeof($data)>0) {
             return Response::returnError("LoginName Already Exists");
         }
-       
+        $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
        $id =  $mysql->insert("_tbl_franchisees_staffs",array("FrCode"          => $loginInfo[0]['FranchiseeCode'],
                                                                  "StaffCode"       => $_POST['staffCode'],   
                                                                  "PersonName"      => $_POST['staffName'], 
-                                                                 "Sex"             => $_POST['Sex'], 
-                                                                 "DateofBirth"     => $_POST['DateofBirth'],
+                                                                 "Sex"             => $_POST['Sex'],                                 
+                                                                 "DateofBirth"     => $dob,
                                                                  "CountryCode"    => $_POST['CountryCode'],
                                                                  "MobileNumber"    => $_POST['MobileNumber'],
                                                                  "EmailID"         => $_POST['EmailID'],
@@ -833,6 +833,7 @@
                     return Response::returnError("Mobile Number Already Exists");
                 }   
                  $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_POST['Code']."'");
+                  $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
                     $mysql->execute("update _tbl_franchisees_staffs set PersonName='".$_POST['staffName']."', 
                                                            Sex='".$_POST['Sex']."', 
                                                            DateofBirth='".$dob."',
@@ -843,14 +844,15 @@
                                                            LoginPassword='".$_POST['LoginPassword']."'
                                                            where  PersonID='".$Staffs[0]['PersonID']."'");
                 return Response::returnSuccess("success",array());
-                                                            
+                                                                                               
     } 
     function GetStaffs(){
            global $mysql,$loginInfo;    
               
               $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_POST['Code']."'");
-              $sql="select * from _tbl_franchisees_staffs where PersonID='".$_POST['Code']."'";
-                return Response::returnSuccess("success",$Staffs);
+              $Sex =   $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$Staffs[0]['Sex']."'");
+                return Response::returnSuccess("success",array("Staffs" => $Staffs,
+                                                                "Gender"     =>$Sex));
     }
     function GetFranchiseeInfo(){
              global $mysql,$loginInfo;
@@ -1868,10 +1870,13 @@
                 return Response::returnSuccess("success",$mysql->select($sql));    
              }                                                                                                                                                                            
              if (isset($_POST['Request']) && $_POST['Request']=="Draft") {
-                return Response::returnSuccess("success".$sql,$mysql->select($sql." WHERE _tbl_draft_profiles.RequestToVerify='0'"));    
+                return Response::returnSuccess("success".$sql,$mysql->select($sql." and _tbl_draft_profiles.RequestToVerify='0'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Post") {
+                return Response::returnSuccess("success".$sql,$mysql->select($sql." and _tbl_draft_profiles.RequestToVerify='1' and _tbl_draft_profiles.IsApproved='0'"));    
              }
              if (isset($_POST['Request']) && $_POST['Request']=="Publish") {
-                return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_draft_profiles.IsApproved='1'"));    
+                return Response::returnSuccess("success",$mysql->select($sql."  and _tbl_draft_profiles.IsApproved='1'"));    
              }
          }
          
