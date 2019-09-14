@@ -30,7 +30,7 @@
                 $response = $webservice->getData("Franchisee","forgotPassword",$_POST);
                 if ($response['status']=="success") {
                     ?>
-                    <form action="forget-password-otp.php" id="reqFrm" method="post">
+                    <form action="FpwdOTP.php" id="reqFrm" method="post">
                         <input type="hidden" value="<?php echo $response['data']['reqID'];?>" name="reqID">
                         <input type="hidden" value="<?php echo $response['data']['email'];?>" name="reqEmail">
                     </form>

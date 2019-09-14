@@ -101,6 +101,17 @@ text-align: left;
                          <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Marital Status</label>
                          <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['MaritalStatus']);?></label>   
                     </div>
+                    <?php if($ProfileInfo['MaritalStatusCode']!= "MST001"){?>
+                    <div class="form-group row">
+                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Children</label>
+                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Children']);?></label>   
+                    </div>
+                    <div class="form-group row">
+                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Children with you</label>
+                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
+                            <?php if(trim($ProfileInfo['Children'])=="1"){ echo "Yes";} else  { echo "No";};?></label>   
+                    </div>
+                    <?php }?>
                     <div class="form-group row">
                          <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Mother Tongue</label>
                          <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['MotherTongue']);?></label>  

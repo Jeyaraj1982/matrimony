@@ -3,7 +3,7 @@
 <?php
         include_once("../../config.php");
      
-        if (isset($_POST['UserName']))  {
+       /* if (isset($_POST['UserName']))  {
             //echo "select * from _tbl_franchisees_staffs where LoginName='".trim($_POST['UserName'])."' or EmailID='".trim($_POST['UserName'])."'";
             $res = $mysql->select("select * from _tbl_members where MemberLogin='".trim($_POST['UserName'])."' or EmailID='".trim($_POST['UserName'])."'");
             if(sizeof($res)>0) {
@@ -14,7 +14,7 @@
                     $mail2 = new MailController();
                      $mail2->MemberForgetPassword(array("mailTo"     => $res[0]['EmailID'] ,
                                                         "MemberName" => $res[0]['MemberName'],
-                                                        "code"       => $_SESSION['OTP']));
+                                                        "code"       => $_SESSION['OTP']));                   
                     header("Location:".AppUrl."views/Member/FpwdOTP.php");
                 } else {
                      $status = "Couldn't process. account may be suspended";
@@ -22,8 +22,26 @@
             } else {
                 $status = "Invaild Login Name or Registered Email Address";
             }
-        }                                     
+        }         */                            
     ?>
+    <?php
+            if (isset($_POST['UserName'])) {
+                
+                $response = $webservice->getData("Franchisee","forgotPassword",$_POST);
+                if ($response['status']=="success") {
+                    ?>
+                    <form action="FpwdOTP.php" id="reqFrm" method="post">
+                        <input type="hidden" value="<?php echo $response['data']['reqID'];?>" name="reqID">
+                        <input type="hidden" value="<?php echo $response['data']['email'];?>" name="reqEmail">
+                    </form>
+                    <script>document.getElementById("reqFrm").submit();</script>
+                <?php
+                    }
+                    else{
+                        $errormessage = $response['message']; 
+                    } 
+            }
+            ?>
  <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

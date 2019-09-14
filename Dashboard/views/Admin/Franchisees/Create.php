@@ -133,11 +133,6 @@ $(document).ready(function () {
         IsNonEmpty("FatherName","ErrFatherName","Please Enter Father's Name");
                         
    });
-   $("#DateofBirth").blur(function () {
-    
-        IsNonEmpty("DateofBirth","ErrDateofBirth","Please Enter Date of Birth");
-                        
-   });
    $("#EmailID").blur(function () {
     
         IsNonEmpty("EmailID","ErrEmailID","Please Enter Email ID");
@@ -198,7 +193,6 @@ function myFunction() {
                          $('#ErrIFSCode').html("");
                          $('#ErrPersonName').html("");
                          $('#ErrFatherName').html("");
-                         $('#ErrDateofBirth').html("");
                          $('#ErrEmailID').html("");
                          $('#ErrMobileNumber').html("");
                          $('#ErrWhatsappNumber').html("");
@@ -255,7 +249,6 @@ function myFunction() {
                         if (IsNonEmpty("FatherName","ErrFatherName","Please Enter Father's Name")) {
                         IsAlphabet("FatherName","ErrFatherName","Please Enter Alphabet Charactors only");
                         }
-                        IsNonEmpty("DateofBirth","ErrDateofBirth","Please Enter Valid Date of Birth");
                         
                         if (IsNonEmpty("EmailID","ErrEmailID","Please Enter Email ID")) {
                             IsEmail("EmailID","ErrEmailID","Please Enter Valid EmailID");    
@@ -304,7 +297,6 @@ function myFunction() {
     }
     }
   $fInfo = $webservice->getData("Admin","GetFranchiseeCode");
-  print_r($fInfo);
      $FranchiseeCode="";
         if ($fInfo['status']=="success") {
             $FranchiseeCode  =$fInfo['data']['FranchiseeCode'];
@@ -514,7 +506,7 @@ function myFunction() {
                 </div>
             </div>
         </div>
-
+       </div>
         <div class="col-12 grid-margin">
             <div class="card">
                 <div class="card-body">
@@ -535,11 +527,33 @@ function myFunction() {
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Date of birth<span id="star">*</span></label>
-                        <div class="col-sm-3">
-                            <input type="Date" class="form-control" id="DateofBirth" name="DateofBirth" value="<?php echo (isset($_POST['DateofBirth']) ? $_POST['DateofBirth'] : "");?>" style="line-height:15px !important">
-                            <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth : "";?> </span>
-                        </div>
-                        <label class="col-sm-3 col-form-label">Sex<span id="star">*</span></label>
+                        <div class="col-sm-1" style="max-width:160px !important;">
+                                    <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
+                                        <?php for($i=1;$i<=31;$i++) {?>
+                                            <option value="<?php echo $i; ?>" <?php echo ($_POST[ 'date']==$i) ? " selected='selected' " : "";?>>
+                                            <?php echo $i;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                            </div>
+                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">        
+                                    <select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px">
+                                        <?php foreach($_Month as $key=>$value) {?>
+                                            <option value="<?php echo $key+1; ?>" <?php echo ($_POST[ 'month']==$key+1) ? " selected='selected' " : "";?>>
+                                            <?php echo $value;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>                                    
+                            </div>
+                            <div class="col-sm-2" style="max-width: 148px;">
+                                    <select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
+                                        <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
+                                            <option value="<?php echo $i; ?>" <?php echo ($_POST['year']==$i) ? " selected='selected' " : "";?>><?php echo $i;?>
+                                            </option>                             
+                                        <?php } ?>                                  
+                                    </select>
+                     </div>
+                       <label class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
                         <div class="col-sm-3">
                             <select class="selectpicker form-control" data-live-search="true" id="Sex" name="Sex">
                                 <option value="0">--Choose Gender--</option>
@@ -560,19 +574,37 @@ function myFunction() {
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-2">
+                        <select class="selectpicker form-control" data-live-search="true" name="MobileNumberCountryCode" id="MobileNumberCountryCode" style="width: 61px;">
+                                    <?php foreach($fInfo['data']['CountryCode'] as $CountryCode) { ?>
+                                        <option value="<?php echo $CountryCode['ParamB'];?>"<?php echo ($_POST['MobileNumberCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
+                                            <?php echo $CountryCode['str'];?>
+                                        </option>
+                                        <?php } ?>                       
+                                </select>
+                    </div>
+                        <div class="col-sm-7">
                             <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" Placeholder="Mobile Number" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>">
                             <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Whatsapp Number </label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
+                        <select class="selectpicker form-control" data-live-search="true" name="WhatsappNumberCountryCode" id="WhatsappNumberCountryCode" style="width: 61px;">
+                                    <?php foreach($fInfo['data']['CountryCode'] as $CountryCode) { ?>
+                                        <option value="<?php echo $CountryCode['ParamB'];?>"<?php echo ($_POST['WhatsappNumberCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
+                                            <?php echo $CountryCode['str'];?>
+                                        </option>
+                                        <?php } ?>                       
+                                </select>
+                        </div>
+                        <div class="col-sm-2">
                             <input type="text" maxlength="10" class="form-control" id="WhatsappNumber" name="WhatsappNumber" Placeholder="Whatsapp Number" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : "");?>">
                             <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
                         </div>
                         <label class="col-sm-3 col-form-label">Landline Number </label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <input type="text" class="form-control" id="LandlineNumber" name="LandlineNumber" Placeholder="Landline Number" value="<?php echo (isset($_POST['LandlineNumber']) ? $_POST['LandlineNumber'] : "");?>">
                             <span class="errorstring" id="ErrLandlineNumber"><?php echo isset($ErrLandlineNumber)? $ErrLandlineNumber : "";?></span>
                         </div>

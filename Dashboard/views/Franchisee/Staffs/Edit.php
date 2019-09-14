@@ -62,7 +62,8 @@
         }
     }
     $response = $webservice->GetStaffs();
-    $Staffs=$response['data'];
+    $Staffs=$response['data']['Staffs'];
+   
 ?>
 <script>
 
@@ -76,11 +77,6 @@ $(document).ready(function () {
    $("#staffCode").blur(function () {
     
         IsNonEmpty("staffCode","ErrstaffCode","Please Enter staff Code");
-                        
-   });
-   $("#staffName").blur(function () {
-    
-        IsNonEmpty("staffName","ErrstaffName","Please Enter staff Name");
                         
    });
    $("#Sex").blur(function () {
@@ -133,7 +129,6 @@ function SubmitNewStaff() {
                          $('#ErrstaffCode').html("");
                          $('#ErrstaffName').html("");
                          $('#ErrSex').html("");
-                         $('#ErrDateofBirth').html("");
                          $('#ErrMobileNumber').html("");
                          $('#ErrEmailID').html("");
                          $('#ErrUserRole').html("");
@@ -146,7 +141,6 @@ function SubmitNewStaff() {
                         if (IsNonEmpty("staffName","ErrstaffName","Please Enter staff Name")) {
                         IsAlphabet("staffName","ErrstaffName","Please Enter Alpha Numeric characters only");
                         }
-                        IsNonEmpty("DateofBirth","ErrDateofBirth","Please Enter Valid Date of Birth");
                         if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter MobileNumber")) {
                         IsMobileNumber("MobileNumber","ErrMobileNumber","Please Enter Valid Mobile Number");
                         }
@@ -214,27 +208,42 @@ function SubmitNewStaff() {
                           <div class="col-sm-3">
                           <select class="form-control" id="Sex"  name="Sex" >
                           <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
-                            <option value="<?php echo $Sex['SoftCode'];?>" <?php echo ($_POST['Sex']==$Sex['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
-                            <?php } ?>
+                          <option value="<?php echo $Sex['SoftCode'];?>" <?php echo (isset($_POST[ 'Sex'])) ? (($_POST[ 'Sex']==$Sex[ 'SoftCode']) ? " selected='selected' " : "") : (($Staffs[0]['Sex']==$Sex[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                            <?php echo $Sex['CodeValue'];?>
+                                                <?php } ?>      
+                        </option>
                           </select>
                           <span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>
                           </div>
-                          <div class="col-sm-1"></div>
                           <label class="col-sm-2 col-form-label">Date of Birth<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <?php
-                         
-                          if (isset($_POST['DateofBirth'])) {
-                            $dob=$_POST['DateofBirth']  ;
-                          } else {
-                              $dob=strtotime($Staffs[0]['DateofBirth'])  ;  
-                               $dob = date("Y",$dob)."-".date("m",$dob)."-".date("d",$dob);
-                          } 
-      
-                          ?>
-                            <input type="date" class="form-control" id="DateofBirth" name="DateofBirth" style="line-height:15px !important" value="<?php echo $dob;?>">
-                             <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth: "";?></span>
-                          </div>
+                          <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+                                <?php $dob=strtotime($Staffs[0]['DateofBirth'])  ; ?>
+                                    <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
+                                        <?php for($i=1;$i<=31;$i++) {?>
+                                            <option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'date'])) ? (($_POST[ 'date']==$i) ? " selected='selected' " : "") : ((date("d",$dob)==$i) ? " selected='selected' " : "");?>>
+                                            <?php echo $i;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                            </div>
+                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">        
+                                    <select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px">
+                                        <?php foreach($_Month as $key=>$value) {?>
+                                            <option value="<?php echo $key+1; ?>" <?php echo (isset($_POST[ 'month'])) ? (($_POST[ 'month']==$key+1) ? " selected='selected' " : "") : ((date("m",$dob)==$key+1) ? " selected='selected' " : "");?>>
+                                            <?php echo $value;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                            </div>
+                            <div class="col-sm-2">
+                                    <select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
+                                        <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
+                                            <option value="<?php echo $i; ?>" <?php echo (isset($_POST['year'])) ? (($_POST['year']==$i) ? " selected='selected' " : "") : ((date("Y",$dob)==$i) ? " selected='selected' " : "");?>>
+                                            <?php echo $i;?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                            </div>
                         </div>
                       </div>
                       </div>

@@ -163,7 +163,7 @@ function submitprofile() {
                         <div class="form-group row">
                             <label for="MaritalStatus" class="col-sm-2 col-form-label">Marital Status<span id="star">*</span></label>
                             <div class="col-sm-4">
-                                <select class="selectpicker form-control" data-live-search="true" id="MaritalStatus" name="MaritalStatus" onchange="getHowmanyChildrenInfo())">
+                                <select class="selectpicker form-control" data-live-search="true" id="MaritalStatus" name="MaritalStatus" onchange="getHowmanyChildrenInfo()">
                                     <option value="0">Choose Marital Status</option>
                                     <?php foreach($response['data']['MaritalStatus'] as $MaritalStatus) { ?>
                                         <option value="<?php echo $MaritalStatus['SoftCode'];?>" <?php echo (isset($_POST[ 'MaritalStatus'])) ? (($_POST[ 'MaritalStatus']==$MaritalStatus[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MaritalStatus']==$MaritalStatus[ 'CodeValue']) ? " selected='selected' " : "");?>>
@@ -184,45 +184,25 @@ function submitprofile() {
                                 <span class="errorstring" id="ErrLanguage"><?php echo isset($ErrLanguage)? $ErrLanguage : "";?></span>
                             </div>
                         </div>
-    <script>
-        function getHowmanyChildrenInfo() {
-            
-            if ($('#MaritalStatus').val()=="MST002")  {
-                   $('#HowManyChildren').attr("disabled", "disabled");
-                   $('#howmanychildren').html('Children');
-                  // $('#ChildrenWithYou').attr("disabled", "disabled");
-                  // $('#IsChildrenWithYou').html('Is Children With You?');
-            }else {
-                   $('#HowManyChildren').removeAttr("disabled");
-                   $('#howmanychildren').html('Children<span id="star">*</span>');
-                 //  $('#ChildrenWithYou').removeAttr("disabled");
-                  // $('#IsChildrenWithYou').html('Is Children WithYou?<span id="star">*</span>');
-            }
-        }
-        
-        setTimeout(function(){
-            getHowmanyChildrenInfo()
-        },1000);
-        
-</script>                  
-                        <div class="form-group row">
-                            <label for="HowManyChildren" class="col-sm-2 col-form-label" id="howmanychildren"></label>
+                 
+                        <div class="form-group row" id="mstatus_additionalinfo">
+                            <label for="HowManyChildren" class="col-sm-2 col-form-label" id="howmanychildren">Children</label>
                             <div class="col-sm-4" id="childrencount_input">
                                     <select class="selectpicker form-control" data-live-search="true" id="HowManyChildren" name="HowManyChildren">
                                     <option>Choose How Many Children</option>
                                     <?php foreach($response['data']['NumberofBrother'] as $HowManyChildren) { ?>
-                                        <option value="<?php echo $HowManyChildren['SoftCode'];?>" <?php echo (isset($_POST[ 'HowManyChildren'])) ? (($_POST[ 'HowManyChildren']==$HowManyChildren[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'HowManyChildren']==$HowManyChildren[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                                        <option value="<?php echo $HowManyChildren['SoftCode'];?>" <?php echo (isset($_POST[ 'HowManyChildren'])) ? (($_POST[ 'HowManyChildren']==$HowManyChildren[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Children']==$HowManyChildren[ 'CodeValue']) ? " selected='selected' " : "");?>>
                                             <?php echo $HowManyChildren['CodeValue'];?></option>
                                                 <?php } ?>
                                 </select>
                             </div>
-        
+                            
                             <label for="Description" class="col-sm-2 col-form-label" id="IsChildrenWithYou" style="text-align: right;">Is Children with you?</label>
                             <div class="col-sm-4" id="Childrenwithyou_input">
                                 <select class="selectpicker form-control" data-live-search="true" id="ChildrenWithYou" name="ChildrenWithYou">
                                     <option>Choose Children With You</option>
-                                    <option value="1" <?php echo ($ProfileInfo['ChildrenWithYou']==1) ? " selected='selected' " : "";?>>Yes</option>
-                                    <option value="0" <?php echo ($ProfileInfo['ChildrenWithYou']==0) ? " selected='selected' " : "";?>>No</option>
+                                    <option value="1" <?php echo (isset($_POST[ 'ChildrenWithYou'])) ? (($_POST[ 'ChildrenWithYou']==1) ? " selected='selected' " : "") : (($ProfileInfo['IsChildrenWithYou']==1)? " selected='selected' " : "");?>>Yes</option>
+                                    <option value="0" <?php echo (isset($_POST[ 'ChildrenWithYou'])) ? (($_POST[ 'ChildrenWithYou']==0) ? " selected='selected' " : "") : (($ProfileInfo['IsChildrenWithYou']==0)? " selected='selected' " : "");?>>No</option>
                                 </select>
                             </div>
                         </div>
@@ -302,6 +282,18 @@ function submitprofile() {
                         </div>
 </form>
 </div>
+
+    <script>
+        function getHowmanyChildrenInfo() {
+            if ($('#MaritalStatus').val()=="MST001" || $('#MaritalStatus').val()=="0") {
+                $('#mstatus_additionalinfo').hide();
+            } else {
+                $('#mstatus_additionalinfo').show();
+            }
+        }
+        setTimeout(function(){getHowmanyChildrenInfo();},1000);
+        
+</script> 
 <?php include_once("settings_footer.php");?>  
 
 <!--<script>

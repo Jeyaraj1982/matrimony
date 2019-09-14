@@ -215,7 +215,7 @@ function showLearnMore() {
                 $.ajax({
                 url: API_URL + "m=Member&a=ProfilePhotoBringToFront&ProfilePhotoID="+ProfilePhotoID, 
                 success: function(result){
-                    $.simplyToast("Profile ID: "+ProfilePhotoID+" has been set as Front", 'info');
+                    $.simplyToast("Profile photo ID: "+ProfilePhotoID+" has been set as Front", 'info');
             }});
           }
          

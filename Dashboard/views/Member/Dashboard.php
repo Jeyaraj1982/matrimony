@@ -37,6 +37,7 @@
         </div>
     </div>
     <div class="row">
+    <?php  if(sizeof($latestupdates['data'])>0){?>
     <div class="col-7 grid-margin" style="flex: 0 0 600px;max-width: 600px;">                                                                     
             <div class="member_dashboard_widget_title">Latest Updates</div>
              <div class="card"  style="background:#dee9ea">
@@ -68,6 +69,16 @@
                   </div>
              </div>   
         </div>
+        <?php }else{?>
+          <div class="col-7 grid-margin" style="flex: 0 0 600px;max-width: 600px;">       
+             <div class="card"  style="background:#dee9ea">
+                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:374px">
+                    <div id="resCon_a002" style="background:white;width:97%;text-align:left;padding:0px;height: 351px;overflow:auto">
+                    </div>
+                </div>
+             </div>
+          </div>
+          <?php }?>
         <div class="col-5 grid-margin" style="max-width: 35.667%;">
             <div class="member_dashboard_widget_title">My Recent Profiles</div>
             <div class="card"  style="background:#dee9ea;">

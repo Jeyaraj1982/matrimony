@@ -5,7 +5,8 @@
              } else {*/?>
              <?php
  $response = $webservice->GetStaffs(array());
-    $Staffs=$response['data'];    
+    $Staffs=$response['data']['Staffs'];    
+     $Sex=$response['data']['Gender'];
 ?>
  
  
@@ -35,9 +36,9 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Sex<span id="star">*</span></label>
-                          <div class="col-sm-9"><small style="color:#737373;"><?php echo $Staffs[0]['Sex'];?></small></div>
+                          <div class="col-sm-9"><small style="color:#737373;"><?php echo $Sex[0]['CodeValue'];?></small></div>
                           <label class="col-sm-3 col-form-label">Date of Birth<span id="star">*</span></label>
-                            <div class="col-sm-9"><small style="color:#737373;"><?php echo $Staffs[0]['DateofBirth'];?></small></div>
+                            <div class="col-sm-9"><small style="color:#737373;"><?php echo PutDate($Staffs[0]['DateofBirth']);?></small></div>
                         </div>
                       </div>
                       </div>
@@ -45,7 +46,7 @@
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
-                            <div class="col-sm-9"><small style="color:#737373;"><?php echo $Staffs[0]['MobileNumber'];?></small></div>
+                            <div class="col-sm-9"><small style="color:#737373;"><?php echo $Staffs[0]['CountryCode'];?>+<?php echo $Staffs[0]['MobileNumber'];?></small></div>
                         </div>
                       </div>
                       </div>

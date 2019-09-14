@@ -49,6 +49,7 @@
                                 <td></td>
                                 <td style="text-align:right"><a href="<?php echo GetUrl("Staffs/Edit/". $Staff['PersonID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Staffs/View/".$Staff['PersonID'].".html"); ?>"><span>View</span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php// echo GetUrl("Staffs/View/".$Staff['PersonID'].".html"); ?>"><span>Login History</span></a>&nbsp;&nbsp;&nbsp;
                                 </tr>
                         <?php }} ?>            
                       </tbody>

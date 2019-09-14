@@ -196,7 +196,7 @@ function submitprofile() {
     <div class="form-group row">
         <label for="No of Brothers" class="col-sm-2 col-form-label">No of Brothers<span id="star">*</span></label>
         <div class="col-sm-1" style="max-width:100px !important" align="left">
-            <select class="selectpicker form-control" data-live-search="true" id="NumberofBrother" name="NumberofBrother">
+            <select class=" form-control"  id="NumberofBrother" onchange="print_brother_counts()" name="NumberofBrother" style="width: 50px;">
                 <option>Brothers</option>
                 <?php foreach($response['data']['NumberofBrother'] as $NumberofBrother) { ?>
                     <option value="<?php echo $NumberofBrother['SoftCode'];?>" <?php echo (isset($_POST[ 'NumberofBrother'])) ? (($_POST[ 'NumberofBrother']==$NumberofBrother[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'NumberofBrothers']==$NumberofBrother[ 'CodeValue']) ? " selected='selected' " : "");?>>
@@ -206,7 +206,7 @@ function submitprofile() {
         </div>
          <label for="Elder" class="col-sm-1 col-form-label" style="text-align:right">Elder</label>
         <div class="col-sm-1" style="max-width:100px !important">
-            <select class="selectpicker form-control" data-live-search="true" id="elder" name="elder">
+            <select class="form-control" id="belder" name="elder" style="width: 50px;">
                 <?php foreach($response['data']['NumberofElderBrother'] as $elder) { ?>
                     <option value="<?php echo $elder['SoftCode'];?>" <?php echo (isset($_POST[ 'elder'])) ? (($_POST[ 'elder']==$elder[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Elder']==$elder[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $elder['CodeValue'];?></option>
@@ -215,7 +215,7 @@ function submitprofile() {
         </div>
         <label for="elder" class="col-sm-2 col-form-label" style="text-align:right">Younger</label>
         <div class="col-sm-1" style="max-width:100px !important">
-            <select class="selectpicker form-control" data-live-search="true" id="younger" name="younger" size="width:60px">
+            <select class="form-control"  id="byounger" name="younger" style="width: 50px;">
                 <?php foreach($response['data']['NumberofYoungerBrother'] as $younger) { ?>
                     <option value="<?php echo $younger['SoftCode'];?>" <?php echo (isset($_POST[ 'younger'])) ? (($_POST[ 'younger']==$younger[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Younger']==$younger[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $younger['CodeValue'];?></option>
@@ -224,7 +224,7 @@ function submitprofile() {
         </div>
         <label for="elder" class="col-sm-2 col-form-label" style="text-align:right">Married</label>
         <div class="col-sm-1" style="max-width:100px !important">
-            <select class="selectpicker form-control" data-live-search="true" id="married" name="married" size="width:60px">
+            <select class=" form-control"   id="married" name="married" style="width: 50px;">
                 <?php foreach($response['data']['NumberofMarriedBrother'] as $married) { ?>
                     <option value="<?php echo $married['SoftCode'];?>" <?php echo (isset($_POST[ 'married'])) ? (($_POST[ 'married']==$married[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Married']==$married[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $married['CodeValue'];?></option>
@@ -235,7 +235,7 @@ function submitprofile() {
     <div class="form-group row">
         <label for="No of Sisters" class="col-sm-2 col-form-label">No of Sisters<span id="star">*</span></label>
         <div class="col-sm-1" align="left" style="max-width:100px !important">
-            <select class="selectpicker form-control" data-live-search="true" id="NumberofSisters" name="NumberofSisters" size="width:60px">
+            <select class="form-control" id="NumberofSisters" onchange="print_sister_counts()" name="NumberofSisters" style="width: 50px;">
                 <?php foreach($response['data']['NumberofSisters'] as $NumberofSister) { ?>
                     <option value="<?php echo $NumberofSister['SoftCode'];?>" <?php echo (isset($_POST[ 'NumberofSisters'])) ? (($_POST[ 'NumberofSisters']==$NumberofSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'NumberofSisters']==$NumberofSister[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $NumberofSister['CodeValue'];?>  </option>
@@ -244,7 +244,7 @@ function submitprofile() {
         </div>
         <label for="elder" class="col-sm-1 col-form-label" style="text-align:right">Elder</label>
         <div class="col-sm-1" align="left" style="max-width:100px !important">
-            <select class="selectpicker form-control" data-live-search="true" id="elderSister" name="elderSister" size="width:60px">
+            <select class="form-control" id="elderSister" name="elderSister" style="width: 50px;">
                 <?php foreach($response['data']['NumberofElderSisters'] as $elderSister) { ?>
                     <option value="<?php echo $elderSister['SoftCode'];?>" <?php echo (isset($_POST[ 'elderSister'])) ? (($_POST[ 'elderSister']==$elderSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'ElderSister']==$elderSister[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $elderSister['CodeValue'];?>  </option>
@@ -253,7 +253,7 @@ function submitprofile() {
         </div>
         <label for="elder" class="col-sm-2 col-form-label" style="text-align:right">Younger</label>
         <div class="col-sm-1" align="left" style="max-width:100px !important">
-            <select class="selectpicker form-control" data-live-search="true" id="youngerSister" name="youngerSister" size="width:60px">
+            <select class="form-control" id="youngerSister" name="youngerSister" style="width: 50px;">
                 <?php foreach($response['data']['NumberofYoungerSisters'] as $youngerSister) { ?>
                     <option value="<?php echo $youngerSister['SoftCode'];?>" <?php echo (isset($_POST[ 'youngerSister'])) ? (($_POST[ 'youngerSister']==$youngerSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'YoungerSister']==$youngerSister[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $youngerSister['CodeValue'];?> </option>
@@ -262,7 +262,7 @@ function submitprofile() {
         </div>
         <label for="elder" class="col-sm-2 col-form-label" style="text-align:right">Married</label>
         <div class="col-sm-1" align="left" style="max-width:100px !important">
-            <select class="selectpicker form-control" data-live-search="true" id="marriedSister" name="marriedSister" size="width:60px">
+            <select class="form-control" id="marriedSister" name="marriedSister" style="width: 50px;">
                 <?php foreach($response['data']['NumberofMarriedSisters'] as $marriedSister) { ?>
                     <option value="<?php echo $marriedSister['SoftCode'];?>" <?php echo (isset($_POST[ 'marriedSister'])) ? (($_POST[ 'marriedSister']==$marriedSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MarriedSister']==$marriedSister[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $marriedSister['CodeValue'];?> </option>
@@ -282,6 +282,102 @@ function submitprofile() {
         <div class="col-sm-3"><a href="../PhysicalInformation/<?php echo $_GET['Code'].".htm";?>">Next</a></div>
     </div>
     
-</div>
-              
+</div>                                                                       
+<script>
+    function print_brother_counts() {
+        var n_brothers = $('#NumberofBrother').val();
+        if (n_brothers=='NOB001') {
+             $('#belder').hide();
+             $('#byounger').hide();
+             $('#married').hide();
+        } else {
+            $('#belder').show();
+            $('#byounger').show();
+            $('#married').show();
+           
+           var c = ['NOB001','NOB002','NOB003','NOB004','NOB005','NOB006','NOB007','NOB008','NOB009','NOB010'] ;
+          
+          $('#belder').find('option').remove();
+          $('#byounger').find('option').remove();
+          $('#married').find('option').remove();
+                 
+            for (var i = 0; i<=c.indexOf(n_brothers); i++){
+    var opt = document.createElement('option');
+    opt.value = c[i];
+    opt.innerHTML = i;
+    document.getElementById('belder').appendChild(opt);
+}
+
+  for (var i = 0; i<=c.indexOf(n_brothers); i++){
+    var opt = document.createElement('option');
+    opt.value = c[i];
+    opt.innerHTML = i;
+   
+    document.getElementById('byounger').appendChild(opt);
+    
+}
+
+  for (var i = 0; i<=c.indexOf(n_brothers); i++){
+    var opt = document.createElement('option');
+    opt.value = c[i];
+    opt.innerHTML = i;
+    
+    document.getElementById('married').appendChild(opt);
+}
+        }
+        
+    }
+    
+    setTimeout(function(){
+        print_brother_counts();
+    },1000);
+    
+function print_sister_counts() {      
+        var n_brothers = $('#NumberofSisters').val();
+        if (n_brothers=='NS001') {
+             $('#elderSister').hide();
+             $('#youngerSister').hide();
+             $('#marriedSister').hide();
+        } else {
+            $('#elderSister').show();
+            $('#youngerSister').show();
+            $('#marriedSister').show();
+           
+           var c = ['NS001','NS002','NS003','NS004','NS005','NS006','NS007','NS008','NS009','NS010'] ;
+          
+          $('#elderSister').find('option').remove();
+          $('#youngerSister').find('option').remove();
+          $('#marriedSister').find('option').remove();
+                 
+            for (var i = 0; i<=c.indexOf(n_brothers); i++){
+    var opt = document.createElement('option');
+    opt.value = c[i];
+    opt.innerHTML = i;
+    document.getElementById('elderSister').appendChild(opt);
+}
+
+  for (var i = 0; i<=c.indexOf(n_brothers); i++){
+    var opt = document.createElement('option');
+    opt.value = c[i];
+    opt.innerHTML = i;
+   
+    document.getElementById('youngerSister').appendChild(opt);
+    
+}
+
+  for (var i = 0; i<=c.indexOf(n_brothers); i++){
+    var opt = document.createElement('option');
+    opt.value = c[i];
+    opt.innerHTML = i;
+    
+    document.getElementById('marriedSister').appendChild(opt);
+}
+        }
+        
+    }
+    
+    setTimeout(function(){
+        print_sister_counts();
+    },1000);
+    </script>              
 <?php include_once("settings_footer.php");?>                     

@@ -43,16 +43,11 @@ $(document).ready(function () {
         IsNonEmpty("MemberCode","ErrMemberCode","Please Enter Member Code");
                         
    });
-   $("#DateofBirth").blur(function () {
-    
-        IsNonEmpty("DateofBirth","ErrDateofBirth","Please Enter Date of Birth");
-                        
-   });
    $("#MobileNumber").blur(function () {
     
         IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter Mobile Number");
                         
-   });
+   });                                                                                                                                 
    $("#WhatsappNumber").blur(function () {
     
     //    IsNonEmpty("WhatsappNumber","ErrWhatsappNumber","Please Enter Whatsapp Number");
@@ -87,7 +82,6 @@ function myFunction() {
 function SubmitNewMember() {
                          $('#ErrMemberCode').html("");
                          $('#ErrMemberName').html("");
-                         $('#ErrDateofBirth').html("");
                          $('#ErrSex').html("");
                          $('#ErrMobileNumber').html("");
                          $('#ErrWhatsappNumber').html("");
@@ -97,12 +91,11 @@ function SubmitNewMember() {
                          ErrorCount=0;
                         
                         if (IsNonEmpty("MemberCode","ErrMemberCode","Please Enter Member Code")) {
-                        IsAlphaNumeric("MemberCode","ErrMemberCode","Please Enter Alpha Numeric characters only");
+                        IsAlphaNumeric("MemberCode","ErrMemberCode","Please Enter Alphabets characters only");
                         }
                         if (IsNonEmpty("MemberName","ErrMemberName","Please Enter Member Name")) {
                         IsAlphabet("MemberName","ErrMemberName","Please Enter Alpha Numeric characters only");
                         }
-                        IsNonEmpty("DateofBirth","ErrDateofBirth","Please Enter Valid Date of Birth");
                         IsNonEmpty("Sex","ErrSex","Please Enter Valid Sex");
                         if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter MobileNumber")) {
                         IsMobileNumber("MobileNumber","ErrMobileNumber","Please Enter Valid Mobile Number");

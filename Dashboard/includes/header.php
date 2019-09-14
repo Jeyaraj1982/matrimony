@@ -79,6 +79,7 @@
         </script>
         </head>
     <body>
+   <!-- time_elapsed_string($Profile['IsApprovedOn'])-->
         <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="margin-bottom:0px !important;border-radius:0px !important">
             <?php if (UserRole=="Member") { ?> 
                      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center " style="overflow:hidden">
@@ -447,9 +448,9 @@
                             </div>
                              <div class="col-sm-12" style="text-align:center;color: #514444cc;">
                                <?php if($ProfileInformation['mode']=="Published"){?>
-                                    <?php echo $ProfileInformation['mode'];?>&nbsp;(<?php echo time_elapsed_string($Profile['IsApprovedOn']);?>)
+                                    <?php echo $ProfileInformation['mode'];?>&nbsp;(<?php echo putDate($Profile['IsApprovedOn']);?>)
                                <?php }else { echo $ProfileInformation['mode']; }?>
-                            </div>
+                            </div>                                                                                              
                         </div>
                         <div style="float:right;line-height: 1px;">
                                 <?php if($ProfileInformation['mode']=="Draft") { ?>
