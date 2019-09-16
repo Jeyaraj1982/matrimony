@@ -435,7 +435,7 @@
                 
         ?>
          
-        <div class="col-sm-12" id="resCon_a001">
+        
             <div class="form-group row">
                             <div class="col-sm-12" style="text-align:center">
                                <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
@@ -465,7 +465,7 @@
                                       <a href="<?php echo GetUrl("MyProfiles/Published/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                 <?php } ?>
                     </div>                                          
-               </div>                                                 
+                                                     
                   <?php                                            
               }
             ?>                                                  

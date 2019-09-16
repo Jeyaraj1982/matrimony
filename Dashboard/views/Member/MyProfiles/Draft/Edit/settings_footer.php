@@ -30,9 +30,9 @@
             </div>
         </div>
                                                                                                                        
-<script>
+<script>                                                                                                                              
 
-/* */
+/* CheckUploadAllDeatils(\''+ProfileID+'\')*/
 
 
 function showConfirmPublish(ProfileID) {
@@ -49,7 +49,7 @@ function showConfirmPublish(ProfileID) {
                         +  '<button type="button" disabled="disabled" class="btn btn-primary" name="Publish" id="PublishBtn"  onclick="SendOtpForProfileforPublish(\''+ProfileID+'\')" style="font-family:roboto">Yes, send request</button>&nbsp;&nbsp;&nbsp;'
                         +  '<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
                        +  '</div><br>'
-                    +  '</form>'
+                    +  '</form>'                                                                                                          
                 +  '</div>'
             +  '</div>';
             $('#Publish_body').html(content);

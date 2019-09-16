@@ -1207,6 +1207,49 @@
         function SendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
 
         global $mysql,$mail,$loginInfo;      
+        
+        $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+        $ProfileCode = $data[0]['ProfileCode'];
+        $EducationDetails =$mysql->select("Select * from `_tbl_draft_profiles_education_details` where `IsDeleted`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+         if (sizeof($EducationDetails)==0) {
+                return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Missing</h4>  <br><br>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">You must Provide Your Education Details.</h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/EducationDetails/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
+                       </div>'; 
+             }
+         $Documents =$mysql->select("Select * from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+         if (sizeof($Documents)==0) {
+                return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Missing</h4>  <br><br>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">You must upload Documents Details.</h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/DocumentAttachment/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
+                       </div>';                                                                      
+             }
+     $ProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+         if (sizeof($ProfilePhoto)==0) {
+                return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Missing</h4>  <br><br>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">You must upload Profile photo.</h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/ProfilePhoto/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
+                       </div>'; 
+             }
+     $DefaultProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `PriorityFirst`='1' and `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+         if (sizeof($DefaultProfilePhoto)==0) {
+                return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Missing</h4>  <br><br>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">You must Select Default Profile photo.</h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/ProfilePhoto/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
+                       </div>'; 
+             }
         $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
         /* return $data[0]['ProfileName'].strlen(trim($data[0]['ProfileName'])); 
           /*   if (sizeof($data)==0) {
@@ -3141,7 +3184,8 @@
              }
              
              return Response::returnSuccess("success",$result);
-         } 
+         }
+  
      
      
      }  

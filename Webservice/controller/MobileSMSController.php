@@ -48,6 +48,7 @@
             curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch,CURLOPT_TIMEOUT, 200);
             $response = curl_exec($ch);
+           //$response = "";
             $mysql->execute("update _tbl_logs_mobilesms set ApiResponse ='".$response."' where ReqID='".$id."' ");
             curl_close ($ch);
               }

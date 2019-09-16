@@ -83,19 +83,23 @@
             <div class="member_dashboard_widget_title">My Recent Profiles</div>
             <div class="card"  style="background:#dee9ea;">
                 <div class="card-body" style="padding:10px !important;">
+                <div class="col-sm-12" id="resCon_a001" style="height: 327px;">
                     <?php if (sizeof($response['data'])==0) {      ?>
-                            <div style="text-align:center;">
+                            <div style="text-align:center;margin-top: 115px;">
                                 <h5 style="color: #aaa;">No Profiles Found<br><br> <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a> </h5>
                             </div>
                         <?php } else { ?>
                 <div>
                             <?php foreach($response['data'] as $Profile) { 
                          echo  DisplayManageProfileShortInfoforDashboard($Profile); ?> <br>
-                         <?php    } } ?>
+                         <?php    }  ?>
+                </div>
+                <?php }?>
                 </div>
                 </div>
             </div>
          </div> 
+          
          <div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
                 <div class="modal-content" id="model_body" style="height: 220px;">
@@ -124,8 +128,8 @@
                             <a href="<?php echo SiteUrl;?>MyContacts/RecentlyWhoViewed">View All</a>
                          </div>
                     <?php } else { ?>
-                         <div id="resCon_a002" class="resCon_a002"  style="background:white;width:97%">
-                            <div style="text-align:center;">
+                         <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
+                            <div style="text-align:center;margin-top: 127px;">
                                 <h5 style="color: #aaa;">No Profiles Found </h5>
                             </div>
                          </div>
@@ -152,11 +156,11 @@
                         <a href="<?php echo SiteUrl;?>MyContacts/RecentlyWhofavourited">View All</a>
                     </div>  
                     <?php } else { ?>
-                    <div id="resCon_a002" class="resCon_a002"  style="background:white;width:97%;height:293px">
-                        <div style="text-align:center;">
-                            <h5 style="margin-top:84px;color: #aaa;">No Profiles Found </h5>
-                        </div>
-                    </div>                                                        
+                    <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
+                            <div style="text-align:center;margin-top: 127px;">
+                                <h5 style="color: #aaa;">No Profiles Found </h5>
+                            </div>
+                         </div>                                                        
                     <?php } ?>
                 </div>
             </div>

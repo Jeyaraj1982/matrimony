@@ -1879,6 +1879,86 @@
                 return Response::returnSuccess("success",$mysql->select($sql."  and _tbl_draft_profiles.IsApproved='1'"));    
              }
          }
+         function forgotPassword() {
+
+             global $mysql,$mail;            
+
+             if (Validation::isEmail($_POST['FpUserName'])) {
+                $data = $mysql->select("Select * from `_tbl_franchisees_staffs` where `LoginName`='".$_POST['UserName']."'");
+                if (sizeof($data)==0){
+                    return Response::returnError("Login name not available");
+                }
+             } else {
+                $data = $mysql->select("Select * from `_tbl_franchisees_staffs` where `EmailID`='".$_POST['UserName']."'");    
+                if (sizeof($data)==0){
+                    return Response::returnError("Email ID not available");
+                }
+             }
+
+             $otp=rand(1000,9999);
+             $securitycode = $mysql->insert("_tbl_verification_code",array("FranchiseeID"      => $data[0]['FranchiseeID'],
+                                                                           "RequestSentOn" => date("Y-m-d H:i:s"),
+                                                                           "SecurityCode"  => $otp,
+                                                                           "messagedon"    => date("Y-m-d h:i:s"), 
+                                                                           "EmailTo"       => $data[0]['EmailID'],
+                                                                           "Type"          => "Forget Password")) ; 
+
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeForgetPassword'");
+             $content  = str_replace("#FranchiseeName#",$data[0]['PersonName'],$mContent[0]['Content']);
+             $content  = str_replace("#otp#",$otp,$content);
+
+             MailController::Send(array("MailTo"   => $data[0]['EmailID'],
+                                        "Category" => "FranchiseeForgetPassword",
+                                        "FranchiseeID" => $data[0]['FranchiseeID'],                 
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+
+             if($mailError){
+                return  Response::returnError("Error: unable to process your request.");
+             } else {
+                return Response::returnSuccess("Email sent successfully",array("reqID"=>$securitycode,"email"=>$data[0]['EmailID']));
+             }
+         }
+         function forgotPasswordOTPvalidation() {
+
+             global $mysql;                  
+             $data = $mysql->select("Select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqID']."' ");
+             if (sizeof($data)>0) {
+                 if ($data[0]['SecurityCode']==$_POST['scode']) {
+                    return Response::returnSuccess("email sent successfully",array("reqID"=>$_POST['reqID'],"email"=>$data[0]['EmailID'])); 
+                 } else {
+                    return Response::returnError("Invalid verification code"); 
+                 }
+             } else {
+                return Response::returnError("Invalid access".json_encode($_POST));
+             }
+         }
+         function forgotPasswordchangePassword() {
+
+             global $mysql;
+             $data = $mysql->select("Select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqID']."' ");
+
+             if (!(strlen(trim($_POST['Password']))>=6)) {
+                return Response::returnError("Please enter valid new password must have 6 characters");
+             } 
+             if (!(strlen(trim($_POST['RePassword']))>=6)) {
+                return Response::returnError("Please enter valid confirm new password  must have 6 characters"); 
+             } 
+             if ($_POST['Password']!=$_POST['RePassword']) {
+                return Response::returnError("Password do not match"); 
+             }
+             $sqlQry ="update _tbl_franchisees_staffs set `LoginPassword`='".$_POST['RePassword']."' where `PersonID`='".$data[0]['FranchiseeID']."'";
+             $mysql->execute($sqlQry);  
+             $data = $mysql->select("select * from `_tbl_franchisees_staffs` where  PersonID='".$data[0]['FranchiseeID']."'");
+             $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $data[0]['FranchiseeID'],
+                                                             "ActivityType"   => 'forgetpasswordchangepassword.',
+                                                             "ActivityString" => 'forget password changed password.',
+                                                             "SqlQuery"       => base64_encode($sqlQry),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+
+             return Response::returnSuccess("New Password saved successfully",$data[0]);  
+         }
          
         }
 ?> 

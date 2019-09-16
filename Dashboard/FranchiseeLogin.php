@@ -83,7 +83,7 @@
                       <input type="checkbox" class="form-check-input" > Keep me signedin
                     </label>
                   </div>
-                  <a href="views/Franchisee/ForgetPassword.php" class="text-small forgot-password text-black">Forgot Password</a>
+                 <!-- <a href="views/Franchisee/ForgetPassword.php" class="text-small forgot-password text-black">Forgot Password</a>-->
                 </div>
                </form>
             </div>
