@@ -104,7 +104,7 @@
 
              $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'");
              
-             if ($allowDuplicateMobile[0]['CodeDescription']==0) {
+             if ($allowDuplicateMobile[0]['ParamA']==0) {
                  $data = $mysql->select("select * from `_tbl_members` where  `MobileNumber`='".$_POST['MobileNumber']."'");
                  if (sizeof($data)>0) {
                      return Response::returnError("Mobile Number Already Exists");
@@ -113,7 +113,7 @@
 
              $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
              
-             if ($allowDuplicateEmail[0]['CodeDescription']==0) {
+             if ($allowDuplicateEmail[0]['ParamA']==0) {
                  $data = $mysql->select("select * from `_tbl_members` where  `EmailID`='".$_POST['Email']."'");
                  if (sizeof($data)>0) {
                     return Response::returnError("Email Already Exists");
@@ -259,7 +259,7 @@
 
                  //duplicate, 
              $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'");
-                if ($allowDuplicateMobile[0]['CodeDescription']==0) {
+                if ($allowDuplicateMobile[0]['ParamA']==0) {
                  $data = $mysql->select("select * from `_tbl_members` where `MobileNumber`='".trim($_POST['MobileNumber'])."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
                      if (sizeof($data)>0) {
                         return Response::returnError("Mobile Number Already Exists");    
@@ -272,7 +272,7 @@
 
                 //duplicate,
              $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
-                if ($allowDuplicateEmail[0]['CodeDescription']==0) {
+                if ($allowDuplicateEmail[0]['ParamA']==0) {
                     $data = $mysql->select("select * from  `_tbl_members` where `EmailID`='".trim($_POST['EmailID'])."' and `MemberID` <>'".$loginInfo[0]['MemberID']."'");
                         if (sizeof($data)>0) {
                             return Response::returnError("EmailID Already Exists");    
