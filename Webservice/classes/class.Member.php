@@ -102,15 +102,24 @@
                 return Response::returnError("Please enter password");
              }
 
-             $data = $mysql->select("select * from `_tbl_members` where  `MobileNumber`='".$_POST['MobileNumber']."'");
-             if (sizeof($data)>0) {
-                 return Response::returnError("Mobile Number Already Exists");
+             $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'");
+             
+             if ($allowDuplicateMobile[0]['CodeDescription']==0) {
+                 $data = $mysql->select("select * from `_tbl_members` where  `MobileNumber`='".$_POST['MobileNumber']."'");
+                 if (sizeof($data)>0) {
+                     return Response::returnError("Mobile Number Already Exists");
+                 }
              }
 
-             $data = $mysql->select("select * from `_tbl_members` where  `EmailID`='".$_POST['Email']."'");
-             if (sizeof($data)>0) {
-                return Response::returnError("Email Already Exists");
+             $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
+             
+             if ($allowDuplicateEmail[0]['CodeDescription']==0) {
+                 $data = $mysql->select("select * from `_tbl_members` where  `EmailID`='".$_POST['Email']."'");
+                 if (sizeof($data)>0) {
+                    return Response::returnError("Email Already Exists");
+                 }
              }
+             
              $MemberCode=SeqMaster::GetNextMemberNumber();
              $id = $mysql->insert("_tbl_members",array("MemberName"     => $_POST['Name'],
                                                        "MemberCode"     => $MemberCode,
@@ -249,9 +258,12 @@
                  //mobile format
 
                  //duplicate, 
+             $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'");
+                if ($allowDuplicateMobile[0]['CodeDescription']==0) {
                  $data = $mysql->select("select * from `_tbl_members` where `MobileNumber`='".trim($_POST['MobileNumber'])."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
-                 if (sizeof($data)>0) {
-                    return Response::returnError("Mobile Number Already Exists");    
+                     if (sizeof($data)>0) {
+                        return Response::returnError("Mobile Number Already Exists");    
+                     }
                  }
              } 
              if($Member[0]['IsEmailVerified']==0) {
@@ -259,9 +271,12 @@
                 //email format
 
                 //duplicate,
-                $data = $mysql->select("select * from  `_tbl_members` where `EmailID`='".trim($_POST['EmailID'])."' and `MemberID` <>'".$loginInfo[0]['MemberID']."'");
-                if (sizeof($data)>0) {
-                    return Response::returnError("EmailID Already Exists");    
+             $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
+                if ($allowDuplicateEmail[0]['CodeDescription']==0) {
+                    $data = $mysql->select("select * from  `_tbl_members` where `EmailID`='".trim($_POST['EmailID'])."' and `MemberID` <>'".$loginInfo[0]['MemberID']."'");
+                        if (sizeof($data)>0) {
+                            return Response::returnError("EmailID Already Exists");    
+                        }
                 }
              }
 
