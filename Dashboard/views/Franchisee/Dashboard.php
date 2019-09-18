@@ -99,6 +99,7 @@ $PostedProfilesCount = $response['data']['PostedProfiles'];
               <!--weather card-->
               <!--<div class="card card-weather">-->
                 <div class="card-body">
+                <h5 class="card-title">My Earnings </h5>
                   <div id="chartContainer" style="height: 100%; width: 100%;"></div>
                     
                   </div>
@@ -109,8 +110,7 @@ $PostedProfilesCount = $response['data']['PostedProfiles'];
      <div class="col-5 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">Upcomming Renewals
-                 </h5>
+                  <h5 class="card-title">Upcomming Renewals </h5>
                 
                 </div>
               </div>

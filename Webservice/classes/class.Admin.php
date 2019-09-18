@@ -563,6 +563,7 @@ class Admin extends Master {
                                                              //approved by   //admin remarks
              $draft = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'");
              $ProfileCode   = SeqMaster::GetNextProfileCode();
+             
              $pid =  $mysql->insert("_tbl_profiles",array("ProfileCode"     => $ProfileCode,
                                                   "DraftProfileID"          => $draft[0]['ProfileID'],
                                                   "DraftProfileCode"        => $draft[0]['ProfileCode'],
@@ -574,13 +575,16 @@ class Admin extends Master {
                                                   "Sex"                     => $draft[0]['Sex'],
                                                   "MaritalStatusCode"       => $draft[0]['MaritalStatusCode'], 
                                                   "MaritalStatus"           => $draft[0]['MaritalStatus'],
+                                                  "ChildrenCode"            => $draft[0]['ChildrenCode'],
+                                                  "Children"                => $draft[0]['Children'],
+                                                  "IsChildrenWithyou"       => $draft[0]['IsChildrenWithyou'],
                                                   "MotherTongueCode"        => $draft[0]['MotherTongueCode'],
                                                   "MotherTongue"            => $draft[0]['MotherTongue'],
                                                   "ReligionCode"            => $draft[0]['ReligionCode'],
                                                   "Religion"                => $draft[0]['Religion'],
                                                   "CasteCode"               => $draft[0]['CasteCode'],
                                                   "Caste"                   => $draft[0]['Caste'],
-                                                  "SubCaste"                   => $draft[0]['SubCaste'],
+                                                  "SubCaste"                => $draft[0]['SubCaste'],
                                                   "AboutMe"                 => $draft[0]['AboutMe'],
                                                   "CountryCode"             => $draft[0]['CountryCode'],
                                                   "Country"                 => $draft[0]['Country'],

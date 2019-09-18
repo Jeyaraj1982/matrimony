@@ -673,6 +673,7 @@
                          tb1_1.MemberName AS MemberName,
                          tb1_1.MemberCode AS MemberCode,
                          tb1_1.MobileNumber AS MobileNumber,
+                         tb1_1.CountryCode AS CountryCode,
                          _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
                          _tbl_franchisees.FranchiseName AS FranchiseeName,
                          tb1_1.CreatedOn AS CreatedOn,
@@ -1203,27 +1204,32 @@
              $elderSister       = CodeMaster::getData("ELDERSIS",$_POST['elderSister']);
              $youngerSister     = CodeMaster::getData("YOUNGERSIS",$_POST['youngerSister']);
              $marriedSister     = CodeMaster::getData("MARRIEDSIS",$_POST['marriedSister']);
-             $FathersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['FathersAlive']);
-             $MothersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['MothersAlive']);
+            // $FathersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['FathersAlive']);
+            // $MothersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['MothersAlive']);
              $MothersIncome     = CodeMaster::getData("INCOMERANGE",$_POST['MothersIncome']);
              $FathersIncome     = CodeMaster::getData("INCOMERANGE",$_POST['FathersIncome']);
+             
+              $Fathersstatus = ($_POST['FathersAlive']=='on' ? 1 : 0);
+             $Mothersstatus = ($_POST['MothersAlive']=='on' ? 1 : 0);
              
              $updateSql = "update `_tbl_draft_profiles` set `FathersName`           = '".$_POST['FatherName']."',
                                                            `FathersOccupationCode` = '".$_POST['FathersOccupation']."',
                                                            `FathersOccupation`     = '".$FathersOccupation[0]['CodeValue']."',
+                                                           `FathersContactCountryCode`        = '".$_POST['FathersContactCountryCode']."',
                                                            `FathersContact`        = '".$_POST['FathersContact']."',
                                                            `FathersIncomeCode`         = '".$_POST['FathersIncome']."',
                                                            `FathersIncome`         = '".$FathersIncome[0]['CodeValue']."',
                                                            `FatherAliveCode`       = '".$_POST['FathersAlive']."',
-                                                           `FathersAlive`           = '".$FathersAlive[0]['CodeValue']."',
+                                                           `FathersAlive`       = '".$Fathersstatus."',
                                                            `MothersName`           = '".$_POST['MotherName']."',
+                                                           `MothersContactCountryCode`= '".$_POST['MotherContactCountryCode']."',
                                                            `MothersContact`        = '".$_POST['MotherContact']."',
                                                            `MothersIncomeCode`     = '".$_POST['MothersIncome']."',
                                                            `MothersIncome`         = '".$MothersIncome[0]['CodeValue']."',
                                                            `MothersOccupationCode`     = '".$_POST['MothersOccupationCode']."',
                                                            `MothersOccupation`         = '".$MothersOccupation[0]['CodeValue']."',
                                                            `MothersAliveCode`       = '".$_POST['MothersAlive']."',
-                                                           `MothersAlive`           = '".$MothersAlive[0]['CodeValue']."',
+                                                           `MothersAlive`           = '".$Mothersstatus."',
                                                            `FamilyTypeCode`        = '".$_POST['FamilyType']."',
                                                            `FamilyType`            = '".$FamilyType[0]['CodeValue']."',
                                                            `FamilyValueCode`       = '".$_POST['FamilyValue']."',
@@ -1256,7 +1262,7 @@
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
              $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'");      
       
-             return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
+             return Response::returnSuccess("success".$updateSql,array("ProfileInfo"            => $Profiles[0],
                                                             "Occupation"             => CodeMaster::getData('Occupation'),
                                                             "FamilyType"             => CodeMaster::getData('FAMILYTYPE'),
                                                             "FamilyValue"            => CodeMaster::getData('FAMILYVALUE'),
@@ -1587,6 +1593,12 @@
          
          function AddEducationalDetails() {
              global $mysql,$loginInfo;
+              if (!(trim($_POST['Educationdetails']))>0) {                                                                               
+                 return Response::returnError("Please select education details");
+             }
+             if (!(trim($_POST['EducationDegree']))>0) {                                
+                 return Response::returnError("Please select education degree ");
+             }
              $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'"); 
              $id = $mysql->insert("_tbl_draft_profiles_education_details",array("EducationDetails" => $_POST['Educationdetails'],
                                                                   "EducationDegree"  => $_POST['EducationDegree'],
@@ -1638,17 +1650,19 @@
                        </div>';
 
          } 
-        /* function GetDraftProfileInfo() {
-               
-                global $mysql,$loginInfo;      
-             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where ProfileCode='".$_POST['ProfileCode']."'");               
-            
-            
-               $result =  Profiles::getDraftProfileInformation($Profiles[0]['ProfileCode']);
-               return Response::returnSuccess("success",$result);
-           }*/
+         
+         function GetDraftProfileInfo() {
+             
+             global $mysql,$loginInfo;      
+             $result =  Profiles::getDraftProfileInformation($_POST['ProfileCode'],2);
+             if (sizeof($result)>0) {
+                 return Response::returnSuccess("success",$result);
+             } else {
+                 return Response::returnError("No profile found");
+             }
+         } 
           
-          function AddToLandingPage() {
+         function AddToLandingPage() {
 
         global $mysql;  
         

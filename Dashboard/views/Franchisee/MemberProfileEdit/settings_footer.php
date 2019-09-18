@@ -34,22 +34,31 @@
 function showConfirmPublish(ProfileID) {
       $('#PubplishNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'
+                    +   '<div  style="height: 315px;">'                                                                              
                     +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
                      + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                      +  '<div style="text-align:center">Profile Publish<br><br>'
-                        + '<button type="button" class="close" data-dismiss="modal" style="margin-top: -40px;margin-right: 0px;">&times;</button>'
-                     //  +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
+                          + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        + '<h4 class="modal-title">Profile Publish</h4> <br>'
                         +'<div style="text-align:left"> Dear ,<br>'
-                        +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). Once our DAT has approved your profile,the profile will live imediately in our portal, so please verify all data<br><br>'
-                        + '<input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I agree the terms and conditions  </label><br><br>'
-                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="VerifyProfileforPublish(\''+ProfileID+'\')">Yes,send request</button>&nbsp;'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No, i will do later</button>'
+                        +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). DAT has approved your profile, the profile will pubhlish immediately, so please verify all data before publish.<br><br>'
+                        + '<input type="checkbox" name="check" id="agreetopublish" onclick="agreeToPublish();" value="1">&nbsp;<label for="check" style="font-weight:normal"> I agree the terms and conditions  </label><br><br>'
+                        +  '<button type="button" disabled="disabled" class="btn btn-primary" name="Publish" id="PublishBtn"  onclick="VerifyProfileforPublish(\''+ProfileID+'\')" style="font-family:roboto">Yes, send request</button>&nbsp;&nbsp;&nbsp;'
+                        +  '<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
                        +  '</div><br>'
-                    +  '</form>'
+                    +  '</form>'                                                                                                          
                 +  '</div>'
             +  '</div>';
             $('#Publish_body').html(content);
+}
+function agreeToPublish() {
+    
+    if($("#agreetopublish").prop("checked") == true){ 
+        $('#PublishBtn').removeAttr("Disabled");
+    }
+    
+    if($("#agreetopublish").prop("checked") == false){
+        $('#PublishBtn').attr("Disabled","Disabled");
+    }
 }
 function VerifyProfileforPublish(formid) {
      var param = $("#frm_"+formid).serialize();

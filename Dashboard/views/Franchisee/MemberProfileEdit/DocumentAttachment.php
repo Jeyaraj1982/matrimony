@@ -74,11 +74,8 @@ function submitUpload() {
                     if ($err==0) {
                         $_POST['File']= $profilephoto;
                         $res =$webservice->getData("Franchisee","AttachDocuments",$_POST);
-                        if ($res['status']=="success") {
-                            echo  $res['message']; 
-                        } else {
-                            $errormessage = $res['message']; 
-                        }
+                        echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
+                                                           : $dashboard->showErrorMsg($res['message']);
                     } else {
                         $res =$webservice->getData("Franchisee","AttachDocuments");
                     }
@@ -122,7 +119,13 @@ function submitUpload() {
         <div class="col-sm-3">
             <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
         </div>
-    </div>
+    </div><br>
+    <div class="form-group row" style="margin-bottom:0px;">
+            <div class="col-sm-2">
+                <a href="../PhysicalInformation/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Previous</a>
+            </div>
+            <div class="col-sm-2"><a href="../CommunicationDetails/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Next</a></div>
+        </div>
     <br><br><div style="text-align: right;" id="x"></div>
     <br>
     </form>
@@ -145,6 +148,7 @@ function submitUpload() {
                 <br><?php echo PutDateTime($d['AttachedOn']);?>   
             </div>
         </div>
+        
    
         <?php }   ?>
          <div style="clear:both"></div>

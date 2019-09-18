@@ -84,12 +84,8 @@ function submitUpload() {
                     if ($err==0) {
                         $_POST['ProfilePhoto']= $profilephoto;
                         $res =$webservice->getData("Franchisee","AddProfilePhoto",$_POST);
-                        if ($res['status']=="success") {
-                            echo  $res['message']; 
-                        } else {
-                            print_r($photos);
-                            echo $res['message']; 
-                        }
+                        echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
+                                                           : $dashboard->showErrorMsg($res['message']);
                     } else {
                         $res =$webservice->getData("Franchisee","AddProfilePhoto");
                     }
@@ -113,6 +109,12 @@ function submitUpload() {
             <button type="submit" name="UpdateProfilePhoto" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
         </div>
     </div><br>
+    <div class="form-group row" style="margin-bottom:0px;">
+            <div class="col-sm-2">
+                <a href="../CommunicationDetails/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Previous</a>
+            </div>
+            <div class="col-sm-2"><a href="../PartnersExpectation/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Next</a></div>
+        </div>
     <div style="text-align: right;" id="x"></div>
     <br>
     <br>
@@ -212,7 +214,7 @@ function showLearnMore() {
                 $.ajax({
                 url: API_URL + "m=Franchisee&a=ProfilePhotoBringToFront&ProfilePhotoID="+ProfilePhotoID, 
                 success: function(result){
-                    $.simplyToast("Profile ID: "+ProfilePhotoID+" has been set as Front", 'info');
+                    $.simplyToast("Selected profile photo has been set to default photo   ", 'info');
             }});
           }
          

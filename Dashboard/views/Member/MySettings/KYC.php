@@ -174,6 +174,9 @@
      
        
 </form>
+<div class="form-group row">
+        <span style="color:#ff6b6b;;">We do not share your documents with any 3rd party except local law enforcement agencies, if required.</span>
+    </div>
 <script>
  
     

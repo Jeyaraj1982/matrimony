@@ -54,11 +54,17 @@ text-align: left;
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Created On</label>
             <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
-             </div>
+            <div class="col-sm-2">
+                <i class="menu-icon mdi mdi-printer" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Print</label> 
+            </div>
+        </div>
              <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Last saved</label>
-                    <label class="col-sm-3 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></label>
+                    <label class="col-sm-8 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></label>
+                    <div class="col-sm-2">
+                        <i class="menu-icon mdi mdi-download" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Download</label>   
                    </div>
+             </div>
         <?php } else{?>
             <div class="form-group row">
             <label class="col-sm-2 col-form-label">Created On</label>
@@ -80,86 +86,77 @@ text-align: left;
             <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
          </div>
               <div class="form-group row">
+                <div class="col-sm-5">
+                    <div style="border: 1px solid black;padding: 0px;width: 282px;height: 378px;"> 
+                    <div class="form-group row">                                                       
+                        <div class="col-sm-12">
+                            <div class="photoview" style="float:left;width: 280px;height:280px">
+                                <img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 100%;width: 100%;">
+                            </div>
+                        </div> 
+                    </div>
+                    <div style="padding-left: 10px;">
+                        <div class="col-sm-1"><a href="#" class="previous round">&#8249;</a></div> 
+                        <div class="col-sm-10">
+                        <?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
+                            <div class="photoview" style="float: left;">
+                                <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 72px;width: 54px;">
+                            </div>
+                        <?php }?>
+                        </div>
+                        <div class="col-sm-1"><a href="#" class="next round">&#8250;</a></div>
+                  </div>
+                </div>
+                </div>
                 <div class="col-sm-7">
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Profile For</label>
-                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['ProfileFor']);?></label>
-                         </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Name</label>
-                        <label class="col-sm-8 col-form-label"  style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['ProfileName']);?></label>
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['ProfileName']);?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Age</label>
-                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Age']);?>&nbsp;years</label>
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Sex']);?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Sex</label>
-                         <label class="col-sm-8 col-form-label"  style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Sex']);?></label>   
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Age']);?>&nbsp;years,&nbsp;<?php echo trim($ProfileInfo['Height']);?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Marital Status</label>
-                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['MaritalStatus']);?></label>   
-                    </div>
-                    <?php if($ProfileInfo['MaritalStatusCode']!= "MST001"){?>
-                    <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Children</label>
-                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Children']);?></label>   
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Religion']);?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Children with you</label>
-                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
-                            <?php if(trim($ProfileInfo['Children'])=="1"){ echo "Yes";} else  { echo "No";};?></label>   
-                    </div>
-                    <?php }?>
-                    <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Mother Tongue</label>
-                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['MotherTongue']);?></label>  
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Caste']);?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Religion</label>
-                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Religion']);?></label>   
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['SubCaste']);?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Caste</label>
-                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Caste']);?></label>   
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Community']);?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Sub Caste</label>
-                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['SubCaste']);?></label>   
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Nationality']);?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Community</label>
-                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Community']);?></label>  
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['MotherTongue']);?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Nationality</label>
-                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Nationality']);?></label>   
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['City']);?>,&nbsp;&nbsp;<?php echo trim($ProfileInfo['State']);?>,&nbsp;&nbsp;<?php echo trim($ProfileInfo['Country']);?></label>
                     </div>
-                    <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">About me</label>
-                         <div class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['AboutMe']);?></div> 
-                    </div>
+                  
               </div>
-              <div class="col-sm-5">                                                             
-              <div class="form-group row">
-             <div class="col-sm-12" style="text-align:right">
-                   <div class="photoview">
-                    <img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 200px;width: 150px;">
-                  </div>
-              </div> 
-             </div>
-             <div style="text-align:right">
-             <?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
-                   <div class="photoview">
-                    <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 96px;width: 72px;">
-                  </div>
-                  <?php }?>
-                  </div>
-             </div>
               </div>
          </div>
 </div>
+</div>
+<div class="col-12 grid-margin">
+  <div class="card">
+    <div class="card-body">
+     <div class="form-group row">
+            <div class="col-sm-6"><h4 class="card-title">About Me</h4></div>
+            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+         </div>
+         <table>           
+           <?php echo trim($ProfileInfo['AboutMe']);?>
+        </table>
+    </div>
+  </div>
 </div>
 <div class="col-12 grid-margin">
   <div class="card">
@@ -602,23 +599,34 @@ text-align: left;
 function showConfirmPublish(ProfileID) {
       $('#PubplishNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'
+                    +   '<div  style="height: 315px;">'                                                                              
                     +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
                      + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
                           + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                         + '<h4 class="modal-title">Profile Publish</h4> <br>'
-                     //  +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
                         +'<div style="text-align:left"> Dear ,<br>'
-                        +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). Once our DAT has approved your profile,the profile will live imediately in our portal, so please verify all data<br><br>'
-                        + '<input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I agree the terms and conditions  </label><br><br>'
-                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="SendOtpForProfileforPublish(\''+ProfileID+'\')">Yes,send request</button>&nbsp;'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No, i will do later</button>'
+                        +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). DAT has approved your profile, the profile will pubhlish immediately, so please verify all data before publish.<br><br>'
+                        + '<input type="checkbox" name="check" id="agreetopublish" onclick="agreeToPublish();" value="1">&nbsp;<label for="check" style="font-weight:normal"> I agree the terms and conditions  </label><br><br>'
+                        +  '<button type="button" disabled="disabled" class="btn btn-primary" name="Publish" id="PublishBtn"  onclick="SendOtpForProfileforPublish(\''+ProfileID+'\')" style="font-family:roboto">Yes, send request</button>&nbsp;&nbsp;&nbsp;'
+                        +  '<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
                        +  '</div><br>'
-                    +  '</form>'
+                    +  '</form>'                                                                                                          
                 +  '</div>'
             +  '</div>';
             $('#Publish_body').html(content);
 }
+
+function agreeToPublish() {
+    
+    if($("#agreetopublish").prop("checked") == true){ 
+        $('#PublishBtn').removeAttr("Disabled");
+    }
+    
+    if($("#agreetopublish").prop("checked") == false){
+        $('#PublishBtn').attr("Disabled","Disabled");
+    }
+}
+
 function SendOtpForProfileforPublish(formid) {
      var param = $("#frm_"+formid).serialize();
      $('#Publish_body').html(preloader);
@@ -636,11 +644,12 @@ function ProfilePublishOTPVerification(frmid) {
                     );
               
     }
-     function ResendSendOtpForProfileforPublish(formid) {                  
-     var param = $("#frm_"+formid).serialize();
+    
+function ResendSendOtpForProfileforPublish(frmid) {
+     var param = $("#"+frmid).serialize();
      $('#Publish_body').html(preloader);
         $.post(API_URL + "m=Member&a=ResendSendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
-}   
+} 
 
 </script>
    

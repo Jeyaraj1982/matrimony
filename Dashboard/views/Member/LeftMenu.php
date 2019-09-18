@@ -134,7 +134,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#Accounts" aria-expanded="false" aria-controls="Support">
-              <i class="menu-icon mdi mdi-content-copy"></i>
+              <i class="menu-icon mdi mdi-content-copy"></i> 
               <span class="menu-title"  style="font-size:14px">My Accounts</span>
               <i class="menu-arrow"></i>
             </a>

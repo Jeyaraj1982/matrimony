@@ -1,5 +1,5 @@
 <?php
-     $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
+     $response = $webservice->getData("Franchisee","GetDraftProfileInfo",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
     $Member = $response['data']['Members'];
     $EducationAttachment = $response['data']['EducationAttachments'];
@@ -223,10 +223,10 @@ text-align: left;
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's Name</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersName'];?></label>
-            <label class="col-sm-2 col-form-label">Father's Alive</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersAlive'];?></label> 
+            <label class="col-sm-2 col-form-label">Father's Alive</label>                
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if($ProfileInfo['FathersAlive']=="0"){ echo "Yes";}else { echo "Passed away" ;}?></label> 
         </div>
-        <?php if($ProfileInfo['FathersAlive']=="Yes"){?>
+        <?php if($ProfileInfo['FathersAlive']=="0"){?>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's Occupation</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersOccupation'];?></label>
@@ -238,9 +238,9 @@ text-align: left;
              <label class="col-sm-2 col-form-label">Mother's Name</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersName'];?> </label>
              <label class="col-sm-2 col-form-label">Mother's Alive</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersAlive'];?></label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if($ProfileInfo['MothersAlive']=="0"){ echo "Yes";}else { echo "Passed away" ;}?></label>
          </div>
-         <?php if($ProfileInfo['MothersAlive']=="Yes"){?>
+         <?php if($ProfileInfo['MothersAlive']=="0"){?>
         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Mother's Occupation</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MothersOccupation'];?></label>
@@ -249,11 +249,11 @@ text-align: left;
         </div>
         <?php }?>
         <div class="form-group row">
-            <?php if($ProfileInfo['FathersAlive']=="Yes"){?>
+            <?php if($ProfileInfo['FathersAlive']=="0"){?>
              <label class="col-sm-2 col-form-label">Father's Contact</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo "+"; echo $ProfileInfo['FathersContactCountryCode'];?>-<?php echo $ProfileInfo['FathersContact'];?></label>
             <?php }?>
-            <?php if($ProfileInfo['MothersAlive']=="Yes"){?>
+            <?php if($ProfileInfo['MothersAlive']=="0"){?>
              <label class="col-sm-2 col-form-label">Mother's Contact</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo "+"; echo $ProfileInfo['MothersContactCountryCode'];?>-<?php echo $ProfileInfo['MothersContact'];?></label>
             <?php }?>
@@ -589,22 +589,32 @@ text-align: left;
 function showConfirmPublish(ProfileID) {
       $('#PubplishNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'
+                    +   '<div  style="height: 315px;">'                                                                              
                     +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
                      + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                      +  '<div style="text-align:center">Profile Publish<br><br>'
-                        + '<button type="button" class="close" data-dismiss="modal" style="margin-top: -40px;margin-right: 0px;">&times;</button>'
-                     //  +  '<div style="text-align:center">Are you sure want to Publish?  <br><br>'
+                          + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        + '<h4 class="modal-title">Profile Publish</h4> <br>'
                         +'<div style="text-align:left"> Dear ,<br>'
-                        +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). Once our DAT has approved your profile,the profile will live imediately in our portal, so please verify all data<br><br>'
-                        + '<input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I agree the terms and conditions  </label><br><br>'
-                        +  '<button type="button" class="btn btn-primary" name="Publish"  onclick="VerifyProfileforPublish(\''+ProfileID+'\')">Yes,send request</button>&nbsp;'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No, i will do later</button>'
+                        +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). DAT has approved your profile, the profile will pubhlish immediately, so please verify all data before publish.<br><br>'
+                        + '<input type="checkbox" name="check" id="agreetopublish" onclick="agreeToPublish();" value="1">&nbsp;<label for="check" style="font-weight:normal"> I agree the terms and conditions  </label><br><br>'
+                        +  '<button type="button" disabled="disabled" class="btn btn-primary" name="Publish" id="PublishBtn"  onclick="VerifyProfileforPublish(\''+ProfileID+'\')" style="font-family:roboto">Yes, send request</button>&nbsp;&nbsp;&nbsp;'
+                        +  '<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
                        +  '</div><br>'
-                    +  '</form>'
+                    +  '</form>'                                                                                                          
                 +  '</div>'
             +  '</div>';
             $('#Publish_body').html(content);
+}
+
+function agreeToPublish() {
+    
+    if($("#agreetopublish").prop("checked") == true){ 
+        $('#PublishBtn').removeAttr("Disabled");
+    }
+    
+    if($("#agreetopublish").prop("checked") == false){
+        $('#PublishBtn').attr("Disabled","Disabled");
+    }
 }
 function VerifyProfileforPublish(formid) {
      var param = $("#frm_"+formid).serialize();

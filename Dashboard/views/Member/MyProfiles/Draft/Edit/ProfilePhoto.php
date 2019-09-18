@@ -139,7 +139,7 @@ function submitUpload() {
             <?php if($d['IsApproved']==1){ echo "Approved" ; }?>
                 <br><small><?php echo PutDateTime($d['UpdateOn']);?></small><br>
                 
-                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>')" style="cursor: pointer;border: 1px;padding: 3px 10px;background:#eee;color:#353535">set as default</span>
+                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" style="cursor: pointer;border: 1px;padding: 3px 10px;background:#eee;color:#353535">set as default</span>
                 <br/>  
             </div>
         </div>
@@ -154,7 +154,7 @@ function submitUpload() {
             <?php if($d['IsApproved']==1){ echo "Approved" ; }?>
                 <br><small><?php echo PutDateTime($d['UpdateOn']);?></small> <br>
                 
-                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>')" style="cursor: pointer;border: 1px ;padding: 3px 10px;background:green;color:white">set as default</span>
+                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" style="cursor: pointer;border: 1px ;padding: 3px 10px;background:green;color:white">set as default</span>
                 <br/>  
             </div>
         </div>
@@ -205,7 +205,7 @@ function showLearnMore() {
          
          $('#x').html( available + " out 5 photos");
          
-          function _select(ProfilePhotoID) {
+          function _select(ProfilePhotoID,ProfileID) {
          var mvar = "";
             $(".Profile_photo").each(function() {
                
@@ -215,7 +215,8 @@ function showLearnMore() {
                 $.ajax({
                 url: API_URL + "m=Member&a=ProfilePhotoBringToFront&ProfilePhotoID="+ProfilePhotoID, 
                 success: function(result){
-                    $.simplyToast("Profile photo ID: "+ProfilePhotoID+" has been set as Front", 'info');
+                    //$.simplyToast("Profile photo ID: "+ProfileID+" has been set as Front", 'info');
+                    $.simplyToast("Selected profile photo has been set to default photo"  , 'info');
             }});
           }
          

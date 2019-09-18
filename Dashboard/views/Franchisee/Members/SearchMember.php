@@ -71,12 +71,12 @@
                         if (sizeof($response['data'])>0) {
                         }
                     ?> 
-                    <?php foreach($response['data'] as $Member) {  ?>
+                    <?php foreach($response['data'] as $Member)  { ?>
                         <tr>
                             <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberCode'];?></td>
                             <td><?php echo $Member['MemberName'];?></td>
                             <td>[<?php echo $Member['FranchiseeCode'];?>]&nbsp;<?php echo $Member['FranchiseeName'];?></td>
-                            <td>+<?php echo $Member['CountryCode'];?>-<?php echo $Member['MobileNumber'];?></td>
+                            <td>+<?php echo trim($Member['CountryCode']);?>-<?php echo $Member['MobileNumber'];?></td>
                             <td><a href="<?php echo GetUrl("Members/ViewMember/". $Member['MemberID'].".html");?>"><span>View</span></a></td>
                         </tr>                               
                     <?php }} ?>            
