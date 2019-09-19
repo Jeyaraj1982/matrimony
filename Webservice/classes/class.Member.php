@@ -17,46 +17,68 @@
              $data=$mysql->select("select * from `_tbl_members` where (`MemberLogin`='".$_POST['UserName']."' or `EmailID`='".$_POST['UserName']."' or `MobileNumber`='".$_POST['UserName']."' or `MemberCode`='".$_POST['UserName']."') and `IsDeleted`='0'");
              $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
              $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"       => date("Y-m-d H:i:s"),
-                                                                 "LoginFrom"     => "Web",
-                                                                 "Device"        => $clientinfo['Device'],
-                                                                 "MemberID"      => $data[0]['MemberID'],
-                                                                 "LoginName"     => $_POST['UserName'],
-                                                                 "BrowserIP"     => $clientinfo['query'],
-                                                                 "CountryName"   => $clientinfo['country'],
-                                                                 "BrowserName"   => $clientinfo['UserAgent'],
-                                                                 "APIResponse"   => json_encode($clientinfo),
-                                                                 "LoginPassword" => $_POST['Password']));
-             if (sizeof($data)==1) {
-
-                 if ($data[0]['MemberPassword']==$_POST['Password']) {              
-
-                     $mysql->execute("update `_tbl_logs_logins` set `LoginStatus`='1' where `LoginID`='".$loginid."'");
-
-                     if ($data[0]['IsActive']==1) {
-
-                         if($data[0]['WelcomeMsg']==0) {
-                            $d=$mysql->select("Select * From `_tbl_welcome_message` where `IsActive`='1' and `UserRole`='Member'");
-                            $data[0]['WelcomeMessage']=$d[0]['Message'];  
-                         }
-                         $data[0]['LoginID']=$loginid;
-                         
-                         $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where    `IsDelete`='0' and `MemberID`='".$data[0]['MemberID']."' and `PriorityFirst`='1'");
-                         if (sizeof($ProfileThumb)==0) {
-                            $ProfileThumbnail="";
-                         } else {
-                            $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
-                         }
-                         $data[0]['FileName']=$ProfileThumbnail;
-                         return Response::returnSuccess("success",$data[0]);
-
-                     } else {
-                        return Response::returnError("Access denied. Please contact support");   
-                     }
-                 } else {
-                     return Response::returnError("Invalid username or password");
+                                                                "LoginFrom"     => "Web",
+                                                                "Device"        => $clientinfo['Device'],
+                                                                "MemberID"      => $data[0]['MemberID'],
+                                                                "LoginName"     => $_POST['UserName'],
+                                                                "BrowserIP"     => $clientinfo['query'],
+                                                                "CountryName"   => $clientinfo['country'],
+                                                                "BrowserName"   => $clientinfo['UserAgent'],
+                                                                "APIResponse"   => json_encode($clientinfo),
+                                                                "LoginPassword" => $_POST['Password']));
+             if (sizeof($data)==1) { /* Single Information */
+                 
+                 if ($data[0]['MemberPassword']!=$_POST['Password']) {              
+                    return Response::returnError("Invalid username or password");
                  }
-             } elseif (sizeof($data)>1) {
-                return Response::returnError("Error occured in your login, please contact support team"); 
+                 
+                 $mysql->execute("update `_tbl_logs_logins` set `LoginStatus`='1' where `LoginID`='".$loginid."'");
+                 
+                 if ($data[0]['IsActive']==0) {
+                    return Response::returnError("Access denied. Please contact support");   
+                 }
+
+                 if($data[0]['WelcomeMsg']==0) {
+                    $d=$mysql->select("Select * From `_tbl_welcome_message` where `IsActive`='1' and `UserRole`='Member'");
+                    $data[0]['WelcomeMessage']=$d[0]['Message'];  
+                 }
+                 
+                 $data[0]['LoginID']=$loginid;
+                 
+                 $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where    `IsDelete`='0' and `MemberID`='".$data[0]['MemberID']."' and `PriorityFirst`='1'");
+                 $data[0]['FileName']=(sizeof($ProfileThumb)==0) ? "" : getDataURI($ProfileThumb[0]['ProfilePhoto']);
+                 
+                 return Response::returnSuccess("success",$data[0]);
+
+             } elseif (sizeof($data)>1) { /* Same email more than one member */
+                 
+                 $data=$mysql->select("select * from `_tbl_members` where MemberPassword='".$_POST['Password']."' and (`MemberLogin`='".$_POST['UserName']."' or `EmailID`='".$_POST['UserName']."' or `MobileNumber`='".$_POST['UserName']."' or `MemberCode`='".$_POST['UserName']."') and `IsDeleted`='0'");
+                 
+                 if (sizeof($data)==0) {
+                     return Response::returnError("Invalid username or password"); 
+                 } 
+                 
+                 if (sizeof($data)>1) {
+                    return Response::returnError("Error occured  login into your account, please contact support team");
+                 }
+                 
+                 $mysql->execute("update `_tbl_logs_logins` set `LoginStatus`='1' where `LoginID`='".$loginid."'");
+                 
+                 if ($data[0]['IsActive']==0) {
+                     return Response::returnError("Access denied. Please contact support");   
+                 }
+                     
+                 if($data[0]['WelcomeMsg']==0) {
+                    $d=$mysql->select("Select * From `_tbl_welcome_message` where `IsActive`='1' and `UserRole`='Member'");
+                    $data[0]['WelcomeMessage']=$d[0]['Message'];  
+                 }
+                 
+                 $data[0]['LoginID']=$loginid;
+                 $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where    `IsDelete`='0' and `MemberID`='".$data[0]['MemberID']."' and `PriorityFirst`='1'");
+                 $data[0]['FileName']=(sizeof($ProfileThumb)==0) ? "" : getDataURI($ProfileThumb[0]['ProfilePhoto']);
+                 
+                 return Response::returnSuccess("success",$data[0]);
+                
              } else {
                 return Response::returnError("Invalid username and password");
              }
