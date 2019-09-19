@@ -2220,7 +2220,7 @@
              
              $data = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where  `DocumentTypeCode`='".$_POST['Documents']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
              if (sizeof($data)>0) {
-                return Response::returnError("Adharcard Already attached",$photos);
+                return Response::returnError("Document type attached",$photos);
              }
              $data = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where  `AttachFileName`='".$_POST['File']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
              if (sizeof($data)>0) {
@@ -2368,6 +2368,14 @@
          function DeleteMember() {
              global $mysql,$loginInfo;
              $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+             $deletereason= CodeMaster::getData("DELETEREASON",$_POST['DeleteReason']); 
+             $mysql->insert("_tbl_member_delete_request",array("MemberID"      => $loginInfo[0]['MemberID'],
+                                                               "MemberCode"    => $member[0]['MemberCode'],
+                                                               "DeleteReasonCode"  => $_POST['DeleteReason'],
+                                                               "DeleteReason"  => $deletereason[0]['CodeValue'],
+                                                               "DeleteReason"  => $_POST['DeleteReason'],
+                                                               "MemberCommemnts"     => $_POST['Commemnts'],
+                                                               "AddOn"      => date("Y-m-d H:i:s")));
              
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='DeleteMember'");
              $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
@@ -2378,7 +2386,15 @@
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Account has been Deleted.");  
              $mysql->execute("update `_tbl_members` set `IsDeleted`='1', `DeletedOn`='".date("Y-m-d H:i:s")."'  where  `MemberID`='".$loginInfo[0]['MemberID']."'");
+             //_draft
+             //_profile
              return Response::returnSuccess("successfully",array());
+             return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirmation For Delete Member</h4>
+                            <h5 style="text-align:center;color:#ada9a9">Your account was deleted successfully.</h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'?action=logout&redirect=../index" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                       </div>';
          }
          function SaveBankRequest() {
 
@@ -3199,6 +3215,9 @@
              }
              
              return Response::returnSuccess("success",$result);
+         }
+         function GetMemberDeleteReason() {
+             return Response::returnSuccess("success",array("DeleteReason"        => CodeMaster::getData("DELETEREASON")));
          }
   
      

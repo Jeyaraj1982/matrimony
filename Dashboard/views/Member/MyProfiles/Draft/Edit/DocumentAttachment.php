@@ -112,6 +112,11 @@ function submitUpload() {
         </div>
     </div>
     <div class="form-group row">
+        <div class="col-sm-12">
+            <span style="color:#ff6b6b;;">We do not share your documents with any 3rd party except local law enforcement agencies, if required.</span>
+        </div>
+    </div>
+    <div class="form-group row">
         <div class="col-sm-2"></div>
         <div class="col-sm-9">
            <?php echo $errormessage;?><?php echo $successmessage;?>

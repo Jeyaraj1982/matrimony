@@ -48,10 +48,10 @@ function submitprofile() {
                          ErrorCount=0;
                          
                          if (IsNonEmpty("EmailID","ErrEmailID","Please enter your Email ID")) {
-                            IsEmail("EmailID","ErrEmailID","Please enter valid EmailID");
+                            IsEmail("EmailID","ErrEmailID","Please enter valid EmailID"); 
                          }
                          if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please enter your Mobile Number")) {
-                            IsMobile("MobileNumber","ErrMobileNumber","Please enter valid Mobile Number");
+                            IsMobileNumber("MobileNumber","ErrMobileNumber","Please enter valid Mobile Number"); 
                          }
                          IsNonEmpty("AddressLine1","ErrAddressLine1","Please enter your Address Line1");
                          IsNonEmpty("City","ErrCity","Please enter your City");
@@ -75,7 +75,7 @@ function submitprofile() {
     
     
 }
-</script>
+</script>   
 <div class="col-sm-10" style="margin-top: -8px;">
 <form method="post" action="" onsubmit="return submitprofile();">
         <h4 class="card-title">Communication Details</h4>

@@ -46,7 +46,7 @@ $Education=$response['data']['Attachments'];
                             <div class="col-sm-8"><input type="text" class="form-control" name="EducationRemarks" id="EducationRemarks" value="<?php echo (isset($_POST['EducationRemarks']) ? $_POST['EducationRemarks'] : $response['data']['EducationRemarks']);?>"></div>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <div class="col-sm-12" style="text-align:left">
+                            <div class="col-sm-12" style="text-align:left;color:red">
                                 <?php echo $errormessage;?><?php echo $successmessage;?> 
                             </div>
                         </div>

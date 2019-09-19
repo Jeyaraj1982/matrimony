@@ -48,7 +48,7 @@
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12" style="text-align:center;color:red">
-                                <?php echo $errormessage;?><?php echo $successmessage;?> 
+                                <span style="color:red"><?php echo $errormessage;?><?php echo $successmessage;?></span> 
                             </div>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">

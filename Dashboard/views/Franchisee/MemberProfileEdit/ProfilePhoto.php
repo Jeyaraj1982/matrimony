@@ -217,7 +217,6 @@ function showLearnMore() {
                     $.simplyToast("Selected profile photo has been set to default photo   ", 'info');
             }});
           }
-         
  
     function showConfirmDelete(ProfilePhotoID,ProfileID) {                                           
         $('#Delete').modal('show'); 

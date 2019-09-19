@@ -1048,7 +1048,7 @@
                                                            `NationalityCode`   = '".$_POST['Nationality']."',   
                                                            `Nationality`        = '".trim($Nationality[0]['CodeValue'])."',
                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
-                                                           `AboutMe`           = '".$_POST['AboutMe']."' where ProfileCode='".$_POST['ProfileCode']."'";   
+                                                           `AboutMe`           = '".$_POST['AboutMe']."' where ProfileCode='".$_POST['Code']."'";   
                                                            
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
@@ -1262,7 +1262,7 @@
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
              $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'");      
       
-             return Response::returnSuccess("success".$updateSql,array("ProfileInfo"            => $Profiles[0],
+             return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
                                                             "Occupation"             => CodeMaster::getData('Occupation'),
                                                             "FamilyType"             => CodeMaster::getData('FAMILYTYPE'),
                                                             "FamilyValue"            => CodeMaster::getData('FAMILYVALUE'),
@@ -1363,7 +1363,7 @@
              
              $data = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where  `DocumentTypeCode`='".$_POST['Documents']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
              if (sizeof($data)>0) {
-                return Response::returnError("Adharcard Already attached",$photos);
+                return Response::returnError("Document type already attached",$photos);
              }
              $data = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where  `AttachFileName`='".$_POST['File']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
              if (sizeof($data)>0) {
@@ -1382,7 +1382,7 @@
                  }
              }
              $photos = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where `MemberID`='".$profiles[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0' and Type='IDProof'");
-             return Response::returnSuccess("success",$photos);
+             return Response::returnSuccess("Your Document Information has successfully updated and waiting for verification",$photos);
          }
 
          function EditDraftCommunicationDetails() {

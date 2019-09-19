@@ -144,8 +144,10 @@ function submitUpload() {
             </div>
             <div><img src="<?php echo AppUrl;?>uploads/<?php echo $d['AttachFileName'];?>" style="height:120px;"></div>
             <div>
+                <br><?php echo $d['DocumentType'];?><br> 
                 <?php if($d['IsVerified']==0){ echo "verification pending" ; } else { echo "Verified" ; }?>
                 <br><?php echo PutDateTime($d['AttachedOn']);?>   
+            </div> 
             </div>
         </div>
         
@@ -200,7 +202,7 @@ function showLearnMore() {
                                 + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
                                 + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
                                  + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                                 + '<h4 class="modal-title">Confirmation For remove</h4>'
+                                 + '<h4 class="modal-title">Confirmation For remove</h4><br>'
                                 + '<div>Are you sure want to Delete?  </div><br>'
                                     + '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+AttachmentID+'\')">Yes</button>&nbsp;&nbsp;'
                                     + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button></div>'
