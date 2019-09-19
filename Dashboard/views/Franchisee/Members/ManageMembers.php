@@ -15,8 +15,9 @@
                     </div>
                     <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                         <a href="ManageMembers" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                        <a href="ManageActiveMembers"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
-                        <a href="ManageDeactiveMembers"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>
+                        <a href="ManageActiveMembers"><small>Active</small></a>&nbsp;|&nbsp;
+                        <a href="ManageDeactiveMembers"><small>Deactive</small></a>&nbsp;|&nbsp;
+                        <a href="ManageDeletedMembers"><small>Deleted</small></a>
                     </div>
                 </div>
                 <div class="table-responsive">

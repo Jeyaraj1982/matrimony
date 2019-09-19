@@ -510,14 +510,15 @@ text-align: left;
      <?php if($ProfileInfo['IsApproved']==1){?>
          Profile Already Published
      <?php } else {?>
-      <!--  <a href="javascript:void(0)" onclick="showConfirmApprove('<?php //echo $_GET['Code'];?>')" class="btn btn-success" name="Approve" style="font-family:roboto">Approve</a>&nbsp;-->
-        <button type="submit" class="btn btn-success" name="Approve" style="font-family:roboto">Approve</button>&nbsp;
+       <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')"  class="btn btn-success" name="Approve" style="font-family:roboto">Approve</a>&nbsp;
+      <!--  <button type="submit" class="btn btn-success" name="Approve" style="font-family:roboto">Approve</button>&nbsp; -->
         <button type="submit" class="btn btn-warning" name="Reject" style="font-family:roboto">Reject</button>
         <button type="submit" class="btn btn-danger" name="Delete" style="font-family:roboto">Delete</button>
         <?php }?>
     </div>
   
- </form>   
+ </form> 
+   
         
         <div class="modal" id="ApproveNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
@@ -528,24 +529,37 @@ text-align: left;
         </div>
                                                                                                                       
 <script>
-function showConfirmApprove(ProfileCode) {
+function showConfirmPublish(ProfileID) {
       $('#ApproveNow').modal('show'); 
-      var content = '<div class="Approve_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'
-                    +  '<form method="post" id="frm_'+ProfileCode+'" name="frm_'+ProfileCode+'" action="" >'
-                     + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
-                       +  '<div style="text-align:center">Are you sure want to Approve?  <br><br>'
-                        +  '<button type="button" class="btn btn-primary" name="Approve"  onclick="ApproveProfile(\''+ProfileID+'\')">Yes</button>&nbsp;'
-                        +  '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
+      var content = '<div class="Publish_body" style="padding:20px">'
+                    +   '<div  style="height: 315px;">'                                                                              
+                    +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
+                     + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                          + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        + '<h4 class="modal-title">Profile Publish</h4> <br>'
+                        +'<div style="text-align:left"> Dear ,<br>'
+                        +'<div style="text-align:left">Are you sure want to publish this profile  </label><br><br>'
+                        +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Publish" id="PublishBtn"  onclick="ApproveProfile(\''+ProfileID+'\')" style="font-family:roboto">Yes</button>&nbsp;&nbsp;&nbsp;'
+                        +  '<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a></div>'
                        +  '</div><br>'
-                    +  '</form>'
+                    +  '</form>'                                                                                                          
                 +  '</div>'
             +  '</div>';
-            $('#Approve_body').html(content);
+            $('#Approve_body').html(content);     
 }
-
+function RequestToModify(ProfileCode) {
+       //  var param = $( "#"+frmid).serialize();
+         $('#Approve_body').html(preloader);
+                    $.post( API_URL + "m=Admin&a=RequestToModify&ProfileCode="+ProfileCode, 
+                            "",
+                            function(result2) {
+                                $('#Approve_body').html(result2);   
+                            }
+                    );
+              
+    } 
 function ApproveProfile(frmid) {
-         var param = $( "#"+frmid).serialize();
+         var param = $( "#frm_"+frmid).serialize();
          $('#Approve_body').html(preloader);
                     $.post( API_URL + "m=Admin&a=ApproveProfile", 
                             param,

@@ -73,9 +73,14 @@
            /**IE Hacks - see http://css3pie.com/ for more info on how to use CS3Pie and to download the latest version**/
            div.enlarge img, div.enlarge span{behavior: url(pie/PIE.htc);}  
            /* end of Thumb image */
+           div, label,a,ul,li,p,h1,h2,h3,h4,h5,h6,span,i,b,u {font-family:'Roboto' !important;}
         </style>
         <script>
           var MyFavoritedPage=0;
+              function changeMemberStatus(txt) {
+        $('#mem_current_status').html(txt);
+    }
+
         </script>
         </head>
     <body>

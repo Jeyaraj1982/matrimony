@@ -49,7 +49,6 @@
                 <div class="card-body" style="text-align:center;font-family:'Roboto'">
                     <img src="<?php echo AppUrl;?>assets/images/noprofile.jpg">
                     <Br>
-                    <div style="padding:30px;padding-top:10px;font-size:20px;color:#ccc;font-family:'Roboto'">There are no profiles</div>
 
                     <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a>
                     <!-- <?php echo GetUrl("Profile/CreateProfile");?>-->

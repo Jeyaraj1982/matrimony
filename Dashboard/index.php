@@ -1,5 +1,7 @@
 <?php 
     include_once("config.php");
+    include_once("includes/lang_eng.php");
+    //include_once("includes/lang_tam.php");
     include_once("includes/header.php");
 
     if (isset($_GET['p'])) {

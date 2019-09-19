@@ -25,13 +25,43 @@
                 $('#verifydiv').hide(1000);
             }
         }
+        function mynotification() {
+            var x = document.getElementById("notificationdiv");
+            if (!(x.style.display === "none")) {
+                $('#notificationdiv').hide(1000);
+            }
+        }
     </script>
+      <?php $notificationresponse = $webservice->getData("Member","GetMyNotifications");   ?>  
+         <?php  if(sizeof($notificationresponse['data'])>0) { ?>
+     <div class="row" id="notificationdiv" >
+        <div class="col-sm-12 grid-margin stretch-card">
+            <div class="card card-statistics" style="border-radius: 5px;">
+                <div class="card-body" style="border-radius: 5px;background: #fffdc4;border: 1px solid #ccc;padding: 12px;">
+                    <div class="col-sm-6" id="notificationContent"><?php echo $notificationresponse['data']['Message'];?></div>
+                    <a href="javascript:void(0)" onclick="mynotification()" class="close" style="outline:none" >&times;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php }?>
+  
     <div class="row" id="verifydiv" style="display: none;">
         <div class="col-sm-12 grid-margin stretch-card">
             <div class="card card-statistics" style="border-radius: 5px;">
                 <div class="card-body" style="border-radius: 5px;background: #fffdc4;border: 1px solid #ccc;padding: 12px;">
                     <div class="col-sm-6" id="verificationContent"></div>
                     <a href="javascript:void(0)" onclick="myFunction()" class="close" style="outline:none" >&times;</a>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div class="row" id="notificationdiv" style="display: none;">
+        <div class="col-sm-12 grid-margin stretch-card">
+            <div class="card card-statistics" style="border-radius: 5px;">
+                <div class="card-body" style="border-radius: 5px;background: #fffdc4;border: 1px solid #ccc;padding: 12px;">
+                    <div class="col-sm-6" id="notificationContent"></div>
+                    <a href="javascript:void(0)" onclick="mynotification()" class="close" style="outline:none" >&times;</a>
                 </div>
             </div>
         </div>
@@ -86,7 +116,7 @@
                 <div class="col-sm-12" id="resCon_a001" style="height: 327px;">
                     <?php if (sizeof($response['data'])==0) {      ?>
                             <div style="text-align:center;margin-top: 115px;">
-                                <h5 style="color: #aaa;">No Profiles Found<br><br> <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a> </h5>
+                                <h5 style="color: #aaa;"><a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a> </h5>
                             </div>
                         <?php } else { ?>
                 <div>
