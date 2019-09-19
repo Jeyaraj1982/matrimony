@@ -532,9 +532,51 @@ class Admin extends Master {
      
      function ApproveProfile() {
 
-             global $mysql,$loginInfo;                                                      
+             global $mysql,$loginInfo; 
              
-             $draft = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'");
+             $EducationDetails =$mysql->select("Select * from `_tbl_draft_profiles_education_details` where `IsDeleted`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+                 if (sizeof($EducationDetails)==0) {
+                        return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Profile Verification</h4>  <br><br>
+                                    <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                                    <h5 style="text-align:center;color:#ada9a9">Education details not found.</h5>
+                                    <h5 style="text-align:center;"><a href="javascript:void(0)" onclick="RequestToModify(\''.$_POST['ProfileID'].'\')" class="btn btn-primary" style="cursor:pointer">Request to modify</a><h5>
+                               </div>'; 
+                     }
+             $Documents =$mysql->select("Select * from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+             if (sizeof($Documents)==0) {
+                return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Profile Verification</h4>  <br><br>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">Documents details not found.</h5>
+                            <h5 style="text-align:center;"><a href="javascript:void(0)" onclick="RequestToModify(\''.$_POST['ProfileID'].'\')" class="btn btn-primary" style="cursor:pointer">Request to modify</a> <h5>
+                       </div>';                                                                      
+             }
+             
+             $ProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+                if (sizeof($ProfilePhoto)==0) {
+                return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Profile Verification</h4>  <br><br>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">Profile photo not found.</h5>
+                            <h5 style="text-align:center;"><a href="javascript:void(0)" onclick="RequestToModify(\''.$_POST['ProfileID'].'\')" class="btn btn-primary" style="cursor:pointer">Request to modify</a> <h5>
+                       </div>'; 
+             } 
+             $DefaultProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `PriorityFirst`='1' and `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+             if (sizeof($DefaultProfilePhoto)==0) {
+                    return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Profile Verification</h4>  <br><br>
+                                <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                                <h5 style="text-align:center;color:#ada9a9">Default Profile photo not found.</h5>
+                                <h5 style="text-align:center;"><a href="javascript:void(0)" onclick="RequestToModify(\''.$_POST['ProfileID'].'\')" class="btn btn-primary" style="cursor:pointer">Request to modify</a> <h5>
+                           </div>'; 
+                 }                                                
+             
+             $draft = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'");
              
              $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$draft[0]['MemberID']."'");
              
@@ -2385,9 +2427,43 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              
                  return Response::returnSuccess("success",$Profiles);                                               
                  }
-                 
-   
-    
+    function RequestToModify() {
+
+             global $mysql,$loginInfo; 
+                                                          
+             
+             $draft = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_GET['ProfileCode']."'");
+             
+             $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$draft[0]['MemberID']."'");
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToModify'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$draft[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$draft[0]['PersonName'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "RequestToModify",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$draft[0]['PersonName'].") Does not have all details so could not approved your profile. Your Profile ID is ".$draft[0]['ProfileCode']);  
+             
+             $updateSql = "update `_tbl_draft_profiles` set `RequestToVerify` = '0' where `ProfileCode`='".$_GET['ProfileCode']."'";
+                                                            
+             $mysql->execute($updateSql);     
+             
+          $id =  $mysql->insert("_tbl_member_profile_modify_notification",array("MemberID" => $member[0]['MemberID'],
+                                                                                   "Message"   => "your profile does not have all details",
+                                                                                   "UpdatedOn"   => date("Y-m-d H:i:s"),
+                                                                                   "ViewedOn"      => date("Y-m-d H:i:s")));   
+                            
+             return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Profile Verification</h4>  <br><br>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'Profiles/Requested" class="btn btn-primary" style="cursor:pointer">Continue</a> <h5>
+                       </div>';                                             
+                 }
         
 
     }

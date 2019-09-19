@@ -645,6 +645,11 @@
              global $loginInfo;     
             return ($loginInfo[0]['FranchiseeID']>0) ? Response::returnSuccess("success",$this->execute("select * from _tbl_members where IsActive='0' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"))
                                                      : Response::returnError("Access denied. Please contact support"); 
+        }
+        function GetMyDeletedMembers() {
+             global $loginInfo;     
+            return ($loginInfo[0]['FranchiseeID']>0) ? Response::returnSuccess("success"."select * from _tbl_members where IsDeleted='1' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'",$this->execute("select * from _tbl_members where IsDeleted='1' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"))
+                                                     : Response::returnError("Access denied. Please contact support"); 
         }  
         function execute($Qry) {
             
@@ -1885,13 +1890,13 @@
              
              global $mysql,$loginInfo;
          
-             $Member = $mysql->select("select count(*) as cnt from `_tbl_members`");      
-             $DraftedProfiles = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `RequestToVerify`='0' and `IsApproved`='0'");      
-             $PostedProfiles = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `RequestToVerify`='1' and `IsApproved`='0'");      
+             $Member = $mysql->select("select count(*) as cnt from `_tbl_members` where `ReferedBy`='".$loginInfo[0]['FranchiseeStaffID']."'");      
+             $DraftedProfiles = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `RequestToVerify`='0' and `IsApproved`='0' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."'");      
+             $PostedProfiles = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `RequestToVerify`='1' and `IsApproved`='0' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."'");      
              
-             return Response::returnSuccess("success".$PostedProfiles,array("Member"               =>$Member[0],
-                                                                             "DraftedProfiles"      =>$DraftedProfiles[0],
-                                                                             "PostedProfiles"       =>$PostedProfiles[0]));
+             return Response::returnSuccess("success",array("Member"           =>$Member[0],
+                                                            "DraftedProfiles"  =>$DraftedProfiles[0],
+                                                            "PostedProfiles"   =>$PostedProfiles[0]));
          }
          function GetDraftedProfiles() {
            global $mysql,$loginInfo;    
@@ -1993,6 +1998,91 @@
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
 
              return Response::returnSuccess("New Password saved successfully",$data[0]);  
+         }
+         function GetMyProfiles() {
+
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+             $Position = "";   
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
+                                                                                                
+                 $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  `RequestToVerify`='0' and IsApproved='0'");
+                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  RequestToVerify='1'");
+                 
+                 if (sizeof($DraftProfiles)>0) {
+                     
+                     foreach($DraftProfiles as $DraftProfile) {
+                        $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);    
+                        $result['mode']="Draft";
+                        $Profiles[]= $result;
+                     }
+                     
+                 } else if (sizeof($PostProfiles)>0) {
+                     
+                     if ($PostProfiles[0]['IsApproved']>0) {
+                         
+                         $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where DraftProfileID='".$PostProfiles['0']['ProfileID']."' and  `MemberID` = '".$loginInfo[0]['MemberID']."'");
+                         foreach($PublishedProfiles as $PublishedProfile) {
+                            $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
+                            $result['mode']="Published";
+                            $Profiles[]=$result;     
+                         }
+                         
+                     } else {
+                        foreach($PostProfiles as $PostProfile) {
+                            $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode']);
+                            $result['mode']="Posted";
+                            $Profiles[]=$result;     
+                        }
+                     }
+                     
+                 }  
+                  return Response::returnSuccess("success",$Profiles);
+             }
+             
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Draft") {  /* Profile => Drafted */
+                 
+                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='0'");
+                 
+                 if (sizeof($DraftProfiles)>0) {
+                     foreach($DraftProfiles as $DraftProfile) {
+                        $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
+                        $result['mode']="Draft";
+                        $Profiles[]=$result;   
+                     }
+                 }
+                 
+                 return Response::returnSuccess("success",$Profiles);
+             }
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Posted") {    /* Profile => Posted */
+                  $PostProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='1' and IsApproved='0'");
+
+                  if (sizeof($PostProfiles)>0) {
+                      foreach($PostProfiles as $PostProfile) {
+                        $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode'],2);
+                        $result['mode']="Posted";
+                        $Profiles[]=$result;  
+                     }
+                 }
+                 
+                return Response::returnSuccess("success",$Profiles);
+             }
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {    /* Profile => Posted */
+                
+                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and IsApproved='1' and RequestToVerify='1'");
+                if (sizeof($PublishedProfiles)>0) {
+                    foreach($PublishedProfiles as $PublishedProfile) {
+                        $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);
+                        $result['mode']="Published";
+                        $Profiles[]=$result; 
+                     }                                                                          
+                }
+                return Response::returnSuccess("success",$Profiles);
+             }
          }
          
         }

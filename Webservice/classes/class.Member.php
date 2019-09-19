@@ -32,7 +32,7 @@
                     return Response::returnError("Invalid username or password");
                  }
                  
-                 $mysql->execute("update `_tbl_logs_logins` set  `MemberID` ='".$data[0]['MemberID']."', `LoginStatus`='1' where `LoginID`='".$loginid."'");
+                 $mysql->execute("update `_tbl_logs_logins` set `LoginStatus`='1' where `LoginID`='".$loginid."'");
                  
                  if ($data[0]['IsActive']==0) {
                     return Response::returnError("Access denied. Please contact support");   
@@ -59,10 +59,10 @@
                  } 
                  
                  if (sizeof($data)>1) {
-                    return Response::returnError("Error occured  login into your account, please contact support team");
+                    return Response::returnError("Error occured login into your account, please contact support team");
                  }
                  
-                 $mysql->execute("update `_tbl_logs_logins` set `MemberID` ='".$data[0]['MemberID']."', `LoginStatus`='1' where `LoginID`='".$loginid."'");
+                 $mysql->execute("update `_tbl_logs_logins` set `LoginStatus`='1' where `LoginID`='".$loginid."'");
                  
                  if ($data[0]['IsActive']==0) {
                      return Response::returnError("Access denied. Please contact support");   
@@ -3242,6 +3242,11 @@
          }
          function GetMemberDeleteReason() {
              return Response::returnSuccess("success",array("DeleteReason"        => CodeMaster::getData("DELETEREASON")));
+         }
+         function GetMyNotifications(){
+             global $mysql,$loginInfo;
+             $Member=$mysql->select("select * from `_tbl_member_profile_modify_notification` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
+             return Response::returnSuccess("success",$Member[0]);
          }
   
      
