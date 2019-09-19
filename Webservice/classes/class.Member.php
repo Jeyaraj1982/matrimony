@@ -76,7 +76,7 @@
                  $data[0]['LoginID']=$loginid;
                  $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where    `IsDelete`='0' and `MemberID`='".$data[0]['MemberID']."' and `PriorityFirst`='1'");
                  $data[0]['FileName']=(sizeof($ProfileThumb)==0) ? "" : getDataURI($ProfileThumb[0]['ProfilePhoto']);
-                 
+                 $data[0]['LoginOn'] = $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$data[0]['MemberID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
                  return Response::returnSuccess("success",$data[0]);
                 
              } else {

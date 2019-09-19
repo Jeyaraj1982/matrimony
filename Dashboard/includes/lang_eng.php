@@ -20,5 +20,7 @@ $lang= array(
 "my_orders"=>"My Orders",
 "my_invoices"=>"My Invoices",
 "my_receipts"=>"My Receipts",
+"my_transactions"=>"My Transactions",
+"my_wallet"=>"My Wallet",
 );
 ?>

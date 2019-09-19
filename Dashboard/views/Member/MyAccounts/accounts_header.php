@@ -47,6 +47,12 @@
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon1 <?php echo ($page=="MyInvoices") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">   
                                             <a id="myaccount_leftnav_a" href="<?php echo GetUrl("MyAccounts/MyInvoices");?>" class="" style="text-decoration:none"><span>My Invoices</span></a>
                                         </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon1 <?php echo ($page=="MyOrders") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">   
+                                            <a id="myaccount_leftnav_a" href="<?php echo GetUrl("MyAccounts/MyOrders");?>" class="" style="text-decoration:none"><span>My Orders</span></a>
+                                        </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon1 <?php echo ($page=="MyReceipts") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">   
+                                            <a id="myaccount_leftnav_a" href="<?php echo GetUrl("MyAccounts/MyReceipts");?>" class="" style="text-decoration:none"><span>My Receipts</span></a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

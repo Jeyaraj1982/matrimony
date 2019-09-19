@@ -29,16 +29,18 @@
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MyFavorited");?>" style="font-size:13px"><?php echo $lang['my_favorited'];?>My Favorited</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MyDownloaded");?>" style="font-size:13px"><?php echo $lang['my_downloaded'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MyInvitations");?>" style="font-size:13px"><?php echo $lang['my_invitations'];?></a></li>
-              </ul>
+              </ul>                                                                                                
             </div>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#Accounts" aria-expanded="false" aria-controls="Support"><i class="menu-icon mdi mdi-content-copy"></i><span class="menu-title"  style="font-size:14px"><?php echo $lang['my_accounts'];?></span><i class="menu-arrow"></i></a>
             <div class="collapse" id="Accounts">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Accounts/MyOrders");?>"><?php echo $lang['my_orders'];?></a></li>
-                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Accounts/MyInvoices");?>"><?php echo $lang['my_invoices'];?></a></li>
-                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Accounts/MyReceipts");?>"><?php echo $lang['my_receipts'];?></a></li>
+                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyAccounts/MyWallet");?>"><?php echo $lang['my_wallet'];?></a></li>
+                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyAccounts/MyOrders");?>"><?php echo $lang['my_orders'];?></a></li>
+                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyAccounts/MyInvoices");?>"><?php echo $lang['my_invoices'];?></a></li>
+                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyAccounts/MyReceipts");?>"><?php echo $lang['my_receipts'];?></a></li>
+                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyAccounts/MyTransactions");?>"><?php echo $lang['my_transactions'];?></a></li>
               </ul>
             </div>
         </li> 
