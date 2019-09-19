@@ -32,7 +32,7 @@
                     return Response::returnError("Invalid username or password");
                  }
                  
-                 $mysql->execute("update `_tbl_logs_logins` set `LoginStatus`='1' where `LoginID`='".$loginid."'");
+                 $mysql->execute("update `_tbl_logs_logins` set  `MemberID` ='".$data[0]['MemberID']."', `LoginStatus`='1' where `LoginID`='".$loginid."'");
                  
                  if ($data[0]['IsActive']==0) {
                     return Response::returnError("Access denied. Please contact support");   
@@ -62,7 +62,7 @@
                     return Response::returnError("Error occured  login into your account, please contact support team");
                  }
                  
-                 $mysql->execute("update `_tbl_logs_logins` set `LoginStatus`='1' where `LoginID`='".$loginid."'");
+                 $mysql->execute("update `_tbl_logs_logins` set `MemberID` ='".$data[0]['MemberID']."', `LoginStatus`='1' where `LoginID`='".$loginid."'");
                  
                  if ($data[0]['IsActive']==0) {
                      return Response::returnError("Access denied. Please contact support");   
