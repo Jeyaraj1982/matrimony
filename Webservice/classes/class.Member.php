@@ -14,7 +14,7 @@
                  return Response::returnError("Please enter login password ");
              }
 
-             $data=$mysql->select("select * from `_tbl_members` where (`MemberLogin`='".$_POST['UserName']."' or `EmailID`='".$_POST['UserName']."' or `MobileNumber`='".$_POST['UserName']."') and `IsDeleted`='0'");
+             $data=$mysql->select("select * from `_tbl_members` where (`MemberLogin`='".$_POST['UserName']."' or `EmailID`='".$_POST['UserName']."' or `MobileNumber`='".$_POST['UserName']."' or `MemberCode`='".$_POST['UserName']."') and `IsDeleted`='0'");
              $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
              $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"       => date("Y-m-d H:i:s"),
                                                                  "LoginFrom"     => "Web",
@@ -26,7 +26,7 @@
                                                                  "BrowserName"   => $clientinfo['UserAgent'],
                                                                  "APIResponse"   => json_encode($clientinfo),
                                                                  "LoginPassword" => $_POST['Password']));
-             if (sizeof($data)>0) {
+             if (sizeof($data)==1) {
 
                  if ($data[0]['MemberPassword']==$_POST['Password']) {              
 
@@ -55,6 +55,8 @@
                  } else {
                      return Response::returnError("Invalid username or password");
                  }
+             } elseif (sizeof($data)>1) {
+                return Response::returnError("Error occured in your login, please contact support team"); 
              } else {
                 return Response::returnError("Invalid username and password");
              }
