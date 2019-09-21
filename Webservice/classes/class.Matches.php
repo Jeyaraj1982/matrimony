@@ -35,22 +35,23 @@
                                                                                  
              $result = array();
              
-             $myprofile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+             $checkverification = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+             
+             if($checkverification[0]['IsMobileVerified']==0) {
+                 return Response::returnError("you must verify your mobile number",array("param"=>"mobile"));   
+             }
+             
+             if($checkverification[0]['IsEmailVerified']==0) {
+                 return Response::returnError("you must verify your email id",array("param"=>"email"));   
+             }
+             
+             $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnSuccess("success",$result); 
+                return Response::returnError("you must create a profile",array("param"=>"profile"));   
              }
              
-             $sexcode="";
-             if ($myprofile[0]['SexCode']=="SX001") {
-                $sexcode="SX002";  
-             }
-             
-             if ($myprofile[0]['SexCode']=="SX002") {
-                $sexcode="SX001";  
-             }
-             
-             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".$sexcode."'");
-             
+             /* validate active profiles */  
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX002")."'");
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
              }
@@ -59,54 +60,57 @@
          }
          
          function MatchesNearByMe() {
-                 global $mysql,$loginInfo;
-             
+             global $mysql,$loginInfo;
+                                                                                 
              $result = array();
              
-             $myprofile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+             $checkverification = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+             
+             if($checkverification[0]['IsMobileVerified']==0) {
+                 return Response::returnError("you must verify your mobile number",array("param"=>"mobile"));   
+             }
+             
+             if($checkverification[0]['IsEmailVerified']==0) {
+                 return Response::returnError("you must verify your email id",array("param"=>"email"));   
+             }
+             
+             $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnSuccess("success",$result); 
+                return Response::returnError("you must create a profile",array("param"=>"profile"));   
              }
              
-             $sexcode="";
-             if ($myprofile[0]['SexCode']=="SX001") {
-                $sexcode="SX002";  
-             }
-             
-             if ($myprofile[0]['SexCode']=="SX002") {
-                $sexcode="SX001";  
-             }
-             
-             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".$sexcode."'");
-             
+             /* validate active profiles */  
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX002")."'");
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
              }
              
              return Response::returnSuccess("success",$result);
+             
          }
          
          function MatchesRecentlyAdded() {
-                global $mysql,$loginInfo;
-             
+              global $mysql,$loginInfo;
+                                                                                 
              $result = array();
              
-             $myprofile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+             $checkverification = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+             
+             if($checkverification[0]['IsMobileVerified']==0) {
+                 return Response::returnError("you must verify your mobile number",array("param"=>"mobile"));   
+             }
+             
+             if($checkverification[0]['IsEmailVerified']==0) {
+                 return Response::returnError("you must verify your email id",array("param"=>"email"));   
+             }
+             
+             $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnSuccess("success",$result); 
+                return Response::returnError("you must create a profile",array("param"=>"profile"));   
              }
              
-             $sexcode="";
-             if ($myprofile[0]['SexCode']=="SX001") {
-                $sexcode="SX002";  
-             }
-             
-             if ($myprofile[0]['SexCode']=="SX002") {
-                $sexcode="SX001";  
-             }
-             
-             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".$sexcode."'");
-             
+             /* validate active profiles */  
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX002")."'");
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
              }
@@ -115,26 +119,27 @@
          }
          
          function MatchesMostPopular() {
-               global $mysql,$loginInfo;
-             
+              global $mysql,$loginInfo;
+                                                                                 
              $result = array();
              
-             $myprofile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+             $checkverification = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+             
+             if($checkverification[0]['IsMobileVerified']==0) {
+                 return Response::returnError("you must verify your mobile number",array("param"=>"mobile"));   
+             }
+             
+             if($checkverification[0]['IsEmailVerified']==0) {
+                 return Response::returnError("you must verify your email id",array("param"=>"email"));   
+             }
+             
+             $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnSuccess("success",$result); 
+                return Response::returnError("you must create a profile",array("param"=>"profile"));   
              }
              
-             $sexcode="";
-             if ($myprofile[0]['SexCode']=="SX001") {
-                $sexcode="SX002";  
-             }
-             
-             if ($myprofile[0]['SexCode']=="SX002") {
-                $sexcode="SX001";  
-             }
-             
-             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".$sexcode."'");
-             
+             /* validate active profiles */  
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX002")."'");
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
              }
@@ -143,26 +148,27 @@
          }
          
          function MatchesReligion() {
-                global $mysql,$loginInfo;
-             
+              global $mysql,$loginInfo;
+                                                                                 
              $result = array();
              
-             $myprofile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+             $checkverification = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+             
+             if($checkverification[0]['IsMobileVerified']==0) {
+                 return Response::returnError("you must verify your mobile number",array("param"=>"mobile"));   
+             }
+             
+             if($checkverification[0]['IsEmailVerified']==0) {
+                 return Response::returnError("you must verify your email id",array("param"=>"email"));   
+             }
+             
+             $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnSuccess("success",$result); 
+                return Response::returnError("you must create a profile",array("param"=>"profile"));   
              }
              
-             $sexcode="";
-             if ($myprofile[0]['SexCode']=="SX001") {
-                $sexcode="SX002";  
-             }
-             
-             if ($myprofile[0]['SexCode']=="SX002") {
-                $sexcode="SX001";  
-             }
-             
-             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".$sexcode."'");
-             
+             /* validate active profiles */  
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX002")."'");
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
              }
@@ -171,26 +177,27 @@
          }
          
          function MatchesIncome() {
-                global $mysql,$loginInfo;
-             
+              global $mysql,$loginInfo;
+                                                                                 
              $result = array();
              
-             $myprofile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+             $checkverification = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+             
+             if($checkverification[0]['IsMobileVerified']==0) {
+                 return Response::returnError("you must verify your mobile number",array("param"=>"mobile"));   
+             }
+             
+             if($checkverification[0]['IsEmailVerified']==0) {
+                 return Response::returnError("you must verify your email id",array("param"=>"email"));   
+             }
+             
+             $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnSuccess("success",$result); 
+                return Response::returnError("you must create a profile",array("param"=>"profile"));   
              }
              
-             $sexcode="";
-             if ($myprofile[0]['SexCode']=="SX001") {
-                $sexcode="SX002";  
-             }
-             
-             if ($myprofile[0]['SexCode']=="SX002") {
-                $sexcode="SX001";  
-             }
-             
-             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".$sexcode."'");
-             
+             /* validate active profiles */  
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX002")."'");
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
              }
@@ -199,26 +206,27 @@
          }
          
          function MatchesEducation() {
-               global $mysql,$loginInfo;
-             
+              global $mysql,$loginInfo;
+                                                                                 
              $result = array();
              
-             $myprofile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+             $checkverification = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+             
+             if($checkverification[0]['IsMobileVerified']==0) {
+                 return Response::returnError("you must verify your mobile number",array("param"=>"mobile"));   
+             }
+             
+             if($checkverification[0]['IsEmailVerified']==0) {
+                 return Response::returnError("you must verify your email id",array("param"=>"email"));   
+             }
+             
+             $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnSuccess("success",$result); 
+                return Response::returnError("you must create a profile",array("param"=>"profile"));   
              }
              
-             $sexcode="";
-             if ($myprofile[0]['SexCode']=="SX001") {
-                $sexcode="SX002";  
-             }
-             
-             if ($myprofile[0]['SexCode']=="SX002") {
-                $sexcode="SX001";  
-             }
-             
-             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".$sexcode."'");
-             
+             /* validate active profiles */  
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX002")."'");
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
              }
@@ -227,26 +235,27 @@
          }
          
          function MatchesOccupation() {
-               global $mysql,$loginInfo;
-             
+              global $mysql,$loginInfo;
+                                                                                 
              $result = array();
              
-             $myprofile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+             $checkverification = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+             
+             if($checkverification[0]['IsMobileVerified']==0) {
+                 return Response::returnError("you must verify your mobile number",array("param"=>"mobile"));   
+             }
+             
+             if($checkverification[0]['IsEmailVerified']==0) {
+                 return Response::returnError("you must verify your email id",array("param"=>"email"));   
+             }
+             
+             $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnSuccess("success",$result); 
+                return Response::returnError("you must create a profile",array("param"=>"profile"));   
              }
              
-             $sexcode="";
-             if ($myprofile[0]['SexCode']=="SX001") {
-                $sexcode="SX002";  
-             }
-             
-             if ($myprofile[0]['SexCode']=="SX002") {
-                $sexcode="SX001";  
-             }
-             
-             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".$sexcode."'");
-             
+             /* validate active profiles */  
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX002")."'");
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
              }
@@ -255,26 +264,27 @@
          }
          
          function MatchesOthers() {
-                 global $mysql,$loginInfo;
-             
+             global $mysql,$loginInfo;
+                                                                                 
              $result = array();
              
-             $myprofile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+             $checkverification = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
+             
+             if($checkverification[0]['IsMobileVerified']==0) {
+                 return Response::returnError("you must verify your mobile number",array("param"=>"mobile"));   
+             }
+             
+             if($checkverification[0]['IsEmailVerified']==0) {
+                 return Response::returnError("you must verify your email id",array("param"=>"email"));   
+             }
+             
+             $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnSuccess("success",$result); 
+                return Response::returnError("you must create a profile",array("param"=>"profile"));   
              }
              
-             $sexcode="";
-             if ($myprofile[0]['SexCode']=="SX001") {
-                $sexcode="SX002";  
-             }
-             
-             if ($myprofile[0]['SexCode']=="SX002") {
-                $sexcode="SX001";  
-             }
-             
-             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".$sexcode."'");
-             
+             /* validate active profiles */  
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX002")."'");
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
              }

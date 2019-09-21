@@ -3,7 +3,6 @@
         $response = $webservice->WelcomeMessage();
     }  
     $response = $webservice->getData("Member","GetMyProfiles",array("ProfileFrom"=>"All"));
- 
     $whoviewed = $webservice->getData("Member","GetRecentlyWhoViewedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
     $WhoViewedYourProfile = $whoviewed['data'];       
 
@@ -15,6 +14,10 @@
 
     $myfavorited = $webservice->getData("Member","GetFavouritedProfiles",array("requestfrom"=>"0","requestto"=>"5"));
     $MyFavouritedProfiles = $myfavorited['data'];
+    
+    $mutualprofile = $webservice->getData("Member","GetMutualProfiles",array("requestfrom"=>"0","requestto"=>"5"));
+    $MutualProfiles = $mutualprofile['data'];
+    
     
     $latestupdates = $webservice->getData("Member","GetLatestUpdates");
 ?>
@@ -72,7 +75,7 @@
             <div class="member_dashboard_widget_title">Latest Updates</div>
              <div class="card"  style="background:#dee9ea">
                 <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:345px">
-                    <div id="resCon_a002" style="background:white;width:97%;text-align:left;padding:0px;height:300px;overflow:auto">
+                    <div id="resCon_a002" class="resCon_a002" style="background:white;width:97%;text-align:left;padding:0px;height:300px;overflow:auto">
                     <?php foreach($latestupdates['data'] as $Row) { ?>   
                     <div id="UpdatesDiv_<?php echo $Row['LatestID'];?>" name="UpdatesDiv_<?php echo $Row['LatestID'];?>" style="border-bottom:1px solid #e5e5e5;padding: 5px;padding-bottom:6px;background:#fff;overflow:auto;">
                         <table style="width: 100%;">
@@ -154,9 +157,11 @@
                             <button class="btn btn-primary leftLst"><</button>
                             <button class="btn btn-primary rightLst">></button>
                          </div> 
-                         <div style="padding:8px;text-align:center;">
-                            <a href="<?php echo SiteUrl;?>MyContacts/RecentlyWhoViewed">View All</a>
-                         </div>
+                         <?php if (sizeof($WhoViewedYourProfile)>=3) { ?>
+                            <div style="clear:both;padding:3px;text-align:center;">
+                                        <a href="<?php echo SiteUrl;?>RecentlyWhofavourited/RecentlyWhoViewed">View All</a>
+                            </div>
+                          <?php } ?> 
                     <?php } else { ?>
                          <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
                             <div style="text-align:center;margin-top: 127px;">
@@ -182,15 +187,47 @@
                         <button class="btn btn-primary leftLst"><</button>
                         <button class="btn btn-primary rightLst">></button>
                     </div> 
-                    <div style="padding:8px;text-align:center;">
-                        <a href="<?php echo SiteUrl;?>MyContacts/RecentlyWhofavourited">View All</a>
-                    </div>  
+                     <?php if (sizeof($WhoFavoritedYourProfiles)>=3) { ?>
+                            <div style="clear:both;padding:3px;text-align:center;">
+                                        <a href="<?php echo SiteUrl;?>RecentlyWhofavourited/MutualProfiles">View All</a>
+                            </div>
+                          <?php } ?> 
                     <?php } else { ?>
                     <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
                             <div style="text-align:center;margin-top: 127px;">
                                 <h5 style="color: #aaa;">No Profiles Found </h5>
                             </div>
                          </div>                                                        
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+        <br><div>
+            <div class="member_dashboard_widget_title">Mutual Profile</div>
+            <div class="card" style="background:#dee9ea">
+                <div class="card-body member_dashboard_widget_container" id="slideshow" >
+                    <?php if (sizeof($MutualProfiles)>0) { ?>
+                        <div style="height:280px;overflow:hidden">
+                            <?php
+                                foreach($MutualProfiles as $Profile) {
+                                   // echo dashboard_view_1($Profile);
+                                    echo dashboard_mutual_profiles($Profile);
+                                }
+                            ?> 
+                            <button class="btn btn-primary leftLst"><</button>
+                            <button class="btn btn-primary rightLst">></button>
+                         </div> 
+                         <?php if (sizeof($MutualProfiles)>=3) { ?>
+                            <div style="clear:both;padding:3px;text-align:center;">
+                                        <a href="<?php echo SiteUrl;?>MyContacts/MutualProfiles">View All</a>
+                            </div>
+                          <?php } ?>
+                    <?php } else { ?>
+                         <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
+                            <div style="text-align:center;margin-top: 127px;">
+                                <h5 style="color: #aaa;">No Profiles Found </h5>
+                            </div>
+                         </div>
                     <?php } ?>
                 </div>
             </div>
@@ -208,7 +245,9 @@
                     }?> 
                 </div>
                 <?php if (sizeof($MyRecentlyViewed)>=4) { ?>
-                <div> View All </div>
+                <div style="clear:both;padding:3px;text-align:center;">
+                            <a href="<?php echo SiteUrl;?>MyContacts/MyRecentViewed">View All</a>
+                         </div>
                 <?php } ?>
                  <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
@@ -231,16 +270,18 @@
             <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">My Favourited</div>
             <div class="card" style="background:#dee9ea;">
                 <div class="card-body" style="padding:10px !important;">
-                    <?php if (sizeof($MyFavouritedProfiles)>0) { ?>
+                    <?php if (sizeof($MyFavouritedProfiles)>0) {  ?>
                 <div>
                     <?php
                      foreach($MyFavouritedProfiles as $Profile) { 
-                       echo dashboard_view_2($Profile);
+                       echo dashboard_myfavorited_view_2($Profile);
                      }
                     ?> 
                 </div>
                 <?php if (sizeof($MyFavouritedProfiles)>=4) { ?>
-                <div> View All </div>
+                <div style="clear:both;padding:3px;text-align:center;">
+                            <a href="<?php echo SiteUrl;?>MyContacts/MyFavorited">View All</a>
+                         </div>
                 <?php } ?>
                  <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
@@ -291,7 +332,7 @@
     </div>
     <?php } ?>
 <script>
-$(document).ready(function () {
+/*$(document).ready(function () {
     var itemsMainDiv = ('#slideshow');
     var itemsDiv = ('.resCon_a002');
     var itemWidth = "";
@@ -392,12 +433,12 @@ $(document).ready(function () {
         ResCarousel(ell, Parent, slide);
     }
 
-});
+});  */
 </script>   
 
  
 <script>
-$('.carousel.carousel-multi-item.v-2 .carousel-item').each(function(){
+/*$('.carousel.carousel-multi-item.v-2 .carousel-item').each(function(){
   var next = $(this).next();
   if (!next.length) {
     next = $(this).siblings(':first');
@@ -410,8 +451,8 @@ $('.carousel.carousel-multi-item.v-2 .carousel-item').each(function(){
       next=$(this).siblings(':first');
     }
     next.children(':first-child').clone().appendTo($(this));
-  }
-});
+  } 
+});  */
 </script>
 <script>
         function showConfirmDelete(LatestID) {                                           
@@ -440,5 +481,9 @@ $('.carousel.carousel-multi-item.v-2 .carousel-item').each(function(){
             $('#UpdatesDiv_'+LatestID).hide();
         }
     );
+   
 }
-        </script>
+    function HideDiv(divid) {
+        $('#mutprofile_div_'+divid).hide(500);       
+    }
+         </script>

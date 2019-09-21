@@ -46,7 +46,6 @@
                     <i class="menu-arrow"></i>
                 </a>
             </li>
-            <li
             <li class="nav-item">
                 <a class="nav-link" href="<?php echo GetUrl("ListOfLandingPageProfiles");?>" >
                     <i class="menu-icon mdi mdi-content-copy "></i>                    
@@ -220,6 +219,13 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Logs/Activity");?>">Activity</a></li>
                     </ul>
                 </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo GetUrl("AppParam");?>" >
+                    <i class="menu-icon mdi mdi-content-copy "></i>                    
+                    <span class="menu-title">App Param</span>
+                    <i class="menu-arrow"></i>
+                </a>
             </li>
          </ul>
     </nav> 

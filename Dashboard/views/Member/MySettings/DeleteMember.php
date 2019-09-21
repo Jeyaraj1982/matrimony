@@ -43,9 +43,9 @@ function submitdelete() {
 <form method="post" action=""   name="form1" id="form1">
     <div class="col-sm-9" style="margin-top: -8px;">
         <h4 class="card-title">Delete Member</h4>
-        <span style="color:#666;">If you delete a member it will all immediately and permanently delete all associated data. This will also affect your analytics, so we only recommend deleteing members that never used in future.</span><br><br>
+        <span style="color:#666;">If you delete a member it will delete all associated data immediately and permanently. This will also affect your analytics, so we only recommend deleting members that never used in future.</span><br><br>
         <div class="form-group row">
-            <label for="DeleteReason" class="col-sm-12 col-form-label" style="margin-bottom: -15px;">Select the reason for deleting your profile</label>
+            <label for="DeleteReason" class="col-sm-12 col-form-label" style="margin-bottom: -15px;">Select the reason for deleting your account</label>
         </div>
         <div class="form-group row">
             <div class="col-sm-9">

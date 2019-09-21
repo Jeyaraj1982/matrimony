@@ -151,7 +151,7 @@
         var grey = $('#img_'+ImgId).attr("src_a");
         var red = $('#img_'+ImgId).attr("src");
         $.ajax({
-                url: API_URL + "m=Member&a=AddToFavourite&ProfileCode="+ProfileCode, 
+                url: API_URL + "m=Member&a=RemoveFromFavourite&ProfileCode="+ProfileCode, 
                 success: function(result){
                     
                     if (MyFavoritedPage==1) {

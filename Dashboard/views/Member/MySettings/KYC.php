@@ -7,6 +7,8 @@
         <h4 class="card-title" style="margin-bottom:5px">KYC Process</h4>
         <span style="color:#999;">KYC stands for Know Your Customer process of identifying and verifying identity of members.</span>
         <br><br>
+        <span style="color:#666;">In order to submit your KYC, your identification documents need to pass a verification process, done by our document authentication team.</span>
+        <br><br>
         <div class="form-group row">
             <div class="col-sm-12">
             <?php
@@ -54,16 +56,13 @@
                         <?php foreach($Kyc['data']['IDProof'] as $IDType) { ?>
                             <option value="<?php echo $IDType['SoftCode'];?>" <?php echo ($_POST['IDType']==$IDType['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $IDType['CodeValue'];?></option>
                         <?php } ?>
-                    </select>
+                    </select> <br><br>
+                    <button type="submit" class="btn btn-primary" name="updateIDProof" style="font-family:roboto;margin-top: 10px;">Submit Document</button>
                 </div>
                 <div class="col-sm-3" style="padding-top: 5px;"><input type="file" name="IDProofFileName"></div>
                 <br>
                 <br>
-                <div class="form-group row">
-                    <div class="col-sm-3"></div>
-                    <div class="col-sm-9" style="margin-top: 12px;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666;">In order to submit your KYC, your identification documents need to pass a verification process, done by our document authentication team.</span><br>
-                    <button type="submit" class="btn btn-primary" name="updateIDProof" style="font-family:roboto;margin-top: 10px;">Submit Documents</button></div>
-                </div>
+                
                  
               <?php } 
               foreach($Kyc['data']['IdProofDocument'] as $idProof)  { ?>
@@ -134,15 +133,13 @@
                             <option value="<?php echo $AddressProofTypee['SoftCode'];?>" <?php echo ($_POST['AddressProofType']==$AddressProofTypee['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $AddressProofTypee['CodeValue'];?></option>
                         <?php } ?>
                     </select>
+                    <br><br>
+                    <button type="submit" class="btn btn-primary" name="updateKYC" style="font-family:roboto;margin-top: 10px;">Submit Document</button>
                 </div>
                 <div class="col-sm-3" style="padding-top: 5px;"><input type="file" name="AddressProofFileName"></div>
                 <br>
                 <br>
-                <div class="form-group row">
-                    <div class="col-sm-3"></div>
-                    <div class="col-sm-9" style="margin-top: 12px;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666;">In order to submit your KYC, your identification documents need to pass a verification process, done by our document authentication team.</span><br>
-                    <button type="submit" class="btn btn-primary" name="updateKYC" style="font-family:roboto;margin-top: 10px;">Submit Documents</button></div>
-                </div>  
+                 
               <?php } 
               foreach($Kyc['data']['AddressProofDocument'] as $addressProof)  { ?>
               

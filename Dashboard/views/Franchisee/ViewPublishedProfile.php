@@ -1,5 +1,5 @@
 <?php
-    $response = $webservice->getData("Member","GetDraftProfileInfo",array("ProfileCode"=>$_GET['Code']));
+    $response = $webservice->getData("Franchisee","GetPublishProfileInfo",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
     $Member = $response['data']['Members'];
     $EducationAttachment = $response['data']['EducationAttachments'];
@@ -36,45 +36,20 @@ text-align: left;
     margin-bottom: 10px;
     border-radius: 10px;
 }
- 
+
  </style>
 <form method="post" action="" onsubmit="">
-<?php if($ProfileInfo['RequestToVerify']=="0"){?>
-<div style="text-align: right" id="">
-        <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
-        <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
-</div>
-<?php }?>
-<br>
-
 <div class="col-12 grid-margin">
-  <div class="card">                                                                                                               
+  <div class="card">
     <div class="card-body">
-        <?php if($ProfileInfo['RequestToVerify']=="0"){?>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Created On</label>
             <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
-            <div class="col-sm-2">
-                <i class="menu-icon mdi mdi-printer" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Print</label> 
-            </div>
-        </div>
-             <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Last saved</label>
-                    <label class="col-sm-8 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></label>
-                    <div class="col-sm-2">
-                        <i class="menu-icon mdi mdi-download" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Download</label>   
-                   </div>
-             </div>
-        <?php } else{?>
-            <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Created On</label>
-            <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
              </div>
              <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Puplished On</label>
-                    <label class="col-sm-3 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['RequestVerifyOn']);?></label>
+                    <label class="col-sm-2 col-form-label">Published On</label>
+                    <label class="col-sm-3 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['IsApprovedOn']);?></label>
                    </div>
-        <?php }?>
   </div>
 </div>
 </div>
@@ -109,10 +84,10 @@ text-align: left;
                 </div>
                 </div>
                 <div class="col-sm-7">
-                    <div class="form-group row">                                       
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo strlen(trim($ProfileInfo['ProfileName']))> 0 ? trim($ProfileInfo['ProfileName']) : "N/A "; ?></label>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['ProfileName'])))>0){ echo trim($ProfileInfo['ProfileName']); } else{ echo "N/A";}?></label>
                     </div>
-                    <div class="form-group row">                                       
+                    <div class="form-group row">
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['Age'])))>0){ echo trim($ProfileInfo['Age']); ?>&nbsp;yrs ,<?php }?>&nbsp;<?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">approximate</span><?php }?></label>
                     </div>
                     <div class="form-group row">
@@ -147,7 +122,7 @@ text-align: left;
                     <div class="form-group row">
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['MotherTongue']);?></label>
                     </div>
-                     <div class="form-group row">
+                    <div class="form-group row">
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['City'])))>0){ echo trim($ProfileInfo['City']);?>,&nbsp;&nbsp;<?php }?><?php if((strlen(trim($ProfileInfo['State'])))>0){ echo trim($ProfileInfo['State']);?>,&nbsp;&nbsp;<?php }?><?php echo trim($ProfileInfo['Country']);?></label>
                     </div>
                   
@@ -240,8 +215,7 @@ text-align: left;
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's Name</label>                
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['FathersName']))> 0 ? trim($ProfileInfo['FathersName']) : "N/A "; ?></label>
-                                                                                        
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersName'])))>0){ echo trim($ProfileInfo['FathersName']); } else{ echo "N/A";}?></label>
             <label class="col-sm-2 col-form-label">Father's Status</label>               
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersAlive'])))>0){?><?php if($ProfileInfo['FathersAlive']=="0"){ echo "Yes";}else { echo "Passed away" ;}?><?php } else{ echo "N/A";}?> </label> 
         </div>
@@ -250,8 +224,8 @@ text-align: left;
             <label class="col-sm-2 col-form-label">Father's Occupation</label>         
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersOccupation'])))>0){ echo trim($ProfileInfo['FathersOccupation']); } else{ echo "N/A";}?></label>
             <label class="col-sm-2 col-form-label">Father's Income</label>              
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['FathersIncome']))> 0 ? trim($ProfileInfo['FathersIncome']) : "N/A "; ?></label>
-        </div>                                                                         
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersIncome'])))>0){ echo trim($ProfileInfo['FathersIncome']); } else{ echo "N/A";}?></label>
+        </div>
         <?php }?>
         <div class="form-group row">                                                    
              <label class="col-sm-2 col-form-label">Mother's Name</label>
@@ -360,7 +334,7 @@ text-align: left;
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['SpeechImpairedDescription'])))>0){ echo trim($ProfileInfo['SpeechImpairedDescription']); } else{ echo "N/A";}?></label>
             <?php }?>
         </div>
-        <div class="form-group row">
+         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Height</label>                      
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">approximate</span><?php } else{ echo "N/A";}?>
              </label>
@@ -492,7 +466,7 @@ text-align: left;
          </div>
         <div class="form-group row">                                                                                                                                                                                             
             <label class="col-sm-2 col-form-label">Age </label>   
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if(strlen(trim($PartnerExpectation['AgeFrom']))>0){ echo trim($PartnerExpectation['AgeFrom']); } else{ echo "N/A";}?> &nbsp;&nbsp;to&nbsp;&nbsp;<?php if(strlen(trim($PartnerExpectation['AgeTo']))>0){ echo trim($PartnerExpectation['AgeTo']); } else{ echo "N/A";}?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if(strlen(trim($PartnerExpectation['AgeFrom']))>0){ echo trim($PartnerExpectation['AgeFrom']); } else{ echo "N/A";}?> &nbsp;&nbsp;to&nbsp;&nbsp;<?php if(strlen(trim($PartnerExpectation['AgeTo']))>0){ echo strlen($PartnerExpectation['AgeTo']); } else{ echo "N/A";}?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Religion</label>                     
@@ -602,71 +576,6 @@ text-align: left;
  
             
                
- <div class="modal" id="PubplishNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-            <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="Publish_body" style="height:315px">
-            
-                </div>
-            </div>
-        </div>
-
-<script>
-function showConfirmPublish(ProfileID) {
-      $('#PubplishNow').modal('show'); 
-      var content = '<div class="Publish_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'                                                                              
-                    +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
-                     + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                          + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                        + '<h4 class="modal-title">Profile Publish</h4> <br>'
-                        +'<div style="text-align:left"> Dear ,<br>'
-                        +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). DAT has approved your profile, the profile will pubhlish immediately, so please verify all data before publish.<br><br>'
-                        + '<input type="checkbox" name="check" id="agreetopublish" onclick="agreeToPublish();" value="1">&nbsp;<label for="check" style="font-weight:normal"> I agree the terms and conditions  </label><br><br>'
-                        +  '<button type="button" disabled="disabled" class="btn btn-primary" name="Publish" id="PublishBtn"  onclick="SendOtpForProfileforPublish(\''+ProfileID+'\')" style="font-family:roboto">Yes, send request</button>&nbsp;&nbsp;&nbsp;'
-                        +  '<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
-                       +  '</div><br>'
-                    +  '</form>'                                                                                                          
-                +  '</div>'
-            +  '</div>';
-            $('#Publish_body').html(content);
-}
-
-function agreeToPublish() {
-    
-    if($("#agreetopublish").prop("checked") == true){ 
-        $('#PublishBtn').removeAttr("Disabled");
-    }
-    
-    if($("#agreetopublish").prop("checked") == false){
-        $('#PublishBtn').attr("Disabled","Disabled");
-    }
-}
-
-function SendOtpForProfileforPublish(formid) {
-     var param = $("#frm_"+formid).serialize();
-     $('#Publish_body').html(preloader);
-        $.post(API_URL + "m=Member&a=SendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
-}
-
-function ProfilePublishOTPVerification(frmid) {
-         var param = $( "#"+frmid).serialize();
-         $('#Publish_body').html(preloader);
-                    $.post( API_URL + "m=Member&a=ProfilePublishOTPVerification", 
-                            param,
-                            function(result2) {
-                                $('#Publish_body').html(result2);   
-                            }
-                    );
-              
-    }
-    
-function ResendSendOtpForProfileforPublish(frmid) {
-     var param = $("#"+frmid).serialize();
-     $('#Publish_body').html(preloader);
-        $.post(API_URL + "m=Member&a=ResendSendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
-} 
-
-</script>
-   
+ 
             
                

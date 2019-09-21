@@ -10,7 +10,7 @@ $lang= array(
 "basic_search"=>"Basic Search",
 "my_contacts"=>"My Contacts",
 "my_recently_viewed"=>"My Recently Viewed",
-"my_avorited"=>"My Favorited",
+"my_favorited"=>"My Favorited",
 "my_downloaded"=>"My Downloaded",
 "my_invitations"=>"My Invitations",
 "support"=>"Support",
@@ -22,5 +22,7 @@ $lang= array(
 "my_receipts"=>"My Receipts",
 "my_transactions"=>"My Transactions",
 "my_wallet"=>"My Wallet",
+"mutual_profiles"=>"Mutual Profiles",
+
 );
 ?>

@@ -2464,7 +2464,27 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                             <h5 style="text-align:center;"><a href="'.AppPath.'Profiles/Requested" class="btn btn-primary" style="cursor:pointer">Continue</a> <h5>
                        </div>';                                             
                  }
+                 
+    function UpdateAllowDuplicateDetails() {
         
-
+        global $mysql,$loginInfo;
+        $mysql->execute("update `_tbl_master_codemaster` set `ParamA`='".(isset($_POST['IsAllowDuplicateMobile']) ? '1' : '0')."' where `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'");    
+        $mysql->execute("update `_tbl_master_codemaster` set `ParamA`='".(isset($_POST['IsAllowDuplicateEmail']) ? '1' : '0')."' where `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
+        $mysql->execute("update `_tbl_master_codemaster` set `ParamA`='".(isset($_POST['IsAllowDuplicateWhatsapp']) ? '1' : '0')."' where `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateWhatsapp'");
+        return Response::returnSuccess("Success");
+         
     }
+
+    function GetAllowDuplicateDetails(){
+        global $mysql,$loginInfo;
+        
+        $Mobile=$mysql->select("select * from `_tbl_master_codemaster` where `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'"); 
+        $Email=$mysql->select("select * from `_tbl_master_codemaster` where `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'"); 
+        $Whatsapp=$mysql->select("select * from `_tbl_master_codemaster` where `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateWhatsapp'"); 
+        
+        return Response::returnSuccess("success",array("Mobile"   => $Mobile[0],
+                                                       "Email"    => $Email[0],
+                                                       "Whatsapp" => $Whatsapp[0]));
+    }
+}
 ?> 

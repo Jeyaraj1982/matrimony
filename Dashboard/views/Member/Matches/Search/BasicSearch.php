@@ -78,11 +78,15 @@ div, label,a {font-family:'Roboto' !important;}
             </div> 
             <div class="form-group row">
                 <div class="col-sm-12">
-                <?php $response = $webservice->getData("Member","GetMemberInfo"); ?>
+                <?php $response = $webservice->getData("Member","GetMemberInfo"); 
+               // print_r($response);
+                ?>
                 <?php  if ($response['data']['IsMobileVerified']==0) { ?>
                 <a href="javascript:void(0)" onclick="MobileNumberVerification()" class="btn btn-primary">Search</a>
             <?php } else if ($response['data']['IsEmailVerified']==0) { ?>
                 <a href="javascript:void(0)" onclick="EmailVerification()" class="btn btn-primary">Search</a>
+            <?php }  else if (sizeof($response['data']['Profile'])==0) { ?>
+                <a href="javascript:void(0)" onclick="CheckVerification()" class="btn btn-primary">Create Profile</a>
             <?php } else{ ?>
                 <button type="submit" name="searchBtn" class="btn btn-primary" style="font-family:roboto">Search</button>
             <?php }?></div>

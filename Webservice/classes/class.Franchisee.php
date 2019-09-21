@@ -1651,7 +1651,7 @@
                             <h4 class="modal-title">Publish Profile</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>            
                             <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
-                            <h5 style="text-align:center;"><a href="../../Dashoard" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                            <h5 style="text-align:center;"><a href="../../../Dashboard" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';
 
          } 
@@ -1665,7 +1665,18 @@
              } else {
                  return Response::returnError("No profile found");
              }
-         } 
+         }
+         function GetPublishProfileInfo() {
+               
+                global $mysql,$loginInfo;      
+            
+               $result =  Profiles::getProfileInfo($_POST['ProfileCode'],2);
+                  if (sizeof($result)>0) {
+                     return Response::returnSuccess("success",$result);
+                 } else {
+                     return Response::returnError("No profile found");
+                 }
+            }
           
          function AddToLandingPage() {
 

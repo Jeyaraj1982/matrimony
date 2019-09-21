@@ -48,16 +48,16 @@
            /*dashboard*/
            div, label,a,h1,h2,h3,h4,h5,h6 {font-family:'Roboto' !important;}
            #resCon_a001 {background:white;padding:10px;border-bottom: 1px solid #d5d5d5;cursor:pointer;}
-           #resCon_a002 {float:left;width:143px;height: 235px;background:white;margin-left:6px;margin-top: -19px;padding: 25px;text-align:center;cursor:pointer;}
+           .resCon_a002 {float:left;width:143px;height: 235px;background:white;margin-left:6px;margin-top: -19px;padding: 25px;text-align:center;cursor:pointer;}
            #resCon_a0021 {float:left;width:143px;height: 235px;background:white;margin-left:6px;margin-top: -19px;padding: 25px;text-align:center;cursor:pointer;}
            #resCon_a001:hover {background:#f1f1f1;}
-           #resCon_a002:hover {background:#f1f1f1;}
+           .resCon_a002:hover {background:#f1f1f1;}
            #resCon_a0021:hover {background:#f1f1f1;}
            #verifybtn{background: #0eb1db;border:1px#32cbf3;box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
            #verifybtn:hover{background:#149dc9;}
            input:focus{border:1px solid #ccc;}
            #errormsg{text-align:center;color:red;padding-bottom:5px;padding-top:5px;}
-           #resCon_a002 a:hover{color: #337ab7;}
+           .resCon_a002 a:hover{color: #337ab7;}
            #resCon_a0021 a:hover{color: #337ab7;}
            #UpdatesDiv_:hover {background: #c3d1d2;}
            /*thumb image preview*/
@@ -699,22 +699,24 @@
                   <?php
               }
             ?>   
-            
+                                                 
            <?php
                 function dashboard_view_1($ProfileInformation) {
                       $Profile = $ProfileInformation['ProfileInfo'];
                       $rnd = rand(3000,3000000);
                     ?>                                                                                                                                                                                   
-                       <div id="resCon_a002" style="height:280px;overflow:hidden;width:181px;padding:10px;margin-top:0px !important">
-                        <div style="text-align:left;">
-                        <span style="color:#333333 !important;font-size: 12px;font-weight:Bold;color:#777"><?php echo$Profile['ProfileCode'];?></span>
+                       <div id="div_<?php echo $rnd; ?>" class="resCon_a002" style="height:280px;overflow:hidden;width:181px;padding:10px;margin-top:0px !important">
+                        <div style="text-align:right;">
+                        <span style="color:#333333 !important;font-size: 12px;font-weight:Bold;color:#777;float: left"><?php echo$Profile['ProfileCode'];?></span>
                             <?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
                                                 <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
-                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">
-                                            <?php } else {?>
-                                                <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;float:right">
+                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
+                                            <?php } else if ($Profile['isMutured']==1) {?>
+                                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                                            <?php } else{?>
+                                                <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
                                             <?php }?>
-                        </div>   
+                        </div>  
                         <div class="enlarge">
                         <div>
                             <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;" alt="" />
@@ -733,13 +735,20 @@
             <?php
                 function dashboard_view_1_Recent_Favouriters($ProfileInformation) {
                       $Profile = $ProfileInformation['ProfileInfo'];
-                      
+                      $rnd = rand(3000,3000000);
                     ?>                                                                                                                                                                                   
-                       <div id="resCon_a002" style="height:280px;overflow:hidden;width:181px;padding:10px;margin-top:0px !important">
-                        <div style="text-align:left;">
-                        <span style="color:#333333 !important;font-size: 12px;font-weight:Bold;color:#777"><?php echo$Profile['ProfileCode'];?></span>
-                           <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;float:right">
-                        </div>   
+                       <div id="resCon_a002" class="resCon_a002" style="height:280px;overflow:hidden;width:181px;padding:10px;margin-top:0px !important">
+                         <div style="text-align:right;">
+                        <span style="color:#333333 !important;font-size: 12px;font-weight:Bold;color:#777;float: left"><?php echo$Profile['ProfileCode'];?></span>
+                            <?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
+                                                <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
+                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
+                                            <?php } else if ($Profile['isMutured']==1) {?>
+                                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                                            <?php } else{?>
+                                                <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                                            <?php }?>
+                        </div> 
                          <div class="enlarge">
                         <div>
                             <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;" alt="" />
@@ -759,17 +768,19 @@
                 function dashboard_view_2($ProfileInformation) {
                       $Profile = $ProfileInformation['ProfileInfo'];
                       $rnd = rand(3000,3000000);
+                      
                     ?>
                     <div class="col-sm-12" id="resCon_a001">
-                    <div style="text-align:left;margin-right: -7px;">
-                        <span style="color:#333333 !important;font-size: 12px">ID &nbsp;<?php echo$Profile['ProfileCode'];?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <?php  if ($Profile['isFavourited']==0) { ?>
-                                                <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>"></span>
-                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;margin-left: 170px;">
-                                            <?php } else {?>
-                                                <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;margin-left: 170px;">
-                                            <?php }?>
-                    </div>
+                    
+                    <div style="text-align:right;">
+                        <span style="color:#333333 !important;font-size: 12px;font-weight:Bold;color:#777;float: left"><?php echo$Profile['ProfileCode'];?></span>
+                            <?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
+                                <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
+                                    <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
+                                    <?php } else{?>
+                                    <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                            <?php }?>
+                        </div> 
                       <div class="col-sm-2" style="margin-left:-15px">
                         <div class="enlarge">
                         <div>
@@ -783,10 +794,91 @@
                           <div style="height: 20px"><span style="color:#999 !important;margin-left: 73px;"><?php echo $Profile['Age'];?>&nbsp;yrs</span><br>
                                                             <span style="color:#999 !important;margin-left: 73px;"><?php echo $Profile['City'];?></span>
                           </div> <br>
-                          <a href="<?php echo GetUrl("Profile/".$Profile['ProfileCode'].".htm");?>" class="viewbutton" id="dashviewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;margin-left:73px">View</a> <br>
-                          <div style="height: 20px;float:right;margin-right: -33px;"><span style="color:#999 !important;font-size: 12px">Visited &nbsp;:&nbsp;<?php echo time_elapsed_string($Profile['LastSeen']);?></span></div> <br>
+                          <a href="<?php echo GetUrl("Profile/".$Profile['ProfileCode'].".htm");?>" class="viewbutton" id="dashviewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;margin-left:73px">View</a> <br><br />
+                          <div style="height: 20px;float:right;margin-right: -33px;line-height:12px;font-size: 11px;text-align: right"><span style="color:#999 !important;">
+                            <?php if ($Profile['LastSeen']!=0) { ?> 
+                            My last visited&nbsp;<?php echo time_elapsed_string($Profile['LastSeen']);?>
+                            <?php } else { ?>
+                            You favourited, but not view this profile.
+                            <?php } ?>
+                             <br />
+                             <?php if($Profile['isMutured']==1) {?>
+                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<?php echo $Profile['Sex']=="Male" ? "He " : "She "; ?>liked on <?php echo time_elapsed_string($Profile['MuturedOn']);?>
+                             <?php }?>
+                            </span></div> <br>
                         </div>
                     </div>
+                    <?php
+                }
+            ?>  
+            <?php
+                function dashboard_myfavorited_view_2($ProfileInformation) {
+                      $Profile = $ProfileInformation['ProfileInfo'];
+                      $rnd = rand(3000,3000000);
+                    ?>
+                    <div class="col-sm-12" id="resCon_a001">
+                     
+                    <div style="text-align:right;">
+                        <span style="color:#333333 !important;font-size: 12px;font-weight:Bold;color:#777;float: left"><?php echo$Profile['ProfileCode'];?></span>
+                            <?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
+                                                <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
+                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
+                                           <?php } else{?>
+                                                <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                                            <?php }?>
+                        </div> 
+                      <div class="col-sm-2" style="margin-left:-15px">
+                        <div class="enlarge">
+                        <div>
+                            <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;" alt="" />
+                            <span><img src="<?php echo $ProfileInformation['ProfileThumb'];?>" alt="" /><br /><?php echo $Profile['ProfileName'];?></span>
+                        </div>
+                        </div>
+                      </div>
+                        <div class="col-sm-10">
+                          <div style="margin-top:-17px;margin-left: 73px;"><?php echo $Profile['ProfileName'];?></div>
+                          <div style="height: 20px"><span style="color:#999 !important;margin-left: 73px;"><?php echo $Profile['Age'];?>&nbsp;yrs</span><br>
+                                                            <span style="color:#999 !important;margin-left: 73px;"><?php echo $Profile['City'];?></span>
+                          </div> <br>
+                          <a href="<?php echo GetUrl("Profile/".$Profile['ProfileCode'].".htm");?>" class="viewbutton" id="dashviewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;margin-left:73px">View</a> <br><br />
+                          <div style="height: 20px;float:right;margin-right: -33px;line-height:12px;font-size: 11px;text-align: right"><span style="color:#999 !important;">
+                            <?php if ($Profile['LastSeen']!=0) { ?> 
+                            My last visited&nbsp;<?php echo time_elapsed_string($Profile['LastSeen']);?>
+                            <?php } else { ?>
+                            You favourited, but not view this profile.
+                            <?php } ?>
+                             <br />
+                             <?php if ($Profile['isMutured']==1) {?>
+                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<?php echo $Profile['Sex']=="Male" ? "He " : "She "; ?>liked on <?php echo time_elapsed_string($Profile['MuturedOn']);?>
+                             <?php }?>
+                            </span></div> <br>
+                        </div>
+                    </div>
+                    <?php
+                }
+            ?> 
+             <?php
+                function dashboard_mutual_profiles($ProfileInformation) {
+                      $Profile = $ProfileInformation['ProfileInfo'];
+                      $rnd = rand(3000,3000000);
+                    ?>         
+                      <div id="mutprofile_div_<?php echo $rnd; ?>" class="resCon_a002" style="height:280px;overflow:hidden;width:181px;padding:10px;margin-top:0px !important">
+                        <div style="text-align:right;">
+                            <span style="color:#333333 !important;font-size: 12px;font-weight:Bold;color:#777;float:left"><?php echo$Profile['ProfileCode'];?></span>&nbsp;&nbsp;
+                            <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>');HideDiv('<?php echo $rnd;?>');" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                        </div>   
+                         <div class="enlarge">
+                        <div>
+                            <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;" alt="" />
+                            <span><img src="<?php echo $ProfileInformation['ProfileThumb'];?>" alt="" /><br /><?php echo $Profile['ProfileName'];?></span>
+                        </div>
+                        </div>
+                        <div style="height:20px;"><h5 style="margin-bottom:-10px"><?php echo $Profile['ProfileName'];?></h5></div><br>
+                        <span style="color:#bfacac;"><?php echo $Profile['City'];?></span><br>
+                        <span style="color:#bfacac;"><?php echo $Profile['Age'];?>&nbsp;yrs</span><br>
+                        <a href="<?php echo GetUrl("Profile/".$Profile['ProfileCode'].".htm");?>" class="viewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</a> <br><br>
+                        <div style="text-align:center;"><span style="color:#999 !important;font-size: 12px">Visited &nbsp;<?php echo time_elapsed_string($Profile['LastSeen']);?></span></div>   
+                    </div>                                                                                                                                                                                
                     <?php
                 }
             ?>                                                                                                                                    

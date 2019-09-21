@@ -88,7 +88,7 @@ text-align: left;
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['ProfileName'])))>0){ echo trim($ProfileInfo['ProfileName']); } else{ echo "N/A";}?></label>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['Age'])))>0){ echo trim($ProfileInfo['Age']); ?>&nbsp;yrs ,<?php }?>&nbsp;<?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);}?></label>
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['Age'])))>0){ echo trim($ProfileInfo['Age']); ?>&nbsp;yrs ,<?php }?>&nbsp;<?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">approximate</span><?php }?></label>
                     </div>
                     <div class="form-group row">
                          <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['MaritalStatus']);?></label> 
@@ -122,8 +122,8 @@ text-align: left;
                     <div class="form-group row">
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['MotherTongue']);?></label>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['City']);?>,&nbsp;&nbsp;<?php echo trim($ProfileInfo['State']);?>,&nbsp;&nbsp;<?php echo trim($ProfileInfo['Country']);?></label>
+                     <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['City'])))>0){ echo trim($ProfileInfo['City']);?>,&nbsp;&nbsp;<?php }?><?php if((strlen(trim($ProfileInfo['State'])))>0){ echo trim($ProfileInfo['State']);?>,&nbsp;&nbsp;<?php }?><?php echo trim($ProfileInfo['Country']);?></label>
                     </div>
                   
               </div>
@@ -216,7 +216,7 @@ text-align: left;
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's Name</label>                
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersName'])))>0){ echo trim($ProfileInfo['FathersName']); } else{ echo "N/A";}?></label>
-            <label class="col-sm-2 col-form-label">Father's Alive</label>               
+            <label class="col-sm-2 col-form-label">Father's Status</label>               
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersAlive'])))>0){?><?php if($ProfileInfo['FathersAlive']=="0"){ echo "Yes";}else { echo "Passed away" ;}?><?php } else{ echo "N/A";}?> </label> 
         </div>
         <?php if($ProfileInfo['FathersAlive']=="0"){?>
@@ -230,7 +230,7 @@ text-align: left;
         <div class="form-group row">                                                    
              <label class="col-sm-2 col-form-label">Mother's Name</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['MothersName'])))>0){ echo trim($ProfileInfo['MothersName']); } else{ echo "N/A";}?> </label>
-             <label class="col-sm-2 col-form-label">Mother's Alive</label>               
+             <label class="col-sm-2 col-form-label">Mother's Status</label>               
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['MothersAlive'])))>0){?><?php if($ProfileInfo['MothersAlive']=="0"){ echo "Yes";}else { echo "Passed away" ;}?><?php } else{ echo "N/A";}?></label>
          </div>
          <?php if($ProfileInfo['MothersAlive']=="0"){?>
@@ -336,12 +336,13 @@ text-align: left;
         </div>
         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Height</label>                      
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']); } else{ echo "N/A";}?>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">approximate</span><?php } else{ echo "N/A";}?>
              </label>
              <label class="col-sm-2 col-form-label">Weight</label>                      
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Weight'])))>0){ echo trim($ProfileInfo['Weight']); } else{ echo "N/A";}?>   
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Weight'])))>0){ echo trim($ProfileInfo['Weight']);?>&nbsp;&nbsp;<span style="color: #ccc;">approximate</span><?php } else{ echo "N/A";}?>   
              </label>
         </div>
+        
         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Blood Group</label>                 
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['BloodGroup'])))>0){ echo trim($ProfileInfo['BloodGroup']); } else{ echo "N/A";}?>
@@ -465,36 +466,36 @@ text-align: left;
             <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
          </div>
         <div class="form-group row">                                                                                                                                                                                             
-            <label class="col-sm-2 col-form-label">Age </label>
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['AgeFrom'])))>0){ echo trim($ProfileInfo['AgeFrom']); } else{ echo "N/A";}?> &nbsp;&nbsp;to&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['AgeTo'])))>0){ echo trim($ProfileInfo['AgeTo']); } else{ echo "N/A";}?></label>
+            <label class="col-sm-2 col-form-label">Age </label>   
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if(strlen(trim($PartnerExpectation['AgeFrom']))>0){ echo trim($PartnerExpectation['AgeFrom']); } else{ echo "N/A";}?> &nbsp;&nbsp;to&nbsp;&nbsp;<?php if(strlen(trim($PartnerExpectation['AgeTo']))>0){ echo trim($PartnerExpectation['AgeTo']); } else{ echo "N/A";}?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Religion</label>                     
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Religion'])))>0){ echo trim($ProfileInfo['Religion']); } else{ echo "N/A";}?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if(strlen(trim($PartnerExpectation['Religion']))>0){ echo trim($PartnerExpectation['Religion']); } else{ echo "N/A";}?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Caste</label>                        
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Caste'])))>0){ echo trim($ProfileInfo['Caste']); } else{ echo "N/A";}?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($PartnerExpectation['Caste'])))>0){ echo trim($PartnerExpectation['Caste']); } else{ echo "N/A";}?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Marital Status</label>               
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['MaritalStatus'])))>0){ echo trim($ProfileInfo['MaritalStatus']); } else{ echo "N/A";}?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($PartnerExpectation['MaritalStatus'])))>0){ echo trim($PartnerExpectation['MaritalStatus']); } else{ echo "N/A";}?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Income Range</label>                
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['AnnualIncome'])))>0){ echo trim($ProfileInfo['AnnualIncome']); } else{ echo "N/A";}?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($PartnerExpectation['AnnualIncome'])))>0){ echo trim($PartnerExpectation['AnnualIncome']); } else{ echo "N/A";}?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Education</label>                   
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Education'])))>0){ echo trim($ProfileInfo['Education']); } else{ echo "N/A";}?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($PartnerExpectation['Education'])))>0){ echo trim($PartnerExpectation['Education']); } else{ echo "N/A";}?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Employed As</label>                 
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['EmployedAs'])))>0){ echo trim($ProfileInfo['EmployedAs']); } else{ echo "N/A";}?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($PartnerExpectation['EmployedAs'])))>0){ echo trim($PartnerExpectation['EmployedAs']); } else{ echo "N/A";}?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Description</label>                 
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Details'])))>0){ echo trim($ProfileInfo['Details']); } else{ echo "N/A";}?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($PartnerExpectation['Details'])))>0){ echo trim($PartnerExpectation['Details']); } else{ echo "N/A";}?></label>
         </div>
     </div>
   </div>

@@ -7,13 +7,13 @@
                 
             $Profiles = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");               
             $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' order by LastSeenID desc limit 0,1");
-
-               $id = $mysql->insert("_tbl_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
-                                                                      "LastSeenBy"   => $loginInfo[0]['MemberID'],
-                                                                      "ProfileID"    => $Profiles[0]['ProfileID'],
-                                                                      "MemberID"     => $loginInfo[0]['MemberID'],
-                                                                      "FranchiseeID" => "0",
-                                                                      "AdminID"      => "0"));
+            
+            $id = $mysql->insert("_tbl_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
+                                                                 "LastSeenBy"   => $loginInfo[0]['MemberID'],
+                                                                 "ProfileID"    => $Profiles[0]['ProfileID'],
+                                                                 "MemberID"     => $loginInfo[0]['MemberID'],
+                                                                 "FranchiseeID" => "0",
+                                                                 "AdminID"      => "0"));
             
             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");     
             $PartnersExpectations = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
@@ -72,6 +72,7 @@
             return  $result;
                                                                                                            
         }
+        
         public function getDraftProfileInformationforAdmin($ProfileCode) {
             
             global $mysql,$loginInfo;  
@@ -142,6 +143,7 @@
                             "ProfileThumb"         => $ProfileThumbnail);
             return  $result;
         }
+        
         public function getProfileInformationforAdmin($ProfileCode) {
             
             global $mysql,$loginInfo;  
@@ -281,6 +283,7 @@
             
             return  $result;
         }
+        
         public function getRecentlyViewdProfileInformation($ProfileCode,$IsOther=0) {
             
             global $mysql,$loginInfo;  
@@ -336,6 +339,7 @@
             return  $result;
                                                                                                            
         }
+        
         public function MyActiveProfile() {
               
               global $mysql,$loginInfo;  
@@ -426,7 +430,8 @@
                 $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
                 $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
                 $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
-            
+                $isFavourite = $mysql->select("select ViewedOn from `_tbl_profiles_favourites` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' and `IsFavorite`='1' and `IsVisible`='1' order by FavProfileID desc limit 0,1");
+                $isMutured = $mysql->select("select ViewedOn from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and VisterProfileCode='".$Profiles[0]['ProfileCode']."' and `VisterProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'    and `MemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC)");
             } else {   
                 $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$ProfileCode."'");               
                 $PartnersExpectations = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `ProfileCode`='".$ProfileCode."'");
@@ -435,11 +440,12 @@
                 $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
                 $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
                 if ($myrecentviewed==1) {
-                    $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
-                    $isFavourite = $mysql->select("select * from `_tbl_profiles_favourites` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' and `IsHidden`='0' order by FavProfileID desc limit 0,1");
+                    $lastseen = $mysql->select("select ViewedOn from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
+                    $isFavourite = $mysql->select("select ViewedOn from `_tbl_profiles_favourites` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' and `IsFavorite`='1' and `IsVisible`='1' order by FavProfileID desc limit 0,1");
+                    //$isMutured = $mysql->select("select ViewedOn from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and ProfileCode='".$Profiles[0]['ProfileCode']."' and `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'    and `MemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC)");
+                    $isMutured = $mysql->select("select ViewedOn from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and VisterProfileCode='".$Profiles[0]['ProfileCode']."' and `VisterProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'    and `MemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC)");
                 } else {
                     $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where VisterProfileID='".$Profiles[0]['ProfileID']."' and MemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
-                    //$isFavourite = $mysql->select("select * from `_tbl_profiles_favourites` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' and `IsHidden`='0' order by FavProfileID desc limit 0,1");
                 }
             }
             
@@ -464,11 +470,11 @@
             } 
             
             $Position = "Published";                                             
-            
-            $Profiles[0]['LastSeen']=(isset($lastseen[0]['ViewedOn']) ? $lastseen[0]['ViewedOn'] : 0);
-            $Profiles[0]['isFavourited']=(isset($isFavourite[0]['ViewedOn']) ? $isFavourite[0]['ViewedOn'] : 0);
-            $Profiles[0]['Age'] =  date("Y")-date("Y",strtotime($Profiles[0]['DateofBirth']));
-            //$Profiles[0]['Age'] =  $Profiles[0]['DateofBirth'];
+            $Profiles[0]['LastSeen']     = (isset($lastseen[0]['ViewedOn']) ? $lastseen[0]['ViewedOn'] : 0);
+            $Profiles[0]['isFavourited'] = (isset($isFavourite[0]['ViewedOn']) ? $isFavourite[0]['ViewedOn'] : 0);
+            $Profiles[0]['isMutured']    = (isset($isMutured[0]['ViewedOn']) ? 1 : 0);
+            $Profiles[0]['MuturedOn']    = (isset($isMutured[0]['ViewedOn']) ? $isMutured[0]['ViewedOn'] : "");
+            $Profiles[0]['Age']          = date("Y")-date("Y",strtotime($Profiles[0]['DateofBirth']));
              
             $result = array("ProfileInfo"          => $Profiles[0],
                             "Position"             => $Position,
@@ -478,9 +484,9 @@
                             "ProfilePhotos"        => $ProfilePhotos,  /*array*/
                             "ProfileThumb"         => $ProfileThumbnail);
             return  $result;
-                                                                                                           
         }
-} 
+        
+    } 
 
     function getDataURI($image, $mime = '') {
         
@@ -496,28 +502,28 @@
         // $text = "This is a sunset!";
 
         // Print Text On Image
-      //imagettftext($jpg_image, 25, 0, 75, 300, $white, "", $text);
+        //imagettftext($jpg_image, 25, 0, 75, 300, $white, "", $text);
 
-      // Send Image to Browser
-      //imagejpeg($jpg_image);
-      //$image=  $jpg_image;
-      // Clear Memory
-     // imagedestroy($jpg_image);
-          //image/jpeg;
-          //image/png
-          $temp = explode(".",$image);
-          $temp = trim(strtolower($temp[sizeof($temp)-1]));
-          if ($temp=="jpeg"  || $temp=="jpg") {
-              return 'data:image/jpeg;ba se64,'.base64_encode(file_get_contents(file_url($image)));   
-          } else if ($temp=="png" ) {
-              return 'data:image/png;base64,'.base64_encode(file_get_contents(file_url($image))); 
-          }
-   // return 'data: '.(function_exists('mime_content_type') ? mime_content_type($image) : $mime).';base64,'.base64_encode(file_get_contents($image));
-} 
+        // Send Image to Browser
+        //imagejpeg($jpg_image);
+        //$image=  $jpg_image;
+        // Clear Memory
+        // imagedestroy($jpg_image);
+        //image/jpeg;
+        //image/png
+        $temp = explode(".",$image);
+        $temp = trim(strtolower($temp[sizeof($temp)-1]));
+        if ($temp=="jpeg"  || $temp=="jpg") {
+            return 'data:image/jpeg;ba se64,'.base64_encode(file_get_contents(file_url($image)));   
+        } else if ($temp=="png" ) {
+            return 'data:image/png;base64,'.base64_encode(file_get_contents(file_url($image))); 
+        }
+        // return 'data: '.(function_exists('mime_content_type') ? mime_content_type($image) : $mime).';base64,'.base64_encode(file_get_contents($image));
+    } 
 
-function file_url($url){
-  $parts = parse_url($url);
-  $path_parts = array_map('rawurldecode', explode('/', $parts['path']));
-  return $parts['scheme'].'://'.$parts['host'].implode('/', array_map('rawurlencode', $path_parts));
-}
+    function file_url($url){
+        $parts = parse_url($url);
+        $path_parts = array_map('rawurldecode', explode('/', $parts['path']));
+        return $parts['scheme'].'://'.$parts['host'].implode('/', array_map('rawurlencode', $path_parts));
+    }
 ?>

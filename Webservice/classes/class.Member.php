@@ -265,8 +265,11 @@
          function GetMemberInfo(){
              global $mysql,$loginInfo;
              $Member=$mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
+             $Profile=$mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              $Member[0]['Country'] = CodeMaster::getData('RegisterAllowedCountries');
-             return Response::returnSuccess("success",$Member[0]);
+           //  $Member[0]['Profile'] = "$Profile";
+             
+             return Response::returnSuccess("success",$Member[0],array("Profile"=>$Profile[0]));
          }    
 
          function EditMemberInfo() {
@@ -2751,24 +2754,24 @@
              if (sizeof($profileCodes)>0) {
                  for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) {  
                      if (isset($profileCodes[$i])) {
-                        $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,2);     
+                        $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
                      }
                 }
              }
                   
              return Response::returnSuccess("success",$Profiles);
          }
-         
+         /* Favourited Section */
          function AddToFavourite() {
              
              global $mysql,$loginInfo;
              
-             $ProfileCode = $_GET['ProfileCode'];
+             $Profiles = $mysql->select("select SexCode,MemberID,ProfileID,ProfileCode from `_tbl_profiles` where ProfileCode='".$_GET['ProfileCode']."'"); 
+             if (sizeof($Profiles)==0) {
+                return Response::returnError("Couldn't favorite, please contact support team"); 
+             }
              
-             $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$ProfileCode."'"); 
-             $member =$mysql->select("select * from `_tbl_members` where MemberID='".$loginInfo[0]['MemberID']."'"); 
-             $visitorsDetails =$mysql->select("select * from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
-             
+             $visitorsDetails =$mysql->select("select ProfileID,ProfileCode from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
              $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$visitorsDetails[0]['ProfileCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
              if (sizeof($ProfileThumb)==0) {
                  if ($Profiles[0]['SexCode']=="SX002"){
@@ -2779,53 +2782,76 @@
              } else {
                  $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
              }
-               
-             $isFavourite = $mysql->select("select * from `_tbl_profiles_favourites` where  ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by FavProfileID desc limit 0,1");           
-             if (sizeof($isFavourite)==0) {
-                 $id = $mysql->insert("_tbl_profiles_favourites",array("MemberID"           => $Profiles[0]['MemberID'],
-                                                                       "ProfileID"          => $Profiles[0]['ProfileID'],
-                                                                       "ProfileCode"        => $Profiles[0]['ProfileCode'],
-                                                                       "VisterMemberID"     => $member[0]['MemberID'],
-                                                                       "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
-                                                                       "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
-                                                                       "ViewedOn"           => date("Y-m-d H:i:s")));
-                 $mysql->insert("_tbl_latest_updates",array("MemberID"           => $Profiles[0]['MemberID'],
-                                                            "ProfileID"          => $Profiles[0]['ProfileID'],
-                                                            "ProfileCode"        => $Profiles[0]['ProfileCode'],
-                                                            "VisterMemberID"     => $member[0]['MemberID'],
-                                                            "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
-                                                            "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
-                                                            "ProfilePhoto"       => $ProfileThumbnail,
-                                                            "Subject"            => "has favorites your profile",
-                                                            "ViewedOn"           => date("Y-m-d H:i:s")));
+              
+             $id = $mysql->insert("_tbl_profiles_favourites",array("MemberID"           => $Profiles[0]['MemberID'],
+                                                                   "ProfileID"          => $Profiles[0]['ProfileID'],
+                                                                   "ProfileCode"        => $Profiles[0]['ProfileCode'],
+                                                                   "VisterMemberID"     => $loginInfo[0]['MemberID'],
+                                                                   "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
+                                                                   "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                                   "ViewedOn"           => date("Y-m-d H:i:s"),
+                                                                   "IsFavorite"         => "1",
+                                                                   "IsVisible"          => "1",
+                                                                   "IsFavoriteOn"       => date("Y-m-d H:i:s")));
+                                                                   
+             $mysql->insert("_tbl_latest_updates",array("MemberID"           => $Profiles[0]['MemberID'],
+                                                        "ProfileID"          => $Profiles[0]['ProfileID'],
+                                                        "ProfileCode"        => $Profiles[0]['ProfileCode'],
+                                                        "VisterMemberID"     => $loginInfo[0]['MemberID'],
+                                                        "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
+                                                        "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                        "ProfilePhoto"       => $ProfileThumbnail,
+                                                        "Subject"            => "has favorited your profile",
+                                                        "ViewedOn"           => date("Y-m-d H:i:s")));
                                                             
-                 return Response::returnSuccess($Profiles[0]['ProfileCode']." has favorites your profile.");                                               
-                  
-                
-             } else {
-                 
-                if ($isFavourite[0]['IsHidden']=='1') {
-                    
-                    $mysql->execute("update _tbl_profiles_favourites set IsHidden='0', HiddenOn='".date("Y-m-d H:i:s")."' where FavProfileID='".$isFavourite[0]['FavProfileID']."'");
-                    return Response::returnSuccess($Profiles[0]['ProfileCode']." has been added to your favourites");                                                   
-                    
-                } else if ($isFavourite[0]['IsHidden']=='0') {
-                    $mysql->execute("update _tbl_profiles_favourites set IsHidden='1', HiddenOn='".date("Y-m-d H:i:s")."' where FavProfileID='".$isFavourite[0]['FavProfileID']."'");
-                    $mysql->insert("_tbl_latest_updates",array("MemberID"          => $Profiles[0]['MemberID'],
-                                                               "ProfileID"         => $Profiles[0]['ProfileID'],
-                                                               "ProfileCode"       => $Profiles[0]['ProfileCode'],
-                                                               "VisterMemberID"    => $member[0]['MemberID'],
-                                                               "VisterProfileID"   => $visitorsDetails[0]['ProfileID'],
-                                                               "VisterProfileCode" => $visitorsDetails[0]['ProfileCode'],
-                                                               "ProfilePhoto"      => $ProfileThumbnail,
-                                                               "Subject"           => "has unfavorite your profile.",
-                                                               "ViewedOn"          => date("Y-m-d H:i:s")));
-                     return Response::returnSuccess($Profiles[0]['ProfileCode']." has unfavorite your profile.");                                               
-                 }                                                                 
+             return Response::returnSuccess($Profiles[0]['ProfileCode']." has favorited.");                                               
+         }
+         
+         function RemoveFromFavourite() {
+             
+             global $mysql,$loginInfo;
+             
+             $Profiles = $mysql->select("select MemberID,ProfileID,ProfileCode,SexCode from `_tbl_profiles` where ProfileCode='".$_GET['ProfileCode']."'"); 
+             if (sizeof($Profiles)==0) {
+                return Response::returnError("Couldn't favorite, please contact support team"); 
              }
+             
+             $visitorsDetails =$mysql->select("select ProfileID,ProfileCode from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+             $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$visitorsDetails[0]['ProfileCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
+             if (sizeof($ProfileThumb)==0) {
+                 if ($Profiles[0]['SexCode']=="SX002"){
+                     $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
+                 } else { 
+                     $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
+                 }
+             } else {
+                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); 
+             }
+             $mysql->execute("update `_tbl_profiles_favourites` set `IsVisible`='0' where `IsFavorite`='1' and  ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."'");
+             $id = $mysql->insert("_tbl_profiles_favourites",array("MemberID"           => $Profiles[0]['MemberID'],
+                                                                   "ProfileID"          => $Profiles[0]['ProfileID'],
+                                                                   "ProfileCode"        => $Profiles[0]['ProfileCode'],
+                                                                   "VisterMemberID"     => $loginInfo[0]['MemberID'],
+                                                                   "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
+                                                                   "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                                   "ViewedOn"           => date("Y-m-d H:i:s"),
+                                                                   "IsFavorite"         => "0",
+                                                                   "IsVisible"          => "0",
+                                                                   "IsFavoriteOn"       => date("Y-m-d H:i:s")));
+                                                                   
+             $mysql->insert("_tbl_latest_updates",array("MemberID"          => $Profiles[0]['MemberID'],
+                                                        "ProfileID"         => $Profiles[0]['ProfileID'],
+                                                        "ProfileCode"       => $Profiles[0]['ProfileCode'],
+                                                        "VisterMemberID"    => $loginInfo[0]['MemberID'],
+                                                        "VisterProfileID"   => $visitorsDetails[0]['ProfileID'],
+                                                        "VisterProfileCode" => $visitorsDetails[0]['ProfileCode'],
+                                                        "ProfilePhoto"      => $ProfileThumbnail,
+                                                        "Subject"           => "has unfavorited your profile.",
+                                                        "ViewedOn"          => date("Y-m-d H:i:s")));
+             return Response::returnSuccess($Profiles[0]['ProfileCode']." has unfavorited.");      
           }
           
-          function GetFavouritedProfiles() {
+         function GetFavouritedProfiles() {
               
           global $mysql,$loginInfo; 
              $Profiles = array();
@@ -2837,7 +2863,7 @@
                 $_POST['requestto']=5; 
              }
 
-             $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_favourites` where `IsHidden` ='0' and`VisterMemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC");
+             $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and`VisterMemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC");
              $profileCodes  = array();
              foreach($RecentProfiles as $RecentProfile) {
                  if (!(in_array($RecentProfile['ProfileCode'], $profileCodes)))
@@ -2855,6 +2881,7 @@
                   
              return Response::returnSuccess("success",$Profiles);
          }
+      
          function GetWhoFavouriteMyProfiles() {
               
           global $mysql,$loginInfo; 
@@ -2867,7 +2894,7 @@
                 $_POST['requestto']=5; 
              }
 
-             $RecentProfiles = $mysql->select("select VisterProfileCode from `_tbl_profiles_favourites` where `IsHidden` ='0' and`MemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC");
+             $RecentProfiles = $mysql->select("select VisterProfileCode from `_tbl_profiles_favourites` where `IsFavorite` ='1' and`MemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC");
              
              $profileCodes  = array();
              foreach($RecentProfiles as $RecentProfile) {
@@ -2886,6 +2913,40 @@
                   
              return Response::returnSuccess("success",$Profiles);
          }
+         
+         function GetMutualProfiles() {
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+             $sql = "";
+             if (isset($_POST['requestfrom'])) {
+                 $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
+             } else {
+                $_POST['requestfrom']=0; 
+                $_POST['requestto']=5; 
+             }
+             
+             $MutualProfiles = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `MemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC)");
+             
+             $profileCodes = array();
+             foreach($MutualProfiles as $mprofile) {
+                 if (!(in_array($mprofile['ProfileCode'], $profileCodes)))
+                  {
+                      $profileCodes[]=$mprofile['ProfileCode'];
+                 }                                                                           
+             }
+             
+             if (sizeof($profileCodes)>0) {
+                for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
+                    if (isset($profileCodes[$i]))  {
+                        $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                    }
+                }
+             }
+                  
+             return Response::returnSuccess("success",$Profiles);
+         }
+         /* End Favourited Section */
+        
          function ResendMobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
 
              if ($loginid=="") {
