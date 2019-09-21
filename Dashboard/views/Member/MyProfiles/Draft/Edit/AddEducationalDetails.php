@@ -47,10 +47,10 @@
                             <label class="col-sm-3 col-form-label">Remarks</label>
                             <div class="col-sm-8"><input type="text" class="form-control" name="EducationRemarks" id="EducationRemarks" value="<?php echo (isset($_POST['EducationRemarks']) ? $_POST['EducationRemarks'] : $response['data']['EducationRemarks']);?>"></div>
                         </div>
-                        <div class="form-group row">
+                       <!-- <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Attachment</label>
                             <div class="col-sm-8"><input type="file" name="EducationAttachment"></div>
-                        </div>
+                        </div> -->
                         <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12" style="text-align:center;color:red">
                                 <span style="color:red"><?php echo $errormessage;?><?php echo $successmessage;?></span> 

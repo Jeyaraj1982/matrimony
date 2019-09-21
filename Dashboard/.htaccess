@@ -13,6 +13,9 @@ RewriteRule ^view/(.*)\.htm$ ./index.php?Code=$1&p=view
 RewriteRule ^Members/Created/(.*)\.htm$ ./index.php?Code=$1&p=Members/Created
 RewriteRule ^CreateProfile/(.*)\.htm$ ./index.php?Code=$1&p=CreateProfile
 RewriteRule ^ViewMemberProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewMemberProfile           
+RewriteRule ^ViewDraftProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewDraftProfile           
+RewriteRule ^ViewPostedProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewPostedProfile           
+RewriteRule ^ViewPublishedProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewPublishedProfile           
 RewriteRule ^ViewProfileforaddLandingPage/(.*)\.htm$ ./index.php?Code=$1&p=ViewProfileforaddLandingPage
 
 
