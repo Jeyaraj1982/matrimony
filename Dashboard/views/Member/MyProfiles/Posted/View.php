@@ -38,7 +38,46 @@ text-align: left;
 }
 
  </style>                                                         
-<form method="post" action="" onsubmit="">
+<?php
+    $response = $webservice->getData("Member","GetDraftProfileInfo",array("ProfileCode"=>$_GET['Code']));
+    $ProfileInfo          = $response['data']['ProfileInfo'];
+    $Member = $response['data']['Members'];
+    $EducationAttachment = $response['data']['EducationAttachments'];
+    $PartnerExpectation = $response['data']['PartnerExpectation'];
+?>
+ <style>
+ .table-bordered > tbody > tr > td{
+     width: 75px;
+height: 75px;
+text-align:center;
+ }
+ #doctable > tbody > tr > td{
+ width: 75px;
+height: 33px;
+text-align: left;
+ }
+ #doctable {
+    border-top: 2px solid #ddd;
+}
+  .form-group {
+    margin-bottom: 0px;
+}
+.photoview {
+    float: right;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.Documentview {
+    float: left;
+    margin-right: 10px;
+    text-align: center;
+    border: 1px solid #eaeaea;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+ </style>                                                         
 <div class="col-12 grid-margin">
   <div class="card">                                                                                                               
     <div class="card-body">
@@ -90,10 +129,10 @@ text-align: left;
                 </div>
                 <div class="col-sm-7">
                     <div class="form-group row">                                       
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo strlen(trim($ProfileInfo['ProfileName']))> 0 ? trim($ProfileInfo['ProfileName']) : "N/A "; ?></label>
+                        <label class="col-sm-12 col-form-label" style="color: #1e1e1e;font-size: 17px;"><?php echo strlen(trim($ProfileInfo['ProfileName']))> 0 ? trim($ProfileInfo['ProfileName']) : "N/A "; ?>&nbsp;<?php if((strlen(trim($ProfileInfo['Age'])))>0){ echo trim($ProfileInfo['Age']); ?>&nbsp;&nbsp;&nbsp;yrs ,<?php }?>&nbsp;</label>
                     </div>
                     <div class="form-group row">                                       
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['Age'])))>0){ echo trim($ProfileInfo['Age']); ?>&nbsp;yrs ,<?php }?>&nbsp;<?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">approximate</span><?php }?></label>
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">(approximate)</span><?php }?></label>
                     </div>
                     <div class="form-group row">
                          <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['MaritalStatus']);?></label> 
@@ -342,10 +381,10 @@ text-align: left;
         </div>
         <div class="form-group row">                                                    
              <label class="col-sm-2 col-form-label">Height</label>                      
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">approximate</span><?php } else{ echo "N/A";}?>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">(approximate)</span><?php } else{ echo "N/A";}?>
              </label>
              <label class="col-sm-2 col-form-label">Weight</label>                      
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Weight'])))>0){ echo trim($ProfileInfo['Weight']);?>&nbsp;&nbsp;<span style="color: #ccc;">approximate</span><?php } else{ echo "N/A";}?>   
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['Weight'])))>0){ echo trim($ProfileInfo['Weight']);?>&nbsp;&nbsp;<span style="color: #ccc;">(approximate)</span><?php } else{ echo "N/A";}?>   
              </label>
         </div>
         <div class="form-group row">
@@ -499,8 +538,8 @@ text-align: left;
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['EmployedAs']))> 0 ? trim($ProfileInfo['EmployedAs']) : "N/A "; ?></label>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Description</label>                  
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Details']))> 0 ? trim($ProfileInfo['Details']) : "N/A "; ?></label>
+            <label class="col-sm-2 col-form-label">Expectation</label>                  
+            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:2px solid black;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Details']))> 0 ? trim($ProfileInfo['Details']) : "N/A "; ?></div></div>
         </div>
     </div>
   </div>
@@ -604,7 +643,9 @@ text-align: left;
   </div>
 </div>
 </div>
-</form>
+ 
+            
+               
  
             
                
