@@ -19,7 +19,7 @@ var MyFavoritedPage=1;
         <div class="card-body">
                 <?php 
                     foreach($Profiles as $Profile) { 
-                        echo DisplayProfileShortInformation($Profile);
+                        echo DisplayMyFavoritedProfileShortInformation($Profile);
                         echo "<br>";
                     }
                 ?>                                                                     

@@ -17,7 +17,7 @@
         <div class="card-body">
                 <?php 
                     foreach($Profiles as $Profile) { 
-                        echo DisplayWhoFavoritedProfileShortInformation($Profile);
+                        echo DisplayMutualProfileShortInformation($Profile);
                      //   echo DisplayWhoFavoritedProfileShortInformation($Profile);
                         echo "<br>";
                     }

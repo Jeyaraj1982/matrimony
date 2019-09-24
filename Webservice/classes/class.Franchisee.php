@@ -1031,6 +1031,7 @@
              $Caste          = CodeMaster::getData("CASTNAMES",$_POST['Caste']);  
              $Community      = CodeMaster::getData("COMMUNITY",$_POST['Community']);  
              $Nationality    = CodeMaster::getData("NATIONALNAMES",$_POST['Nationality']);  
+             $Childrens     = CodeMaster::getData("NUMBEROFBROTHER",$_POST['HowManyChildren']); 
              
              $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
           
@@ -1041,6 +1042,9 @@
                                                            `Sex`               = '".trim($Sex[0]['CodeValue'])."',
                                                            `MaritalStatusCode` = '".$_POST['MaritalStatus']."',
                                                            `MaritalStatus`     = '".trim($MaritalStatus[0]['CodeValue'])."',
+                                                           `ChildrenCode`      ='0',     
+                                                           `Children`          ='0',
+                                                           `IsChildrenWithyou` ='0',
                                                            `MotherTongueCode`  = '".$_POST['Language']."',
                                                            `MotherTongue`      = '".trim($MotherTongue[0]['CodeValue'])."', 
                                                            `ReligionCode`      = '".$_POST['Religion']."',
@@ -1053,8 +1057,11 @@
                                                            `NationalityCode`   = '".$_POST['Nationality']."',   
                                                            `Nationality`        = '".trim($Nationality[0]['CodeValue'])."',
                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
-                                                           `AboutMe`           = '".$_POST['AboutMe']."' where ProfileCode='".$_POST['Code']."'";   
-                                                           
+                                                           `AboutMe`           = '".$_POST['AboutMe']."'";  
+             if ($_POST['MaritalStatusCode'] != "MST001") {
+            $updateSql .= " ,ChildrenCode ='".$_POST['HowManyChildren']."', Children='".$Childrens[0]['CodeValue']."',IsChildrenWithyou='".$_POST['ChildrenWithYou']."'";
+        }
+              $updateSql .= "where ProfileCode='".$_POST['Code']."'";                                                  
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
                                                              "ActivityType"   => 'MemberGeneralinformationupdated.',
@@ -1631,6 +1638,47 @@
 
              global $mysql,$loginInfo ;
              
+                $EducationDetails =$mysql->select("Select * from `_tbl_draft_profiles_education_details` where `IsDeleted`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+                 if (sizeof($EducationDetails)==0) {
+                        return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Missing</h4>  <br><br>
+                                    <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                                    <h5 style="text-align:center;color:#ada9a9">You must Provide Your Education Details.</h5>
+                                    <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/EducationDetails/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
+                               </div>'; 
+                     }
+                 $Documents =$mysql->select("Select * from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+                 if (sizeof($Documents)==0) {
+                        return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Missing</h4>  <br><br>
+                                    <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                                    <h5 style="text-align:center;color:#ada9a9">You must upload Documents Details.</h5>
+                                    <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/DocumentAttachment/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
+                               </div>';                                                                      
+                     }
+                 $ProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+                     if (sizeof($ProfilePhoto)==0) {
+                            return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Missing</h4>  <br><br>
+                                        <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                                        <h5 style="text-align:center;color:#ada9a9">You must upload Profile photo.</h5>
+                                        <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/ProfilePhoto/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
+                                   </div>'; 
+                         }
+                 $DefaultProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `PriorityFirst`='1' and `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+                     if (sizeof($DefaultProfilePhoto)==0) {
+                            return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Missing</h4>  <br><br>
+                                        <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                                        <h5 style="text-align:center;color:#ada9a9">You must Select Default Profile photo.</h5>
+                                        <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/ProfilePhoto/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
+                                   </div>'; 
+                         }
+             
              $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
              
               $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
@@ -2083,18 +2131,35 @@
              }
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {    /* Profile => Posted */
-                
+             
                 $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and IsApproved='1' and RequestToVerify='1'");
                 if (sizeof($PublishedProfiles)>0) {
                     foreach($PublishedProfiles as $PublishedProfile) {
                         $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);
-                        $result['mode']="Published";
+                        $result['mode']="Published"; 
+                        $RecentlyViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['RecentlyViewed']= sizeof($RecentlyViewedcount);
+                        
+                        $MyFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `VisterProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['MyFavorited']= sizeof($MyFavoritedcount);
+                        
+                        $WhoViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `VisterProfileCode` ");
+                        $result['RecentlyWhoViwed']= sizeof($WhoViewedcount);
+                        
+                        $WhoFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['WhoFavorited']= sizeof($WhoFavoritedcount);
+                        
+                        $MutualCount = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' order by FavProfileID DESC)");
+                                       
+                        $result['MutualCount']= sizeof($WhoFavoritedcount);
+                        
                         $Profiles[]=$result; 
+                        
                      }                                                                          
                 }
                 return Response::returnSuccess("success",$Profiles);
              }
-         }
+         } 
          
         }
 ?> 

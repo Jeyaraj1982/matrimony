@@ -6,12 +6,6 @@
                         <div class="col-sm-6">
                         <h4 class="card-title">Published</h4>
                         </div>
-                        <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                            <a href="DraftedProfiles"><small>Drafted</small></a>&nbsp;|&nbsp;
-                            <a href="PostedProfiles"><small>Requested</small></a>&nbsp;|&nbsp;
-                            <a href="PublishedProfiles"><small style="font-weight:bold;text-decoration:underline">Published</small></a>&nbsp;|&nbsp;
-                            <a href="Rejected"><small>Rejected</small></a>
-                        </div>
                     </div>
                <!-- <div class="table-responsive">
                     <table id="myTable" class="table table-striped">
@@ -42,8 +36,7 @@
                      </table>
                   </div> -->      
                    <?php 
-                         $response = $webservice->getData("Franchisee","GetMyProfiles",array("ProfileFrom"=>"Published"));
-                         if (sizeof($response['data'])>0) {                                                                 
+                         $response = $webservice->getData("Franchisee","GetSelectedProfiles");
                          ?>
                         <?php foreach($response['data']as $P) { 
                             $Profile = $P['ProfileInfo'];
@@ -101,40 +94,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12">
-                                <div class="col-sm-10"><div style="line-height: 1px;"><a href="<?php echo GetUrl("ListOfProfile/".$Profile['ProfileCode'].".htm?source=RecentlyViewedCount");?>">Recently Viewed (<?php echo $P['RecentlyViewed'];?>)</a> &nbsp;&nbsp;&nbsp;
-                                <a href="#">Favorited (<?php echo $P['MyFavorited'];?>)</a> &nbsp;&nbsp;&nbsp;
-                                <a href="#">Who Viewed (<?php echo $P['RecentlyWhoViwed'];?>)</a> &nbsp;&nbsp;&nbsp;
-                                <a href="#">Who Favorited(<?php echo $P['WhoFavorited'];?>)</a> &nbsp;&nbsp;&nbsp;
-                                <a href="#">Mutual(<?php echo $P['MutualCount'];?>)</a></div></div>
-                                <div class="col-sm-1">
-                                    <div style="float:right;line-height: 1px;">
-                                        <a href="<?php echo GetUrl("ViewPublishedProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>  
                         <br> 
-                <?php }} else {?>   
-                  <div class="card-body" style="padding:80px;text-align:center;color:#aaa">
-                        <img src="<?php echo ImageUrl;?>noprofile.svg" style="height:128px">
-                        <Br> No profiles found in your account
-                        <br>
-                        <Br>
-                        <br>
-                        <Br>
-                        <br>
-                        <Br>
-                        <br>
-                    </div>
-                  <?php }?>                                             
+                <?php } ?>                                             
                 </div>
               </div>
             </div>
         </form>   
- <script>
-$(document).ready(function(){
-    $('#myTable').dataTable();
-    setTimeout("DataTableStyleUpdate()",500);
-});
-</script>

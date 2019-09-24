@@ -156,7 +156,6 @@ function submitUpload() {
          <div style="clear:both"></div>
          <?php }?>
     </div>
-</div>
 <div class="modal" id="LearnMore" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
                 <div class="modal-content" id="LearnMore_body" style="height:300px">

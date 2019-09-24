@@ -7,7 +7,9 @@ RewriteRule ^Profiles/ViewRequestProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profil
 RewriteRule ^Profiles/ViewPublishProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewPublishProfile
 RewriteRule ^ViewMemberProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewMemberProfile
 
-RewriteRule ^Profile/(.*)\.htm$ ./index.php?Code=$1&p=view
+RewriteRule ^ViewProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewProfile [QSA]
+RewriteRule ^ListOfProfile/(.*)\.htm$ ./index.php?Code=$1&p=ListOfProfile [QSA]
+
 RewriteRule ^view/(.*)\.htm$ ./index.php?Code=$1&p=view
 
 RewriteRule ^Members/Created/(.*)\.htm$ ./index.php?Code=$1&p=Members/Created
@@ -20,9 +22,6 @@ RewriteRule ^ViewProfileforaddLandingPage/(.*)\.htm$ ./index.php?Code=$1&p=ViewP
 
 
 RewriteRule ^Matches/Search/ViewPlans/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ViewPlans
-RewriteRule ^Matches/Search/ViewSearchProfile/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ViewSearchProfile
-RewriteRule ^MyContacts/ViewProfileDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyContacts/ViewProfileDetails
-RewriteRule ^MyContacts/MyDownloaded/ViewProfileDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyContacts/MyDownloaded/ViewProfileDetails
 
 RewriteRule ^Members/KYC/ViewKyc/(.*)\.htm$ ./index.php?Code=$1&p=Members/KYC/ViewKyc
 

@@ -92,7 +92,7 @@ function submitprofile() {
     <form method="post" action="" onsubmit="return submitprofile();">
         <h4 class="card-title">General Information</h4>
             <div class="form-group row">
-                <label for="Community" class="col-sm-2 col-form-label">Profile For<span id="star">*</span></label>
+                <label for="Community" class="col-sm-2 col-form-label">Profile Created For<span id="star">*</span></label>
                 <div class="col-sm-4">
                                 <select class="selectpicker form-control" data-live-search="true" id="ProfileFor" name="ProfileFor">
                                     <option value="0">Choose Profile Sign In</option>

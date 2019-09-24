@@ -445,7 +445,7 @@
                     //$isMutured = $mysql->select("select ViewedOn from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and ProfileCode='".$Profiles[0]['ProfileCode']."' and `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'    and `MemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC)");
                     $isMutured = $mysql->select("select ViewedOn from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and VisterProfileCode='".$Profiles[0]['ProfileCode']."' and `VisterProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'    and `MemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC)");
                 } else {
-                    $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where VisterProfileID='".$Profiles[0]['ProfileID']."' and MemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
+                    $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where VisterProfileID='".$Profiles[0]['ProfileID']."' and MemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");   
                 }
             }
             
@@ -474,7 +474,7 @@
             $Profiles[0]['isFavourited'] = (isset($isFavourite[0]['ViewedOn']) ? $isFavourite[0]['ViewedOn'] : 0);
             $Profiles[0]['isMutured']    = (isset($isMutured[0]['ViewedOn']) ? 1 : 0);
             $Profiles[0]['MuturedOn']    = (isset($isMutured[0]['ViewedOn']) ? $isMutured[0]['ViewedOn'] : "");
-            $Profiles[0]['Age']          = date("Y")-date("Y",strtotime($Profiles[0]['DateofBirth']));
+            $Profiles[0]['Age']          = date("Y")-date("Y",strtotime($Profiles[0]['DateofBirth']));   
              
             $result = array("ProfileInfo"          => $Profiles[0],
                             "Position"             => $Position,

@@ -16,7 +16,7 @@
         <div class="card-body">
                 <?php 
                     foreach($Profiles as $Profile) { 
-                        echo DisplayProfileShortInformation($Profile);
+                        echo DisplayMyRecentViewedProfileShortInformation($Profile);
                         echo "<br>";
                     }
                 ?>                                                                     

@@ -22,7 +22,7 @@
                 <div class="card-body">
                     <h4 class="card-title">Download Profiles</h4>
                     <?php foreach($Profiles as $Profile) { 
-                        echo DisplayMyContactsProfileShortInfoBrowse($Profile);
+                        echo DisplayMyDownloadedProfiles($Profile);
                         ?>
                        
                         <br> 

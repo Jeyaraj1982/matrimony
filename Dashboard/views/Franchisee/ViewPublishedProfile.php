@@ -89,7 +89,7 @@ text-align: left;
                 </div>
                 <div class="col-sm-7">
                     <div class="form-group row">                                       
-                        <label class="col-sm-12 col-form-label" style="color: #1e1e1e;font-size: 17px;"><?php echo strlen(trim($ProfileInfo['ProfileName']))> 0 ? trim($ProfileInfo['ProfileName']) : "N/A "; ?>&nbsp;<?php if((strlen(trim($ProfileInfo['Age'])))>0){ echo trim($ProfileInfo['Age']); ?>&nbsp;&nbsp;&nbsp;yrs ,<?php }?>&nbsp;</label>
+                        <label class="col-sm-12 col-form-label" style="color: #1e1e1e;font-size: 17px;"><?php echo strlen(trim($ProfileInfo['ProfileName']))> 0 ? trim($ProfileInfo['ProfileName']) : "N/A "; ?>&nbsp;<?php if((strlen(trim($ProfileInfo['Age'])))>0){ echo "("." ".trim($ProfileInfo['Age'])." "."yrs".")";  }?>&nbsp;</label>
                     </div>
                     <div class="form-group row">                                       
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">(approximate)</span><?php }?></label>
@@ -471,35 +471,35 @@ text-align: left;
          </div>
         <div class="form-group row">                                                                                                                                                                                             
             <label class="col-sm-2 col-form-label">Age </label>                       
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['AgeFrom']))> 0 ? trim($ProfileInfo['AgeFrom']) : "N/A "; ?>&nbsp;&nbsp;to&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['AgeTo']))> 0 ? trim($ProfileInfo['AgeTo']) : "N/A "; ?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['AgeFrom']))> 0 ? trim($PartnerExpectation['AgeFrom']) : "N/A "; ?>&nbsp;&nbsp;to&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['AgeTo']))> 0 ? trim($PartnerExpectation['AgeTo']) : "N/A "; ?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Religion</label>                     
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Religion']))> 0 ? trim($ProfileInfo['Religion']) : "N/A "; ?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['Religion']))> 0 ? trim($PartnerExpectation['Religion']) : "N/A "; ?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Caste</label>                        
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Caste']))> 0 ? trim($ProfileInfo['Caste']) : "N/A "; ?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['Caste']))> 0 ? trim($PartnerExpectation['Caste']) : "N/A "; ?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Marital Status</label>               
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['MaritalStatus']))> 0 ? trim($ProfileInfo['MaritalStatus']) : "N/A "; ?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['MaritalStatus']))> 0 ? trim($PartnerExpectation['MaritalStatus']) : "N/A "; ?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Income Range</label>                
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['AnnualIncome']))> 0 ? trim($ProfileInfo['AnnualIncome']) : "N/A "; ?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['AnnualIncome']))> 0 ? trim($PartnerExpectation['AnnualIncome']) : "N/A "; ?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Education</label>                   
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Education']))> 0 ? trim($ProfileInfo['Education']) : "N/A "; ?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['Education']))> 0 ? trim($PartnerExpectation['Education']) : "N/A "; ?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Employed As</label>                 
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['EmployedAs']))> 0 ? trim($ProfileInfo['EmployedAs']) : "N/A "; ?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['EmployedAs']))> 0 ? trim($PartnerExpectation['EmployedAs']) : "N/A "; ?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Expectation</label>                  
-            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:2px solid black;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Details']))> 0 ? trim($ProfileInfo['Details']) : "N/A "; ?></div></div>
+            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:2px solid black;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['Details']))> 0 ? trim($PartnerExpectation['Details']) : "N/A "; ?></div></div>
         </div>
     </div>
   </div>

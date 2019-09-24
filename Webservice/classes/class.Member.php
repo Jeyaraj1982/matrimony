@@ -2782,6 +2782,21 @@
              } else {
                  $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
              }
+             
+             
+             $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");
+             
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddToFavoriteProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "AddToFavoriteProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has favorited. Your Profile ID is ".$Profiles[0]['ProfileCode']);
               
              $id = $mysql->insert("_tbl_profiles_favourites",array("MemberID"           => $Profiles[0]['MemberID'],
                                                                    "ProfileID"          => $Profiles[0]['ProfileID'],

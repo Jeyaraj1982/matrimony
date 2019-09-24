@@ -85,7 +85,7 @@
                                 </td>
                                 <td style="font-size:13px;color:#555;">
                                     <?php echo $Row['VisterProfileCode'];?> &nbsp;<?php echo $Row['Subject'];?><br>
-                                     <a href="<?php echo GetUrl("view/".$Row['VisterProfileCode'].".htm ");?>">View Profile</a>
+                                     <a href="<?php echo GetUrl("ViewProfile/".$Row['VisterProfileCode'].".htm?source=DashboardLatestUpdatesView");?>">View Profile</a>
                                 </td>
                                 <td style="width:94px;text-align:right;line-height: 24px;padding: 0px;">
                                  <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $Row['LatestID'];?>')" name="Hide" style="font-family:roboto">&times;</a><br>

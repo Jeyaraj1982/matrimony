@@ -1,10 +1,3 @@
-<?php           
- /*   $response = $webservice->getData("Member","GetDownloadProfileInformation",array("ProfileCode"=>$_GET['Code']));
-    $ProfileInfo          = $response['data']['ProfileInfo'];
-    $PartnerExpectation = $response['data']['PartnerExpectation'];
-    $EducationAttachment = $response['data']['EducationAttachments'];
-    $ProfilePhotos = $response['data']['ProfilePhoto'];   */
-?>
 <?php
     $response = $webservice->getData("Member","GetFullProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
@@ -55,7 +48,16 @@ text-align: left;
                 "RecentlyWhoFavorited"=>"MyContacts/RecentlyWhofavourited",
                 "RecentlyWhoFavorited"=>"MyContacts/RecentlyWhofavourited",
                 "MyRecentViewed"=>"MyContacts/MyRecentViewed",
-                "MyFavorited"=>"MyContacts/MyFavorited");
+                "MyFavorited"=>"MyContacts/MyFavorited",
+                "DashboardWhoViewedYourProfile"=>"../Dashboard",
+                "DashboardMyRecentlyViewed"=>"../Dashboard",
+                "DashboardWhoFavoritedYourProfile"=>"../Dashboard",
+                "DashboardMyFavorited"=>"../Dashboard",
+                "DashboardMutualProfile"=>"../Dashboard",
+                "BrowseMatches"=>"Matches/Browse/BrowseMatches",
+                "DashboardLatestUpdatesView"=>"../Dashboard",
+                "MyDownloaded"=>"MyContacts/MyDownloaded",
+                );
             if (isset($pageLinks[$_GET['source']])) {
         ?>
         <a href="<?php echo SiteUrl.$pageLinks[$_GET['source']]?>" class="btn btn-primary">back</a>
@@ -111,7 +113,7 @@ text-align: left;
         <div class="card-body">
          <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Profile Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            
          </div>
               <div class="form-group row">
                 <div class="col-sm-5">
@@ -189,7 +191,7 @@ text-align: left;
     <div class="card-body">
      <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">About Me</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            
          </div>
          <table>           
            <?php echo trim($ProfileInfo['AboutMe']);?>
@@ -202,7 +204,7 @@ text-align: left;
     <div class="card-body">
      <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Education Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            
          </div>
          <table class="table table-bordered" id="doctable">           
             <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">
@@ -237,7 +239,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Occupation Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Employed As</label>                 
@@ -264,7 +266,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Family Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's Name</label>                
@@ -354,7 +356,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Physical Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Physically Impaired?</label>         
@@ -428,7 +430,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Horoscope Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" >Date of birth</label>               
@@ -516,7 +518,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Horoscope Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            
          </div>
             <div class="form-group row">
                 <div class="col-sm-12" style="text-align: center;">
@@ -534,7 +536,7 @@ text-align: left;
     <div class="card-body">
     <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Partner's Expectations</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            
          </div>
         <div class="form-group row">                                                                                                                                                                                             
             <label class="col-sm-2 col-form-label">Age </label>                       
@@ -576,7 +578,7 @@ text-align: left;
     <div class="card-body">
     <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Communication Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            
          </div>
         <div class="form-group row">                                                   
             <label class="col-sm-2 col-form-label">Email ID</label>                    
@@ -627,7 +629,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Communication details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            
          </div>
             <div class="form-group row">
                 <div class="col-sm-12" style="text-align: center;">
@@ -640,29 +642,6 @@ text-align: left;
          </div>
     </div>
   </div> 
-<div class="col-12 grid-margin">
-  <div class="card">                                                                                                        
-    <div class="card-body">
-    <div class="form-group row">
-        <div class="col-sm-6"><h4 class="card-title">Attached Documents</h4></div>
-        <div class="col-sm-6" style="text-align: right;"><h4 class="card-title" style="color:green">For Admnistrative Purpose only</h4><br>
-            <a href="#">Edit</a>                    
-        </div>
-    </div>
-    
-        <div class="form-group row">
-         <?php foreach($response['data']['Documents'] as $Doc) {?>
-                   <div class="Documentview">
-                    <img src="<?php echo $Doc['AttachFileName'];?>" style="width: 200px;height:150px">   <br>
-                    <label style="color:#737373;"><?php echo $Doc['DocumentType'];?></label> <br>
-                    <label style="color:#737373;">verification pending</label>
-                  </div>
-                  <?php }?>
-         </div>
-    </div>
-  </div>                                                                                                               
-</div>
-
 <div class="col-12 grid-margin">
   <div class="card">                                                                                                               
     <div class="card-body">

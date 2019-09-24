@@ -30,7 +30,7 @@
                 <div class="card-body">
                     <?php 
                         foreach($response['data'] as $Profile) {   
-                            echo DisplayProfileShortInformation($Profile); ?><br>
+                            echo DisplayBrowseMatchesProfileShortInformation($Profile); ?><br>
                      <?php    }
                     ?>
                 </div>
