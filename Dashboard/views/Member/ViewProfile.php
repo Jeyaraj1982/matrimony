@@ -5,129 +5,84 @@
     $EducationAttachment = $response['data']['EducationAttachments'];
     $PartnerExpectation = $response['data']['PartnerExpectation'];
 ?>
- <style>
- .table-bordered > tbody > tr > td{
-     width: 75px;
-height: 75px;
-text-align:center;
- }
- #doctable > tbody > tr > td{
- width: 75px;
-height: 33px;
-text-align: left;
- }
- #doctable {
-    border-top: 2px solid #ddd;
-}
-  .form-group {
-    margin-bottom: 0px;
-}
-.photoview {
-    float: right;
-    margin-right: 10px;
-    margin-bottom: 10px;
-}
-.Documentview {
-    float: left;
-    margin-right: 10px;
-    text-align: center;
-    border: 1px solid #eaeaea;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-}
-
+<style>
+ .table-bordered > tbody > tr > td{width: 75px;height: 75px;text-align:center;}
+ #doctable > tbody > tr > td{width: 75px;height: 33px;text-align: left;}
+ #doctable {border-top: 2px solid #ddd;}
+ .form-group {margin-bottom: 0px;}
+ .photoview {float: right;margin:5px;}
  </style>
- <div class="col-12 grid-margin">
-    <div class="form-group row">
-        <div class="col-sm-12" style="text-align:right">
         <?php
             $pageLinks=array(
-                "RecentlyWhoViewed"=>"MyContacts/RecentlyWhoViewed",
-                "Mutual"=>"MyContacts/MutualProfiles",
-                "RecentlyWhoFavorited"=>"MyContacts/RecentlyWhofavourited",
-                "RecentlyWhoFavorited"=>"MyContacts/RecentlyWhofavourited",
+                
                 "MyRecentViewed"=>"MyContacts/MyRecentViewed",
+                "MyRecentViewed_string"=>"back to my recently viewed profile",
+            
+                "RecentlyWhoViewed"=>"MyContacts/RecentlyWhoViewed",
+                "RecentlyWhoViewed_string"=>"back to who viewed my profile",
+                
                 "MyFavorited"=>"MyContacts/MyFavorited",
-                "DashboardWhoViewedYourProfile"=>"../Dashboard",
-                "DashboardMyRecentlyViewed"=>"../Dashboard",
-                "DashboardWhoFavoritedYourProfile"=>"../Dashboard",
-                "DashboardMyFavorited"=>"../Dashboard",
-                "DashboardMutualProfile"=>"../Dashboard",
+                "MyFavorited_string"=>"back to my favorited profile",
+                
+                "RecentlyWhoFavorited"=>"MyContacts/RecentlyWhofavourited",
+                "RecentlyWhoFavorited_string"=>"back to who favorited my profile",
+                
+                "Mutual"=>"MyContacts/MutualProfiles",
+                "Mutual_string"=>"back to mutual profile",
+                
                 "BrowseMatches"=>"Matches/Browse/BrowseMatches",
                 "DashboardLatestUpdatesView"=>"../Dashboard",
                 "MyDownloaded"=>"MyContacts/MyDownloaded",
                 );
-            if (isset($pageLinks[$_GET['source']])) {
+           ?> 
+           <div style="width:800px">
+<div class="col-12 grid-margin" style="margin-bottom:5px">
+    <div class="card" style="background: none;">
+        <div class="card-body" style="padding: 0px;background: none;">
+            <div class="form-group row" style="background: none;">  
+                <div class="col-sm-8 col-form-label" style="background: none;">
+                    <div class="form-group row">                                       
+                        <label class="col-sm-12 col-form-label" style="background: none;color: #222;font-size:24px;font-weight:bold;">
+                        <?php echo strlen(trim($ProfileInfo['ProfileName']))> 0 ? trim($ProfileInfo['ProfileName']) : "N/A "; ?>
+                        &nbsp;(<?php if((strlen(trim($ProfileInfo['Age'])))>0) { echo trim($ProfileInfo['Age']); ?> Yrs<?php }?>)
+                        </label>
+                        <label class="col-sm-12 col-form-label" style="background: none;color: #333;font-size: 14px;padding: 0px 16px;color: #666;">
+                            <?php echo strlen(trim($ProfileInfo['ProfileCode']))> 0 ? trim($ProfileInfo['ProfileCode']) : "N/A "; ?>&nbsp;&nbsp;|&nbsp;&nbsp;::ProfileCreatedFor::
+                        </label>
+                    </div>
+            </div>
+            <div class="col-sm-4"  style="text-align:right">
+                 <?php
+                  if (isset($pageLinks[$_GET['source']])) {
         ?>
-        <a href="<?php echo SiteUrl.$pageLinks[$_GET['source']]?>" class="btn btn-primary">back</a>
+        <a href="<?php echo SiteUrl.$pageLinks[$_GET['source']]?>" class="btn btn-primary">ê&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $pageLinks[$_GET['source']."_string"];?></a>
             
         <?php } ?>
-             
-        </div>
-    </div>
-</div>
-
-<div class="col-12 grid-margin">
-  <div class="card">                                                                                                               
-    <div class="card-body">
-        <div class="form-group row">
-            <div class="col-sm-10 col-form-label"><div style="text-align:left;">
-                        <?php $rnd = rand(3000,3000000);  if ($ProfileInfo['isFavourited']==0) { ?>                                                                                                                    
-                                                <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $ProfileInfo['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
-                                                <img onclick="AddtoFavourite('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;                                     ">  
-                                            <?php } else if ($ProfileInfo['isMutured']==1) {?>
-                                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
-                                            <?php } else{?>
-                                                <img onclick="removeFavourited('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
-                                            <?php }?>
-                        </div></div>
-            <div class="col-sm-2">
-                <i class="menu-icon mdi mdi-printer" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Print</label> 
+        <br><br>
+         <i class="menu-icon mdi mdi-printer" style="font-size: 15px;color: purple;"></i>&nbsp;<label style="background:none">Print</label> 
+                 <i class="menu-icon mdi mdi-download" style="font-size: 15px;color: purple;"></i>&nbsp;<label style="background:none">Download</label>   
+               
             </div>
         </div>
-        <div class="form-group row">
-            <div class="col-sm-10 col-form-label">
-                <div style="height: 20px;margin-right: -33px;line-height:12px;font-size: 11px;"><span style="color:#999 !important;">
-                            <?php if ($ProfileInfo['LastSeen']!=0) { ?> 
-                            My last visited&nbsp;<?php echo time_elapsed_string($ProfileInfo['LastSeen']);?>
-                            <?php } else { ?>
-                            You favourited, but not view this profile.
-                            <?php } ?>
-                             <br />
-                             <?php if($ProfileInfo['isMutured']==1) {?>
-                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<?php echo $ProfileInfo['Sex']=="Male" ? "He " : "She "; ?>liked on <?php echo time_elapsed_string($ProfileInfo['MuturedOn']);?>
-                             <?php }?>
-                            </span></div>
-            </div>
-                <div class="col-sm-2">
-                    <i class="menu-icon mdi mdi-download" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Download</label>   
-                </div>
-        </div>
-       
   </div>
 </div>
 </div>
 <div class="col-12 grid-margin">                                                     
     <div class="card">
         <div class="card-body">
-         <div class="form-group row">
-            <div class="col-sm-6"><h4 class="card-title">Profile Information</h4></div>
-            
-         </div>
               <div class="form-group row">
                 <div class="col-sm-5">
-                    <div style="border: 1px solid black;padding: 0px;width: 318px;height: 378px;"> 
+                    <div style="border: 1px solid #ccc;padding: 0px;width: 291px;height: 378px;"> 
                     <div class="form-group row">                                                       
                         <div class="col-sm-12">
-                            <div class="photoview" style="float:left;width: 316px;height:280px">
+                            <div class="photoview" style="float:left;width: 290px;height:290px;margin:0px;">
                                 <img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 100%;width: 100%;">
                             </div>
                         </div> 
                     </div>
-                    <div style="padding-left: 10px;padding-right: 10px;">
+                    <div style="padding-left:3px;padding-right: 10px;margin-top:7px">
                       <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/nextarrow.jpg" style="width:30px"></div>
-                        <div class="col-sm-10">
+                        <div class="col-sm-10" style="padding-left:8px;padding-right:5px;">
                         <?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
                             <div class="photoview" style="float: left;">
                                 <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 62px;width: 44px;">
@@ -137,11 +92,33 @@ text-align: left;
                        <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/rightarrow.jpg" style="width:30px"></div>
                   </div>
                 </div>
+                    <div>
+                  <div style="text-align:left;">
+                        <?php $rnd = rand(3000,3000000);  if ($ProfileInfo['isFavourited']==0) { ?>                                                                                                                    
+                                                <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $ProfileInfo['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
+                                                <img onclick="AddtoFavourite('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;                                     ">  
+                                            <?php } else if ($ProfileInfo['isMutured']==1) {?>
+                                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                                            <?php } else{?>
+                                                <img onclick="removeFavourited('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                                            <?php }?>
+                        </div>  
+                   <div style="height: 20px;margin-right: -33px;line-height:12px;font-size: 11px;"><span style="color:#999 !important;">
+                            <?php if ($ProfileInfo['LastSeen']!=0) { ?> 
+                            My last visited&nbsp;<?php echo time_elapsed_string($ProfileInfo['LastSeen']);?>
+                            <?php } else { ?>
+                            You favourited, but not view this profile.
+                            <?php } ?>
+                             <br />
+                             <?php if($ProfileInfo['isMutured']==1) {?>
+                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<?php echo $ProfileInfo['Sex']=="Male" ? "He " : "She "; ?>liked on <?php echo time_elapsed_string($ProfileInfo['MuturedOn']);?>
+                             <?php }?>
+                            </span></div> 
+                    </div>                
+                
                 </div>
                 <div class="col-sm-7">
-                    <div class="form-group row">                                       
-                        <label class="col-sm-12 col-form-label" style="color: #1e1e1e;font-size: 17px;"><?php echo strlen(trim($ProfileInfo['ProfileName']))> 0 ? trim($ProfileInfo['ProfileName']) : "N/A "; ?>&nbsp;<?php if((strlen(trim($ProfileInfo['Age'])))>0){ echo trim($ProfileInfo['Age']); ?>&nbsp;&nbsp;&nbsp;yrs ,<?php }?>&nbsp;</label>
-                    </div>
+                    
                     <div class="form-group row">                                       
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">(approximate)</span><?php }?></label>
                     </div>
@@ -321,7 +298,7 @@ text-align: left;
              </label>
         </div>
         <div class="form-group row">
-             <label class="col-sm-2 col-form-label">Number Of Brothers</label>          
+             <label class="col-sm-2 col-form-label">Brothers</label>          
              <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['NumberofBrothers']))> 0 ? trim($ProfileInfo['NumberofBrothers']) : "N/A "; ?>
              </label>
              <label class="col-sm-1 col-form-label">Elder</label>                       
@@ -335,7 +312,7 @@ text-align: left;
              </label>
         </div>
         <div class="form-group row">
-             <label class="col-sm-2 col-form-label">Number Of Sisters</label>           
+             <label class="col-sm-2 col-form-label">Sisters</label>           
              <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['NumberofSisters']))> 0 ? trim($ProfileInfo['NumberofSisters']) : "N/A "; ?>
              </label>
              <label class="col-sm-1 col-form-label">Elder</label>                       
@@ -525,7 +502,7 @@ text-align: left;
                     <img src="<?php echo ImageUrl;?>lockimage.png">
                 </div>
                 <div class="col-sm-12" style="text-align: center;">
-                    You must upgrade your package
+                    Upgrade membership to unlock the horoscope details<br><br><br> 
                 </div>
             </div>
          </div>
@@ -629,14 +606,13 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Communication details</h4></div>
-            
          </div>
             <div class="form-group row">
                 <div class="col-sm-12" style="text-align: center;">
                     <img src="<?php echo ImageUrl;?>lockimage.png">
                 </div>
                 <div class="col-sm-12" style="text-align: center;">
-                    You must upgrade your package
+                    Upgrade membership to unlock the contact details<br><br><br> 
                 </div>
             </div>
          </div>
@@ -666,11 +642,169 @@ text-align: left;
         <?php }?>
   </div>
 </div>
+</div>             
 </div>
+ <div style="width:400px">
+ <?php if($_GET['source']=="MyRecentViewed"){?>
+<div class="member_dashboard_widget_title">My Recently Viewed</div>
+            <div class="card"  style="background:#dee9ea;">
+                <div class="card-body" style="padding:10px !important;">
+                <?php 
+                    $myrecentviewed = $webservice->getData("Member","GetRecentlyViewedProfiles",array("requestfrom"=>"0","requestto"=>"10"));
+                    $MyRecentlyViewed = $myrecentviewed['data'];
+                 ?>
+                    <?php if (sizeof($MyRecentlyViewed)>0) { ?>
+                <div>
+                    <?php
+                     foreach($MyRecentlyViewed as $Profile) { 
+                         if ($Profile['ProfileInfo']['ProfileCode']!=$_GET['Code']) {
+                            echo dashboard_view_2($Profile);      
+                         }
+                    }?> 
+                </div>
+                <?php if (sizeof($MyRecentlyViewed)>=4) { ?>
+                <div style="clear:both;padding:3px;text-align:center;">
+                            <a href="<?php echo SiteUrl;?>MyContacts/MyRecentViewed">View All</a>
+                         </div>
+                <?php } ?>
+                 <?php } else { ?>
+                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
+                        <div style="text-align:center;">
+                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+<?php }?>
 
- 
-            
-               
- 
-            
-               
+<?php if($_GET['source']=="RecentlyWhoViewed"){?>
+<div class="member_dashboard_widget_title">Who viewed your profile</div>
+            <div class="card"  style="background:#dee9ea;">
+                <div class="card-body" style="padding:10px !important;">
+                <?php 
+                    $whoviewed = $webservice->getData("Member","GetRecentlyWhoViewedProfiles",array("requestfrom"=>"0","requestto"=>"10"));
+                    $WhoViewedYourProfile = $whoviewed['data']; 
+                 ?>
+                    <?php if (sizeof($WhoViewedYourProfile)>0) { ?>
+                <div>
+                    <?php
+                     foreach($WhoViewedYourProfile as $Profile) { 
+                         if ($Profile['ProfileInfo']['ProfileCode']!=$_GET['Code']) {
+                            echo dashboard_view_2($Profile);      
+                         }
+                    }?> 
+                </div>
+                <?php if (sizeof($WhoViewedYourProfile)>=4) { ?>
+                <div style="clear:both;padding:3px;text-align:center;">
+                            <a href="<?php echo SiteUrl;?>RecentlyWhofavourited/RecentlyWhoViewed">View All</a>
+                         </div>
+                <?php } ?>
+                 <?php } else { ?>
+                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
+                        <div style="text-align:center;">
+                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+<?php }?>
+
+<?php if($_GET['source']=="MyFavorited"){?>
+<div class="member_dashboard_widget_title">My Favourited</div>
+            <div class="card"  style="background:#dee9ea;">
+                <div class="card-body" style="padding:10px !important;">
+                <?php 
+                    $myfavorited = $webservice->getData("Member","GetFavouritedProfiles",array("requestfrom"=>"0","requestto"=>"10"));
+                    $MyFavouritedProfiles = $myfavorited['data'];
+                 ?>
+                    <?php if (sizeof($MyFavouritedProfiles)>0) { ?>
+                <div>
+                    <?php
+                     foreach($MyFavouritedProfiles as $Profile) { 
+                         if ($Profile['ProfileInfo']['ProfileCode']!=$_GET['Code']) {
+                            echo dashboard_view_2($Profile);      
+                         }
+                    }?> 
+                </div>
+                <?php if (sizeof($MyFavouritedProfiles)>=4) { ?>
+                <div style="clear:both;padding:3px;text-align:center;">
+                             <a href="<?php echo SiteUrl;?>MyContacts/MyFavorited">View All</a>
+                         </div>
+                <?php } ?>
+                 <?php } else { ?>
+                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
+                        <div style="text-align:center;">
+                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+<?php }?>
+<?php if($_GET['source']=="RecentlyWhoFavorited"){?>
+<div class="member_dashboard_widget_title">Who favorited your profile</div>
+            <div class="card"  style="background:#dee9ea;">
+                <div class="card-body" style="padding:10px !important;">
+                <?php 
+                    $whofavorited = $webservice->getData("Member","GetWhoFavouriteMyProfiles",array("requestfrom"=>"0","requestto"=>"10"));
+                    $WhoFavoritedYourProfiles = $whofavorited['data']; 
+                 ?>
+                    <?php if (sizeof($WhoFavoritedYourProfiles)>0) { ?>
+                <div>
+                    <?php
+                     foreach($WhoFavoritedYourProfiles as $Profile) { 
+                         if ($Profile['ProfileInfo']['ProfileCode']!=$_GET['Code']) {
+                            echo dashboard_view_2($Profile);      
+                         }
+                    }?> 
+                </div>
+                <?php if (sizeof($WhoFavoritedYourProfiles)>=4) { ?>
+                <div style="clear:both;padding:3px;text-align:center;">
+                             <a href="<?php echo SiteUrl;?>RecentlyWhofavourited/MutualProfiles">View All</a>
+                         </div>
+                <?php } ?>
+                 <?php } else { ?>
+                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
+                        <div style="text-align:center;">
+                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+<?php }?>
+<?php if($_GET['source']=="Mutual"){?>
+<div class="member_dashboard_widget_title">Mutual Profile</div>
+            <div class="card"  style="background:#dee9ea;">
+                <div class="card-body" style="padding:10px !important;">
+                <?php 
+                    $mutualprofile = $webservice->getData("Member","GetMutualProfiles",array("requestfrom"=>"0","requestto"=>"10"));
+                    $MutualProfiles = $mutualprofile['data']; 
+                 ?>
+                    <?php if (sizeof($MutualProfiles)>0) { ?>
+                <div>
+                    <?php
+                     foreach($MutualProfiles as $Profile) { 
+                         if ($Profile['ProfileInfo']['ProfileCode']!=$_GET['Code']) {
+                            echo dashboard_view_2($Profile);      
+                         }
+                    }?> 
+                </div>
+                <?php if (sizeof($MutualProfiles)>=4) { ?>
+                <div style="clear:both;padding:3px;text-align:center;">
+                            <a href="<?php echo SiteUrl;?>MyContacts/MutualProfiles">View All</a>
+                         </div>
+                <?php } ?>
+                 <?php } else { ?>
+                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
+                        <div style="text-align:center;">
+                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+<?php }?>
+</div>

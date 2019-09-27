@@ -1,6 +1,6 @@
 <?php
     $page="OccupationDetails";
-    if (isset($_POST['BtnSaveProfile'])) {
+   /* if (isset($_POST['BtnSaveProfile'])) {
         
         $response = $webservice->getData("Member","EditDraftOccupationDetails",$_POST);
         if ($response['status']=="success") {
@@ -8,11 +8,56 @@
         } else {
             $errormessage = $response['message']; 
         }
-    }
+    }    */
     
     $response = $webservice->GetDraftProfileInformation(array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
    ?>
+    <?php
+                if (isset($_POST['BtnSaveProfile'])) {
+                    
+                    $target_dir = "uploads/";
+                    $err=0;
+                    $_POST['File']= "";
+                    $acceptable = array('image/jpeg',
+                                        'image/jpg',
+                                        'image/png'
+                                    );
+                     
+                  if(($_FILES['File']['size'] >= 5000000) || ($_FILES["File"]["size"] == 0)) {
+                    $err++;
+                           echo "Please upload file. File must be less than 5 megabytes.";
+                    }
+                            
+                    if((!in_array($_FILES['File']['type'], $acceptable)) && (!empty($_FILES["File"]["type"]))) {
+                        $err++;
+                           echo "Invalid file type. Only JPG,PNG,JPEG types are accepted.";
+                    }
+
+                    
+                    if (isset($_FILES["File"]["name"]) && strlen(trim($_FILES["File"]["name"]))>0 ) {
+                        $OccupationAttachments = time().$_FILES["File"]["name"];
+                        if (!(move_uploaded_file($_FILES["File"]["tmp_name"], $target_dir . $OccupationAttachments))) {
+                           $err++;
+                           echo "Sorry, there was an error uploading your file.";
+                        }
+                    }
+                    
+                    if ($err==0) {
+                        $_POST['File']= $OccupationAttachments;
+                        $res =$webservice->getData("Member","EditDraftOccupationDetails",$_POST);   
+                        echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
+                                                           : $dashboard->showErrorMsg($res['message']);
+                    } else {
+                        $res =$webservice->getData("Member","EditDraftOccupationDetails");
+                    }
+                } else {
+                     $res =$webservice->getData("Member","EditDraftOccupationDetails");
+                     
+                }
+                $DocumentPhoto = $res['data'];      
+              
+            ?>
 <?php include_once("settings_header.php");?>
 <script>
 function submitprofile() {
@@ -54,9 +99,21 @@ function submitprofile() {
     
     
 }
+$(document).ready(function() {
+    var text_max = 250;
+    var text_length = $('#OccupationDetails').val().length;
+    $('#textarea_feedback').html(text_length + ' characters typed');
+
+    $('#OccupationDetails').keyup(function() {
+        var text_length = $('#OccupationDetails').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback').html(text_length + ' characters typed');
+    });
+});
 </script>
 <div class="col-sm-10" style="margin-top: -8px;">
-<form method="post" action="" onsubmit="return submitprofile();">
+<form method="post" action="" name="form1" id="form1" enctype="multipart/form-data" onsubmit="return submitprofile();">
     <h4 class="card-title">Occupation Details</h4>
     <div class="form-group row">
         <label for="Employed As" class="col-sm-2 col-form-label">Employed As<span id="star">*</span></label>
@@ -118,6 +175,17 @@ function submitprofile() {
                 </select>
                 <span class="errorstring" id="ErrWCountry"><?php echo isset($ErrWCountry)? $ErrWCountry : "";?></span>
             </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Attachment</label>
+        <div class="col-sm-8"><input type="File" id="File" name="File" Placeholder="File"></div>
+    </div>
+     <div class="form-group row">
+        <label for="Details" class="col-sm-2 col-form-label">Details<span id="star">*</span></label>
+        <div class="col-sm-10">                                                                           
+            <textarea class="form-control" maxlength="250" name="OccupationDetails" id="OccupationDetails"><?php echo (isset($_POST['OccupationDetails']) ? $_POST['OccupationDetails'] : $ProfileInfo['OccupationDetails']);?></textarea> <br>
+            <div class="col-sm-12">Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></div>
+        </div>
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>

@@ -207,6 +207,10 @@ text-align: left;
             <label class="col-sm-2 col-form-label">Country</label>                      
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['WorkedCountry']))> 0 ? trim($ProfileInfo['WorkedCountry']) : "N/A "; ?></label>
         </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Details</label>                  
+            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:2px solid black;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['OccupationDetails']))> 0 ? trim($ProfileInfo['OccupationDetails']) : "N/A "; ?></div></div>
+        </div>
     </div>
   </div>
 </div>
@@ -219,10 +223,7 @@ text-align: left;
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's Name</label>                
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['FathersName']))> 0 ? trim($ProfileInfo['FathersName']) : "N/A "; ?></label>
-                                                                                        
-            <label class="col-sm-2 col-form-label">Father's Status</label>               
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersAlive'])))>0){?><?php if($ProfileInfo['FathersAlive']=="0"){ echo "Yes";}else { echo "Passed away" ;}?><?php } else{ echo "N/A";}?> </label> 
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['FathersName']))> 0 ? trim($ProfileInfo['FathersName']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersAlive'])))>0){?><?php if($ProfileInfo['FathersAlive']=="1") { echo "Passed away" ;}?><?php } ?></label>
         </div>
         <?php if($ProfileInfo['FathersAlive']=="0"){?>
         <div class="form-group row">
@@ -230,13 +231,16 @@ text-align: left;
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['FathersOccupation']))> 0 ? trim($ProfileInfo['FathersOccupation']) : "N/A "; ?></label>
             <label class="col-sm-2 col-form-label">Father's Income</label>              
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['FathersIncome']))> 0 ? trim($ProfileInfo['FathersIncome']) : "N/A "; ?></label>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Father's Contact</label>            
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersContact'])))>0){?><?php echo "+"; echo $ProfileInfo['FathersContactCountryCode'];?>-<?php echo $ProfileInfo['FathersContact'];?><?php  } else{ echo "N/A";}?></label>
+            
         </div>                                                                         
         <?php }?>
         <div class="form-group row">                                                    
              <label class="col-sm-2 col-form-label">Mother's Name</label>               
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['MothersName']))> 0 ? trim($ProfileInfo['MothersName']) : "N/A "; ?> </label>
-             <label class="col-sm-2 col-form-label">Mother's Status</label>               
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['MothersAlive'])))>0){?><?php if($ProfileInfo['MothersAlive']=="0"){ echo "Yes";}else { echo "Passed away" ;}?><?php } else{ echo "N/A";}?></label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['MothersName']))> 0 ? trim($ProfileInfo['MothersName']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['MothersAlive'])))>0){?><?php if($ProfileInfo['MothersAlive']=="1"){ "Passed away" ;}?><?php } ?> </label>
          </div>
          <?php if($ProfileInfo['MothersAlive']=="0"){?>
         <div class="form-group row">
@@ -245,17 +249,11 @@ text-align: left;
              <label class="col-sm-2 col-form-label">Mother's Income</label>             
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['MothersIncome']))> 0 ? trim($ProfileInfo['MothersIncome']) : "N/A "; ?></label>
         </div>
-        <?php }?>
         <div class="form-group row">
-            <?php if($ProfileInfo['FathersAlive']=="0"){?>                             
-             <label class="col-sm-2 col-form-label">Father's Contact</label>            
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersContact'])))>0){?><?php echo "+"; echo $ProfileInfo['FathersContactCountryCode'];?>-<?php echo $ProfileInfo['FathersContact'];?><?php  } else{ echo "N/A";}?></label>
-            <?php }?>
-            <?php if($ProfileInfo['MothersAlive']=="0"){?>
-             <label class="col-sm-2 col-form-label">Mother's Contact</label>           
+            <label class="col-sm-2 col-form-label">Mother's Contact</label>           
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['MothersContact'])))>0){?><?php echo "+"; echo $ProfileInfo['MothersContactCountryCode'];?>-<?php echo $ProfileInfo['FathersContact'];?><?php  } else{ echo "N/A";}?></label>
-            <?php }?>
-        </div>                                                              
+        </div>
+        <?php }?>
         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Family Type</label>                 
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['FamilyType']))> 0 ? trim($ProfileInfo['FamilyType']) : "N/A "; ?>
@@ -297,6 +295,10 @@ text-align: left;
              <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['MarriedSister']))> 0 ? trim($ProfileInfo['MarriedSister']) : "N/A "; ?>
              </label>
         </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">About My Family</label>                  
+            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:2px solid black;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['AboutMyFamily']))> 0 ? trim($ProfileInfo['AboutMyFamily']) : "N/A "; ?></div></div>
+        </div>
         </div>
     </div>
   </div>
@@ -309,35 +311,39 @@ text-align: left;
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Physically Impaired?</label>         
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['PhysicallyImpaired']))> 0 ? trim($ProfileInfo['PhysicallyImpaired']) : "N/A "; ?></label>
-            <?php if($ProfileInfo['PhysicallyImpaired'] =="Yes"){?> 
-            <label class="col-sm-2 col-form-label">Description</label>                 
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['PhysicallyImpaireddescription']))> 0 ? trim($ProfileInfo['PhysicallyImpaireddescription']) : "N/A "; ?></label>
-            <?php }?>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
+                <?php echo strlen(trim($ProfileInfo['PhysicallyImpaired']))> 0 ? trim($ProfileInfo['PhysicallyImpaired']) : "N/A "; ?>&nbsp;
+                <?php if($ProfileInfo['PhysicallyImpaired'] =="Yes"){ echo ",";?>
+                    <?php echo strlen(trim($ProfileInfo['PhysicallyImpaireddescription']))> 0 ? trim($ProfileInfo['PhysicallyImpaireddescription']) : "N/A "; ?>
+                <?php }?>
+            </label>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Visually Impaired?</label>          
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['VisuallyImpaired']))> 0 ? trim($ProfileInfo['VisuallyImpaired']) : "N/A "; ?></label>
-            <?php if($ProfileInfo['VisuallyImpaired'] =="Yes"){?> 
-            <label class="col-sm-2 col-form-label">Description</label>                 
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['VisuallyImpairedDescription']))> 0 ? trim($ProfileInfo['VisuallyImpairedDescription']) : "N/A "; ?></label>
-            <?php }?>
+            <label class="col-sm-2 col-form-label">Visually Impaired?</label>         
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
+                <?php echo strlen(trim($ProfileInfo['VisuallyImpaired']))> 0 ? trim($ProfileInfo['VisuallyImpaired']) : "N/A "; ?>&nbsp;
+                <?php if($ProfileInfo['VisuallyImpaired'] =="Yes"){ echo ",";?>
+                    <?php echo strlen(trim($ProfileInfo['VisuallyImpairedDescription']))> 0 ? trim($ProfileInfo['VisuallyImpairedDescription']) : "N/A "; ?>
+                <?php }?>
+            </label>
         </div>
         <div class="form-group row">
-             <label class="col-sm-2 col-form-label">Vission Impaired?</label>           
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['VissionImpaired']))> 0 ? trim($ProfileInfo['VissionImpaired']) : "N/A "; ?> </label>
-             <?php if($ProfileInfo['VissionImpaired'] =="Yes"){?> 
-            <label class="col-sm-2 col-form-label">Description</label>                 
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['VissionImpairedDescription']))> 0 ? trim($ProfileInfo['VissionImpairedDescription']) : "N/A "; ?></label>
-            <?php }?>
-         </div>
+            <label class="col-sm-2 col-form-label">Vission Impaired?</label>         
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
+                <?php echo strlen(trim($ProfileInfo['VissionImpaired']))> 0 ? trim($ProfileInfo['VissionImpaired']) : "N/A "; ?>&nbsp;
+                <?php if($ProfileInfo['VissionImpaired'] =="Yes"){ echo ",";?>
+                    <?php echo strlen(trim($ProfileInfo['VissionImpairedDescription']))> 0 ? trim($ProfileInfo['VissionImpairedDescription']) : "N/A "; ?>
+                <?php }?>
+            </label>
+        </div>
         <div class="form-group row">
-             <label class="col-sm-2 col-form-label">Speech Impaired?</label>            
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['SpeechImpaired']))> 0 ? trim($ProfileInfo['SpeechImpaired']) : "N/A "; ?></label>
-             <?php if($ProfileInfo['SpeechImpaired'] =="Yes"){?> 
-            <label class="col-sm-2 col-form-label">Description</label>                  
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['SpeechImpairedDescription']))> 0 ? trim($ProfileInfo['SpeechImpairedDescription']) : "N/A "; ?></label>
-            <?php }?>
+            <label class="col-sm-2 col-form-label">Speech Impaired?</label>         
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
+                <?php echo strlen(trim($ProfileInfo['SpeechImpaired']))> 0 ? trim($ProfileInfo['SpeechImpaired']) : "N/A "; ?>&nbsp;
+                <?php if($ProfileInfo['SpeechImpaired'] =="Yes"){ echo ",";?>
+                    <?php echo strlen(trim($ProfileInfo['SpeechImpairedDescription']))> 0 ? trim($ProfileInfo['SpeechImpairedDescription']) : "N/A "; ?>
+                <?php }?>
+            </label>
         </div>
         <div class="form-group row">                                                    
              <label class="col-sm-2 col-form-label">Height</label>                      
@@ -371,6 +377,10 @@ text-align: left;
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['DrinkingHabit']))> 0 ? trim($ProfileInfo['DrinkingHabit']) : "N/A "; ?>  
              </label>
         </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Description</label>                  
+            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['PhysicalDescription']))> 0 ? trim($ProfileInfo['PhysicalDescription']) : "N/A "; ?></div></div>
+        </div>
     </div>
   </div>
 </div>
@@ -402,6 +412,10 @@ text-align: left;
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Lakanam']))> 0 ? trim($ProfileInfo['Lakanam']) : "N/A "; ?></label>
             <label class="col-sm-2 col-form-label">Chevvai Dhosham</label>              
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['ChevvaiDhosham']))> 0 ? trim($ProfileInfo['ChevvaiDhosham']) : "N/A "; ?></label>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Details</label>                  
+            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:2px solid black;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['HoroscopeDetails']))> 0 ? trim($ProfileInfo['HoroscopeDetails']) : "N/A "; ?></div></div>
         </div>
         <div class="form-group row">
             <div class="col-sm-6">
@@ -577,6 +591,7 @@ text-align: left;
     </div>
   </div>                                                                                                               
 </div>
+
 
 <div class="col-12 grid-margin">
   <div class="card">                                                                                                               

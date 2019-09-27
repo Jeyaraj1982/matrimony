@@ -103,10 +103,10 @@
                             </div>
                             <div class="col-sm-12">
                                 <div class="col-sm-10"><div style="line-height: 1px;"><a href="<?php echo GetUrl("ListOfProfile/".$Profile['ProfileCode'].".htm?source=RecentlyViewedCount");?>">Recently Viewed (<?php echo $P['RecentlyViewed'];?>)</a> &nbsp;&nbsp;&nbsp;
-                                <a href="#">Favorited (<?php echo $P['MyFavorited'];?>)</a> &nbsp;&nbsp;&nbsp;
-                                <a href="#">Who Viewed (<?php echo $P['RecentlyWhoViwed'];?>)</a> &nbsp;&nbsp;&nbsp;
-                                <a href="#">Who Favorited(<?php echo $P['WhoFavorited'];?>)</a> &nbsp;&nbsp;&nbsp;
-                                <a href="#">Mutual(<?php echo $P['MutualCount'];?>)</a></div></div>
+                                <a href="<?php echo GetUrl("MyFavoritedProfiles/".$Profile['ProfileCode'].".htm?source=MyFavorited");?>">My Liked (<?php echo $P['MyFavorited'];?>)</a> &nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("RecentlyWhoViewed/".$Profile['ProfileCode'].".htm?source=RecentlyWhoViewed");?>">Who Viewed (<?php echo $P['RecentlyWhoViwed'];?>)</a> &nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("WhoFavorited/".$Profile['ProfileCode'].".htm?source=WhoFavorited");?>">Who Liked(<?php echo $P['WhoFavorited'];?>)</a> &nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Mutual/".$Profile['ProfileCode'].".htm?source=Mutual");?>">Mutual(<?php echo $P['MutualCount'];?>)</a></div></div>
                                 <div class="col-sm-1">
                                     <div style="float:right;line-height: 1px;">
                                         <a href="<?php echo GetUrl("ViewPublishedProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
@@ -127,7 +127,8 @@
                         <Br>
                         <br>
                     </div>
-                  <?php }?>                                             
+                  <?php }?> 
+                                                              
                 </div>
               </div>
             </div>

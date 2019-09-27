@@ -1951,6 +1951,7 @@
                                                            `FamilyValue`           = '".$FamilyValue[0]['CodeValue']."',
                                                            `FamilyAffluenceCode`   = '".$_POST['FamilyAffluence']."',
                                                            `FamilyAffluence`       = '".$FamilyAffluence[0]['CodeValue']."',
+                                                           `AboutMyFamily`       = '".$_POST['AboutMyFamily']."',
                                                            `MothersOccupationCode` = '".$_POST['MothersOccupation']."',
                                                            `MothersOccupation`     = '".$MothersOccupation[0]['CodeValue']."',
                                                            `NumberofBrothersCode`  = '".$_POST['NumberofBrother']."',
@@ -2038,6 +2039,7 @@
                                                            `SmokingHabitCode`       = '".$_POST['SmookingHabit']."',
                                                            `SmokingHabit`           = '".$SmookingHabit[0]['CodeValue']."',
                                                            `DrinkingHabitCode`      = '".$_POST['DrinkingHabit']."',
+                                                           `PhysicalDescription`       = '".$_POST['PhysicalDescription']."',
                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                            `DrinkingHabit`          = '".$DrinkingHabit[0]['CodeValue']."' where  `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['Code']."'";
              $mysql->execute($updateSql);  
@@ -2191,12 +2193,14 @@
                                                             `AnnualIncomeCode`     = '".$_POST['IncomeRange']."',
                                                             `WorkedCountryCode`     = '".$_POST['WCountry']."',
                                                             `WorkedCountry`     = '".$Country[0]['CodeValue']."',
+                                                            `OccupationAttachFileName`     = '".$_POST['File']."',
+                                                            `OccupationDetails`   = '".$_POST['OccupationDetails']."',
                                                             `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                             `AnnualIncome`         = '".$IncomeRange[0]['CodeValue']."' where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'";
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
                                                              "ActivityType"   => 'Occupationdetailsupdated.',
-                                                             "ActivityString" => 'Occupation Details Updated.',                          
+                                                             "ActivityString" => 'Occupation Details Updated.',                           
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
@@ -2218,13 +2222,19 @@
              if (!(trim($_POST['EducationDegree']))>0) {                                
                  return Response::returnError("Please select education degree ");
              }
+             $data = $mysql->select("select * from `_tbl_draft_profiles_education_details` where  `FileName`='".$_POST['File']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
+             if (sizeof($data)>0) {
+                return Response::returnError("Document  Already attached",$data);
+             }
              $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'");                         
              $id = $mysql->insert("_tbl_draft_profiles_education_details",array("EducationDetails" => $_POST['Educationdetails'],
                                                                   "EducationDegree"  => $_POST['EducationDegree'],
                                                                   "EducationRemarks"  => $_POST['EducationRemarks'],
+                                                                  "FileName"            => $_POST['File'],
                                                                   "ProfileID"        => $profile[0]['ProfileID'],
                                                                   "ProfileCode"        => $_POST['Code'],
                                                                   "MemberID"         => $loginInfo[0]['MemberID']));
+             
              return (sizeof($id)>0) ? Response::returnSuccess("success",$_POST)
                                     : Response::returnError("Access denied. Please contact support");   
          }
@@ -2314,6 +2324,7 @@
                                                             `PlaceOfBirth`      = '".$_POST['PlaceOfBirth']."',
                                                             `ChevvaiDhoshamCode`      = '".$_POST['ChevvaiDhosham']."',
                                                             `ChevvaiDhosham`      = '".$ChevvaiDhosham[0]['CodeValue']."',
+                                                            `HoroscopeDetails`      = '".$_POST['HoroscopeDetails']."',
                                                             `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                             `R1`            = '".$_POST['RA1']."',
                                                             `R2`            = '".$_POST['RA2']."',
@@ -3324,8 +3335,187 @@
              $Member=$mysql->select("select * from `_tbl_member_profile_modify_notification` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
              return Response::returnSuccess("success",$Member[0]);
          }
-  
-     
+         
+         function GetPublishedProfileInformation($ProfileCode="",$rtype="") {
+             
+             $ProfileCode = $ProfileCode != "" ? $ProfileCode : $_POST['ProfileCode'];
+             
+             global $mysql,$loginInfo;      
+             $Profiles = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");               
+             
+             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");     
+             $PartnersExpectations = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
+             $ProfilePhoto =      $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_profiles_photos` where `ProfileID`='".$Profiles[0]['ProfileID']."' and `ProfileCode`='".$ProfileCode."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
+             
+              if (sizeof($ProfilePhoto)<4) {
+                  for($i=sizeof($ProfilePhoto);$i<4;$i++) {
+                    if ($Profiles[0]['SexCode']=="SX002"){
+                     $ProfilePhoto[$i]['ProfilePhoto'] = AppPath."assets/images/noprofile_female.png";
+                  }
+                  else{
+                        $ProfilePhoto[$i]['ProfilePhoto'] = AppPath."assets/images/noprofile_male.png";
+                  }
+                  }  
+              }
+              
+            
+             $ProfilePhotoFirst = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where `ProfileID`='".$Profiles[0]['ProfileID']."' and `ProfileCode`='".$ProfileCode."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='1'");                                        
+              $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_profiles_verificationdocs` where `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
+              $Educationattachments = $mysql->select("select * from `_tbl_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0'  and ProfileID='".$Profiles[0]['ProfileID']."'");
+              
+             if (sizeof($ProfilePhotoFirst)==0) {
+                  for($i=sizeof($ProfilePhoto);$i<4;$i++) {
+                    if ($Profiles[0]['SexCode']=="SX002"){
+                        $ProfilePhotoFirst[0]['ProfilePhoto'] = AppPath."assets/images/noprofile_female.png";
+                        }
+                   else{
+                        $ProfilePhotoFirst[0]['ProfilePhoto'] = AppPath."assets/images/noprofile_male.png";
+                        }
+                  }  
+              }
+             
+              $result = array("ProfileInfo"            => $Profiles[0],
+                              "ProfileCode"                =>$ProfileCode,
+                              "Members"                => $members[0],
+                              "EducationAttachments"   => $Educationattachments,
+                              "Documents"   => $Documents,
+                              "PartnerExpectation"     => $PartnersExpectations[0],
+                              "ProfilePhotos"           => $ProfilePhoto,
+                              "ProfilePhotoFirst"      => $ProfilePhotoFirst[0],
+                              
+                              "ProfileSignInFor"       => CodeMaster::getData('PROFILESIGNIN'),
+                              
+                              "Gender"                 => CodeMaster::getData('SEX'),
+                                                            "MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
+                                                            "Language"               => CodeMaster::getData('LANGUAGENAMES'),
+                                                            "Religion"               => CodeMaster::getData('RELINAMES'),
+                                                            "Caste"                  => CodeMaster::getData('CASTNAMES'),
+                                                            "Community"              => CodeMaster::getData('COMMUNITY'),
+                                                            "Nationality"            => CodeMaster::getData('NATIONALNAMES'),
+                                                            "EmployedAs"             => CodeMaster::getData('OCCUPATIONS'),
+                                                            "Occupation"             => CodeMaster::getData('Occupation'),
+                                                            "TypeofOccupation"       => CodeMaster::getData('TYPEOFOCCUPATIONS'),
+                                                            "IncomeRange"            => CodeMaster::getData('INCOMERANGE'),
+                                                            "FamilyType"             => CodeMaster::getData('FAMILYTYPE'),
+                                                            "FamilyValue"            => CodeMaster::getData('FAMILYVALUE'),
+                                                            "FamilyAffluence"        => CodeMaster::getData('FAMILYAFFLUENCE'),
+                                                            "NumberofBrother"        => CodeMaster::getData('NUMBEROFBROTHER'),
+                                                            "NumberofElderBrother"   => CodeMaster::getData('ELDER'),
+                                                            "NumberofYoungerBrother" => CodeMaster::getData('YOUNGER'),
+                                                            "NumberofMarriedBrother" => CodeMaster::getData('MARRIED'),
+                                                            "NumberofSisters"        => CodeMaster::getData('NOOFSISTER'),
+                                                            "NumberofElderSisters"   => CodeMaster::getData('ELDERSIS'),
+                                                            "NumberofYoungerSisters" => CodeMaster::getData('YOUNGERSIS'),
+                                                            "NumberofMarriedSisters" => CodeMaster::getData('MARRIEDSIS'),
+                                                            "PhysicallyImpaired"     => CodeMaster::getData('PHYSICALLYIMPAIRED'),
+                                                            "VisuallyImpaired"       => CodeMaster::getData('VISUALLYIMPAIRED'),
+                                                            "VissionImpaired"        => CodeMaster::getData('VISSIONIMPAIRED'),
+                                                            "SpeechImpaired"         => CodeMaster::getData('SPEECHIMPAIRED'),
+                                                            "Height"                 => CodeMaster::getData('HEIGHTS'),
+                                                            "Weight"                 => CodeMaster::getData('WEIGHTS'),
+                                                            "BloodGroup"             => CodeMaster::getData('BLOODGROUPS'),
+                                                            "Complexation"           => CodeMaster::getData('COMPLEXIONS'),
+                                                            "BodyType"               => CodeMaster::getData('BODYTYPES'),
+                                                            "Diet"                   => CodeMaster::getData('DIETS'),
+                                                            "SmookingHabit"          => CodeMaster::getData('SMOKINGHABITS'),
+                                                            "DrinkingHabit"          => CodeMaster::getData('DRINKINGHABITS'),
+                                                            "DocumentType"           => CodeMaster::getData('DOCTYPES'),
+                                                            "CountryName"           => CodeMaster::getData('RegisterAllowedCountries'),
+                                                            "AllCountryName"        => CodeMaster::getData('CONTNAMES'),
+                                                            "RasiName"               => CodeMaster::getData('MONSIGNS'),
+                                                            "Lakanam"                => CodeMaster::getData('LAKANAM'),
+                                                            "StarName"               => CodeMaster::getData('STARNAMES'),
+                                                            "Education"              => CodeMaster::getData('EDUCATETITLES'),
+                                                            "ParentsAlive"              => CodeMaster::getData('PARENTSALIVE'),
+                                                            "ChevvaiDhosham"              => CodeMaster::getData('CHEVVAIDHOSHAM'),
+                                                            "StateName"              => CodeMaster::getData('STATNAMES'));
+             if ($rtype=="")  {
+             return Response::returnSuccess("success",$result);
+             } else {
+                 return  $result;
+             }                                                    
+         }
+         function GetViewPublishAttachments() {
+             global $mysql,$loginInfo;    
+             $SAttachments = $mysql->select("select * from `_tbl_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and  `ProfileCode`='".$_POST['Code']."' and `IsDeleted`='0'");
+             
+             return Response::returnSuccess("success"."select * from `_tbl_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDeleted`='0'",array("Attachments"     =>$SAttachments,
+                                                            "EducationDetail" => CodeMaster::getData('EDUCATETITLES'),
+                                                            "EducationDegree"  => CodeMaster::getData('EDUCATIONDEGREES')));
+         }
+         function PublishedAttachDocuments() {
+
+             global $mysql,$loginInfo;       
+
+             $photos = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
+             $profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'");
+
+             $DocumentType      = CodeMaster::getData("DOCTYPES",$_POST['Documents']) ;
+             
+             if (isset($_POST['File'])) {
+             
+             if(sizeof($photos)<2){
+                     if ((strlen(trim($_POST['Documents']))==0 || $_POST['Documents']=="0" )) {
+                return Response::returnError("Please select Document Type",$photos);
+             }
+             
+             $data = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where  `DocumentTypeCode`='".$_POST['Documents']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
+             if (sizeof($data)>0) {
+                return Response::returnError("Document type attached",$photos);
+             }
+             $data = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where  `AttachFileName`='".$_POST['File']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
+             if (sizeof($data)>0) {
+                return Response::returnError("Document  Already attached",$photos);
+             }
+                     $mysql->insert("_tbl_draft_profiles_verificationdocs",array("DocumentTypeCode"  => $_POST['Documents'],
+                                                                    "DocumentType"      => $DocumentType[0]['CodeValue'],
+                                                                    "AttachedOn"        => date("Y-m-d H:i:s"),
+                                                                    "AttachFileName"    => $_POST['File'],
+                                                                    "Type"              =>'IDProof',
+                                                                    "ProfileID"         => $profiles[0]['ProfileID'],
+                                                                    "ProfileCode"         => $_POST['Code'],
+                                                                    "MemberID"          => $loginInfo[0]['MemberID']));
+                 } else { 
+                     return Response::returnError("Only 2 photos allowed",$photos);
+                 }
+             }
+             $photos = $mysql->select("select * from `_tbl_profiles_verificationdocs` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
+             return Response::returnSuccess("Your Document Information has successfully updated and waiting for verification",$photos);
+         }
+         function AddPublishProfilePhoto() {
+
+             global $mysql,$loginInfo;   
+
+                                     
+             $photos = $mysql->select("select * from `_tbl_draft_profiles_photos` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
+             $profile = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'");
+
+             if (isset($_POST['ProfilePhoto'])) {        
+                 if(sizeof($photos)<5){
+                     $mysql->insert("_tbl_draft_profiles_photos",array("MemberID"     => $loginInfo[0]['MemberID'],
+                                                                "ProfileID"    => $profile[0]['ProfileID'],
+                                                                "ProfileCode"    => $_POST['Code'],
+                                                                "ProfilePhoto" => $_POST['ProfilePhoto'],
+                                                                "UpdateOn"     => date("Y-m-d H:i:s")));
+                 } else { 
+                     return Response::returnError("Only 5 phots allowed",$photos);
+                 }
+             }
+             $photos = $mysql->select("select * from `_tbl_profiles_photos` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
+             return Response::returnSuccess("Your profile photo has successfully updated and waiting for verification",$photos);
+         }
+          function GetPublishPartnersExpectaionInformation() {
+             global $mysql,$loginInfo;
+             $PartnersExpectation = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileCode']."'");               
+             return Response::returnSuccess("success",array("ProfileInfo"            =>$PartnersExpectation[0],
+                                                            "MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
+                                                            "Language"               => CodeMaster::getData('LANGUAGENAMES'),
+                                                            "Religion"               => CodeMaster::getData('RELINAMES'),
+                                                            "Caste"                  => CodeMaster::getData('CASTNAMES'),
+                                                            "IncomeRange"            => CodeMaster::getData('INCOMERANGE'),
+                                                            "Education"              => CodeMaster::getData('EDUCATETITLES'),
+                                                            "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
+         }
      
      }  
    

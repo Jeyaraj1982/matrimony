@@ -154,8 +154,6 @@
                                     echo dashboard_view_1($Profile);
                                 }
                             ?> 
-                            <button class="btn btn-primary leftLst"><</button>
-                            <button class="btn btn-primary rightLst">></button>
                          </div> 
                          <?php if (sizeof($WhoViewedYourProfile)>=3) { ?>
                             <div style="clear:both;padding:3px;text-align:center;">
@@ -184,8 +182,6 @@
                                 echo dashboard_view_1_Recent_Favouriters($Profile);
                             }
                         ?> 
-                        <button class="btn btn-primary leftLst"><</button>
-                        <button class="btn btn-primary rightLst">></button>
                     </div> 
                      <?php if (sizeof($WhoFavoritedYourProfiles)>=3) { ?>
                             <div style="clear:both;padding:3px;text-align:center;">
@@ -214,8 +210,6 @@
                                     echo dashboard_mutual_profiles($Profile);
                                 }
                             ?> 
-                            <button class="btn btn-primary leftLst"><</button>
-                            <button class="btn btn-primary rightLst">></button>
                          </div> 
                          <?php if (sizeof($MutualProfiles)>=3) { ?>
                             <div style="clear:both;padding:3px;text-align:center;">

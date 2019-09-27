@@ -64,7 +64,7 @@ $(document).ready(function () {
    $("#LoginPassword").blur(function () {
                   
        if (IsNonEmpty("LoginPassword","ErrLoginPassword","Please Enter Login Password")) {
-       IsPassword("LoginPassword","ErrLoginPassword","Please Enter Alpha Numeric Characters and More than 8 characters");  
+       IsPassword("LoginPassword","ErrLoginPassword","Please Enter More than 8 characters");  
                   
                         } 
    });
@@ -107,7 +107,7 @@ function SubmitNewMember() {
                             IsEmail("EmailID","ErrEmailID","Please Enter Valid EmailID");    
                         }
                         if (IsNonEmpty("LoginPassword","ErrLoginPassword","Please Enter Login Password")) {
-                            IsPassword("LoginPassword","ErrLoginPassword","Please Enter Alpha Numeric Characters and More than 8 characters");  
+                            IsPassword("LoginPassword","ErrLoginPassword","Please Enter More than 8 characters");  
                         }                                                                                                                                
                         
                         if (ErrorCount==0) {

@@ -596,14 +596,14 @@ class Admin extends Master {
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$draft[0]['PersonName'].") has been published. Your Profile ID is ".$draft[0]['ProfileCode']);  
              
-             $updateSql = "update `_tbl_draft_profiles` set  `IsApproved`      = '1',
+             $updateSql = "update `_tbl_draft_profiles` set `IsApproved`      = '1',
                                                              `IsApprovedOn`    = '".date("Y-m-d H:i:s")."'
-                                                              where `ProfileCode`='".$_POST['Code']."'";
+                                                              where `ProfileCode`='".$_POST['ProfileID']."'";
                                                             
              $mysql->execute($updateSql); 
                
                                                              //approved by   //admin remarks
-             $draft = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'");
+             $draft = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'");
              $ProfileCode   = SeqMaster::GetNextProfileCode();
              
              $pid =  $mysql->insert("_tbl_profiles",array("ProfileCode"     => $ProfileCode,
@@ -645,6 +645,8 @@ class Admin extends Master {
                                                   "Occupation"              => $draft[0]['Occupation'],
                                                   "WorkedCountryCode"       => $draft[0]['WorkedCountryCode'],
                                                   "WorkedCountry"           => $draft[0]['WorkedCountry'],
+                                                  "OccupationAttachFileName"           => $draft[0]['OccupationAttachFileName'],
+                                                  "OccupationDetails"           => $draft[0]['OccupationDetails'],
                                                   "EducationCode"           => $draft[0]['EducationCode'],
                                                   "Education"               => $draft[0]['Education'],
                                                   "AnnualIncomeCode"        => $draft[0]['AnnualIncomeCode'],
@@ -685,6 +687,7 @@ class Admin extends Master {
                                                   "SmokingHabit"            => $draft[0]['SmokingHabit'],
                                                   "DrinkingHabitCode"       => $draft[0]['DrinkingHabitCode'],
                                                   "DrinkingHabit"           => $draft[0]['DrinkingHabit'],
+                                                  "PhysicalDescription"           => $draft[0]['PhysicalDescription'],
                                                   "FathersName"             => $draft[0]['FathersName'],
                                                   "FathersAliveCode"             => $draft[0]['FathersAliveCode'],
                                                   "FathersAlive"             => $draft[0]['FathersAlive'],
@@ -709,6 +712,7 @@ class Admin extends Master {
                                                   "FamilyValue"             => $draft[0]['FamilyValue'],
                                                   "FamilyAffluenceCode"     => $draft[0]['FamilyAffluenceCode'],
                                                   "FamilyAffluence"         => $draft[0]['FamilyAffluence'],
+                                                  "AboutMyFamily"         => $draft[0]['AboutMyFamily'],
                                                   "NumberofBrothersCode"    => $draft[0]['NumberofBrothersCode'],
                                                   "NumberofBrothers"        => $draft[0]['NumberofBrothers'],
                                                   "YoungerCode"             => $draft[0]['YoungerCode'],
@@ -743,6 +747,7 @@ class Admin extends Master {
                                                   "Lakanam"                 => $draft[0]['Lakanam'],
                                                   "ChevvaiDhoshamCode"             => $draft[0]['ChevvaiDhoshamCode'],
                                                   "ChevvaiDhosham"                 => $draft[0]['ChevvaiDhosham'],
+                                                  "HoroscopeDetails"                 => $draft[0]['HoroscopeDetails'],
                                                   "R1"                      => $draft[0]['R1'],                    
                                                   "R2"                      => $draft[0]['R2'],
                                                   "R3"                      => $draft[0]['R3'],
@@ -780,11 +785,13 @@ class Admin extends Master {
                                                   "IsApproved"              => "1",                                   
                                                   "IsApprovedOn"            => date("Y-m-d H:i:s")));
                                                   
-     $draftEducationDetails = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['Code']."'");   
+     $draftEducationDetails = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['ProfileID']."'");   
        foreach($draftEducationDetails as $ded) {
      $mysql->insert("_tbl_profiles_education_details",array("EducationDetails"  => $ded['EducationDetails'],
                                                             "EducationDegree"   => $ded['EducationDegree'],
                                                             "EducationRemarks"  => $ded['EducationRemarks'],
+                                                            "FileName"          => $ded['FileName'],
+                                                            "EducationDescription"  => $ded['EducationDescription'],
                                                             "DraftProfileID"    => $ded['ProfileID'],
                                                             "DraftProfileCode"  => $ded['ProfileCode'],
                                                             "DraftEducationID"  => $ded['AttachmentID'],
@@ -796,7 +803,7 @@ class Admin extends Master {
                                                             "IsApprovedOn"      => date("Y-m-d H:i:s")));
        }
        
-       $draftProfilePhotos = $mysql->select("select * from `_tbl_draft_profiles_photos` where  `ProfileCode`='".$_POST['Code']."'");   
+       $draftProfilePhotos = $mysql->select("select * from `_tbl_draft_profiles_photos` where  `ProfileCode`='".$_POST['ProfileID']."'");   
        foreach($draftProfilePhotos as $dPp) {
                       $mysql->insert("_tbl_profiles_photos",array("ProfilePhoto"      => $dPp['ProfilePhoto'],
                                                                   "UpdateOn"          => $dPp['UpdateOn'],
@@ -813,7 +820,7 @@ class Admin extends Master {
                                                                   "IsApproved"        => "1",
                                                                   "IsApprovedOn"      => date("Y-m-d H:i:s")));
        }
-       $draftProfilePartnersExpectatipns = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileCode`='".$_POST['Code']."'");   
+       $draftProfilePartnersExpectatipns = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileCode`='".$_POST['ProfileID']."'");   
        foreach($draftProfilePartnersExpectatipns as $dPE) {
                       $mysql->insert("_tbl_profiles_partnerexpectation",array("AgeFrom"             => $dPE['AgeFrom'],
                                                                               "AgeTo"               => $dPE['AgeTo'],
@@ -839,7 +846,7 @@ class Admin extends Master {
                                                                               "IsApproved"          => "1",
                                                                               "IsApprovedOn"        => date("Y-m-d H:i:s")));
        }
-       $draftdocuments = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where `ProfileCode`='".$_POST['Code']."'");   
+       $draftdocuments = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where `ProfileCode`='".$_POST['ProfileID']."'");   
     
        foreach($draftdocuments as $dPD) {
                         $mysql->insert("_tbl_profiles_verificationdocs",array("DocumentTypeCode"    => $dPD['DocumentTypeCode'],

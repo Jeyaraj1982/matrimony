@@ -16,6 +16,20 @@
    ?>
        
 <?php include_once("settings_header.php");?>
+<script>
+    $(document).ready(function() {
+    var text_max = 250;
+    var text_length = $('#Details').val().length;
+    $('#textarea_feedback').html(text_length + ' characters typed');
+
+    $('#Details').keyup(function() {
+        var text_length = $('#Details').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback').html(text_length + ' characters typed');
+    });
+});
+</script>
 <div class="col-sm-9" style="margin-top: -8px;">
 <form method="post" action="" onsubmit="">
     
@@ -121,8 +135,10 @@
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-sm-3" align="left">Details<span id="star">*</span></div>
-        <div class="col-sm-5"><textarea class="form-control" cols="3" rows="2" name="Details" id="Details"><?php echo $ProfileInfo['Details'];?></textarea>
+        <div class="col-sm-3" align="left">Expectations<span id="star">*</span></div>
+        <div class="col-sm-9">
+             <textarea class="form-control" maxlength="250" name="Details" id="Details"><?php echo (isset($_POST['Details']) ? $_POST['Details'] : $ProfileInfo['Details']);?></textarea> <br>
+                                <div class="col-sm-12">Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></div>
         </div>
     </div>
     <div class="form-group row" style="margin-bottom:0px;">

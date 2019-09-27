@@ -34,8 +34,12 @@
         ErrorCount=0;
         
         IsNonEmpty("CurrentPassword","ErrCurrentPassword","Please Enter Current Password");
-        IsNonEmpty("NewPassword","ErrNewPassword","Please Enter New Password");
-        IsNonEmpty("ConfirmNewPassword","ErrConfirmNewPassword","Please Enter Confirm New Password");
+        if(IsNonEmpty("NewPassword","ErrNewPassword","Please Enter New Password")){
+            IsPassword("NewPassword","ErrNewPassword","Please Enter more than 6 characters");
+        }
+         if(IsNonEmpty("ConfirmNewPassword","ErrConfirmNewPassword","Please Enter Confirm New Password")){
+        IsNonEmpty("ConfirmNewPassword","ErrConfirmNewPassword","Please Enter more than 6 characters");
+         }
        
         var password = document.getElementById("NewPassword").value;
         var confirmPassword = document.getElementById("ConfirmNewPassword").value;

@@ -62,8 +62,11 @@ text-align: left;
         <div class="card-body">
          <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Profile Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','GeneralInformation')">Edit</a></div>
          </div>
+         <div class="form-group row">
+                    <div class="col-sm-6"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','ProfilePhoto')">Edit</a></div>
+              </div>                                            
               <div class="form-group row">
                 <div class="col-sm-5">
                     <div style="border: 1px solid black;padding: 0px;width: 318px;height: 378px;"> 
@@ -140,7 +143,7 @@ text-align: left;
     <div class="card-body">
      <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">About Me</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','GeneralInformation')">Edit</a></div>
          </div>
          <table>           
            <?php echo trim($ProfileInfo['AboutMe']);?>
@@ -153,7 +156,7 @@ text-align: left;
     <div class="card-body">
      <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Education Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','EducationDetails')">Edit</a></div>
          </div>
          <table class="table table-bordered" id="doctable">           
             <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">
@@ -188,7 +191,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Occupation Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','OccupationDetails')">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Employed As</label>                 
@@ -207,6 +210,10 @@ text-align: left;
             <label class="col-sm-2 col-form-label">Country</label>                      
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['WorkedCountry']))> 0 ? trim($ProfileInfo['WorkedCountry']) : "N/A "; ?></label>
         </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Details</label>                  
+            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:2px solid black;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['OccupationDetails']))> 0 ? trim($ProfileInfo['OccupationDetails']) : "N/A "; ?></div></div>
+        </div>
     </div>
   </div>
 </div>
@@ -215,7 +222,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Family Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','FamilyInformation')">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's Name</label>                
@@ -297,6 +304,10 @@ text-align: left;
              <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['MarriedSister']))> 0 ? trim($ProfileInfo['MarriedSister']) : "N/A "; ?>
              </label>
         </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">About My Family</label>                  
+            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:2px solid black;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['AboutMyFamily']))> 0 ? trim($ProfileInfo['AboutMyFamily']) : "N/A "; ?></div></div>
+        </div>
         </div>
     </div>
   </div>
@@ -305,7 +316,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Physical Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','PhysicalInformation')">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Physically Impaired?</label>         
@@ -371,6 +382,10 @@ text-align: left;
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['DrinkingHabit']))> 0 ? trim($ProfileInfo['DrinkingHabit']) : "N/A "; ?>  
              </label>
         </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Description</label>                  
+            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:2px solid black;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['PhysicalDescription']))> 0 ? trim($ProfileInfo['PhysicalDescription']) : "N/A "; ?></div></div>
+        </div>
     </div>
   </div>
 </div>
@@ -379,7 +394,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Horoscope Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','HoroscopeDetails')">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" >Date of birth</label>               
@@ -402,6 +417,10 @@ text-align: left;
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Lakanam']))> 0 ? trim($ProfileInfo['Lakanam']) : "N/A "; ?></label>
             <label class="col-sm-2 col-form-label">Chevvai Dhosham</label>              
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['ChevvaiDhosham']))> 0 ? trim($ProfileInfo['ChevvaiDhosham']) : "N/A "; ?></label>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Details</label>                  
+            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:2px solid black;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['HoroscopeDetails']))> 0 ? trim($ProfileInfo['HoroscopeDetails']) : "N/A "; ?></div></div>
         </div>
         <div class="form-group row">
             <div class="col-sm-6">
@@ -467,7 +486,7 @@ text-align: left;
     <div class="card-body">
     <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Partner's Expectations</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','PartnersExpectation')">Edit</a></div>
          </div>
         <div class="form-group row">                                                                                                                                                                                             
             <label class="col-sm-2 col-form-label">Age </label>                       
@@ -509,7 +528,7 @@ text-align: left;
     <div class="card-body">
     <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Communication Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','CommunicationDetails')">Edit</a></div>
          </div>
         <div class="form-group row">                                                   
             <label class="col-sm-2 col-form-label">Email ID</label>                    
@@ -561,7 +580,7 @@ text-align: left;
     <div class="form-group row">
         <div class="col-sm-6"><h4 class="card-title">Attached Documents</h4></div>
         <div class="col-sm-6" style="text-align: right;"><h4 class="card-title" style="color:green">For Admnistrative Purpose only</h4><br>
-            <a href="#">Edit</a>                    
+            <a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','DocumentAttachment')">Edit</a>                    
         </div>
     </div>
     
@@ -578,35 +597,39 @@ text-align: left;
   </div>                                                                                                               
 </div>
 
-<div class="col-12 grid-margin">
-  <div class="card">                                                                                                               
-    <div class="card-body">
-        <?php if($ProfileInfo['RequestToVerify']=="0"){?>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Created On</label>
-            <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
+
+           
+               
+ <div class="modal" id="EditNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+            <div class="modal-dialog" style="width: 367px;">
+                <div class="modal-content" id="Edit_body" style="height:315px">
+            
+                </div>
+            </div>
         </div>
-             <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Last saved</label>
-                    <label class="col-sm-8 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></label>
-             </div>
-        <?php } else{?>
-            <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Created On</label>
-            <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
-             </div>
-             <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Puplished On</label>
-                    <label class="col-sm-3 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['RequestVerifyOn']);?></label>
-                   </div>
-        <?php }?>
-  </div>
-</div>
-</div>
+
+<script>
+function showConfirmEdit(ProfileCode,FileName) {
+      $('#EditNow').modal('show'); 
+      var content = '<div class="Edit_body" style="padding:20px">'
+                    +   '<div  style="height: 315px;">'                                                                              
+                    +  '<form method="post" id="frm_'+ProfileCode+'" name="frm_'+ProfileCode+'" action="" >'
+                     + '<input type="hidden" value="'+ProfileCode+'" name="ProfileID">'
+                          + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        + '<h4 class="modal-title">Profile Edit</h4> <br>'
+                        +'<div style="text-align:left">Are you sure want to edit this profile.<br><br>'
+                        +  '<div style="text-align:center"><a href="'+AppUrl+'MyProfiles/Published/Edit/'+FileName+'/'+ProfileCode+'.htm" class="btn btn-primary" name="Edit" id="Edit" style="font-family:roboto">Yes</button>&nbsp;&nbsp;&nbsp;'
+                        +  '<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a></div>'
+                       +  '</div><br>'
+                    +  '</form>'                                                                                                          
+                +  '</div>'
+            +  '</div>';
+            $('#Edit_body').html(content);
+}
+</script>
 
  
             
                
  
             
-               

@@ -91,6 +91,18 @@ function submitprofile() {
     
     
 }
+$(document).ready(function() {
+    var text_max = 250;
+    var text_length = $('#PhysicalDescription').val().length;
+    $('#textarea_feedback').html(text_length + ' characters typed');
+
+    $('#PhysicalDescription').keyup(function() {
+        var text_length = $('#PhysicalDescription').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback').html(text_length + ' characters typed');
+    });
+});
 </script>
  <form method="post" action="" onsubmit="return submitprofile();">
     <h4 class="card-title">Physical Information</h4>
@@ -260,6 +272,13 @@ function submitprofile() {
                             <?php } ?>
             </select>
             <span class="errorstring" id="ErrDrinkingHabit"><?php echo isset($ErrDrinkingHabit)? $ErrDrinkingHabit : "";?></span> 
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Description<span id="star">*</span></label>
+        <div class="col-sm-10">                                                        
+            <textarea class="form-control" maxlength="250" name="PhysicalDescription" id="PhysicalDescription"><?php echo (isset($_POST['PhysicalDescription']) ? $_POST['PhysicalDescription'] : $ProfileInfo['PhysicalDescription']);?></textarea> <br>
+            <div class="col-sm-12">Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></div>
         </div>
     </div>
     <div class="form-group row" style="margin-bottom:0px;">

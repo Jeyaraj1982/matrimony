@@ -51,6 +51,18 @@ function submitprofile() {
     
     
 }
+$(document).ready(function() {
+    var text_max = 250;
+    var text_length = $('#AboutMyFamily').val().length;
+    $('#textarea_feedback').html(text_length + ' characters typed');
+
+    $('#AboutMyFamily').keyup(function() {
+        var text_length = $('#AboutMyFamily').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback').html(text_length + ' characters typed');
+    });
+});
 </script>
 <div class="col-sm-10" style="margin-top: -8px;">
 <form method="post" action="" onsubmit="return submitprofile();">
@@ -269,6 +281,14 @@ function submitprofile() {
             </select>
         </div>
     </div>
+    <div class="form-group row">
+        <label for="AboutMe" class="col-sm-2 col-form-label">About My Family<span id="star">*</span></label>
+        <div class="col-sm-10">                                                        
+            <textarea class="form-control" maxlength="250" name="AboutMyFamily" id="AboutMyFamily"><?php echo (isset($_POST['AboutMyFamily']) ? $_POST['AboutMyFamily'] : $ProfileInfo['AboutMyFamily']);?></textarea> <br>
+            <div class="col-sm-12">Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></div>
+        </div>
+    </div>
+     
      <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
                         </div>

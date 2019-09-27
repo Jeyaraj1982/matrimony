@@ -87,6 +87,18 @@ function submitprofile() {
     
     
 }
+$(document).ready(function() {
+    var text_max = 250;
+    var text_length = $('#AboutMe').val().length;
+    $('#textarea_feedback').html(text_length + ' characters typed');
+
+    $('#AboutMe').keyup(function() {
+        var text_length = $('#AboutMe').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback').html(text_length + ' characters typed');
+    });
+});
 </script>
     <div class="col-sm-10" style="margin-top: -8px;width:100%;padding-left:16px">
     <form method="post" action="" onsubmit="return submitprofile();">
@@ -264,7 +276,8 @@ function submitprofile() {
                         <div class="form-group row">
                             <label for="AboutMe" class="col-sm-2 col-form-label">About Me<span id="star">*</span></label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" name="AboutMe" id="AboutMe"><?php echo $ProfileInfo['AboutMe'];?></textarea>
+                                <textarea class="form-control" maxlength="250" name="AboutMe" id="AboutMe"><?php echo (isset($_POST['AboutMe']) ? $_POST['AboutMe'] : $ProfileInfo['AboutMe']);?></textarea> <br>
+                                <div class="col-sm-12">Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></div>
                             </div>
                         </div>
                         <!-- <i class="fa fa-plus"></i> -->

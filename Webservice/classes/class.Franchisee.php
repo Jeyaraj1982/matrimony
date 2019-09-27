@@ -1107,6 +1107,8 @@
                                                             `AnnualIncomeCode`     = '".$_POST['IncomeRange']."',
                                                             `WorkedCountryCode`     = '".$_POST['WCountry']."',
                                                             `WorkedCountry`     = '".$Country[0]['CodeValue']."',
+                                                            `OccupationAttachFileName`     = '".$_POST['File']."',
+                                                            `OccupationDetails`   = '".$_POST['OccupationDetails']."',
                                                             `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                             `AnnualIncome`         = '".$IncomeRange[0]['CodeValue']."' where `ProfileCode`='".$_POST['Code']."'";
              $mysql->execute($updateSql);  
@@ -1248,6 +1250,7 @@
                                                            `FamilyValue`           = '".$FamilyValue[0]['CodeValue']."',
                                                            `FamilyAffluenceCode`   = '".$_POST['FamilyAffluence']."',
                                                            `FamilyAffluence`       = '".$FamilyAffluence[0]['CodeValue']."',
+                                                           `AboutMyFamily`       = '".$_POST['AboutMyFamily']."',
                                                            `NumberofBrothersCode`  = '".$_POST['NumberofBrother']."',
                                                            `NumberofBrothers`      = '".$NumberofBrothers[0]['CodeValue']."',
                                                            `YoungerCode`           = '".$_POST['younger']."',
@@ -1332,6 +1335,7 @@
                                                            `SmokingHabitCode`       = '".$_POST['SmookingHabit']."',
                                                            `SmokingHabit`           = '".$SmookingHabit[0]['CodeValue']."',
                                                            `DrinkingHabitCode`      = '".$_POST['DrinkingHabit']."',
+                                                           `PhysicalDescription`       = '".$_POST['PhysicalDescription']."',
                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                            `DrinkingHabit`          = '".$DrinkingHabit[0]['CodeValue']."' where ProfileCode='".$_POST['Code']."'";
              $mysql->execute($updateSql);  
@@ -1488,6 +1492,7 @@
                                                             `PlaceOfBirth`      = '".$_POST['PlaceOfBirth']."',
                                                             `ChevvaiDhoshamCode`      = '".$_POST['ChevvaiDhosham']."',
                                                             `ChevvaiDhosham`      = '".$ChevvaiDhosham[0]['CodeValue']."',
+                                                            `HoroscopeDetails`      = '".$_POST['HoroscopeDetails']."',
                                                             `R1`            = '".$_POST['RA1']."',
                                                             `R2`            = '".$_POST['RA2']."',
                                                             `R3`            = '".$_POST['RA3']."',
@@ -1611,10 +1616,15 @@
              if (!(trim($_POST['EducationDegree']))>0) {                                
                  return Response::returnError("Please select education degree ");
              }
+             $data = $mysql->select("select * from `_tbl_draft_profiles_education_details` where  `FileName`='".$_POST['File']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
+             if (sizeof($data)>0) {
+                return Response::returnError("Document  Already attached",$data);
+             }
              $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'"); 
              $id = $mysql->insert("_tbl_draft_profiles_education_details",array("EducationDetails" => $_POST['Educationdetails'],
                                                                   "EducationDegree"  => $_POST['EducationDegree'],
                                                                   "EducationRemarks"  => $_POST['EducationRemarks'],
+                                                                  "FileName"            => $_POST['File'],
                                                                   "ProfileID"        => $profile[0]['ProfileID'],
                                                                   "ProfileCode"        => $_POST['Code'],
                                                                   "MemberID"         => $profile[0]['MemberID']));
@@ -2160,6 +2170,56 @@
                 return Response::returnSuccess("success",$Profiles);
              }
          } 
-         
-        }
+         function GetMemberProfileData() {
+
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+             
+             $Profiles["primarydata"] = Profiles::getProfileInfo($_POST['ProfileCode'],2);
+             $Profiles['results'] = array();
+             $Profiles['statistics']=array();
+             
+             
+             if ($_POST['request']=="MyRecentViews") {
+                $reqProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$_POST['ProfileCode']."' group by `ProfileID` ");
+             }
+             
+             if ($_POST['request']=="MyFavorited") {
+                $reqProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `VisterProfileCode` = '".$_POST['ProfileCode']."' group by `ProfileID`");
+             }
+             
+             if ($_POST['request']=="RecentlyWhoViewed") {
+                $reqProfiles = $mysql->select("select VisterProfileCode as ProfileCode from `_tbl_profiles_lastseen` where `ProfileCode` = '".$_POST['ProfileCode']."' group by `VisterProfileCode`");
+             }
+             if ($_POST['request']=="WhoFavorited") {
+                                                 
+                $reqProfiles = $mysql->select("select VisterProfileCode as ProfileCode from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$_POST['ProfileCode']."' group by `ProfileID`");
+             }
+             if ($_POST['request']=="Mutual") {
+                                              
+                $reqProfiles = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and `VisterProfileCode` = '".$_POST['ProfileCode']."' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$_POST['ProfileCode']."' order by FavProfileID DESC)");
+             }
+             
+             foreach($reqProfiles as $reqProfile) {
+                $Profiles['results'][]=Profiles::getProfileInfo($reqProfile['ProfileCode'],1,1);   
+             } 
+             
+             $RecentlyViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$_POST['ProfileCode']."' group by `ProfileID` ");
+             $Profiles['statistics']['RecentlyViewedCount']= sizeof($RecentlyViewedcount);
+             
+             $MyFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `VisterProfileCode` = '".$_POST['ProfileCode']."' group by `ProfileID` ");
+             $Profiles['statistics']['MyFavoritedCount']= sizeof($MyFavoritedcount);
+                        
+             $WhoViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$_POST['ProfileCode']."' group by `VisterProfileCode` ");
+             $Profiles['statistics']['RecentlyWhoViwedCount']= sizeof($WhoViewedcount);
+                        
+             $WhoFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$_POST['ProfileCode']."' group by `ProfileID` ");
+             $Profiles['statistics']['WhoFavoritedCount']= sizeof($WhoFavoritedcount);
+                        
+             $MutualCount = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and `VisterProfileCode` = '".$_POST['ProfileCode']."' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$_POST['ProfileCode']."' order by FavProfileID DESC)");
+             $Profiles['statistics']['MutualCount']= sizeof($MutualCount);  
+                         
+                return Response::returnSuccess("success"."select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$_POST['ProfileCode']."' order by FavProfileID DESC)",$Profiles);
+         }
+    }
 ?> 

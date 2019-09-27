@@ -19,18 +19,18 @@
                 <tr>
                     <th>Education</th>
                     <th>Education Details</th>
-                    <th>Remarks</th>
+                    <th>Attachments</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                
                 <?php foreach($response['data']['Attachments'] as $Document) { ?>
-                                                                                                                    
+                        
                 <tr id="Documentview_<?php echo $Document['AttachmentID'];?>">    
                     <td><?php echo $Document['EducationDetails'];?></td>
-                    <td><?php echo $Document['EducationDegree'];?></td>
-                    <td><?php echo $Document['EducationRemarks'];?></td>
+                    <td><?php echo $Document['EducationDegree'];?><BR><?php echo $Document['EducationRemarks'];?></td>
+                    <td><?php if($Document['FileName']>0){ echo "Attached"; } else { echo "Not Attached"; }?></td>
                     <td style="width:20px"><a href="javascript:void(0)" onclick="showConfirmDeleteAttach('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['EducationDetails'];?>','<?php  echo $Document['EducationDegree'];?>')"><img src="<?php echo SiteUrl?>assets/images/document_delete.png" style="width:16px;height:16px"></a></td>
                 </tr>
                 <?php }}?>

@@ -604,20 +604,7 @@ text-align: left;
   </div>
 </div>
 </div>
- <?php 
-     if (isset($_POST['Approve'])) {
-        
-        $response = $webservice->getData("Admin","ApproveProfile",array("ProfileCode"=>$_GET['Code']));   
-        if ($response['status']=="success") {   ?>
-        <script>location.href='<?php echo AppUrl;?>Profiles/Approved';</script>
-        <?php     
-        } else {
-            $errormessage = $response['message']; 
-        }
-    }
-    
- ?>
-   
+ 
             
                            
   <div style="text-align: right">
@@ -632,8 +619,6 @@ text-align: left;
     </div>
   
  </form> 
-   
-        
         <div class="modal" id="ApproveNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
                 <div class="modal-content" id="Approve_body" style="height:315px">
@@ -678,12 +663,17 @@ function ApproveProfile(frmid) {
                     $.post( API_URL + "m=Admin&a=ApproveProfile", 
                             param,
                             function(result2) {
-                                $('#Approve_body').html(result2);   
+                                var obj = JSON.parse(result2);
+                                if (obj.status=="success") {
+                                     $('#Approve_body').html("success");
+                                   setTimeout(function(){location.href= AppUrl+"Profiles/Approved";},1000);
+                                } else {
+                                    alert(obj.message);       
+                                }
                             }
                     );
-              
     } 
-
 </script>
-
+ 
+   
             
