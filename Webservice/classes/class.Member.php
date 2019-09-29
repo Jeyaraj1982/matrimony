@@ -387,7 +387,7 @@
              $ProfileCode   =SeqMaster::GetNextDraftProfileCode();
              $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
              $id =  $mysql->insert("_tbl_draft_profiles",array("ProfileCode"      => $ProfileCode,
-                                                              "ProfileForCode"    => $_POST['ProfileFor'],
+                                                              "ProfileForCode"    => $ProfileFors[0]['SoftCode'],
                                                               "ProfileFor"        => $ProfileFors[0]['CodeValue'],
                                                               "ProfileName"       => $_POST['ProfileName'],
                                                               "DateofBirth"       => $dob,        
@@ -3515,6 +3515,135 @@
                                                             "IncomeRange"            => CodeMaster::getData('INCOMERANGE'),
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
                                                             "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
+         }
+         function EditPublishGeneralInformation() {
+
+             global $mysql, $loginInfo;
+
+             $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
+             $Sex            = CodeMaster::getData("SEX",$_POST['Sex']);
+             $MotherTongue   = CodeMaster::getData("LANGUAGENAMES",$_POST['Language']); 
+             $Religion       = CodeMaster::getData("RELINAMES",$_POST['Religion']); 
+             $Caste          = CodeMaster::getData("CASTNAMES",$_POST['Caste']);  
+             $Community      = CodeMaster::getData("COMMUNITY",$_POST['Community']);  
+             $Nationality    = CodeMaster::getData("NATIONALNAMES",$_POST['Nationality']);
+             $Childrens     = CodeMaster::getData("NUMBEROFBROTHER",$_POST['HowManyChildren']);  
+             $ProfileFors     = CodeMaster::getData("PROFILESIGNIN",$_POST['ProfileFor']);  
+              $ProfileCode   =SeqMaster::GetNextPublishProfileCode();
+              
+             $PublishProfileCode = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['Code']."'");                
+              
+
+             $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
+             $ChildrenCode = ($_POST['HowManyChildren']>0 ? $_POST['HowManyChildren'] : 0);
+            //  $Children = ($_POST['Children']>0 ? $Childrens[0]['CodeValue'] : 0);
+              $IsChildrenWithyou = ($_POST['ChildrenWithYou']>0 ? $_POST['ChildrenWithYou'] : 0);
+             
+                    $mysql->insert("_tbl_publish_profiles",array("ProfileCode"       => $ProfileCode,
+                                                           "PublishProfileID"  => $PublishProfileCode[0]['ProfileID'],
+                                                           "PublishProfileCode"=> $PublishProfileCode[0]['ProfileCode'],
+                                                           "ProfileFor"    => $_POST['ProfileFor'],
+                                                           "ProfileForCode"        => $ProfileFors[0]['SoftCode'],
+                                                           "ProfileName"       => $_POST['ProfileName'],
+                                                           "DateofBirth"       => $dob,
+                                                           "SexCode"           => $_POST['Sex'],
+                                                           "Sex"               => $Sex[0]['CodeValue'],
+                                                           "MaritalStatusCode" => $_POST['MaritalStatus'],
+                                                           "MaritalStatus"     => $MaritalStatus[0]['CodeValue'],
+                                                           "ChildrenCode"      => $ChildrenCode,     
+                                                           "Children"          => $Childrens[0]['CodeValue'],
+                                                           "IsChildrenWithyou" => $IsChildrenWithyou,
+                                                           "MotherTongueCode"  => $_POST['Language'],
+                                                           "MotherTongue"      => $MotherTongue[0]['CodeValue'],
+                                                           "ReligionCode"      => $_POST['Religion'],
+                                                           "Religion"          => $Religion[0]['CodeValue'],
+                                                           "CasteCode"         => $_POST['Caste'],
+                                                           "Caste"             => $Caste[0]['CodeValue'],
+                                                           "SubCaste"          => $_POST['SubCaste'],
+                                                           "CommunityCode"     => $_POST['Community'],
+                                                           "Community"         => $Community[0]['CodeValue'],
+                                                           "NationalityCode"   => $_POST['Nationality'],
+                                                           "Nationality"       => $Nationality[0]['CodeValue'],
+                                                           "LastUpdatedOn"     => date("Y-m-d H:i:s"),
+                                                           "AboutMe"           => $_POST['AboutMe'])) ; 
+                                       
+                                      
+                                       
+              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'Generalinformationupdated.',
+                                                             "ActivityString" => 'General Information Updated.',
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'");      
+
+             return Response::returnSuccess("success",array("ProfileInfo"      => $Profiles[0],
+                                                            "ProfileSignInFor" => CodeMaster::getData('PROFILESIGNIN'),
+                                                            "Gender"           => CodeMaster::getData('SEX'),
+                                                            "MaritalStatus"    => CodeMaster::getData('MARTIALSTATUS'),
+                                                            "Language"         => CodeMaster::getData('LANGUAGENAMES'),
+                                                            "Religion"         => CodeMaster::getData('RELINAMES'),
+                                                            "Caste"            => CodeMaster::getData('CASTNAMES'),
+                                                            "Community"        => CodeMaster::getData('COMMUNITY'),
+                                                            "Nationality"      => CodeMaster::getData('NATIONALNAMES')));
+         } 
+         function AddPublishEducationalDetails() {
+             global $mysql,$loginInfo;
+             
+              if (!(trim($_POST['Educationdetails']))>0) {                                                                               
+                 return Response::returnError("Please select education details");
+             }
+             if (!(trim($_POST['EducationDegree']))>0) {                                
+                 return Response::returnError("Please select education degree ");
+             }
+             $profile = $mysql->select("select * from _tbl_profiles where ProfileCode='".$_POST['Code']."'");                         
+             $id = $mysql->insert("_tbl_publish_profiles_education_details",array("EducationDetails" => $_POST['Educationdetails'],
+                                                                  "EducationDegree"  => $_POST['EducationDegree'],
+                                                                  "EducationRemarks"  => $_POST['EducationRemarks'],
+                                                                  "FileName"            => $_POST['File'],
+                                                                  "ProfileID"        => $profile[0]['ProfileID'],
+                                                                  "ProfileCode"        => $_POST['Code'],
+                                                                  "MemberID"         => $loginInfo[0]['MemberID']));
+             
+             return (sizeof($id)>0) ? Response::returnSuccess("success",$_POST)
+                                    : Response::returnError("Access denied. Please contact support");   
+         }
+         function EditPublishOccupationDetails() {
+
+             global $mysql,$loginInfo;
+
+             $EmployedAs       = CodeMaster::getData("OCCUPATIONS",$_POST["EmployedAs"]) ;
+             $OccupationType   = CodeMaster::getData("Occupation",$_POST["OccupationType"]) ;
+             $TypeofOccupation = CodeMaster::getData("TYPEOFOCCUPATIONS",$_POST["TypeofOccupation"]) ;
+             $IncomeRange      = CodeMaster::getData("INCOMERANGE",$_POST["IncomeRange"]) ;
+             $Country          = CodeMaster::getData("CONTNAMES",$_POST['WCountry']);
+             $updateSql = "update `_tbl_publish_profiles` set  `EmployedAsCode`       = '".$_POST['EmployedAs']."',
+                                                            `EmployedAs`           = '".$EmployedAs[0]['CodeValue']."',
+                                                            `OccupationTypeCode`   = '".$_POST['OccupationType']."',
+                                                            `OccupationType`       = '".$OccupationType[0]['CodeValue']."',
+                                                            `TypeofOccupationCode` = '".$_POST['TypeofOccupation']."',
+                                                            `TypeofOccupation`     = '".$TypeofOccupation[0]['CodeValue']."',
+                                                            `AnnualIncomeCode`     = '".$_POST['IncomeRange']."',
+                                                            `WorkedCountryCode`     = '".$_POST['WCountry']."',
+                                                            `WorkedCountry`     = '".$Country[0]['CodeValue']."',
+                                                            `OccupationAttachFileName`     = '".$_POST['File']."',
+                                                            `OccupationDetails`   = '".$_POST['OccupationDetails']."',
+                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
+                                                            `AnnualIncome`         = '".$IncomeRange[0]['CodeValue']."' where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'";
+             $mysql->execute($updateSql);  
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'Occupationdetailsupdated.',
+                                                             "ActivityString" => 'Occupation Details Updated.',                           
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+             $Profiles = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'");      
+
+             return Response::returnSuccess("success",array("ProfileInfo"      => $Profiles[0],
+                                                            "EmployedAs"       => CodeMaster::getData('OCCUPATIONS'),
+                                                            "Occupation"       => CodeMaster::getData('Occupation'),
+                                                            "TypeofOccupation" => CodeMaster::getData('TYPEOFOCCUPATIONS'),
+                                                            "IncomeRange"      => CodeMaster::getData('INCOMERANGE')));
          }
      
      }  

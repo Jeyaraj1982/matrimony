@@ -45,14 +45,14 @@
                     
                     if ($err==0) {
                         $_POST['File']= $OccupationAttachments;
-                        $res =$webservice->getData("Member","EditDraftOccupationDetails",$_POST);   
+                        $res =$webservice->getData("Member","EditPublishOccupationDetails",$_POST);   
                         echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
                                                            : $dashboard->showErrorMsg($res['message']);
                     } else {
-                        $res =$webservice->getData("Member","EditDraftOccupationDetails");
+                        $res =$webservice->getData("Member","EditPublishOccupationDetails");
                     }
                 } else {
-                     $res =$webservice->getData("Member","EditDraftOccupationDetails");
+                     $res =$webservice->getData("Member","EditPublishOccupationDetails");
                      
                 }
                 $DocumentPhoto = $res['data'];      

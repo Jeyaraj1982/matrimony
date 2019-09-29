@@ -2478,6 +2478,11 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
         $mysql->execute("update `_tbl_master_codemaster` set `ParamA`='".(isset($_POST['IsAllowDuplicateMobile']) ? '1' : '0')."' where `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'");    
         $mysql->execute("update `_tbl_master_codemaster` set `ParamA`='".(isset($_POST['IsAllowDuplicateEmail']) ? '1' : '0')."' where `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
         $mysql->execute("update `_tbl_master_codemaster` set `ParamA`='".(isset($_POST['IsAllowDuplicateWhatsapp']) ? '1' : '0')."' where `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateWhatsapp'");
+        $mysql->execute("update `_tbl_master_codemaster` set `ParamA`='".(isset($_POST['AllowToPasswordCaseSensitive']) ? '1' : '0')."' where `HardCode`='APPSETTINGS' and `CodeValue`='AllowToPasswordCaseSensitive'");
+        $mysql->execute("update `_tbl_master_codemaster` set `ParamA`='".(isset($_POST['ChangePasswordNotificationSendToMember']) ? '1' : '0')."' where `HardCode`='APPSETTINGS' and `CodeValue`='ChangePasswordNotificationSendToMember'");
+        $mysql->execute("update `_tbl_master_codemaster` set `ParamA`='".$_POST['MaximumAllowSizeProfileImages']."' where `HardCode`='APPSETTINGS' and `CodeValue`='MaximumAllowSizeProfileImages'");
+        $mysql->execute("update `_tbl_master_codemaster` set `ParamA`='".$_POST['InvalidLoginNotification']."' where `HardCode`='APPSETTINGS' and `CodeValue`='InvalidLoginNotification'");
+        $mysql->execute("update `_tbl_master_codemaster` set `ParamA`='".(isset($_POST['DisplayLastLoginInDashboard']) ? '1' : '0')."' where `HardCode`='APPSETTINGS' and `CodeValue`='DisplayLastLoginInDashboard'");
         return Response::returnSuccess("Success");
          
     }
@@ -2488,10 +2493,93 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
         $Mobile=$mysql->select("select * from `_tbl_master_codemaster` where `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'"); 
         $Email=$mysql->select("select * from `_tbl_master_codemaster` where `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'"); 
         $Whatsapp=$mysql->select("select * from `_tbl_master_codemaster` where `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateWhatsapp'"); 
+        $PasswordCaseSensitive=$mysql->select("select * from `_tbl_master_codemaster` where `HardCode`='APPSETTINGS' and `CodeValue`='AllowToPasswordCaseSensitive'"); 
+        $ChangePasswordNotification=$mysql->select("select * from `_tbl_master_codemaster` where `HardCode`='APPSETTINGS' and `CodeValue`='ChangePasswordNotificationSendToMember'"); 
+        $MaximumAllowSizeProfileImages=$mysql->select("select * from `_tbl_master_codemaster` where `HardCode`='APPSETTINGS' and `CodeValue`='MaximumAllowSizeProfileImages'"); 
+        $InvalidLoginNotification=$mysql->select("select * from `_tbl_master_codemaster` where `HardCode`='APPSETTINGS' and `CodeValue`='InvalidLoginNotification'"); 
+        $DisplayLastLogin=$mysql->select("select * from `_tbl_master_codemaster` where `HardCode`='APPSETTINGS' and `CodeValue`='DisplayLastLoginInDashboard'"); 
         
         return Response::returnSuccess("success",array("Mobile"   => $Mobile[0],
                                                        "Email"    => $Email[0],
-                                                       "Whatsapp" => $Whatsapp[0]));
+                                                       "Whatsapp" => $Whatsapp[0],
+                                                       "PasswordCaseSensitive" => $PasswordCaseSensitive[0],
+                                                       "ChangePasswordNotification" => $ChangePasswordNotification[0],
+                                                       "DisplayLastLogin" => $DisplayLastLogin[0],
+                                                       "MaximumSizeProfileImage" => $MaximumAllowSizeProfileImages[0],
+                                                       "InvalidLoginNotification" => $InvalidLoginNotification[0]
+                                                       ));
     }
+    function GetGeneralSettingsDetails(){
+        global $mysql,$loginInfo;
+        
+        $FirstTimeProfileView=$mysql->select("select * from `_tbl_general_settings` where `Settings`='FirstTimeProfileView'"); 
+        $FirstTimeProfileFavorite=$mysql->select("select * from `_tbl_general_settings` where `Settings`='FirstTimeProfileFavorite'"); 
+        $FirstTimeProfileUnFavorite=$mysql->select("select * from `_tbl_general_settings` where `Settings`='FirstTimeProfileUnFavorite'"); 
+        $EveryTimeProfileView=$mysql->select("select * from `_tbl_general_settings` where `Settings`='EveryTimeProfileView'"); 
+        $EveryTimeProfileFavorite=$mysql->select("select * from `_tbl_general_settings` where `Settings`='EveryTimeProfileFavorite'"); 
+        $EveryTimeProfileUnfavorite=$mysql->select("select * from `_tbl_general_settings` where `Settings`='EveryTimeProfileUnFavorite'"); 
+        $ChangePasswordNotification=$mysql->select("select * from `_tbl_general_settings` where `Settings`='ChangePasswordNotification'"); 
+        $EmailVerificationStatus=$mysql->select("select * from `_tbl_general_settings` where `Settings`='EmailVerificationStatus'"); 
+        $MobileVerificationStatus=$mysql->select("select * from `_tbl_general_settings` where `Settings`='MobileVerificationStatus'"); 
+        $InvalidLoginNotification=$mysql->select("select * from `_tbl_general_settings` where `Settings`='InvalidLoginNotification'"); 
+        $ApproveKYC=$mysql->select("select * from `_tbl_general_settings` where `Settings`='ApproveKYC'"); 
+        $RejectKYC=$mysql->select("select * from `_tbl_general_settings` where `Settings`='RejectKYC'"); 
+        $ApproveProfile=$mysql->select("select * from `_tbl_general_settings` where `Settings`='ApproveProfile'"); 
+        $RejectProfile=$mysql->select("select * from `_tbl_general_settings` where `Settings`='RejectProfile'"); 
+        $RemodificationRequest=$mysql->select("select * from `_tbl_general_settings` where `Settings`='RemodificationRequest'"); 
+        
+        return Response::returnSuccess("success",array("FirstTimeProfileView"   => $FirstTimeProfileView[0],
+                                                       "FirstTimeProfileFavorite"   => $FirstTimeProfileFavorite[0],
+                                                       "FirstTimeProfileUnFavorite"   => $FirstTimeProfileUnFavorite[0],
+                                                       "EveryTimeProfileView"   => $EveryTimeProfileView[0],
+                                                       "EveryTimeProfileFavorite"   => $EveryTimeProfileFavorite[0],
+                                                       "EveryTimeProfileUnFavorite"   => $EveryTimeProfileUnfavorite[0],
+                                                       "ChangePasswordNotification"   => $ChangePasswordNotification[0],
+                                                       "EmailVerificationStatus"   => $EmailVerificationStatus[0],
+                                                       "InvalidLoginNotification"   => $InvalidLoginNotification[0],
+                                                       "MobileVerificationStatus"   => $MobileVerificationStatus[0],
+                                                       "ApproveKYC"   => $ApproveKYC[0],
+                                                       "RejectKYC"   => $RejectKYC[0],
+                                                       "ApproveProfile"   => $ApproveProfile[0],
+                                                       "RejectProfile"   => $RejectProfile[0],
+                                                       "RemodificationRequest"   => $RemodificationRequest[0]));  
+    }
+   function UpdateGeneralSettings() {
+        
+        global $mysql,$loginInfo;
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['FirstTimeProfileViewSMS']) ? '1' : '0')."' where `Settings`='FirstTimeProfileView'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['FirstTimeProfileViewEmail']) ? '1' : '0')."' where `Settings`='FirstTimeProfileView'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['FirstTimeProfileFavoriteSMS']) ? '1' : '0')."' where `Settings`='FirstTimeProfileFavorite'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['FirstTimeProfileFavoriteEmail']) ? '1' : '0')."' where `Settings`='FirstTimeProfileFavorite'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['FirstTimeProfileUnFavoriteSMS']) ? '1' : '0')."' where `Settings`='FirstTimeProfileUnFavorite'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['FirstTimeProfileUnFavoriteEmail']) ? '1' : '0')."' where `Settings`='FirstTimeProfileUnFavorite'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['EveryTimeProfileViewSMS']) ? '1' : '0')."' where `Settings`='EveryTimeProfileView'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['EveryTimeProfileViewEmail']) ? '1' : '0')."' where `Settings`='EveryTimeProfileView'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['EveryTimeProfileFavoriteSMS']) ? '1' : '0')."' where `Settings`='EveryTimeProfileFavorite'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['EveryTimeProfileFavoriteEmail']) ? '1' : '0')."' where `Settings`='EveryTimeProfileFavorite'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['EveryTimeProfileUnFavoriteSMS']) ? '1' : '0')."' where `Settings`='EveryTimeProfileUnFavorite'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['EveryTimeProfileUnFavoriteEmail']) ? '1' : '0')."' where `Settings`='EveryTimeProfileUnFavorite'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['ChangePasswordNotificationSMS']) ? '1' : '0')."' where `Settings`='ChangePasswordNotification'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['ChangePasswordNotificationEmail']) ? '1' : '0')."' where `Settings`='ChangePasswordNotification'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['EmailVerificationStatusSMS']) ? '1' : '0')."' where `Settings`='EmailVerificationStatus'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['EmailVerificationStatusEmail']) ? '1' : '0')."' where `Settings`='EmailVerificationStatus'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['MobileVerificationStatusSMS']) ? '1' : '0')."' where `Settings`='MobileVerificationStatus'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['MobileVerificationStatusEmail']) ? '1' : '0')."' where `Settings`='MobileVerificationStatus'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['InvalidLoginNotificationSMS']) ? '1' : '0')."' where `Settings`='InvalidLoginNotification'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['InvalidLoginNotificationEmail']) ? '1' : '0')."' where `Settings`='InvalidLoginNotification'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['ApproveKYCSMS']) ? '1' : '0')."' where `Settings`='ApproveKYC'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['ApproveKYCEmail']) ? '1' : '0')."' where `Settings`='ApproveKYC'");    
+         $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['RejectKYCSMS']) ? '1' : '0')."' where `Settings`='RejectKYC'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['RejectKYCEmail']) ? '1' : '0')."' where `Settings`='RejectKYC'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['ApproveProfileSMS']) ? '1' : '0')."' where `Settings`='ApproveProfile'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['ApproveProfileEmail']) ? '1' : '0')."' where `Settings`='ApproveProfile'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['RejectProfileSMS']) ? '1' : '0')."' where `Settings`='RejectProfile'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['RejectProfileEmail']) ? '1' : '0')."' where `Settings`='RejectProfile'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['RemodificationRequestSMS']) ? '1' : '0')."' where `Settings`='RemodificationRequest'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['RemodificationRequestEmail']) ? '1' : '0')."' where `Settings`='RemodificationRequest'");    
+       
+        return Response::returnSuccess("Success");
+         
+    }                                                                                                                         
 }
 ?> 

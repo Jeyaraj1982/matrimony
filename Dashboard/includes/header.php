@@ -76,6 +76,7 @@
            div, label,a,ul,li,p,h1,h2,h3,h4,h5,h6,span,i,b,u {font-family:'Roboto' !important;}
         </style>
         <script>
+            var AppUrl = "<?php echo AppUrl;?>";
           var MyFavoritedPage=0;
               function changeMemberStatus(txt) {
         $('#mem_current_status').html(txt);
@@ -958,7 +959,7 @@
                         <div style="height:20px;"><h5 style="margin-bottom:-10px"><?php echo $Profile['ProfileName'];?></h5></div><br>
                         <span style="color:#bfacac;"><?php echo $Profile['City'];?></span><br>
                         <span style="color:#bfacac;"><?php echo $Profile['Age'];?>&nbsp;yrs</span><br>
-                        <a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=DashboardWhoViewedYourProfile");?>" class="viewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</a> <br><br>
+                        <a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=RecentlyWhoViewed");?>" class="viewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</a> <br><br>
                         <div style="text-align:center;"><span style="color:#999 !important;font-size: 12px">Visited&nbsp;<?php echo time_elapsed_string($Profile['LastSeen']);?></span></div>   
                     </div>
                     <?php
@@ -994,7 +995,7 @@
                           <div style="height: 20px"><span style="color:#999 !important;margin-left: 73px;"><?php echo $Profile['Age'];?>&nbsp;yrs</span><br>
                                                             <span style="color:#999 !important;margin-left: 73px;"><?php echo $Profile['City'];?></span>
                           </div> <br>
-                          <a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=DashboardMyRecentlyViewed");?>" class="viewbutton" id="dashviewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;margin-left:73px">View</a> <br><br />
+                          <a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=MyRecentViewed");?>" class="viewbutton" id="dashviewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;margin-left:73px">View</a> <br><br />
                           <div style="height: 20px;float:right;margin-right: -33px;line-height:12px;font-size: 11px;text-align: right"><span style="color:#999 !important;">
                             <?php if ($Profile['LastSeen']!=0) { ?> 
                             My last visited&nbsp;<?php echo time_elapsed_string($Profile['LastSeen']);?>
@@ -1037,7 +1038,7 @@
                         <div style="height:20px;"><h5 style="margin-bottom:-10px"><?php echo $Profile['ProfileName'];?></h5></div><br>
                         <span style="color:#bfacac;"><?php echo $Profile['City'];?></span><br>
                         <span style="color:#bfacac;"><?php echo $Profile['Age'];?>&nbsp;yrs</span><br>
-                        <a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=DashboardWhoFavoritedYourProfile");?>" class="viewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</a> <br><br>
+                        <a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=RecentlyWhoFavorited");?>" class="viewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</a> <br><br>
                         <div style="text-align:center;"><span style="color:#999 !important;font-size: 12px">Visited &nbsp;<?php echo time_elapsed_string($Profile['LastSeen']);?></span></div>   
                     </div>
                     <?php
@@ -1072,7 +1073,7 @@
                           <div style="height: 20px"><span style="color:#999 !important;margin-left: 73px;"><?php echo $Profile['Age'];?>&nbsp;yrs</span><br>
                                                             <span style="color:#999 !important;margin-left: 73px;"><?php echo $Profile['City'];?></span>
                           </div> <br>
-                          <a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=DashboardMyFavorited");?>" class="viewbutton" id="dashviewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;margin-left:73px">View</a> <br><br />
+                          <a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=MyFavorited");?>" class="viewbutton" id="dashviewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;margin-left:73px">View</a> <br><br />
                           <div style="height: 20px;float:right;margin-right: -33px;line-height:12px;font-size: 11px;text-align: right"><span style="color:#999 !important;">
                             <?php if ($Profile['LastSeen']!=0) { ?> 
                             My last visited&nbsp;<?php echo time_elapsed_string($Profile['LastSeen']);?>
@@ -1108,7 +1109,7 @@
                         <div style="height:20px;"><h5 style="margin-bottom:-10px"><?php echo $Profile['ProfileName'];?></h5></div><br>
                         <span style="color:#bfacac;"><?php echo $Profile['City'];?></span><br>
                         <span style="color:#bfacac;"><?php echo $Profile['Age'];?>&nbsp;yrs</span><br>
-                        <a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=DashboardMutualProfile");?>" class="viewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</a> <br><br>
+                        <a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=Mutual");?>" class="viewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;">View</a> <br><br>
                         <div style="text-align:center;"><span style="color:#999 !important;font-size: 12px">Visited &nbsp;<?php echo time_elapsed_string($Profile['LastSeen']);?></span></div>   
                     </div>                                                                                                                                                                                
                     <?php

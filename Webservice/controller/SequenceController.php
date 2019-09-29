@@ -93,6 +93,13 @@
             $Rows   = $mysql->select("select count(*) as rCount from `_tbl_orders`");
             return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
         } 
+        function GetNextPublishProfileCode() {
+            global $mysql;
+            $prefix = "PID";
+            $length = 6;
+            $Rows   = $mysql->select("select count(*) as rCount from `_tbl_publish_profiles`");
+            return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
+        }
    
    /* Admin Master  */
     function GetNextCode($SoftCode) {

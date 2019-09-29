@@ -3,7 +3,7 @@
 
     if (isset($_POST['BtnSaveProfile'])) {
         
-        $response = $webservice->getData("Member","EditDraftGeneralInformation",$_POST);
+        $response = $webservice->getData("Member","EditPublishGeneralInformation",$_POST);
         if ($response['status']=="success") {
             $successmessage = $response['message']; 
         } else {

@@ -50,14 +50,14 @@
                     
                     if ($err==0) {
                         $_POST['File']= $EducationDetails;
-                        $res =$webservice->getData("Member","AddEducationalDetails",$_POST);
+                        $res =$webservice->getData("Member","AddPublishEducationalDetails",$_POST);
                         echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
                                                            : $dashboard->showErrorMsg($res['message']);
                     } else {
-                        $res =$webservice->getData("Member","AddEducationalDetails");
+                        $res =$webservice->getData("Member","AddPublishEducationalDetails");
                     }
                 } else {
-                     $res =$webservice->getData("Member","AddEducationalDetails");
+                     $res =$webservice->getData("Member","AddPublishEducationalDetails");
                      
                 }
               

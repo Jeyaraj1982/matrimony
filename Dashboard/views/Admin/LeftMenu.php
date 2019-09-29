@@ -220,12 +220,18 @@
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php echo GetUrl("AppParam");?>" >
-                    <i class="menu-icon mdi mdi-content-copy "></i>                    
-                    <span class="menu-title">App Param</span>
+           <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#ApplicationSettings" aria-expanded="false" aria-controls="ui-basic">
+                    <i class="menu-icon mdi mdi-content-copy "></i>
+                    <span class="menu-title">Application Settings</span>
                     <i class="menu-arrow"></i>
                 </a>
+                <div class="collapse" id="ApplicationSettings">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("ConfigurationSettings");?>">Configuration Setings</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("GeneralSettings");?>">General Setings</a></li>
+                    </ul>
+                </div>
             </li>
          </ul>
     </nav> 

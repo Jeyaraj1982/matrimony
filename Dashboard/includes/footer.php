@@ -74,6 +74,8 @@
     </body>
 </html>
 <script>
+
+
 function RequestToshowUpgrades(ProfileID) {
         
         $('#Upgrades_body').html(preloader);
