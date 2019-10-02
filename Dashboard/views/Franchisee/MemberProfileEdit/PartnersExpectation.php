@@ -108,19 +108,6 @@
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-sm-3" align="left">Annual Income<span id="star">*</span></div>
-        <div class="col-sm-5">
-            <select class="selectpicker form-control" data-live-search="true" id="IncomeRange" name="IncomeRange">
-                <option value="0">Choose IncomeRange</option>
-                <?php foreach($response['data']['IncomeRange'] as $IncomeRange) { ?>
-                    <option value="<?php echo $IncomeRange['SoftCode'];?>" <?php echo (isset($_POST[ 'IncomeRange'])) ? (($_POST[ 'IncomeRange']==$IncomeRange[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'AnnualIncome']==$IncomeRange[ 'CodeValue']) ? " selected='selected' " : "");?>>
-                        <?php echo $IncomeRange['CodeValue'];?>
-                            <?php } ?>
-                    </option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group row">
         <div class="col-sm-3" align="left">Employed As<span id="star">*</span></div>
         <div class="col-sm-5">
             <select class="selectpicker form-control" data-live-search="true" id="EmployedAs" name="EmployedAs">
@@ -128,6 +115,19 @@
                 <?php foreach($response['data']['EmployedAs'] as $EmployedAs) { ?>
                     <option value="<?php echo $EmployedAs['SoftCode'];?>" <?php echo (isset($_POST[ 'EmployedAs'])) ? (($_POST[ 'EmployedAs']==$EmployedAs[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'EmployedAs']==$EmployedAs[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $EmployedAs['CodeValue'];?>
+                            <?php } ?>
+                    </option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3" align="left">Annual Income<span id="star">*</span></div>
+        <div class="col-sm-5">
+            <select class="selectpicker form-control" data-live-search="true" id="IncomeRange" name="IncomeRange">
+                <option value="0">Choose IncomeRange</option>
+                <?php foreach($response['data']['IncomeRange'] as $IncomeRange) { ?>
+                    <option value="<?php echo $IncomeRange['SoftCode'];?>" <?php echo (isset($_POST[ 'IncomeRange'])) ? (($_POST[ 'IncomeRange']==$IncomeRange[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'AnnualIncome']==$IncomeRange[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                        <?php echo $IncomeRange['CodeValue'];?>
                             <?php } ?>
                     </option>
             </select>

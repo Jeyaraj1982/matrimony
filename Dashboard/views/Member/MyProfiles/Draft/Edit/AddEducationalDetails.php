@@ -29,9 +29,9 @@
                                         'image/png'
                                     );
                      
-                  if(($_FILES['File']['size'] >= 5000000) || ($_FILES["File"]["size"] == 0)) {
+                  if(($_FILES['File']['size'] >= 5000000)) {
                     $err++;
-                           echo "Please upload file. File must be less than 5 megabytes.";
+                           echo "File must be less than 5 megabytes.";
                     }
                             
                     if((!in_array($_FILES['File']['type'], $acceptable)) && (!empty($_FILES["File"]["type"]))) {
@@ -51,14 +51,14 @@
                     if ($err==0) {
                         $_POST['File']= $EducationDetails;
                         $res =$webservice->getData("Member","AddEducationalDetails",$_POST);
-                        echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
-                                                           : $dashboard->showErrorMsg($res['message']);
-                    } else {
-                        $res =$webservice->getData("Member","AddEducationalDetails");
-                    }
-                } else {
-                     $res =$webservice->getData("Member","AddEducationalDetails");
-                     
+                       /* echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
+                                                           : $dashboard->showErrorMsg($res['message']);   */
+                        if ($response['status']=="success") {                
+                             echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm'</script>";   
+                        } else {
+                            $errormessage = $response['message']; 
+                        }
+                    } 
                 }
               
             ?>
@@ -81,7 +81,6 @@ $(document).ready(function() {
 </script> 
 <div class="col-sm-10" style="margin-top: -8px;">
 <form method="post" action="" name="form1" id="form1" enctype="multipart/form-data">
-                               <div style="height: 315px;">
                      <h4 class="card-title">Educational Details</h4>
                         <div class="form-group row">
                            <label class="col-sm-3 col-form-label">Education<span id="star">*</span></label> 
@@ -115,7 +114,7 @@ $(document).ready(function() {
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Description<span id="star">*</span></label>
-                            <div class="col-sm-10">                                                        
+                            <div class="col-sm-9">                                                        
                                 <textarea class="form-control" maxlength="250" name="EducationDescription" id="EducationDescription"><?php echo (isset($_POST['EducationDescription']) ? $_POST['EducationDescription'] : $response['data']['EducationDescription']);?></textarea> <br>
                                 <div class="col-sm-12">Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></div>
                             </div>
@@ -125,12 +124,11 @@ $(document).ready(function() {
                                 <span style="color:red"><?php echo $errormessage;?><?php echo $successmessage;?></span> 
                             </div>
                         </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
+                        <div class="form-group row">
                             <div class="col-sm-12" style="text-align:left">
                                 <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Save Education Details</button>
                             </div>
                         </div>
-                </div>
                 </form>
                 
 

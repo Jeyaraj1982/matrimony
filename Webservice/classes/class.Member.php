@@ -1481,6 +1481,8 @@
              global $mysql,$loginInfo;
 
              $updateSql = "update `_tbl_draft_profiles_education_details` set `IsDeleted` = '1' where `AttachmentID`='".$_POST['AttachmentID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
+             $mysql->execute($updateSql);
+             $updateSql = "update `_tbl_draft_profile_education_attachments` set `IsDeleted` = '1' where `EducationAttachmentID`='".$_POST['AttachmentID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
                                                              "ActivityType"   => 'Delete Attachment',
@@ -1611,7 +1613,7 @@
                                                             "ChevvaiDhosham"              => CodeMaster::getData('CHEVVAIDHOSHAM'),
                                                             "StateName"              => CodeMaster::getData('STATNAMES'));
              if ($rtype=="")  {
-             return Response::returnSuccess("success",$result);
+             return Response::returnSuccess("success"."select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'",$result);
              } else {
                  return  $result;
              }                                                    
@@ -1883,6 +1885,17 @@
                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                            `AboutMe`           = '".$_POST['AboutMe']."'"; 
         if ($_POST['MaritalStatusCode'] != "MST001") {
+             if($_POST['HowManyChildren']==-1){
+                 return Response::returnError("Please select how many children");
+             } else {
+                 if ($_POST['HowManyChildren']=="NOB001") {
+                     
+                 } else {
+                 if($_POST['ChildrenWithYou']==-1){
+                    return Response::returnError("Please select IsChildrenWithyou");
+                }
+                 }
+             }
             $updateSql .= " ,ChildrenCode ='".$_POST['HowManyChildren']."', Children='".$Childrens[0]['CodeValue']."',IsChildrenWithyou='".$_POST['ChildrenWithYou']."'";
         } 
         $updateSql .= " where  MemberID='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['Code']."'";                 
@@ -2087,6 +2100,7 @@
                                                             `State`          = '".$State[0]['CodeValue']."',
                                                             `City`           = '".$_POST['City']."',
                                                             `Pincode`           = '".$_POST['Pincode']."',
+                                                            `CommunicationDescription` = '".$_POST['CommunicationDescription']."',
                                                             `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                             `OtherLocation`  = '".$_POST['OtherLocation']."' where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'";
              $mysql->execute($updateSql);  
@@ -2230,13 +2244,45 @@
              $id = $mysql->insert("_tbl_draft_profiles_education_details",array("EducationDetails" => $_POST['Educationdetails'],
                                                                   "EducationDegree"  => $_POST['EducationDegree'],
                                                                   "EducationRemarks"  => $_POST['EducationRemarks'],
+                                                                  "EducationDescription"  => $_POST['EducationDescription'],
                                                                   "FileName"            => $_POST['File'],
                                                                   "ProfileID"        => $profile[0]['ProfileID'],
                                                                   "ProfileCode"        => $_POST['Code'],
-                                                                  "MemberID"         => $loginInfo[0]['MemberID']));
+                                                                  "MemberID"         => $loginInfo[0]['MemberID'])); 
+            $mysql->insert("_tbl_draft_profile_education_attachments",array("EducationAttachmentID" => $id,
+                                                                            "MemberID"              => $loginInfo[0]['MemberID'],
+                                                                            "ProfileID"             => $profile[0]['ProfileID'], 
+                                                                            "ProfileCode"           => $profile[0]['ProfileCode'], 
+                                                                            "FileName"              => $_POST['File'])); 
              
              return (sizeof($id)>0) ? Response::returnSuccess("success",$_POST)
                                     : Response::returnError("Access denied. Please contact support");   
+         }
+         function AddEducationalAttachment() {
+
+             global $mysql,$loginInfo;
+             
+             $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'");  
+             
+             $EducationID= $mysql->select("select * from _tbl_draft_profiles_education_details where ProfileCode='".$_POST['Code']."' and MemberID='".$loginInfo[0]['MemberID']."'");      
+             
+              $mysql->insert("_tbl_draft_profile_education_attachments",array("EducationAttachmentID" => $EducationID[0]['AttachmentID'],
+                                                                            "MemberID"              => $loginInfo[0]['MemberID'],
+                                                                            "ProfileID"             => $profile[0]['ProfileID'], 
+                                                                            "ProfileCode"           => $profile[0]['Code'], 
+                                                                            "FileName"              => $_POST['File'])); 
+
+           $updateSql = "update `_tbl_draft_profiles_education_details` set  `FileName`= '".$_POST['File']."' where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `AttachmentID`='".$_POST['AttachmentID']."'";
+             $mysql->execute($updateSql);  
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'EducationAttachmentupdated.',
+                                                             "ActivityString" => 'Education Attachment Updated.',                           
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'");      
+
+             return Response::returnSuccess("success");
          }
 
          function AttachDocuments() {
@@ -2390,8 +2436,10 @@
          function GetViewAttachments() {
              global $mysql,$loginInfo;    
              $SAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and  `ProfileCode`='".$_POST['Code']."' and `IsDeleted`='0'");
+            // $SAttachments = $mysql->select("SELECT * From _tbl_draft_profiles_education_details
+                                                     //   INNER JOIN _tbl_draft_profile_education_attachments ON _tbl_draft_profiles_education_details.AttachmentID=_tbl_draft_profile_education_attachments.EducationAttachmentID") ;
              
-             return Response::returnSuccess("success"."select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDeleted`='0'",array("Attachments"     =>$SAttachments,
+             return Response::returnSuccess("success",array("Attachments"     =>$SAttachments,
                                                             "EducationDetail" => CodeMaster::getData('EDUCATETITLES'),
                                                             "EducationDegree"  => CodeMaster::getData('EDUCATIONDEGREES')));
          }
@@ -2684,7 +2732,51 @@
                 } else {
                  $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
                  }
-                if($Profiles[0]['MemberID']>0 && $Profiles[0]['ProfileID']>0){                
+                if($Profiles[0]['MemberID']>0 && $Profiles[0]['ProfileID']>0){
+                
+             $ViewTime = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterMemberID`='".$loginInfo[0]['MemberID']."'");
+             if(sizeof($ViewTime)==0){
+             
+             $FirstTimeProfileView = $mysql->select("select * from `_tbl_general_settings` where  `Settngs`='FirstTimeProfileView'");
+             
+             if($FirstTimeProfileView[0]['Email']=="1"){
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='FirstTimeProfileView'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "FirstTimeProfileView",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             }
+             if($FirstTimeProfileView[0]['SMS']=="1"){
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has viewed. Your Profile ID is ".$Profiles[0]['ProfileCode']);
+             } 
+             }
+             if(sizeof($ViewTime)>0){
+             
+             $EveryTimeProfileView = $mysql->select("select * from `_tbl_general_settings` where  `Settngs`='EveryTimeProfileView'");
+             
+             if($EveryTimeProfileView[0]['Email']=="1"){
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='EveryTimeProfileView'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "EveryTimeProfileView",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             }
+             if($EveryTimeProfileView[0]['SMS']=="1"){
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has viewed. Your Profile ID is ".$Profiles[0]['ProfileCode']);
+             } 
+             }                   
               $id = $mysql->insert("_tbl_profiles_lastseen",array("MemberID"           => $Profiles[0]['MemberID'],
                                                                   "ProfileID"          => $Profiles[0]['ProfileID'],
                                                                    "ProfileCode"        => $Profiles[0]['ProfileCode'],
@@ -2797,7 +2889,14 @@
              
              $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");
              
-            $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddToFavoriteProfile'");
+              $FirstTime = $mysql->select("select * from `_tbl_profiles_favourites` where `VisterMemberID`='".$loginInfo[0]['MemberID']."'");
+             if(sizeof($FirstTime)==0){
+             
+             $FirstTimeProfileFavorite = $mysql->select("select * from `_tbl_general_settings` where  `Settngs`='FirstTimeProfileFavorite'");
+             
+             if($FirstTimeProfileFavorite[0]['Email']=="1"){
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddToFavoriteProfile'");
              $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
              $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
              $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
@@ -2807,8 +2906,30 @@
                                         "MemberID" => $member[0]['MemberID'],
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
+             }
+             if($FirstTimeProfileFavorite[0]['SMS']=="1"){
              MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has favorited. Your Profile ID is ".$Profiles[0]['ProfileCode']);
-              
+             }
+             }
+             
+             $EveryTimeProfileFavorite = $mysql->select("select * from `_tbl_general_settings` where  `Settngs`='EveryTimeProfileFavorite'");
+             
+             if($EveryTimeProfileFavorite[0]['Email']=="1"){
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddToFavoriteProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "AddToFavoriteProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             }
+             if($EveryTimeProfileFavorite[0]['SMS']=="1"){
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has favorited. Your Profile ID is ".$Profiles[0]['ProfileCode']);
+             } 
              $id = $mysql->insert("_tbl_profiles_favourites",array("MemberID"           => $Profiles[0]['MemberID'],
                                                                    "ProfileID"          => $Profiles[0]['ProfileID'],
                                                                    "ProfileCode"        => $Profiles[0]['ProfileCode'],
@@ -2854,6 +2975,50 @@
                  $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); 
              }
              $mysql->execute("update `_tbl_profiles_favourites` set `IsVisible`='0' where `IsFavorite`='1' and  ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."'");
+          
+             $FirstTime = $mysql->select("select * from `_tbl_profiles_favourites` where `VisterMemberID`='".$loginInfo[0]['MemberID']."'");
+             if(sizeof($FirstTime)==0){
+             
+             $FirstTimeProfileFavorite = $mysql->select("select * from `_tbl_general_settings` where  `Settngs`='FirstTimeProfileFavorite'");
+             
+             if($FirstTimeProfileFavorite[0]['Email']=="1"){
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RemoveFavoriteProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "RemoveFavoriteProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             }
+             if($FirstTimeProfileFavorite[0]['SMS']=="1"){
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has unfavorited. Your Profile ID is ".$Profiles[0]['ProfileCode']);
+             }
+             }
+          
+          
+             $EveryTimeProfileUnFavorite = $mysql->select("select * from `_tbl_general_settings` where  `Settngs`='EveryTimeProfileUnFavorite'");
+             
+             if($EveryTimeProfileUnFavorite[0]['Email']=="1"){
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RemoveFavoriteProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "RemoveFavoriteProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             }
+             if($EveryTimeProfileUnFavorite[0]['SMS']=="1"){
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has unfavorited. Your Profile ID is ".$Profiles[0]['ProfileCode']);
+             }
+          
              $id = $mysql->insert("_tbl_profiles_favourites",array("MemberID"           => $Profiles[0]['MemberID'],
                                                                    "ProfileID"          => $Profiles[0]['ProfileID'],
                                                                    "ProfileCode"        => $Profiles[0]['ProfileCode'],

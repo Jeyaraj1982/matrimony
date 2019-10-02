@@ -43,8 +43,11 @@
                     if ($err==0) {
                         $_POST['File']= $EducationDetails;
                         $res =$webservice->getData("Franchisee","AddEducationalDetails",$_POST);
-                        echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
-                                                           : $dashboard->showErrorMsg($res['message']);
+                       if ($response['status']=="success") {                
+                             echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm'</script>";
+                        } else {
+                            $errormessage = $response['message']; 
+                        }
                     } else {
                         $res =$webservice->getData("Franchisee","AddEducationalDetails");
                     }
@@ -75,7 +78,6 @@ $(document).ready(function() {
 </script> 
 <div class="col-sm-10" style="margin-top: -8px;">
 <form method="post" action="" enctype="multipart/form-data">
-                               <div style="height: 315px;">
                      <h4 class="card-title">Educational Details</h4>
                         <div class="form-group row">
                            <label class="col-sm-3 col-form-label">Education<span id="star">*</span></label> 
@@ -124,7 +126,6 @@ $(document).ready(function() {
                                 <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Save Education Details</button>
                             </div>
                         </div>
-                </div>
                 </form>
                 
 

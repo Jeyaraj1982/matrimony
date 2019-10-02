@@ -1422,6 +1422,7 @@
                                                             `State`          = '".$State[0]['CodeValue']."',
                                                             `City`           = '".$_POST['City']."',
                                                             `Pincode`        = '".$_POST['Pincode']."',
+                                                            `CommunicationDescription`        = '".$_POST['CommunicationDescription']."',
                                                             `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                             `OtherLocation`  = '".$_POST['OtherLocation']."' where `ProfileCode`='".$_POST['Code']."'";
              $mysql->execute($updateSql);  

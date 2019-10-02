@@ -665,6 +665,7 @@ function ApproveProfile(frmid) {
                             function(result2) {
                                 var obj = JSON.parse(result2);
                                 if (obj.status=="success") {
+                                    // $('#Approve_body').html(result2);
                                      $('#Approve_body').html("success");
                                    setTimeout(function(){location.href= AppUrl+"Profiles/Approved";},1000);
                                 } else {

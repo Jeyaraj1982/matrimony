@@ -656,9 +656,9 @@ class Admin extends Master {
                                                   "EmployedAsCode"          => $draft[0]['EmployedAsCode'],
                                                   "EmployedAs"              => $draft[0]['EmployedAs'],
                                                   "OccupationTypeCode"      => $draft[0]['OccupationTypeCode'],
-                                                  "OccupationType"          => $draft[0]['OccupationType'],
+                                                  "OccupationType"          => $draft[0]['OccupationType'], 
                                                   "TypeofOccupationCode"    => $draft[0]['TypeofOccupationCode'],
-                                                  "TypeofOccupation"        => $draft[0]['TypeofOccupation'],
+                                                  "TypeofOccupation"        => $draft[0]['TypeofOccupation'], 
                                                   "PhysicallyImpairedCode"  => $draft[0]['PhysicallyImpairedCode'],
                                                   "PhysicallyImpaired"      => $draft[0]['PhysicallyImpaired'],
                                                   "PhysicallyImpaireddescription"      => $draft[0]['PhysicallyImpaireddescription'],
@@ -687,7 +687,7 @@ class Admin extends Master {
                                                   "SmokingHabit"            => $draft[0]['SmokingHabit'],
                                                   "DrinkingHabitCode"       => $draft[0]['DrinkingHabitCode'],
                                                   "DrinkingHabit"           => $draft[0]['DrinkingHabit'],
-                                                  "PhysicalDescription"           => $draft[0]['PhysicalDescription'],
+                                                  "PhysicallyImpaireddescription"           => $draft[0]['PhysicalDescription'],
                                                   "FathersName"             => $draft[0]['FathersName'],
                                                   "FathersAliveCode"             => $draft[0]['FathersAliveCode'],
                                                   "FathersAlive"             => $draft[0]['FathersAlive'],
@@ -773,7 +773,7 @@ class Admin extends Master {
                                                   "A15"                     => $draft[0]['A15'],
                                                   "A16"                     => $draft[0]['A16'],
                                                   "CreatedOn"               => $draft[0]['CreatedOn'],
-                                                  "LastUpdatedOn"           => $draft[0]['LastUpdatedOn'],
+                                                  "LastUpdatedOn"           => $draft[0]['LastUpdatedOn'], 
                                                   "MemberID"               => $draft[0]['MemberID'],
                                                   "MemberCode"             => $draft[0]['MemberCode'],
                                                   "ReferBy"                 => $draft[0]['ReferBy'],
@@ -784,6 +784,7 @@ class Admin extends Master {
                                                   "CreatedByFranchiseeStaffID"         => $draft[0]['CreatedByFranchiseeStaffID'],
                                                   "IsApproved"              => "1",                                   
                                                   "IsApprovedOn"            => date("Y-m-d H:i:s")));
+             $sql[]=$mysql->qry;
                                                   
      $draftEducationDetails = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['ProfileID']."'");   
        foreach($draftEducationDetails as $ded) {
@@ -802,6 +803,7 @@ class Admin extends Master {
                                                             "IsApproved"        => "1",
                                                             "IsApprovedOn"      => date("Y-m-d H:i:s")));
        }
+       $sql[]=$mysql->qry;
        
        $draftProfilePhotos = $mysql->select("select * from `_tbl_draft_profiles_photos` where  `ProfileCode`='".$_POST['ProfileID']."'");   
        foreach($draftProfilePhotos as $dPp) {
@@ -820,6 +822,7 @@ class Admin extends Master {
                                                                   "IsApproved"        => "1",
                                                                   "IsApprovedOn"      => date("Y-m-d H:i:s")));
        }
+       
        $draftProfilePartnersExpectatipns = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileCode`='".$_POST['ProfileID']."'");   
        foreach($draftProfilePartnersExpectatipns as $dPE) {
                       $mysql->insert("_tbl_profiles_partnerexpectation",array("AgeFrom"             => $dPE['AgeFrom'],
@@ -870,7 +873,7 @@ class Admin extends Master {
                             <h5 style="text-align:center;color:#ada9a9">Your profile Approved.</h5>
                             <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
                        </div>',array("ProfileCode"=>$ProfileCode));  */
-             return Response::returnSuccess("success",array("ProfileCode"=>$ProfileCode));
+             return Response::returnSuccess("success",array("ProfileCode"=>$ProfileCode,"Sql"=>$sql));
          }
 
     function GetManageActiveFranchisee() {

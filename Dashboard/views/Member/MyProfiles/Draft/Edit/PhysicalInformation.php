@@ -144,10 +144,10 @@ $(document).ready(function() {
     
    
     <div class="form-group row">
-        <label for="VissionImpaired" class="col-sm-3 col-form-label">Vission Impaired?<span id="star">*</span></label>
+        <label for="VissionImpaired" class="col-sm-3 col-form-label">Vision Impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="VissionImpaired" name="VissionImpaired" onchange="getAdditionalVissionInfo()">
-                <option value="0"> Vission Impaired</option>
+                <option value="0"> Vision Impaired</option>
                 <?php foreach($response['data']['VissionImpaired'] as $VissionImpaired) { ?>
                     <option value="<?php echo $VissionImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'VissionImpaired'])) ? (($_POST[ 'VissionImpaired']==$VissionImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'VissionImpaired']==$VissionImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $VissionImpaired['CodeValue'];?>      </option>

@@ -167,7 +167,12 @@
   <div class="card">
     <div class="card-body">
      <div class="form-group row">
-            <div class="col-sm-6"><h4 class="card-title">About Me</h4></div>
+            <div class="col-sm-6"><h4 class="card-title">
+            <?php if ( trim($ProfileInfo['ProfileFor'])=="Myself") { echo "About Myself"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother"){ echo "About My Brother"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister"){ echo "About My Sister"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter"){ echo "About My Daughter"; }?>
+             </h4></div>
             
          </div>
          <table>           

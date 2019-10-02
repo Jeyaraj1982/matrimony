@@ -40,6 +40,7 @@ $(document).ready(function () {
 function submitprofile() {
                          $('#ErrEmailID').html("");
                          $('#ErrMobileNumber').html("");
+                         $('#ErrWhatsappNumber').html("");
                          $('#ErrAddressLine1').html("");
                          $('#ErrCity').html("");
                          $('#ErrStateName').html("");
@@ -52,6 +53,9 @@ function submitprofile() {
                          }
                          if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please enter your Mobile Number")) {
                             IsMobileNumber("MobileNumber","ErrMobileNumber","Please enter valid Mobile Number"); 
+                         }
+                         if ($('#WhatsappNumber').val().trim().length>0) {
+                            IsMobileNumber("WhatsappNumber","ErrWhatsappNumber","Please Enter Valid Whatsapp Number");
                          }
                          IsNonEmpty("AddressLine1","ErrAddressLine1","Please enter your Address Line1");
                          IsNonEmpty("City","ErrCity","Please enter your City");
@@ -75,6 +79,18 @@ function submitprofile() {
     
     
 }
+$(document).ready(function() {
+    var text_max = 250;
+    var text_length = $('#CommunicationDescription').val().length;
+    $('#textarea_feedback').html(text_length + ' characters typed');
+
+    $('#CommunicationDescription').keyup(function() {
+        var text_length = $('#CommunicationDescription').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback').html(text_length + ' characters typed');
+    });
+});
 </script>   
 <div class="col-sm-10" style="margin-top: -8px;">
 <form method="post" action="" onsubmit="return submitprofile();">
@@ -173,6 +189,13 @@ function submitprofile() {
                                 <?php } ?>
                 </select>
                 <span class="errorstring" id="ErrCountry"><?php echo isset($ErrCountry)? $ErrCountry : "";?></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="CommunicationDescription" class="col-sm-2 col-form-label">Summary<span id="star">*</span></label>
+            <div class="col-sm-10">                                                        
+                <textarea class="form-control" maxlength="250" name="CommunicationDescription" id="CommunicationDescription"><?php echo (isset($_POST['CommunicationDescription']) ? $_POST['CommunicationDescription'] : $ProfileInfo['CommunicationDescription']);?></textarea> <br>
+                <div class="col-sm-12">Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></div>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px;">

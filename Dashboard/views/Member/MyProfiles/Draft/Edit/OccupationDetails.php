@@ -10,7 +10,7 @@
         }
     }    */
     
-    $response = $webservice->GetDraftProfileInformation(array("ProfileCode"=>$_GET['Code']));
+    $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
    ?>
     <?php
@@ -46,16 +46,15 @@
                     if ($err==0) {
                         $_POST['File']= $OccupationAttachments;
                         $res =$webservice->getData("Member","EditDraftOccupationDetails",$_POST);   
-                        echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
-                                                           : $dashboard->showErrorMsg($res['message']);
-                    } else {
-                        $res =$webservice->getData("Member","EditDraftOccupationDetails");
+                       if ($res['status']=="success") {
+                             $successmessage = $res['message']; 
+                        } else {
+                            $errormessage = $res['message']; 
+                        }
+                         $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
+    $ProfileInfo          = $response['data']['ProfileInfo'];
                     }
-                } else {
-                     $res =$webservice->getData("Member","EditDraftOccupationDetails");
-                     
                 }
-                $DocumentPhoto = $res['data'];      
               
             ?>
 <?php include_once("settings_header.php");?>
@@ -178,7 +177,13 @@ $(document).ready(function() {
     </div>
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Attachment</label>
-        <div class="col-sm-8"><input type="File" id="File" name="File" Placeholder="File"></div>
+        <div class="col-sm-8">
+            <?php if(sizeof($ProfileInfo['OccupationAttachFileName'])==0){  ?>
+                <input type="File" id="File" name="File" Placeholder="File">
+            <?php }  else {  ?>  
+                <img src="<?php echo AppUrl;?>uploads/<?php echo $ProfileInfo['OccupationAttachFileName'];?>" style="height:120px;"><br><input type="File" id="File" name="File" Placeholder="File">
+       <?php }?>
+       </div>
     </div>
      <div class="form-group row">
         <label for="Details" class="col-sm-2 col-form-label">Details<span id="star">*</span></label>
