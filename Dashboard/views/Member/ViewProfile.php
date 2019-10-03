@@ -104,6 +104,8 @@
                                             <?php }?>
                         </div>  
                    <div style="height: 20px;margin-right: -33px;line-height:12px;font-size: 11px;"><span style="color:#999 !important;">
+                            <?php if ($ProfileInfo['LastLogin']!=0) { ?> 
+                            My last Login&nbsp;<?php echo time_elapsed_string($ProfileInfo['LastLogin']); } ?><br>
                             <?php if ($ProfileInfo['LastSeen']!=0) { ?> 
                             My last visited&nbsp;<?php echo time_elapsed_string($ProfileInfo['LastSeen']);?>
                             <?php } else { ?>
@@ -198,7 +200,8 @@
                 <tr>
                     <th>Qualification</th>
                     <th>Education Degree</th>
-                    <th>Remarks</th>
+                     <th>Descriptions</th>
+                    <th>Attachments</th>
                 </tr>
             </thead>
             <tbody>
@@ -206,8 +209,18 @@
                 <?php foreach($EducationAttachment as $Document) { ?>
                 <tr>    
                     <td style="text-align:left"><?php echo $Document['EducationDetails'];?></td>
-                    <td style="text-align:left"><?php echo $Document['EducationDegree'];?></td>
-                    <td style="text-align:left"><?php echo $Document['EducationRemarks'];?></td>
+                    <td style="text-align:left"><?php echo $Document['EducationDegree'];?><BR><?php echo $Document['EducationRemarks'];?></td> 
+                    <td style="text-align:left"><?php echo $Document['EducationDescription']; ?></td>
+                    <td style="text-align:left">
+                        <?php if($Document['FileName']>0){ ?>
+                          <?php  if($Document['IsVerified']==1) { echo "Attachment Verifiled"; ?>
+                                <br><a href="javascript:void(0)" onclick="ViewAttchment('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
+                          <?php } else { echo "Attached"; ?>
+                                <br><a href="javascript:void(0)" onclick="ViewAttchment('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
+                          <?php }?>
+                         <?php } else { echo "Not Attached";?>
+                        <?php }?>
+                    </td>
                 </tr>
                 <?php } 
             
@@ -244,6 +257,8 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Country</label>                      
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['WorkedCountry']))> 0 ? trim($ProfileInfo['WorkedCountry']) : "N/A "; ?></label>
+            <label class="col-sm-2 col-form-label">Attachment</label>                      
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['OccupationAttachFileName']> 0 ? "Attached" : "Not Attache"; ?></label>
         </div>
     </div>
   </div>
@@ -512,7 +527,8 @@
                     <img src="<?php echo ImageUrl;?>lockimage.png">
                 </div>
                 <div class="col-sm-12" style="text-align: center;">
-                    Upgrade membership to unlock the horoscope details<br><br><br> 
+                    Upgrade membership to unlock the horoscope details<br>
+                    <a href="#" class="btn btn-success">UPGRADE BUTTON</a><br><br> 
                 </div>
             </div>
          </div>
@@ -622,37 +638,13 @@
                     <img src="<?php echo ImageUrl;?>lockimage.png">
                 </div>
                 <div class="col-sm-12" style="text-align: center;">
-                    Upgrade membership to unlock the contact details<br><br><br> 
+                    Upgrade membership to unlock the contact details<br>
+                     <a href="#" class="btn btn-success">UPGRADE BUTTON</a><br><br> 
                 </div>
             </div>
          </div>
     </div>
   </div> 
-<div class="col-12 grid-margin">
-  <div class="card">                                                                                                               
-    <div class="card-body">
-        <?php if($ProfileInfo['RequestToVerify']=="0"){?>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Created On</label>
-            <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
-        </div>
-             <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Last saved</label>
-                    <label class="col-sm-8 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></label>
-             </div>
-        <?php } else{?>
-            <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Created On</label>
-            <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
-             </div>
-             <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Puplished On</label>
-                    <label class="col-sm-3 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['RequestVerifyOn']);?></label>
-                   </div>
-        <?php }?>
-  </div>
-</div>
-</div>             
 </div>
  <div style="width:400px">
  <?php if($_GET['source']=="MyRecentViewed"){?>
@@ -818,3 +810,23 @@
             </div>
 <?php }?>
 </div>
+  <div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+            <div class="modal-dialog">
+                <div class="modal-content" id="DeleteNow_body" style="height:260px">
+            
+                </div>
+            </div>
+        </div>
+<script>
+function ViewAttchment(AttachmentID,ProfileID,FileName) {
+      $('#DeleteNow').modal('show'); 
+      var content = '<div class="Publish_body" style="padding:20px">'
+                        +'<div  style="height: 315px;">'
+                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                            + '<h4 class="modal-title">Education Attachment</h4> <br>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                        + '</div>'
+                    +  '</div>';                                                                                                
+            $('#DeleteNow_body').html(content);
+}                                                  
+</script>

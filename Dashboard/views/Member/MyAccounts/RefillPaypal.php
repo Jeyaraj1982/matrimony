@@ -79,6 +79,32 @@
         <div class="col-sm-9" style="margin-top: -8px;color:#444">
             <h4 class="card-title" style="margin-bottom:5px">Refill Wallet Using Paypal</h4>
             <span style="color:#999;">It's is safe transaction and gives refill amount instantly.</span><br><br>
+             <?php 
+             $verification_info  = $webservice->getData("Member","GetMemberVerfiedDetails");
+             $MobileVerification=$verification_info['data']['Member']['IsMobileVerified'];
+             $EmailVerification=$verification_info['data']['Member']['IsEmailVerified'];
+             $KYCVerification=$verification_info['data']['Documents'];
+            if($MobileVerification==0){ ?>
+         <br><br>
+         <div class="form group row">
+            <div class="col-sm-1" style="margin-right: -32px;"><img src="<?php echo SiteUrl;?>assets/images/exclamation-mark.png"></div>
+            <DIV class="col-sm-11">Your mobile number is not verified. Click to&nbsp;<a href="javascript:void(0)" onclick="MobileNumberVerification()">verify now</a></div><br>
+         </div>
+        <?php }   ?>  
+       <?php if($EmailVerification==0) { ?>
+        <br><div class="form group row">
+            <div class="col-sm-1" style="margin-right: -32px;"><img src="<?php echo SiteUrl;?>assets/images/exclamation-mark.png"></div>
+            <DIV class="col-sm-11">Your email number is not verified. Click to&nbsp;<a href="javascript:void(0)" onclick="EmailVerification()">verify now</a></div>
+         </div>
+        <?php }   ?>
+        <?php if(sizeof($KYCVerification)==0) { ?>
+            <br> <div class="form group row">
+            <div class="col-sm-1" style="margin-right: -32px;"><img src="<?php echo SiteUrl;?>assets/images/exclamation-mark.png"></div>
+            <DIV class="col-sm-11">Your documents is not verified. Click to&nbsp;<a href="<?php echo GetUrl("MySettings/KYC");?>">Update now</a></div><br>
+         </div>
+        <?php }   ?>
+        <?php if(sizeof($KYCVerification)>0 && $EmailVerification==1 && $MobileVerification==1) { ?>
+        
             <form method="post" action="" name="form1" id="form1">
             Refill Amount: (₹)<br> 
             <input type="text" placeholder="Enter Amount" name="Amount" id="Amount" style="border:1px solid #ccc;padding:3px;padding-left:10px;"><br>
@@ -109,7 +135,7 @@
             </div>
         </div> 
      <?php }?>
-     
+ <?php } ?>    
     <script>
         function PaypalTermsandConditions() {
       $('#termscondition').modal('show'); 

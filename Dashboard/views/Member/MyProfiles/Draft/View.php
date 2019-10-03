@@ -71,7 +71,7 @@ text-align: left;
         <div class="card-body">
          <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Profile Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
               <div class="form-group row">
                 <div class="col-sm-5">
@@ -151,7 +151,7 @@ text-align: left;
     <div class="card-body">
      <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">About Me</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
          <table>           
            <?php echo trim($ProfileInfo['AboutMe']);?>
@@ -164,7 +164,7 @@ text-align: left;
     <div class="card-body">
      <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Education Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MyProfiles/Draft/Edit/EducationDetails/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
          <table class="table table-bordered" id="doctable">           
             <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">
@@ -209,7 +209,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Occupation Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MyProfiles/Draft/Edit/OccupationDetails/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Employed As</label>                 
@@ -242,7 +242,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Family Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MyProfiles/Draft/Edit/FamilyInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's Name</label>                
@@ -330,7 +330,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Physical Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MyProfiles/Draft/Edit/PhysicalInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Physically Impaired?</label>         
@@ -412,7 +412,7 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Horoscope Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MyProfiles/Draft/Edit/HoroscopeDetails/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" >Date of birth</label>               
@@ -504,7 +504,7 @@ text-align: left;
     <div class="card-body">
     <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Partner's Expectations</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MyProfiles/Draft/Edit/PartnersExpectation/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
         <div class="form-group row">                                                                                                                                                                                             
             <label class="col-sm-2 col-form-label">Age </label>                       
@@ -546,7 +546,7 @@ text-align: left;
     <div class="card-body">
     <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Communication Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MyProfiles/Draft/Edit/CommunicationDetails/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
         <div class="form-group row">                                                   
             <label class="col-sm-2 col-form-label">Email ID</label>                    
@@ -602,7 +602,7 @@ text-align: left;
     <div class="form-group row">
         <div class="col-sm-6"><h4 class="card-title">Attached Documents</h4></div>
         <div class="col-sm-6" style="text-align: right;"><h4 class="card-title" style="color:green">For Admnistrative Purpose only</h4><br>
-            <a href="#">Edit</a>                    
+            <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/DocumentAttachment/". $_GET['Code'].".htm");?>">Edit</a>                    
         </div>
     </div>
     

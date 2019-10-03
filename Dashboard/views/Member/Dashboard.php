@@ -193,7 +193,7 @@
                     <?php } else { ?>
                     <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
                             <div style="text-align:center;margin-top: 127px;">
-                                <h5 style="color: #aaa;font-weight: normal;line-height: 19px;">you don't have active profile to view <br>recently who liked your profile </h5>
+                                <h5 style="color: #aaa;font-weight: normal;line-height: 19px;">you don't have active profile to view recently who liked your profile </h5>
                             </div>
                          </div>                                                        
                     <?php } ?>
@@ -243,7 +243,7 @@
                  <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
                         <div style="text-align:center;">
-                            <h5 style="margin-top: 197px;color: #aaa;font-weight: normal;line-height: 19px;">recently you didn't<br> view any profiles </h5>
+                            <h5 style="margin-top: 197px;color: #aaa;font-weight: normal;line-height: 19px;">recently you didn't view any profiles </h5>
                         </div>
                     </div>
                     <?php } ?>
@@ -272,7 +272,7 @@
                  <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
                         <div style="text-align:center;">
-                            <h5 style="margin-top: 197px;color: #aaa;font-weight: normal;line-height: 19px;">recently you didn't<br> like any profiles </h5>
+                            <h5 style="margin-top: 197px;color: #aaa;font-weight: normal;line-height: 19px;">recently you didn't like any profiles </h5>
                         </div>
                     </div>
                     <?php } ?>

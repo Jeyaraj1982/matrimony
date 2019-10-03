@@ -67,6 +67,40 @@
     <div class="col-sm-9" style="margin-top: -8px;">  
         <h4 class="card-title" style="margin-bottom:5px">Refill Wallet Using Bank</h4>
         <span style="color:#999;">It's is safe transaction and gives refill amount.</span>
+        <?php 
+             $verification_info  = $webservice->getData("Member","GetMemberVerfiedDetails");
+             $MobileVerification=$verification_info['data']['Member']['IsMobileVerified'];
+             $EmailVerification=$verification_info['data']['Member']['IsEmailVerified'];
+             $KYCVerification=$verification_info['data']['Documents'];
+             if($MobileVerification==0){ ?>
+         <br><br>
+         <table>
+            <tr>
+            <td style="width: 25px;"><img src="<?php echo SiteUrl;?>assets/images/exclamation-mark.png"></td>
+            <td>Your mobile number is not verified. Click to&nbsp;<a href="javascript:void(0)" onclick="MobileNumberVerification()">verify now</a></td>
+            </tr>
+         </table>
+        <?php }   ?>  
+       <?php if($EmailVerification==0) { ?>
+        <br> <table>
+            <tr>
+            <td style="width: 25px;"><img src="<?php echo SiteUrl;?>assets/images/exclamation-mark.png"></td>
+            <td>Your email number is not verified. Click to&nbsp;<a href="javascript:void(0)" onclick="EmailVerification()">verify now</a></td>
+            </tr>
+         </table>
+        <?php }   ?>
+        <?php if(sizeof($KYCVerification)==0) { ?>
+            <br> <table>
+            <tr>
+            <td style="width: 25px;"><img src="<?php echo SiteUrl;?>assets/images/exclamation-mark.png"></td>
+            <td>Your documents is not verified. Click to&nbsp;<a href="<?php echo GetUrl("MySettings/KYC");?>">Update now</a></td>
+            </tr>
+        </table>
+         </div>
+        <?php }   ?>
+        <?php if(sizeof($KYCVerification)>0 && $EmailVerification==1 && $MobileVerification==1) { ?>
+        
+        
         <?php
         if (isset($_POST['saverequest'])) {
             $response =$webservice->getData("Member","SaveBankRequest",$_POST);
@@ -173,5 +207,7 @@
         </div>
     </div>
 </div> 
+<?php } ?>
+
 <?php } ?>
 <?php include_once("accounts_footer.php");?>

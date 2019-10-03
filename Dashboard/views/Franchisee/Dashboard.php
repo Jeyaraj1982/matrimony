@@ -27,7 +27,7 @@ $PostedProfilesCount = $response['data']['PostedProfiles'];
                     </div>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo GetUrl("Member/ManageMembers");?>">View</a>
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo GetUrl("Members/ManageMembers");?>">View</a>
                   </p>
                 </div>
               </div>
@@ -47,7 +47,7 @@ $PostedProfilesCount = $response['data']['PostedProfiles'];
                     </div>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo GetUrl("Member/ManageMembers");?>">View</a>
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo GetUrl("DraftedProfiles");?>">View</a>
                   </p>
                 </div>
               </div>
@@ -67,7 +67,7 @@ $PostedProfilesCount = $response['data']['PostedProfiles'];
                     </div>
                   </div>
                    <p class="text-muted mt-3 mb-0">
-                     <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo GetUrl("Member/ManageMembers");?>">View</a>
+                     <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo GetUrl("PostedProfiles");?>">View</a>
                   </p>
                   </div>
             </div>

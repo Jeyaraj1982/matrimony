@@ -231,7 +231,17 @@
           <?php
                      $response = $webservice->getData("Member","GetLoginHistory");
                ?>
+                <li class="nav-item dropdown d-none d-xl-inline-block" style="text-align: right;margin-right: 0px;">
+                    <img src="<?php echo ImagePath;?>wallet.svg" style="width:40px;color:white"/><br /><span class="profile-text" style="line-height:18px;">Rs.0.00</span> 
+                </li>
                 <li class="nav-item dropdown d-none d-xl-inline-block">
+                     <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"></a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding-top: 10px;padding-bottom: 10px;">
+              <a href="<?php echo GetUrl("MyAccounts/RefillWallet");?>" class="dropdown-item">Wallet Update</a>
+              <a href="<?php echo GetUrl("MyAccounts/MyTransactions");?>" class="dropdown-item">Wallet Transaction</a>
+            </div>
+              </li>
+              <li class="nav-item dropdown d-none d-xl-inline-block" style="text-align: right;">
                 <span class="profile-text" style="line-height:18px;"><?php echo "<b>".$_Member['MemberName']."</b>";?><br><span style="color:#f9f9f9f"><?php echo $_Member['MemberCode'] ; ?></span><br><span style="color:#f9f9f9f">Last Logged &nbsp;<?php echo putDateTime($response['data'][0]['LoginOn']) ; ?></span></span><br> 
               </li>
              <li class="nav-item dropdown d-none d-xl-inline-block">

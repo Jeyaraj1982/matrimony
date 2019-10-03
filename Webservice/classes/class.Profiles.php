@@ -447,6 +447,7 @@
                 } else {
                     $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where VisterProfileID='".$Profiles[0]['ProfileID']."' and MemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");   
                 }
+                 $LastLogin = $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$Profiles[0]['MemberID']."' ORDER BY `LoginID` DESC");
             }
             
             if (sizeof($ProfilePhotos)<4) {
@@ -470,6 +471,7 @@
             } 
             
             $Position = "Published";                                             
+            $Profiles[0]['LastLogin']     = (isset($LastLogin[0]['LoginOn']) ? $LastLogin[0]['LoginOn'] : 0);
             $Profiles[0]['LastSeen']     = (isset($lastseen[0]['ViewedOn']) ? $lastseen[0]['ViewedOn'] : 0);
             $Profiles[0]['isFavourited'] = (isset($isFavourite[0]['ViewedOn']) ? $isFavourite[0]['ViewedOn'] : 0);
             $Profiles[0]['isMutured']    = (isset($isMutured[0]['ViewedOn']) ? 1 : 0);

@@ -3827,6 +3827,13 @@
                                                             "WhoFavorited"           =>$Whofavorited[0],
                                                             "Mutual"           =>$Mutual[0]));
          }
+          function GetMemberVerfiedDetails(){
+             global $mysql,$loginInfo;
+             $Member=$mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
+             $Documents=$mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
+             
+             return Response::returnSuccess("success"."select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."'",array("Member"=>$Member[0],"Documents"=>$Documents[0]));
+         }     
      
      }  
    
