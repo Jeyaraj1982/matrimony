@@ -6,10 +6,10 @@
             <a class="nav-link" data-toggle="collapse" href="#manageprofiles" aria-expanded="false" aria-controls="ui-basic"><i class="menu-icon mdi mdi-content-copy "></i><span class="menu-title" style="font-size:14px"><?php echo $lang['my_profiles'];?></span><i class="menu-arrow"></i></a>
             <div class="collapse" id="manageprofiles">                                                                                
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyProfiles/ManageProfile");?>"><?php echo $lang['manage_profiles'];?></a></li>
+                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyProfiles/ManageProfile");?>"><?php echo $lang['manage_profile'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/RecentlyWhoViewed");?>" style="font-size:13px"><?php echo $lang['recently_who_viewed'];?></a></li>
-                <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/RecentlyWhofavourited");?>" style="font-size:13px"><?php echo $lang['recently_who_favorited'];?></a></li>
-                <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MutualProfiles");?>" style="font-size:13px"><?php echo $lang['mutual_profiles'];?></a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/RecentlyWhofavourited");?>" style="font-size:13px"><?php echo $lang['recently_who_liked'];?></a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MutualProfiles");?>" style="font-size:13px"><?php echo $lang['mutually_liked_profiles'];?></a></li>
               </ul>
             </div>
         </li>

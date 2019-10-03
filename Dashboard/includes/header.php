@@ -74,6 +74,14 @@
            div.enlarge img, div.enlarge span{behavior: url(pie/PIE.htc);}  
            /* end of Thumb image */
            div, label,a,ul,li,p,h1,h2,h3,h4,h5,h6,span,i,b,u {font-family:'Roboto' !important;}
+           .widget_title {font-family:'Roboto' !important;font-size: 22px;margin-top:0px;margin-bottom:10px;text-transform:none;}
+           .widget_subtitle {font-family:'Roboto' !important;color:#888;font-weight: normal;margin-top: -5px;font-size: 13px;margin-bottom: 0px;}
+           .widget_message {text-align:center;font-family:'Roboto';color:#666}
+           .widget_message img {height:128px !important}
+           .padding15 {padding:15px !important}
+           .padding0 {padding:0px !important}
+           .padding90 {padding:90px !important}
+           .bgwhite {background:#fff !important}
         </style>
         <script>
             var AppUrl = "<?php echo AppUrl;?>";
@@ -81,7 +89,7 @@
               function changeMemberStatus(txt) {
         $('#mem_current_status').html(txt);
     }
-
+                   
         </script>
         </head>
     <body>
@@ -224,7 +232,7 @@
                      $response = $webservice->getData("Member","GetLoginHistory");
                ?>
                 <li class="nav-item dropdown d-none d-xl-inline-block">
-                <span class="profile-text" style="line-height:18px;"><?php echo "<b>".$_Member['MemberName']."</b>";?><br><span style="color:#f9f9f9f"><?php echo $_Member['MemberCode'] ; ?></span><br><span style="color:#f9f9f9f"><?php echo putDateTime($response['data'][0]['LoginOn']) ; ?></span></span><br> 
+                <span class="profile-text" style="line-height:18px;"><?php echo "<b>".$_Member['MemberName']."</b>";?><br><span style="color:#f9f9f9f"><?php echo $_Member['MemberCode'] ; ?></span><br><span style="color:#f9f9f9f">Last Logged &nbsp;<?php echo putDateTime($response['data'][0]['LoginOn']) ; ?></span></span><br> 
               </li>
              <li class="nav-item dropdown d-none d-xl-inline-block">
              <?php $filename = strlen(trim($_Member['FileName'])) >0 ? $_Member['FileName'] : SiteUrl."assets/images/userimage.jpg"; ?>

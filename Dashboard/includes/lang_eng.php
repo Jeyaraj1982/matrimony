@@ -1,10 +1,10 @@
 <?php
 $lang= array( 
 "dashboard"=>"Dashboard",
-"my_profiles"=>"My Profiles",
-"manage_profiles"=>"Manage Profiles",
+"my_profiles"=>"My Profile",
+"manage_profile"=>"Manage Profile",
 "recently_who_viewed"=>"Recently who viewed",
-"recently_who_favorited"=>"Recently who Favorited",
+"recently_who_liked"=>"Recently who liked",
 "matches"=>"Matches",
 "browse_matches"=>"Browse Matches",
 "basic_search"=>"Basic Search",
@@ -22,7 +22,7 @@ $lang= array(
 "my_receipts"=>"My Receipts",
 "my_transactions"=>"My Transactions",
 "my_wallet"=>"My Wallet",
-"mutual_profiles"=>"Mutual Profiles",
-
+"mutually_liked_profiles"=>"Mutually liked",
+"no_profiles_who_viewed_your_profile"=>"you don't have active profile to view recently who viewed your profile"
 );
 ?>

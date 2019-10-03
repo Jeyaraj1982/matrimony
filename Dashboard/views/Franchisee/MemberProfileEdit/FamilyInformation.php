@@ -32,6 +32,8 @@
 function submitprofile() {
        $('#ErrFatherName').html("");
        $('#ErrMotherName').html("");
+       $('#ErrFathersContact').html("");
+       $('#ErrMotherContact').html("");
        
         ErrorCount=0;
         
@@ -41,6 +43,12 @@ function submitprofile() {
         if (IsNonEmpty("MotherName","ErrMotherName","Please enter your mother name")) {
             IsAlphabet("MotherName","ErrMotherName","Please enter alpha numeric characters only");
             }
+         if ($('#FathersContact').val().trim().length>0) {
+            IsMobileNumber("FathersContact","ErrFathersContact","Please Enter Valid Mobile Number");
+        }
+        if ($('#MotherContact').val().trim().length>0) {
+            IsMobileNumber("MotherContact","ErrMotherContact","Please Enter Valid Mobile Number");
+        }
             
         if (ErrorCount==0) {
                             return true;

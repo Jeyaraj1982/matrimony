@@ -10,7 +10,7 @@
         }
     }    */
     
-    $response = $webservice->GetDraftProfileInformation(array("ProfileCode"=>$_GET['Code']));
+   $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
    ?>
     <?php
@@ -51,6 +51,8 @@
                         } else {
                             $errormessage = $res['message']; 
                         }
+                        $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
+    $ProfileInfo          = $response['data']['ProfileInfo'];
                     }
                 }
               
@@ -175,7 +177,13 @@ $(document).ready(function() {
     </div>
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Attachment</label>
-        <div class="col-sm-8"><input type="File" id="File" name="File" Placeholder="File"></div>
+        <div class="col-sm-8">
+            <?php if(sizeof($ProfileInfo['OccupationAttachFileName'])==0){  ?>
+                <input type="File" id="File" name="File" Placeholder="File">
+            <?php }  else {  ?>  
+                <img src="<?php echo AppUrl;?>uploads/<?php echo $ProfileInfo['OccupationAttachFileName'];?>" style="height:120px;"><br><input type="File" id="File" name="File" Placeholder="File">
+       <?php }?>
+       </div>
     </div>
      <div class="form-group row">
         <label for="Details" class="col-sm-2 col-form-label">Details<span id="star">*</span></label>

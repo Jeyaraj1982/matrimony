@@ -39,6 +39,7 @@ $(document).ready(function () {
 function submitprofile() {
                          $('#ErrEmailID').html("");
                          $('#ErrMobileNumber').html("");
+                         $('#ErrWhatsappNumber').html("");
                          $('#ErrAddressLine1').html("");
                          $('#ErrCity').html("");
                          $('#ErrStateName').html("");
@@ -51,6 +52,9 @@ function submitprofile() {
                          }
                          if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please enter your Mobile Number")) {
                             IsMobileNumber("MobileNumber","ErrMobileNumber","Please enter valid Mobile Number"); 
+                         }
+                         if ($('#WhatsappNumber').val().trim().length>0) {
+                            IsMobileNumber("WhatsappNumber","ErrWhatsappNumber","Please Enter Valid Whatsapp Number");
                          }
                          IsNonEmpty("AddressLine1","ErrAddressLine1","Please enter your Address Line1");
                          IsNonEmpty("City","ErrCity","Please enter your City");

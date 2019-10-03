@@ -540,10 +540,10 @@
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
-                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -12px;">&times;</button>
                                 <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
-                                    <h5 style="color: #777;line-height:20px;font-weight: 100;padding-top: 21px;">In order to protect the security of your account, we will send you a verification code with a verification that you will need to enter the next screen</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Please verify your mobile number</h4>
+                                    <h5 style="color: #777;line-height:20px;font-weight: 100;padding-top: 21px;">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen</h4>
                                 </div> 
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">+'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumber()">Change</h4>
@@ -590,9 +590,9 @@
                         <input type="hidden" value="'.$loginid.'" name="loginId">
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
                            <div class="form-group">
-                           <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right:8px;">&times;</button>
                                 <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;padding-top: 15%;">Change Mobile Number</h4>
+                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Change Mobile Number</h4>
                                 </div>
                             </div> 
                             <div class="form-group">
@@ -609,8 +609,9 @@
                             </div> 
                             <div class="col-sm-12" id="errormsg">'.$error.'</div>
                             <div class="col-sm-12" style="text-align:center">
-                                    <button type="button" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Save and verify</button>&nbsp;&nbsp;
-                                    <a  href="javascript:void(0)" onclick="CheckVerification()">back</a></div>
+                                    <a  href="javascript:void(0)" onclick="CheckVerification()">back</a>&nbsp;&nbsp;
+                                    <button type="button" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify" style="font-family:roboto">Save and verify</button>
+                                    </div>
                                 </div>
                            </div>
                         </form>                                                                                                       
@@ -3809,6 +3810,22 @@
                                                             "Occupation"       => CodeMaster::getData('Occupation'),
                                                             "TypeofOccupation" => CodeMaster::getData('TYPEOFOCCUPATIONS'),
                                                             "IncomeRange"      => CodeMaster::getData('INCOMERANGE')));
+         }
+          function DashboardCounts() {
+                                                  
+             global $mysql,$loginInfo;
+               $myProfile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");                         
+             $RecentlyViewed = $mysql->select("select count(*) as cnt from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$loginInfo[0]['MemberID']."'");      
+             $RecentlyWhoViewed = $mysql->select("select VisterProfileCode from `_tbl_profiles_lastseen` where `ProfileCode` = '".$myProfile[0]['ProfileCode']."'");      
+             $Myfavorited = $mysql->select("select ProfileCode from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and`VisterMemberID` = '".$loginInfo[0]['MemberID']."'");      
+             $Whofavorited = $mysql->select("select VisterProfileCode from `_tbl_profiles_favourites` where `IsFavorite` ='1' and`MemberID` = '".$loginInfo[0]['MemberID']."'");      
+             $Mutual = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `MemberID` = '".$loginInfo[0]['MemberID']."'");      
+             
+             return Response::returnSuccess("success",array("MyRecentlyViewedCount"           =>$RecentlyViewed[0],
+                                                            "RecentlyWhoViewed"           =>$RecentlyWhoViewed[0],
+                                                            "MyFavorited"           =>$Myfavorited[0],
+                                                            "WhoFavorited"           =>$Whofavorited[0],
+                                                            "Mutual"           =>$Mutual[0]));
          }
      
      }  

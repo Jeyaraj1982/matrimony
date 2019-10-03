@@ -19,6 +19,7 @@
                 <tr>
                     <th>Education</th>
                     <th>Education Details</th>
+                    <th>Descriptions</th>
                     <th>Attachments</th>
                     <th></th>
                 </tr>
@@ -30,8 +31,21 @@
                 <tr id="Documentview_<?php echo $Document['AttachmentID'];?>">    
                     <td><?php echo $Document['EducationDetails'];?></td>
                     <td><?php echo $Document['EducationDegree'];?><BR><?php echo $Document['EducationRemarks'];?></td>
-                    <td><?php if($Document['FileName']>0){ echo "Attached"; } else { echo "Not Attached"; }?></td>
-                    <td style="width:20px"><a href="javascript:void(0)" onclick="showConfirmDeleteAttach('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['EducationDetails'];?>','<?php  echo $Document['EducationDegree'];?>')"><img src="<?php echo SiteUrl?>assets/images/document_delete.png" style="width:16px;height:16px"></a></td>
+                    <td><?php echo $Document['EducationDescription']; ?></td>
+                    <td>
+                        <?php if($Document['FileName']>0){ ?>
+                          <?php  if($Document['IsVerified']==1) { echo "Attachment Verifiled"; ?>
+                                <br><a href="javascript:void(0)" onclick="ViewAttchment('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
+                          <?php } else { echo "Attached"; ?>
+                                <br><a href="javascript:void(0)" onclick="ViewAttchment('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
+                          <?php }?>
+                         <?php } else { echo "Not Attached";?>
+                         <br><a href="<?php echo GetUrl("MemberProfileEdit/AttachEducationDetails/". $Document['ProfileCode'].".htm?AttachmentID=".$Document['AttachmentID']."");?>">Attach</a>
+                        <?php }?></td>
+                    <td style="width:20px">
+                        <?php  if($Document['IsVerified']==0) {?>
+                        <a href="javascript:void(0)" onclick="showConfirmDeleteAttach('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['EducationDetails'];?>','<?php  echo $Document['EducationDegree'];?>')"><img src="<?php echo SiteUrl?>assets/images/document_delete.png" style="width:16px;height:16px"></a></td>
+                        <?php }?>
                 </tr>
                 <?php }}?>
             </tbody>
@@ -101,6 +115,18 @@ function showConfirmDeleteAttach(AttachmentID,ProfileID,EducationDetails,Educati
                     
       
         //$.ajax({url: API_URL + "m=Member&a=DeletDocumentAttachments",success: function(result2){$('#model_body').html(result2);}});
-}                                                      
+}
+
+function ViewAttchment(AttachmentID,ProfileID,FileName) {
+      $('#DeleteNow').modal('show'); 
+      var content = '<div class="Publish_body" style="padding:20px">'
+                        +'<div  style="height: 315px;">'
+                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                            + '<h4 class="modal-title">Education Attachment</h4> <br>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                        + '</div>'
+                    +  '</div>';                                                                                                
+            $('#DeleteNow_body').html(content);
+}                                                         
 </script>       
 <?php include_once("settings_footer.php");?>                                  

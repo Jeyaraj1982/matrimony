@@ -52,7 +52,7 @@
                             $errormessage = $res['message']; 
                         }
                          $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
-    $ProfileInfo          = $response['data']['ProfileInfo'];
+                         $ProfileInfo  = $response['data']['ProfileInfo'];
                     }
                 }
               

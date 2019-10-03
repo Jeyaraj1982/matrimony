@@ -1059,6 +1059,17 @@
                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                            `AboutMe`           = '".$_POST['AboutMe']."'";  
              if ($_POST['MaritalStatusCode'] != "MST001") {
+                 if($_POST['HowManyChildren']==-1){
+                 return Response::returnError("Please select how many children");
+             } else {
+                 if ($_POST['HowManyChildren']=="NOB001") {
+                     
+                 } else {
+                 if($_POST['ChildrenWithYou']==-1){
+                    return Response::returnError("Please select IsChildrenWithyou");
+                }
+                 }
+             }
             $updateSql .= " ,ChildrenCode ='".$_POST['HowManyChildren']."', Children='".$Childrens[0]['CodeValue']."',IsChildrenWithyou='".$_POST['ChildrenWithYou']."'";
         }
               $updateSql .= "where ProfileCode='".$_POST['Code']."'";                                                  
@@ -1625,12 +1636,39 @@
              $id = $mysql->insert("_tbl_draft_profiles_education_details",array("EducationDetails" => $_POST['Educationdetails'],
                                                                   "EducationDegree"  => $_POST['EducationDegree'],
                                                                   "EducationRemarks"  => $_POST['EducationRemarks'],
+                                                                  "EducationDescription"  => $_POST['EducationDescription'],
                                                                   "FileName"            => $_POST['File'],
                                                                   "ProfileID"        => $profile[0]['ProfileID'],
                                                                   "ProfileCode"        => $_POST['Code'],
                                                                   "MemberID"         => $profile[0]['MemberID']));
              return (sizeof($id)>0) ? Response::returnSuccess("success",$_POST)
                                     : Response::returnError("Access denied. Please contact support");   
+         }
+          function AddEducationalAttachment() {
+
+             global $mysql,$loginInfo;
+             
+             $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'");  
+             
+             $EducationID= $mysql->select("select * from _tbl_draft_profiles_education_details where ProfileCode='".$_POST['Code']."'");      
+             
+              $mysql->insert("_tbl_draft_profile_education_attachments",array("EducationAttachmentID" => $EducationID[0]['AttachmentID'],
+                                                                            "MemberID"              => $profile[0]['MemberID'],
+                                                                            "ProfileID"             => $profile[0]['ProfileID'], 
+                                                                            "ProfileCode"           => $profile[0]['Code'], 
+                                                                            "FileName"              => $_POST['File'])); 
+
+           $updateSql = "update `_tbl_draft_profiles_education_details` set  `FileName`= '".$_POST['File']."' where `ProfileCode`='".$_POST['Code']."' and `AttachmentID`='".$_POST['AttachmentID']."'";
+             $mysql->execute($updateSql);  
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $profile[0]['MemberID'],
+                                                             "ActivityType"   => 'EducationAttachmentupdated.',
+                                                             "ActivityString" => 'Education Attachment Updated.',                           
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'");      
+
+             return Response::returnSuccess("success");
          }
          function ProfilePhotoBringToFront() {
 

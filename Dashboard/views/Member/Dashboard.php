@@ -20,6 +20,14 @@
     
     
     $latestupdates = $webservice->getData("Member","GetLatestUpdates");
+
+    $DashboardCounts = $webservice->getData("Member","DashboardCounts");
+    $MyRecentlyViewedCount = $DashboardCounts['data']['MyRecentlyViewedCount'];
+    $RecentlyWhoViewedCount = $DashboardCounts['data']['RecentlyWhoViewed'];
+    $MyFavoritedCount = $DashboardCounts['data']['MyFavorited'];
+    $WhofavoritedCount = $DashboardCounts['data']['Whofavorited'];
+    $MutualCount = $DashboardCounts['data']['Mutual'];
+
 ?>
     <script>
         function myFunction() {
@@ -105,20 +113,20 @@
         <?php }else{?>
           <div class="col-7 grid-margin" style="flex: 0 0 600px;max-width: 600px;">       
              <div class="card"  style="background:#dee9ea">
-                <div class="card-body" style="padding-left: 4px;padding-right: 0px;height:374px">
-                    <div id="resCon_a002" style="background:white;width:97%;text-align:left;padding:0px;height: 351px;overflow:auto">
+                <div class="card-body" style="padding-left: 4px;padding:10px !important;height:374px">
+                    <div id="resCon_a002" style="background:white;width:100%;text-align:left;padding:0px;height: 351px;overflow:auto">
                     </div>
                 </div>
              </div>
           </div>
           <?php }?>
         <div class="col-5 grid-margin" style="max-width: 35.667%;">
-            <div class="member_dashboard_widget_title">My Recent Profiles</div>
+            <div class="member_dashboard_widget_title">My Recent Profile</div>
             <div class="card"  style="background:#dee9ea;">
                 <div class="card-body" style="padding:10px !important;">
                 <div class="col-sm-12" id="resCon_a001" style="height: 327px;">
                     <?php if (sizeof($response['data'])==0) {      ?>
-                            <div style="text-align:center;margin-top: 115px;">
+                            <div style="text-align:center;margin-top: 140px;">
                                 <h5 style="color: #aaa;"><a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a> </h5>
                             </div>
                         <?php } else { ?>
@@ -128,11 +136,10 @@
                          <?php    }  ?>
                 </div>
                 <?php }?>
-                </div>
+                </div>              
                 </div>
             </div>
          </div> 
-          
          <div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
                 <div class="modal-content" id="model_body" style="height: 220px;">
@@ -140,11 +147,10 @@
             </div>
         </div>                                                
         </div>
-        
 <div class="row">
     <div class="col-7 grid-margin" style="flex: 0 0 600px;max-width: 600px;">
         <div>
-            <div class="member_dashboard_widget_title">Who viewed your profile</div>
+            <div class="member_dashboard_widget_title">Who viewed my profile</div>
             <div class="card" style="background:#dee9ea">
                 <div class="card-body member_dashboard_widget_container" id="slideshow" >
                     <?php if (sizeof($WhoViewedYourProfile)>0) { ?>
@@ -155,15 +161,13 @@
                                 }
                             ?> 
                          </div> 
-                         <?php if (sizeof($WhoViewedYourProfile)>=3) { ?>
                             <div style="clear:both;padding:3px;text-align:center;">
-                                        <a href="<?php echo SiteUrl;?>RecentlyWhofavourited/RecentlyWhoViewed">View All</a>
+                                        <a href="<?php echo SiteUrl;?>RecentlyWhofavourited/RecentlyWhoViewed">View All(<?php echo $RecentlyWhoViewed['cnt'];?>)</a>
                             </div>
-                          <?php } ?> 
                     <?php } else { ?>
                          <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
                             <div style="text-align:center;margin-top: 127px;">
-                                <h5 style="color: #aaa;">No Profiles Found </h5>
+                                <h5 style="color: #aaa;font-weight: normal;line-height: 19px;"><?php echo $lang['no_profiles_who_viewed_your_profile'];?></h5>
                             </div>
                          </div>
                     <?php } ?>
@@ -172,7 +176,7 @@
         </div>
         <Br>
         <div>
-            <div class="member_dashboard_widget_title">Who favorited your profile</div>
+            <div class="member_dashboard_widget_title">Who liked my profile</div>
             <div class="card"  style="background:#dee9ea">
                 <div class="card-body member_dashboard_widget_container" id="slideshow">
                     <?php if (sizeof($WhoFavoritedYourProfiles)>0) { ?>                            
@@ -183,15 +187,13 @@
                             }
                         ?> 
                     </div> 
-                     <?php if (sizeof($WhoFavoritedYourProfiles)>=3) { ?>
                             <div style="clear:both;padding:3px;text-align:center;">
-                                        <a href="<?php echo SiteUrl;?>RecentlyWhofavourited/MutualProfiles">View All</a>
+                                        <a href="<?php echo SiteUrl;?>RecentlyWhofavourited/MutualProfiles">View All (<?php echo $WhoFavoritedCount['cnt'];?>)</a>
                             </div>
-                          <?php } ?> 
                     <?php } else { ?>
                     <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
                             <div style="text-align:center;margin-top: 127px;">
-                                <h5 style="color: #aaa;">No Profiles Found </h5>
+                                <h5 style="color: #aaa;font-weight: normal;line-height: 19px;">you don't have active profile to view <br>recently who liked your profile </h5>
                             </div>
                          </div>                                                        
                     <?php } ?>
@@ -199,27 +201,24 @@
             </div>
         </div>
         <br><div>
-            <div class="member_dashboard_widget_title">Mutual Profile</div>
+            <div class="member_dashboard_widget_title">Mutually liked profiles</div>
             <div class="card" style="background:#dee9ea">
                 <div class="card-body member_dashboard_widget_container" id="slideshow" >
                     <?php if (sizeof($MutualProfiles)>0) { ?>
                         <div style="height:280px;overflow:hidden">
                             <?php
                                 foreach($MutualProfiles as $Profile) {
-                                   // echo dashboard_view_1($Profile);
                                     echo dashboard_mutual_profiles($Profile);
                                 }
                             ?> 
                          </div> 
-                         <?php if (sizeof($MutualProfiles)>=3) { ?>
                             <div style="clear:both;padding:3px;text-align:center;">
-                                        <a href="<?php echo SiteUrl;?>MyContacts/MutualProfiles">View All</a>
+                                        <a href="<?php echo SiteUrl;?>MyContacts/MutualProfiles">View All (<?php echo $MutualCount['cnt'];?>)</a>
                             </div>
-                          <?php } ?>
                     <?php } else { ?>
                          <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
                             <div style="text-align:center;margin-top: 127px;">
-                                <h5 style="color: #aaa;">No Profiles Found </h5>
+                                <h5 style="color: #aaa;font-weight: normal;line-height: 19px;">you don't have mutually liked profiles</h5>
                             </div>
                          </div>
                     <?php } ?>
@@ -238,30 +237,25 @@
                        echo dashboard_view_2($Profile);
                     }?> 
                 </div>
-                <?php if (sizeof($MyRecentlyViewed)>=4) { ?>
                 <div style="clear:both;padding:3px;text-align:center;">
-                            <a href="<?php echo SiteUrl;?>MyContacts/MyRecentViewed">View All</a>
+                            <a href="<?php echo SiteUrl;?>MyContacts/MyRecentViewed">View All (<?php echo $MyRecentlyViewedCount['cnt'];?>)</a>
                          </div>
-                <?php } ?>
                  <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
                         <div style="text-align:center;">
-                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
+                            <h5 style="margin-top: 197px;color: #aaa;font-weight: normal;line-height: 19px;">recently you didn't<br> view any profiles </h5>
                         </div>
                     </div>
                     <?php } ?>
                 </div>
             </div>
-         </div>
+         </div> 
 </div>
-
-
 <div class="row">
     <div class="col-7 grid-margin" style="flex: 0 0 600px;max-width: 600px;">
-            
     </div>
-    <div class="col-5 grid-margin" style="max-width: 35.667%;">
-            <div style="width:156px;background:#dee9ea;padding:10px;padding-bottom:0px;padding-left:12px;padding-top:7px">My Favourited</div>
+     <div class="col-5 grid-margin" style="max-width: 35.667%;">
+            <div class="member_dashboard_widget_title">I liked profiles</div>
             <div class="card" style="background:#dee9ea;">
                 <div class="card-body" style="padding:10px !important;">
                     <?php if (sizeof($MyFavouritedProfiles)>0) {  ?>
@@ -272,15 +266,13 @@
                      }
                     ?> 
                 </div>
-                <?php if (sizeof($MyFavouritedProfiles)>=4) { ?>
                 <div style="clear:both;padding:3px;text-align:center;">
-                            <a href="<?php echo SiteUrl;?>MyContacts/MyFavorited">View All</a>
+                            <a href="<?php echo SiteUrl;?>MyContacts/MyFavorited">View All <?php echo $MyFavoritedCount['cnt'];?></a>
                          </div>
-                <?php } ?>
                  <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
                         <div style="text-align:center;">
-                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
+                            <h5 style="margin-top: 197px;color: #aaa;font-weight: normal;line-height: 19px;">recently you didn't<br> like any profiles </h5>
                         </div>
                     </div>
                     <?php } ?>
@@ -288,7 +280,6 @@
             </div>
          </div>
 </div>
-
 <?php $response = $webservice->getData("Member","GetMemberInfo");?>
     <script>
         <?php if($response['data']['WelcomeMsg']==0) { ?>
@@ -300,10 +291,10 @@
         }); 
         <?php } else { ?>
             <?php  if ($response['data']['IsMobileVerified']==0) { ?>
-                $('#verificationContent').html('<span style="color:red">Your mobile number not verify &nbsp;<a href="javascript:void(0)" onclick="MobileNumberVerification()">Verfiy now</a></span>');
+                $('#verificationContent').html('<span style="color:#666;font-size:13px;"><img src="assets/images/exclamation-mark.png" style="margin-top: -3px;margin-right: 3px;">&nbsp;Your mobile number is not verified. Click to&nbsp;<a href="javascript:void(0)" onclick="MobileNumberVerification()">verify now</a></span>');
                 setTimeout(function(){$("#verifydiv").show(500)},1500);
             <?php } else if ($response['data']['IsEmailVerified']==0) { ?>
-                $('#verificationContent').html('<span style="color:red">Your email address not verify &nbsp;<a href="javascript:void(0)" onclick="EmailVerification()">Verfiy now</a></span>');
+                $('#verificationContent').html('<span style="color:#666;font-size:13px;"><img src="assets/images/exclamation-mark.png" style="margin-top: -3px;margin-right: 3px;">&nbsp;Your email address is not verified.Click to &nbsp;<a href="javascript:void(0)" onclick="EmailVerification()">verify now</a></span>');
                 setTimeout(function(){$("#verifydiv").show(500)},1500);
             <?php } ?>
         <?php } ?>
@@ -325,129 +316,6 @@
         </div>
     </div>
     <?php } ?>
-<script>
-/*$(document).ready(function () {
-    var itemsMainDiv = ('#slideshow');
-    var itemsDiv = ('.resCon_a002');
-    var itemWidth = "";
-
-    $('.leftLst, .rightLst').click(function () {
-        var condition = $(this).hasClass("leftLst");
-        if (condition)
-            click(0, this);
-        else
-            click(1, this)
-    });
-
-    ResCarouselSize();
-    $(window).resize(function () {
-        ResCarouselSize();
-    });
-
-    //this function define the size of the items
-    function ResCarouselSize() {
-        var incno = 0;
-        var dataItems = ("data-items");
-        var itemClass = ('.item');
-        var id = 0;
-        var btnParentSb = '';
-        var itemsSplit = '';
-        var sampwidth = $(itemsMainDiv).width();
-        var bodyWidth = $('body').width();
-        $(itemsDiv).each(function () {
-            id = id + 1;
-            var itemNumbers = $(this).find(itemClass).length;
-            btnParentSb = $(this).parent().attr(dataItems);
-            itemsSplit = btnParentSb.split(',');
-            $(this).parent().attr("id", "resCon_a002" + id);
-
-
-            if (bodyWidth >= 1200) {
-                incno = itemsSplit[3];
-                itemWidth = sampwidth / incno;
-            }
-            else if (bodyWidth >= 992) {
-                incno = itemsSplit[2];
-                itemWidth = sampwidth / incno;
-            }
-            else if (bodyWidth >= 768) {
-                incno = itemsSplit[1];
-                itemWidth = sampwidth / incno;
-            }
-            else {
-                incno = itemsSplit[0];
-                itemWidth = sampwidth / incno;
-            }
-            $(this).css({ 'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers });
-            $(this).find(itemClass).each(function () {
-                $(this).outerWidth(itemWidth);
-            });
-
-            $(".leftLst").addClass("over");
-            $(".rightLst").removeClass("over");
-
-        });
-    }
-
-
-    //this function used to move the items
-    function ResCarousel(e, el, s) {
-        var leftBtn = ('.leftLst');
-        var rightBtn = ('.rightLst');
-        var translateXval = '';
-        var divStyle = $(el + ' ' + itemsDiv).css('transform');
-        var values = divStyle.match(/-?[\d\.]+/g);
-        var xds = Math.abs(values[4]);
-        if (e == 0) {
-            translateXval = parseInt(xds) - parseInt(itemWidth * s);
-            $(el + ' ' + rightBtn).removeClass("over");
-
-            if (translateXval <= itemWidth / 2) {
-                translateXval = 0;
-                $(el + ' ' + leftBtn).addClass("over");
-            }
-        }
-        else if (e == 1) {
-            var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
-            translateXval = parseInt(xds) + parseInt(itemWidth * s);
-            $(el + ' ' + leftBtn).removeClass("over");
-
-            if (translateXval >= itemsCondition - itemWidth / 2) {
-                translateXval = itemsCondition;
-                $(el + ' ' + rightBtn).addClass("over");
-            }
-        }
-        $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
-    }
-
-    //It is used to get some elements from btn
-    function click(ell, ee) {
-        var Parent = "#" + $(ee).parent().attr("id");
-        var slide = $(Parent).attr("data-slide");
-        ResCarousel(ell, Parent, slide);
-    }
-
-});  */
-</script>   
-
- 
-<script>
-/*$('.carousel.carousel-multi-item.v-2 .carousel-item').each(function(){
-  var next = $(this).next();
-  if (!next.length) {
-    next = $(this).siblings(':first');
-  }
-  next.children(':first-child').clone().appendTo($(this));
-
-  for (var i=0;i<4;i++) {
-    next=next.next();
-    if (!next.length) {
-      next=$(this).siblings(':first');
-    }
-    next.children(':first-child').clone().appendTo($(this));
-  } 
-});  */
-</script>
 <script>
         function showConfirmDelete(LatestID) {                                           
         $('#Delete').modal('show'); 
@@ -480,4 +348,4 @@
     function HideDiv(divid) {
         $('#mutprofile_div_'+divid).hide(500);       
     }
-         </script>
+</script>

@@ -200,7 +200,7 @@ $(document).ready(function() {
                             <label for="HowManyChildren" class="col-sm-2 col-form-label" id="howmanychildren">Children</label>
                             <div class="col-sm-4" id="childrencount_input">
                                     <select class="selectpicker form-control" data-live-search="true" id="HowManyChildren" name="HowManyChildren">
-                                    <option>Choose How Many Children</option>
+                                    <option value="-1">Choose How Many Children</option>
                                     <?php foreach($response['data']['NumberofBrother'] as $HowManyChildren) { ?>
                                         <option value="<?php echo $HowManyChildren['SoftCode'];?>" <?php echo (isset($_POST[ 'HowManyChildren'])) ? (($_POST[ 'HowManyChildren']==$HowManyChildren[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Children']==$HowManyChildren[ 'CodeValue']) ? " selected='selected' " : "");?>>
                                             <?php echo $HowManyChildren['CodeValue'];?></option>
@@ -211,7 +211,7 @@ $(document).ready(function() {
                             <label for="Description" class="col-sm-2 col-form-label" id="IsChildrenWithYou" style="text-align: right;">Is Children with you?</label>
                             <div class="col-sm-4" id="Childrenwithyou_input">
                                 <select class="selectpicker form-control" data-live-search="true" id="ChildrenWithYou" name="ChildrenWithYou">
-                                    <option>Choose Children With You</option>
+                                    <option value="-1">Choose Children With You</option>
                                     <option value="1" <?php echo (isset($_POST[ 'ChildrenWithYou'])) ? (($_POST[ 'ChildrenWithYou']==1) ? " selected='selected' " : "") : (($ProfileInfo['IsChildrenWithYou']==1)? " selected='selected' " : "");?>>Yes</option>
                                     <option value="0" <?php echo (isset($_POST[ 'ChildrenWithYou'])) ? (($_POST[ 'ChildrenWithYou']==0) ? " selected='selected' " : "") : (($ProfileInfo['IsChildrenWithYou']==0)? " selected='selected' " : "");?>>No</option>
                                 </select>

@@ -10,7 +10,7 @@
         }  
     }*/
    ?>
-    <?php
+   <?php
                 if (isset($_POST['BtnSave'])) {
                     
                     $target_dir = "uploads/";
@@ -21,9 +21,9 @@
                                         'image/png'
                                     );
                      
-                  if(($_FILES['File']['size'] >= 5000000) || ($_FILES["File"]["size"] == 0)) {
+                  if(($_FILES['File']['size'] >= 5000000)) {
                     $err++;
-                           echo "Please upload file. File must be less than 5 megabytes.";
+                           echo "File must be less than 5 megabytes.";
                     }
                             
                     if((!in_array($_FILES['File']['type'], $acceptable)) && (!empty($_FILES["File"]["type"]))) {
@@ -43,17 +43,14 @@
                     if ($err==0) {
                         $_POST['File']= $EducationDetails;
                         $res =$webservice->getData("Franchisee","AddEducationalDetails",$_POST);
-                       if ($response['status']=="success") {                
-                             echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm'</script>";
+                       /* echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
+                                                           : $dashboard->showErrorMsg($res['message']);   */
+                        if ($res['status']=="success") {                
+                             echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm'</script>";   
                         } else {
                             $errormessage = $response['message']; 
                         }
-                    } else {
-                        $res =$webservice->getData("Franchisee","AddEducationalDetails");
-                    }
-                } else {
-                     $res =$webservice->getData("Franchisee","AddEducationalDetails");
-                     
+                    } 
                 }
               
             ?>

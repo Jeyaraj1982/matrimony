@@ -1,12 +1,12 @@
-<div class="col-12 grid-margin" style="padding:0px !important">
+<div class="col-12 grid-margin bshadow padding0">
     <div class="card">
-        <div class="card-body" style="padding:15px !important">
-            <h4 class="card-title" style="font-size: 22px;margin-top:0px;margin-bottom:15px">Recently Who Favorited My Profile</h4>
-            <h5 style="color:#666">This page gives you quick access to view recently who favorited your profile.</h5>
+        <div class="card-body padding15">
+            <h4 class="card-title widget_title">Recently who liked my profile</h4>
+            <h5 class="widget_subtitle">This page gives you quick access to view recently who liked my profile.</h5>
         </div>
     </div>
 </div> 
-<div class="col-lg-12 grid-margin stretch-card" style="padding:0px !important;">
+<div class="col-lg-12 grid-margin stretch-card padding0">
 <?php
     $response = $webservice->getData("Member","GetWhoFavouriteMyProfiles");
     $Profiles = $response['data']; 
@@ -23,10 +23,10 @@
         </div>
     </div>
 <?php  } else { ?>
-    <div class="col-lg-12 grid-margin stretch-card bshadow" style="background:#fff;padding:90px;">
+    <div class="col-lg-12 grid-margin stretch-card bshadow padding90 bgwhite">
         <div class="card">
-            <div class="card-body" style="text-align:center;font-family:'Roboto'">
-                <img src="<?php echo ImageUrl;?>noprofile.svg" style="height:128px"><Br> 
+            <div class="card-body widget_message">
+                <img src="<?php echo ImageUrl;?>noprofile.svg"><Br><br><br>
                 No recently viewed profiles found at this time<br><br>
             </div>
         </div>
