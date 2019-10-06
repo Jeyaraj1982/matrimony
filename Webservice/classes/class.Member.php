@@ -540,11 +540,9 @@
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
-                                <div class="input-group">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title">Please verify your mobile number</h4>
                                     <h5 style="color: #777;line-height:20px;font-weight: 100;padding-top: 21px;">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen</h4>
-                                </div> 
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">+'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumber()">Change</h4>
                             </div>
@@ -576,6 +574,8 @@
 
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Please Verify Your Mobile</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="CheckVerification()">Continue</a>
@@ -694,9 +694,9 @@
                          <input type="hidden" value="'.$loginid.'" name="loginId">
                          <input type="hidden" value="'.$securitycode.'" name="reqId">                          
                             <div class="form-group">
-                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
+                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Mobile Number Verification</h4>
                             '.(($updatemsg!="") ? $updatemsg : "").'
-                                    <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
                             </div> 
                             <div style="text-align:left"> Dear '.$memberdata[0]['MemberName'].',<br>
                                 <h5 style="color: #777;line-height:20px;font-weight: 100;">Please enter the verification code which you have received on your mobile number ending with  +'.$memberdata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'</h5>
@@ -757,6 +757,8 @@
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Email Verification</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
@@ -801,6 +803,8 @@
 
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Email Verification</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
@@ -884,6 +888,8 @@
 
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Email Verification</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
@@ -920,10 +926,9 @@
                         <input type="hidden" value="'.$loginid.'" name="loginId">
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
-                                <div class="input-group">
-                                    <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Please verify your email</h4>
                                     '.(($updatemsg!="") ? $updatemsg : "").'
-                                    <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
                                 </div>
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/emailicon.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digits verification Code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
@@ -990,7 +995,8 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
+                           <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Please verify your email</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h5>
                             <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
@@ -3158,6 +3164,8 @@
              
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Mobile Number Verification</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
@@ -3180,12 +3188,11 @@
                          <form method="POST" id="'.$formid.'">
                          <input type="hidden" value="'.$_GET['callfrom'].'" name="callfrom">     
                          <input type="hidden" value="'.$loginid.'" name="loginId">
-                         <input type="hidden" value="'.$securitycode.'" name="reqId">                          
-                            <div class="form-group">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            '.(($updatemsg!="") ? $updatemsg : "").'
-                                    <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
-                            </div> 
+                         <input type="hidden" value="'.$securitycode.'" name="reqId">     
+                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          '.(($updatemsg!="") ? $updatemsg : "").'
+                         <h4 class="modal-title">Please verify your mobile number</h4>                     
+                            
                             <div style="text-align:left"> Dear '.$memberdata[0]['MemberName'].',<br>
                                 <h5 style="color: #777;line-height:20px;font-weight: 100;">Please enter the verification code which you have received on your mobile number ending with  +'.$memberdata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'</h5>
                             </div>
@@ -3222,6 +3229,8 @@
 
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Email Verification</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
@@ -3833,6 +3842,51 @@
              $Documents=$mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
              
              return Response::returnSuccess("success"."select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."'",array("Member"=>$Member[0],"Documents"=>$Documents[0]));
+         }
+         
+         function SendToInterest() {
+             
+             global $mysql,$loginInfo;
+             
+             $Profiles = $mysql->select("select SexCode,MemberID,ProfileID,ProfileCode from `_tbl_profiles` where ProfileCode='".$_GET['ProfileCode']."'"); 
+             if (sizeof($Profiles)==0) {
+                return Response::returnError("Couldn't favorite, please contact support team"); 
+             }
+             
+             $visitorsDetails =$mysql->select("select ProfileID,ProfileCode from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+             $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$visitorsDetails[0]['ProfileCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
+             if (sizeof($ProfileThumb)==0) {
+                 if ($Profiles[0]['SexCode']=="SX002"){
+                     $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
+                 } else { 
+                     $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
+                 }
+             } else {
+                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
+             }
+             
+             
+             $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");
+          
+             $id = $mysql->insert("_tbl_profiles_favourites",array("MemberID"           => $Profiles[0]['MemberID'],
+                                                                   "ProfileID"          => $Profiles[0]['ProfileID'],
+                                                                   "ProfileCode"        => $Profiles[0]['ProfileCode'],
+                                                                   "SendInterestMemberID"     => $loginInfo[0]['MemberID'],
+                                                                   "SendInterestProfileID"    => $visitorsDetails[0]['ProfileID'],
+                                                                   "SendInterestProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                                   "InterestedOn"           => date("Y-m-d H:i:s")));
+                                                                   
+             $mysql->insert("_tbl_latest_updates",array("MemberID"           => $Profiles[0]['MemberID'],
+                                                        "ProfileID"          => $Profiles[0]['ProfileID'],
+                                                        "ProfileCode"        => $Profiles[0]['ProfileCode'],
+                                                        "VisterMemberID"     => $loginInfo[0]['MemberID'],
+                                                        "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
+                                                        "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                        "ProfilePhoto"       => $ProfileThumbnail,
+                                                        "Subject"            => "has send interest request",
+                                                        "ViewedOn"           => date("Y-m-d H:i:s")));
+                                                            
+             return Response::returnSuccess($Profiles[0]['ProfileCode']." has send interest request.");                                               
          }     
      
      }  

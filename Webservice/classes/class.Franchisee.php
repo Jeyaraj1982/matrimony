@@ -757,10 +757,10 @@
                         }
                     }
                                                        
-                    $mysql->execute("update _tbl_members set MemberName='".$_POST['MemberName']."',
+                $mysql->execute("update _tbl_members set MemberName='".$_POST['MemberName']."',
                                                     EmailID='".$_POST['EmailID']."',
                                                     MobileNumber='".$_POST['MobileNumber']."',
-                                                    MobileNumberCountryCode='".$_POST['CountryCode']."',
+                                                    CountryCode='".$_POST['CountryCode']."',
                                                     IsActive='".$_POST['Status']."' where  MemberID='".$Member[0]['MemberID']."'");
       
      

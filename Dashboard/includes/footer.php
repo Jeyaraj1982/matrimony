@@ -19,7 +19,7 @@
         <script src="<?php echo SiteUrl?>assets/js/mcontroller.js?rand=<?php echo rand(3000,3300000);?>"></script>
         
         <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-            <div class="modal-dialog" style="width: 367px;">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div id="Mobile_VerificationBody" style="height: 315px;">
@@ -40,7 +40,7 @@
         <script src="<?php echo SiteUrl?>assets/js/fcontroller.js?rand=<?php echo rand(3000,3300000);?>"></script>
         
         <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" style="padding-top:200px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-    <div class="modal-dialog" style="width: 367px;">
+    <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-body">
                     <div id="Mobile_VerificationBody" style="height: 315px;">
@@ -59,7 +59,7 @@
         <script src="<?php echo SiteUrl?>assets/js/Admincontroller.js?rand=<?php echo rand(3000,3300000);?>"></script>
         
         <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" style="padding-top:200px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-    <div class="modal-dialog" style="width: 367px;">
+    <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-body">
                     <div id="Mobile_VerificationBody" style="height: 315px;">

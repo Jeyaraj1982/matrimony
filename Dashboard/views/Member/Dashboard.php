@@ -200,7 +200,8 @@
                 </div>
             </div>
         </div>
-        <br><div>
+        <br>
+        <div>
             <div class="member_dashboard_widget_title">Mutually liked profiles</div>
             <div class="card" style="background:#dee9ea">
                 <div class="card-body member_dashboard_widget_container" id="slideshow" >
@@ -227,9 +228,10 @@
         </div>
     </div> 
     <div class="col-5 grid-margin" style="max-width: 35.667%;">
+        <div>
             <div class="member_dashboard_widget_title">My Recently Viewed</div>
             <div class="card"  style="background:#dee9ea;">
-                <div class="card-body" style="padding:10px !important;">
+                <div class="card-body" style="padding:10px !important;height: 480px;">
                     <?php if (sizeof($MyRecentlyViewed)>0) { ?>
                 <div>
                     <?php
@@ -249,15 +251,12 @@
                     <?php } ?>
                 </div>
             </div>
-         </div> 
-</div>
-<div class="row">
-    <div class="col-7 grid-margin" style="flex: 0 0 600px;max-width: 600px;">
-    </div>
-     <div class="col-5 grid-margin" style="max-width: 35.667%;">
+        </div>
+         <br>            
+        <div>
             <div class="member_dashboard_widget_title">I liked profiles</div>
             <div class="card" style="background:#dee9ea;">
-                <div class="card-body" style="padding:10px !important;">
+                <div class="card-body" style="padding:10px !important;height: 480px;">
                     <?php if (sizeof($MyFavouritedProfiles)>0) {  ?>
                 <div>
                     <?php
@@ -278,6 +277,14 @@
                     <?php } ?>
                 </div>
             </div>
+        </div>
+    </div> 
+</div>
+<div class="row">
+    <div class="col-7 grid-margin" style="flex: 0 0 600px;max-width: 600px;">
+    </div>
+     <div class="col-5 grid-margin" style="max-width: 35.667%;">
+          
          </div>
 </div>
 <?php $response = $webservice->getData("Member","GetMemberInfo");?>

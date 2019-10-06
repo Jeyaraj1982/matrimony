@@ -29,6 +29,7 @@ function submitprofile() {
                          $('#ErrCaste').html("");
                          $('#ErrCommunity').html("");
                          $('#ErrNationality').html("");
+                         $('#ErrSex').html("");
                          
                          ErrorCount=0;
                          

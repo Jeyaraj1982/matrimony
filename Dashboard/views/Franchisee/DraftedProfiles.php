@@ -67,7 +67,7 @@
                                        <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:27px;"></span></div> 
                                        <div class="col-sm-4" style="float:right;font-size: 12px;">
                                                 <?php  echo "Created On: ".time_elapsed_string($Profile['CreatedOn']); ?><br> 
-                                                <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
+                                                <?php  echo "Last Saved: ".time_elapsed_string($Profile['LastUpdatedOn']); ?><br>
                                                 <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".putDateTime($Profile['LastSeen']) : ""; ?>
                                                 <br>
                                                 <br>
