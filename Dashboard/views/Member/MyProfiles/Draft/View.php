@@ -108,10 +108,10 @@ text-align: left;
                     </div>
                     <?php if($ProfileInfo['MaritalStatusCode']!= "MST001"){?>
                     <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Children</label>
+                            <label class="col-sm-2 col-form-label" style="color:#737373;">Children</label>
                             <label class="col-sm-2 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Children']);?></label> 
-                           <?php if($ProfileInfo['Children']==1){?>   
-                            <label class="col-sm-3 col-form-label">Children with you</label>
+                           <?php if($ProfileInfo['Children']>=1){?>   
+                            <label class="col-sm-3 col-form-label" style="color:#737373;">Children with you</label>
                             <label class="col-sm-2 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
                             <?php if(trim($ProfileInfo['IsChildrenWithYou'])=="1") {  echo "Yes"; } else  { echo "No";};?></label>  
                            <?php } ?> 
