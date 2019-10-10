@@ -21,7 +21,7 @@
         <div class="form-group row">
             <label for="Community" class="col-sm-2 col-form-label">Profile Created For<span id="star">*</span></label>
             <div class="col-sm-4">
-                <select class="selectpicker form-control" data-live-search="true" id="ProfileFor" name="ProfileFor">
+                <select class="selectpicker form-control" data-live-search="true" id="ProfileFor" name="ProfileFor" onchange="DraftProfile.changeAboutLable();">
                     <option value="0">Choose Profile Sign In</option>
                     <?php foreach($response['data']['ProfileSignInFor'] as $ProfileFor) { ?>
                         <option value="<?php echo $ProfileFor['CodeValue'];?>" <?php echo (isset($_POST[ 'ProfileFor'])) ? (($_POST[ 'ProfileFor']==$ProfileFor[ 'CodeValue']) ? " selected='selected' " : "") : (($ProfileInfo[ 'ProfileFor']==$ProfileFor[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $ProfileFor['CodeValue'];?></option>
@@ -118,13 +118,37 @@
         <div class="form-group row">
             <label for="Religion" class="col-sm-2 col-form-label">Religion<span id="star">*</span></label>
             <div class="col-sm-4">
-                <select class="selectpicker form-control" data-live-search="true" id="Religion" name="Religion">
+                <select class="selectpicker form-control" data-live-search="true" id="Religion" name="Religion" onchange="DraftProfile.addOtherReligionName()">
                     <option value="0">Choose Religion</option>
                     <?php foreach($response['data']['Religion'] as $Religion) { ?>
                     <option value="<?php echo $Religion['SoftCode'];?>" <?php echo (isset($_POST[ 'Religion'])) ? (($_POST[ 'Religion']==$Religion[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Religion']==$Religion[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $Religion['CodeValue'];?></option>
                     <?php } ?>
                 </select>
                 <span class="errorstring" id="ErrReligion"><?php echo isset($ErrReligion)? $ErrReligion : "";?></span>
+            </div>
+            <label class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-4"  id="Religion_additionalinfo"><input type="text" class="form-control" id="ReligionOthers" name="ReligionOthers" value="<?php echo (isset($_POST['ReligionOthers']) ? $_POST['ReligionOthers'] : $ProfileInfo['OtherReligion']);?>">
+            <span class="errorstring" id="ErrReligionOthers"><?php echo isset($ErrReligionOthers)? $ErrReligionOthers : "";?></span></div>
+        </div>
+        <div class="form-group row">
+            <label for="Caste" class="col-sm-2 col-form-label">Caste<span id="star">*</span></label>
+            <div class="col-sm-4">
+                <select class="selectpicker form-control" data-live-search="true" id="Caste" name="Caste"  onchange="DraftProfile.addOtherCasteName()">
+                <option value="0">Choose Caste</option>
+                <?php foreach($response['data']['Caste'] as $Caste) { ?>
+                <option value="<?php echo $Caste['SoftCode'];?>" <?php echo (isset($_POST[ 'Caste'])) ? (($_POST[ 'Caste']==$Caste[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'CasteCode']==$Caste[ 'SoftCode']) ? " selected='selected' " : "");?>><?php echo trim($Caste['CodeValue']);?></option>
+                <?php } ?>
+                </select>
+                <span class="errorstring" id="ErrCaste"><?php echo isset($ErrCaste)? $ErrCaste : "";?></span>
+            </div>
+            <label class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-4"  id="CasteName_additionalinfo"><input type="text" class="form-control" id="OtherCaste" name="OtherCaste" value="<?php echo (isset($_POST['OtherCaste']) ? $_POST['OtherCaste'] : $ProfileInfo['OtherCaste']);?>">
+            <span class="errorstring" id="ErrOtherCaste"><?php echo isset($ErrOtherCaste)? $ErrOtherCaste : "";?></span></div>
+        </div>
+        <div class="form-group row">
+             <label for="SubCaste" class="col-sm-2 col-form-label" >Sub Caste<span id="star">*</span></label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" name="SubCaste" id="SubCaste" value="<?php echo (isset($_POST['SubCaste']) ? $_POST['SubCaste'] : $ProfileInfo['SubCaste']);?>" placeholder="Sub Caste">
             </div>
             <label for="Community" class="col-sm-2 col-form-label" style="text-align: right;">Community<span id="star">*</span></label>
             <div class="col-sm-4">
@@ -135,22 +159,6 @@
                     <?php } ?>
                 </select>
                 <span class="errorstring" id="ErrCommunity"><?php echo isset($ErrCommunity)? $ErrCommunity : "";?></span>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="Caste" class="col-sm-2 col-form-label">Caste<span id="star">*</span></label>
-            <div class="col-sm-4">
-                <select class="selectpicker form-control" data-live-search="true" id="Caste" name="Caste">
-                <option value="0">Choose Caste</option>
-                <?php foreach($response['data']['Caste'] as $Caste) { ?>
-                <option value="<?php echo $Caste['SoftCode'];?>" <?php echo (isset($_POST[ 'Caste'])) ? (($_POST[ 'Caste']==$Caste[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'CasteCode']==$Caste[ 'SoftCode']) ? " selected='selected' " : "");?>><?php echo trim($Caste['CodeValue']);?></option>
-                <?php } ?>
-                </select>
-                <span class="errorstring" id="ErrCaste"><?php echo isset($ErrCaste)? $ErrCaste : "";?></span>
-            </div>
-            <label for="SubCaste" class="col-sm-2 col-form-label" style="text-align: right;">Sub Caste<span id="star">*</span></label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" name="SubCaste" id="SubCaste" value="<?php echo (isset($_POST['SubCaste']) ? $_POST['SubCaste'] : $ProfileInfo['SubCaste']);?>" placeholder="Sub Caste">
             </div>
         </div>
         <div class="form-group row">
@@ -166,7 +174,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="AboutMe" class="col-sm-2 col-form-label">About Me<span id="star">*</span></label>
+            <label for="AboutMe" class="col-sm-2 col-form-label" id="Aboutlabel"></label>
             <div class="col-sm-10">                                                        
                 <textarea style="margin-bottom:5px;" class="form-control" maxlength="250" name="AboutMe" id="AboutMe"><?php echo (isset($_POST['AboutMe']) ? $_POST['AboutMe'] : $ProfileInfo['AboutMe']);?></textarea>
                 Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span>
@@ -196,6 +204,9 @@
             $('#textarea_feedback').html(text_length + ' characters typed');
         });
         getHowmanyChildrenInfo();
+        DraftProfile.addOtherReligionName();
+        DraftProfile.addOtherCasteName();
+        DraftProfile.changeAboutLable();
     });
 </script>    
 <?php include_once("settings_footer.php");?>                

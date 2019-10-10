@@ -76,6 +76,15 @@
         }
     );
     //$.ajax({url: API_URL + "m=Member&a=DeletDocumentAttachments",success: function(result2){$('#model_body').html(result2);}});
+} 
+function DeleteEducationAttachmentOnly(AttachmentID) {
+        var param = $("#form_"+AttachmentID).serialize();
+        $('#DeleteNow_body').html(preloader);
+        $.post(API_URL + "m=Member&a=DeleteEducationAttachmentOnly", param, function(result2) {                                             
+            $('#DeleteNow_body').html(result2);                                     
+          //  $('#Documentview_'+AttachmentID).hide();
+        }
+    );
 }    
 </script>       
 <?php include_once("settings_footer.php");?>                    

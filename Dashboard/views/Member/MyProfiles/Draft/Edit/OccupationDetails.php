@@ -24,7 +24,7 @@
                                         'image/png'
                                     );
                      
-                  if(($_FILES['File']['size'] >= 5000000) || ($_FILES["File"]["size"] == 0)) {
+                  if(($_FILES['File']['size'] >= 5000000)) {
                     $err++;
                            echo "Please upload file. File must be less than 5 megabytes.";
                     }
@@ -65,29 +65,38 @@ function submitprofile() {
                          $('#ErrTypeofOccupation').html("");
                          $('#ErrIncomeRange').html("");
                          $('#ErrWCountry').html("");
+                         $('#ErrOtherOccupation').html("");
                        
                          ErrorCount=0;
                          
-                           if($("#EmployedAs").val()=="0"){
+                         if($("#EmployedAs").val()=="0"){
                             document.getElementById("ErrEmployedAs").innerHTML="Please select employed as"; 
                              ErrorCount++;
-                         } 
-                         if($("#OccupationType").val()=="0"){
-                            document.getElementById("ErrOccupationType").innerHTML="Please select occupation"; 
-                             ErrorCount++;
                          }
-                         if($("#TypeofOccupation").val()=="0"){
-                            document.getElementById("ErrTypeofOccupation").innerHTML="Please select ccupation type"; 
-                             ErrorCount++;
-                         } 
-                         if($("#IncomeRange").val()=="0"){
-                            document.getElementById("ErrIncomeRange").innerHTML="Please select annual income"; 
-                             ErrorCount++;
-                         }
-                         if($("#WCountry").val()=="0"){
-                            document.getElementById("ErrWCountry").innerHTML="Please select country"; 
-                             ErrorCount++;
-                         }
+                          if ($('#EmployedAs').val()=="O001") {   
+                             if($("#OccupationType").val()=="0"){
+                                document.getElementById("ErrOccupationType").innerHTML="Please select occupation"; 
+                                 ErrorCount++;
+                             }
+                             if($("#TypeofOccupation").val()=="0"){
+                                document.getElementById("ErrTypeofOccupation").innerHTML="Please select ccupation type"; 
+                                 ErrorCount++;
+                             } 
+                             if($("#IncomeRange").val()=="0"){
+                                document.getElementById("ErrIncomeRange").innerHTML="Please select annual income"; 
+                                 ErrorCount++;
+                             }
+                             if($("#WCountry").val()=="0"){
+                                document.getElementById("ErrWCountry").innerHTML="Please select country"; 
+                                 ErrorCount++;
+                             }
+                          }
+                          if ($('#OccupationType').val()=="OT112") {  
+                              if($("#OtherOccupation").val()==""){
+                                document.getElementById("ErrOtherOccupation").innerHTML="Please enter your occupation"; 
+                                 ErrorCount++;
+                             }
+                          }
                          
                         if (ErrorCount==0) {
                             return true;                        
@@ -98,18 +107,6 @@ function submitprofile() {
     
     
 }
-$(document).ready(function() {
-    var text_max = 250;
-    var text_length = $('#OccupationDetails').val().length;
-    $('#textarea_feedback').html(text_length + ' characters typed');
-
-    $('#OccupationDetails').keyup(function() {
-        var text_length = $('#OccupationDetails').val().length;
-        var text_remaining = text_max - text_length;
-
-        $('#textarea_feedback').html(text_length + ' characters typed');
-    });
-});
 </script>
 <div class="col-sm-10" style="margin-top: -8px;">
 <form method="post" action="" name="form1" id="form1" enctype="multipart/form-data" onsubmit="return submitprofile();">
@@ -117,7 +114,7 @@ $(document).ready(function() {
     <div class="form-group row">
         <label for="Employed As" class="col-sm-2 col-form-label">Employed As<span id="star">*</span></label>
         <div class="col-sm-4">
-            <select class="selectpicker form-control" data-live-search="true" id="EmployedAs" name="EmployedAs">
+            <select class="selectpicker form-control" data-live-search="true" id="EmployedAs" name="EmployedAs"  onchange="DraftProfile.addOtherWorkingDetails();">
                 <option value="0">Choose Employed As</option>
                 <?php foreach($response['data']['EmployedAs'] as $EmployedAs) { ?>
                     <option value="<?php echo $EmployedAs['SoftCode'];?>" <?php echo (isset($_POST[ 'EmployedAs'])) ? (($_POST[ 'EmployedAs']==$EmployedAs[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'EmployedAs']==$EmployedAs[ 'CodeValue']) ? " selected='selected' " : "");?>>
@@ -126,20 +123,10 @@ $(document).ready(function() {
             </select>
             <span class="errorstring" id="ErrEmployedAs"><?php echo isset($ErrEmployedAs)? $ErrEmployedAs : "";?></span>
         </div>
-        <label for="OccupationType" class="col-sm-2 col-form-label">Occupation<span id="star">*</span></label>
-        <div class="col-sm-4">
-            <select class="selectpicker form-control" data-live-search="true" id="OccupationType" name="OccupationType">
-                <option value="0">Choose Occupatin Types</option>
-                <?php foreach($response['data']['Occupation'] as $OccupationType) { ?>
-                    <option value="<?php echo $OccupationType['SoftCode'];?>" <?php echo (isset($_POST[ 'OccupationType'])) ? (($_POST[ 'OccupationType']==$OccupationType[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'OccupationType']==$OccupationType[ 'CodeValue']) ? " selected='selected' " : "");?>>
-                        <?php echo $OccupationType['CodeValue'];?>
-                            <?php } ?>      </option>
-            </select>
-            <span class="errorstring" id="ErrOccupationType"><?php echo isset($ErrOccupationType)? $ErrOccupationType : "";?></span>
-        </div>
     </div>
+    <div id="Working_additionalinfo">
     <div class="form-group row">
-        <label for="TypeofOccupation" class="col-sm-2 col-form-label">OccupationType<span id="star">*</span></label>
+        <label for="TypeofOccupation" class="col-sm-2 col-form-label">Occupation Type<span id="star">*</span></label>
         <div class="col-sm-4">
             <select class="selectpicker form-control" data-live-search="true" id="TypeofOccupation" name="TypeofOccupation">
                 <option value="0">Choose Type of Occupation</option>
@@ -150,7 +137,32 @@ $(document).ready(function() {
             </select>
             <span class="errorstring" id="ErrTypeofOccupation"><?php echo isset($ErrTypeofOccupation)? $ErrTypeofOccupation : "";?></span>
         </div>
-        <label for="IncomeRange" class="col-sm-2 col-form-label">Annual Income<span id="star">*</span></label>
+    </div>
+    <div class="form-group row">
+      <label for="OccupationType" class="col-sm-2 col-form-label">Occupation<span id="star">*</span></label>
+        <div class="col-sm-4">
+            <select class="selectpicker form-control" data-live-search="true" id="OccupationType" name="OccupationType" onchange="DraftProfile.addOtherOccupation();">
+                <option value="0">Choose Occupatin Types</option>
+                <?php foreach($response['data']['Occupation'] as $OccupationType) { ?>
+                    <option value="<?php echo $OccupationType['SoftCode'];?>" <?php echo (isset($_POST[ 'OccupationType'])) ? (($_POST[ 'OccupationType']==$OccupationType[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'OccupationType']==$OccupationType[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                        <?php echo $OccupationType['CodeValue'];?>
+                            <?php } ?>      </option>
+            </select>
+            <span class="errorstring" id="ErrOccupationType"><?php echo isset($ErrOccupationType)? $ErrOccupationType : "";?></span>
+        </div>
+        <label class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-4"  id="Occupation_additionalinfo"><input type="text" class="form-control" id="OtherOccupation" name="OtherOccupation" value="<?php echo (isset($_POST['OtherOccupation']) ? $_POST['OtherOccupation'] : $ProfileInfo['OtherOccupation']);?>">
+            <span class="errorstring" id="ErrOtherOccupation"><?php echo isset($ErrOtherOccupation)? $ErrOtherOccupation : "";?></span></div>
+    </div> 
+    <div class="form-group row">
+        <label for="OccupationDescription" class="col-sm-2 col-form-label">Description<span id="star">*</span></label>
+        <div class="col-sm-10">                                                                           
+            <input type="text" class="form-control" maxlength="250" name="OccupationDescription" id="OccupationDescription" value="<?php echo (isset($_POST['OccupationDescription']) ? $_POST['OccupationDescription'] : $ProfileInfo['OccupationDescription']);?>">
+        </div>
+    </div>
+                                                                
+    <div class="form-group row">
+         <label for="IncomeRange" class="col-sm-2 col-form-label">Annual Income<span id="star">*</span></label>
         <div class="col-sm-4">
             <select class="selectpicker form-control" data-live-search="true" id="IncomeRange" name="IncomeRange">
                 <option value="0">Choose IncomeRange</option>
@@ -161,9 +173,7 @@ $(document).ready(function() {
             </select>
             <span class="errorstring" id="ErrIncomeRange"><?php echo isset($ErrIncomeRange)? $ErrIncomeRange : "";?></span>
         </div>
-    </div>                                                             
-    <div class="form-group row">
-         <label for="Country" class="col-sm-2 col-form-label">Country<span id="star">*</span></label>
+         <label for="Country" class="col-sm-2 col-form-label">Worked Place<span id="star">*</span></label>
             <div class="col-sm-4">
                 <select class="selectpicker form-control" data-live-search="true" id="WCountry" name="WCountry">
                     <option value="0">Choose Country</option>
@@ -181,9 +191,10 @@ $(document).ready(function() {
             <?php if(sizeof($ProfileInfo['OccupationAttachFileName'])==0){  ?>
                 <input type="File" id="File" name="File" Placeholder="File">
             <?php }  else {  ?>  
-                <img src="<?php echo AppUrl;?>uploads/<?php echo $ProfileInfo['OccupationAttachFileName'];?>" style="height:120px;"><br><input type="File" id="File" name="File" Placeholder="File">
+                <img src="<?php echo AppUrl;?>uploads/<?php echo $ProfileInfo['OccupationAttachFileName'];?>" style="height:120px;"><br><a href="javascript:void(0)" onclick="DraftProfile.showAttachmentOccupation('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')"><img src="<?php echo AppUrl ;?>assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a><br><input type="File" id="File" name="File" Placeholder="File">
        <?php }?>
        </div>
+    </div>
     </div>
      <div class="form-group row">
         <label for="Details" class="col-sm-2 col-form-label">Details<span id="star">*</span></label>
@@ -205,4 +216,35 @@ $(document).ready(function() {
     </div>
 </form>
 </div>
+<div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+    <div class="modal-dialog">
+        <div class="modal-content" id="DeleteNow_body" style="height:260px"></div>
+    </div>
+</div>
+<script>
+   $(document).ready(function() {
+    var text_max = 250;
+    var text_length = $('#OccupationDetails').val().length;
+    $('#textarea_feedback').html(text_length + ' characters typed');
+
+    $('#OccupationDetails').keyup(function() {
+        var text_length = $('#OccupationDetails').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback').html(text_length + ' characters typed');
+    });
+        DraftProfile.addOtherOccupation();
+        DraftProfile.addOtherWorkingDetails();
+    });
+    
+   function DeleteOccupationAttachmentOnly(ProfileID) {
+        var param = $("#form_"+ProfileID).serialize();
+        $('#DeleteNow_body').html(preloader);
+        $.post(API_URL + "m=Member&a=DeleteOccupationAttachmentOnly", param, function(result2) {                                             
+            $('#DeleteNow_body').html(result2);                                     
+          //  $('#Documentview_'+AttachmentID).hide();
+        }
+    );
+}  
+</script>  
 <?php include_once("settings_footer.php");?>                    

@@ -1048,16 +1048,25 @@
                                                            `MotherTongueCode`  = '".$_POST['Language']."',
                                                            `MotherTongue`      = '".trim($MotherTongue[0]['CodeValue'])."', 
                                                            `ReligionCode`      = '".$_POST['Religion']."',
+                                                           `OtherReligion`     = '',
                                                            `Religion`          = '".trim($Religion[0]['CodeValue'])."',
                                                            `CasteCode`         = '".$_POST['Caste']."',
-                                                           `Caste`             = '".trim($Caste[0]['CodeValue'])."', 
-                                                           `SubCaste`             = '".$_POST['SubCaste']."',
+                                                           `Caste`             = '".trim($Caste[0]['CodeValue'])."',
+                                                           `OtherCaste`        = '', 
+                                                           `SubCaste`          = '".$_POST['SubCaste']."',
                                                            `CommunityCode`     = '".$_POST['Community']."',  
                                                            `Community`         = '".trim($Community[0]['CodeValue'])."',
                                                            `NationalityCode`   = '".$_POST['Nationality']."',   
                                                            `Nationality`        = '".trim($Nationality[0]['CodeValue'])."',
                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                            `AboutMe`           = '".$_POST['AboutMe']."'";  
+                if ($_POST['Religion']=="RN009") {
+                $updateSql .= " ,OtherReligion ='".$_POST['ReligionOthers']."'";
+                }
+                if ($_POST['Caste']=="CSTN248") {
+                $updateSql .= " ,OtherCaste ='".$_POST['OtherCaste']."'";
+                }
+                                
              if ($_POST['MaritalStatusCode'] != "MST001") {
                  if($_POST['HowManyChildren']==-1){
                  return Response::returnError("Please select how many children");
@@ -1578,6 +1587,28 @@
                        </div>';
 
          }
+         
+          function DeleteEducationAttachmentOnly() {
+
+             global $mysql,$loginInfo;
+                                                                                 
+             $ProfileCode= $_POST['ProfileID'];
+             
+             $updateSql = "update `_tbl_draft_profiles_education_details` set `FileName` = '' where `AttachmentID`='".$_POST['AttachmentID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
+             $mysql->execute($updateSql);
+             $updateSql = "update `_tbl_draft_profile_education_attachments` set `FileName` = '' where `AttachmentID`='".$_POST['AttachmentID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
+             $mysql->execute($updateSql);  
+          
+               return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirmation For Remove</h4>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Attachment has been removed successfully.</h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/EducationDetails/'.$ProfileCode.'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                       </div>';                             
+
+         }
+         
          function GetCodeMasterDatas() {
              return Response::returnSuccess("success",array("Gender"        => CodeMaster::getData("SEX")));
          }
@@ -1635,7 +1666,7 @@
              $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'"); 
              $id = $mysql->insert("_tbl_draft_profiles_education_details",array("EducationDetails" => $_POST['Educationdetails'],
                                                                   "EducationDegree"  => $_POST['EducationDegree'],
-                                                                  "EducationRemarks"  => $_POST['EducationRemarks'],
+                                                                 // "EducationRemarks"  => $_POST['EducationRemarks'],
                                                                   "EducationDescription"  => $_POST['EducationDescription'],
                                                                   "FileName"            => $_POST['File'],
                                                                   "ProfileID"        => $profile[0]['ProfileID'],

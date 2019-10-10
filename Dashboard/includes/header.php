@@ -82,6 +82,8 @@
            .padding0 {padding:0px !important}
            .padding90 {padding:90px !important}
            .bgwhite {background:#fff !important}
+           #server_message_error {color:red}
+           #server_message_success {color:green}
         </style>
         <script>
             var AppUrl = "<?php echo AppUrl;?>";

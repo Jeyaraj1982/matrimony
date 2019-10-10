@@ -170,7 +170,7 @@
            $.ajax({url: API_URL + "m=Member&a=SendToInterest",success: function(result2){}});
 
         //});
-    }
+    }                                    
     
                                      
     var DraftProfile = {
@@ -186,6 +186,7 @@
             $('#ErrCaste').html("");
             $('#ErrCommunity').html("");
             $('#ErrNationality').html(""); 
+            $('#ErrReligionOthers').html(""); 
             
             ErrorCount=0;
             
@@ -238,9 +239,16 @@
                 ErrorCount++; 
             }
             
+            if ($('#Religion').val()=="RN009") {
+                IsNonEmpty("ReligionOthers","ErrReligionOthers","Please enter your religion name");
+            }
+            if ($('#Caste').val()=="CSTN248") {
+                IsNonEmpty("OtherCaste","ErrOtherCaste","Please enter your caste name");
+            }   
+            
             return (ErrorCount==0) ? true : false;
          
-        },
+        },                                                                    
         showConfirmDeleteAttachmentEducationalInformation:function(AttachmentID,ProfileID,EducationDetails,EducationDegree){
             $('#DeleteNow').modal('show'); 
             var content = '<div class="Publish_body" style="padding:20px">'
@@ -277,9 +285,45 @@
              $('#DeleteNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
                         +'<div  style="height: 315px;">'
+                         + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
+                         + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
+                         + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
                             + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                            + '<h4 class="modal-title">Education Attachment</h4> <br>'
+                            + '<h4 class="modal-title">Education Attachment</h4>'
+                              + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
                              + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                             + '<div style="text-align:center"><a href="javascript:void(0)" onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')"><img src="'+AppUrl+'assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a></div>'
+                        + '</div>'
+                        + '</div>'
+                    +  '</div>';                                                                                                
+            $('#DeleteNow_body').html(content);
+        },
+           showAttachmentEducationInformationForView:function(AttachmentID,ProfileID,FileName){
+             $('#DeleteNow').modal('show'); 
+      var content = '<div class="Publish_body" style="padding:20px">'
+                        +'<div  style="height: 315px;">'
+                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                            + '<h4 class="modal-title">Education Attachment</h4>'
+                             + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div><br>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                        + '</div>'
+                    +  '</div>';                                                                                                
+            $('#DeleteNow_body').html(content);
+        },
+        showAttachmentOccupation:function(ProfileCode,MemberID,ProfileID,FileName){
+             $('#DeleteNow').modal('show'); 
+      var content = '<div class="Publish_body" style="padding:20px">'
+                        +'<div  style="height: 315px;">'
+                         + '<form method="post" id="form_'+ProfileCode+'" name="form_'+ProfileCode+'" > '
+                         + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
+                         + '<input type="hidden" value="'+MemberID+'" name="MemberID">'
+                         + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                            + '<h4 class="modal-title">Occupation Attachment</h4>'
+                              + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                             + '<div style="text-align:center"><a href="javascript:void(0)" onclick="DeleteOccupationAttachmentOnly(\''+ProfileID+'\')"><img src="'+AppUrl+'assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a></div>'
+                        + '</div>'
                         + '</div>'
                     +  '</div>';                                                                                                
             $('#DeleteNow_body').html(content);
@@ -304,7 +348,7 @@
             }
             if ($('#MotherContact').val().trim().length>0) {
                 IsMobileNumber("MotherContact","ErrMotherContact","Please Enter Valid Mobile Number");
-            }
+            }                                                                                                        
             
         if (ErrorCount==0) {
                             return true;
@@ -313,6 +357,64 @@
                         }   
                         
         },
+        addOtherReligionName: function() {
+        if ($('#Religion').val()=="RN009") {
+            $('#Religion_additionalinfo').show();
+        } else {
+            $('#Religion_additionalinfo').hide();
+        }
+        },
+        addOtherCasteName: function() {
+            if ($('#Caste').val()=="CSTN248") {
+                $('#CasteName_additionalinfo').show();
+            } else {
+                $('#CasteName_additionalinfo').hide();
+            }
+        },
+        addOtherOccupation: function() {
+            if ($('#OccupationType').val()=="OT112") {
+                $('#Occupation_additionalinfo').show();
+            } else {
+                $('#Occupation_additionalinfo').hide();
+            }
+        },
+        addOtherWorkingDetails: function() {
+            if ($('#EmployedAs').val()=="O001") {
+                $('#Working_additionalinfo').show();
+            } else {
+                $('#Working_additionalinfo').hide();
+            }
+        },
+        
+        changeAboutLable: function() {
+        if ($('#ProfileFor').val()=="Myself") {
+            $('#Aboutlabel').html("About Me<span style='color:red'>*</span>");                                                         
+        }
+        if ($('#ProfileFor').val()=="Brother") {
+            $('#Aboutlabel').html("About My Brother<span style='color:red'>*</span>");
+        }
+        if ($('#ProfileFor').val()=="Sister") {
+            $('#Aboutlabel').html("About My Sister<span style='color:red'>*</span>");
+        }
+        if ($('#ProfileFor').val()=="Daughter") {
+            $('#Aboutlabel').html("About My Daughter<span style='color:red'>*</span>");
+        }
+        if ($('#ProfileFor').val()=="Son") {
+            $('#Aboutlabel').html("About My Son<span style='color:red'>*</span>");
+        }
+        if ($('#ProfileFor').val()=="Sister In Law") {
+            $('#Aboutlabel').html("About My Sister In Law<span style='color:red'>*</span>");
+        }
+        if ($('#ProfileFor').val()=="Brother In Law") {
+            $('#Aboutlabel').html("About My Brother In Law<span style='color:red'>*</span>");
+        }
+        if ($('#ProfileFor').val()=="Son In Law") {
+            $('#Aboutlabel').html("About My Son In Law<span style='color:red'>*</span>");
+        }
+        if ($('#ProfileFor').val()=="Daughter In Law") {
+            $('#Aboutlabel').html("About My Daughter In Law<span style='color:red'>*</span>");
+        }
+    },
         
         Personal:function() {
             alert("personal");

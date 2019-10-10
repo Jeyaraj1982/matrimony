@@ -63,7 +63,6 @@ text-align: left;
         <div class="card-body">
          <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Profile Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
          </div>
               <div class="form-group row">
                 <div class="col-sm-5">
@@ -108,10 +107,22 @@ text-align: left;
                     </div>
                     <?php }?>
                     <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Religion']);?></label>
+                        <label class="col-sm-12 col-form-label" style="color:#737373;">
+                        <?php if($ProfileInfo['ReligionCode']== "RN009"){?>
+                            <?php echo trim($ProfileInfo['Religion']);?> , <?php echo trim($ProfileInfo['OtherReligion']);?>
+                        <?php } else { ?>
+                             <?php echo trim($ProfileInfo['Religion']);?>  
+                        <?php } ?> 
+                    </label>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Caste']);?></label>
+                   <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;">
+                        <?php if($ProfileInfo['CasteCode']== "CSTN248"){?>
+                           <?php echo trim($ProfileInfo['Caste']);?> , <?php echo trim($ProfileInfo['OtherCaste']);?> 
+                        <?php } else { ?>
+                             <?php echo trim($ProfileInfo['Caste']);?>  
+                        <?php } ?> 
+                    </label>
                     </div>
                      <?php if((strlen(trim($ProfileInfo['SubCaste'])))>0){?>
                     <div class="form-group row">
@@ -140,8 +151,17 @@ text-align: left;
   <div class="card">
     <div class="card-body">
      <div class="form-group row">
-            <div class="col-sm-6"><h4 class="card-title">About Me</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
+            <div class="col-sm-6"><h4 class="card-title">
+            <?php if ( trim($ProfileInfo['ProfileFor'])=="Myself") { echo "About Myself"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother"){ echo "About My Brother"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister"){ echo "About My Sister"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter"){ echo "About My Daughter"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Son"){ echo "About My Son"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister In Law"){ echo "About My Sister In Law"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother In Law"){ echo "About My Brother In Law"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Son In Law"){ echo "About My Son In Law"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter In Law"){ echo "About My Daughter In Law"; }?>
+            </h4></div>
          </div>
          <table>           
            <?php echo trim($ProfileInfo['AboutMe']);?>
@@ -159,9 +179,9 @@ text-align: left;
          <table class="table table-bordered" id="doctable">           
             <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">
                 <tr>
-                    <th>Qualification</th>
-                    <th>Education Degree</th>
-                    <th>Remarks</th>
+                     <th>Education</th>
+                    <th>Education Details</th>
+                    <th>Attachments</th>
                 </tr>
             </thead>
             <tbody>
@@ -169,11 +189,14 @@ text-align: left;
                 <?php foreach($EducationAttachment as $Document) { ?>
                 <tr>    
                     <td style="text-align:left"><?php echo $Document['EducationDetails'];?></td>
-                    <td style="text-align:left"><?php echo $Document['EducationDegree'];?></td>
-                    <td style="text-align:left"><?php echo $Document['EducationRemarks'];?></td>
+                    <td style="text-align:left"><?php echo $Document['EducationDegree'];?><BR><?php echo $Document['EducationDescription'];?></td>
+                    <td>   
+                        <?php if($Document['FileName']>0){ ?>
+                            <?php echo $Document['IsVerified']== 1 ? "Attachment Verifiled" : "Attached "; ?>   <br>
+                             <a href="javascript:void(0)" onclick="AttachmentEducationInformation('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
+                        <?php } else { echo "Not Attach"; }?></td>
                 </tr>
                 <?php } 
-            
             } else {?>
                 <tr>    
                     <td colspan="3" style="text-align:center">No datas found</td>
@@ -189,7 +212,6 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Occupation Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Employed As</label>                 
@@ -216,7 +238,6 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Family Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's Name</label>                
@@ -306,7 +327,6 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Physical Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Physically Impaired?</label>         
@@ -380,7 +400,6 @@ text-align: left;
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Horoscope Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" >Date of birth</label>               
@@ -468,7 +487,6 @@ text-align: left;
     <div class="card-body">
     <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Partner's Expectations</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
          </div>
         <div class="form-group row">                                                                                                                                                                                             
             <label class="col-sm-2 col-form-label">Age </label>                       
@@ -510,7 +528,6 @@ text-align: left;
     <div class="card-body">
     <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Communication Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="#">Edit</a></div>
          </div>
         <div class="form-group row">                                                   
             <label class="col-sm-2 col-form-label">Email ID</label>                    
@@ -605,7 +622,32 @@ text-align: left;
 </div>
 </div>
 </form>
+<div class="modal" id="ViewEducationAttach" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+            <div class="modal-dialog" style="width: 367px;">
+                <div class="modal-content" id="ViewEducationAttach_body" style="height:315px">
+            
+                </div>
+            </div>
+        </div>
 
+<script>
+function AttachmentEducationInformation(AttachmentID,ProfileID,FileName) {
+      $('#ViewEducationAttach').modal('show'); 
+      var content = '<div class="ViewEducationAttach_body" style="padding:20px">'
+                        +'<div  style="height: 315px;">'
+                         + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
+                         + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
+                         + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                            + '<h4 class="modal-title">Education Attachment</h4><br>'
+                             + '<div style="text-align:right;color:green;">For Administrative Purpose Only</div><br>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                        + '</div>'
+                        + '</div>'
+                    +  '</div>';                                                                                                
+            $('#ViewEducationAttach_body').html(content);
+}
+</script>
    
             
                

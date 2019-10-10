@@ -55,6 +55,7 @@
                             
                             "DistrictName"  => "select * from `_tbl_master_codemaster` Where `HardCode`='DISTNAMES'".$filter,
                             "Occupation"    => "select * from `_tbl_master_codemaster` Where `HardCode`='OCCUPATIONTYPES'".$filter,
+                            "EMPLOYEDAS"        => "select * from `_tbl_master_codemaster` Where `HardCode`='EMPLOYEDAS'".$filter,
 
                             "Secure"        => "select * from `_tbl_master_codemaster` Where `HardCode`='SECURE'".$filter,
                             "AccountType"   => "select * from `_tbl_master_codemaster` Where `HardCode`='ACCOUNTTYPE'".$filter,

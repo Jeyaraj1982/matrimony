@@ -72,7 +72,7 @@
         -->
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Description<span id="star">*</span></label>
-            <div class="col-sm-9">                                                        
+            <div class="col-sm-8">                                                        
                 <input type="text" class="form-control" maxlength="50" name="EducationDescription" id="EducationDescription" value="<?php echo (isset($_POST['EducationDescription']) ? $_POST['EducationDescription'] : $response['data']['EducationDescription']);?>" style="margin-bottom:5px">
                 Max 50 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span>
             </div>

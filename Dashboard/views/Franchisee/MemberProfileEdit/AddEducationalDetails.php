@@ -61,18 +61,16 @@ $Education=$response['data']['Attachments'];
 <?php include_once("settings_header.php");?>
 <script>
 $(document).ready(function() {
-    var text_max = 250;
+    var text_max = 50;
     var text_length = $('#EducationDescription').val().length;
     $('#textarea_feedback').html(text_length + ' characters typed');
-
     $('#EducationDescription').keyup(function() {
         var text_length = $('#EducationDescription').val().length;
         var text_remaining = text_max - text_length;
-
         $('#textarea_feedback').html(text_length + ' characters typed');
     });
 });
-</script> 
+</script>
 <div class="col-sm-10" style="margin-top: -8px;">
 <form method="post" action="" enctype="multipart/form-data">
                      <h4 class="card-title">Educational Details</h4>
@@ -98,20 +96,16 @@ $(document).ready(function() {
                             </select>
                            </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Remarks</label>
-                            <div class="col-sm-8"><input type="text" class="form-control" name="EducationRemarks" id="EducationRemarks" value="<?php echo (isset($_POST['EducationRemarks']) ? $_POST['EducationRemarks'] : $response['data']['EducationRemarks']);?>"></div>
+                         <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Description<span id="star">*</span></label>
+                            <div class="col-sm-8">                                                        
+                                <input type="text" class="form-control" maxlength="50" name="EducationDescription" id="EducationDescription" value="<?php echo (isset($_POST['EducationDescription']) ? $_POST['EducationDescription'] : $response['data']['EducationDescription']);?>" style="margin-bottom:5px">
+                                Max 50 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span>
+                            </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Attachment</label>
                             <div class="col-sm-8"><input type="File" id="File" name="File" Placeholder="File"></div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Description<span id="star">*</span></label>
-                            <div class="col-sm-10">                                                        
-                                <textarea class="form-control" maxlength="250" name="EducationDescription" id="EducationDescription"><?php echo (isset($_POST['EducationDescription']) ? $_POST['EducationDescription'] : $response['data']['EducationDescription']);?></textarea> <br>
-                                <div class="col-sm-12">Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></div>
-                            </div>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12" style="text-align:left;color:red">

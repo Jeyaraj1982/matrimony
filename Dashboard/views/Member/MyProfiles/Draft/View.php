@@ -118,10 +118,22 @@ text-align: left;
                     </div>
                     <?php }?>
                     <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Religion']);?></label>
+                        <label class="col-sm-12 col-form-label" style="color:#737373;">
+                        <?php if($ProfileInfo['ReligionCode']== "RN009"){?>
+                            <?php echo trim($ProfileInfo['OtherReligion']);?>
+                        <?php } else { ?>
+                             <?php echo trim($ProfileInfo['Religion']);?>  
+                        <?php } ?> 
+                    </label>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Caste']);?></label>
+                   <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;">
+                        <?php if($ProfileInfo['CasteCode']== "CSTN248"){?>
+                            <?php echo trim($ProfileInfo['OtherCaste']);?>
+                        <?php } else { ?>
+                             <?php echo trim($ProfileInfo['Caste']);?>  
+                        <?php } ?> 
+                    </label>
                     </div>
                      <?php if((strlen(trim($ProfileInfo['SubCaste'])))>0){?>
                     <div class="form-group row">
@@ -150,7 +162,17 @@ text-align: left;
   <div class="card">
     <div class="card-body">
      <div class="form-group row">
-            <div class="col-sm-6"><h4 class="card-title">About Me</h4></div>
+            <div class="col-sm-6"><h4 class="card-title">
+                 <?php if ( trim($ProfileInfo['ProfileFor'])=="Myself") { echo "About Myself"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother"){ echo "About My Brother"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister"){ echo "About My Sister"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter"){ echo "About My Daughter"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Son"){ echo "About My Son"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister In Law"){ echo "About My Sister In Law"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother In Law"){ echo "About My Brother In Law"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Son In Law"){ echo "About My Son In Law"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter In Law"){ echo "About My Daughter In Law"; }?>
+            </h4></div>
             <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
          <table>           
@@ -171,7 +193,6 @@ text-align: left;
                 <tr>
                      <th>Education</th>
                     <th>Education Details</th>
-                    <th>Descriptions</th>
                     <th>Attachments</th>
                 </tr>
             </thead>
@@ -180,11 +201,11 @@ text-align: left;
                 <?php foreach($EducationAttachment as $Document) { ?>
                 <tr>    
                     <td style="text-align:left"><?php echo $Document['EducationDetails'];?></td>
-                    <td style="text-align:left"><?php echo $Document['EducationDegree'];?><BR><?php echo $Document['EducationRemarks'];?></td>
-                    <td style="text-align:left"><?php echo $Document['EducationDescription']; ?></td>
+                    <td style="text-align:left"><?php echo $Document['EducationDegree'];?><br><?php echo $Document['EducationDescription']; ?></td>
                     <td>   
                         <?php if($Document['FileName']>0){ ?>
-                            <?php echo $Document['IsVerified']== 1 ? "Attachment Verifiled" : "Attached "; ?>
+                            <?php echo $Document['IsVerified']== 1 ? "Attachment Verifiled" : "Attached "; ?> <br>
+                            <a href="javascript:void(0)" onclick="DraftProfile.showAttachmentEducationInformationForView('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
                         <?php } else { echo "Not Attach"; }?></td>
                 </tr>
                 <?php } 
@@ -630,8 +651,13 @@ text-align: left;
                 </div>
             </div>
         </div>
-
+ <div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+    <div class="modal-dialog">
+        <div class="modal-content" id="DeleteNow_body" style="height:260px"></div>
+    </div>
+</div>
 <script>
+
 function showConfirmPublish(ProfileID) {
       $('#PubplishNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
@@ -686,7 +712,7 @@ function ResendSendOtpForProfileforPublish(frmid) {
      $('#Publish_body').html(preloader);
         $.post(API_URL + "m=Member&a=ResendSendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
 } 
-
+ 
 </script>
    
             
