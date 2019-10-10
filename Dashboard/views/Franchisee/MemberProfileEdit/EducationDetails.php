@@ -68,7 +68,7 @@
                                                                                                                                                                                                           
         <div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="DeleteNow_body" style="height:260px">
+                <div class="modal-content" id="DeleteNow_body" style="height:285px">
             
                 </div>
             </div>
@@ -129,10 +129,11 @@ function ViewAttchment(AttachmentID,ProfileID,FileName) {
                          + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
                          + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
                             + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                            + '<h4 class="modal-title">Education Attachment</h4>'
+                            + '<h4 class="modal-title">Confirmation For Remove</h4>'
                               + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
                              + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
-                             + '<div style="text-align:center"><a href="javascript:void(0)" onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')"><img src="'+AppUrl+'assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a></div>'
+                              +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;'
+                              +  '<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
                         + '</div>'
                         + '</div>'
                     +  '</div>';                                                                                                

@@ -1966,23 +1966,34 @@
              $MothersOccupation = CodeMaster::getData("Occupation",$_POST['MothersOccupation']);  
              $NumberofBrothers  = CodeMaster::getData("NUMBEROFBROTHER",$_POST['NumberofBrother']);
              $younger           = CodeMaster::getData("YOUNGER",$_POST['younger']);
-             $elder             = CodeMaster::getData("ELDER",$_POST['elder']);
+             $elder             = CodeMaster::getData("ELDER",$_POST['elder']); 
              $married           = CodeMaster::getData("MARRIED",$_POST['married']);
              $NumberofSisters   = CodeMaster::getData("NOOFSISTER",$_POST['NumberofSisters']);
              $elderSister       = CodeMaster::getData("ELDERSIS",$_POST['elderSister']);
              $youngerSister     = CodeMaster::getData("YOUNGERSIS",$_POST['youngerSister']);
              $marriedSister     = CodeMaster::getData("MARRIEDSIS",$_POST['marriedSister']);
-             //$FathersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['FathersAlive']);
-             //$MothersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['MothersAlive']);
              $MothersIncome     = CodeMaster::getData("INCOMERANGE",$_POST['MothersIncome']);
              $FathersIncome     = CodeMaster::getData("INCOMERANGE",$_POST['FathersIncome']);
                                                                                                                       
              $Fathersstatus = ($_POST['FathersAlive']=='on' ? 1 : 0);
              $Mothersstatus = ($_POST['MothersAlive']=='on' ? 1 : 0);
-                                                                                                          
+             if($NumberofBrothers[0]['CodeValue']>0){
+           
+                 if($NumberofBrothers[0]['CodeValue'] != ($elder[0]['CodeValue'] + $younger[0]['CodeValue'])) {
+                      return Response::returnError("Please select equal to number of brothers");
+                 }
+             }
+             if($NumberofSisters[0]['CodeValue']>0){
+           
+                 if($NumberofSisters[0]['CodeValue'] != ($elderSister[0]['CodeValue'] + $youngerSister[0]['CodeValue'])) {
+                      return Response::returnError("Please select equal to number of sisters");
+                 }
+             }
+             
              $updateSql = "update `_tbl_draft_profiles` set `FathersName`           = '".$_POST['FatherName']."',
                                                            `FathersOccupationCode` = '".$_POST['FathersOccupation']."',
                                                            `FathersOccupation`     = '".$FathersOccupation[0]['CodeValue']."',
+                                                           `FatherOtherOccupation`     = '".$_POST['FatherOtherOccupation']."',
                                                            `FathersContactCountryCode`        = '".$_POST['FathersContactCountryCode']."',
                                                            `FathersContact`        = '".$_POST['FathersContact']."',
                                                            `FathersIncomeCode`         = '".$_POST['FathersIncome']."',
@@ -1994,6 +2005,9 @@
                                                            `MothersIncomeCode`     = '".$_POST['MothersIncome']."',
                                                            `MothersIncome`         = '".$MothersIncome[0]['CodeValue']."',
                                                            `MothersAlive`           = '".$Mothersstatus."',
+                                                           `FamilyLocation1`        = '".$_POST['FamilyLocation1']."',
+                                                           `FamilyLocation2`        = '".$_POST['FamilyLocation2']."',
+                                                           `Ancestral`              = '".$_POST['Ancestral']."',
                                                            `FamilyTypeCode`        = '".$_POST['FamilyType']."',
                                                            `FamilyType`            = '".$FamilyType[0]['CodeValue']."',              
                                                            `FamilyValueCode`       = '".$_POST['FamilyValue']."',
@@ -2003,6 +2017,7 @@
                                                            `AboutMyFamily`       = '".$_POST['AboutMyFamily']."',
                                                            `MothersOccupationCode` = '".$_POST['MothersOccupation']."',
                                                            `MothersOccupation`     = '".$MothersOccupation[0]['CodeValue']."',
+                                                           `MotherOtherOccupation`     = '".$_POST['MotherOtherOccupation']."',
                                                            `NumberofBrothersCode`  = '".$_POST['NumberofBrother']."',
                                                            `NumberofBrothers`      = '".$NumberofBrothers[0]['CodeValue']."',
                                                            `YoungerCode`           = '".$_POST['younger']."',                    
@@ -2235,26 +2250,28 @@
              $IncomeRange      = CodeMaster::getData("INCOMERANGE",$_POST["IncomeRange"]) ;
              $Country          = CodeMaster::getData("CONTNAMES",$_POST['WCountry']);
              
-              if ($_POST['EmployedAs']=="O001") {
-             $updateSql = "update `_tbl_draft_profiles` set  `EmployedAsCode`       = '".$_POST['EmployedAs']."',
-                                                            `EmployedAs`           = '".$EmployedAs[0]['CodeValue']."',
-                                                            `OccupationTypeCode`   = '".$_POST['OccupationType']."',
-                                                            `OccupationType`       = '".$OccupationType[0]['CodeValue']."',
-                                                            `TypeofOccupationCode` = '".$_POST['TypeofOccupation']."',
-                                                            `OccupationDescription` = '".$_POST['OccupationDescription']."',
-                                                            `TypeofOccupation`     = '".$TypeofOccupation[0]['CodeValue']."',
-                                                            `AnnualIncomeCode`     = '".$_POST['IncomeRange']."',
-                                                            `WorkedCountryCode`     = '".$_POST['WCountry']."',
-                                                            `WorkedCountry`     = '".$Country[0]['CodeValue']."',
-                                                            `OccupationAttachFileName`     = '".$_POST['File']."',
-                                                            `OccupationDetails`   = '".$_POST['OccupationDetails']."',
-                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
-                                                            `AnnualIncome`         = '".$IncomeRange[0]['CodeValue']."'";
+             if ($_POST['EmployedAs']=="O001") {
+                 $updateSql = "update `_tbl_draft_profiles` set `EmployedAsCode`        = '".$_POST['EmployedAs']."',
+                                                                `EmployedAs`            = '".$EmployedAs[0]['CodeValue']."',
+                                                                `OccupationTypeCode`    = '".$_POST['OccupationType']."',
+                                                                `OccupationType`        = '".$OccupationType[0]['CodeValue']."',
+                                                                `TypeofOccupationCode`  = '".$_POST['TypeofOccupation']."',
+                                                                `OccupationDescription` = '".$_POST['OccupationDescription']."',
+                                                                `TypeofOccupation`      = '".$TypeofOccupation[0]['CodeValue']."',
+                                                                `AnnualIncomeCode`      = '".$_POST['IncomeRange']."',
+                                                                `WorkedCountryCode`     = '".$_POST['WCountry']."',
+                                                                `WorkedCountry`         = '".$Country[0]['CodeValue']."',
+                                                                `OccupationDetails`     = '".$_POST['OccupationDetails']."',
+                                                                `LastUpdatedOn`         = '".date("Y-m-d H:i:s")."',
+                                                                `AnnualIncome`          = '".$IncomeRange[0]['CodeValue']."'";
+                 if (isset($_POST['File'])) {
+                    $updateSql .= " , `OccupationAttachFileName`     = '".$_POST['File']."' ";
+                 }
               }
                                                             
-                if ($_POST['EmployedAs']=="O002") {
+              if ($_POST['EmployedAs']=="O002") {
                     $updateSql = "update `_tbl_draft_profiles` set  `EmployedAsCode`       ='".$_POST['EmployedAs']."',
-                                                                    `EmployedAs`           = '',
+                                                                    `EmployedAs`           = '".$EmployedAs[0]['CodeValue']."',
                                                                     `OccupationTypeCode`   = '',
                                                                     `OccupationType`       = '',
                                                                     `TypeofOccupationCode` = '',
@@ -3953,7 +3970,7 @@
              $updateSql = "update `_tbl_draft_profiles` set `OccupationAttachFileName` = '' where `ProfileID`='".$_POST['ProfileID']."' and`ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$_POST['MemberID']."'";
              $mysql->execute($updateSql);
           
-               return  "update `_tbl_draft_profiles` set `OccupationAttachFileName` = '' where `ProfileID`='".$_POST['ProfileID']."' and`ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$_POST['MemberID']."'".'<div style="background:white;width:100%;padding:20px;height:100%;">
+               return  '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Confirmation For Remove</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>

@@ -107,7 +107,7 @@ $(document).ready(function() {
  <form method="post" action="" onsubmit="return submitprofile();">
     <h4 class="card-title">Physical Information</h4>
                     
-    <div class="form-group row">
+   <div class="form-group row">
         <label for="PhysicallyImpaired" class="col-sm-3 col-form-label">Physically Impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="PhysicallyImpaired" name="PhysicallyImpaired" onchange="getAdditionalPhysicalInfo()">
@@ -118,6 +118,12 @@ $(document).ready(function() {
             </select>
             <span class="errorstring" id="ErrPhysicallyImpaired"><?php echo isset($ErrPhysicallyImpaired)? $ErrPhysicallyImpaired : "";?></span>
         </div>
+        <label for="Description" class="col-sm-3 col-form-label" id="pm_description"></label>
+        <div class="col-sm-3" id="pm_input">
+            <input type="text" class="form-control" name="PhysicallyImpairedDescription" id="PhysicallyImpairedDescription" value="<?php echo (isset($_POST['PhysicallyImpairedDescription']) ? $_POST['PhysicallyImpairedDescription'] : $ProfileInfo['PhysicallyImpaireddescription']);?>">
+        </div>
+    </div>
+    <div class="form-group row">
         <label for="VisuallyImpaired" class="col-sm-3 col-form-label">Visually Impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="VisuallyImpaired" name="VisuallyImpaired" onchange="getAdditionalVisualInfo()">
@@ -129,25 +135,16 @@ $(document).ready(function() {
             </select>
             <span class="errorstring" id="ErrVisuallyImpaired"><?php echo isset($ErrVisuallyImpaired)? $ErrVisuallyImpaired : "";?></span>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="Description" class="col-sm-3 col-form-label" id="pm_description"></label>
-        <div class="col-sm-3" id="pm_input">
-            <input type="text" class="form-control" name="PhysicallyImpairedDescription" id="PhysicallyImpairedDescription" value="<?php echo (isset($_POST['PhysicallyImpairedDescription']) ? $_POST['PhysicallyImpairedDescription'] : $ProfileInfo['PhysicallyImpaireddescription']);?>">
-        </div>
-        
         <label for="Description" class="col-sm-3 col-form-label" id="vs_description"></label>
         <div class="col-sm-3" id="vs_input">
             <input type="text" class="form-control" name="VisuallyImpairedDescription" id="VisuallyImpairedDescription" value="<?php echo (isset($_POST['VisuallyImpairedDescription']) ? $_POST['VisuallyImpairedDescription'] : $ProfileInfo['VisuallyImpairedDescription']);?>">
         </div>
     </div>
-    
-   
     <div class="form-group row">
-        <label for="VissionImpaired" class="col-sm-3 col-form-label">Vission Impaired?<span id="star">*</span></label>
+        <label for="VissionImpaired" class="col-sm-3 col-form-label">Vision Impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="VissionImpaired" name="VissionImpaired" onchange="getAdditionalVissionInfo()">
-                <option value="0"> Vission Impaired</option>
+                <option value="0">Choose Vision Impaired</option>
                 <?php foreach($response['data']['VissionImpaired'] as $VissionImpaired) { ?>
                     <option value="<?php echo $VissionImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'VissionImpaired'])) ? (($_POST[ 'VissionImpaired']==$VissionImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'VissionImpaired']==$VissionImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $VissionImpaired['CodeValue'];?>      </option>
@@ -155,6 +152,12 @@ $(document).ready(function() {
             </select>
             <span class="errorstring" id="ErrVissionImpaired"><?php echo isset($ErrVissionImpaired)? $ErrVissionImpaired : "";?></span>
         </div>
+        <label for="Description" class="col-sm-3 col-form-label" id="vn_description"></label>
+        <div class="col-sm-3" id="vn_input">
+            <input type="text" class="form-control" name="VissionImpairedDescription" id="VissionImpairedDescription" value="<?php echo (isset($_POST['VissionImpairedDescription']) ? $_POST['VissionImpairedDescription'] : $ProfileInfo['VissionImpairedDescription']);?>">
+        </div>
+    </div>
+    <div class="form-group row">
         <label for="SpeechImpaired" class="col-sm-3 col-form-label">Speech Impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="SpeechImpaired" name="SpeechImpaired" onchange="getAdditionalSpeechInfo()">
@@ -166,13 +169,6 @@ $(document).ready(function() {
             </select>  
             <span class="errorstring" id="ErrSpeechImpaired"><?php echo isset($ErrSpeechImpaired)? $ErrSpeechImpaired : "";?></span>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="Description" class="col-sm-3 col-form-label" id="vn_description"></label>
-        <div class="col-sm-3" id="vn_input">
-            <input type="text" class="form-control" name="VissionImpairedDescription" id="VissionImpairedDescription" value="<?php echo (isset($_POST['VissionImpairedDescription']) ? $_POST['VissionImpairedDescription'] : $ProfileInfo['VissionImpairedDescription']);?>">
-        </div>
-        
         <label for="Description" class="col-sm-3 col-form-label" id="si_description"></label>
         <div class="col-sm-3" id="si_input">
             <input type="text" class="form-control" name="SpeechImpairedDescription" id="SpeechImpairedDescription" value="<?php echo (isset($_POST['SpeechImpairedDescription']) ? $_POST['SpeechImpairedDescription'] : $ProfileInfo['SpeechImpairedDescription']);?>">

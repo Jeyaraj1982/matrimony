@@ -59,7 +59,14 @@
                     <?php } ?> 
                 </select>
             </div>
-        </div>                                                                                                          
+        </div>
+        <div id="FatherOccupation_additionalinfo">
+        <div class="form-group row" id="FatherAlive_row_3" >   
+             <label class="col-sm-3 col-form-label"></label>
+             <div class="col-sm-4"  id="FatherOccupation_additionalinfo"><input type="text" class="form-control" id="FatherOtherOccupation" name="FatherOtherOccupation" value="<?php echo (isset($_POST['FatherOtherOccupation']) ? $_POST['FatherOtherOccupation'] : $ProfileInfo['FatherOtherOccupation']);?>">
+              <span class="errorstring" id="ErrFatherOtherOccupation"><?php echo isset($ErrFatherOtherOccupation)? $ErrFatherOtherOccupation : "";?></span></div>
+         </div>  
+         </div>                                                                                                        
         <div class="form-group row">
             <label for="MotherName" class="col-sm-3 col-form-label">Mother's Name<span id="star">*</span></label>
             <div class="col-sm-7">
@@ -84,7 +91,7 @@
                 <span class="errorstring" id="ErrMotherContact"><?php echo isset($ErrMotherContact)? $ErrMotherContact : "";?></span>
             </div>
         </div>
-        <div class="form-group row" id="MotherAlive_row_2" >
+        <div class="form-group row" id="MotherAlive_row_2" >   
             <label for="MothersOccupation" class="col-sm-3 col-form-label">Mother's Occupation<span id="star">*</span></label>
             <div class="col-sm-4">
                 <select onchange="displayMotherIncome()" class="selectpicker form-control" data-live-search="true" id="MothersOccupation" name="MothersOccupation">
@@ -93,7 +100,7 @@
                     <option value="<?php echo $MothersOccupation['SoftCode'];?>" <?php echo (isset($_POST[ 'MothersOccupation'])) ? (($_POST[ 'MothersOccupation']==$MothersOccupation[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MothersOccupation']==$MothersOccupation[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $MothersOccupation['CodeValue'];?></option>
                     <?php } ?>
                 </select>
-            </div>
+            </div>  
             <label for="MothersIncome" id="mother_income_1" class="col-sm-2 col-form-label">Mother's Income<span id="star">*</span></label>
             <div class="col-sm-3" id="mother_income_2">
                 <select class="selectpicker form-control" data-live-search="true" id="MothersIncome" name="MothersIncome">
@@ -103,6 +110,25 @@
                 <?php } ?> 
                 </select>
             </div>                                                                      
+        </div>
+        <div id="MotherOccupation_additionalinfo">
+         <div class="form-group row" id="MotherAlive_row_3" >   
+             <label class="col-sm-3 col-form-label"></label>
+             <div class="col-sm-4"  id="MotherOccupation_additionalinfo"><input type="text" class="form-control" id="MotherOtherOccupation" name="MotherOtherOccupation" value="<?php echo (isset($_POST['MotherOtherOccupation']) ? $_POST['MotherOtherOccupation'] : $ProfileInfo['MotherOtherOccupation']);?>">
+              <span class="errorstring" id="ErrMotherOtherOccupation"><?php echo isset($ErrMotherOtherOccupation)? $ErrMotherOtherOccupation : "";?></span></div>
+         </div>
+         </div>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Family Location<span id="star">*</span></label>
+            <div class="col-sm-9"><input type="text" class="form-control" name="FamilyLocation1" id="FamilyLocation1" value="<?php echo (isset($_POST['FamilyLocation1']) ? $_POST['FamilyLocation1'] : $ProfileInfo['FamilyLocation1']);?>" placeholder="Addressline 1"></div>
+        </div>
+        <div class="form-group row">
+           <label class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9"><input type="text" class="form-control" name="FamilyLocation2" id="FamilyLocation2" value="<?php echo (isset($_POST['FamilyLocation2']) ? $_POST['FamilyLocation2'] : $ProfileInfo['FamilyLocation2']);?>" placeholder="Addressline 2"></div>
+        </div>
+        <div class="form-group row">
+           <label class="col-sm-3 col-form-label">Ancestral / Family Origin<span id="star">*</span></label>
+            <div class="col-sm-9"><input type="text" class="form-control" name="Ancestral" id="Ancestral" value="<?php echo (isset($_POST['Ancestral']) ? $_POST['Ancestral'] : $ProfileInfo['Ancestral']);?>" placeholder="Ancestral"></div>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Family Type<span id="star">*</span></label>
@@ -144,7 +170,7 @@
                     <option value="<?php echo $NumberofBrother['SoftCode'];?>" <?php echo (isset($_POST[ 'NumberofBrother'])) ? (($_POST[ 'NumberofBrother']==$NumberofBrother[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'NumberofBrothers']==$NumberofBrother[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $NumberofBrother['CodeValue'];?></option>
                     <?php } ?>
                 </select>
-            </div>
+            </div>                                   
             <label for="Elder" class="col-sm-1 col-form-label" style="text-align:right">Elder</label>
             <div class="col-sm-1" style="max-width:100px !important">
                 <select class="form-control" id="belder" name="elder" style="width: 50px;">
@@ -252,6 +278,7 @@
         verifiyFatherPassedaway();
         verifiyMotherPassedaway();
         displayFatherIncome();
+        displayMotherIncome();
     });
 </script>              
 <?php include_once("settings_footer.php");?>                     

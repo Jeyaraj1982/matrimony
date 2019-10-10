@@ -18,33 +18,34 @@
                     
                     $target_dir = "uploads/";
                     $err=0;
-                    $_POST['File']= "";
-                    $acceptable = array('image/jpeg',
-                                        'image/jpg',
-                                        'image/png'
-                                    );
-                     
-                  if(($_FILES['File']['size'] >= 5000000)) {
-                    $err++;
-                           echo "Please upload file. File must be less than 5 megabytes.";
-                    }
-                            
-                    if((!in_array($_FILES['File']['type'], $acceptable)) && (!empty($_FILES["File"]["type"]))) {
-                        $err++;
-                           echo "Invalid file type. Only JPG,PNG,JPEG types are accepted.";
-                    }
-
+                    $acceptable = array('image/jpeg','image/jpg','image/png');
                     
-                    if (isset($_FILES["File"]["name"]) && strlen(trim($_FILES["File"]["name"]))>0 ) {
+                    if (isset($_FILES['File']['name']) && strlen(trim($_FILES['File']['name']))>0) {
+                        
+                        if(($_FILES['File']['size'] >= 5000000)) {
+                            $err++;
+                            echo "Please upload file. File must be less than 5 megabytes.";
+                        }
+                            
+                        if((!in_array($_FILES['File']['type'], $acceptable)) && (!empty($_FILES["File"]["type"]))) {
+                            $err++;
+                            echo "Invalid file type. Only JPG,PNG,JPEG types are accepted.";
+                        }
+                        
                         $OccupationAttachments = time().$_FILES["File"]["name"];
                         if (!(move_uploaded_file($_FILES["File"]["tmp_name"], $target_dir . $OccupationAttachments))) {
-                           $err++;
-                           echo "Sorry, there was an error uploading your file.";
+                            $err++;
+                            echo "Sorry, there was an error uploading your file.";
+                        } else {
+                            $_POST['File']= $OccupationAttachments;
                         }
+                        
                     }
+                     
+                 
                     
                     if ($err==0) {
-                        $_POST['File']= $OccupationAttachments;
+                        
                         $res =$webservice->getData("Member","EditDraftOccupationDetails",$_POST);   
                        if ($res['status']=="success") {
                              $successmessage = $res['message']; 
@@ -112,7 +113,7 @@ function submitprofile() {
 <form method="post" action="" name="form1" id="form1" enctype="multipart/form-data" onsubmit="return submitprofile();">
     <h4 class="card-title">Occupation Details</h4>
     <div class="form-group row">
-        <label for="Employed As" class="col-sm-2 col-form-label">Employed As<span id="star">*</span></label>
+        <label for="Employed As" class="col-sm-2 col-form-label">Employed As<span id="star">*</span></label>   
         <div class="col-sm-4">
             <select class="selectpicker form-control" data-live-search="true" id="EmployedAs" name="EmployedAs"  onchange="DraftProfile.addOtherWorkingDetails();">
                 <option value="0">Choose Employed As</option>
@@ -133,7 +134,8 @@ function submitprofile() {
                 <?php foreach($response['data']['TypeofOccupation'] as $TypeofOccupation) { ?>
                     <option value="<?php echo $TypeofOccupation['SoftCode'];?>" <?php echo (isset($_POST[ 'TypeofOccupation'])) ? (($_POST[ 'TypeofOccupation']==$TypeofOccupation[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'TypeofOccupation']==$TypeofOccupation[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $TypeofOccupation['CodeValue'];?>
-                            <?php } ?>    </option>
+                            <?php } ?>    
+                    </option>
             </select>
             <span class="errorstring" id="ErrTypeofOccupation"><?php echo isset($ErrTypeofOccupation)? $ErrTypeofOccupation : "";?></span>
         </div>
@@ -142,7 +144,7 @@ function submitprofile() {
       <label for="OccupationType" class="col-sm-2 col-form-label">Occupation<span id="star">*</span></label>
         <div class="col-sm-4">
             <select class="selectpicker form-control" data-live-search="true" id="OccupationType" name="OccupationType" onchange="DraftProfile.addOtherOccupation();">
-                <option value="0">Choose Occupatin Types</option>
+                <option value="0">Choose Occupation Types</option>
                 <?php foreach($response['data']['Occupation'] as $OccupationType) { ?>
                     <option value="<?php echo $OccupationType['SoftCode'];?>" <?php echo (isset($_POST[ 'OccupationType'])) ? (($_POST[ 'OccupationType']==$OccupationType[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'OccupationType']==$OccupationType[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $OccupationType['CodeValue'];?>
@@ -156,8 +158,8 @@ function submitprofile() {
     </div> 
     <div class="form-group row">
         <label for="OccupationDescription" class="col-sm-2 col-form-label">Description<span id="star">*</span></label>
-        <div class="col-sm-10">                                                                           
-            <input type="text" class="form-control" maxlength="250" name="OccupationDescription" id="OccupationDescription" value="<?php echo (isset($_POST['OccupationDescription']) ? $_POST['OccupationDescription'] : $ProfileInfo['OccupationDescription']);?>">
+        <div class="col-sm-7">                                                                           
+            <input type="text" class="form-control" maxlength="50" name="OccupationDescription" id="OccupationDescription" value="<?php echo (isset($_POST['OccupationDescription']) ? $_POST['OccupationDescription'] : $ProfileInfo['OccupationDescription']);?>">
         </div>
     </div>
                                                                 
@@ -188,10 +190,10 @@ function submitprofile() {
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Attachment</label>
         <div class="col-sm-8">
-            <?php if(sizeof($ProfileInfo['OccupationAttachFileName'])==0){  ?>
+            <?php if($ProfileInfo['OccupationAttachFileName']==""){  ?>
                 <input type="File" id="File" name="File" Placeholder="File">
             <?php }  else {  ?>  
-                <img src="<?php echo AppUrl;?>uploads/<?php echo $ProfileInfo['OccupationAttachFileName'];?>" style="height:120px;"><br><a href="javascript:void(0)" onclick="DraftProfile.showAttachmentOccupation('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')"><img src="<?php echo AppUrl ;?>assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a><br><input type="File" id="File" name="File" Placeholder="File">
+                <div id="attachfilediv"><img src="<?php echo AppUrl;?>uploads/<?php echo $ProfileInfo['OccupationAttachFileName'];?>" style="height:120px;"><br><a href="javascript:void(0)" onclick="DraftProfile.showAttachmentOccupation('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')"><img src="<?php echo AppUrl ;?>assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a></div><br><input type="File" id="File" name="File" Placeholder="File">
        <?php }?>
        </div>
     </div>
@@ -218,7 +220,7 @@ function submitprofile() {
 </div>
 <div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
     <div class="modal-dialog">
-        <div class="modal-content" id="DeleteNow_body" style="height:260px"></div>
+        <div class="modal-content" id="DeleteNow_body" style="height:285px"></div>
     </div>
 </div>
 <script>
@@ -238,11 +240,11 @@ function submitprofile() {
     });
     
    function DeleteOccupationAttachmentOnly(ProfileID) {
-        var param = $("#form_"+ProfileID).serialize();
+        var param = $("#Occupationform_"+ProfileID).serialize();
         $('#DeleteNow_body').html(preloader);
         $.post(API_URL + "m=Member&a=DeleteOccupationAttachmentOnly", param, function(result2) {                                             
             $('#DeleteNow_body').html(result2);                                     
-          //  $('#Documentview_'+AttachmentID).hide();
+           $('#attachfilediv').hide();
         }
     );
 }  

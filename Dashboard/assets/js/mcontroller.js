@@ -252,32 +252,32 @@
         showConfirmDeleteAttachmentEducationalInformation:function(AttachmentID,ProfileID,EducationDetails,EducationDegree){
             $('#DeleteNow').modal('show'); 
             var content = '<div class="Publish_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'
-                        + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
-                        + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
-                        + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                        + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                        + '<h4 class="modal-title">Confirmation For Remove</h4> <br>'
-                        + '<div>Are you sure want to remove below records?  <br><br>'
-                        + '<table class="table table-bordered">'
-                           + '<thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-top: 1px solid #ccc;"> '
-                            +'<tr>'
-                                +'<th>Education</th>'
-                                +'<th>Education Details</th>'
-                            +'</tr>'
-                           +'</thead>'
-                           + '<tbody> '
-                            +'<tr>'                                                  
-                                +'<td>'+EducationDetails+'</td>'
-                                +'<td>'+EducationDegree+'</td>'
-                            +'</tr>'
-                           +'</tbody>'
-                           +'</table>'
-                        +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteAttach(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;'
-                        +  '<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
-                       +  '</div><br>'
-                    +  '</form>'
-                +  '</div>'
+                            +'<div  style="height: 315px;">'
+                                + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
+                                    + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
+                                    + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                                    + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                    + '<h4 class="modal-title">Confirmation For Remove</h4> <br>'
+                                        + '<div>Are you sure want to remove below records?  <br><br>'
+                                            + '<table class="table table-bordered">'
+                                                + '<thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-top: 1px solid #ccc;"> '
+                                                    +'<tr>'
+                                                        +'<th>Education</th>'
+                                                        +'<th>Education Details</th>'
+                                                    +'</tr>'
+                                                +'</thead>'
+                                                +'<tbody> '
+                                                    +'<tr>'                                                  
+                                                        +'<td>'+EducationDetails+'</td>'
+                                                        +'<td>'+EducationDegree+'</td>'
+                                                    +'</tr>'
+                                                +'</tbody>'
+                                            +'</table>'
+                                        +'<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteAttach(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;'
+                                        +'<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
+                                    +'</div><br>'
+                            +'</form>'
+                       +'</div>'
             +  '</div>';                                                                                                
             $('#DeleteNow_body').html(content); 
         },
@@ -285,15 +285,16 @@
              $('#DeleteNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
                         +'<div  style="height: 315px;">'
-                         + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
-                         + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
-                         + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                            + '<h4 class="modal-title">Education Attachment</h4>'
-                              + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
-                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
-                             + '<div style="text-align:center"><a href="javascript:void(0)" onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')"><img src="'+AppUrl+'assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a></div>'
-                        + '</div>'
+                            + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
+                                + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
+                                + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                                    + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                    + '<h4 class="modal-title">Comfirmation For Remove</h4>'
+                                    + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
+                                        + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                                        +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;'
+                                        +  '<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
+                                    + '</div>'
                         + '</div>'
                     +  '</div>';                                                                                                
             $('#DeleteNow_body').html(content);
@@ -314,7 +315,26 @@
              $('#DeleteNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
                         +'<div  style="height: 315px;">'
-                         + '<form method="post" id="form_'+ProfileCode+'" name="form_'+ProfileCode+'" > '
+                         + '<form method="post" id="Occupationform_'+ProfileCode+'" name="Occupationform_'+ProfileCode+'" > '
+                         + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
+                         + '<input type="hidden" value="'+MemberID+'" name="MemberID">'
+                         + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                            + '<h4 class="modal-title">Confirmation For Remove</h4>'
+                              + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                               +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteOccupationAttachmentOnly(\''+ProfileCode+'\')">Yes, remove</button>&nbsp;&nbsp;'
+                        +  '<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
+                        + '</div>'
+                        + '</div>'
+                    +  '</div>';                                                                                                
+            $('#DeleteNow_body').html(content);
+        },
+        showAttachmentOccupationForView:function(ProfileCode,MemberID,ProfileID,FileName){
+             $('#DeleteNow').modal('show'); 
+      var content = '<div class="Publish_body" style="padding:20px">'
+                        +'<div  style="height: 315px;">'
+                         + '<form method="post" id="Occupationform_'+ProfileCode+'" name="Occupationform_'+ProfileCode+'" > '
                          + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
                          + '<input type="hidden" value="'+MemberID+'" name="MemberID">'
                          + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
@@ -322,7 +342,6 @@
                             + '<h4 class="modal-title">Occupation Attachment</h4>'
                               + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
                              + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
-                             + '<div style="text-align:center"><a href="javascript:void(0)" onclick="DeleteOccupationAttachmentOnly(\''+ProfileID+'\')"><img src="'+AppUrl+'assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a></div>'
                         + '</div>'
                         + '</div>'
                     +  '</div>';                                                                                                
@@ -348,7 +367,13 @@
             }
             if ($('#MotherContact').val().trim().length>0) {
                 IsMobileNumber("MotherContact","ErrMotherContact","Please Enter Valid Mobile Number");
-            }                                                                                                        
+            } 
+            if ($('#FathersOccupation').val()=="OT112") {
+                IsNonEmpty("FatherOtherOccupation","ErrFatherOtherOccupation","Please enter your father other occupation");
+            }
+            if ($('#MothersOccupation').val()=="OT112") {
+                IsNonEmpty("MotherOtherOccupation","ErrMotherOtherOccupation","Please enter your mothers occuption");
+            }                                                                                                          
             
         if (ErrorCount==0) {
                             return true;
@@ -385,7 +410,6 @@
                 $('#Working_additionalinfo').hide();
             }
         },
-        
         changeAboutLable: function() {
         if ($('#ProfileFor').val()=="Myself") {
             $('#Aboutlabel').html("About Me<span style='color:red'>*</span>");                                                         
@@ -448,31 +472,48 @@
             
             $('#FatherAlive_row_1').hide();
             $('#FatherAlive_row_2').hide();
+            $('#FatherAlive_row_3').hide();
         } else {
             $('#FatherAlive_row_1').show();
             $('#FatherAlive_row_2').show();
+            $('#FatherAlive_row_3').show();
         }
     }
     
-    function displayFatherIncome() {
-        if ($("#FathersOccupation").val()=="OT107" || $("#FathersOccupation").val()==0) {
-              
+    function displayFatherIncome() {     
+       
+         if ($("#FathersOccupation").val()=="OT107" || $("#FathersOccupation").val()==0) {
             $('#father_income_1').hide();
             $('#father_income_2').hide();
+             $('#FatherOccupation_additionalinfo').hide(); 
         } else {
+            
+            if ($("#FathersOccupation").val()=="OT112")  {
+                 $('#FatherOccupation_additionalinfo').show(); 
+            } else {
+            
              $('#father_income_1').show();
             $('#father_income_2').show();
+            $('#FatherOccupation_additionalinfo').hide(); 
+            }
         }
     }
     
     function displayMotherIncome() {
         if ($("#MothersOccupation").val()=="OT107" || $("#MothersOccupation").val()==0) {
-              
             $('#mother_income_1').hide();
             $('#mother_income_2').hide();
+             $('#MotherOccupation_additionalinfo').hide(); 
         } else {
+            
+            if ($("#MothersOccupation").val()=="OT112")  {
+                 $('#MotherOccupation_additionalinfo').show(); 
+            } else {
+            
              $('#mother_income_1').show();
             $('#mother_income_2').show();
+            $('#MotherOccupation_additionalinfo').hide(); 
+            }
         }
     }
     
@@ -481,9 +522,11 @@
            
             $('#MotherAlive_row_1').hide();
             $('#MotherAlive_row_2').hide();
+            $('#MotherAlive_row_3').hide();
         } else {
             $('#MotherAlive_row_1').show();
             $('#MotherAlive_row_2').show();
+            $('#MotherAlive_row_3').show();
         }
     }
     
@@ -499,20 +542,22 @@ function print_sister_counts() {
             $('#youngerSister').show();
             $('#marriedSister').show();
            
-           var c = ['NS001','NS002','NS003','NS004','NS005','NS006','NS007','NS008','NS009','NS010'] ;
-          
+           var nc = ['NS001','NS002','NS003','NS004','NS005','NS006','NS007','NS008','NS009','NS010'] ;
+           
+           var c = ['ES001','ES002','ES003','ES004','ES005','ES006','ES007','ES008','ES009','ES010'] ;
+                                                                                                                 
           $('#elderSister').find('option').remove();
           $('#youngerSister').find('option').remove();
           $('#marriedSister').find('option').remove();
                  
-            for (var i = 0; i<=c.indexOf(n_brothers); i++){
+            for (var i = 0; i<=nc.indexOf(n_brothers); i++){
     var opt = document.createElement('option');
     opt.value = c[i];
     opt.innerHTML = i;
     document.getElementById('elderSister').appendChild(opt);
 }
-
-  for (var i = 0; i<=c.indexOf(n_brothers); i++){
+   var c = ['YS001','YS002','YS003','YS004','YS005','YS006','YS007','YS008','YS009','YS010'] ;
+  for (var i = 0; i<=nc.indexOf(n_brothers); i++){
     var opt = document.createElement('option');
     opt.value = c[i];
     opt.innerHTML = i;
@@ -520,8 +565,8 @@ function print_sister_counts() {
     document.getElementById('youngerSister').appendChild(opt);
     
 }
-
-  for (var i = 0; i<=c.indexOf(n_brothers); i++){
+  var c = ['MS001','MS002','MS003','MS004','MS005','MS006','MS007','MS008','MS009','MS010'] ;
+  for (var i = 0; i<=nc.indexOf(n_brothers); i++){
     var opt = document.createElement('option');
     opt.value = c[i];
     opt.innerHTML = i;
@@ -532,46 +577,47 @@ function print_sister_counts() {
         
     }
     
-function print_brother_counts() {
-    var n_brothers = $('#NumberofBrother').val();
+    function print_brother_counts() {
+        var n_brothers = $('#NumberofBrother').val();
+        
         if (n_brothers=='NOB001') {
-             $('#belder').hide();
-             $('#byounger').hide();
-             $('#married').hide();
+            $('#belder').hide();
+            $('#byounger').hide();
+            $('#married').hide();
         } else {
             $('#belder').show();
             $('#byounger').show();
             $('#married').show();
-           
-           var c = ['NOB001','NOB002','NOB003','NOB004','NOB005','NOB006','NOB007','NOB008','NOB009','NOB010'] ;
+            
+            var nc = ['NOB001','NOB002','NOB003','NOB004','NOB005','NOB006','NOB007','NOB008','NOB009','NOB010'] ;
+            
+            var c = ['EB001','EB002','EB003','EB004','EB005','EB006','EB007','EB008','EB009','EB010'] ;
           
-          $('#belder').find('option').remove();
-          $('#byounger').find('option').remove();
-          $('#married').find('option').remove();
+            $('#belder').find('option').remove();
+            $('#byounger').find('option').remove();
+            $('#married').find('option').remove();
                  
-            for (var i = 0; i<=c.indexOf(n_brothers); i++){
-    var opt = document.createElement('option');
-    opt.value = c[i];
-    opt.innerHTML = i;
-    document.getElementById('belder').appendChild(opt);
-}
+            for (var i = 0; i<=nc.indexOf(n_brothers); i++){
+                var opt = document.createElement('option');
+                opt.value = c[i];
+                opt.innerHTML = i;
+                document.getElementById('belder').appendChild(opt);
+            }
+            
+            var c = ['YB001','YB002','YB003','YB004','YB005','YB006','YB007','YB008','YB009','YB010'] ;
+            for (var i = 0; i<=nc.indexOf(n_brothers); i++){
+                var opt = document.createElement('option');
+                opt.value = c[i];
+                opt.innerHTML = i;
+                document.getElementById('byounger').appendChild(opt);
+            }
 
-  for (var i = 0; i<=c.indexOf(n_brothers); i++){
-    var opt = document.createElement('option');
-    opt.value = c[i];
-    opt.innerHTML = i;
-   
-    document.getElementById('byounger').appendChild(opt);
-    
-}
-
-  for (var i = 0; i<=c.indexOf(n_brothers); i++){
-    var opt = document.createElement('option');
-    opt.value = c[i];
-    opt.innerHTML = i;
-    
-    document.getElementById('married').appendChild(opt);
-}
+            var c = ['MB001','MB002','MB003','MB004','MB005','MB006','MB007','MB008','MB009','MB010'] ;
+            for (var i = 0; i<=nc.indexOf(n_brothers); i++){
+                var opt = document.createElement('option');
+                opt.value = c[i];
+                opt.innerHTML = i;
+                document.getElementById('married').appendChild(opt);
+            }
         }
-        
     }

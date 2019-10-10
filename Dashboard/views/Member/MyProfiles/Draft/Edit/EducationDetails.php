@@ -63,7 +63,7 @@
 </div>  
 <div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
     <div class="modal-dialog">
-        <div class="modal-content" id="DeleteNow_body" style="height:260px"></div>
+        <div class="modal-content" id="DeleteNow_body" style="height:285px"></div>
     </div>
 </div>
 <script>
