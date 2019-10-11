@@ -1,256 +1,62 @@
-/*------------------------------------------------------------------
- [Master Stylesheet]
-
-  Project:	Star Admin Bootstrap Template [Free Version]
-  Version:	2.0
--------------------------------------------------------------------*/
-/*-------------------------------------------------------------------
-  ===== Table of Contents =====
-
-  * Bootstrap functions
-  * Template variables
-  * SCSS Compass Functions
-  * Boostrap Main SCSS
-  * Template mixins
-    + Animation Mixins
-    + Background Mixins
-    + BlockQuote Mixins
-    + Badges Mixins
-    + Buttons Mixins
-    + Cards Mixins
-    + Miscellaneous Mixins
-    + Text Mixins
-  * Core Styles
-    + Reset Styles
-    + Fonts
-    + Functions
-    + Sidebar
-    + Navbar
-    + Typography
-    + Miscellaneous
-    + Footer
-    + Layouts
-    + Utilities
-    + Demo styles
-    + Dashboard
-  * Components
-    + Badges
-    + Bootstrap Progress
-    + Buttons
-    + Cards
-    + Checkboxes and Radios
-    + Dropdowns
-    + Forms
-    + Icons
-    + Lists
-    + Nav
-    + New Account
-    + Preview
-    + Tables
-  * Landing screens
-    + Auth
-    + Error
--------------------------------------------------------------------*/
-/*-------------------------------------------------------------------*/
-/* === Import Bootstrap functions and variables === */
-/*-------------------------------------------------------------------*/
-/* === Import template variables === */
-/*-------------------------------------------------------------------*/
-/* === SCSS Compass Functions === */
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
-@import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700");
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700");
 @-moz-keyframes flash {
-  0% {
-    opacity: 1; }
-  25% {
-    opacity: 0; }
-  50% {
-    opacity: 1; }
-  75% {
-    opacity: 0; }
-  100% {
-    opacity: 1; } }
-
+  0% {opacity: 1; }
+  25% {opacity: 0; }
+  50% {opacity: 1; }
+  75% {opacity: 0; }
+  100% {opacity: 1; } }
 @-webkit-keyframes flash {
-  0% {
-    opacity: 1; }
-  25% {
-    opacity: 0; }
-  50% {
-    opacity: 1; }
-  75% {
-    opacity: 0; }
-  100% {
-    opacity: 1; } }
-
+  0% {opacity: 1; }
+  25% {opacity: 0; }
+  50% {opacity: 1; }
+  75% {opacity: 0; }
+  100% {opacity: 1; } }
 @-o-keyframes flash {
-  0% {
-    opacity: 1; }
-  25% {
-    opacity: 0; }
-  50% {
-    opacity: 1; }
-  75% {
-    opacity: 0; }
-  100% {
-    opacity: 1; } }
-
+  0% {opacity: 1; }
+  25% {opacity: 0; }
+  50% {opacity: 1; }
+  75% {opacity: 0; }
+  100% {opacity: 1; } }
 @-ms-keyframes flash {
-  0% {
-    opacity: 1; }
-  25% {
-    opacity: 0; }
-  50% {
-    opacity: 1; }
-  75% {
-    opacity: 0; }
-  100% {
-    opacity: 1; } }
-
+  0% {opacity: 1; }
+  25% {opacity: 0; }
+  50% {opacity: 1; }
+  75% {opacity: 0; }
+  100% {opacity: 1; } }
 @keyframes flash {
-  0% {
-    opacity: 1; }
-  25% {
-    opacity: 0; }
-  50% {
-    opacity: 1; }
-  75% {
-    opacity: 0; }
-  100% {
-    opacity: 1; } }
-
+  0% {opacity: 1; }
+  25% {opacity: 0; }
+  50% {opacity: 1; }
+  75% {opacity: 0; }
+  100% {opacity: 1; } }
 @-moz-keyframes bounce {
-  0% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); }
-  20% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); }
-  40% {
-    -webkit-transform: translateY(-30px);
-    -moz-transform: translateY(-30px);
-    -ms-transform: translateY(-30px);
-    -o-transform: translateY(-30px);
-    transform: translateY(-30px); }
-  50% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); }
-  60% {
-    -webkit-transform: translateY(-15px);
-    -moz-transform: translateY(-15px);
-    -ms-transform: translateY(-15px);
-    -o-transform: translateY(-15px);
-    transform: translateY(-15px); }
-  80% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); }
-  100% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); } }
-
+  0% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); }
+  20% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); }
+  40% {-webkit-transform: translateY(-30px);-moz-transform: translateY(-30px);-ms-transform: translateY(-30px);-o-transform: translateY(-30px);transform: translateY(-30px); }
+  50% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); }
+  60% {-webkit-transform: translateY(-15px);-moz-transform: translateY(-15px);-ms-transform: translateY(-15px);-o-transform: translateY(-15px);transform: translateY(-15px); }
+  80% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); }
+  100% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); } 
+}
 @-webkit-keyframes bounce {
-  0% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); }
-  20% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); }
-  40% {
-    -webkit-transform: translateY(-30px);
-    -moz-transform: translateY(-30px);
-    -ms-transform: translateY(-30px);
-    -o-transform: translateY(-30px);
-    transform: translateY(-30px); }
-  50% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); }
-  60% {
-    -webkit-transform: translateY(-15px);
-    -moz-transform: translateY(-15px);
-    -ms-transform: translateY(-15px);
-    -o-transform: translateY(-15px);
-    transform: translateY(-15px); }
-  80% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); }
-  100% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); } }
-
+  0% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); }
+  20% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); }
+  40% {-webkit-transform: translateY(-30px);-moz-transform: translateY(-30px);-ms-transform: translateY(-30px);-o-transform: translateY(-30px);transform: translateY(-30px); }
+  50% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); }
+  60% {-webkit-transform: translateY(-15px);-moz-transform: translateY(-15px);-ms-transform: translateY(-15px);-o-transform: translateY(-15px);transform: translateY(-15px); }
+  80% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); }
+  100% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); } 
+}
 @-o-keyframes bounce {
-  0% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); }
-  20% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); }
-  40% {
-    -webkit-transform: translateY(-30px);
-    -moz-transform: translateY(-30px);
-    -ms-transform: translateY(-30px);
-    -o-transform: translateY(-30px);
-    transform: translateY(-30px); }
-  50% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); }
-  60% {
-    -webkit-transform: translateY(-15px);
-    -moz-transform: translateY(-15px);
-    -ms-transform: translateY(-15px);
-    -o-transform: translateY(-15px);
-    transform: translateY(-15px); }
-  80% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); }
-  100% {
-    -webkit-transform: translateY(0);
-    -moz-transform: translateY(0);
-    -ms-transform: translateY(0);
-    -o-transform: translateY(0);
-    transform: translateY(0); } }
-
+  0% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); }
+  20% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); }
+  40% {-webkit-transform: translateY(-30px);-moz-transform: translateY(-30px);-ms-transform: translateY(-30px);-o-transform: translateY(-30px);transform: translateY(-30px); }
+  50% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); }
+  60% {-webkit-transform: translateY(-15px);-moz-transform: translateY(-15px);-ms-transform: translateY(-15px);-o-transform: translateY(-15px);transform: translateY(-15px); }
+  80% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); }
+  100% {-webkit-transform: translateY(0);-moz-transform: translateY(0);-ms-transform: translateY(0);-o-transform: translateY(0);transform: translateY(0); } 
+}
 @-ms-keyframes bounce {
   0% {
     -webkit-transform: translateY(0);
@@ -13680,7 +13486,7 @@ input:focus {
 .sidebar {
   min-height: calc(100vh - 63px);
   background: #ffffff;
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   padding: 0;
   width: 255px;
   z-index: 11;
@@ -13869,7 +13675,7 @@ input:focus {
 
 /* Navbar */                                                                                  
 .navbar.default-layout {
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   background:#5983e8;;
   transition: background 0.25s ease;
   -webkit-transition: background 0.25s ease;
@@ -14004,7 +13810,7 @@ input:focus {
 :root,
 body {
   font-size: 1rem;
-  font-family: "Poppins", sans-serif; }
+  font-family: "Roboto", sans-serif; }
 
 .h1,
 .h2,
@@ -14018,7 +13824,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 500; }
 
 p {
@@ -14133,7 +13939,7 @@ address p {
   margin: 0.38rem 0 0.75rem; }
 
 .card-title {
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 500;
   color: #404852;
   margin-bottom: 22px;
@@ -14143,13 +13949,13 @@ address p {
     text-align: right; }
 
 .card-subtitle {
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   margin-top: 0.625rem;
   margin-bottom: 0.625rem; }
 
 .card-description {
   margin-bottom: 0.9375rem;
-  font-family: "Poppins", sans-serif; }
+  font-family: "Roboto", sans-serif; }
   .rtl .card-description {
     text-align: right; }
 
@@ -14251,7 +14057,7 @@ pre {
   -ms-transition: all 0.25s ease;
   border-top: 1px solid #f2f2f2;
   font-size: calc(13px - 0.05rem);
-  font-family: "Poppins", sans-serif; }
+  font-family: "Roboto", sans-serif; }
   .footer a {
     color: #00ce68;
     font-size: inherit; }
@@ -14545,7 +14351,7 @@ pre {
     width: 40%; }
     .card-revenue-table .revenue-item .revenue-amount p {
       font-size: 1.25rem;
-      font-family: "Poppins", sans-serif;
+      font-family: "Roboto", sans-serif;
       font-weight: 600;
       text-align: right; }
       .rtl .card-revenue-table .revenue-item .revenue-amount p {
@@ -14557,7 +14363,7 @@ pre {
   color: #ffffff; }
   .card-revenue .highlight-text {
     font-size: 1.875rem;
-    font-family: "Poppins", sans-serif;
+    font-family: "Roboto", sans-serif;
     font-weight: 500; }
   .card-revenue .badge {
     background-color: rgba(255, 255, 255, 0.2);
@@ -14633,7 +14439,7 @@ pre {
   font-weight: initial;
   line-height: 1;
   padding: 0.2rem 0.3rem;
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 600; }
   .badge:empty {
     display: inline-block;
@@ -14770,7 +14576,7 @@ pre {
 .btn {
   font-size: 0.875rem;
   line-height: 1;
-  font-family: "Poppins", sans-serif; }
+  font-family: "Roboto", sans-serif; }
   .btn i {
     margin-right: 0.3125rem; }
   .btn .btn-label:before {
@@ -15672,7 +15478,7 @@ pre {
 
 .form-control {
   border: 1px solid #f2f2f2;
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 0.75rem;
   padding: 0.56rem 0.75rem;
   line-height: 14px;
@@ -15724,7 +15530,7 @@ select.form-control {
     -webkit-align-items: center;
     align-items: center;
     padding: 15px;
-    font-family: "Poppins", sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 13px; }
     .icons-list > div i {
       display: inline-block;
@@ -16032,7 +15838,7 @@ ul {
     .preview-list .preview-item .preview-item-content p {
       margin-bottom: 10px; }
       .preview-list .preview-item .preview-item-content p .content-category {
-        font-family: "Poppins", sans-serif;
+        font-family: "Roboto", sans-serif;
         padding-right: 15px;
         border-right: 1px solid #f2f2f2; }
   .preview-list .preview-item .preview-actions {
@@ -16069,7 +15875,7 @@ ul {
   .table thead th {
     border-top: 0;
     border-bottom-width: 1px;
-    font-family: "Poppins", sans-serif;
+    font-family: "Roboto", sans-serif;
     font-weight: 500; }
     .table thead th i {
       margin-left: 0.325rem; }
@@ -16137,7 +15943,7 @@ ul {
         border-color: #e5e5e5;
         color: #b6b6b6; }
   .auth.theme-one .auto-form-wrapper .form-group .submit-btn {
-    font-family: "Poppins", sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 13px;
     padding: 12px 8px;
     font-weight: 600; }
@@ -16246,7 +16052,7 @@ ul {
           border-right: none;
           color: #dfdfdf; }
       .auth.theme-two .auto-form-wrapper form .form-group .submit-btn {
-        font-family: "Poppins", sans-serif;
+        font-family: "Roboto", sans-serif;
         font-size: 13px;
         padding: 11px 33px;
         font-weight: 600;
@@ -16287,21 +16093,12 @@ ul {
     .auth.theme-two .banner-section .slide-content.bg-2 {
       background: url("../images/auth/register_2.html") no-repeat center center;
       background-size: cover; }
-
 /* Error */
-.error-page h1 {
-  font-size: 9.375rem;
-  line-height: 1; }
+.error-page h1 {font-size: 9.375rem;line-height: 1; }
   @media (max-width: 991px) {
-    .error-page h1 {
-      font-size: 8rem; } }
-
-.error-page h2 {
-  font-size: 4.375rem;
-  line-height: 1; }
-
+    .error-page h1 {font-size: 8rem; } }
+.error-page h2 {font-size: 4.375rem;line-height: 1; }
 @media (min-width: 992px) {
   .error-page .error-page-divider {
     border-left: 3px solid rgba(255, 255, 255, 0.2); } }
-
-/*# sourceMappingURL=maps/style.css.map */     
+/*# sourceMappingURL=maps/style.css.map 16250 */     

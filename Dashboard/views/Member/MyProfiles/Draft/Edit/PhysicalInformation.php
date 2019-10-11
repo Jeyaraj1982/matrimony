@@ -1,6 +1,5 @@
 <?php
     $page="PhysicalInformation";
-   
     if (isset($_POST['BtnSaveProfile'])) {
         
         $response = $webservice->getData("Member","EditDraftPhysicalInformation",$_POST);
@@ -30,6 +29,10 @@ function submitprofile() {
                          $('#ErrDiet').html("");
                          $('#ErrSmookingHabit').html("");
                          $('#ErrDrinkingHabit').html("");
+                         $('#ErrPhysicallyImpairedDescription').html("");
+                         $('#ErrVisuallyImpairedDescription').html("");
+                         $('#ErrVissionImpairedDescription').html("");
+                         $('#ErrSpeechImpairedDescription').html("");
                        
                          ErrorCount=0;
                          
@@ -81,6 +84,30 @@ function submitprofile() {
                             document.getElementById("ErrDrinkingHabit").innerHTML="Please select Drinking Habit"; 
                              ErrorCount++;
                          }
+                         if($("#PhysicallyImpaired").val()=="PI002"){
+                            if($("#PhysicallyImpairedDescription").val()==""){
+                                document.getElementById("ErrPhysicallyImpairedDescription").innerHTML="Please Enter Description"; 
+                                 ErrorCount++;
+                            }
+                         }
+                         if($("#VisuallyImpaired").val()=="VI002"){
+                            if($("#VisuallyImpairedDescription").val()==""){
+                                document.getElementById("ErrVisuallyImpairedDescription").innerHTML="Please Enter Description"; 
+                                 ErrorCount++;
+                            }
+                         }
+                         if($("#VissionImpaired").val()=="VS002"){
+                            if($("#VissionImpairedDescription").val()==""){
+                                document.getElementById("ErrVissionImpairedDescription").innerHTML="Please Enter Description"; 
+                                 ErrorCount++;
+                            }
+                         }
+                         if($("#SpeechImpaired").val()=="SI002"){
+                             if($("#SpeechImpairedDescription").val()==""){
+                                document.getElementById("ErrSpeechImpairedDescription").innerHTML="Please Enter Description"; 
+                                 ErrorCount++;
+                             }
+                         }
                          
                         if (ErrorCount==0) {
                             return true;                        
@@ -118,9 +145,9 @@ $(document).ready(function() {
             </select>
             <span class="errorstring" id="ErrPhysicallyImpaired"><?php echo isset($ErrPhysicallyImpaired)? $ErrPhysicallyImpaired : "";?></span>
         </div>
-        <label for="Description" class="col-sm-3 col-form-label" id="pm_description"></label>
-        <div class="col-sm-3" id="pm_input">
-            <input type="text" class="form-control" name="PhysicallyImpairedDescription" id="PhysicallyImpairedDescription" value="<?php echo (isset($_POST['PhysicallyImpairedDescription']) ? $_POST['PhysicallyImpairedDescription'] : $ProfileInfo['PhysicallyImpaireddescription']);?>">
+        <div class="col-sm-6" id="pm_input">
+            <input type="text" class="form-control" name="PhysicallyImpairedDescription" id="PhysicallyImpairedDescription" value="<?php echo (isset($_POST['PhysicallyImpairedDescription']) ? $_POST['PhysicallyImpairedDescription'] : $ProfileInfo['PhysicallyImpaireddescription']);?>" Placeholder="Description">
+            <span class="errorstring" id="ErrPhysicallyImpairedDescription"><?php echo isset($ErrPhysicallyImpairedDescription)? $ErrPhysicallyImpairedDescription : "";?></span>
         </div>
     </div>
     <div class="form-group row">
@@ -135,9 +162,9 @@ $(document).ready(function() {
             </select>
             <span class="errorstring" id="ErrVisuallyImpaired"><?php echo isset($ErrVisuallyImpaired)? $ErrVisuallyImpaired : "";?></span>
         </div>
-        <label for="Description" class="col-sm-3 col-form-label" id="vs_description"></label>
-        <div class="col-sm-3" id="vs_input">
-            <input type="text" class="form-control" name="VisuallyImpairedDescription" id="VisuallyImpairedDescription" value="<?php echo (isset($_POST['VisuallyImpairedDescription']) ? $_POST['VisuallyImpairedDescription'] : $ProfileInfo['VisuallyImpairedDescription']);?>">
+        <div class="col-sm-6" id="vs_input">
+            <input type="text" class="form-control" name="VisuallyImpairedDescription" id="VisuallyImpairedDescription" Placeholder="Description" value="<?php echo (isset($_POST['VisuallyImpairedDescription']) ? $_POST['VisuallyImpairedDescription'] : $ProfileInfo['VisuallyImpairedDescription']);?>">
+            <span class="errorstring" id="ErrVisuallyImpairedDescription"><?php echo isset($ErrVisuallyImpairedDescription)? $ErrVisuallyImpairedDescription : "";?></span>
         </div>
     </div>
     <div class="form-group row">
@@ -152,9 +179,9 @@ $(document).ready(function() {
             </select>
             <span class="errorstring" id="ErrVissionImpaired"><?php echo isset($ErrVissionImpaired)? $ErrVissionImpaired : "";?></span>
         </div>
-        <label for="Description" class="col-sm-3 col-form-label" id="vn_description"></label>
-        <div class="col-sm-3" id="vn_input">
-            <input type="text" class="form-control" name="VissionImpairedDescription" id="VissionImpairedDescription" value="<?php echo (isset($_POST['VissionImpairedDescription']) ? $_POST['VissionImpairedDescription'] : $ProfileInfo['VissionImpairedDescription']);?>">
+        <div class="col-sm-6" id="vn_input">
+            <input type="text" class="form-control" name="VissionImpairedDescription" id="VissionImpairedDescription" Placeholder="Description" value="<?php echo (isset($_POST['VissionImpairedDescription']) ? $_POST['VissionImpairedDescription'] : $ProfileInfo['VissionImpairedDescription']);?>">
+            <span class="errorstring" id="ErrVissionImpairedDescription"><?php echo isset($ErrVissionImpairedDescription)? $ErrVissionImpairedDescription : "";?></span>
         </div>
     </div>
     <div class="form-group row">
@@ -169,9 +196,9 @@ $(document).ready(function() {
             </select>  
             <span class="errorstring" id="ErrSpeechImpaired"><?php echo isset($ErrSpeechImpaired)? $ErrSpeechImpaired : "";?></span>
         </div>
-        <label for="Description" class="col-sm-3 col-form-label" id="si_description"></label>
-        <div class="col-sm-3" id="si_input">
-            <input type="text" class="form-control" name="SpeechImpairedDescription" id="SpeechImpairedDescription" value="<?php echo (isset($_POST['SpeechImpairedDescription']) ? $_POST['SpeechImpairedDescription'] : $ProfileInfo['SpeechImpairedDescription']);?>">
+        <div class="col-sm-6" id="si_input">
+            <input type="text" class="form-control" name="SpeechImpairedDescription" id="SpeechImpairedDescription" Placeholder="Description" value="<?php echo (isset($_POST['SpeechImpairedDescription']) ? $_POST['SpeechImpairedDescription'] : $ProfileInfo['SpeechImpairedDescription']);?>">
+            <span class="errorstring" id="ErrSpeechImpairedDescription"><?php echo isset($ErrSpeechImpairedDescription)? $ErrSpeechImpairedDescription : "";?></span>
         </div>
     </div>
     <div class="form-group row">
@@ -271,64 +298,61 @@ $(document).ready(function() {
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Description<span id="star">*</span></label>
-        <div class="col-sm-10">                                                        
-            <textarea class="form-control" maxlength="250" name="PhysicalDescription" id="PhysicalDescription"><?php echo (isset($_POST['PhysicalDescription']) ? $_POST['PhysicalDescription'] : $ProfileInfo['PhysicalDescription']);?></textarea> <br>
-            <div class="col-sm-12">Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></div>
+        <label class="col-sm-3 col-form-label">Description</label>
+        <div class="col-sm-12">                                                        
+            <textarea class="form-control" style="margin-bottom:5px;" maxlength="250" name="PhysicalDescription" id="PhysicalDescription"><?php echo (isset($_POST['PhysicalDescription']) ? $_POST['PhysicalDescription'] : $ProfileInfo['PhysicalDescription']);?></textarea>
+            Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span>
         </div>
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
                         </div>
     <div class="form-group row" style="margin-bottom:0px;">
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
             <br>
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
-        <div class="col-sm-3"><a href="../DocumentAttachment/<?php echo $_GET['Code'].".htm";?>">Next</a></div>
+        <div class="col-sm-6" style="text-align: right;">
+            <ul class="pager">
+                  <li><a href="../FamilyInformation/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
+                  <li><a href="../DocumentAttachment/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+            </ul>
+        </div>
     </div>
     </form>                                                   
 </div>
-      <script>
+        <script>
         function getAdditionalPhysicalInfo() {
             
-            if ($('#PhysicallyImpaired').val()=="PI001")  {                                
-                   $('#PhysicallyImpairedDescription').attr("disabled", "disabled");
-                   $('#pm_description').html('Description');
+            if ($('#PhysicallyImpaired').val()=="PI001" || $('#PhysicallyImpaired').val()=="0")  {                                
+                   $('#PhysicallyImpairedDescription').hide();
             }else {
-                   $('#PhysicallyImpairedDescription').removeAttr("disabled");
-                   $('#pm_description').html('Description<span id="star">*</span>');
+                   $('#PhysicallyImpairedDescription').show();
             }
         }
         function getAdditionalVisualInfo() {
             
-            if ($('#VisuallyImpaired').val()=="VI001")  {
-                   $('#VisuallyImpairedDescription').attr("disabled", "disabled");
-                   $('#vs_description').html('Description');
+            if ($('#VisuallyImpaired').val()=="VI001" || $('#VisuallyImpaired').val()=="0")  {
+                   $('#VisuallyImpairedDescription').hide();
             }else {
-                   $('#VisuallyImpairedDescription').removeAttr("disabled");
-                   $('#vs_description').html('Description<span id="star">*</span>');
+                   $('#VisuallyImpairedDescription').show();
             }
         }
         function getAdditionalVissionInfo() {
             
-            if ($('#VissionImpaired').val()=="VS001")  {
-                   $('#VissionImpairedDescription').attr("disabled", "disabled");
-                   $('#vn_description').html('Description');
+            if ($('#VissionImpaired').val()=="VS001" || $('#VissionImpaired').val()=="0")  {
+                   $('#VissionImpairedDescription').hide();
             }else {
-                   $('#VissionImpairedDescription').removeAttr("disabled");
-                   $('#vn_description').html('Description<span id="star">*</span>');
+                   $('#VissionImpairedDescription').show();
             }
         }
         function getAdditionalSpeechInfo() {
             
-            if ($('#SpeechImpaired').val()=="SI001")  {
-                   $('#SpeechImpairedDescription').attr("disabled", "disabled");
-                   $('#si_description').html('Description');
+            if ($('#SpeechImpaired').val()=="SI001" || $('#SpeechImpaired').val()=="0")  {
+                   $('#SpeechImpairedDescription').hide();
             }else {
-                   $('#SpeechImpairedDescription').removeAttr("disabled");
-                   $('#si_description').html('Description<span id="star">*</span>');
+                   $('#SpeechImpairedDescription').show();
             }
         }
         

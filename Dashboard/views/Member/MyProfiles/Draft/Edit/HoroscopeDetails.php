@@ -183,11 +183,17 @@ $(document).ready(function() {
                             <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <div class="col-sm-3">
+                            <div class="col-sm-6">
                                 <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
                                 <br>
                                 <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
                             </div>
+                            <div class="col-sm-6" style="text-align:right">
+                                <ul class="pager">
+                                    <li><a href="../PartnersExpectation/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
+                                </ul>
+                            </div>
                         </div>
+                        
                     </div>
 <?php include_once("settings_footer.php");?>                    

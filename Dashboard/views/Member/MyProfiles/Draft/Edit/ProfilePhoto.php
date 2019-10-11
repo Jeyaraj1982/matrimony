@@ -34,13 +34,20 @@
 <div class="col-sm-10" style="margin-top: -8px;">
 <script>
 function submitUpload() {
+            $('#ErrProfilePhoto').html("");
             $('#Errcheck').html("");
             ErrorCount==0
+            if ($("#ProfilePhoto").val()=="") {
+                $("#ErrProfilePhoto").html("Please select the profile Photo");
+                return false;
+            }
             if (document.form1.check.checked == false) {
                 $("#Errcheck").html("Please read the instruction");
                 return false;
-            }
+            }     
+            
             if (ErrorCount==0) {
+                setTimeout(function(){$("#UpdateProfilePhoto").attr('disabled', 'disabled');},100);
                             return true;
                         } else{
                             return false;
@@ -50,7 +57,7 @@ function submitUpload() {
 </script>
 <form method="post" onsubmit="return submitUpload()" name="form1" id="form1" action="" enctype="multipart/form-data">
     <h4 class="card-title">Profile Photo</h4>
-    <span style="color:#555">"A picture is worth a thousand words". Adding your picture is one of the most important aspects of your profile, as per statistics it increases your chances up to 20 times. Most members won't even search a profile without a picture. Picture is the first impression that is given to the viewers and you don't want to give them a blank first impression.<Br><Br><br></span>
+    
     <?php
                 if (isset($_POST['UpdateProfilePhoto'])) {
                     
@@ -95,29 +102,25 @@ function submitUpload() {
                 }
                 $profile = $res['data'];
               
-            ?>
-             
+            ?>    
+<div id="AddPhotoDiv">
+   <span style="color:#555">"A picture is worth a thousand words". Adding your picture is one of the most important aspects of your profile, as per statistics it increases your chances up to 20 times. Most members won't even search a profile without a picture. Picture is the first impression that is given to the viewers and you don't want to give them a blank first impression.<Br><Br><br></span>          
     <div class="form-group row">
         <div class="col-sm-12">
             <input type="File" id="ProfilePhoto" name="ProfilePhoto" Placeholder="File">
-            <span style="color:#888">supports png, jpg, jpeg & File size Lessthan 5 MB </span>
+            <span style="color:#888">supports png, jpg, jpeg & File size Lessthan 5 MB </span><br>
+             <span class="errorstring" id="ErrProfilePhoto"></span>
         </div>
     </div>
     <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="showLearnMore()">Learn more</a>
         <br><span class="errorstring" id="Errcheck"></span><br><br>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-3">
-            <button type="submit" name="UpdateProfilePhoto" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
+            <button type="submit" id="UpdateProfilePhoto" name="UpdateProfilePhoto" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
         </div>
     </div><br>
-    <div class="form-group row" style="margin-bottom:0px;">
-            <div class="col-sm-2">
-                <a href="../CommunicationDetails/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Previous</a>
-            </div>
-            <div class="col-sm-2"><a href="../PartnersExpectation/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Next</a></div>
-        </div>
+    </div>
     <div style="text-align: right;" id="x"></div>
-    <br>
     <br>
     </form>
     <div>
@@ -164,6 +167,16 @@ function submitUpload() {
          <?php }?>
          
          
+    </div>
+    <br>
+    <div class="form-group row">
+        <div class="col-sm-6"></div>
+        <div class="col-sm-6" style="text-align:right">
+             <ul class="pager">
+                  <li><a href="../CommunicationDetails/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
+                  <li><a href="../PartnersExpectation/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+            </ul>
+        </div>
     </div>
 </div>
 <div class="modal" id="LearnMore" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
@@ -248,6 +261,7 @@ function showLearnMore() {
             $('#model_body').html(result2);
             $('#photoview_'+ProfilePhotoID).hide();
             available--;
+            DisplayAddProfilePhotoForm();
             $('#x').html( available + " out 5 photos");
         }
     );
@@ -257,6 +271,18 @@ function changeColor(id)
   document.getElementById(id).style.color = "#ff0000"; // forecolor
  
 }
+function DisplayAddProfilePhotoForm() {
+     if (available==5) {
+          $('#AddPhotoDiv').hide();
+      } else {
+          $('#AddPhotoDiv').show();
+      }
+}
+
+  setTimeout(function(){
+        DisplayAddProfilePhotoForm(); 
+      
+  },500);
 </script>
 <?php include_once("settings_footer.php");?>                    
 

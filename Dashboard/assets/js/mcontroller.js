@@ -12,6 +12,7 @@
                }
             }});
     }
+    
     function EmailVerification() {
         
         $('#Mobile_VerificationBody').html(preloader);
@@ -30,6 +31,7 @@
         $('#myModal').modal('show'); 
         $.post(API_URL + "m=Member&a=MobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
     }
+    
     function ChangeMobileNumber() {
         $('#Mobile_VerificationBody').html(preloader);
         $('#myModal').modal('show'); 
@@ -39,28 +41,21 @@
     function EmailVerificationForm(frmid1) {
         
         var param = $( "#"+frmid1).serialize();
-        
         $('#Mobile_VerificationBody').html(preloader);
         $('#myModal').modal('show'); 
-        
-        $.post(API_URL + "m=Member&a=EmailVerificationForm", 
-                            param,
-                            function(result2) {
-                                 $('#Mobile_VerificationBody').html(result2);  
-                            }
-                    );
+        $.post(API_URL + "m=Member&a=EmailVerificationForm",param,function(result2) {
+            $('#Mobile_VerificationBody').html(result2);  
+        });
     }
+    
     function ChangeEmailID() {
         $('#Mobile_VerificationBody').html(preloader);
-         $('#myModal').modal('show'); 
-        $.ajax({
-                        url: API_URL + "m=Member&a=ChangeEmailID", 
-                        success: function(result2){
-                            $('#Mobile_VerificationBody').html(result2);
-                               
-                        }
-                    });
+        $('#myModal').modal('show'); 
+        $.ajax({url: API_URL + "m=Member&a=ChangeEmailID", success: function(result2){
+            $('#Mobile_VerificationBody').html(result2);
+        }});
     } 
+    
     function CheckVerification() {
         $('#Mobile_VerificationBody').html(preloader);
          $('#myModal').modal('show'); 
@@ -396,6 +391,13 @@
                 $('#CasteName_additionalinfo').hide();
             }
         },
+        addOtherEducationDetails: function() {
+            if ($('#EducationDegree').val()=="Others") {
+                $('#Education_additionalinfo').show();
+            } else {
+                $('#Education_additionalinfo').hide();
+            }
+        },
         addOtherOccupation: function() {
             if ($('#OccupationType').val()=="OT112") {
                 $('#Occupation_additionalinfo').show();
@@ -530,76 +532,101 @@
         }
     }
     
-    
-function print_sister_counts() {      
-        var n_brothers = $('#NumberofSisters').val();
-        if (n_brothers=='NS001') {
-             $('#elderSister').hide();
-             $('#youngerSister').hide();
-             $('#marriedSister').hide();
-        } else {
-            $('#elderSister').show();
-            $('#youngerSister').show();
-            $('#marriedSister').show();
-           
-           var nc = ['NS001','NS002','NS003','NS004','NS005','NS006','NS007','NS008','NS009','NS010'] ;
-           
-           var c = ['ES001','ES002','ES003','ES004','ES005','ES006','ES007','ES008','ES009','ES010'] ;
-                                                                                                                 
-          $('#elderSister').find('option').remove();
-          $('#youngerSister').find('option').remove();
-          $('#marriedSister').find('option').remove();
-                 
-            for (var i = 0; i<=nc.indexOf(n_brothers); i++){
-    var opt = document.createElement('option');
-    opt.value = c[i];
-    opt.innerHTML = i;
-    document.getElementById('elderSister').appendChild(opt);
-}
-   var c = ['YS001','YS002','YS003','YS004','YS005','YS006','YS007','YS008','YS009','YS010'] ;
-  for (var i = 0; i<=nc.indexOf(n_brothers); i++){
-    var opt = document.createElement('option');
-    opt.value = c[i];
-    opt.innerHTML = i;
-   
-    document.getElementById('youngerSister').appendChild(opt);
-    
-}
-  var c = ['MS001','MS002','MS003','MS004','MS005','MS006','MS007','MS008','MS009','MS010'] ;
-  for (var i = 0; i<=nc.indexOf(n_brothers); i++){
-    var opt = document.createElement('option');
-    opt.value = c[i];
-    opt.innerHTML = i;
-    
-    document.getElementById('marriedSister').appendChild(opt);
-}
-        }
+    function print_sister_counts() {
         
+        var n_brothers = $('#NumberofSisters').val();
+        
+        if (n_brothers=='NS001') {
+            $('#div_elderSister').hide();
+            $('#div_youngerSister').hide();
+            $('#div_marriedSister').hide();
+        } else {
+            $('#div_elderSister').show();
+            $('#div_youngerSister').show();
+            $('#div_marriedSister').show();
+            
+            var eld = $('#elderSister').val();
+            var ynr = $('#youngerSister').val();
+            var mrd = $('#marriedSister').val();
+            
+            var nc = ['NS001','NS002','NS003','NS004','NS005','NS006','NS007','NS008','NS009','NS010'] ;
+            
+            $('#elderSister').find('option').remove();
+            $('#youngerSister').find('option').remove();
+            $('#marriedSister').find('option').remove();
+            
+            var c = ['ES001','ES002','ES003','ES004','ES005','ES006','ES007','ES008','ES009','ES010'] ;     
+            for (var i = 0; i<=nc.indexOf(n_brothers); i++){
+                var opt = document.createElement('option');
+                opt.value = c[i];
+                if (eld==c[i]) {
+                    var att = document.createAttribute("selected");
+                    att.value = "selected";
+                    opt.setAttributeNode(att); 
+                }
+                opt.innerHTML = i;
+                document.getElementById('elderSister').appendChild(opt);
+            }
+            
+            var c = ['YS001','YS002','YS003','YS004','YS005','YS006','YS007','YS008','YS009','YS010'] ;
+            for (var i = 0; i<=nc.indexOf(n_brothers); i++){
+                var opt = document.createElement('option');
+                opt.value = c[i];
+                if (ynr==c[i]) {
+                    var att = document.createAttribute("selected");
+                    att.value = "selected";
+                    opt.setAttributeNode(att); 
+                }
+                opt.innerHTML = i;
+                document.getElementById('youngerSister').appendChild(opt);
+            }
+            
+            var c = ['MS001','MS002','MS003','MS004','MS005','MS006','MS007','MS008','MS009','MS010'] ;
+            for (var i = 0; i<=nc.indexOf(n_brothers); i++){
+                var opt = document.createElement('option');
+                opt.value = c[i];
+                if (mrd==c[i]) {
+                    var att = document.createAttribute("selected");
+                    att.value = "selected";
+                    opt.setAttributeNode(att); 
+                }
+                opt.innerHTML = i;
+                document.getElementById('marriedSister').appendChild(opt);
+            }
+        }
     }
     
     function print_brother_counts() {
         var n_brothers = $('#NumberofBrother').val();
         
         if (n_brothers=='NOB001') {
-            $('#belder').hide();
-            $('#byounger').hide();
-            $('#married').hide();
+            $('#div_elder').hide();
+            $('#div_younger').hide();
+            $('#div_married').hide();
         } else {
-            $('#belder').show();
-            $('#byounger').show();
-            $('#married').show();
+            $('#div_elder').show();
+            $('#div_younger').show();
+            $('#div_married').show();
             
             var nc = ['NOB001','NOB002','NOB003','NOB004','NOB005','NOB006','NOB007','NOB008','NOB009','NOB010'] ;
             
-            var c = ['EB001','EB002','EB003','EB004','EB005','EB006','EB007','EB008','EB009','EB010'] ;
-          
+            var eld = $('#belder').val();
+            var ynr = $('#byounger').val();
+            var mrd = $('#married').val();
+            
             $('#belder').find('option').remove();
             $('#byounger').find('option').remove();
             $('#married').find('option').remove();
-                 
+            
+            var c = ['EB001','EB002','EB003','EB004','EB005','EB006','EB007','EB008','EB009','EB010'] ;     
             for (var i = 0; i<=nc.indexOf(n_brothers); i++){
                 var opt = document.createElement('option');
                 opt.value = c[i];
+                if (eld==c[i]) {
+                    var att = document.createAttribute("selected");
+                    att.value = "selected";
+                    opt.setAttributeNode(att); 
+                }
                 opt.innerHTML = i;
                 document.getElementById('belder').appendChild(opt);
             }
@@ -608,6 +635,11 @@ function print_sister_counts() {
             for (var i = 0; i<=nc.indexOf(n_brothers); i++){
                 var opt = document.createElement('option');
                 opt.value = c[i];
+                if (ynr==c[i]) {
+                    var att = document.createAttribute("selected");
+                    att.value = "selected";
+                    opt.setAttributeNode(att); 
+                }
                 opt.innerHTML = i;
                 document.getElementById('byounger').appendChild(opt);
             }
@@ -616,6 +648,11 @@ function print_sister_counts() {
             for (var i = 0; i<=nc.indexOf(n_brothers); i++){
                 var opt = document.createElement('option');
                 opt.value = c[i];
+                if (mrd==c[i]) {
+                    var att = document.createAttribute("selected");
+                    att.value = "selected";
+                    opt.setAttributeNode(att); 
+                }
                 opt.innerHTML = i;
                 document.getElementById('married').appendChild(opt);
             }

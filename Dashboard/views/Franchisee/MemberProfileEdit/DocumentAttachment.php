@@ -9,7 +9,7 @@
     margin-right: 10px;
     text-align: center;
     border: 1px solid #eaeaea;
-    height: 211px;
+    height: 250px;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
@@ -21,13 +21,25 @@
 <div class="col-sm-10" style="margin-top: -8px;">
 <script>
 function submitUpload() {
+            $('#ErrDocuments').html("");  
+            $('#ErrFile').html("");  
             $('#Errcheck').html("");
+            
             ErrorCount==0
+            if ($("#Documents").val()=="0") {
+                $("#ErrDocuments").html("Please select the Document Type");
+                return false;
+            }
+            if ($("#File").val()=="") {
+                $("#ErrFile").html("Please select the Document");
+                return false;
+            }
             if (document.form1.check.checked == false) {
                 $("#Errcheck").html("Please read the instruction");
                 return false;
             }
             if (ErrorCount==0) {
+                 setTimeout(function(){$("#BtnSave").attr('disabled', 'disabled');},100);
                             return true;
                         } else{
                             return false;
@@ -36,10 +48,9 @@ function submitUpload() {
         }
 </script>
 <form method="post" onsubmit="return submitUpload()" name="form1" id="form1" action="" enctype="multipart/form-data">
-    <h4 class="card-title">Document Attachments<br>
+    <h4 class="card-title">Document Attachments
     <span style="float:right;color:green">For administrator purpose only</span><br><span style="float:right;color:grey;font-size:12px">Not show to members or others</span></h4>
     
-  <span style="color:#555">  We have implemented certain measures for the safety of our members. registered members must have update      a copy of any specified government issued identity proof to add credibility to their profiles. </span><br><Br><br>
     
     <?php
                 if (isset($_POST['BtnSave'])) {
@@ -86,24 +97,27 @@ function submitUpload() {
                 $DocumentPhoto = $res['data'];
                 
               
-            ?>
-    
+            ?>       
+   <div id="Attachdetails"> 
+   <span style="color:#555">  We have implemented certain measures for the safety of our members. registered members must have update      a copy of any specified government issued identity proof to add credibility to their profiles. </span><br><Br><br>
     <div class="form-group row">
         <label for="Documents" class="col-sm-2 col-form-label">Document Type<span id="star">*</span></label>
         <div class="col-sm-4">
             <select class="selectpicker form-control" data-live-search="true" id="Documents" name="Documents">
-                <option>Choose Documents</option>
+                <option value="0">Choose Documents</option>
                 <?php foreach($response['data']['DocumentType'] as $Document) { ?>
                  <option value="<?php echo $Document['SoftCode'];?>" <?php echo ($_POST['Documents']==$Document['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Document['CodeValue'];?></option>
                     <?php } ?>
             </select>
+             <span class="errorstring" id="ErrDocuments"></span>
         </div>
     </div>
     <div class="form-group row">
         <label for="Attachment" class="col-sm-2 col-form-label">Attachment<span id="star">*</span></label>
         <div class="col-sm-9">
             <input type="File" id="File" name="File" Placeholder="File">
-            <span style="color:#888">supports png, jpg, jpeg and pdf & File size Lessthan 5 MB </span>
+            <span style="color:#888">supports png, jpg, jpeg and pdf & File size Lessthan 5 MB </span><br>
+            <span class="errorstring" id="ErrFile"></span>
         </div>
     </div>
     <div class="form-group row">
@@ -117,16 +131,13 @@ function submitUpload() {
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-3">
-            <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
+            <button type="submit" name="BtnSave" id="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
         </div>
-    </div><br>
-    <div class="form-group row" style="margin-bottom:0px;">
-            <div class="col-sm-2">
-                <a href="../PhysicalInformation/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Previous</a>
-            </div>
-            <div class="col-sm-2"><a href="../CommunicationDetails/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Next</a></div>
-        </div>
-    <br><br><div style="text-align: right;" id="x"></div>
+    </div>  
+    <br><br>
+   </div>
+   
+   <div style="text-align: right;" id="x"></div>
     <br>
     </form>
     
@@ -154,8 +165,17 @@ function submitUpload() {
    
         <?php }   ?>
          <div style="clear:both"></div>
-         <?php }?>
+         <?php }?>    <br><br>
          </div>
+   <div class="form-group row">
+    <div class="col-sm-6"></div>
+    <div class="col-sm-6" style="text-align: right;">
+            <ul class="pager">
+                  <li><a href="../PhysicalInformation/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
+                  <li><a href="../CommunicationDetails/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+            </ul>
+        </div>
+   </div>
     </div>
 <div class="modal" id="LearnMore" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
@@ -221,6 +241,7 @@ function showLearnMore() {
             $('#model_body').html(result2);
             $('#photoview_'+AttachmentID).hide();
             available--;
+             DisplayDocAttachForm();
             $('#x').html( available + " out 2 photos");
         }
     );
@@ -228,6 +249,18 @@ function showLearnMore() {
       
         //$.ajax({url: API_URL + "m=Member&a=DeletDocumentAttachments",success: function(result2){$('#model_body').html(result2);}});
 }
+function DisplayDocAttachForm() {
+     if (available==2) {
+          $('#Attachdetails').hide();
+      } else {
+          $('#Attachdetails').show();
+      }
+}
+
+  setTimeout(function(){
+        DisplayDocAttachForm(); 
+      
+  },500);
 
 </script>   
 <?php include_once("settings_footer.php");?>

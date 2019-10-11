@@ -3,7 +3,7 @@
     include_once("settings_header.php");
     $response = $webservice->getData("Member","GetViewAttachments",(array("ProfileCode"=>$_GET['Code'])));
 ?> 
-<div class="col-sm-10" style="margin-top: -8px;">
+<div class="col-sm-10" style="margin-top: -8px;max-width:770px !important">
     <h4 class="card-title">Education Details</h4>
     <div align="right">
             <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/AddEducationalDetails/". $_GET['Code'].".htm");?>" class="btn btn-success mr-2" >Add Education Details</a>
@@ -24,7 +24,11 @@
             <?php foreach($response['data']['Attachments'] as $Document) { ?>
                 <tr id="Documentview_<?php echo $Document['AttachmentID'];?>">    
                     <td><?php echo $Document['EducationDetails'];?></td>
-                    <td><?php echo $Document['EducationDegree'];?><BR><span style='color:#888'><?php echo $Document['EducationDescription'];?></span></td>
+                    <td><?php if($Document['EducationDegree']== "Others"){?>
+                            <?php echo trim($Document['OtherEducationDegree']);?>
+                        <?php } else { ?>
+                             <?php echo trim($Document['EducationDegree']);?>  
+                        <?php } ?><BR><span style='color:#888'><?php echo $Document['EducationDescription'];?></span></td>
                     <td>
                         <?php if($Document['FileName']>0){ ?>
                             <?php if($Document['IsVerified']==1) { echo "Attachment Verifiled"; ?>
@@ -54,11 +58,15 @@
         <?php } ?>
     </table>
     <br>
-    <div class="form-group row" style="margin-bottom:0px;">
-        <div class="col-sm-2">
-            <a href="../GeneralInformation/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Previous</a>
+    <div class="form-group row">
+        <div class="col-sm-6"></div>
+        <div class="col-sm-6" style="text-align:right">
+            <ul class="pager" style="float:right">
+                <li><a href="../GeneralInformation/<?php echo $_GET['Code'].".htm";?>">&#8249; Previous</a></li>
+                <li>&nbsp;</li>
+                <li><a href="../OccupationDetails/<?php echo $_GET['Code'].".htm";?>">Next &#8250;</a></li>
+            </ul>
         </div>
-        <div class="col-sm-2"><a href="../OccupationDetails/<?php echo $_GET['Code'].".htm";?>" class="btn btn-primary mr-2" style="font-family:roboto">Next</a></div>
     </div>
 </div>  
 <div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">

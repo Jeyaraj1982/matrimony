@@ -38,6 +38,9 @@ $(document).ready(function () {
    });
   
 function submitprofile() {
+                         $('#ErrContactPersonName').html("");
+                         $('#ErrRelation').html("");
+                         $('#ErrPrimaryPriority').html("");
                          $('#ErrEmailID').html("");
                          $('#ErrMobileNumber').html("");
                          $('#ErrWhatsappNumber').html("");
@@ -45,21 +48,35 @@ function submitprofile() {
                          $('#ErrCity').html("");
                          $('#ErrStateName').html("");
                          $('#ErrCountry').html("");
+                         $('#ErrPincode').html("");
                          
                          ErrorCount=0;
                          
+                         if (IsNonEmpty("ContactPersonName","ErrContactPersonName","Please enter your contact person name")) {
+                            IsAlphaNumeric("ContactPersonName","ErrContactPersonName","Please enter alphabet charchters only"); 
+                         }
                          if (IsNonEmpty("EmailID","ErrEmailID","Please enter your Email ID")) {
                             IsEmail("EmailID","ErrEmailID","Please enter valid EmailID"); 
                          }
                          if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please enter your Mobile Number")) {
                             IsMobileNumber("MobileNumber","ErrMobileNumber","Please enter valid Mobile Number"); 
                          }
-                         if ($('#WhatsappNumber').val().trim().length>0) {
+                         if (IsNonEmpty("WhatsappNumber","ErrWhatsappNumber","Please enter your Whatsapp Number")) {
                             IsMobileNumber("WhatsappNumber","ErrWhatsappNumber","Please Enter Valid Whatsapp Number");
                          }
+                            
                          IsNonEmpty("AddressLine1","ErrAddressLine1","Please enter your Address Line1");
                          IsNonEmpty("City","ErrCity","Please enter your City");
+                         IsNonEmpty("Pincode","ErrPincode","Please enter your Pincode");
                          
+                         if($("#Relation").val()=="0"){
+                            document.getElementById("ErrRelation").innerHTML="Please select your Relation"; 
+                             ErrorCount++;
+                         }
+                         if($("#PrimaryPriority").val()=="0"){
+                            document.getElementById("ErrPrimaryPriority").innerHTML="Please select Primary Priority"; 
+                             ErrorCount++;
+                         }
                          if($("#StateName").val()=="0"){
                             document.getElementById("ErrStateName").innerHTML="Please select your State Name"; 
                              ErrorCount++;
@@ -92,9 +109,40 @@ $(document).ready(function() {
     });
 });
 </script>   
-<div class="col-sm-10" style="margin-top: -8px;">
+<div class="col-sm-10" style="margin-top: -8px;max-width:780px !important">
 <form method="post" action="" onsubmit="return submitprofile();">
         <h4 class="card-title">Communication Details</h4>
+        <div class="form-group row">
+            <label for="Email ID" class="col-sm-2 col-form-label">Contact Person<span id="star">*</span></label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="ContactPersonName" name="ContactPersonName" value="<?php echo (isset($_POST['ContactPersonName']) ? $_POST['ContactPersonName'] : $ProfileInfo['ContactPersonName']);?>" placeholder="Contact Person Name">
+                <span class="errorstring" id="ErrContactPersonName"><?php echo isset($ErrContactPersonName)? $ErrContactPersonName : "";?></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Relation" class="col-sm-2 col-form-label">Relation<span id="star">*</span></label>
+            <div class="col-sm-4">
+                <select class="selectpicker form-control" data-live-search="true" id="Relation" name="Relation">
+                    <option value="0">Choose Relation</option>
+                    <?php foreach($response['data']['ProfileSignInFor'] as $Relation) { ?>
+                        <option value="<?php echo $Relation['CodeValue'];?>" <?php echo (isset($_POST[ 'Relation'])) ? (($_POST[ 'Relation']==$Relation[ 'CodeValue']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Relation']==$Relation[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $Relation['CodeValue'];?></option>
+                    <?php } ?>
+                </select>
+                <span class="errorstring" id="ErrRelation"><?php echo isset($ErrRelation)? $ErrRelation : "";?></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Relation" class="col-sm-2 col-form-label">Primary Priority<span id="star">*</span></label>
+            <div class="col-sm-4">
+                <select class="selectpicker form-control" data-live-search="true" id="PrimaryPriority" name="PrimaryPriority">
+                    <option value="0">Choose Primary Priority</option>
+                    <?php foreach($response['data']['PrimaryPriority'] as $PrimaryPriority) { ?>
+                        <option value="<?php echo $PrimaryPriority['CodeValue'];?>" <?php echo (isset($_POST[ 'PrimaryPriority'])) ? (($_POST[ 'PrimaryPriority']==$PrimaryPriority[ 'CodeValue']) ? " selected='selected' " : "") : (($ProfileInfo[ 'PrimaryPriority']==$PrimaryPriority[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $PrimaryPriority['CodeValue'];?></option>
+                    <?php } ?>
+                </select>
+                <span class="errorstring" id="ErrPrimaryPriority"><?php echo isset($ErrPrimaryPriority)? $ErrPrimaryPriority : "";?></span>
+            </div>
+        </div>
         <div class="form-group row">
             <label for="Email ID" class="col-sm-2 col-form-label">Email ID<span id="star">*</span></label>
             <div class="col-sm-9">
@@ -116,7 +164,7 @@ $(document).ready(function() {
                 <input type="text" class="form-control" id="MobileNumber" maxlength="10" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $ProfileInfo['MobileNumber']);?>" placeholder="Mobile Number">
                 <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
             </div>
-           <label for="WhatsappNumber" class="col-sm-2 col-form-label" style="margin-right: -24px;" >Whatsapp</label>
+           <label for="WhatsappNumber" class="col-sm-2 col-form-label" style="margin-right: -24px;" >Whatsapp<span id="star">*</span></label>
             <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
                 <select name="WhatsappCountryCode" class="selectpicker form-control" data-live-search="true" id="WhatsappCountryCode"> 
                      <?php foreach($response['data']['CountryName'] as $CountryCode) { ?>
@@ -128,7 +176,7 @@ $(document).ready(function() {
             <div class="col-sm-2">
                 <input type="text" class="form-control" id="WhatsappNumber" maxlength="10" name="WhatsappNumber" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : $ProfileInfo['WhatsappNumber']);?>" placeholder="Whatsapp Number">
                 <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
-            </div>
+            </div>     
         </div>
         <div class="form-group row">
             <label for="AddressLine1" class="col-sm-2 col-form-label">Address<span id="star">*</span></label>
@@ -150,7 +198,7 @@ $(document).ready(function() {
             </div>
         </div>
         <div class="form-group row">
-            <label for="Pincode" class="col-sm-2 col-form-label">Pincode</label>
+            <label for="Pincode" class="col-sm-2 col-form-label">Pincode<span id="star">*</span></label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="Pincode" name="Pincode" maxlength="10" value="<?php echo (isset($_POST['Pincode']) ? $_POST['Pincode'] : $ProfileInfo['Pincode']);?>" placeholder="Pincode">
                 <span class="errorstring" id="ErrPincode"><?php echo isset($ErrPincode)? $ErrPincode : "";?></span>
@@ -191,24 +239,32 @@ $(document).ready(function() {
                 <span class="errorstring" id="ErrCountry"><?php echo isset($ErrCountry)? $ErrCountry : "";?></span>
             </div>
         </div>
+        <div class="form-group row" style="margin-bottom:0px">
+            <label for="CommunicationDescription" class="col-sm-4 col-form-label">Summary</label>
+        </div>
         <div class="form-group row">
-            <label for="CommunicationDescription" class="col-sm-2 col-form-label">Summary<span id="star">*</span></label>
-            <div class="col-sm-10">                                                        
-                <textarea class="form-control" maxlength="250" name="CommunicationDescription" id="CommunicationDescription"><?php echo (isset($_POST['CommunicationDescription']) ? $_POST['CommunicationDescription'] : $ProfileInfo['CommunicationDescription']);?></textarea> <br>
-                <div class="col-sm-12">Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></div>
+            <div class="col-sm-11">                                                        
+                <textarea class="form-control" maxlength="250" name="CommunicationDescription" id="CommunicationDescription" style="margin-bottom:5px;"><?php echo (isset($_POST['CommunicationDescription']) ? $_POST['CommunicationDescription'] : $ProfileInfo['CommunicationDescription']);?></textarea>
+                Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
                         </div>
        <div class="form-group row" style="margin-bottom:0px;">
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
             <br>
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
-        <div class="col-sm-3"><a href="../ProfilePhoto/<?php echo $_GET['Code'].".htm";?>">Next</a></div>
+        <div class="col-sm-6" style="text-align:right">
+             <ul class="pager">
+                  <li><a href="../DocumentAttachment/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
+                  <li><a href="../ProfilePhoto/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+            </ul>
+        </div>
     </div>
+    
 </form>
 </div>
 <?php include_once("settings_footer.php");?>      

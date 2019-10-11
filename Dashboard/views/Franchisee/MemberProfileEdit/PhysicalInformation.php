@@ -29,7 +29,11 @@ function submitprofile() {
                          $('#ErrBodyType').html("");
                          $('#ErrDiet').html("");
                          $('#ErrSmookingHabit').html("");
-                         $('#ErrDrinkingHabit').html("");
+                         $('#ErrDrinkingHabit').html(""); 
+                         $('#ErrPhysicallyImpairedDescription').html("");
+                         $('#ErrVisuallyImpairedDescription').html("");
+                         $('#ErrVissionImpairedDescription').html("");
+                         $('#ErrSpeechImpairedDescription').html("");
                        
                          ErrorCount=0;
                          
@@ -81,6 +85,30 @@ function submitprofile() {
                             document.getElementById("ErrDrinkingHabit").innerHTML="Please select Drinking Habit"; 
                              ErrorCount++;
                          }
+                         if($("#PhysicallyImpaired").val()=="PI002"){
+                            if($("#PhysicallyImpairedDescription").val()==""){
+                                document.getElementById("ErrPhysicallyImpairedDescription").innerHTML="Please Enter Description"; 
+                                 ErrorCount++;
+                            }
+                         }
+                         if($("#VisuallyImpaired").val()=="VI002"){
+                            if($("#VisuallyImpairedDescription").val()==""){
+                                document.getElementById("ErrVisuallyImpairedDescription").innerHTML="Please Enter Description"; 
+                                 ErrorCount++;
+                            }
+                         }
+                         if($("#VissionImpaired").val()=="VS002"){
+                            if($("#VissionImpairedDescription").val()==""){
+                                document.getElementById("ErrVissionImpairedDescription").innerHTML="Please Enter Description"; 
+                                 ErrorCount++;
+                            }
+                         }
+                         if($("#SpeechImpaired").val()=="SI002"){
+                             if($("#SpeechImpairedDescription").val()==""){
+                                document.getElementById("ErrSpeechImpairedDescription").innerHTML="Please Enter Description"; 
+                                 ErrorCount++;
+                             }
+                         }
                          
                         if (ErrorCount==0) {
                             return true;                        
@@ -121,6 +149,7 @@ $(document).ready(function() {
         <label for="Description" class="col-sm-3 col-form-label" id="pm_description"></label>
         <div class="col-sm-3" id="pm_input">
             <input type="text" class="form-control" name="PhysicallyImpairedDescription" id="PhysicallyImpairedDescription" value="<?php echo (isset($_POST['PhysicallyImpairedDescription']) ? $_POST['PhysicallyImpairedDescription'] : $ProfileInfo['PhysicallyImpaireddescription']);?>">
+            <span class="errorstring" id="ErrPhysicallyImpairedDescription"><?php echo isset($ErrPhysicallyImpairedDescription)? $ErrPhysicallyImpairedDescription : "";?></span>
         </div>
     </div>
     <div class="form-group row">
@@ -138,6 +167,7 @@ $(document).ready(function() {
         <label for="Description" class="col-sm-3 col-form-label" id="vs_description"></label>
         <div class="col-sm-3" id="vs_input">
             <input type="text" class="form-control" name="VisuallyImpairedDescription" id="VisuallyImpairedDescription" value="<?php echo (isset($_POST['VisuallyImpairedDescription']) ? $_POST['VisuallyImpairedDescription'] : $ProfileInfo['VisuallyImpairedDescription']);?>">
+            <span class="errorstring" id="ErrVisuallyImpairedDescription"><?php echo isset($ErrVisuallyImpairedDescription)? $ErrVisuallyImpairedDescription : "";?></span>
         </div>
     </div>
     <div class="form-group row">
@@ -155,6 +185,7 @@ $(document).ready(function() {
         <label for="Description" class="col-sm-3 col-form-label" id="vn_description"></label>
         <div class="col-sm-3" id="vn_input">
             <input type="text" class="form-control" name="VissionImpairedDescription" id="VissionImpairedDescription" value="<?php echo (isset($_POST['VissionImpairedDescription']) ? $_POST['VissionImpairedDescription'] : $ProfileInfo['VissionImpairedDescription']);?>">
+            <span class="errorstring" id="ErrVissionImpairedDescription"><?php echo isset($ErrVissionImpairedDescription)? $ErrVissionImpairedDescription : "";?></span>
         </div>
     </div>
     <div class="form-group row">
@@ -172,6 +203,7 @@ $(document).ready(function() {
         <label for="Description" class="col-sm-3 col-form-label" id="si_description"></label>
         <div class="col-sm-3" id="si_input">
             <input type="text" class="form-control" name="SpeechImpairedDescription" id="SpeechImpairedDescription" value="<?php echo (isset($_POST['SpeechImpairedDescription']) ? $_POST['SpeechImpairedDescription'] : $ProfileInfo['SpeechImpairedDescription']);?>">
+            <span class="errorstring" id="ErrSpeechImpairedDescription"><?php echo isset($ErrSpeechImpairedDescription)? $ErrSpeechImpairedDescription : "";?></span>
         </div>
     </div>
     <div class="form-group row">
@@ -281,12 +313,17 @@ $(document).ready(function() {
                             <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
                         </div>
     <div class="form-group row" style="margin-bottom:0px;">
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
             <br>
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
-        <div class="col-sm-3"><a href="../DocumentAttachment/<?php echo $_GET['Code'].".htm";?>">Next</a></div>
+       <div class="col-sm-6" style="text-align: right;">
+            <ul class="pager">
+                  <li><a href="../FamilyInformation/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
+                  <li><a href="../DocumentAttachment/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+            </ul>
+        </div>
     </div>
     </form>                                                   
 </div>
@@ -294,40 +331,40 @@ $(document).ready(function() {
         function getAdditionalPhysicalInfo() {
             
             if ($('#PhysicallyImpaired').val()=="PI001")  {                                
-                   $('#PhysicallyImpairedDescription').attr("disabled", "disabled");
-                   $('#pm_description').html('Description');
+                   $('#PhysicallyImpairedDescription').hide();
+                   $('#pm_description').html('');
             }else {
-                   $('#PhysicallyImpairedDescription').removeAttr("disabled");
+                   $('#PhysicallyImpairedDescription').show();
                    $('#pm_description').html('Description<span id="star">*</span>');
             }
         }
         function getAdditionalVisualInfo() {
             
             if ($('#VisuallyImpaired').val()=="VI001")  {
-                   $('#VisuallyImpairedDescription').attr("disabled", "disabled");
-                   $('#vs_description').html('Description');
+                   $('#VisuallyImpairedDescription').hide();
+                   $('#vs_description').html('');
             }else {
-                   $('#VisuallyImpairedDescription').removeAttr("disabled");
+                   $('#VisuallyImpairedDescription').show();
                    $('#vs_description').html('Description<span id="star">*</span>');
             }
         }
         function getAdditionalVissionInfo() {
             
             if ($('#VissionImpaired').val()=="VS001")  {
-                   $('#VissionImpairedDescription').attr("disabled", "disabled");
-                   $('#vn_description').html('Description');
+                   $('#VissionImpairedDescription').hide();
+                   $('#vn_description').html('');
             }else {
-                   $('#VissionImpairedDescription').removeAttr("disabled");
+                   $('#VissionImpairedDescription').show();
                    $('#vn_description').html('Description<span id="star">*</span>');
             }
         }
         function getAdditionalSpeechInfo() {
             
             if ($('#SpeechImpaired').val()=="SI001")  {
-                   $('#SpeechImpairedDescription').attr("disabled", "disabled");
-                   $('#si_description').html('Description');
+                   $('#SpeechImpairedDescription').hide();
+                   $('#si_description').html('');
             }else {
-                   $('#SpeechImpairedDescription').removeAttr("disabled");
+                   $('#SpeechImpairedDescription').show();
                    $('#si_description').html('Description<span id="star">*</span>');
             }
         }

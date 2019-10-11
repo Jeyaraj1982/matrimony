@@ -109,9 +109,10 @@ $(document).ready(function() {
                                 <select class="selectpicker form-control" data-live-search="true" id="ProfileFor" name="ProfileFor" onchange="changeAboutLable();">
                                     <option value="0">Choose Profile Sign In</option>
                                     <?php foreach($response['data']['ProfileSignInFor'] as $ProfileFor) { ?>
+                                    <?php  if($ProfileFor['CodeValue']!= "Father" && $ProfileFor['CodeValue']!= "Mother"){     ?>
                                         <option value="<?php echo $ProfileFor['CodeValue'];?>" <?php echo (isset($_POST[ 'ProfileFor'])) ? (($_POST[ 'ProfileFor']==$ProfileFor[ 'CodeValue']) ? " selected='selected' " : "") : (($ProfileInfo[ 'ProfileFor']==$ProfileFor[ 'CodeValue']) ? " selected='selected' " : "");?>>
                                             <?php echo $ProfileFor['CodeValue'];?>  </option>
-                                    <?php } ?>
+                                    <?php } }?>
                                 </select>
                                  <span class="errorstring" id="ErrProfileFor"><?php echo isset($ErrProfileFor)? $ErrProfileFor : "";?></span>
                             </div>
@@ -283,12 +284,16 @@ $(document).ready(function() {
                             <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <div class="col-sm-3">
+                            <div class="col-sm-6">
                                 <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
                                 <br>
                                 <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
                             </div>
-                            <div class="col-sm-3"><a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">Next</a></div>
+                            <div class="col-sm-6" style="text-align: right;">
+                                <ul class="pager" style="margin:0px">
+                                    <li><a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+                                </ul>
+                            </div>
                         </div>
 </form>
 </div>

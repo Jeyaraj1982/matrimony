@@ -36,7 +36,20 @@ text-align: left;
     margin-bottom: 10px;
     border-radius: 10px;
 }
- 
+fieldset {
+  display: block;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-top: 0.35em;
+  padding-bottom: 0.625em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  border: 1px groove;
+  border-color: #ddd;
+}
+legend {
+    margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px;
+} 
  </style>
 <form method="post" action="" onsubmit="">
 <?php if($ProfileInfo['RequestToVerify']=="0"){?>
@@ -133,13 +146,10 @@ text-align: left;
                         <?php } else { ?>
                              <?php echo trim($ProfileInfo['Caste']);?>  
                         <?php } ?> 
+                        <?php if((strlen(trim($ProfileInfo['SubCaste'])))>0){   ?>&nbsp;&nbsp; , &nbsp;&nbsp;
+                        <?php      echo "Sub Caste :" . trim($ProfileInfo['SubCaste']);    }   ?>
                     </label>
                     </div>
-                     <?php if((strlen(trim($ProfileInfo['SubCaste'])))>0){?>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['SubCaste']);?></label>
-                    </div>
-                    <?php }?>
                     <div class="form-group row">
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Community']);?></label>
                     </div>
@@ -175,9 +185,9 @@ text-align: left;
             </h4></div>
             <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a></div>
          </div>
-         <table>           
-           <?php echo trim($ProfileInfo['AboutMe']);?>
-        </table>
+         <div class="form-group row">
+            <label class="col-sm-12 col-form-label" style="color:#737373;font-size:13px"><?php echo trim($ProfileInfo['AboutMe']);?></label>
+         </div>
     </div>
   </div>
 </div>
@@ -259,8 +269,12 @@ text-align: left;
         <?php }?>
         <?php if(strlen(trim($ProfileInfo['OccupationDetails']))> 0){ ?>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Details</label>                  
-            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:1px solid #e6e6e6;;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['OccupationDetails']); ?></div></div>
+            <div class="col-sm-12">
+                <fieldset>
+                    <legend style="width:49px;">Details</legend>
+                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['OccupationDetails']); ?></div>
+                </fieldset>
+            </div>
         </div>
         <?php }?>
     </div>
@@ -368,9 +382,13 @@ text-align: left;
              </label>
         </div>
         <?php if(strlen(trim($ProfileInfo['AboutMyFamily']))> 0){ ?>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">About My Family</label>                  
-            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:1px solid #e6e6e6;;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['AboutMyFamily']); ?></div></div>
+         <div class="form-group row">
+            <div class="col-sm-12">
+                <fieldset>
+                    <legend style="width:100px;">About My Family</legend>
+                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['AboutMyFamily']); ?></div>
+                </fieldset>
+            </div>
         </div>
         <?php }?>
         </div>
@@ -453,8 +471,12 @@ text-align: left;
         </div>
         <?php if(strlen(trim($ProfileInfo['PhysicalDescription']))> 0){ ?>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Description</label>                  
-            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:1px solid #e6e6e6;;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['PhysicalDescription']); ?></div></div>
+            <div class="col-sm-12">
+                <fieldset>
+                    <legend style="width:70px;">Description</legend>
+                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['PhysicalDescription']); ?></div>
+                </fieldset>
+            </div>
         </div>
         <?php }?>
     </div>
@@ -491,9 +513,13 @@ text-align: left;
         </div>
         <?php if(strlen(trim($ProfileInfo['HoroscopeDetails']))> 0){ ?>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Details</label>                  
-            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:1px solid #e6e6e6;;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['HoroscopeDetails']); ?></div></div>
-        </div>
+            <div class="col-sm-12">
+                <fieldset>
+                    <legend style="width:49px;">Details</legend>
+                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['HoroscopeDetails']); ?></div>
+                </fieldset>
+            </div>
+        </div><br>
         <?php }?>
         <div class="form-group row">
             <div class="col-sm-6">
@@ -590,9 +616,13 @@ text-align: left;
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['AnnualIncome']))> 0 ? trim($PartnerExpectation['AnnualIncome']) : "N/A "; ?></label>
         </div>
            <?php if(strlen(trim($PartnerExpectation['Details']))> 0){ ?>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Expectations</label>                  
-            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:1px solid #e6e6e6;;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo trim($PartnerExpectation['Details']); ?></div></div>
+       <div class="form-group row">
+            <div class="col-sm-12">
+                <fieldset>
+                    <legend style="width: 90px;">Expectations</legend>
+                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($PartnerExpectation['Details']); ?></div>
+                </fieldset>
+            </div>
         </div>
         <?php }?>
     </div>
@@ -605,6 +635,16 @@ text-align: left;
             <div class="col-sm-6"><h4 class="card-title">Communication Details</h4></div>
             <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MemberProfileEdit/CommunicationDetails/".$_GET['Code'].".htm ");?>">Edit</a></div>
          </div>
+         <div class="form-group row">                                                   
+            <label class="col-sm-2 col-form-label">Person Name</label>                    
+            <label class="col-sm-9 col-form-label"style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['ContactPersonName']))> 0 ? trim($ProfileInfo['ContactPersonName']) : "N/A "; ?></label>
+        </div>
+         <div class="form-group row">                                                   
+            <label class="col-sm-2 col-form-label">Relation</label>                    
+            <label class="col-sm-3 col-form-label"style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Relation']))> 0 ? trim($ProfileInfo['Relation']) : "N/A "; ?></label>
+            <label class="col-sm-2 col-form-label">Primary Priority</label>                    
+            <label class="col-sm-3 col-form-label"style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['PrimaryPriority']))> 0 ? trim($ProfileInfo['PrimaryPriority']) : "N/A "; ?></label>
+        </div>
         <div class="form-group row">                                                   
             <label class="col-sm-2 col-form-label">Email ID</label>                    
             <label class="col-sm-9 col-form-label"style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['EmailID']))> 0 ? trim($ProfileInfo['EmailID']) : "N/A "; ?></label>
@@ -648,8 +688,12 @@ text-align: left;
         </div> 
          <?php if(strlen(trim($ProfileInfo['CommunicationDescription']))> 0){ ?>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Summary</label>                  
-            <div class="col-sm-12 col-form-label" style="color:#737373;"><div style="border:1px solid #e6e6e6;;padding: 10px;width: 562px;height: 100px;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['CommunicationDescription']); ?></div></div>
+            <div class="col-sm-12">
+                <fieldset>
+                    <legend style="width: 65px;">Summary</legend>
+                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['CommunicationDescription']); ?></div>
+                </fieldset>
+            </div>
         </div>
         <?php }?>
         </div>

@@ -39,39 +39,70 @@
     }
     include_once("settings_header.php");
 ?>
-<div class="col-sm-10" style="margin-top: -8px;">
-    <form method="post" action="" name="form1" id="form1" enctype="multipart/form-data">
+<script>
+function submitEducation() {
+            $('#ErrEducationdetails').html("");  
+            $('#ErrEducationDegree').html("");  
+            $('#ErrOtherEducationDegree').html("");  
+            
+            ErrorCount==0
+            if ($("#Educationdetails").val()=="0") {
+                $("#ErrEducationdetails").html("Please select the Education");
+                return false;
+            }
+            if ($("#EducationDegree").val()=="0") {
+                $("#ErrEducationDegree").html("Please select the Education details");
+                return false;
+            }
+            if ($('#EducationDegree').val()=="Others") {  
+                              if($("#OtherEducationDegree").val()==""){
+                                document.getElementById("ErrOtherEducationDegree").innerHTML="Please enter your education details"; 
+                                  return false;
+                             }
+                          }
+            if (ErrorCount==0) {
+                 setTimeout(function(){$("#BtnSave").attr('disabled', 'disabled');},100);
+                            return true;
+                        } else{
+                            return false;
+                        }
+
+        }
+</script>
+<div class="col-sm-10" style="margin-top: -8px;max-width:770px !important">
+    <form method="post" action="" name="form1" id="form1" onsubmit="return submitEducation()" enctype="multipart/form-data">
         <h4 class="card-title">Educational Details</h4>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Education<span id="star">*</span></label> 
             <div class="col-sm-8">
-                <select class="selectpicker form-control" data-live-search="true" name="Educationdetails">
+                <select class="selectpicker form-control" data-live-search="true" name="Educationdetails" id="Educationdetails">
                     <option value="0">Choose Education</option>
                     <?php foreach($response['data']['EducationDetail'] as $EducationDetail) { ?>
                     <option value="<?php echo $EducationDetail['CodeValue'];?>" <?php echo ($_POST['Educationdetails']==$EducationDetail['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $EducationDetail['CodeValue'];?></option>
                     <?php } ?> 
                 </select>
+                <span class="errorstring" id="ErrEducationdetails"></span>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row">                                 
             <label class="col-sm-3 col-form-label">Education Details<span id="star">*</span></label> 
             <div class="col-sm-8">
-                <select class="selectpicker form-control" data-live-search="true" name="EducationDegree">
+                <select class="selectpicker form-control" data-live-search="true" name="EducationDegree" id="EducationDegree" onchange="DraftProfile.addOtherEducationDetails();">
                     <option value="0">Choose Education Degree</option>
                     <?php foreach($response['data']['EducationDegree'] as $EducationDegree) { ?>
                     <option value="<?php echo $EducationDegree['CodeValue'];?>" <?php echo ($_POST['EducationDegree']==$EducationDegree['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $EducationDegree['CodeValue'];?></option>
                     <?php } ?>   
                 </select>
+                <span class="errorstring" id="ErrEducationDegree"></span>
             </div>                                                
         </div>
-        <!--
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Remarks</label>
-            <div class="col-sm-8"><input type="text" class="form-control" name="EducationRemarks" id="EducationRemarks" value="<?php echo (isset($_POST['EducationRemarks']) ? $_POST['EducationRemarks'] : $response['data']['EducationRemarks']);?>"></div>
+        <div class="form-group row" id="Education_additionalinfo">
+            <label class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-8" ><input type="text" class="form-control" id="OtherEducationDegree" name="OtherEducationDegree" value="<?php echo (isset($_POST['OtherEducationDegree']) ? $_POST['OtherEducationDegree'] : $ProfileInfo['OtherEducationDegree']);?>">
+            <span class="errorstring" id="ErrOtherEducationDegree"><?php echo isset($ErrOtherEducationDegree)? $ErrOtherEducationDegree : "";?></span></div>
         </div>
-        -->
         <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Description<span id="star">*</span></label>
+            <label class="col-sm-3 col-form-label">Description</label>
             <div class="col-sm-8">                                                        
                 <input type="text" class="form-control" maxlength="50" name="EducationDescription" id="EducationDescription" value="<?php echo (isset($_POST['EducationDescription']) ? $_POST['EducationDescription'] : $response['data']['EducationDescription']);?>" style="margin-bottom:5px">
                 Max 50 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span>
@@ -79,7 +110,11 @@
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Attachment</label>
-            <div class="col-sm-8"><input type="File" id="File" name="File" Placeholder="File"></div>
+            <div class="col-sm-8">
+                <input type="File" id="File" name="File" Placeholder="File">
+                 <span class="errorstring" id="ErrFile"></span>   
+            </div>
+            
         </div>
         <div class="form-group row" style="margin-bottom:0px;">
             <div class="col-sm-12" style="text-align:center;color:red">
@@ -88,7 +123,8 @@
         </div>
         <div class="form-group row">
             <div class="col-sm-12" style="text-align:left">
-                <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Save Education Details</button>
+                <button type="submit" name="BtnSave" id="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Save Education Details</button>&nbsp;&nbsp;
+                <a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">back</a>
             </div>
         </div>
     </form>
@@ -103,6 +139,7 @@ $(document).ready(function() {
         var text_remaining = text_max - text_length;
         $('#textarea_feedback').html(text_length + ' characters typed');
     });
+    DraftProfile.addOtherEducationDetails();
 });
 </script> 
 <?php include_once("settings_footer.php");?>      

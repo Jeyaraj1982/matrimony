@@ -52,6 +52,7 @@ function submitprofile() {
                          $('#ErrTypeofOccupation').html("");
                          $('#ErrIncomeRange').html("");
                          $('#ErrWCountry').html("");
+                          $('#ErrWorkedCityName').html("");
                          $('#ErrOtherOccupation').html("");
                        
                          ErrorCount=0;
@@ -75,6 +76,10 @@ function submitprofile() {
                              }
                              if($("#WCountry").val()=="0"){
                                 document.getElementById("ErrWCountry").innerHTML="Please select country"; 
+                                 ErrorCount++;
+                             }
+                              if($("#WorkedCityName").val()==""){
+                                document.getElementById("ErrWorkedCityName").innerHTML="Please enter worked city"; 
                                  ErrorCount++;
                              }
                           }
@@ -143,9 +148,11 @@ $(document).ready(function() {
             <select class="selectpicker form-control" data-live-search="true" id="OccupationType" name="OccupationType" onchange="addOtherOccupation();">
                 <option value="0">Choose Occupation Types</option>
                 <?php foreach($response['data']['Occupation'] as $OccupationType) { ?>
+                    <?php  if($OccupationType['SoftCode']!= "OT107"){     ?>
                     <option value="<?php echo $OccupationType['SoftCode'];?>" <?php echo (isset($_POST[ 'OccupationType'])) ? (($_POST[ 'OccupationType']==$OccupationType[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'OccupationType']==$OccupationType[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $OccupationType['CodeValue'];?>
-                            <?php } ?>      </option>
+                            <?php } } ?>   
+                               </option>
             </select>
             <span class="errorstring" id="ErrOccupationType"><?php echo isset($ErrOccupationType)? $ErrOccupationType : "";?></span>
         </div>
@@ -172,7 +179,7 @@ $(document).ready(function() {
             </select>
             <span class="errorstring" id="ErrIncomeRange"><?php echo isset($ErrIncomeRange)? $ErrIncomeRange : "";?></span>
         </div>
-         <label for="Country" class="col-sm-2 col-form-label">Worked Place<span id="star">*</span></label>
+         <label for="Country" class="col-sm-2 col-form-label">Workind Country<span id="star">*</span></label>
             <div class="col-sm-4">
                 <select class="selectpicker form-control" data-live-search="true" id="WCountry" name="WCountry">
                     <option value="0">Choose Country</option>
@@ -186,12 +193,17 @@ $(document).ready(function() {
     </div>
    <div class="form-group row">
         <label class="col-sm-2 col-form-label">Attachment</label>
-        <div class="col-sm-8">
+        <div class="col-sm-4">
             <?php if($ProfileInfo['OccupationAttachFileName']==""){  ?>
                 <input type="File" id="File" name="File" Placeholder="File">
             <?php }  else {  ?>  
                 <div id="attachfilediv"><img src="<?php echo AppUrl;?>uploads/<?php echo $ProfileInfo['OccupationAttachFileName'];?>" style="height:120px;"><br><a href="javascript:void(0)" onclick="showAttachmentOccupation('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')"><img src="<?php echo AppUrl ;?>assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a></div><br><input type="File" id="File" name="File" Placeholder="File">
        <?php }?>
+       </div>
+       <label class="col-sm-2 col-form-label">City Name<span id="star">*</span></label>
+       <div class="col-sm-4">
+           <input type="text" class="form-control" id="WorkedCityName" name="WorkedCityName" value="<?php echo (isset($_POST['WorkedCityName']) ? $_POST['WorkedCityName'] : $ProfileInfo['WorkedCityName']);?>" placeholder="City Name">
+            <span class="errorstring" id="ErrWorkedCityName"><?php echo isset($ErrWorkedCityName)? $ErrWorkedCityName : "";?></span>
        </div>
     </div>
     </div>
@@ -206,14 +218,18 @@ $(document).ready(function() {
                             <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
                         </div>
     <div class="form-group row" style="margin-bottom:0px;">
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
             <br>
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
-        <div class="col-sm-3"><a href="../FamilyInformation/<?php echo $_GET['Code'].".htm";?>">Next</a></div>
+        <div class="col-sm-6" style="text-align: right;">
+            <ul class="pager">
+                <li><a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
+                <li><a href="../FamilyInformation/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+            </ul>
+        </div>
     </div>
-  
 </form>
 </div>
   <div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
