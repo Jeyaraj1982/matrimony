@@ -1017,6 +1017,7 @@
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
                                                             "ParentsAlive"              => CodeMaster::getData('PARENTSALIVE'),
                                                             "ChevvaiDhosham"              => CodeMaster::getData('CHEVVAIDHOSHAM'),
+                                                            "PrimaryPriority"              => CodeMaster::getData('PRIMARYPRIORITY'),
                                                             "StateName"              => CodeMaster::getData('STATNAMES')));
          }   
           
@@ -1129,6 +1130,7 @@
                                                                 `AnnualIncomeCode`      = '".$_POST['IncomeRange']."',
                                                                 `WorkedCountryCode`     = '".$_POST['WCountry']."',
                                                                 `WorkedCountry`         = '".$Country[0]['CodeValue']."',
+                                                                `WorkedCityName`     = '".$_POST['WorkedCityName']."',
                                                                 `OccupationDetails`     = '".$_POST['OccupationDetails']."',
                                                                 `LastUpdatedOn`         = '".date("Y-m-d H:i:s")."',
                                                                 `AnnualIncome`          = '".$IncomeRange[0]['CodeValue']."'";
@@ -1147,6 +1149,7 @@
                                                                     `AnnualIncomeCode`     = '',
                                                                     `WorkedCountryCode`    = '',
                                                                     `WorkedCountry`        = '',
+                                                                    `WorkedCityName`        = '',
                                                                     `OccupationDescription`        = '',
                                                                     `OccupationAttachFileName`= '',
                                                                     `OccupationDetails`   = '".$_POST['OccupationDetails']."',
@@ -1474,7 +1477,10 @@
              $Country = CodeMaster::getData("CONTNAMES",$_POST['Country']);
              $State   = CodeMaster::getData("STATNAMES",$_POST['StateName']);
              
-             $updateSql = "update `_tbl_draft_profiles` set `EmailID`        = '".$_POST['EmailID']."',
+             $updateSql = "update `_tbl_draft_profiles` set `ContactPersonName`        = '".$_POST['ContactPersonName']."',
+                                                            `Relation`        = '".$_POST['Relation']."',
+                                                            `PrimaryPriority`        = '".$_POST['PrimaryPriority']."',
+                                                            `EmailID`        = '".$_POST['EmailID']."',
                                                             `MobileNumber`   = '".$_POST['MobileNumber']."',
                                                             `MobileNumberCountryCode`   = '".$_POST['MobileNumberCountryCode']."',
                                                             `WhatsappNumber` = '".$_POST['WhatsappNumber']."',
@@ -1709,10 +1715,16 @@
              if (sizeof($data)>0) {
                 return Response::returnError("Document  Already attached",$data);
              }
-             $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'"); 
+             $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'");
+             if($_POST['EducationDegree']=="Others"){
+                 $OtherEducation =  $_POST['OtherEducationDegree'];
+             }  
+             else {
+                  $OtherEducation =  "";
+             }                       
              $id = $mysql->insert("_tbl_draft_profiles_education_details",array("EducationDetails" => $_POST['Educationdetails'],
                                                                   "EducationDegree"  => $_POST['EducationDegree'],
-                                                                 // "EducationRemarks"  => $_POST['EducationRemarks'],
+                                                                 "OtherEducationDegree"  => $OtherEducation,
                                                                   "EducationDescription"  => $_POST['EducationDescription'],
                                                                   "FileName"            => $_POST['File'],
                                                                   "ProfileID"        => $profile[0]['ProfileID'],
@@ -2346,7 +2358,7 @@
              $updateSql = "update `_tbl_draft_profiles` set `OccupationAttachFileName` = '' where `ProfileID`='".$_POST['ProfileID']."' and`ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$_POST['MemberID']."'";
              $mysql->execute($updateSql);
           
-               return  "update `_tbl_draft_profiles` set `OccupationAttachFileName` = '' where `ProfileID`='".$_POST['ProfileID']."' and`ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$_POST['MemberID']."'".'<div style="background:white;width:100%;padding:20px;height:100%;">
+               return  '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Confirmation For Remove</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>

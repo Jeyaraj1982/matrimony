@@ -355,59 +355,23 @@
              if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0" )) {
                 return Response::returnError("Please select sex");
              }
-             if ((strlen(trim($_POST['MaritalStatus']))==0 || $_POST['MaritalStatus']=="0" )) {
-                return Response::returnError("Please select marital status");
-             }                                                                                                          
-             if ((strlen(trim($_POST['Language']))==0 || $_POST['Language']=="0" )) {
-                return Response::returnError("Please select language");
-             }
-             if ((strlen(trim($_POST['Religion']))==0 || $_POST['Religion']=="0" )) {
-                return Response::returnError("Please select religion");
-             }
-             if ((strlen(trim($_POST['Caste']))==0 || $_POST['Caste']=="0" )) {
-                return Response::returnError("Please select caste");
-             }
-             if ((strlen(trim($_POST['Community']))==0 || $_POST['Community']=="0" )) {
-                return Response::returnError("Please select community");
-             }
-             if ((strlen(trim($_POST['Nationality']))==0 || $_POST['Nationality']=="0" )) {
-                return Response::returnError("Please select nationality");
-             }
 
              $member= $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              
-             $ProfileFors = CodeMaster::getData("PROFILESIGNIN",$_POST["ProfileFor"]);
-             $MaritalStatus = CodeMaster::getData("MARTIALSTATUS",$_POST["MaritalStatus"]);
+             $ProfileFors   = CodeMaster::getData("PROFILESIGNIN",$_POST["ProfileFor"]);
              $Sex           = CodeMaster::getData("SEX",$_POST["Sex"]); 
-             $MotherTongue  = CodeMaster::getData("LANGUAGENAMES",$_POST["Language"]); 
-             $Religion      = CodeMaster::getData("RELINAMES",$_POST["Religion"]);
-             $Caste         = CodeMaster::getData("CASTNAMES",$_POST["Caste"]);
-             $Community     = CodeMaster::getData("COMMUNITY",$_POST["Community"]); 
-             $Nationality   = CodeMaster::getData("NATIONALNAMES",$_POST["Nationality"]);
-             $ProfileCode   =SeqMaster::GetNextDraftProfileCode();
+             $ProfileCode   = SeqMaster::GetNextDraftProfileCode();
              $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
              $id =  $mysql->insert("_tbl_draft_profiles",array("ProfileCode"      => $ProfileCode,
                                                               "ProfileForCode"    => $ProfileFors[0]['SoftCode'],
                                                               "ProfileFor"        => $ProfileFors[0]['CodeValue'],
-                                                              "ProfileName"       => $_POST['ProfileName'],
+                                                              "ProfileName"       => trim($_POST['ProfileName']),
                                                               "DateofBirth"       => $dob,        
                                                               "SexCode"           => $_POST['Sex'],      
                                                               "Sex"               => $Sex[0]['CodeValue'],      
-                                                              "MaritalStatusCode" => $_POST['MaritalStatus'],      
-                                                              "MaritalStatus"     => $MaritalStatus[0]['CodeValue'],      
-                                                              "MotherTongueCode"  => $_POST['Language'], 
-                                                              "MotherTongue"      => $MotherTongue[0]['CodeValue'],      
-                                                              "ReligionCode"      => $_POST['Religion'],
-                                                              "Religion"          => $Religion[0]['CodeValue'],      
-                                                              "CasteCode"         => $_POST['Caste'],
-                                                              "Caste"             => $Caste[0]['CodeValue'],      
-                                                              "CommunityCode"     => $_POST['Community'],        
-                                                              "Community"         => $Community[0]['CodeValue'],           
                                                               "CreatedOn"         => date("Y-m-d H:i:s"),        
-                                                              "NationalityCode"   => $_POST['Nationality'],
-                                                              "Nationality"       => $Nationality[0]['CodeValue'],
                                                               "MemberID"          => $loginInfo[0]['MemberID'],
-                                                              "MemberCode"          => $member[0]['MemberCode'],
+                                                              "MemberCode"        => $member[0]['MemberCode'],
                                                               "CreatedByMemberID" => $loginInfo[0]['MemberID']));
              if (sizeof($id)>0) {
                  $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='DraftProfile'");
@@ -1638,6 +1602,7 @@
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
                                                             "ParentsAlive"              => CodeMaster::getData('PARENTSALIVE'),
                                                             "ChevvaiDhosham"              => CodeMaster::getData('CHEVVAIDHOSHAM'),
+                                                            "PrimaryPriority"              => CodeMaster::getData('PRIMARYPRIORITY'),
                                                             "StateName"              => CodeMaster::getData('STATNAMES'));
              if ($rtype=="")  {
              return Response::returnSuccess("success"."select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'",$result);
@@ -2137,7 +2102,10 @@
              $Country = CodeMaster::getData("RegisterAllowedCountries",$_POST['Country']);
              $State   = CodeMaster::getData("STATNAMES",$_POST['StateName']);
 
-             $updateSql = "update `_tbl_draft_profiles` set  `EmailID`        = '".$_POST['EmailID']."',
+             $updateSql = "update `_tbl_draft_profiles` set `ContactPersonName`        = '".$_POST['ContactPersonName']."',
+                                                            `Relation`        = '".$_POST['Relation']."',
+                                                            `PrimaryPriority`        = '".$_POST['PrimaryPriority']."',
+                                                            `EmailID`        = '".$_POST['EmailID']."',
                                                             `MobileNumber`   = '".$_POST['MobileNumber']."',
                                                             `MobileNumberCountryCode`   = '".$_POST['MobileNumberCountryCode']."',
                                                             `WhatsappNumber` = '".$_POST['WhatsappNumber']."',
@@ -2261,6 +2229,7 @@
                                                                 `AnnualIncomeCode`      = '".$_POST['IncomeRange']."',
                                                                 `WorkedCountryCode`     = '".$_POST['WCountry']."',
                                                                 `WorkedCountry`         = '".$Country[0]['CodeValue']."',
+                                                                `WorkedCityName`     = '".$_POST['WorkedCityName']."',
                                                                 `OccupationDetails`     = '".$_POST['OccupationDetails']."',
                                                                 `LastUpdatedOn`         = '".date("Y-m-d H:i:s")."',
                                                                 `AnnualIncome`          = '".$IncomeRange[0]['CodeValue']."'";
@@ -2279,6 +2248,7 @@
                                                                     `AnnualIncomeCode`     = '',
                                                                     `WorkedCountryCode`    = '',
                                                                     `WorkedCountry`        = '',
+                                                                    `WorkedCityName`        = '',
                                                                     `OccupationDescription`        = '',
                                                                     `OccupationAttachFileName`= '',
                                                                     `OccupationDetails`   = '".$_POST['OccupationDetails']."',
@@ -2320,10 +2290,16 @@
              if (sizeof($data)>0) {
                 return Response::returnError("Document  Already attached",$data);
              }
-             $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'");                         
+             $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'"); 
+             if($_POST['EducationDegree']=="Others"){
+                 $OtherEducation =  $_POST['OtherEducationDegree'];
+             }  
+             else {
+                  $OtherEducation =  "";
+             }                      
              $id = $mysql->insert("_tbl_draft_profiles_education_details",array("EducationDetails" => $_POST['Educationdetails'],
                                                                   "EducationDegree"  => $_POST['EducationDegree'],
-                                                                //  "EducationRemarks"  => $_POST['EducationRemarks'],
+                                                                  "OtherEducationDegree"  =>$OtherEducation,
                                                                   "EducationDescription"  => $_POST['EducationDescription'],
                                                                   "FileName"            => $_POST['File'],
                                                                   "ProfileID"        => $profile[0]['ProfileID'],
