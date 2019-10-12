@@ -3,7 +3,7 @@
    ?>
    
 <?php include_once("settings_header.php");?> 
-<div class="col-sm-10" style="margin-top: -8px;">
+<div class="col-sm-10 rightwidget" >
     <h4 class="card-title">Education Details</h4>
     <div align="right">
             <a href="<?php echo GetUrl("MemberProfileEdit/AddEducationalDetails/". $_GET['Code'].".htm");?>" class="btn btn-success mr-2" >Add Education Details</a>
@@ -28,7 +28,11 @@
             <?php foreach($response['data']['Attachments'] as $Document) { ?>
                 <tr id="Documentview_<?php echo $Document['AttachmentID'];?>">    
                     <td><?php echo $Document['EducationDetails'];?></td>
-                    <td><?php echo $Document['EducationDegree'];?><BR><span style='color:#888'><?php echo $Document['EducationDescription'];?></span></td>
+                    <td><?php if($Document['EducationDegree']== "Others"){?>
+                            <?php echo trim($Document['OtherEducationDegree']);?>
+                        <?php } else { ?>
+                             <?php echo trim($Document['EducationDegree']);?>  
+                        <?php } ?><BR><span style='color:#888'><?php echo $Document['EducationDescription'];?></span></td>
                     <td>
                         <?php if($Document['FileName']>0){ ?>
                           <?php  if($Document['IsVerified']==1) { echo "Attachment Verifiled"; ?>
@@ -41,7 +45,7 @@
                         <?php }?></td>
                     <td style="width:20px">
                         <?php  if($Document['IsVerified']==0) {?>
-                        <a href="javascript:void(0)" onclick="showConfirmDeleteAttach('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['EducationDetails'];?>','<?php  echo $Document['EducationDegree'];?>')"><img src="<?php echo SiteUrl?>assets/images/document_delete.png" style="width:16px;height:16px"></a>
+                        <a href="javascript:void(0)" onclick="showConfirmDeleteAttach('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['EducationDetails'];?>','<?php  echo $Document['EducationDegree'];?>','<?php echo $Document['OtherEducationDegree']?>')"><img src="<?php echo SiteUrl?>assets/images/document_delete.png" style="width:16px;height:16px"></a>
                         <?php }?>
                   </td>  
                 </tr>
@@ -58,9 +62,10 @@
         <div class="form-group row">
         <div class="col-sm-6"></div>
         <div class="col-sm-6" style="text-align:right">
-            <ul class="pager">
-                <li><a href="../GeneralInformation/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
-                <li><a href="../OccupationDetails/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+            <ul class="pager" style="float:right">
+                <li><a href="../GeneralInformation/<?php echo $_GET['Code'].".htm";?>">&#8249; Previous</a></li>
+                <li>&nbsp;</li>
+                <li><a href="../OccupationDetails/<?php echo $_GET['Code'].".htm";?>">Next &#8250;</a></li>
             </ul>
         </div>
     </div>
@@ -78,7 +83,7 @@
         </div>
 
 <script>
-function showConfirmDeleteAttach(AttachmentID,ProfileID,EducationDetails,EducationDegree) {
+function showConfirmDeleteAttach(AttachmentID,ProfileID,EducationDetails,EducationDegree,OtherEducationDegree) {
        $('#DeleteNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
                     +   '<div  style="height: 315px;">'
@@ -98,7 +103,7 @@ function showConfirmDeleteAttach(AttachmentID,ProfileID,EducationDetails,Educati
                            + '<tbody> '
                             +'<tr>'                                                  
                                 +'<td>'+EducationDetails+'</td>'
-                                +'<td>'+EducationDegree+'</td>'
+                                  +'<td>'+EducationDegree +', '+OtherEducationDegree+'</td>'
                             +'</tr>'
                            +'</tbody>'
                            +'</table>'

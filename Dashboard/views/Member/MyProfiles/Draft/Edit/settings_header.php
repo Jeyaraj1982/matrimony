@@ -25,7 +25,7 @@
                 <div class="card-body" style="padding:0px">
                     <div class="form-group-row">
                         <div>
-                            <div class="col-sm-2" style="width: 15%;padding-left:0px;padding-right: 0px;;">
+                            <div class="col-sm-2" style="min-width:200px;padding-left:0px;padding-right: 0px;;">
                                 <div class="sidemenu">
                                     <ul class="ft-left-nav fusmyacc_leftnav" style="padding: 0px;list-style: none;">
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="GeneralInformation") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">

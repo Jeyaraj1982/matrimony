@@ -29,10 +29,10 @@
     });
 });
 </script>
-<div class="col-sm-9" style="margin-top: -8px;">
+<div class="col-sm-10 rightwidget">
 <form method="post" action="" onsubmit="">
- <input type="hidden" value="<?php echo $_GET['Code'];?>"  name="ProfileCode">
-    <h4 class="card-title">Partner's Expectation</h4>
+    
+    <h4 class="card-title">Partner's Expectations</h4>
     <div class="form-group row">
         <div class="col-sm-3" align="left">Age</div>
         <div class="col-sm-2" align="left" style="width:100px">
@@ -87,7 +87,7 @@
             <select class="selectpicker form-control" data-live-search="true" id="Caste" name="Caste">
                 <option value="0">Choose Caste</option>
                 <?php foreach($response['data']['Caste'] as $Caste) { ?>
-                    <option value="<?php echo $Caste['SoftCode'];?>" <?php echo (isset($_POST[ 'Caste'])) ? (($_POST[ 'Caste']==$Caste[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'CasteCode']==$Caste[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                    <option value="<?php echo $Caste['SoftCode'];?>" <?php echo (isset($_POST[ 'Caste'])) ? (($_POST[ 'Caste']==$Caste[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Caste']==$Caste[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $Caste['CodeValue'];?>
                     </option>
                     <?php } ?>
@@ -137,25 +137,26 @@
         <div class="col-sm-3" align="left">Expectations<span id="star">*</span></div>
         <div class="col-sm-9">
              <textarea class="form-control" maxlength="250" name="Details" id="Details"><?php echo (isset($_POST['Details']) ? $_POST['Details'] : $ProfileInfo['Details']);?></textarea> <br>
-                                <div class="col-sm-12">Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></div>
+                                <div class="col-sm-12">Max 250 characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></div>
         </div>
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
-                            <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
-                        </div>
+            <div class="col-sm-12"><span id="server_message_error"><?php echo $errormessage ;?></span><span id="server_message_success"><?php echo $successmessage;?></span></div>
+        </div>
      <div class="form-group row" style="margin-bottom:0px;">
             <div class="col-sm-6">
                 <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
                 <br>
                 <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
             </div>
-            <div class="col-sm-6" style="text-align:right">
-             <ul class="pager">
-                   <li><a href="../ProfilePhoto/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
-                   <li><a href="../HoroscopeDetails/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+        <div class="col-sm-6" style="text-align:right">
+             <ul class="pager" style="float:right;">
+                   <li><a href="../ProfilePhoto/<?php echo $_GET['Code'].".htm";?>">&#8249; Previous</a></li>
+                   <li>&nbsp;</li>
+                   <li><a href="../HoroscopeDetails/<?php echo $_GET['Code'].".htm";?>">Next &#8250;</a></li>
             </ul>
         </div>
         </div>
     </form>
-</div> 
+</div>
 <?php include_once("settings_footer.php");?>                      

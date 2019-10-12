@@ -30,10 +30,10 @@
         if ($err==0) {
             $_POST['File']= $EducationDetails;
             $res =$webservice->getData("Member","AddEducationalDetails",$_POST);
-            if ($response['status']=="success") {                
-                echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm'</script>";   
+            if ($res['status']=="success") {                
+               echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm'</script>";   
             } else {
-                $errormessage = $response['message']; 
+                $errormessage = $res['message']; 
             }
         } 
     }
@@ -73,8 +73,8 @@ function submitEducation() {
     <form method="post" action="" name="form1" id="form1" onsubmit="return submitEducation()" enctype="multipart/form-data">
         <h4 class="card-title">Educational Details</h4>
         <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Education<span id="star">*</span></label> 
-            <div class="col-sm-8">
+            <label class="col-sm-2 col-form-label">Education<span id="star">*</span></label> 
+            <div class="col-sm-10">
                 <select class="selectpicker form-control" data-live-search="true" name="Educationdetails" id="Educationdetails">
                     <option value="0">Choose Education</option>
                     <?php foreach($response['data']['EducationDetail'] as $EducationDetail) { ?>
@@ -85,8 +85,8 @@ function submitEducation() {
             </div>
         </div>
         <div class="form-group row">                                 
-            <label class="col-sm-3 col-form-label">Education Details<span id="star">*</span></label> 
-            <div class="col-sm-8">
+            <label class="col-sm-2 col-form-label">Education details<span id="star">*</span></label> 
+            <div class="col-sm-10">
                 <select class="selectpicker form-control" data-live-search="true" name="EducationDegree" id="EducationDegree" onchange="DraftProfile.addOtherEducationDetails();">
                     <option value="0">Choose Education Degree</option>
                     <?php foreach($response['data']['EducationDegree'] as $EducationDegree) { ?>
@@ -97,29 +97,27 @@ function submitEducation() {
             </div>                                                
         </div>
         <div class="form-group row" id="Education_additionalinfo">
-            <label class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-8" ><input type="text" class="form-control" id="OtherEducationDegree" name="OtherEducationDegree" value="<?php echo (isset($_POST['OtherEducationDegree']) ? $_POST['OtherEducationDegree'] : $ProfileInfo['OtherEducationDegree']);?>">
+            <label class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10" ><input type="text" class="form-control" id="OtherEducationDegree" placeholder="Education details" name="OtherEducationDegree" value="<?php echo (isset($_POST['OtherEducationDegree']) ? $_POST['OtherEducationDegree'] : $ProfileInfo['OtherEducationDegree']);?>">
             <span class="errorstring" id="ErrOtherEducationDegree"><?php echo isset($ErrOtherEducationDegree)? $ErrOtherEducationDegree : "";?></span></div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Description</label>
-            <div class="col-sm-8">                                                        
-                <input type="text" class="form-control" maxlength="50" name="EducationDescription" id="EducationDescription" value="<?php echo (isset($_POST['EducationDescription']) ? $_POST['EducationDescription'] : $response['data']['EducationDescription']);?>" style="margin-bottom:5px">
-                Max 50 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span>
+            <label class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">                                                        
+                <input type="text" class="form-control" maxlength="50" name="EducationDescription" id="EducationDescription" placeholder="Education Description" value="<?php echo (isset($_POST['EducationDescription']) ? $_POST['EducationDescription'] : $response['data']['EducationDescription']);?>" style="margin-bottom:5px">
+                 <label class="col-form-label" style="padding-top:0px;">Max 50 characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></label>
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Attachment</label>
-            <div class="col-sm-8">
+            <label class="col-sm-2 col-form-label">Attachment</label>
+            <div class="col-sm-10">
                 <input type="File" id="File" name="File" Placeholder="File">
                  <span class="errorstring" id="ErrFile"></span>   
             </div>
             
         </div>
         <div class="form-group row" style="margin-bottom:0px;">
-            <div class="col-sm-12" style="text-align:center;color:red">
-                <span style="color:red"><?php echo $errormessage;?><?php echo $successmessage;?></span> 
-            </div>
+            <div class="col-sm-12"><span id="server_message_error"><?php echo $errormessage ;?></span><span id="server_message_success"><?php echo $successmessage;?></span></div>
         </div>
         <div class="form-group row">
             <div class="col-sm-12" style="text-align:left">

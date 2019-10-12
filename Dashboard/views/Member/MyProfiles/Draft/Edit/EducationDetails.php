@@ -44,7 +44,7 @@
                     </td>
                     <td style="width:20px">
                         <?php  if($Document['IsVerified']==0) {?>
-                            <a href="javascript:void(0)" onclick="DraftProfile.showConfirmDeleteAttachmentEducationalInformation('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['EducationDetails'];?>','<?php  echo $Document['EducationDegree'];?>')"><img src="<?php echo SiteUrl?>assets/images/document_delete.png" style="width:16px;height:16px"></a>
+                            <a href="javascript:void(0)" onclick="DraftProfile.showConfirmDeleteAttachmentEducationalInformation('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['EducationDetails'];?>','<?php  echo $Document['EducationDegree'];?>','<?php  echo $Document['OtherEducationDegree'];?>')"><img src="<?php echo SiteUrl?>assets/images/document_delete.png" style="width:16px;height:16px"></a>
                         <?php }?>
                     </td>
                 </tr>

@@ -180,8 +180,8 @@ $(document).ready(function() {
                             </div>
                         </div>
                        <div class="form-group row" style="margin-bottom:0px;">
-                            <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
-                        </div>
+                            <div class="col-sm-12"><span id="server_message_error"><?php echo $errormessage ;?></span><span id="server_message_success"><?php echo $successmessage;?></span></div>
+                       </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-6">
                                 <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>

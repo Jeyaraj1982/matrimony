@@ -24,14 +24,15 @@
                 <select class="selectpicker form-control" data-live-search="true" id="ProfileFor" name="ProfileFor" onchange="DraftProfile.changeAboutLable();">
                     <option value="0">Choose Profile Sign In</option>
                     <?php foreach($response['data']['ProfileSignInFor'] as $ProfileFor) { ?>
+                    <?php  if($ProfileFor['CodeValue']!= "Father" && $ProfileFor['CodeValue']!= "Mother"){     ?>
                     <option value="<?php echo $ProfileFor['CodeValue'];?>" <?php echo (isset($_POST[ 'ProfileFor'])) ? (($_POST[ 'ProfileFor']==$ProfileFor[ 'CodeValue']) ? " selected='selected' " : "") : (($ProfileInfo[ 'ProfileFor']==$ProfileFor[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $ProfileFor['CodeValue'];?></option>
-                    <?php } ?>
+                    <?php } } ?>
                 </select>
                 <span class="errorstring" id="ErrProfileFor"><?php echo isset($ErrProfileFor)? $ErrProfileFor : "";?></span>
             </div>
         </div>
         <div class="form-group row">
-            <label for="Name" class="col-sm-2 col-form-label">Name<span id="star">*</span></label>
+            <label for="ProfileName" class="col-sm-2 col-form-label">Name<span id="star">*</span></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="ProfileName" name="ProfileName" value="<?php echo (isset($_POST['ProfileName']) ? $_POST['ProfileName'] : $ProfileInfo['ProfileName']);?>" placeholder="Name">
                 <span class="errorstring" id="ErrProfileName"><?php echo isset($ErrProfileName)? $ErrProfileName : "";?></span>
@@ -88,7 +89,7 @@
                 </select>
                 <span class="errorstring" id="ErrMaritalStatus"><?php echo isset($ErrMaritalStatus)? $ErrMaritalStatus : "";?></span>
             </div>
-            <label for="Caste" class="col-sm-2 col-form-label" style="text-align: right;padding-left:0px;padding-right:0px;">Mother Tongue<span id="star">*</span></label>
+            <label for="Caste" class="col-sm-2 col-form-label" style="text-align: right;padding-left:0px;padding-right:0px;">Mother tongue<span id="star">*</span></label>
             <div class="col-sm-4">
                 <select class="selectpicker form-control" data-live-search="true" id="Language" name="Language" >
                     <option value="0">Choose Mother Tongue</option>
@@ -179,8 +180,8 @@
         </div>
         <div class="form-group row">
             <div class="col-sm-12">                                                        
-                <textarea style="margin-bottom:5px;" class="form-control" maxlength="250" name="AboutMe" id="AboutMe"><?php echo (isset($_POST['AboutMe']) ? $_POST['AboutMe'] : $ProfileInfo['AboutMe']);?></textarea>
-                <label class="col-form-label" style="padding-top:0px;">Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></label>
+                <textarea style="margin-bottom:5px;height:75px" class="form-control" maxlength="250" name="AboutMe" id="AboutMe"><?php echo (isset($_POST['AboutMe']) ? $_POST['AboutMe'] : $ProfileInfo['AboutMe']);?></textarea>
+                <label class="col-form-label" style="padding-top:0px;">Max 250 characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></label>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px;">

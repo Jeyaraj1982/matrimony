@@ -113,7 +113,7 @@ $(document).ready(function() {
 <form method="post" action="" onsubmit="return submitprofile();">
         <h4 class="card-title">Communication Details</h4>
         <div class="form-group row">
-            <label for="Email ID" class="col-sm-2 col-form-label">Contact Person<span id="star">*</span></label>
+            <label for="Email ID" class="col-sm-2 col-form-label">Contact person<span id="star">*</span></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="ContactPersonName" name="ContactPersonName" value="<?php echo (isset($_POST['ContactPersonName']) ? $_POST['ContactPersonName'] : $ProfileInfo['ContactPersonName']);?>" placeholder="Contact Person Name">
                 <span class="errorstring" id="ErrContactPersonName"><?php echo isset($ErrContactPersonName)? $ErrContactPersonName : "";?></span>
@@ -132,7 +132,7 @@ $(document).ready(function() {
             </div>
         </div>
         <div class="form-group row">
-            <label for="Relation" class="col-sm-2 col-form-label">Primary Priority<span id="star">*</span></label>
+            <label for="Relation" class="col-sm-2 col-form-label">Primary priority<span id="star">*</span></label>
             <div class="col-sm-4">
                 <select class="selectpicker form-control" data-live-search="true" id="PrimaryPriority" name="PrimaryPriority">
                     <option value="0">Choose Primary Priority</option>
@@ -144,14 +144,14 @@ $(document).ready(function() {
             </div>
         </div>
         <div class="form-group row">
-            <label for="Email ID" class="col-sm-2 col-form-label">Email ID<span id="star">*</span></label>
+            <label for="Email ID" class="col-sm-2 col-form-label">Email id<span id="star">*</span></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $ProfileInfo['EmailID']);?>" placeholder="Email ID">
                 <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span>
             </div>
         </div>
         <div class="form-group row">
-            <label for="Mobile Number" class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
+            <label for="Mobile Number" class="col-sm-2 col-form-label">Mobile number<span id="star">*</span></label>
             
             <div class="col-sm-2" style="padding-right:0px">
                 <select class="selectpicker form-control" data-live-search="true" name="MobileNumberCountryCode" id="MobileNumberCountryCode">
@@ -200,16 +200,16 @@ $(document).ready(function() {
             </div>
         </div>
         <div class="form-group row">
-            <label for="Pincode" class="col-sm-2 col-form-label">Pin/Zip Code<span id="star">*</span></label>
+            <label for="Pincode" class="col-sm-2 col-form-label">Pin/zip code<span id="star">*</span></label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="Pincode" name="Pincode" maxlength="10" value="<?php echo (isset($_POST['Pincode']) ? $_POST['Pincode'] : $ProfileInfo['Pincode']);?>" placeholder="Pincode">
                 <span class="errorstring" id="ErrPincode"><?php echo isset($ErrPincode)? $ErrPincode : "";?></span>
             </div>
         </div>
         <div class="form-group row">
-            <label for="City" class="col-sm-2 col-form-label">City Name<span id="star">*</span></label>
+            <label for="City" class="col-sm-2 col-form-label">City name<span id="star">*</span></label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="City" name="City" Placeholder="City" value="<?php echo (isset($_POST['City']) ? $_POST['City'] : $ProfileInfo['City']);?>">
+                <input type="text" class="form-control" id="City" name="City" Placeholder="City Name" value="<?php echo (isset($_POST['City']) ? $_POST['City'] : $ProfileInfo['City']);?>">
                 <span class="errorstring" id="ErrCity"><?php echo isset($ErrCity)? $ErrCity : "";?></span>
             </div>
             <label for="OtherLocation" class="col-sm-2 col-form-label">Landmark</label>
@@ -218,17 +218,6 @@ $(document).ready(function() {
             </div>
         </div>
         <div class="form-group row">
-            <label for="State" class="col-sm-2 col-form-label">State Name<span id="star">*</span></label>
-            <div class="col-sm-4">
-                <select class="selectpicker form-control" data-live-search="true" id="StateName" name="StateName">
-                    <option value="0">Choose State</option>
-                    <?php foreach($response['data']['StateName'] as $StateName) { ?>
-                        <option value="<?php echo $StateName['SoftCode'];?>" <?php echo (isset($_POST[ 'StateName'])) ? (($_POST[ 'StateName']==$StateName[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'State']==$StateName['CodeValue']) ? " selected='selected' " : "");?>>
-                            <?php echo $StateName['CodeValue'];?>  </option>
-                                <?php } ?>
-                </select>
-                <span class="errorstring" id="ErrStateName"><?php echo isset($ErrStateName)? $ErrStateName : "";?></span>
-            </div>
             <label for="Country" class="col-sm-2 col-form-label">Country<span id="star">*</span></label>
             <div class="col-sm-4">
                 <select class="selectpicker form-control" data-live-search="true" id="Country" name="Country">
@@ -240,6 +229,17 @@ $(document).ready(function() {
                 </select>
                 <span class="errorstring" id="ErrCountry"><?php echo isset($ErrCountry)? $ErrCountry : "";?></span>
             </div>
+            <label for="State" class="col-sm-2 col-form-label">State name<span id="star">*</span></label>
+            <div class="col-sm-4">
+                <select class="selectpicker form-control" data-live-search="true" id="StateName" name="StateName">
+                    <option value="0">Choose State</option>
+                    <?php foreach($response['data']['StateName'] as $StateName) { ?>
+                        <option value="<?php echo $StateName['SoftCode'];?>" <?php echo (isset($_POST[ 'StateName'])) ? (($_POST[ 'StateName']==$StateName[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'State']==$StateName['CodeValue']) ? " selected='selected' " : "");?>>
+                            <?php echo $StateName['CodeValue'];?>  </option>
+                                <?php } ?>
+                </select>
+                <span class="errorstring" id="ErrStateName"><?php echo isset($ErrStateName)? $ErrStateName : "";?></span>
+            </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px">
             <label for="CommunicationDescription" class="col-sm-12 col-form-label">Additional information</label>
@@ -247,12 +247,12 @@ $(document).ready(function() {
         <div class="form-group row">
             <div class="col-sm-12">                                                        
                 <textarea class="form-control" maxlength="250" name="CommunicationDescription" id="CommunicationDescription" style="margin-bottom:5px;"><?php echo (isset($_POST['CommunicationDescription']) ? $_POST['CommunicationDescription'] : $ProfileInfo['CommunicationDescription']);?></textarea>
-                Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span>
+                <label class="col-form-label" style="padding-top:0px;">Max 250 characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></label>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px;">
-                            <div class="col-sm-12"><?php echo $errormessage ;?><?php echo $successmessage;?></div>
-                        </div>
+            <div class="col-sm-12"><span id="server_message_error"><?php echo $errormessage ;?></span><span id="server_message_success"><?php echo $successmessage;?></span></div>
+        </div>
        <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-6">
             <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>

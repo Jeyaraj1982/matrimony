@@ -13487,8 +13487,9 @@ input:focus {
   min-height: calc(100vh - 63px);
   background: #ffffff;
   font-family: "Roboto", sans-serif;
-  padding: 0;
-  width: 255px;
+  padding: 0px;
+  /*width: 255px;*/
+  width:230px;
   z-index: 11;
   transition: width 0.25s ease, background 0.25s ease;
   -webkit-transition: width 0.25s ease, background 0.25s ease;
@@ -13506,7 +13507,9 @@ input:focus {
     .sidebar .nav .nav-item .nav-link {
       align-items: center;
       display: flex;
-      padding: 16px 35px;
+      /*padding: 16px 35px;*/
+      padding:10px;    
+      padding-left:20px !important
       white-space: nowrap;
       height: 52px;
       color: #4a4a4a; }
@@ -13596,7 +13599,7 @@ input:focus {
       color: #4a4a4a; }
     .sidebar .nav.sub-menu {
       margin-bottom: 0;
-      padding: 0 0 0 4rem; }
+      padding: 0 0 0 2rem; }
       .sidebar .nav.sub-menu .nav-item .nav-link {
         color: #4a4a4a;
         padding: 0.75rem 1rem;
@@ -14011,7 +14014,7 @@ html {
 
 .main-panel {
   transition: width 0.25s ease, margin 0.25s ease;
-  width: calc(100% - 255px);
+  width: calc(100% - 230px);
   min-height: calc(100vh - 63px);
   display: -webkit-flex;
   display: flex;
@@ -16006,99 +16009,38 @@ ul {
     top: 30px;
     right: 30px; }
     @media (max-width: 767.98px) {
-      .auth.theme-two .auto-form-wrapper .nav-get-started {
-        margin-bottom: 5%;
-        margin-right: auto;
-        margin-left: auto;
-        position: relative;
-        top: unset;
-        right: unset;
-        -webkit-justify-content: center;
-        justify-content: center; } }
-    .auth.theme-two .auto-form-wrapper .nav-get-started p {
-      margin-bottom: 0;
-      font-weight: 300; }
-    .auth.theme-two .auto-form-wrapper .nav-get-started .get-started-btn {
-      border: 1px solid #f2f2f2;
-      padding: 10px 20px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #000;
-      margin-left: 20px;
-      border-radius: 50px; }
-  .auth.theme-two .auto-form-wrapper form {
-    width: 50%;
-    min-width: 300px;
-    max-width: 480px; }
-    .auth.theme-two .auto-form-wrapper form .form-group {
-      width: 100%;
-      margin-bottom: 25px; }
-      @media (max-width: 767.98px) {
-        .auth.theme-two .auto-form-wrapper form .form-group {
-          margin-right: auto;
-          margin-left: auto; } }
-      .auth.theme-two .auto-form-wrapper form .form-group .input-group {
-        height: 44px; }
-        .auth.theme-two .auto-form-wrapper form .form-group .input-group .form-control {
-          border: 1px solid #e5e5e5;
-          border-left: none;
-          border-radius: 0 6px 6px 0; }
-          .auth.theme-two .auto-form-wrapper form .form-group .input-group .form-control:focus {
-            border-left: none;
-            border-color: #e5e5e5; }
-        .auth.theme-two .auto-form-wrapper form .form-group .input-group .input-group-prepend .input-group-text {
-          border-radius: 6px 0 0 6px;
-          border-color: #e5e5e5;
-          border-right: none;
-          color: #dfdfdf; }
-      .auth.theme-two .auto-form-wrapper form .form-group .submit-btn {
-        font-family: "Roboto", sans-serif;
-        font-size: 13px;
-        padding: 11px 33px;
-        font-weight: 600;
-        background-image: linear-gradient(120deg, #00e4d0, #5983e8); }
-  .auth.theme-two .auto-form-wrapper .footer-text {
-    font-size: 13px;
-    margin-bottom: 0; }
-  .auth.theme-two .auto-form-wrapper .auth-footer {
-    list-style-type: none;
-    display: -webkit-flex;
-    display: flex;
-    margin-top: 7px;
-    padding-left: 0;
-    margin-bottom: 0; }
-    .auth.theme-two .auto-form-wrapper .auth-footer li {
-      margin-right: 10px;
-      line-height: 1;
-      padding-right: 10px;
-      border-right: 1px solid #c2c2c2; }
-      .auth.theme-two .auto-form-wrapper .auth-footer li:last-child {
-        margin-right: 0;
-        border-right: none; }
-      .auth.theme-two .auto-form-wrapper .auth-footer li a {
-        font-size: 13px;
-        color: #c2c2c2; }
+        .auth.theme-two .auto-form-wrapper .nav-get-started {margin-bottom: 5%;margin-right: auto;margin-left: auto;position: relative;top: unset;right: unset;-webkit-justify-content: center;justify-content: center; } 
+    }
+    .auth.theme-two .auto-form-wrapper .nav-get-started p {margin-bottom: 0;font-weight: 300; }
+    .auth.theme-two .auto-form-wrapper .nav-get-started .get-started-btn {border: 1px solid #f2f2f2;padding: 10px 20px;font-size: 12px;font-weight: 600;color: #000;margin-left: 20px;border-radius: 50px; }
+    .auth.theme-two .auto-form-wrapper form {width: 50%;min-width: 300px;max-width: 480px;}
+    .auth.theme-two .auto-form-wrapper form .form-group {width: 100%;margin-bottom: 25px; }
     @media (max-width: 767.98px) {
-      .auth.theme-two .auto-form-wrapper .auth-footer {
-        -webkit-justify-content: center;
-        justify-content: center; } }
-
-.auth.theme-two .banner-section {
-  padding-right: 0; }
-  .auth.theme-two .banner-section .slide-content {
-    width: 100%; }
-    .auth.theme-two .banner-section .slide-content.bg-1 {
-      background: url("../images/auth/login_2.html") no-repeat center center;
-      background-size: cover; }
-    .auth.theme-two .banner-section .slide-content.bg-2 {
-      background: url("../images/auth/register_2.html") no-repeat center center;
-      background-size: cover; }
-/* Error */
-.error-page h1 {font-size: 9.375rem;line-height: 1; }
-  @media (max-width: 991px) {
-    .error-page h1 {font-size: 8rem; } }
-.error-page h2 {font-size: 4.375rem;line-height: 1; }
-@media (min-width: 992px) {
-  .error-page .error-page-divider {
-    border-left: 3px solid rgba(255, 255, 255, 0.2); } }
-/*# sourceMappingURL=maps/style.css.map 16250 */     
+        .auth.theme-two .auto-form-wrapper form .form-group {margin-right: auto;margin-left: auto; } 
+    }
+    .auth.theme-two .auto-form-wrapper form .form-group .input-group {height: 44px; }
+    .auth.theme-two .auto-form-wrapper form .form-group .input-group .form-control {border: 1px solid #e5e5e5;border-left: none;border-radius: 0 6px 6px 0; }
+    .auth.theme-two .auto-form-wrapper form .form-group .input-group .form-control:focus {border-left: none;border-color: #e5e5e5; }
+    .auth.theme-two .auto-form-wrapper form .form-group .input-group .input-group-prepend .input-group-text {border-radius: 6px 0 0 6px;border-color: #e5e5e5;border-right: none;color: #dfdfdf; }
+    .auth.theme-two .auto-form-wrapper form .form-group .submit-btn {font-family: "Roboto", sans-serif;font-size: 13px;padding: 11px 33px;font-weight: 600;background-image: linear-gradient(120deg, #00e4d0, #5983e8); }
+    .auth.theme-two .auto-form-wrapper .footer-text {font-size: 13px;margin-bottom: 0; }
+    .auth.theme-two .auto-form-wrapper .auth-footer {list-style-type: none;display: -webkit-flex;display: flex;margin-top: 7px;padding-left: 0;margin-bottom: 0; }
+    .auth.theme-two .auto-form-wrapper .auth-footer li {margin-right: 10px;line-height: 1;padding-right: 10px;border-right: 1px solid #c2c2c2; }
+    .auth.theme-two .auto-form-wrapper .auth-footer li:last-child {margin-right: 0;border-right: none; }
+    .auth.theme-two .auto-form-wrapper .auth-footer li a {font-size: 13px;color: #c2c2c2; }
+    @media (max-width: 767.98px) {
+      .auth.theme-two .auto-form-wrapper .auth-footer {-webkit-justify-content: center;justify-content: center; } 
+    }
+    .auth.theme-two .banner-section {padding-right: 0;}
+    .auth.theme-two .banner-section .slide-content {width: 100%; }
+    .auth.theme-two .banner-section .slide-content.bg-1 {background: url("../images/auth/login_2.html") no-repeat center center;background-size: cover; }
+    .auth.theme-two .banner-section .slide-content.bg-2 {background: url("../images/auth/register_2.html") no-repeat center center;background-size: cover; }
+    .error-page h1 {font-size: 9.375rem;line-height: 1; }
+    @media (max-width: 991px) {
+        .error-page h1 {font-size: 8rem; } 
+    }
+    .error-page h2 {font-size: 4.375rem;line-height: 1; }
+    @media (min-width: 992px) {
+        .error-page .error-page-divider {border-left: 3px solid rgba(255, 255, 255, 0.2); } 
+    }
+/*# sourceMappingURL=maps/style.css.map 16250 */

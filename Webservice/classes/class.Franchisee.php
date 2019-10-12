@@ -1062,13 +1062,21 @@
                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                            `AboutMe`           = '".$_POST['AboutMe']."'";  
                 if ($_POST['Religion']=="RN009") {
+                    $DuplicateReligionNames = $mysql->select("SELECT * FROM _tbl_master_codemaster WHERE HardCode='RELINAMES' and CodeValue='".trim($_POST['ReligionOthers'])."'");
+                    if (sizeof($DuplicateReligionNames)>0) {
+                        return Response::returnError("Religion Already Exists");    
+                    }
                 $updateSql .= " ,OtherReligion ='".$_POST['ReligionOthers']."'";
                 }
                 if ($_POST['Caste']=="CSTN248") {
+                    $DuplicateCasteName = $mysql->select("SELECT * FROM _tbl_master_codemaster WHERE HardCode='CASTNAMES' and CodeValue='".trim($_POST['OtherCaste'])."'");
+                    if (sizeof($DuplicateCasteName)>0) {
+                        return Response::returnError("Caste  Already Exists");    
+                    }
                 $updateSql .= " ,OtherCaste ='".$_POST['OtherCaste']."'";
                 }
                                 
-             if ($_POST['MaritalStatusCode'] != "MST001") {
+             if ($_POST['MaritalStatus'] != "MST001") {
                  if($_POST['HowManyChildren']==-1){
                  return Response::returnError("Please select how many children");
              } else {
@@ -1130,6 +1138,7 @@
                                                                 `AnnualIncomeCode`      = '".$_POST['IncomeRange']."',
                                                                 `WorkedCountryCode`     = '".$_POST['WCountry']."',
                                                                 `WorkedCountry`         = '".$Country[0]['CodeValue']."',
+                                                                
                                                                 `WorkedCityName`     = '".$_POST['WorkedCityName']."',
                                                                 `OccupationDetails`     = '".$_POST['OccupationDetails']."',
                                                                 `LastUpdatedOn`         = '".date("Y-m-d H:i:s")."',
@@ -1152,17 +1161,24 @@
                                                                     `WorkedCityName`        = '',
                                                                     `OccupationDescription`        = '',
                                                                     `OccupationAttachFileName`= '',
+                                                                    `OccupationAttachmentType`= '',
                                                                     `OccupationDetails`   = '".$_POST['OccupationDetails']."',
                                                                     `LastUpdatedOn`     = '',
                                                                     `AnnualIncome`         = ''";
                 } 
                 if ($_POST['EmployedAs']=="O001" && $_POST['OccupationType']=="OT112") {
+                    $DuplicateOccupationType = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='OCCUPATIONTYPES' and `CodeValue`='".trim($_POST['OtherOccupation'])."'");
+                    if (sizeof($DuplicateOccupationType)>0) {
+                        return Response::returnError("Occupation Already Exists");    
+                    }
                 $updateSql .= " ,OtherOccupation ='".$_POST['OtherOccupation']."'";
                 }
                 
                  $updateSql .= " where `ProfileCode`='".$_POST['Code']."'";
              
              $mysql->execute($updateSql);  
+             
+             //`OccupationAttachmentType`     = '".(isset($_POST['OccupationAttachmentType'])?$_POST['OccupationAttachmentType'] : '0')."',
              $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
                                                              "ActivityType"   => 'MemberOccupationdetailsupdated.',
                                                              "ActivityString" => 'Member Occupation Details Updated.',
@@ -1170,6 +1186,7 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),              
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
              $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'");      
+            
              
              return Response::returnSuccess("success",array("ProfileInfo"      => $Profiles[0],
                                                             "EmployedAs"       => CodeMaster::getData('OCCUPATIONS'),
@@ -1289,40 +1306,37 @@
                       return Response::returnError("Please select equal to number of sisters");
                  }
              }
-             
              $updateSql = "update `_tbl_draft_profiles` set `FathersName`           = '".$_POST['FatherName']."',
                                                            `FathersOccupationCode` = '".$_POST['FathersOccupation']."',
                                                            `FathersOccupation`     = '".$FathersOccupation[0]['CodeValue']."',
-                                                           `FatherOtherOccupation`     = '".$_POST['FatherOtherOccupation']."',
-                                                           `FathersContactCountryCode`        = '".$_POST['FathersContactCountryCode']."',
+                                                           `FatherOtherOccupation`     = '',
+                                                           `FathersContactCountryCode` = '".$_POST['FathersContactCountryCode']."',
                                                            `FathersContact`        = '".$_POST['FathersContact']."',
                                                            `FathersIncomeCode`         = '".$_POST['FathersIncome']."',
                                                            `FathersIncome`         = '".$FathersIncome[0]['CodeValue']."',
-                                                           `FatherAliveCode`       = '".$_POST['FathersAlive']."',
                                                            `FathersAlive`       = '".$Fathersstatus."',
                                                            `MothersName`           = '".$_POST['MotherName']."',
                                                            `MothersContactCountryCode`= '".$_POST['MotherContactCountryCode']."',
                                                            `MothersContact`        = '".$_POST['MotherContact']."',
                                                            `MothersIncomeCode`     = '".$_POST['MothersIncome']."',
                                                            `MothersIncome`         = '".$MothersIncome[0]['CodeValue']."',
-                                                           `MothersOccupationCode`     = '".$_POST['MothersOccupation']."',
-                                                           `MothersOccupation`         = '".$MothersOccupation[0]['CodeValue']."',
-                                                           `MotherOtherOccupation`     = '".$_POST['MotherOtherOccupation']."',
-                                                           `MothersAliveCode`       = '".$_POST['MothersAlive']."',
                                                            `MothersAlive`           = '".$Mothersstatus."',
                                                            `FamilyLocation1`        = '".$_POST['FamilyLocation1']."',
                                                            `FamilyLocation2`        = '".$_POST['FamilyLocation2']."',
                                                            `Ancestral`              = '".$_POST['Ancestral']."',
                                                            `FamilyTypeCode`        = '".$_POST['FamilyType']."',
-                                                           `FamilyType`            = '".$FamilyType[0]['CodeValue']."',
+                                                           `FamilyType`            = '".$FamilyType[0]['CodeValue']."',              
                                                            `FamilyValueCode`       = '".$_POST['FamilyValue']."',
                                                            `FamilyValue`           = '".$FamilyValue[0]['CodeValue']."',
                                                            `FamilyAffluenceCode`   = '".$_POST['FamilyAffluence']."',
                                                            `FamilyAffluence`       = '".$FamilyAffluence[0]['CodeValue']."',
                                                            `AboutMyFamily`       = '".$_POST['AboutMyFamily']."',
+                                                           `MothersOccupationCode` = '".$_POST['MothersOccupation']."',
+                                                           `MothersOccupation`     = '".$MothersOccupation[0]['CodeValue']."',
+                                                           `MotherOtherOccupation`     = '',
                                                            `NumberofBrothersCode`  = '".$_POST['NumberofBrother']."',
                                                            `NumberofBrothers`      = '".$NumberofBrothers[0]['CodeValue']."',
-                                                           `YoungerCode`           = '".$_POST['younger']."',
+                                                           `YoungerCode`           = '".$_POST['younger']."',                    
                                                            `Younger`               = '".$younger[0]['CodeValue']."',
                                                            `ElderCode`             = '".$_POST['elder']."',
                                                            `Elder`                 = '".$elder[0]['CodeValue']."',
@@ -1335,9 +1349,28 @@
                                                            `YoungerSisterCode`     = '".$_POST['youngerSister']."',
                                                            `YoungerSister`         = '".$youngerSister[0]['CodeValue']."',
                                                            `MarriedSisterCode`     = '".$_POST['marriedSister']."',
-                                                           `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
-                                                           `MarriedSister`         = '".$marriedSister[0]['CodeValue']."' where ProfileCode='".$_POST['Code']."'";
-             $mysql->execute($updateSql);  
+                                                           `LastUpdatedOn`         = '".date("Y-m-d H:i:s")."',
+                                                           `MarriedSister`         = '".$marriedSister[0]['CodeValue']."'";
+                                                           
+             if ($_POST['FathersOccupation']=="OT112") {
+                    $DuplicateFathersOccupationType = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='OCCUPATIONTYPES' and `CodeValue`='".trim($_POST['FatherOtherOccupation'])."'");
+                    if (sizeof($DuplicateFathersOccupationType)>0) {
+                        return Response::returnError("Fathers Occupation Already Exists");    
+                    }
+                $updateSql .= " ,`FatherOtherOccupation`     = '".$_POST['FatherOtherOccupation']."'";
+                }
+             if ($_POST['MothersOccupation']=="OT112") {
+                    $DuplicateMothersOccupationType = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='OCCUPATIONTYPES' and `CodeValue`='".trim($_POST['MotherOtherOccupation'])."'");
+                    if (sizeof($DuplicateMothersOccupationType)>0) {
+                        return Response::returnError("Mothers Occupation Already Exists");    
+                    }
+                $updateSql .= " ,`MotherOtherOccupation`     = '".$_POST['MotherOtherOccupation']."'";
+                }
+             
+              $updateSql .= " where ProfileCode='".$_POST['Code']."'";
+             $mysql->execute($updateSql);
+             
+             
              $id = $mysql->insert("_tbl_logs_activity",array("Franchisee"       => $loginInfo[0]['FranchiseeID'],
                                                              "ActivityType"   => 'MemberFamilyinformationupdated.',
                                                              "ActivityString" => 'Member Family Information Updated.',
@@ -1662,28 +1695,47 @@
          }
          
          function GetCodeMasterDatas() {
-             return Response::returnSuccess("success",array("Gender"        => CodeMaster::getData("SEX")));
+             return Response::returnSuccess("success",array("Gender"        => CodeMaster::getData("SEX"),
+                                                            "MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
+                                                            "Language"      => CodeMaster::getData('LANGUAGENAMES'),
+                                                            "Religion"      => CodeMaster::getData('RELINAMES'),
+                                                            "Caste"         => CodeMaster::getData('CASTNAMES'),
+                                                            "Height"        => CodeMaster::getData('HEIGHTS'),
+                                                            "Community"     => CodeMaster::getData('COMMUNITY'),
+                                                            "Nationality"   => CodeMaster::getData('NATIONALNAMES'),
+                                                            "ProfileFor"    => CodeMaster::getData('PROFILESIGNIN'),
+                                                            "MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
+                                                            "Religion"      => CodeMaster::getData('RELINAMES'),
+                                                             "Caste"        => CodeMaster::getData('CASTNAMES'),
+                                                            "Education"     => CodeMaster::getData('EDUCATETITLES'),
+                                                            "IncomeRange"   => CodeMaster::getData('INCOMERANGE'),
+                                                            "EmployedAs"    => CodeMaster::getData('OCCUPATIONS')));
          }
          function CreateProfile() {
 
              global $mysql,$loginInfo;
+             
+             if ((strlen(trim($_POST['ProfileFor']))==0 || $_POST['ProfileFor']=="0" )) {
+                return Response::returnError("Please select ProfileFor");
+             }
 
              if (!(strlen(trim($_POST['ProfileName']))>0)) {
                 return Response::returnError("Please enter your name");
              }
-             //if (!(strlen(trim($_POST['DateofBirth']))>0)) {
-             //   return Response::returnError("Please enter your date of birth");
-            // }
+             
              if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0" )) {
                 return Response::returnError("Please select sex");
              }
              
              $member =$mysql->select("Select * from `_tbl_members` where `MemberCode`='".$_POST['MemberCode']."'");
              if (sizeof($member)>0)  {
+             $ProfileFors   = CodeMaster::getData("PROFILESIGNIN",$_POST["ProfileFor"]);
              $Sex           = CodeMaster::getData("SEX",$_POST["Sex"]); 
              $ProfileCode   =SeqMaster::GetNextDraftProfileCode();
              $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
              $id =  $mysql->insert("_tbl_draft_profiles",array("ProfileCode"      => $ProfileCode,
+                                                               "ProfileForCode"    => $ProfileFors[0]['SoftCode'],
+                                                              "ProfileFor"        => $ProfileFors[0]['CodeValue'],
                                                               "ProfileName"       => $_POST['ProfileName'],
                                                               "DateofBirth"       => $dob,        
                                                               "SexCode"           => $_POST['Sex'],      
@@ -1721,7 +1773,13 @@
              }  
              else {
                   $OtherEducation =  "";
-             }                       
+             }
+             if ($_POST['EducationDegree']=="Others") {
+            $DuplicateEducationDegree = $mysql->select("SELECT * FROM _tbl_master_codemaster WHERE HardCode='EDUCATIONDEGREES' and CodeValue='".trim($_POST['OtherEducationDegree'])."'");
+            if (sizeof($DuplicateEducationDegree)>0) {
+                return Response::returnError("Education Details Already Exists");    
+            }
+        }                       
              $id = $mysql->insert("_tbl_draft_profiles_education_details",array("EducationDetails" => $_POST['Educationdetails'],
                                                                   "EducationDegree"  => $_POST['EducationDegree'],
                                                                  "OtherEducationDegree"  => $OtherEducation,
@@ -2355,7 +2413,7 @@
 
              $ProfileCode= $_POST['ProfileCode'];
              
-             $updateSql = "update `_tbl_draft_profiles` set `OccupationAttachFileName` = '' where `ProfileID`='".$_POST['ProfileID']."' and`ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$_POST['MemberID']."'";
+             $updateSql = "update `_tbl_draft_profiles` set `OccupationAttachFileName` = '' ,`OccupationAttachmentType` = '0' where `ProfileID`='".$_POST['ProfileID']."' and`ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$_POST['MemberID']."'";
              $mysql->execute($updateSql);
           
                return  '<div style="background:white;width:100%;padding:20px;height:100%;">

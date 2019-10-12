@@ -244,7 +244,7 @@
             return (ErrorCount==0) ? true : false;
          
         },                                                                    
-        showConfirmDeleteAttachmentEducationalInformation:function(AttachmentID,ProfileID,EducationDetails,EducationDegree){
+        showConfirmDeleteAttachmentEducationalInformation:function(AttachmentID,ProfileID,EducationDetails,EducationDegree,OtherEducationDegree){
             $('#DeleteNow').modal('show'); 
             var content = '<div class="Publish_body" style="padding:20px">'
                             +'<div  style="height: 315px;">'
@@ -264,7 +264,7 @@
                                                 +'<tbody> '
                                                     +'<tr>'                                                  
                                                         +'<td>'+EducationDetails+'</td>'
-                                                        +'<td>'+EducationDegree+'</td>'
+                                                        +'<td>'+EducationDegree +', '+OtherEducationDegree+'</td>'
                                                     +'</tr>'
                                                 +'</tbody>'
                                             +'</table>'
@@ -351,10 +351,10 @@
             
             ErrorCount=0;
         
-            if (IsNonEmpty("FatherName","ErrFatherName","Please enter your father name")) {
+            if (IsNonEmpty("FatherName","ErrFatherName","Please enter your father's name")) {
                 IsAlphabet("FatherName","ErrFatherName","Please enter alpha numeric characters only");
             }
-            if (IsNonEmpty("MotherName","ErrMotherName","Please enter your mother name")) {
+            if (IsNonEmpty("MotherName","ErrMotherName","Please enter your mother's name")) {
                 IsAlphabet("MotherName","ErrMotherName","Please enter alpha numeric characters only");
             }
             if ($('#FathersContact').val().trim().length>0) {
@@ -414,31 +414,31 @@
         },
         changeAboutLable: function() {
         if ($('#ProfileFor').val()=="Myself") {
-            $('#Aboutlabel').html("About Me<span style='color:red'>*</span>");                                                         
+            $('#Aboutlabel').html("About me<span style='color:red'>*</span>");                                                         
         }
         if ($('#ProfileFor').val()=="Brother") {
-            $('#Aboutlabel').html("About My Brother<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my brother<span style='color:red'>*</span>");
         }
         if ($('#ProfileFor').val()=="Sister") {
-            $('#Aboutlabel').html("About My Sister<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my sister<span style='color:red'>*</span>");
         }
         if ($('#ProfileFor').val()=="Daughter") {
-            $('#Aboutlabel').html("About My Daughter<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my daughter<span style='color:red'>*</span>");
         }
         if ($('#ProfileFor').val()=="Son") {
-            $('#Aboutlabel').html("About My Son<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my Son<span style='color:red'>*</span>");
         }
         if ($('#ProfileFor').val()=="Sister In Law") {
-            $('#Aboutlabel').html("About My Sister In Law<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my sister in law<span style='color:red'>*</span>");
         }
         if ($('#ProfileFor').val()=="Brother In Law") {
-            $('#Aboutlabel').html("About My Brother In Law<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my brother in law<span style='color:red'>*</span>");
         }
         if ($('#ProfileFor').val()=="Son In Law") {
-            $('#Aboutlabel').html("About My Son In Law<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my son in law<span style='color:red'>*</span>");
         }
         if ($('#ProfileFor').val()=="Daughter In Law") {
-            $('#Aboutlabel').html("About My Daughter In Law<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my daughter in law<span style='color:red'>*</span>");
         }
     },
         
@@ -492,6 +492,8 @@
             
             if ($("#FathersOccupation").val()=="OT112")  {
                  $('#FatherOccupation_additionalinfo').show(); 
+                  $('#father_income_1').show();
+            $('#father_income_2').show();
             } else {
             
              $('#father_income_1').show();
@@ -510,6 +512,8 @@
             
             if ($("#MothersOccupation").val()=="OT112")  {
                  $('#MotherOccupation_additionalinfo').show(); 
+                 $('#mother_income_1').show();
+            $('#mother_income_2').show();
             } else {
             
              $('#mother_income_1').show();

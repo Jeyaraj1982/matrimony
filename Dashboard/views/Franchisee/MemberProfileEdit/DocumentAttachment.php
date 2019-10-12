@@ -18,7 +18,7 @@
     border:1px solid #9b9a9a;
 }
 </style>
-<div class="col-sm-10" style="margin-top: -8px;">
+<div class="col-sm-10 rightwidget">
 <script>
 function submitUpload() {
             $('#ErrDocuments').html("");  
@@ -170,9 +170,10 @@ function submitUpload() {
    <div class="form-group row">
     <div class="col-sm-6"></div>
     <div class="col-sm-6" style="text-align: right;">
-            <ul class="pager">
-                  <li><a href="../PhysicalInformation/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
-                  <li><a href="../CommunicationDetails/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+            <ul class="pager" style="float:right;">
+                  <li><a href="../PhysicalInformation/<?php echo $_GET['Code'].".htm";?>">&#8249; Previous</a></li>
+                  <li>&nbsp;</li>
+                  <li><a href="../CommunicationDetails/<?php echo $_GET['Code'].".htm";?>">Next &#8250;</a></li>
             </ul>
         </div>
    </div>

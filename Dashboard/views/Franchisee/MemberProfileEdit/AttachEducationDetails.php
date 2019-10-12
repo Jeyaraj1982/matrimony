@@ -55,7 +55,7 @@
              
              
 <?php include_once("settings_header.php");?>
-<div class="col-sm-10" style="margin-top: -8px;">
+<div class="col-sm-10  rightwidget">
 <form method="post" action="" name="form1" id="form1" enctype="multipart/form-data">
                      <h4 class="card-title">Educational Details</h4>
                        <div class="form-group row">
@@ -67,9 +67,10 @@
                                 <span style="color:red"><?php echo $errormessage;?><?php echo $successmessage;?></span> 
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12" style="text-align:left">
-                                <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Save Education Details</button>
+                                <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Save Education Details</button>&nbsp;&nbsp;
+                                <a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">back</a>
                             </div>
                         </div>
                 </form>
