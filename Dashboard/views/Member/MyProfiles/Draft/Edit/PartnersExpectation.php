@@ -30,7 +30,7 @@
     });
 });
 </script>
-<div class="col-sm-9" style="margin-top: -8px;">
+<div class="col-sm-10 rightwidget">
 <form method="post" action="" onsubmit="">
     
     <h4 class="card-title">Partner's Expectations</h4>
@@ -148,11 +148,13 @@
             <div class="col-sm-6">
                 <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
                 <br>
+                <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
             </div>
         <div class="col-sm-6" style="text-align:right">
-             <ul class="pager">
-                   <li><a href="../ProfilePhoto/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
-                   <li><a href="../HoroscopeDetails/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+             <ul class="pager" style="float:right;">
+                   <li><a href="../ProfilePhoto/<?php echo $_GET['Code'].".htm";?>">&#8249; Previous</a></li>
+                   <li>&nbsp;</li>
+                   <li><a href="../HoroscopeDetails/<?php echo $_GET['Code'].".htm";?>">Next &#8250;</a></li>
             </ul>
         </div>
         </div>

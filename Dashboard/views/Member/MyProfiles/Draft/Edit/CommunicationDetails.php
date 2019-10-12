@@ -109,12 +109,12 @@ $(document).ready(function() {
     });
 });
 </script>   
-<div class="col-sm-10" style="margin-top: -8px;max-width:780px !important">
+<div class="col-sm-10 rightwidget">
 <form method="post" action="" onsubmit="return submitprofile();">
         <h4 class="card-title">Communication Details</h4>
         <div class="form-group row">
             <label for="Email ID" class="col-sm-2 col-form-label">Contact Person<span id="star">*</span></label>
-            <div class="col-sm-9">
+            <div class="col-sm-10">
                 <input type="text" class="form-control" id="ContactPersonName" name="ContactPersonName" value="<?php echo (isset($_POST['ContactPersonName']) ? $_POST['ContactPersonName'] : $ProfileInfo['ContactPersonName']);?>" placeholder="Contact Person Name">
                 <span class="errorstring" id="ErrContactPersonName"><?php echo isset($ErrContactPersonName)? $ErrContactPersonName : "";?></span>
             </div>
@@ -145,27 +145,29 @@ $(document).ready(function() {
         </div>
         <div class="form-group row">
             <label for="Email ID" class="col-sm-2 col-form-label">Email ID<span id="star">*</span></label>
-            <div class="col-sm-9">
+            <div class="col-sm-10">
                 <input type="text" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $ProfileInfo['EmailID']);?>" placeholder="Email ID">
                 <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span>
             </div>
         </div>
         <div class="form-group row">
             <label for="Mobile Number" class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
-             <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
-                <select class="selectpicker form-control" data-live-search="true" name="MobileNumberCountryCode" id="MobileNumberCountryCode" style="width: 61px;">
+            
+            <div class="col-sm-2" style="padding-right:0px">
+                <select class="selectpicker form-control" data-live-search="true" name="MobileNumberCountryCode" id="MobileNumberCountryCode">
                    <?php foreach($response['data']['CountryName'] as $CountryCode) { ?>
                   <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'MobileNumberCountryCode'])) ? (($_POST[ 'MobileNumberCountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MobileNumberCountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
                             <?php echo $CountryCode['str'];?>
                    <?php } ?>
                 </select>
             </div>                                                                                     
-            <div class="col-sm-3">
-                <input type="text" class="form-control" id="MobileNumber" maxlength="10" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $ProfileInfo['MobileNumber']);?>" placeholder="Mobile Number">
+            <div class="col-sm-2" style="padding-left:5px;padding-right:10px">
+                <input type="text" class="form-control" id="MobileNumber" maxlength="10" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $ProfileInfo['MobileNumber']);?>" placeholder="Mobile Number" >
                 <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
             </div>
-           <label for="WhatsappNumber" class="col-sm-2 col-form-label" style="margin-right: -24px;" >Whatsapp<span id="star">*</span></label>
-            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+            
+            <label for="WhatsappNumber" class="col-sm-1 col-form-label" style="margin-left:48px;padding-left:0px;padding-right:0px" >Whatsapp</label>
+            <div class="col-sm-2"  style="padding-right:0px">
                 <select name="WhatsappCountryCode" class="selectpicker form-control" data-live-search="true" id="WhatsappCountryCode"> 
                      <?php foreach($response['data']['CountryName'] as $CountryCode) { ?>
                   <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'WhatsappCountryCode'])) ? (($_POST[ 'WhatsappCountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "") : (($ProfileInfo[ 'WhatsappCountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
@@ -173,51 +175,51 @@ $(document).ready(function() {
                    <?php } ?>
                 </select>
             </div>  
-            <div class="col-sm-2">
+            <div class="col-sm-2"  style="padding-left:5px;padding-right:0px">
                 <input type="text" class="form-control" id="WhatsappNumber" maxlength="10" name="WhatsappNumber" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : $ProfileInfo['WhatsappNumber']);?>" placeholder="Whatsapp Number">
                 <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
             </div>     
         </div>
         <div class="form-group row">
             <label for="AddressLine1" class="col-sm-2 col-form-label">Address<span id="star">*</span></label>
-            <div class="col-sm-9">
+            <div class="col-sm-10">
                 <input type="text" class="form-control" id="AddressLine1" name="AddressLine1" value="<?php echo (isset($_POST['AddressLine1']) ? $_POST['AddressLine1'] : $ProfileInfo['AddressLine1']);?>" placeholder="AddressLine1">
                 <span class="errorstring" id="ErrAddressLine1"><?php echo isset($ErrAddressLine1)? $ErrAddressLine1 : "";?></span>
             </div>
         </div>
         <div class="form-group row">
             <label for="AddressLine2" class="col-sm-2 col-form-label"></label>
-            <div class="col-sm-9">
+            <div class="col-sm-10">
                 <input type="text" class="form-control" id="AddressLine2" name="AddressLine2" value="<?php echo (isset($_POST['AddressLine2']) ? $_POST['AddressLine2'] : $ProfileInfo['AddressLine2']);?>" placeholder="AddressLine2">
             </div>
         </div>
         <div class="form-group row">
             <label for="AddressLine3" class="col-sm-2 col-form-label"></label>
-            <div class="col-sm-9">
+            <div class="col-sm-10">
                 <input type="text" class="form-control" id="AddressLine3" name="AddressLine3" value="<?php echo (isset($_POST['AddressLine3']) ? $_POST['AddressLine3'] : $ProfileInfo['AddressLine3']);?>" placeholder="AddressLine3">
             </div>
         </div>
         <div class="form-group row">
-            <label for="Pincode" class="col-sm-2 col-form-label">Pincode<span id="star">*</span></label>
-            <div class="col-sm-3">
+            <label for="Pincode" class="col-sm-2 col-form-label">Pin/Zip Code<span id="star">*</span></label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="Pincode" name="Pincode" maxlength="10" value="<?php echo (isset($_POST['Pincode']) ? $_POST['Pincode'] : $ProfileInfo['Pincode']);?>" placeholder="Pincode">
                 <span class="errorstring" id="ErrPincode"><?php echo isset($ErrPincode)? $ErrPincode : "";?></span>
             </div>
         </div>
         <div class="form-group row">
-            <label for="City" class="col-sm-2 col-form-label">City<span id="star">*</span></label>
-            <div class="col-sm-3">
+            <label for="City" class="col-sm-2 col-form-label">City Name<span id="star">*</span></label>
+            <div class="col-sm-4">
                 <input type="text" class="form-control" id="City" name="City" Placeholder="City" value="<?php echo (isset($_POST['City']) ? $_POST['City'] : $ProfileInfo['City']);?>">
                 <span class="errorstring" id="ErrCity"><?php echo isset($ErrCity)? $ErrCity : "";?></span>
             </div>
-            <label for="OtherLocation" class="col-sm-3 col-form-label">Landmark</label>
-            <div class="col-sm-3">
-                <input type="text" class="form-control" id="OtherLocation" name="OtherLocation" Placeholder="Other Location" value="<?php echo (isset($_POST['OtherLocation']) ? $_POST['OtherLocation'] : $ProfileInfo['OtherLocation']);?>">
+            <label for="OtherLocation" class="col-sm-2 col-form-label">Landmark</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="OtherLocation" name="OtherLocation" Placeholder="Landmark" value="<?php echo (isset($_POST['OtherLocation']) ? $_POST['OtherLocation'] : $ProfileInfo['OtherLocation']);?>">
             </div>
         </div>
         <div class="form-group row">
-            <label for="State" class="col-sm-2 col-form-label">State<span id="star">*</span></label>
-            <div class="col-sm-3">
+            <label for="State" class="col-sm-2 col-form-label">State Name<span id="star">*</span></label>
+            <div class="col-sm-4">
                 <select class="selectpicker form-control" data-live-search="true" id="StateName" name="StateName">
                     <option value="0">Choose State</option>
                     <?php foreach($response['data']['StateName'] as $StateName) { ?>
@@ -227,8 +229,8 @@ $(document).ready(function() {
                 </select>
                 <span class="errorstring" id="ErrStateName"><?php echo isset($ErrStateName)? $ErrStateName : "";?></span>
             </div>
-            <label for="Country" class="col-sm-3 col-form-label">Country<span id="star">*</span></label>
-            <div class="col-sm-3">
+            <label for="Country" class="col-sm-2 col-form-label">Country<span id="star">*</span></label>
+            <div class="col-sm-4">
                 <select class="selectpicker form-control" data-live-search="true" id="Country" name="Country">
                     <option value="0">Choose Country</option>
                     <?php foreach($response['data']['CountryName'] as $Country) { ?>
@@ -240,10 +242,10 @@ $(document).ready(function() {
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px">
-            <label for="CommunicationDescription" class="col-sm-4 col-form-label">Summary</label>
+            <label for="CommunicationDescription" class="col-sm-12 col-form-label">Additional information</label>
         </div>
         <div class="form-group row">
-            <div class="col-sm-11">                                                        
+            <div class="col-sm-12">                                                        
                 <textarea class="form-control" maxlength="250" name="CommunicationDescription" id="CommunicationDescription" style="margin-bottom:5px;"><?php echo (isset($_POST['CommunicationDescription']) ? $_POST['CommunicationDescription'] : $ProfileInfo['CommunicationDescription']);?></textarea>
                 Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span>
             </div>
@@ -258,9 +260,10 @@ $(document).ready(function() {
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
         <div class="col-sm-6" style="text-align:right">
-             <ul class="pager">
-                  <li><a href="../DocumentAttachment/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
-                  <li><a href="../ProfilePhoto/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+             <ul class="pager" style="float:right;">
+                  <li><a href="../DocumentAttachment/<?php echo $_GET['Code'].".htm";?>">&#8249; Previous</a></li>
+                    <li>&nbsp;</li>
+                  <li><a href="../ProfilePhoto/<?php echo $_GET['Code'].".htm";?>">Next &#8250;</a></li>
             </ul>
         </div>
     </div>

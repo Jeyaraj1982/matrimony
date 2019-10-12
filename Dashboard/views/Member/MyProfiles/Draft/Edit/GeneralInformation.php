@@ -15,11 +15,11 @@
     $ProfileInfo = $response['data']['ProfileInfo'];
     include_once("settings_header.php");
 ?>
-<div class="col-sm-10" style="margin-top:-8px;padding-left:16px;max-width:770px !important">
+<div class="col-sm-10 rightwidget">
     <form method="post" action="" onsubmit="return DraftProfile.SubmitGeneralInformation();">
         <h4 class="card-title">General Information</h4>
         <div class="form-group row">
-            <label for="ProfileFor" class="col-sm-2 col-form-label" style="padding-right:0px;">Profile Create For<span id="star">*</span></label>
+            <label for="ProfileFor" class="col-sm-2 col-form-label" style="padding-right:0px;">Profile create for<span id="star">*</span></label>
             <div class="col-sm-4">
                 <select class="selectpicker form-control" data-live-search="true" id="ProfileFor" name="ProfileFor" onchange="DraftProfile.changeAboutLable();">
                     <option value="0">Choose Profile Sign In</option>
@@ -38,12 +38,12 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="Name" class="col-sm-2 col-form-label">Date of Birth<span id="star">*</span></label>
+            <label for="Name" class="col-sm-2 col-form-label">Date of birth<span id="star">*</span></label>
             <div class="col-sm-4" >
                 <div class="col-sm-4" style="max-width:60px !important;padding:0px !important;">
                     <?php $dob=strtotime($ProfileInfo['DateofBirth'])  ; ?>
                     <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
-                        <option value="0">Date</option>
+                        <option value="0">Day</option>
                         <?php for($i=1;$i<=31;$i++) {?>
                         <option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'date'])) ? (($_POST[ 'date']==$i) ? " selected='selected' " : "") : ((date("d",$dob)==$i) ? " selected='selected' " : "");?>><?php echo $i;?></option>
                         <?php } ?>
@@ -78,7 +78,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="MaritalStatus" class="col-sm-2 col-form-label">Marital Status<span id="star">*</span></label>
+            <label for="MaritalStatus" class="col-sm-2 col-form-label">Marital status<span id="star">*</span></label>
             <div class="col-sm-4">
                 <select class="selectpicker form-control" data-live-search="true" id="MaritalStatus" name="MaritalStatus" onchange="getHowmanyChildrenInfo()">
                     <option value="0">Choose Marital Status</option>
@@ -109,7 +109,7 @@
                     <?php } ?>
                 </select>
             </div>
-            <label for="Description" class="col-sm-2 col-form-label" id="IsChildrenWithYou" style="text-align: right;padding-left:0px;padding-right:0px;">Is Children with you?<span id="star">*</span></label>
+            <label for="Description" class="col-sm-2 col-form-label" id="IsChildrenWithYou" style="text-align: right;padding-left:0px;padding-right:0px;">Is children with you?<span id="star">*</span></label>
             <div class="col-sm-4" id="Childrenwithyou_input">
                 <select class="selectpicker form-control" data-live-search="true" id="ChildrenWithYou" name="ChildrenWithYou">
                     <option value="-1">Choose Children With You</option>
@@ -147,7 +147,7 @@
             <span class="errorstring" id="ErrOtherCaste"><?php echo isset($ErrOtherCaste)? $ErrOtherCaste : "";?></span></div>
         </div>
         <div class="form-group row">
-             <label for="SubCaste" class="col-sm-2 col-form-label" >Sub Caste</label>
+             <label for="SubCaste" class="col-sm-2 col-form-label" >Sub caste</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" name="SubCaste" id="SubCaste" value="<?php echo (isset($_POST['SubCaste']) ? $_POST['SubCaste'] : $ProfileInfo['SubCaste']);?>" placeholder="Sub Caste">
             </div>

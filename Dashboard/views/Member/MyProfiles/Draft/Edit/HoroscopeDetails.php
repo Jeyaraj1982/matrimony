@@ -29,12 +29,12 @@ $(document).ready(function() {
 });
 </script> 
     <?php include_once("settings_header.php");?>
-    <div class="col-sm-10" style="margin-top: -8px;width:100%;padding-left:16px">
+    <div class="col-sm-10 rightwidget">
     <form method="post" action="" onsubmit="">
         <h4 class="card-title">Horoscope Details</h4>
         <div class="form-group row">
                 <label for="Time Of Birth" class="col-sm-2 col-form-label">Time Of Birth<span id="star">*</span></label>
-                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+                            <div class="col-sm-2" style="max-width:100px !important;margin-right: -25px;">
                                 <?php $tob=explode(":",$ProfileInfo['TimeOfBirth'])  ; ?>
                                     <select class="selectpicker form-control" data-live-search="true" id="hour" name="hour" style="width:56px">
                                         <?php for($i=0;$i<=23;$i++) {?>
@@ -44,7 +44,7 @@ $(document).ready(function() {
                                         <?php } ?>                                      
                                     </select>
                             </div>
-                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">        
+                            <div class="col-sm-2" style="max-width:100px !important;margin-right: -25px;">        
                                     <select class="selectpicker form-control" data-live-search="true" id="minute" name="minute" style="width:56px">
                                         <?php for($i=0;$i<=59;$i++) {?>
                                             <option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'minute'])) ? (($_POST[ 'minute']==$i) ? " selected='selected' " : "") : (($tob[1]==$i) ? " selected='selected' " : "");?>>
@@ -53,7 +53,7 @@ $(document).ready(function() {
                                         <?php } ?>
                                     </select>
                             </div>
-                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
+                            <div class="col-sm-2" style="max-width:100px !important;margin-right: -25px;">
                                     <select class="selectpicker form-control" data-live-search="true" id="Second" name="Second" style="width:56px">
                                          <?php for($i=0;$i<=59;$i++) {?>
                                             <option value="<?php echo $i; ?>" <?php echo (isset($_POST['Second'])) ? (($_POST['Second']==$i) ? " selected='selected' " : "") : (($tob[2]==$i) ? " selected='selected' " : "");?>>
@@ -106,7 +106,7 @@ $(document).ready(function() {
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="Caste" class="col-sm-2 col-form-label">Chevvai Dhosham<span id="star">*</span></label>
+                            <label for="Caste" class="col-sm-2 col-form-label" style="padding-right:0px">Chevvai Dhosham<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="selectpicker form-control" data-live-search="true" id="ChevvaiDhosham" name="ChevvaiDhosham">
                                     <?php foreach($response['data']['ChevvaiDhosham'] as $ChevvaiDhosham) { ?>
@@ -189,8 +189,10 @@ $(document).ready(function() {
                                 <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
                             </div>
                             <div class="col-sm-6" style="text-align:right">
-                                <ul class="pager">
-                                    <li><a href="../PartnersExpectation/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
+                                <ul class="pager" style="float:right ;">
+                                    <li><a href="../PartnersExpectation/<?php echo $_GET['Code'].".htm";?>">&#8249; Previous</a></li>
+                                    <li>&nbsp;</li>
+                                    <li><a href="javascript:showConfirmPublish('<?php echo $_GET['Code'];?>')">Submit Profile</a></li>
                                 </ul>
                             </div>
                         </div>

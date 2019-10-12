@@ -14,7 +14,7 @@
     $ProfileInfo          = $response['data']['ProfileInfo'];
 ?>
 <?php include_once("settings_header.php");?>
-<div class="col-sm-10" style="margin-top: -8px;">
+<div class="col-sm-10 rightwidget">
 <script>
 function submitprofile() {
                          $('#ErrPhysicallyImpaired').html("");
@@ -298,7 +298,7 @@ $(document).ready(function() {
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Description</label>
+        <label class="col-sm-12 col-form-label">Additional Information</label>
         <div class="col-sm-12">                                                        
             <textarea class="form-control" style="margin-bottom:5px;" maxlength="250" name="PhysicalDescription" id="PhysicalDescription"><?php echo (isset($_POST['PhysicalDescription']) ? $_POST['PhysicalDescription'] : $ProfileInfo['PhysicalDescription']);?></textarea>
             Max 250 Characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span>
@@ -314,9 +314,10 @@ $(document).ready(function() {
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
         <div class="col-sm-6" style="text-align: right;">
-            <ul class="pager">
-                  <li><a href="../FamilyInformation/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
-                  <li><a href="../DocumentAttachment/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+            <ul class="pager" style="float:right">
+                  <li><a href="../FamilyInformation/<?php echo $_GET['Code'].".htm";?>">&#8249; Previous</a></li>
+                  <li>&nbsp;</li>
+                  <li><a href="../DocumentAttachment/<?php echo $_GET['Code'].".htm";?>">Next &#8250;</a></li>
             </ul>
         </div>
     </div>

@@ -114,7 +114,7 @@ function submitprofile() {
     
 }
 </script>
-<div class="col-sm-10" style="margin-top: -8px;max-width:770px !important">
+<div class="col-sm-10 rightwidget">
 <form method="post" action="" name="form1" id="form1" enctype="multipart/form-data" onsubmit="return submitprofile();">
     <h4 class="card-title">Occupation Details</h4>
     <div class="form-group row">
@@ -210,7 +210,7 @@ function submitprofile() {
     </div>
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
-        <label for="Details" class="col-sm-2 col-form-label">Details</label>
+        <label for="Details" class="col-sm-12 col-form-label">Additional information</label>
         </div>
      <div class="form-group row">
         <div class="col-sm-12">                                                                           
@@ -228,9 +228,10 @@ function submitprofile() {
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
         <div class="col-sm-6" style="text-align: right;">
-            <ul class="pager">
-                <li><a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
-                <li><a href="../FamilyInformation/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+            <ul class="pager" style="float: right;">
+                <li><a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">&#8249; Previous</a></li>
+                <li>&nbsp;</li>
+                <li><a href="../FamilyInformation/<?php echo $_GET['Code'].".htm";?>">Next &#8250;</a></li>
             </ul>
         </div>
     </div>

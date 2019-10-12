@@ -18,7 +18,7 @@
     border:1px solid #9b9a9a;
 }
 </style>
-<div class="col-sm-10" style="margin-top: -8px;">
+<div class="col-sm-10 rightwidget">
 <script>
 function submitUpload() {
             $('#ErrDocuments').html("");  
@@ -98,8 +98,8 @@ function submitUpload() {
                 $DocumentPhoto = $res['data'];
               
             ?>
-   <div id="Attachdetails"> 
-    <span style="color:#555">  We have implemented certain measures for the safety of our members. registered members must have update      a copy of any specified government issued identity proof to add credibility to their profiles. </span><br><Br><br>
+   <div id="Attachdetails" style="padding-top:20px"> 
+    <span style="color:#555">We have implemented certain measures for the safety of our members. registered members must have update      a copy of any specified government issued identity proof to add credibility to their profiles. </span><br><Br><br>
     <div class="form-group row">
         <label for="Documents" class="col-sm-2 col-form-label">Document Type<span id="star">*</span></label>
         <div class="col-sm-4">
@@ -175,9 +175,10 @@ function submitUpload() {
    <div class="form-group row">
     <div class="col-sm-6"></div>
     <div class="col-sm-6" style="text-align: right;">
-            <ul class="pager">
-                  <li><a href="../PhysicalInformation/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
-                  <li><a href="../CommunicationDetails/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+            <ul class="pager" style="float:right;">
+                  <li><a href="../PhysicalInformation/<?php echo $_GET['Code'].".htm";?>">&#8249; Previous</a></li>
+                  <li>&nbsp;</li>
+                  <li><a href="../CommunicationDetails/<?php echo $_GET['Code'].".htm";?>">Next &#8250;</a></li>
             </ul>
         </div>
    </div> 
@@ -238,7 +239,6 @@ function showLearnMore() {
     }
     
     function ConfirmDelete(AttachmentID) {
-        
         var param = $( "#form_"+AttachmentID).serialize();
         $('#model_body').html(preloader);
         $.post(API_URL + "m=Member&a=DeletDocumentAttachments", param, function(result2) {
@@ -249,9 +249,6 @@ function showLearnMore() {
             $('#x').html( available + " out 2 photos");
         }
     );
-                    
-      
-        //$.ajax({url: API_URL + "m=Member&a=DeletDocumentAttachments",success: function(result2){$('#model_body').html(result2);}});
 }
 
 function DisplayDocAttachForm() {

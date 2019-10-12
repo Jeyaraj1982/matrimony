@@ -3,7 +3,7 @@
     include_once("settings_header.php");
     $response = $webservice->getData("Member","GetViewAttachments",(array("ProfileCode"=>$_GET['Code'])));
 ?> 
-<div class="col-sm-10" style="margin-top: -8px;max-width:770px !important">
+<div class="col-sm-10 rightwidget">
     <h4 class="card-title">Education Details</h4>
     <div align="right">
             <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/AddEducationalDetails/". $_GET['Code'].".htm");?>" class="btn btn-success mr-2" >Add Education Details</a>

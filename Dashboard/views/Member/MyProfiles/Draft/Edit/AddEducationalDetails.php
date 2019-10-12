@@ -69,7 +69,7 @@ function submitEducation() {
 
         }
 </script>
-<div class="col-sm-10" style="margin-top: -8px;max-width:770px !important">
+<div class="col-sm-10 rightwidget">
     <form method="post" action="" name="form1" id="form1" onsubmit="return submitEducation()" enctype="multipart/form-data">
         <h4 class="card-title">Educational Details</h4>
         <div class="form-group row">

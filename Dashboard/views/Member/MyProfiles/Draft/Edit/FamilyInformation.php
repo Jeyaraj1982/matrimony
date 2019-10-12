@@ -14,13 +14,13 @@
 
     include_once("settings_header.php");
 ?>
-<div class="col-sm-10" style="margin-top:-8px;max-width:780px !important">
+<div class="col-sm-10 rightwidget">
     <form method="post" action="" onsubmit="return DraftProfile.SubmitFamilyInformation();">
         <h4 class="card-title">Family Information</h4>
         <div class="form-group row">
             <label for="FatherName" class="col-sm-3 col-form-label">Father's Name<span id="star">*</span></label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="FatherName" name="FatherName" value="<?php echo (isset($_POST['FatherName']) ? $_POST['FatherName'] : $ProfileInfo['FathersName']);?>" placeholder="Name">
+                <input type="text" class="form-control" id="FatherName" name="FatherName" value="<?php echo (isset($_POST['FatherName']) ? $_POST['FatherName'] : $ProfileInfo['FathersName']);?>" placeholder="Father's Name">
                 <span class="errorstring" id="ErrFatherName"><?php echo isset($ErrFatherName)? $ErrFatherName : "";?></span>
             </div>
             <div class="col-sm-2">
@@ -70,7 +70,7 @@
         <div class="form-group row">
             <label for="MotherName" class="col-sm-3 col-form-label">Mother's Name<span id="star">*</span></label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" id="MotherName" name="MotherName" Placeholder="Mother Name" value="<?php echo (isset($_POST['MotherName']) ? $_POST['MotherName'] : $ProfileInfo['MothersName']);?>">
+                <input type="text" class="form-control" id="MotherName" name="MotherName" Placeholder="Mother's Name" value="<?php echo (isset($_POST['MotherName']) ? $_POST['MotherName'] : $ProfileInfo['MothersName']);?>">
                 <span class="errorstring" id="ErrMotherName"><?php echo isset($ErrMotherName)? $ErrMotherName : "";?></span>
             </div>
             <div class="col-sm-2">
@@ -240,7 +240,7 @@
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px">
-            <label for="AboutMe" class="col-sm-4 col-form-label">About My Family<span id="star">*</span></label>
+            <label for="AboutMe" class="col-sm-4 col-form-label">About My Family</label>
         </div>
         <div class="form-group row">
             <div class="col-sm-12">                                                        
@@ -258,9 +258,10 @@
                 <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
             </div>
             <div class="col-sm-6" style="text-align: right;">
-            <ul class="pager">
-                  <li><a href="../OccupationDetails/<?php echo $_GET['Code'].".htm";?>">Previous</a></li>
-                  <li><a href="../PhysicalInformation/<?php echo $_GET['Code'].".htm";?>">Next</a></li>
+            <ul class="pager" style="float:right;">
+                  <li><a href="../OccupationDetails/<?php echo $_GET['Code'].".htm";?>">&#8249; Previous</a></li>
+                  <li>&nbsp;</li>
+                  <li><a href="../PhysicalInformation/<?php echo $_GET['Code'].".htm";?>">Next &#8250;</a></li>
             </ul>
         </div>
         </div>
