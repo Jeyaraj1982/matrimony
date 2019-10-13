@@ -93,13 +93,13 @@
          function GetLoginHistory() {
              global $mysql,$loginInfo;
              $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$loginInfo[0]['MemberID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
-                return Response::returnSuccess("success",$LoginHistory);
+             return Response::returnSuccess("success",$LoginHistory);
          }
 
          function GetNotificationHistory() {
              global $mysql,$loginInfo;
              $NotificationHistory = $mysql->select("select * from `_tbl_logs_activity` where `MemberID`='".$loginInfo[0]['MemberID']."' ORDER BY `ActivityID` DESC LIMIT 0,5");
-                return Response::returnSuccess("success",$NotificationHistory);
+             return Response::returnSuccess("success",$NotificationHistory);
          }
 
          function Register() {
@@ -2177,6 +2177,7 @@
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
                                                             "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
          }
+         
          function AddPartnersExpectaion() {
 
              global $mysql,$loginInfo;    
@@ -2184,57 +2185,50 @@
              $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
              $Religion       = CodeMaster::getData("RELINAMES",$_POST['Religion']); 
              $Caste          = CodeMaster::getData("CASTNAMES",$_POST['Caste']);  
-             $Education          = CodeMaster::getData("EDUCATETITLES",$_POST['Education']);  
-             $EmployedAs       = CodeMaster::getData("OCCUPATIONS",$_POST["EmployedAs"]) ;
-             $IncomeRange      = CodeMaster::getData("INCOMERANGE",$_POST["IncomeRange"]) ;
+             $Education      = CodeMaster::getData("EDUCATETITLES",$_POST['Education']);  
+             $EmployedAs     = CodeMaster::getData("OCCUPATIONS",$_POST["EmployedAs"]) ;
+             $IncomeRange    = CodeMaster::getData("INCOMERANGE",$_POST["IncomeRange"]) ;
              
              $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'"); 
              $check =  $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['Code']."'");                      
              if (sizeof($check)>0) {
-                   $updateSql = "update `_tbl_draft_profiles_partnerexpectation` set  `AgeFrom`           = '".$_POST['age']."',
-                                                                         `AgeTo`             = '".$_POST['toage']."',
-                                                                         `MaritalStatusCode` = '".$_POST['MaritalStatus']."',
-                                                                         `MaritalStatus`     = '".$MaritalStatus[0]['CodeValue']."',
-                                                                         `ReligionCode`      = '".$_POST['Religion']."',
-                                                                         `Religion`          = '".$Religion[0]['CodeValue']."',
-                                                                         `CasteCode`         = '".$_POST['Caste']."',
-                                                                         `Caste`             = '". $Caste[0]['CodeValue']."',
-                                                                         `EducationCode`     = '".$_POST['Education']."',
-                                                                         `Education`         = '".$Education[0]['CodeValue']."',
-                                                                         `AnnualIncomeCode`  = '".$_POST['IncomeRange']."',
-                                                                         `AnnualIncome`      = '".$IncomeRange[0]['CodeValue']."',
-                                                                         `EmployedAsCode`    = '".$_POST['EmployedAs']."',
-                                                                         `EmployedAs`        = '".$EmployedAs[0]['CodeValue']."',
-                                                                         `Details`           = '".$_POST['Details']."'
-                                                                            where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'";
-             $mysql->execute($updateSql);  
+                 $updateSql = "update `_tbl_draft_profiles_partnerexpectation` set `AgeFrom`           = '".$_POST['age']."',
+                                                                                   `AgeTo`             = '".$_POST['toage']."',
+                                                                                   `MaritalStatusCode` = '".$_POST['MaritalStatus']."',
+                                                                                   `MaritalStatus`     = '".$MaritalStatus[0]['CodeValue']."',
+                                                                                   `ReligionCode`      = '".$_POST['Religion']."',
+                                                                                   `Religion`          = '".$Religion[0]['CodeValue']."',
+                                                                                   `CasteCode`         = '".$_POST['Caste']."',
+                                                                                   `Caste`             = '".$Caste[0]['CodeValue']."',
+                                                                                   `EducationCode`     = '".$_POST['Education']."',
+                                                                                   `Education`         = '".$Education[0]['CodeValue']."',
+                                                                                   `AnnualIncomeCode`  = '".$_POST['IncomeRange']."',
+                                                                                   `AnnualIncome`      = '".$IncomeRange[0]['CodeValue']."',
+                                                                                   `EmployedAsCode`    = '".$_POST['EmployedAs']."',
+                                                                                   `EmployedAs`        = '".$EmployedAs[0]['CodeValue']."',
+                                                                                   `Details`           = '".$_POST['Details']."' where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'";
+                 $mysql->execute($updateSql);  
              } else {
-                   $id = $mysql->insert("_tbl_draft_profiles_partnerexpectation",array("AgeFrom"             => $_POST['age'],
-                                                                   "AgeTo"               => $_POST['toage'],
-                                                                   "MaritalStatusCode"   => $_POST['MaritalStatus'],
-                                                                   "MaritalStatus"       => $MaritalStatus[0]['CodeValue'],
-                                                                   "ReligionCode"        => $_POST['Religion'],
-                                                                   "Religion"            => $Religion[0]['CodeValue'],
-                                                                   "CasteCode"           => $_POST['Caste'],
-                                                                   "Caste"               => $Caste[0]['CodeValue'],
-                                                                   "EducationCode"       => $_POST['Education'],
-                                                                   "Education"           => $Education[0]['CodeValue'],
-                                                                   "AnnualIncomeCode"    => $_POST['IncomeRange'],
-                                                                   "AnnualIncome"        => $IncomeRange[0]['CodeValue'],
-                                                                   "EmployedAsCode"      => $_POST['EmployedAs'],
-                                                                   "EmployedAs"          => $EmployedAs[0]['CodeValue'],
-                                                                   "Details"             => $_POST['Details'],
-                                                                   "MemberID"           => $loginInfo[0]['MemberID'],
-                                                                   "ProfileID"           => $profile[0]['ProfileID'],
-                                                                   "ProfileCode"         => $_POST['Code'])) ;
+                 $id = $mysql->insert("_tbl_draft_profiles_partnerexpectation",array("AgeFrom"           => $_POST['age'],
+                                                                                     "AgeTo"             => $_POST['toage'],
+                                                                                     "MaritalStatusCode" => implode(",",$_POST['MaritalStatus']),
+                                                                                     "MaritalStatus"     => $MaritalStatus[0]['CodeValue'],
+                                                                                     "ReligionCode"      => implode(",",$_POST['Religion']),
+                                                                                     "Religion"          => $Religion[0]['CodeValue'],
+                                                                                     "CasteCode"         => implode(",",$_POST['Caste']),
+                                                                                     "Caste"             => $Caste[0]['CodeValue'],
+                                                                                     "EducationCode"     => implode(",",$_POST['Education']),
+                                                                                     "Education"         => $Education[0]['CodeValue'],
+                                                                                     "AnnualIncomeCode"  => implode(",",$_POST['IncomeRange']),
+                                                                                     "AnnualIncome"      => $IncomeRange[0]['CodeValue'],
+                                                                                     "EmployedAsCode"    => implode(",",$_POST['EmployedAs']),
+                                                                                     "EmployedAs"        => $EmployedAs[0]['CodeValue'],
+                                                                                     "Details"           => $_POST['Details'],
+                                                                                     "MemberID"          => $loginInfo[0]['MemberID'],
+                                                                                     "ProfileID"         => $profile[0]['ProfileID'],
+                                                                                     "ProfileCode"       => $_POST['Code'])) ;
              }
-            return Response::returnSuccess("success",array("MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
-                                                            "Language"               => CodeMaster::getData('LANGUAGENAMES'),
-                                                            "Religion"               => CodeMaster::getData('RELINAMES'),
-                                                            "Caste"                  => CodeMaster::getData('CASTNAMES'),
-                                                            "IncomeRange"            => CodeMaster::getData('INCOMERANGE'),
-                                                            "Education"              => CodeMaster::getData('EDUCATETITLES'),
-                                                            "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
+            return Response::returnSuccess("Partner's expectations are updated successfully",array());
          }
 
          function EditDraftOccupationDetails() {
@@ -2942,24 +2936,25 @@
              }
 
              $myProfile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
-              $RecentProfiles = $mysql->select("select VisterProfileCode from `_tbl_profiles_lastseen` where `ProfileCode` = '".$myProfile[0]['ProfileCode']."'   order by LastSeenID DESC ");
-              $profileCodes  = array();
-             foreach($RecentProfiles as $RecentProfile) {
-                 if (trim(strlen($RecentProfile['VisterProfileCode']))>0) {
-                     if (!(in_array($RecentProfile['VisterProfileCode'], $profileCodes))) {
-                        $profileCodes[]=$RecentProfile['VisterProfileCode'];     
+             if (isset($myProfile[0]['ProfileCode'])) {
+                 $RecentProfiles = $mysql->select("select VisterProfileCode from `_tbl_profiles_lastseen` where `ProfileCode` = '".$myProfile[0]['ProfileCode']."'   order by LastSeenID DESC ");
+                 $profileCodes  = array();
+                 foreach($RecentProfiles as $RecentProfile) {
+                     if (trim(strlen($RecentProfile['VisterProfileCode']))>0) {
+                         if (!(in_array($RecentProfile['VisterProfileCode'], $profileCodes))) {
+                            $profileCodes[]=$RecentProfile['VisterProfileCode'];     
+                         }
+                     }
+                 }
+
+                 if (sizeof($profileCodes)>0) {
+                     for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) {  
+                         if (isset($profileCodes[$i])) {
+                            $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                         }
                      }
                  }
              }
-
-             if (sizeof($profileCodes)>0) {
-                 for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) {  
-                     if (isset($profileCodes[$i])) {
-                        $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
-                     }
-                }
-             }
-                  
              return Response::returnSuccess("success",$Profiles);
          }
          /* Favourited Section */
@@ -3429,7 +3424,7 @@
                 $Profiles[] =Profiles::getProfileInfo($profile['ProfileCode'],2);
              } 
              
-                 return Response::returnSuccess("success".$Profiles,$Profiles);                                               
+                 return Response::returnSuccess("success",$Profiles);                                               
                  }
          
          function GetLandingpageProfileInfo() {
@@ -3599,7 +3594,7 @@
          function GetMyNotifications(){
              global $mysql,$loginInfo;
              $Member=$mysql->select("select * from `_tbl_member_profile_modify_notification` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
-             return Response::returnSuccess("success",$Member[0]);
+             return Response::returnSuccess("success",isset($Member[0]) ? $Member[0] : array());
          }
          
          function GetPublishedProfileInformation($ProfileCode="",$rtype="") {
@@ -3793,9 +3788,9 @@
              $Caste          = CodeMaster::getData("CASTNAMES",$_POST['Caste']);  
              $Community      = CodeMaster::getData("COMMUNITY",$_POST['Community']);  
              $Nationality    = CodeMaster::getData("NATIONALNAMES",$_POST['Nationality']);
-             $Childrens     = CodeMaster::getData("NUMBEROFBROTHER",$_POST['HowManyChildren']);  
-             $ProfileFors     = CodeMaster::getData("PROFILESIGNIN",$_POST['ProfileFor']);  
-              $ProfileCode   =SeqMaster::GetNextPublishProfileCode();
+             $Childrens      = CodeMaster::getData("NUMBEROFBROTHER",$_POST['HowManyChildren']);  
+             $ProfileFors    = CodeMaster::getData("PROFILESIGNIN",$_POST['ProfileFor']);  
+              $ProfileCode   = SeqMaster::GetNextPublishProfileCode();
               
              $PublishProfileCode = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['Code']."'");                
               
@@ -3914,18 +3909,26 @@
           function DashboardCounts() {
                                                   
              global $mysql,$loginInfo;
-               $myProfile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");                         
-             $RecentlyViewed = $mysql->select("select count(*) as cnt from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$loginInfo[0]['MemberID']."'");      
-             $RecentlyWhoViewed = $mysql->select("select VisterProfileCode from `_tbl_profiles_lastseen` where `ProfileCode` = '".$myProfile[0]['ProfileCode']."'");      
-             $Myfavorited = $mysql->select("select ProfileCode from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and`VisterMemberID` = '".$loginInfo[0]['MemberID']."'");      
-             $Whofavorited = $mysql->select("select VisterProfileCode from `_tbl_profiles_favourites` where `IsFavorite` ='1' and`MemberID` = '".$loginInfo[0]['MemberID']."'");      
-             $Mutual = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `MemberID` = '".$loginInfo[0]['MemberID']."'");      
-             
-             return Response::returnSuccess("success",array("MyRecentlyViewedCount"           =>$RecentlyViewed[0],
-                                                            "RecentlyWhoViewed"           =>$RecentlyWhoViewed[0],
-                                                            "MyFavorited"           =>$Myfavorited[0],
-                                                            "WhoFavorited"           =>$Whofavorited[0],
-                                                            "Mutual"           =>$Mutual[0]));
+             $myProfile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");                         
+             if (isset($myProfile[0]['ProfileCode'])) {     
+                 $RecentlyViewed = $mysql->select("select count(*) as cnt from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$loginInfo[0]['MemberID']."'"); 
+                 $RecentlyWhoViewed = $mysql->select("select VisterProfileCode from `_tbl_profiles_lastseen` where `ProfileCode` = '".$myProfile[0]['ProfileCode']."'");      
+                 $Myfavorited = $mysql->select("select ProfileCode from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and`VisterMemberID` = '".$loginInfo[0]['MemberID']."'");      
+                 $Whofavorited = $mysql->select("select VisterProfileCode from `_tbl_profiles_favourites` where `IsFavorite` ='1' and`MemberID` = '".$loginInfo[0]['MemberID']."'");      
+                 $Mutual = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `MemberID` = '".$loginInfo[0]['MemberID']."'");      
+                 
+                 return Response::returnSuccess("success",array("MyRecentlyViewedCount"  => isset($RecentlyViewed[0]) ? $RecentlyViewed[0] : array(),
+                                                                "RecentlyWhoViewed"      => isset($RecentlyWhoViewed[0]) ? $RecentlyWhoViewed[0] : array(),
+                                                                "MyFavorited"            => isset($Myfavorited[0]) ? $Myfavorited[0] : array(),
+                                                                "WhoFavorited"           => isset($Whofavorited[0]) ? $Whofavorited[0] : array(),
+                                                                "Mutual"                 => isset($Mutual[0]) ? $Mutual[0] : array()));
+             } else {
+                 return Response::returnSuccess("success",array("MyRecentlyViewedCount"  => array(),
+                                                                "RecentlyWhoViewed"      => array(),
+                                                                "MyFavorited"            => array(),
+                                                                "WhoFavorited"           => array(),
+                                                                "Mutual"                 => array()));
+             }
          }
           function GetMemberVerfiedDetails(){
              global $mysql,$loginInfo;
@@ -3956,7 +3959,6 @@
                  $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
              }
              
-             
              $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");
           
              $id = $mysql->insert("_tbl_profiles_favourites",array("MemberID"           => $Profiles[0]['MemberID'],
@@ -3979,21 +3981,17 @@
                                                             
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has send interest request.");                                               
          }
-        function DeleteOccupationAttachmentOnly() {
-
-             global $mysql,$loginInfo;
-
-             $ProfileCode= $_POST['ProfileCode'];
+         
+         function DeleteOccupationAttachmentOnly() {
              
-             $updateSql = "update `_tbl_draft_profiles` set `OccupationAttachFileName` = '' ,`OccupationAttachmentType` = '0' where `ProfileID`='".$_POST['ProfileID']."' and`ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$_POST['MemberID']."'";
-             $mysql->execute($updateSql);
-          
-               return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+             global $mysql,$loginInfo;
+             $mysql->execute("update `_tbl_draft_profiles` set `OccupationAttachFileName` = '' ,`OccupationAttachmentType` = '0' where `ProfileID`='".$_POST['ProfileID']."' and`ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");
+             return  '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Confirmation For Remove</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
                             <h5 style="text-align:center;color:#ada9a9">Attachment has been removed successfully.</h5>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/OccupationDetails/'.$ProfileCode.'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/OccupationDetails/'.$_POST['ProfileCode'].'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';                             
 
          }     
