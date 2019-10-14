@@ -34,6 +34,11 @@ function submitprofile() {
        $('#ErrMotherName').html("");
        $('#ErrFathersContact').html("");
        $('#ErrMotherContact').html("");
+       $('#ErrFamilyLocation1').html("");
+       $('#ErrAncestral').html("");
+       $('#ErrFamilyType').html("");
+       $('#ErrFamilyAffluence').html("");
+       $('#ErrFamilyValue').html("");
        
         ErrorCount=0;
         
@@ -49,12 +54,32 @@ function submitprofile() {
         if ($('#MotherContact').val().trim().length>0) {
             IsMobileNumber("MotherContact","ErrMotherContact","Please Enter Valid Mobile Number");
         }
-        if ($('#FathersOccupation').val()=="OT112") {
-                IsNonEmpty("FatherOtherOccupation","ErrFatherOtherOccupation","Please enter your father other occupation");
+       if ($('#FathersOccupation').val()=="OT112") {
+                if(IsNonEmpty("FatherOtherOccupation","ErrFatherOtherOccupation","Please enter your father other occupation")){
+                   IsAlphabet("FatherOtherOccupation","ErrFatherOtherOccupation","Please enter alphabet characters only");
+                }
             }
             if ($('#MothersOccupation').val()=="OT112") {
-                IsNonEmpty("MotherOtherOccupation","ErrMotherOtherOccupation","Please enter your mothers occuption");
+                if(IsNonEmpty("MotherOtherOccupation","ErrMotherOtherOccupation","Please enter your mother other occupation")){
+                   IsAlphabet("MotherOtherOccupation","ErrMotherOtherOccupation","Please enter alphabet characters only");
+                }
             }
+            IsNonEmpty("FamilyLocation1","ErrFamilyLocation1","Please enter your family location");                                                                                                          
+            IsNonEmpty("Ancestral","ErrAncestral","Please enter your ancestral");                                                                                                          
+            IsNonEmpty("FamilyLocation1","ErrFamilyLocation1","Please enter your family location");                                                                                                          
+            IsNonEmpty("Ancestral","ErrAncestral","Please enter your ancestral");       
+            if($("#FamilyType").val()=="0"){
+                ErrorCount++;
+                document.getElementById("ErrFamilyType").innerHTML="Please select family type"; 
+            }
+            if($("#FamilyAffluence").val()=="0"){
+                ErrorCount++;
+                document.getElementById("ErrFamilyAffluence").innerHTML="Please select family affluence"; 
+            }
+            if($("#FamilyValue").val()=="0"){
+                ErrorCount++;
+                document.getElementById("ErrFamilyValue").innerHTML="Please select family value"; 
+            }  
             
         if (ErrorCount==0) {
                             return true;
@@ -184,15 +209,21 @@ $(document).ready(function() {
          </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Family location<span id="star">*</span></label>
-            <div class="col-sm-9"><input type="text" class="form-control" name="FamilyLocation1" id="FamilyLocation1" value="<?php echo (isset($_POST['FamilyLocation1']) ? $_POST['FamilyLocation1'] : $ProfileInfo['FamilyLocation1']);?>" placeholder="Addressline 1"></div>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" name="FamilyLocation1" id="FamilyLocation1" value="<?php echo (isset($_POST['FamilyLocation1']) ? $_POST['FamilyLocation1'] : $ProfileInfo['FamilyLocation1']);?>" placeholder="Addressline 1">
+                    <span class="errorstring" id="ErrFamilyLocation1"><?php echo isset($ErrFamilyLocation1)? $ErrFamilyLocation1 : "";?></span>
+            </div>
         </div>
         <div class="form-group row">
            <label class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9"><input type="text" class="form-control" name="FamilyLocation2" id="FamilyLocation2" value="<?php echo (isset($_POST['FamilyLocation2']) ? $_POST['FamilyLocation2'] : $ProfileInfo['FamilyLocation2']);?>" placeholder="Addressline 2"></div>
         </div>
         <div class="form-group row">
-           <label class="col-sm-3 col-form-label">Ancestral / Family origin</label>
-            <div class="col-sm-9"><input type="text" class="form-control" name="Ancestral" id="Ancestral" value="<?php echo (isset($_POST['Ancestral']) ? $_POST['Ancestral'] : $ProfileInfo['Ancestral']);?>" placeholder="Ancestral / Family Origin"></div>
+           <label class="col-sm-3 col-form-label">Ancestral / Family origin<span id="star">*</span></label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" name="Ancestral" id="Ancestral" value="<?php echo (isset($_POST['Ancestral']) ? $_POST['Ancestral'] : $ProfileInfo['Ancestral']);?>" placeholder="Ancestral / Family Origin">
+               <span class="errorstring" id="ErrAncestral"><?php echo isset($ErrAncestral)? $ErrAncestral : "";?>
+            </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Family type<span id="star">*</span></label>
@@ -203,6 +234,7 @@ $(document).ready(function() {
                     <option value="<?php echo $FamilyType['SoftCode'];?>" <?php echo (isset($_POST[ 'FamilyType'])) ? (($_POST[ 'FamilyType']==$FamilyType[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'FamilyType']==$FamilyType[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $FamilyType['CodeValue'];?> </option>
                     <?php } ?> 
                 </select>
+                <span class="errorstring" id="ErrFamilyType"><?php echo isset($ErrFamilyType)? $ErrFamilyType : "";?>
             </div>
             <label for="Family Value" class="col-sm-2 col-form-label">Family affluence<span id="star">*</span></label>
             <div class="col-sm-3">
@@ -212,6 +244,7 @@ $(document).ready(function() {
                     <option value="<?php echo $FamilyAffluence['SoftCode'];?>" <?php echo (isset($_POST[ 'FamilyAffluence'])) ? (($_POST[ 'FamilyAffluence']==$FamilyAffluence[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'FamilyAffluence']==$FamilyAffluence[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $FamilyAffluence['CodeValue'];?> </option>
                     <?php } ?> 
                 </select>
+                <span class="errorstring" id="ErrFamilyAffluence"><?php echo isset($ErrFamilyAffluence)? $ErrFamilyAffluence : "";?>
             </div>
         </div>
         <div class="form-group row">
@@ -223,6 +256,7 @@ $(document).ready(function() {
                     <option value="<?php echo $FamilyValue['SoftCode'];?>" <?php echo (isset($_POST[ 'FamilyValue'])) ? (($_POST[ 'FamilyValue']==$FamilyValue[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'FamilyValue']==$FamilyValue[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $FamilyValue['CodeValue'];?> </option>
                     <?php } ?> 
                 </select>
+                <span class="errorstring" id="ErrFamilyValue"><?php echo isset($ErrFamilyValue)? $ErrFamilyValue : "";?>
             </div>
         </div>
         <div class="form-group row">
@@ -304,7 +338,7 @@ $(document).ready(function() {
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px">
-            <label for="AboutMe" class="col-sm-4 col-form-label">About my family</label>
+            <label for="AboutMe" class="col-sm-4 col-form-label">About my family<span id="star">*</span></label>
         </div>
         <div class="form-group row">
             <div class="col-sm-12">                                                        

@@ -49,7 +49,7 @@
 
                 function IsAlphabet(ElemID,ResultDiv,Message){
                     $('#'+ResultDiv).html("");
-                    if( /[^a-zA-Z ]/.test( $('#'+ElemID).val() ) ) {
+                    if(  /^([\s\.]?[a-zA-Z]+)+$/.test( $('#'+ElemID).val() ) ) {
                         ErrorCount++;
                         $('#'+ResultDiv).html(Message);
                         return false;
@@ -99,7 +99,7 @@
                  function IsPassword(ElemID,ResultDiv,Message){
                   
                     $('#'+ResultDiv).html("");
-                    if(( $('#'+ElemID).val().length < 8 ))  {
+                    if(( $('#'+ElemID).val().length < 6 ))  {
                         ErrorCount++;                           
                         $('#'+ResultDiv).html(Message);
                         return false;

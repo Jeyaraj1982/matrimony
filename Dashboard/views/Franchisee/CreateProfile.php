@@ -32,9 +32,10 @@ function submitprofile() {
                         if (IsNonEmpty("ProfileName","ErrProfileName","Please enter your profile name")) {
                             IsAlphabet("ProfileName","ErrProfileName","Please enter alpha numeric characters only");
                          }
-                         if($("#date").val()=="0" || $("#month").val()=="0" || $("#year").val()=="0"){
+                        if($("#date").val()=="0" || $("#month").val()=="0" || $("#year").val()=="0"){
                             document.getElementById("ErrDateofBirth").innerHTML="Please select date of birth"; 
-                         }
+                            ErrorCount++;
+                        }
                          if($("#Sex").val()=="0"){
                             document.getElementById("ErrSex").innerHTML="Please select sex"; 
                          }

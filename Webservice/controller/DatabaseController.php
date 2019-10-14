@@ -6,15 +6,15 @@
         var $dbName = "";
         var $qry    = "";
         
-        function MySql($dbHost,$dbUser,$dbPass,$dbName){
+        public function __construct($dbHost,$dbUser,$dbPass,$dbName){
             $this->dbName = $dbName;
             $this->link = mysql_connect($dbHost,$dbUser,$dbPass) or die("Error");
         }
         
-        function select($sql,$ass=false) {
+        public function select($sql,$ass=false) {
             
             mysql_select_db($this->dbName,$this->link);
-
+            mysql_set_charset("utf8",$this->link);
             $resultData = array();
             $result     = mysql_query($sql,$this->link);
             
@@ -35,15 +35,16 @@
             return $resultData;
         }
         
-        function execute($sql) {
+        public function execute($sql) {
             
             $this->qry = $sql;
             mysql_select_db($this->dbName,$this->link);
+            mysql_set_charset("utf8",$this->link);
             mysql_query($this->qry,$this->link);
             return mysql_affected_rows();
         }
         
-        function insert($tableName,$rowData) {
+        public function insert($tableName,$rowData) {
             
             $r = "insert into `".$tableName."` (";
             $l = " values (";
@@ -67,7 +68,7 @@
             return mysql_insert_id($this->link);
         }
         
-         function update($tableName,$rowData,$where) {
+        public  function update($tableName,$rowData,$where) {
             
             $r = "update `".$tableName."` set ";
  
@@ -78,6 +79,7 @@
             $sql = $r." where ".$where;
             
             mysql_select_db($this->dbName,$this->link);
+            mysql_set_charset("utf8",$this->link);
             $this->qry=$sql;  
             mysql_query($this->qry,$this->link);
             return mysql_affected_rows($this->link);
@@ -85,6 +87,10 @@
         
         function dbClose() {
             mysql_close($this->link);
+        }
+        
+        public function __destruct() {
+            $this->link = null;
         }
     }
    

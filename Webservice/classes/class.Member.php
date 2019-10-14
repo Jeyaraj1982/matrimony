@@ -1263,6 +1263,35 @@
                             <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/ProfilePhoto/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
                        </div>'; 
              }
+     $AboutMyself =$mysql->select("Select * from `_tbl_draft_profiles` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+         if (strlen(trim($AboutMyself))==0) {
+                return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Missing</h4>  <br><br>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">You must enter about your self.</h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/GeneralInformation/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
+                       </div>'; 
+             }
+     $AboutMyself =$mysql->select("Select * from `_tbl_draft_profiles` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+         if (strlen(trim($AboutMyself['AboutMe']))==0) {
+                return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Missing</h4>  <br><br>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">You must enter about your self.</h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/GeneralInformation/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
+                       </div>'; 
+             } 
+     if (strlen(trim($AboutMyself['AboutMyFamily']))==0) {
+                return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Missing</h4>  <br><br>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">You must enter about your family.</h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/GeneralInformation/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
+                       </div>'; 
+             }
         $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
         /* return $data[0]['ProfileName'].strlen(trim($data[0]['ProfileName'])); 
           /*   if (sizeof($data)==0) {
@@ -1491,14 +1520,12 @@
 
          }
          
-         function GetDraftProfileInfo() {                           
-               
-                global $mysql,$loginInfo;      
+         function GetDraftProfileInfo() {
+             
+             global $mysql,$loginInfo;      
              $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileCode']."'");               
-            
-            
-               $result =  Profiles::getDraftProfileInformation($Profiles[0]['ProfileCode']);
-               return Response::returnSuccess("success",$result);
+             $result =  Profiles::getDraftProfileInformation($Profiles[0]['ProfileCode']);
+             return Response::returnSuccess("success",$result);
            }
          function GetPublishProfileInfo() {
                
@@ -1548,6 +1575,8 @@
                   }  
               }
              
+            
+              
               $result = array("ProfileInfo"            => $Profiles[0],
                               "ProfileCode"                =>$ProfileCode,
                               "Members"                => $members[0],
@@ -2168,6 +2197,7 @@
           function GetPartnersExpectaionInformation() {
              global $mysql,$loginInfo;
              $PartnersExpectation = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileCode']."'");               
+             
              return Response::returnSuccess("success",array("ProfileInfo"            =>$PartnersExpectation[0],
                                                             "MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
                                                             "Language"               => CodeMaster::getData('LANGUAGENAMES'),
@@ -2175,19 +2205,60 @@
                                                             "Caste"                  => CodeMaster::getData('CASTNAMES'),
                                                             "IncomeRange"            => CodeMaster::getData('INCOMERANGE'),
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
-                                                            "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
+                                                            "RasiName"               => CodeMaster::getData('MONSIGNS'),
+                                                            "StarName"               => CodeMaster::getData('STARNAMES'),
+                                                            "ChevvaiDhosham"         => CodeMaster::getData('CHEVVAIDHOSHAM'),
+                                                            "EmployedAs"             => CodeMaster::getData('Occupation')));
          }
+         
+         
          
          function AddPartnersExpectaion() {
 
              global $mysql,$loginInfo;    
 
-             $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
-             $Religion       = CodeMaster::getData("RELINAMES",$_POST['Religion']); 
-             $Caste          = CodeMaster::getData("CASTNAMES",$_POST['Caste']);  
-             $Education      = CodeMaster::getData("EDUCATETITLES",$_POST['Education']);  
-             $EmployedAs     = CodeMaster::getData("OCCUPATIONS",$_POST["EmployedAs"]) ;
-             $IncomeRange    = CodeMaster::getData("INCOMERANGE",$_POST["IncomeRange"]) ;
+             $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",explode(",",$_POST['MaritalStatus']));
+             $Religion       = CodeMaster::getData("RELINAMES",explode(",",$_POST['Religion'])); 
+             $Caste          = CodeMaster::getData("CASTNAMES",explode(",",$_POST['Caste']));  
+             $Education      = CodeMaster::getData("EDUCATETITLES",explode(",",$_POST['Education']));  
+             $EmployedAs     = CodeMaster::getData("Occupation",explode(",",$_POST["EmployedAs"])) ;
+             $IncomeRange    = CodeMaster::getData("INCOMERANGE",explode(",",$_POST["IncomeRange"])) ;
+             $RasiName       = CodeMaster::getData("MONSIGNS",explode(",",$_POST["RasiName"])) ;
+             $StarName       = CodeMaster::getData("STARNAMES",explode(",",$_POST["StarName"])) ;
+             $ChevvaiDhosham = CodeMaster::getData("CHEVVAIDHOSHAM",$_POST["ChevvaiDhosham"]);
+             
+             $MaritalStatus_CodeValue="";
+             foreach($MaritalStatus as $M) {
+               $MaritalStatus_CodeValue .= $M['CodeValue'].", ";  
+             }
+             $Religion_CodeValue="";
+             foreach($Religion as $R) {
+               $Religion_CodeValue .= $R['CodeValue'].", ";  
+             }
+             $Caste_CodeValue="";
+             foreach($Caste as $C) {
+               $Caste_CodeValue .= $C['CodeValue'].", ";  
+             }
+             $Education_CodeValue="";
+             foreach($Education as $E) {
+               $Education_CodeValue .= $E['CodeValue'].", ";  
+             }
+             $IncomeRange_CodeValue="";
+             foreach($IncomeRange as $I) {
+               $IncomeRange_CodeValue .= $I['CodeValue'].", ";  
+             }
+             $EmployedAs_CodeValue="";
+             foreach($EmployedAs as $EM) {
+               $EmployedAs_CodeValue .= $EM['CodeValue'].", ";  
+             }
+             $RasiName_CodeValue="";
+             foreach($RasiName as $RA) {
+               $RasiName_CodeValue .= $RA['CodeValue'].", ";  
+             }
+             $StarName_CodeValue="";
+             foreach($StarName as $ST) {
+               $StarName_CodeValue .= $ST['CodeValue'].", ";  
+             }
              
              $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'"); 
              $check =  $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['Code']."'");                      
@@ -2195,40 +2266,52 @@
                  $updateSql = "update `_tbl_draft_profiles_partnerexpectation` set `AgeFrom`           = '".$_POST['age']."',
                                                                                    `AgeTo`             = '".$_POST['toage']."',
                                                                                    `MaritalStatusCode` = '".$_POST['MaritalStatus']."',
-                                                                                   `MaritalStatus`     = '".$MaritalStatus[0]['CodeValue']."',
+                                                                                   `MaritalStatus`     = '".substr($MaritalStatus_CodeValue,0,strlen($MaritalStatus_CodeValue)-2)."',
                                                                                    `ReligionCode`      = '".$_POST['Religion']."',
-                                                                                   `Religion`          = '".$Religion[0]['CodeValue']."',
+                                                                                   `Religion`          = '".substr($Religion_CodeValue,0,strlen($Religion_CodeValue)-2)."',
                                                                                    `CasteCode`         = '".$_POST['Caste']."',
-                                                                                   `Caste`             = '".$Caste[0]['CodeValue']."',
+                                                                                   `Caste`             = '".substr($Caste_CodeValue,0,strlen($Caste_CodeValue)-2)."',
                                                                                    `EducationCode`     = '".$_POST['Education']."',
-                                                                                   `Education`         = '".$Education[0]['CodeValue']."',
+                                                                                   `Education`         = '".substr($Education_CodeValue,0,strlen($Education_CodeValue)-2)."',
                                                                                    `AnnualIncomeCode`  = '".$_POST['IncomeRange']."',
-                                                                                   `AnnualIncome`      = '".$IncomeRange[0]['CodeValue']."',
+                                                                                   `AnnualIncome`      = '".substr($IncomeRange_CodeValue,0,strlen($IncomeRange_CodeValue)-2)."',
                                                                                    `EmployedAsCode`    = '".$_POST['EmployedAs']."',
-                                                                                   `EmployedAs`        = '".$EmployedAs[0]['CodeValue']."',
+                                                                                   `EmployedAs`        = '".substr($EmployedAs_CodeValue,0,strlen($EmployedAs_CodeValue)-2)."',
+                                                                                   `RasiNameCode`      = '".$_POST['RasiName']."',
+                                                                                   `RasiName`          = '".substr($RasiName_CodeValue,0,strlen($RasiName_CodeValue)-2)."',
+                                                                                   `StarNameCode`      = '".$_POST['StarName']."',
+                                                                                   `StarName`          = '".substr($StarName_CodeValue,0,strlen($StarName_CodeValue)-2)."',
+                                                                                   `ChevvaiDhoshamCode`= '".$_POST['ChevvaiDhosham']."',
+                                                                                   `ChevvaiDhosham`    = '".$ChevvaiDhosham[0]['CodeValue']."',
                                                                                    `Details`           = '".$_POST['Details']."' where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'";
                  $mysql->execute($updateSql);  
              } else {
                  $id = $mysql->insert("_tbl_draft_profiles_partnerexpectation",array("AgeFrom"           => $_POST['age'],
                                                                                      "AgeTo"             => $_POST['toage'],
-                                                                                     "MaritalStatusCode" => implode(",",$_POST['MaritalStatus']),
-                                                                                     "MaritalStatus"     => $MaritalStatus[0]['CodeValue'],
-                                                                                     "ReligionCode"      => implode(",",$_POST['Religion']),
-                                                                                     "Religion"          => $Religion[0]['CodeValue'],
-                                                                                     "CasteCode"         => implode(",",$_POST['Caste']),
-                                                                                     "Caste"             => $Caste[0]['CodeValue'],
-                                                                                     "EducationCode"     => implode(",",$_POST['Education']),
-                                                                                     "Education"         => $Education[0]['CodeValue'],
-                                                                                     "AnnualIncomeCode"  => implode(",",$_POST['IncomeRange']),
-                                                                                     "AnnualIncome"      => $IncomeRange[0]['CodeValue'],
-                                                                                     "EmployedAsCode"    => implode(",",$_POST['EmployedAs']),
-                                                                                     "EmployedAs"        => $EmployedAs[0]['CodeValue'],
+                                                                                     "MaritalStatusCode" => $_POST['MaritalStatus'],
+                                                                                     "MaritalStatus"     => substr($MaritalStatus_CodeValue,0,strlen($MaritalStatus_CodeValue)-2),
+                                                                                     "ReligionCode"      => $_POST['Religion'],
+                                                                                     "Religion"          => substr($Religion_CodeValue,0,strlen($Religion_CodeValue)-2),
+                                                                                     "CasteCode"         => $_POST['Caste'],
+                                                                                     "Caste"             => substr($Caste_CodeValue,0,strlen($Caste_CodeValue)-2),
+                                                                                     "EducationCode"     => $_POST['Education'],
+                                                                                     "Education"         => substr($Education_CodeValue,0,strlen($Education_CodeValue)-2),
+                                                                                     "AnnualIncomeCode"  => $_POST['IncomeRange'],
+                                                                                     "AnnualIncome"      => substr($IncomeRange_CodeValue,0,strlen($IncomeRange_CodeValue)-2),
+                                                                                     "EmployedAsCode"    => $_POST['EmployedAs'],
+                                                                                     "EmployedAs"        => substr($EmployedAs_CodeValue,0,strlen($EmployedAs_CodeValue)-2),
+                                                                                     "RasiNameCode"      => $_POST['RasiName'],
+                                                                                     "RasiName"          => substr($RasiName_CodeValue,0,strlen($RasiName_CodeValue)-2),
+                                                                                     "StarNameCode"      => $_POST['StarName'],
+                                                                                     "StarName"          => substr($StarName_CodeValue,0,strlen($StarName_CodeValue)-2),
+                                                                                     "ChevvaiDhoshamCode"=>$_POST['ChevvaiDhosham'],
+                                                                                     "ChevvaiDhosham"    => $ChevvaiDhosham[0]['CodeValue'],
                                                                                      "Details"           => $_POST['Details'],
                                                                                      "MemberID"          => $loginInfo[0]['MemberID'],
                                                                                      "ProfileID"         => $profile[0]['ProfileID'],
                                                                                      "ProfileCode"       => $_POST['Code'])) ;
              }
-            return Response::returnSuccess("Partner's expectations are updated successfully",array());
+            return Response::returnSuccess("Partner's expectations are updated successfully".$MaritalStatus,array());
          }
 
          function EditDraftOccupationDetails() {
@@ -2527,13 +2610,14 @@
 
          function GetViewAttachments() {
              global $mysql,$loginInfo;    
-             $SAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and  `ProfileCode`='".$_POST['Code']."' and `IsDeleted`='0'");
-            // $SAttachments = $mysql->select("SELECT * From _tbl_draft_profiles_education_details
-                                                     //   INNER JOIN _tbl_draft_profile_education_attachments ON _tbl_draft_profiles_education_details.AttachmentID=_tbl_draft_profile_education_attachments.EducationAttachmentID") ;
              
-             return Response::returnSuccess("success",array("Attachments"     =>$SAttachments,
-                                                            "EducationDetail" => CodeMaster::getData('EDUCATETITLES'),
-                                                            "EducationDegree"  => CodeMaster::getData('EDUCATIONDEGREES')));
+             $SAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and  `ProfileCode`='".$_POST['Code']."' and `IsDeleted`='0'");
+             $AttachAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `AttachmentID`='".$_POST['AttachmentID']."' and `IsDeleted`='0'");
+             
+             return Response::returnSuccess("success",array("Attachments"       =>  $SAttachments,
+                                                            "AttachAttachments" =>  $AttachAttachments[0],
+                                                            "EducationDetail"   =>  CodeMaster::getData('EDUCATETITLES'),
+                                                            "EducationDegree"   =>  CodeMaster::getData('EDUCATIONDEGREES')));
          }
 
          function GetBankNames() {

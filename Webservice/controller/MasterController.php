@@ -1,10 +1,19 @@
 <?php
     class CodeMaster {
         
-        function getData($Request,$filter="") {
+        function getData($Request,$filter=null) {
             
             global $mysql;
-            $filter = ($filter!="") ?  " and SoftCode='".trim($filter)."'" : "";
+            if (is_array($filter)) {
+                $array_data = "";
+                foreach($filter as $f ) {
+                    $array_data .= "'".$f."',";
+                }
+                $array_data = substr($array_data,0,strlen($array_data)-1);
+                $filter = (sizeof($filter)>0) ?  " and SoftCode in (".$array_data.")" : "";
+            } else {
+                $filter = ($filter!="") ?  " and SoftCode='".trim($filter)."'" : "";
+            }
             
             $quries = array("SEX"                => "select * from `_tbl_master_codemaster` Where `HardCode`='SEX'".$filter,
                             "MARTIALSTATUS"      => "select * from `_tbl_master_codemaster` Where `HardCode`='MARTIALSTATUS'".$filter,

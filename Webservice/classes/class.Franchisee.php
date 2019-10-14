@@ -1113,7 +1113,9 @@
          function GetViewAttachments() {
              global $mysql,$loginInfo;    
              $SAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['Code']."' and `IsDeleted`='0'");
+              $AttachAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['Code']."' and `IsDeleted`='0' and `AttachmentID`='".$_POST['AttachmentID']."'");
              return Response::returnSuccess("success",array("Attachments"     =>$SAttachments,
+                                                            "AttachAttachments" =>  $AttachAttachments[0],    
                                                             "EducationDetail" => CodeMaster::getData('EDUCATETITLES'),
                                                             "EducationDegree"  => CodeMaster::getData('EDUCATIONDEGREES')));
             
@@ -1205,68 +1207,111 @@
                                                             "Caste"                  => CodeMaster::getData('CASTNAMES'),
                                                             "IncomeRange"            => CodeMaster::getData('INCOMERANGE'),
                                                             "Education"              => CodeMaster::getData('EDUCATETITLES'),
-                                                            "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
+                                                            "RasiName"              => CodeMaster::getData('MONSIGNS'),
+                                                            "StarName"              => CodeMaster::getData('STARNAMES'),
+                                                            "ChevvaiDhosham"              => CodeMaster::getData('CHEVVAIDHOSHAM'),
+                                                            "EmployedAs"              => CodeMaster::getData('Occupation')));
          }
          function AddPartnersExpectaion() {
 
              global $mysql,$loginInfo;    
 
-             $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
-             $Religion       = CodeMaster::getData("RELINAMES",$_POST['Religion']); 
-             $Caste          = CodeMaster::getData("CASTNAMES",$_POST['Caste']);  
-             $Education          = CodeMaster::getData("EDUCATETITLES",$_POST['Education']);  
-             $EmployedAs       = CodeMaster::getData("OCCUPATIONS",$_POST["EmployedAs"]) ;
-             $IncomeRange      = CodeMaster::getData("INCOMERANGE",$_POST["IncomeRange"]) ;
-               $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");
-             $check =  $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where ProfileCode='".$_POST['ProfileCode']."'");                      
+              $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",explode(",",$_POST['MaritalStatus']));
+             $Religion       = CodeMaster::getData("RELINAMES",explode(",",$_POST['Religion'])); 
+             $Caste          = CodeMaster::getData("CASTNAMES",explode(",",$_POST['Caste']));  
+             $Education      = CodeMaster::getData("EDUCATETITLES",explode(",",$_POST['Education']));  
+             $EmployedAs     = CodeMaster::getData("Occupation",explode(",",$_POST["EmployedAs"])) ;
+             $IncomeRange    = CodeMaster::getData("INCOMERANGE",explode(",",$_POST["IncomeRange"])) ;
+             $RasiName       = CodeMaster::getData("MONSIGNS",explode(",",$_POST["RasiName"])) ;
+             $StarName       = CodeMaster::getData("STARNAMES",explode(",",$_POST["StarName"])) ;
+             $ChevvaiDhosham       = CodeMaster::getData("CHEVVAIDHOSHAM",$_POST["ChevvaiDhosham"]) ;
+             
+              $MaritalStatus_CodeValue="";
+             foreach($MaritalStatus as $M) {
+               $MaritalStatus_CodeValue .= $M['CodeValue'].", ";  
+             }
+             $Religion_CodeValue="";
+             foreach($Religion as $R) {
+               $Religion_CodeValue .= $R['CodeValue'].", ";  
+             }
+             $Caste_CodeValue="";
+             foreach($Caste as $C) {
+               $Caste_CodeValue .= $C['CodeValue'].", ";  
+             }
+             $Education_CodeValue="";
+             foreach($Education as $E) {
+               $Education_CodeValue .= $E['CodeValue'].", ";  
+             }
+             $IncomeRange_CodeValue="";
+             foreach($IncomeRange as $I) {
+               $IncomeRange_CodeValue .= $I['CodeValue'].", ";  
+             }
+             $EmployedAs_CodeValue="";
+             foreach($EmployedAs as $EM) {
+               $EmployedAs_CodeValue .= $EM['CodeValue'].", ";  
+             }
+             $RasiName_CodeValue="";
+             foreach($RasiName as $RA) {
+               $RasiName_CodeValue .= $RA['CodeValue'].", ";  
+             }
+             $StarName_CodeValue="";
+             foreach($StarName as $ST) {
+               $StarName_CodeValue .= $ST['CodeValue'].", ";  
+             }
+             
+               $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'");
+             $check =  $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where ProfileCode='".$_POST['Code']."'");                      
              if (sizeof($check)>0) {
-                   $updateSql = "update `_tbl_draft_profiles_partnerexpectation` set  `AgeFrom`           = '".$_POST['age']."',
-                                                                         `AgeTo`             = '".$_POST['toage']."',
-                                                                         `MaritalStatusCode` = '".$_POST['MaritalStatus']."',
-                                                                         `MaritalStatus`     = '".$MaritalStatus[0]['CodeValue']."',
-                                                                         `ReligionCode`      = '".$_POST['Religion']."',
-                                                                         `Religion`          = '".$Religion[0]['CodeValue']."',
-                                                                         `CasteCode`         = '".$_POST['Caste']."',
-                                                                         `Caste`             = '". $Caste[0]['CodeValue']."',
-                                                                         `EducationCode`     = '".$_POST['Education']."',
-                                                                         `Education`         = '".$Education[0]['CodeValue']."',
-                                                                         `AnnualIncomeCode`  = '".$_POST['IncomeRange']."',
-                                                                         `AnnualIncome`      = '".$IncomeRange[0]['CodeValue']."',
-                                                                         `EmployedAsCode`    = '".$_POST['EmployedAs']."',
-                                                                         `EmployedAs`        = '".$EmployedAs[0]['CodeValue']."',
-                                                                         `ProfileID`           = '".$Profiles[0]['ProfileID']."',
-                                                                         `MemberID`           = '".$Profiles[0]['MemberID']."',
-                                                                         `Details`           = '".$_POST['Details']."'
-                                                                            where  `ProfileCode`='".$_POST['ProfileCode']."'";
+                  $updateSql = "update `_tbl_draft_profiles_partnerexpectation` set `AgeFrom`           = '".$_POST['age']."',
+                                                                                   `AgeTo`             = '".$_POST['toage']."',
+                                                                                   `MaritalStatusCode` = '".$_POST['MaritalStatus']."',
+                                                                                   `MaritalStatus`     = '".substr($MaritalStatus_CodeValue,0,strlen($MaritalStatus_CodeValue)-2)."',
+                                                                                   `ReligionCode`      = '".$_POST['Religion']."',
+                                                                                   `Religion`          = '".substr($Religion_CodeValue,0,strlen($Religion_CodeValue)-2)."',
+                                                                                   `CasteCode`         = '".$_POST['Caste']."',
+                                                                                   `Caste`             = '".substr($Caste_CodeValue,0,strlen($Caste_CodeValue)-2)."',
+                                                                                   `EducationCode`     = '".$_POST['Education']."',
+                                                                                   `Education`         = '".substr($Education_CodeValue,0,strlen($Education_CodeValue)-2)."',
+                                                                                   `AnnualIncomeCode`  = '".$_POST['IncomeRange']."',
+                                                                                   `AnnualIncome`      = '".substr($IncomeRange_CodeValue,0,strlen($IncomeRange_CodeValue)-2)."',
+                                                                                   `EmployedAsCode`    = '".$_POST['EmployedAs']."',
+                                                                                   `EmployedAs`        = '".substr($EmployedAs_CodeValue,0,strlen($EmployedAs_CodeValue)-2)."',
+                                                                                   `RasiNameCode`      = '".$_POST['RasiName']."',
+                                                                                   `RasiName`          = '".substr($RasiName_CodeValue,0,strlen($RasiName_CodeValue)-2)."',
+                                                                                   `StarNameCode`      = '".$_POST['StarName']."',
+                                                                                   `StarName`          = '".substr($StarName_CodeValue,0,strlen($StarName_CodeValue)-2)."',
+                                                                                   `ChevvaiDhoshamCode`= '".$_POST['ChevvaiDhosham']."',
+                                                                                   `ChevvaiDhosham`    = '".$ChevvaiDhosham[0]['CodeValue']."',
+                                                                                   `Details`           = '".$_POST['Details']."' where  `ProfileCode`='".$_POST['Code']."'";
              $mysql->execute($updateSql);  
              } else {
-                   $id = $mysql->insert("_tbl_draft_profiles_partnerexpectation",array("AgeFrom"             => $_POST['age'],
-                                                                   "AgeTo"               => $_POST['toage'],
-                                                                   "MaritalStatusCode"   => $_POST['MaritalStatus'],
-                                                                   "MaritalStatus"       => $MaritalStatus[0]['CodeValue'],
-                                                                   "ReligionCode"        => $_POST['Religion'],
-                                                                   "Religion"            => $Religion[0]['CodeValue'],
-                                                                   "CasteCode"           => $_POST['Caste'],
-                                                                   "Caste"               => $Caste[0]['CodeValue'],
-                                                                   "EducationCode"       => $_POST['Education'],
-                                                                   "Education"           => $Education[0]['CodeValue'],
-                                                                   "AnnualIncomeCode"    => $_POST['IncomeRange'],
-                                                                   "AnnualIncome"        => $IncomeRange[0]['CodeValue'],
-                                                                   "EmployedAsCode"      => $_POST['EmployedAs'],
-                                                                   "EmployedAs"          => $EmployedAs[0]['CodeValue'],
-                                                                   "Details"             => $_POST['Details'],
-                                                                   "CreatedBy"   => $Profiles[0]['MemberID'],
-                                                                   "MemberID"   => $Profiles[0]['MemberID'],
-                                                                   "ProfileID"   => $Profiles[0]['ProfileID'],
-                                                                   "ProfileCode"         => $_POST['ProfileCode'])) ;
+          $id = $mysql->insert("_tbl_draft_profiles_partnerexpectation",array("AgeFrom"           => $_POST['age'],
+                                                                             "AgeTo"             => $_POST['toage'],
+                                                                             "MaritalStatusCode" => $_POST['MaritalStatus'],
+                                                                             "MaritalStatus"     => substr($MaritalStatus_CodeValue,0,strlen($MaritalStatus_CodeValue)-2),
+                                                                             "ReligionCode"      => $_POST['Religion'],
+                                                                             "Religion"          => substr($Religion_CodeValue,0,strlen($Religion_CodeValue)-2),
+                                                                             "CasteCode"         => $_POST['Caste'],
+                                                                             "Caste"             => substr($Caste_CodeValue,0,strlen($Caste_CodeValue)-2),
+                                                                             "EducationCode"     => $_POST['Education'],
+                                                                             "Education"         => substr($Education_CodeValue,0,strlen($Education_CodeValue)-2),
+                                                                             "AnnualIncomeCode"  => $_POST['IncomeRange'],
+                                                                             "AnnualIncome"      => substr($IncomeRange_CodeValue,0,strlen($IncomeRange_CodeValue)-2),
+                                                                             "EmployedAsCode"    => $_POST['EmployedAs'],
+                                                                             "EmployedAs"        => substr($EmployedAs_CodeValue,0,strlen($EmployedAs_CodeValue)-2),
+                                                                             "RasiNameCode"      => $_POST['RasiName'],
+                                                                             "RasiName"          => substr($RasiName_CodeValue,0,strlen($RasiName_CodeValue)-2),
+                                                                             "StarNameCode"      => $_POST['StarName'],
+                                                                             "StarName"          => substr($StarName_CodeValue,0,strlen($StarName_CodeValue)-2),
+                                                                             "ChevvaiDhoshamCode"=>$_POST['ChevvaiDhosham'],
+                                                                             "ChevvaiDhosham"    => $ChevvaiDhosham[0]['CodeValue'],
+                                                                             "Details"             => $_POST['Details'],
+                                                                             "CreatedBy"   => $Profiles[0]['MemberID'],
+                                                                             "MemberID"   => $Profiles[0]['MemberID'],
+                                                                             "ProfileID"   => $Profiles[0]['ProfileID'],
+                                                                             "ProfileCode"         => $_POST['Code'])) ;
              }
-            return Response::returnSuccess("success",array("MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
-                                                            "Language"               => CodeMaster::getData('LANGUAGENAMES'),
-                                                            "Religion"               => CodeMaster::getData('RELINAMES'),
-                                                            "Caste"                  => CodeMaster::getData('CASTNAMES'),
-                                                            "IncomeRange"            => CodeMaster::getData('INCOMERANGE'),
-                                                            "Education"              => CodeMaster::getData('EDUCATETITLES'),
-                                                            "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
+            return Response::returnSuccess("Partner's expectations are updated successfully",array());
          }
          
          function EditDraftFamilyInformation() {

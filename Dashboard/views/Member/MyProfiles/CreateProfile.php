@@ -24,6 +24,7 @@
         
         if($("#ProfileFor").val()=="0"){
             document.getElementById("ErrProfileFor").innerHTML="Please select profile for"; 
+            ErrorCount++;
         }
         
         if (IsNonEmpty("ProfileName","ErrProfileName","Please enter your profile name")) {
@@ -32,9 +33,11 @@
         
         if($("#date").val()=="0" || $("#month").val()=="0" || $("#year").val()=="0"){
             document.getElementById("ErrDateofBirth").innerHTML="Please select date of birth"; 
+            ErrorCount++;
         }
         if($("#Sex").val()=="0"){
             document.getElementById("ErrSex").innerHTML="Please select sex"; 
+            ErrorCount++;
         }
         
         return (ErrorCount==0)  ? true : false;

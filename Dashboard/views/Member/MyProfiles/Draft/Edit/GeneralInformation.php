@@ -64,8 +64,9 @@
                         <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
                         <option value="<?php echo $i; ?>" <?php echo (isset($_POST['year'])) ? (($_POST['year']==$i) ? " selected='selected' " : "") : ((date("Y",$dob)==$i) ? " selected='selected' " : "");?>><?php echo $i;?></option>
                         <?php } ?>
-                    </select>
+                    </select>      
                 </div>
+                <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth : "";?></span>
             </div>
             <label for="Sex" class="col-sm-2 col-form-label" style="text-align: right;padding-left:0px;padding-right:0px;">Sex<span id="star">*</span></label>
             <div class="col-sm-4" >

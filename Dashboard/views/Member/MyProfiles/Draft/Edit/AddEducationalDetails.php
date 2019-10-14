@@ -40,34 +40,36 @@
     include_once("settings_header.php");
 ?>
 <script>
-function submitEducation() {
-            $('#ErrEducationdetails').html("");  
-            $('#ErrEducationDegree').html("");  
-            $('#ErrOtherEducationDegree').html("");  
+function submitEducation()  {
             
-            ErrorCount==0
-            if ($("#Educationdetails").val()=="0") {
-                $("#ErrEducationdetails").html("Please select the Education");
-                return false;
+            $('#ErrEducationdetails').html("");
+            $('#ErrEducationDegree').html("");
+            $('#ErrOtherEducationDegree').html("");
+            
+            ErrorCount=0;
+            
+            if($("#Educationdetails").val()=="0"){
+                ErrorCount++;
+                document.getElementById("ErrEducationdetails").innerHTML="Please select education"; 
+            } 
+            
+            if($("#EducationDegree").val()=="0"){
+                ErrorCount++;
+                document.getElementById("ErrEducationDegree").innerHTML="Please select education Details"; 
             }
-            if ($("#EducationDegree").val()=="0") {
-                $("#ErrEducationDegree").html("Please select the Education details");
-                return false;
+            
+            if ($('#EducationDegree').val()=="Others") {
+                if(IsNonEmpty("OtherEducationDegree","ErrOtherEducationDegree","Please enter your education details")){
+                     OtherEducationDegree("OtherEducationDegree","ErrOtherEducationDegree","Please enter alphabet characters only");
+                }
             }
-            if ($('#EducationDegree').val()=="Others") {  
-                              if($("#OtherEducationDegree").val()==""){
-                                document.getElementById("ErrOtherEducationDegree").innerHTML="Please enter your education details"; 
-                                  return false;
-                             }
-                          }
-            if (ErrorCount==0) {
-                 setTimeout(function(){$("#BtnSave").attr('disabled', 'disabled');},100);
-                            return true;
-                        } else{
-                            return false;
-                        }
-
+              
+            
+            return (ErrorCount==0) ? true : false;
+         
         }
+
+
 </script>
 <div class="col-sm-10 rightwidget">
     <form method="post" action="" name="form1" id="form1" onsubmit="return submitEducation()" enctype="multipart/form-data">
@@ -81,7 +83,7 @@ function submitEducation() {
                     <option value="<?php echo $EducationDetail['CodeValue'];?>" <?php echo ($_POST['Educationdetails']==$EducationDetail['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $EducationDetail['CodeValue'];?></option>
                     <?php } ?> 
                 </select>
-                <span class="errorstring" id="ErrEducationdetails"></span>
+               <span class="errorstring" id="ErrEducationdetails"><?php echo isset($ErrEducationdetails)? $ErrEducationdetails : "";?></span>
             </div>
         </div>
         <div class="form-group row">                                 

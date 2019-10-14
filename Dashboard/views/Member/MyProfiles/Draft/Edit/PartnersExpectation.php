@@ -3,13 +3,14 @@
     if (isset($_POST['BtnSaveProfile'])) {
         
         $_POST['Code']=$_GET['Code'];
-        
-        $_POST['MaritalStatus']=implode(",",$_POST['MaritalStatus']);
-        $_POST['Religion']=implode(",",$_POST['Religion']);
-        $_POST['Caste']=implode(",",$_POST['Caste']);
-        $_POST['Education']=implode(",",$_POST['Education']);
-        $_POST['IncomeRange']=implode(",",$_POST['IncomeRange']);
-        $_POST['EmployedAs']=implode(",",$_POST['EmployedAs']);
+        $_POST['MaritalStatus'] = implode(",",$_POST['MaritalStatus']);
+        $_POST['Religion']      = implode(",",$_POST['Religion']);
+        $_POST['Caste']         = implode(",",$_POST['Caste']);
+        $_POST['Education']     = implode(",",$_POST['Education']);
+        $_POST['IncomeRange']   = implode(",",$_POST['IncomeRange']);
+        $_POST['EmployedAs']    = implode(",",$_POST['EmployedAs']);
+        $_POST['RasiName']      = implode(",",$_POST['RasiName']);
+        $_POST['StarName']      = implode(",",$_POST['StarName']);
         
         $response = $webservice->getData("Member","AddPartnersExpectaion",$_POST);
         if ($response['status']=="success") {
@@ -30,13 +31,32 @@
 <link href='<?php echo SiteUrl?>assets/css/BsMultiSelect.css' rel='stylesheet' type='text/css'>
 <script src="<?php echo SiteUrl?>assets/js/BsMultiSelect.js" type='text/javascript'></script>
 <style>
-.dropdown-menu {height:200px;overflow:auto;width:200px;}
+.c-menu {height:200px;overflow:auto;width:200px;}
 .badge {padding: 0px 10px !important;background: #f1f1f1 !important;border: 1px solid #ccc !important;color: #888 !important;margin-right:5px;margin-top:2px;margin-bottom:2px;}
 .badge:hover {padding: 0px 10px !important;background: #e5e5e5 !important;border: 1px solid #ccc !important;color: #888 !important;}
 .badge .close {margin-left:8px;}
 </style>
 <div class="col-sm-10 rightwidget">
-    <form method="post" action="" onsubmit="">
+<script>
+function submitexpectation() {
+       $('#Errage').html("");
+       $('#Errtoage').html("");
+       
+        ErrorCount=0;
+        
+       if(($("#age").val() > $("#toage").val())){
+                ErrorCount++;
+                document.getElementById("Errtoage").innerHTML="Please select greater than from age"; 
+            }
+        if (ErrorCount==0) {
+                            return true;
+                        } else{
+                            return false;
+                        }
+    
+}
+</script>
+    <form method="post" action="" onsubmit="return submitexpectation();">
         <h4 class="card-title">Partner's Expectations</h4>
         <div class="form-group row">
             <label for="age" class="col-sm-2 col-form-label">Age<span id="star">*</span></label>
@@ -48,12 +68,13 @@
                 </select>
             </div>
             <label for="toage" class="col-sm-1 col-form-label">To</label>
-            <div class="col-sm-2" align="left" style="width:100px">
-                <select class="form-control" data-live-search="true" id="toage" name="toage">
+            <div class="col-sm-3" align="left" style="width:100px">
+                <select class="form-control" data-live-search="true" id="toage" name="toage" style="width: 100px;">
                     <?php for($i=18;$i<=70;$i++) {?>
                     <option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'toage'])) ? (($_POST[ 'toage']==$i) ? " selected='selected' " : "") : (($ProfileInfo[ 'AgeTo']==$i) ? " selected='selected' " : "");?>><?php echo $i;?></option>
                     <?php } ?>
                 </select>
+                <span class="errorstring" id="Errtoage"><?php echo isset($Errtoage)? $Errtoage : "";?></span>
             </div>
         </div>
         <div class="form-group row">
@@ -98,8 +119,9 @@
                             } 
                         }
                     ?>
+                     <?php  if($Religion['SoftCode']!= "RN009" && $Religion['SoftCode']!= "RN010"){     ?>
                     <option value="<?php echo $Religion['SoftCode'];?>" <?php echo $selected; ?>  ><?php echo $Religion['CodeValue'];?></option>
-                    <?php } ?>
+                    <?php } }?>
                 </select>
             </div>
         </div>
@@ -117,13 +139,14 @@
                                 $selected = " selected='selected' ";
                             }
                         } else {
-                            if (in_array($Caste['SoftCode'], $sel_castename))  {
+                            if (in_array($Caste['SoftCode'], $sel_castename))  {              
                                  $selected = " selected='selected' ";
                             } 
                         }
                     ?>
+                    <?php  if($Caste['SoftCode']!= "CSTN248"){     ?>
                     <option value="<?php echo $Caste['SoftCode'];?>"  <?php echo $selected; ?>   ><?php echo $Caste['CodeValue'];?></option>
-                    <?php } ?>
+                    <?php } } ?>
                 </select>
             </div>
         </div>
@@ -167,8 +190,9 @@
                             } 
                         }
                     ?>
+                    <?php  if($EmployedAs['SoftCode']!= "OT112"){     ?>
                     <option value="<?php echo $EmployedAs['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $EmployedAs['CodeValue'];?></option>
-                    <?php } ?>
+                    <?php } } ?>
                 </select>
             </div>
         </div>
@@ -195,13 +219,72 @@
                 </select>
             </div>
         </div>
+        <div class="form-group row">
+            <label for="RasiName" class="col-sm-2 col-form-label">Rasi name<span id="star">*</span></label>
+            <div class="col-sm-10">
+                <?php $sel_rasinames = isset($_POST['RasiName']) ? explode(",",$_POST['RasiName']) : explode(",",$ProfileInfo[ 'RasiNameCode']); 
+                ?>
+                <select class="form-control" id="RasiName" name="RasiName[]" multiple="multiple"  style="display: none;">
+                    <?php foreach($response['data']['RasiName'] as $RasiName) { ?>
+                    <?php
+                        $selected = "";
+                        if (isset($_POST['RasiName'])) {
+                            if (in_array($RasiName['SoftCode'], $sel_rasinames)) {
+                                $selected = " selected='selected' ";
+                            }
+                        } else {
+                            if (in_array($RasiName['SoftCode'], $sel_rasinames))  {
+                                 $selected = " selected='selected' ";
+                            } 
+                        }
+                    ?>
+                    <option value="<?php echo $RasiName['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $RasiName['CodeValue'];?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="StarName" class="col-sm-2 col-form-label">Star name<span id="star">*</span></label>
+            <div class="col-sm-10">
+                <?php $sel_starnames = isset($_POST['StarName']) ? explode(",",$_POST['StarName']) : explode(",",$ProfileInfo[ 'StarNameCode']); ?>
+                <select class="form-control" id="StarName" name="StarName[]" multiple="multiple"  style="display: none;">
+                    <?php foreach($response['data']['StarName'] as $StarName) { ?>
+                    <?php
+                        $selected = "";
+                        if (isset($_POST['StarName'])) {
+                            if (in_array($StarName['SoftCode'], $sel_starnames)) {
+                                $selected = " selected='selected' ";
+                            }
+                        } else {
+                            if (in_array($StarName['SoftCode'], $sel_starnames))  {
+                                 $selected = " selected='selected' ";
+                            } 
+                        }
+                    ?>
+                    <option value="<?php echo $StarName['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $StarName['CodeValue'];?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Caste" class="col-sm-2 col-form-label" style="padding-right:0px">Chevvai dhosham<span id="star">*</span></label>
+            <div class="col-sm-4">
+                <select class="form-control" data-live-search="true" id="ChevvaiDhosham" name="ChevvaiDhosham">
+                    <?php foreach($response['data']['ChevvaiDhosham'] as $ChevvaiDhosham) { ?>
+                    <?php  if($ChevvaiDhosham['SoftCode']!= "CD003"){     ?>
+                        <option value="<?php echo $ChevvaiDhosham['SoftCode'];?>" <?php echo (isset($_POST[ 'ChevvaiDhosham'])) ? (($_POST[ 'ChevvaiDhosham']==$ChevvaiDhosham[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo['ChevvaiDhosham']==$ChevvaiDhosham[ 'CodeValue']) ? " selected='selected' " : "");?>>
+                            <?php echo $ChevvaiDhosham['CodeValue'];?> </option>
+                                <?php } }?>
+                </select>
+            </div>
+        </div>
         <div class="form-group row" style="margin-bottom: 0px;">
-            <label for="Details" class="col-sm-12 col-form-label">Additional information<span id="star">*</span></label>
+            <label for="Details" class="col-sm-12 col-form-label">Additional information</label>
         </div>
         <div class="form-group row">
             <div class="col-sm-12">
-                 <textarea class="form-control" maxlength="250" name="Details" id="Details" style="margin-bottom:5px;"><?php echo (isset($_POST['Details']) ? $_POST['Details'] : $ProfileInfo['Details']);?></textarea>
-                 Max 250 characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span>
+                 <textarea class="form-control" maxlength="250" name="Details" id="Details" style="margin-bottom:5px;height:75px"><?php echo (isset($_POST['Details']) ? $_POST['Details'] : $ProfileInfo['Details']);?></textarea>
+                 <label class="col-form-label" style="padding-top:0px;">Max 250 characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></label>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px;">
@@ -241,6 +324,8 @@
         $("#Education").dashboardCodeBsMultiSelect();
         $("#Religion").dashboardCodeBsMultiSelect();
         $("#MaritalStatus").dashboardCodeBsMultiSelect();
+        $("#RasiName").dashboardCodeBsMultiSelect();
+        $("#StarName").dashboardCodeBsMultiSelect();   
     </script>                                                     
 </div>
 <?php include_once("settings_footer.php");?>                      

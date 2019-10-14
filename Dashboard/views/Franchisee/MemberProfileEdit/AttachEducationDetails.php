@@ -3,8 +3,8 @@
  ?> 
                    
    <?php                
-            $response = $webservice->getData("Member","GetViewAttachments",(array("ProfileCode"=>$_GET['Code'])));
-            $Education=$response['data']['Attachments'];     
+            $response = $webservice->getData("Franchisee","GetViewAttachments",(array("ProfileCode"=>$_GET['Code'])));
+            $Education=$response['data']['AttachAttachments'];     
              ?>
              
 
@@ -58,8 +58,28 @@
 <div class="col-sm-10  rightwidget">
 <form method="post" action="" name="form1" id="form1" enctype="multipart/form-data">
                      <h4 class="card-title">Educational Details</h4>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Education</label>
+                            <label class="col-sm-10 col-form-label"><?php echo $Education['EducationDetails'];?></label>
+                        </div>
                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Attachment</label>
+                            <label class="col-sm-2 col-form-label">Education Degree</label>
+                            <label class="col-sm-10 col-form-label">
+                                 <?php if($Education['EducationDegree']== "Others"){?>
+                                    <?php echo trim($Education['OtherEducationDegree']);?>
+                                <?php } else { ?>
+                                     <?php echo trim($Education['EducationDegree']);?>  
+                                <?php } ?> 
+                          </label>
+                        </div>
+                        <?php if(strlen($Education['EducationDescription'])>0){ ?>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Descriptions</label>
+                            <label class="col-sm-10 col-form-label"><?php echo $Education['EducationDescription'];?></label>
+                        </div>
+                        <?php } ?>
+                       <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Attachment</label>
                             <div class="col-sm-8"><input type="File" id="File" name="File" Placeholder="File"></div>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">

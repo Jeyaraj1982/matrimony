@@ -98,10 +98,9 @@ function submitprofile() {
                              }
                           }
                           if ($('#OccupationType').val()=="OT112") {  
-                              if($("#OtherOccupation").val()==""){
-                                document.getElementById("ErrOtherOccupation").innerHTML="Please enter your occupation"; 
-                                 ErrorCount++;
-                             }
+                               if(IsNonEmpty("OtherOccupation","ErrOtherOccupation","Please enter your occupation")){
+                                    IsAlphabet("OtherOccupation","ErrOtherOccupation","Please enter alphabet characters only");
+                               }
                           }
                          
                         if (ErrorCount==0) {

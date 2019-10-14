@@ -7,8 +7,8 @@
         }
     
         function returnSuccess($message,$data=array()) {
-            return json_encode(array("status"=>"success","message"=>$message,"data"=>$data));
+            return json_encode(array("status"=>"success","message"=>$message,"data"=>$data),JSON_FORCE_OBJECT);
         }
     }
 
-?>
+?> 

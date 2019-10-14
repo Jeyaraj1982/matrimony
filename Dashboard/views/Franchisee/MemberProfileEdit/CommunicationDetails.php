@@ -47,6 +47,7 @@ function submitprofile() {
                          $('#ErrCity').html("");
                          $('#ErrStateName').html("");
                          $('#ErrCountry').html("");
+                         $('#ErrPincode').html("");
                          
                          ErrorCount=0;
                          
@@ -59,11 +60,12 @@ function submitprofile() {
                          if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please enter your Mobile Number")) {
                             IsMobileNumber("MobileNumber","ErrMobileNumber","Please enter valid Mobile Number"); 
                          }
-                         if ($('#WhatsappNumber').val().trim().length>0) {
+                         if (IsNonEmpty("WhatsappNumber","ErrWhatsappNumber","Please enter your Whatsapp Number")) {
                             IsMobileNumber("WhatsappNumber","ErrWhatsappNumber","Please Enter Valid Whatsapp Number");
                          }
                          IsNonEmpty("AddressLine1","ErrAddressLine1","Please enter your Address Line1");
                          IsNonEmpty("City","ErrCity","Please enter your City");
+                         IsNonEmpty("Pincode","ErrPincode","Please enter your Pincode");
                          
                          if($("#Relation").val()=="0"){
                             document.getElementById("ErrRelation").innerHTML="Please select your Relation"; 
@@ -82,6 +84,7 @@ function submitprofile() {
                             document.getElementById("ErrCountry").innerHTML="Please select your Country"; 
                              ErrorCount++;
                          }
+                         
                         
                               
                         if (ErrorCount==0) {
@@ -163,8 +166,9 @@ $(document).ready(function() {
                 <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
             </div>
             
-            <label for="WhatsappNumber" class="col-sm-1 col-form-label" style="margin-left:48px;padding-left:0px;padding-right:0px" >Whatsapp</label>
-            <div class="col-sm-2"  style="padding-right:0px">
+            <label for="WhatsappNumber" class="col-sm-1 col-form-label" style="margin-left:63px;padding-left:0px;padding-right:0px" >Whatsapp<span id="star">*</span></label>
+            <div class="col-sm-4">
+            <div class="col-sm-5"  style="padding-right:0px">
                 <select name="WhatsappCountryCode" class="selectpicker form-control" data-live-search="true" id="WhatsappCountryCode"> 
                      <?php foreach($response['data']['CountryName'] as $CountryCode) { ?>
                   <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'WhatsappCountryCode'])) ? (($_POST[ 'WhatsappCountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "") : (($ProfileInfo[ 'WhatsappCountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
@@ -172,10 +176,14 @@ $(document).ready(function() {
                    <?php } ?>
                 </select>
             </div>  
-            <div class="col-sm-2"  style="padding-left:5px;padding-right:0px">
+            <div class="col-sm-7"  style="padding-left:5px;padding-right:0px">
                 <input type="text" class="form-control" id="WhatsappNumber" maxlength="10" name="WhatsappNumber" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : $ProfileInfo['WhatsappNumber']);?>" placeholder="Whatsapp Number">
                 <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
-            </div>     
+            </div>    
+            <div class="col-sm-12">
+                <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>   
+            </div> 
+            </div> 
         </div>
         <div class="form-group row">
             <label for="AddressLine1" class="col-sm-2 col-form-label">Address<span id="star">*</span></label>

@@ -26,6 +26,9 @@ function submitprofile() {
                          $('#ErrCaste').html("");
                          $('#ErrCommunity').html("");
                          $('#ErrNationality').html(""); 
+                         $('#Errdate').html("");
+                         $('#Errmonth').html("");
+                         $('#Erryear').html("");
                          
                          ErrorCount=0;
                          
@@ -76,6 +79,20 @@ function submitprofile() {
                          if($("#Nationality").val()=="0"){
                             document.getElementById("ErrNationality").innerHTML="Please select your nationality";
                             ErrorCount++; 
+                         }
+                         if ($('#Religion').val()=="RN009") {
+                            if(IsNonEmpty("ReligionOthers","ErrReligionOthers","Please enter your religion name")){
+                               IsAlphabet("ReligionOthers","ErrReligionOthers","Please enter alphabet characters only");
+                            }
+                         }
+                         if ($('#Caste').val()=="CSTN248") {
+                            if(IsNonEmpty("OtherCaste","ErrOtherCaste","Please enter your caste name")){
+                                IsAlphabet("OtherCaste","ErrOtherCaste","Please enter alphabet characters only");
+                            }
+                         }
+                         if($("#date").val()=="0" || $("#month").val()=="0" || $("#year").val()=="0"){
+                            document.getElementById("ErrDateofBirth").innerHTML="Please select date of birth"; 
+                            ErrorCount++;
                          }
                               
                         if (ErrorCount==0) {
@@ -140,8 +157,8 @@ $(document).ready(function() {
                                 </div>
                                 <div class="col-sm-4" style="max-width:90px !important;padding:0px !important;margin-right:6px;margin-left:6px;">        
                                         <select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px">
+                                           <option value="0">Month</option>
                                             <?php foreach($_Month as $key=>$value) {?>
-                                                <option value="0">Month</option>
                                                 <option value="<?php echo $key+1; ?>" <?php echo (isset($_POST[ 'month'])) ? (($_POST[ 'month']==$key+1) ? " selected='selected' " : "") : ((date("m",$dob)==$key+1) ? " selected='selected' " : "");?>>
                                                 <?php echo $value;?>
                                                 </option>
@@ -158,6 +175,7 @@ $(document).ready(function() {
                                             <?php } ?>
                                         </select>
                                 </div>
+                                <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth : "";?></span>
                             </div>
                            <!-- <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
                             <div class="col-sm-4">
@@ -231,7 +249,10 @@ $(document).ready(function() {
                             </select>
                             <span class="errorstring" id="ErrReligion"><?php echo isset($ErrReligion)? $ErrReligion : "";?></span>
                         </div>
-                        <div class="col-sm-6"  id="Religion_additionalinfo"><input type="text" class="form-control" id="ReligionOthers" name="ReligionOthers" value="<?php echo (isset($_POST['ReligionOthers']) ? $_POST['ReligionOthers'] : $ProfileInfo['OtherReligion']);?>" Placeholder="Religion Name"></div>
+                        <div class="col-sm-6"  id="Religion_additionalinfo">
+                            <input type="text" class="form-control" id="ReligionOthers" name="ReligionOthers" value="<?php echo (isset($_POST['ReligionOthers']) ? $_POST['ReligionOthers'] : $ProfileInfo['OtherReligion']);?>" Placeholder="Religion Name">
+                            <span class="errorstring" id="ErrReligionOthers"><?php echo isset($ErrReligionOthers)? $ErrReligionOthers : "";?></span>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <label for="Caste" class="col-sm-2 col-form-label">Caste<span id="star">*</span></label>
@@ -244,7 +265,10 @@ $(document).ready(function() {
                             </select>
                             <span class="errorstring" id="ErrCaste"><?php echo isset($ErrCaste)? $ErrCaste : "";?></span>
                         </div>
-                        <div class="col-sm-6"  id="CasteName_additionalinfo"><input type="text" class="form-control" id="OtherCaste" name="OtherCaste" value="<?php echo (isset($_POST['OtherCaste']) ? $_POST['OtherCaste'] : $ProfileInfo['OtherCaste']);?>" Placeholder="Caste Name"></div>
+                        <div class="col-sm-6"  id="CasteName_additionalinfo">
+                        <input type="text" class="form-control" id="OtherCaste" name="OtherCaste" value="<?php echo (isset($_POST['OtherCaste']) ? $_POST['OtherCaste'] : $ProfileInfo['OtherCaste']);?>" Placeholder="Caste Name">
+                        <span class="errorstring" id="ErrOtherCaste"><?php echo isset($ErrOtherCaste)? $ErrOtherCaste : "";?></span>
+                        </div>
                     </div>
                     <div class="form-group row">
                          <label for="SubCaste" class="col-sm-2 col-form-label" >Sub caste<span id="star">*</span></label>

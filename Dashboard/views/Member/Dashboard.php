@@ -21,12 +21,12 @@
     
     $latestupdates = $webservice->getData("Member","GetLatestUpdates");
 
-    $DashboardCounts = $webservice->getData("Member","DashboardCounts");
-    $MyRecentlyViewedCount = $DashboardCounts['data']['MyRecentlyViewedCount'];
+    $DashboardCounts        = $webservice->getData("Member","DashboardCounts");
+    $MyRecentlyViewedCount  = $DashboardCounts['data']['MyRecentlyViewedCount'];
     $RecentlyWhoViewedCount = $DashboardCounts['data']['RecentlyWhoViewed'];
-    $MyFavoritedCount = $DashboardCounts['data']['MyFavorited'];
-    $WhofavoritedCount = $DashboardCounts['data']['Whofavorited'];
-    $MutualCount = $DashboardCounts['data']['Mutual'];
+    $MyFavoritedCount       = $DashboardCounts['data']['MyFavorited'];
+    $WhofavoritedCount      = $DashboardCounts['data']['Whofavorited'];
+    $MutualCount            = $DashboardCounts['data']['Mutual'];
 
 ?>
     <script>
