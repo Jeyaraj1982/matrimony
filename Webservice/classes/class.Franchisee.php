@@ -1940,7 +1940,7 @@
                             <h4 class="modal-title">Publish Profile</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>            
                             <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
-                            <h5 style="text-align:center;"><a href="../../../Dashboard" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';
 
          } 
@@ -2470,5 +2470,25 @@
                        </div>';                             
 
          }
+         function SendRequestForEditPostedProfile() {
+
+             global $mysql,$loginInfo;
+             
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'");
+
+             $updateSql = "update `_tbl_draft_profiles` set `RequestToVerify` = '0' where `ProfileCode`='".$_POST['ProfileCode']."'";
+             $mysql->execute($updateSql);
+                  $mysql->insert("_tbl_request_edit",array("MemberID"                => $loginInfo[0]['MemberID'],
+                                                           "ProfileID"               => $Profiles[0]['ProfileID'],
+                                                           "EditRequestFromPostedOn" => date("Y-m-d H:i:s")));
+            
+               return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Edit Profile</h4>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/'.$_POST['FileName'].'/'.$_POST['ProfileCode'].'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                       </div>';
+
+         }
     }
+    
 ?> 

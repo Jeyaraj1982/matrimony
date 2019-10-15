@@ -77,7 +77,6 @@ legend {
         <div class="card-body">
          <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Profile Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"></div>
          </div>
               <div class="form-group row">
                 <div class="col-sm-5">
@@ -176,7 +175,6 @@ legend {
             <?php if ((trim($ProfileInfo['ProfileFor']))=="Son In Law"){ echo "About My Son In Law"; }?>
             <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter In Law"){ echo "About My Daughter In Law"; }?>
             </h4></div>
-            <div class="col-sm-6" style="text-align:right"></div>
          </div>
          <div class="form-group row">
             <label class="col-sm-12 col-form-label" style="color:#737373;font-size:13px"><?php echo trim($ProfileInfo['AboutMe']);?></label>
@@ -189,7 +187,6 @@ legend {
     <div class="card-body">
      <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Education Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"></div>
          </div>
          <table class="table table-bordered" id="doctable">           
             <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">
@@ -206,7 +203,7 @@ legend {
                     <td style="text-align:left"><?php echo $Document['EducationDetails'];?></td>
                     <td style="text-align:left">
                         <?php if($Document['EducationDegree']== "Others"){?>
-                            <?php echo trim($Document['OtherEducationDegree']);?>
+                            <?php echo trim($Document['EducationDegree']);?>&nbsp;,&nbsp;<?php echo trim($Document['OtherEducationDegree']);?>
                         <?php } else { ?>
                              <?php echo trim($Document['EducationDegree']);?>  
                         <?php } ?> 
@@ -239,7 +236,6 @@ legend {
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Occupation Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Employed as</label>                 
@@ -296,7 +292,6 @@ legend {
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Family Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's name</label>                
@@ -308,7 +303,7 @@ legend {
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;  
                 <?php if($ProfileInfo['FathersOccupationCode']=="OT112") {?>
                 <?php  echo $ProfileInfo['FathersOccupation'];?>&nbsp;,&nbsp;<?php echo strlen(trim($ProfileInfo['FatherOtherOccupation']))> 0 ? trim($ProfileInfo['FatherOtherOccupation']) : "N/A "; ?>
-                <?php } else { echo $ProfileInfo['FathersOccupation']; } ?>
+                <?php } else {  echo strlen(trim($ProfileInfo['FathersOccupation']))> 0 ? trim($ProfileInfo['FathersOccupation']) : "N/A "; } ?>
             </label>
             <label class="col-sm-2 col-form-label">Father's contact</label>            
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersContact'])))>0){?><?php echo "+"; echo $ProfileInfo['FathersContactCountryCode'];?>-<?php echo $ProfileInfo['FathersContact'];?><?php  } else{ echo "N/A";}?></label>
@@ -330,7 +325,7 @@ legend {
               <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;  
                 <?php if($ProfileInfo['MothersOccupationCode']=="OT112") {?>
                 <?php  echo $ProfileInfo['MothersOccupation'];?>&nbsp;,&nbsp;<?php echo strlen(trim($ProfileInfo['MotherOtherOccupation']))> 0 ? trim($ProfileInfo['MotherOtherOccupation']) : "N/A "; ?>
-                <?php } else { echo $ProfileInfo['MothersOccupation']; } ?>
+                <?php } else { echo strlen(trim($ProfileInfo['MothersOccupation']))> 0 ? trim($ProfileInfo['MothersOccupation']) : "N/A "; } ?>
             </label>
             <label class="col-sm-2 col-form-label">Mother's contact</label>           
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['MothersContact'])))>0){?><?php echo "+"; echo $ProfileInfo['MothersContactCountryCode'];?>-<?php echo $ProfileInfo['FathersContact'];?><?php  } else{ echo "N/A";}?></label>
@@ -414,7 +409,6 @@ legend {
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Physical Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Physically impaired?</label>         
@@ -502,7 +496,6 @@ legend {
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Horoscope Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" >Date of birth</label>               
@@ -600,7 +593,6 @@ legend {
     <div class="card-body">
     <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Partner's Expectations</h4></div>
-            <div class="col-sm-6" style="text-align:right"></div>
          </div>
         <div class="form-group row">                                                                                                                                                                                             
             <label class="col-sm-2 col-form-label">Age </label>                       
@@ -660,7 +652,6 @@ legend {
     <div class="card-body">
     <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Communication Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"></div>
          </div>
          <div class="form-group row">                                                   
             <label class="col-sm-2 col-form-label">Person name</label>                    
@@ -747,31 +738,6 @@ legend {
          </div>
     </div>
   </div>                                                                                                               
-</div>
-<div class="col-12 grid-margin">
-  <div class="card">                                                                                                               
-    <div class="card-body">
-        <?php if($ProfileInfo['RequestToVerify']=="0"){?>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Created On</label>
-            <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
-        </div>
-             <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Last saved</label>
-                    <label class="col-sm-8 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></label>
-             </div>
-        <?php } else{?>
-            <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Created On</label>
-            <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['CreatedOn']);?></label>
-             </div>
-             <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Puplished On</label>
-                    <label class="col-sm-3 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['RequestVerifyOn']);?></label>
-                   </div>
-        <?php }?>
-  </div>
-</div>
 </div>
 </form>
 <div class="modal" id="ViewEducationAttach" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">

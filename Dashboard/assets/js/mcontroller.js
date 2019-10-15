@@ -182,6 +182,9 @@
             $('#ErrCommunity').html("");
             $('#ErrNationality').html(""); 
             $('#ErrReligionOthers').html(""); 
+            $('#Errdate').html("");
+            $('#Errmonth').html("");
+            $('#Erryear').html("");
             
             ErrorCount=0;
             
@@ -235,10 +238,18 @@
             }
             
             if ($('#Religion').val()=="RN009") {
-                IsNonEmpty("ReligionOthers","ErrReligionOthers","Please enter your religion name");
+                if(IsNonEmpty("ReligionOthers","ErrReligionOthers","Please enter your religion name")){
+                     IsAlphabet("ReligionOthers","ErrReligionOthers","Please enter alphabet characters only");
+                }
             }
             if ($('#Caste').val()=="CSTN248") {
-                IsNonEmpty("OtherCaste","ErrOtherCaste","Please enter your caste name");
+                 if(IsNonEmpty("OtherCaste","ErrOtherCaste","Please enter your caste name")){
+                     IsAlphabet("OtherCaste","ErrOtherCaste","Please enter alphabet characters only");
+                }
+            }
+            if($("#date").val()=="0" || $("#month").val()=="0" || $("#year").val()=="0"){
+                document.getElementById("ErrDateofBirth").innerHTML="Please select date of birth"; 
+                ErrorCount++;
             }   
             
             return (ErrorCount==0) ? true : false;
@@ -348,6 +359,11 @@
             $('#ErrMotherName').html("");
             $('#ErrFathersContact').html("");
             $('#ErrMotherContact').html("");
+            $('#ErrFamilyLocation1').html("");
+            $('#ErrAncestral').html("");
+            $('#ErrFamilyType').html("");
+            $('#ErrFamilyAffluence').html("");
+            $('#ErrFamilyValue').html("");
             
             ErrorCount=0;
         
@@ -357,6 +373,7 @@
             if (IsNonEmpty("MotherName","ErrMotherName","Please enter your mother's name")) {
                 IsAlphabet("MotherName","ErrMotherName","Please enter alpha numeric characters only");
             }
+           
             if ($('#FathersContact').val().trim().length>0) {
                 IsMobileNumber("FathersContact","ErrFathersContact","Please Enter Valid Mobile Number");
             }
@@ -364,11 +381,29 @@
                 IsMobileNumber("MotherContact","ErrMotherContact","Please Enter Valid Mobile Number");
             } 
             if ($('#FathersOccupation').val()=="OT112") {
-                IsNonEmpty("FatherOtherOccupation","ErrFatherOtherOccupation","Please enter your father other occupation");
+                if(IsNonEmpty("FatherOtherOccupation","ErrFatherOtherOccupation","Please enter your father other occupation")){
+                   IsAlphabet("FatherOtherOccupation","ErrFatherOtherOccupation","Please enter alphabet characters only");
+                }
             }
             if ($('#MothersOccupation').val()=="OT112") {
-                IsNonEmpty("MotherOtherOccupation","ErrMotherOtherOccupation","Please enter your mothers occuption");
-            }                                                                                                          
+                if(IsNonEmpty("MotherOtherOccupation","ErrMotherOtherOccupation","Please enter your mother other occupation")){
+                   IsAlphabet("MotherOtherOccupation","ErrMotherOtherOccupation","Please enter alphabet characters only");
+                }
+            }
+            IsNonEmpty("FamilyLocation1","ErrFamilyLocation1","Please enter your family location");                                                                                                          
+            IsNonEmpty("Ancestral","ErrAncestral","Please enter your ancestral");       
+            if($("#FamilyType").val()=="0"){
+                ErrorCount++;
+                document.getElementById("ErrFamilyType").innerHTML="Please select family type"; 
+            }
+            if($("#FamilyAffluence").val()=="0"){
+                ErrorCount++;
+                document.getElementById("ErrFamilyAffluence").innerHTML="Please select family affluence"; 
+            }
+            if($("#FamilyValue").val()=="0"){
+                ErrorCount++;
+                document.getElementById("ErrFamilyValue").innerHTML="Please select family value"; 
+            }                                                                                                    
             
         if (ErrorCount==0) {
                             return true;

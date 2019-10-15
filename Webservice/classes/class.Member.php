@@ -1,5 +1,4 @@
 <?php
-
      class Member {
 
          function Login() {
@@ -1263,18 +1262,8 @@
                             <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/ProfilePhoto/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
                        </div>'; 
              }
-     $AboutMyself =$mysql->select("Select * from `_tbl_draft_profiles` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
-         if (strlen(trim($AboutMyself))==0) {
-                return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Missing</h4>  <br><br>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">You must enter about your self.</h5>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/GeneralInformation/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
-                       </div>'; 
-             }
-     $AboutMyself =$mysql->select("Select * from `_tbl_draft_profiles` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
-         if (strlen(trim($AboutMyself['AboutMe']))==0) {
+     $AboutMyself =$mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+         if (strlen(trim($AboutMyself[0]['AboutMe']))==0) {
                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
                              <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Missing</h4>  <br><br>
@@ -1283,13 +1272,13 @@
                             <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/GeneralInformation/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
                        </div>'; 
              } 
-     if (strlen(trim($AboutMyself['AboutMyFamily']))==0) {
+     if (strlen(trim($AboutMyself[0]['AboutMyFamily']))==0) {
                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
                              <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Missing</h4>  <br><br>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">You must enter about your family.</h5>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/GeneralInformation/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/FamilyInformation/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
                        </div>'; 
              }
         $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
@@ -1453,6 +1442,9 @@
                                                             `RequestVerifyOn`      = '".date("Y-m-d H:i:s")."'
                                                              where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
              $mysql->execute($updateSql);  
+             $mysql->insert("_tbl_request_edit",array("MemberID"                => $loginInfo[0]['MemberID'],
+                                                      "ProfileID"               => $data[0]['ProfileID'],
+                                                      "PostedRequestOn" => date("Y-m-d H:i:s")));
            /*  $mysql->execute("update `_tbl_draft_profiles_photos` set  `IsPublished`      = '1',
                                                             `PublishedOn`      = '".date("Y-m-d H:i:s")."'
                                                              where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$data[0]['ProfileID']."'");  */
@@ -1468,7 +1460,7 @@
                             <h4 class="modal-title">Publish Profile</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>            
                             <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
-                            <h5 style="text-align:center;"><a href="../../../Dashoard" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';
 
              } else {
@@ -1996,51 +1988,51 @@
                         return Response::returnError("Occupation Already Exists");    
                     }
              
-             $updateSql = "update `_tbl_draft_profiles` set `FathersName`           = '".$_POST['FatherName']."',
-                                                           `FathersOccupationCode` = '".$_POST['FathersOccupation']."',
-                                                           `FathersOccupation`     = '".$FathersOccupation[0]['CodeValue']."',
-                                                           `FatherOtherOccupation`     = '',
-                                                           `FathersContactCountryCode` = '".$_POST['FathersContactCountryCode']."',
-                                                           `FathersContact`        = '".$_POST['FathersContact']."',
-                                                           `FathersIncomeCode`         = '".$_POST['FathersIncome']."',
-                                                           `FathersIncome`         = '".$FathersIncome[0]['CodeValue']."',
-                                                           `FathersAlive`       = '".$Fathersstatus."',
-                                                           `MothersName`           = '".$_POST['MotherName']."',
-                                                           `MothersContactCountryCode`= '".$_POST['MotherContactCountryCode']."',
-                                                           `MothersContact`        = '".$_POST['MotherContact']."',
-                                                           `MothersIncomeCode`     = '".$_POST['MothersIncome']."',
-                                                           `MothersIncome`         = '".$MothersIncome[0]['CodeValue']."',
-                                                           `MothersAlive`           = '".$Mothersstatus."',
-                                                           `FamilyLocation1`        = '".$_POST['FamilyLocation1']."',
-                                                           `FamilyLocation2`        = '".$_POST['FamilyLocation2']."',
-                                                           `Ancestral`              = '".$_POST['Ancestral']."',
-                                                           `FamilyTypeCode`        = '".$_POST['FamilyType']."',
-                                                           `FamilyType`            = '".$FamilyType[0]['CodeValue']."',              
-                                                           `FamilyValueCode`       = '".$_POST['FamilyValue']."',
-                                                           `FamilyValue`           = '".$FamilyValue[0]['CodeValue']."',
-                                                           `FamilyAffluenceCode`   = '".$_POST['FamilyAffluence']."',
-                                                           `FamilyAffluence`       = '".$FamilyAffluence[0]['CodeValue']."',
-                                                           `AboutMyFamily`       = '".$_POST['AboutMyFamily']."',
-                                                           `MothersOccupationCode` = '".$_POST['MothersOccupation']."',
-                                                           `MothersOccupation`     = '".$MothersOccupation[0]['CodeValue']."',
-                                                           `MotherOtherOccupation`     = '',
-                                                           `NumberofBrothersCode`  = '".$_POST['NumberofBrother']."',
-                                                           `NumberofBrothers`      = '".$NumberofBrothers[0]['CodeValue']."',
-                                                           `YoungerCode`           = '".$_POST['younger']."',                    
-                                                           `Younger`               = '".$younger[0]['CodeValue']."',
-                                                           `ElderCode`             = '".$_POST['elder']."',
-                                                           `Elder`                 = '".$elder[0]['CodeValue']."',
-                                                           `MarriedCode`           = '".$_POST['married']."',
-                                                           `Married`               = '".$married[0]['CodeValue']."',
-                                                           `NumberofSistersCode`   = '".$_POST['NumberofSisters']."',
-                                                           `NumberofSisters`       = '".$NumberofSisters[0]['CodeValue']."',
-                                                           `ElderSisterCode`       = '".$_POST['elderSister']."',
-                                                           `ElderSister`           = '".$elderSister[0]['CodeValue']."',
-                                                           `YoungerSisterCode`     = '".$_POST['youngerSister']."',
-                                                           `YoungerSister`         = '".$youngerSister[0]['CodeValue']."',
-                                                           `MarriedSisterCode`     = '".$_POST['marriedSister']."',
-                                                           `LastUpdatedOn`         = '".date("Y-m-d H:i:s")."',
-                                                           `MarriedSister`         = '".$marriedSister[0]['CodeValue']."'";
+            $updateSql = "update `_tbl_draft_profiles` set `FathersName`               = '".$_POST['FatherName']."',
+                                                           `FathersAlive`               = '".$Fathersstatus."',
+                                                           `FathersContactCountryCode`  = '".$_POST['FathersContactCountryCode']."',
+                                                           `FathersContact`             = '".$_POST['FathersContact']."',
+                                                           `FathersOccupationCode`     = '".$_POST['FathersOccupation']."',
+                                                           `FathersOccupation`          = '".$FathersOccupation[0]['CodeValue']."',
+                                                           `FatherOtherOccupation`      = '',
+                                                           `FathersIncomeCode`          = '".$_POST['FathersIncome']."',
+                                                           `FathersIncome`              = '".$FathersIncome[0]['CodeValue']."',
+                                                           `MothersName`                = '".$_POST['MotherName']."',
+                                                           `MothersContactCountryCode`  = '".$_POST['MotherContactCountryCode']."',
+                                                           `MothersContact`             = '".$_POST['MotherContact']."',
+                                                           `MothersIncomeCode`          = '".$_POST['MothersIncome']."',
+                                                           `MothersIncome`              = '".$MothersIncome[0]['CodeValue']."',
+                                                           `MothersAlive`               = '".$Mothersstatus."',
+                                                           `FamilyLocation1`            = '".$_POST['FamilyLocation1']."',
+                                                           `FamilyLocation2`            = '".$_POST['FamilyLocation2']."',
+                                                           `Ancestral`                  = '".$_POST['Ancestral']."',
+                                                           `FamilyTypeCode`             = '".$_POST['FamilyType']."',
+                                                           `FamilyType`                 = '".$FamilyType[0]['CodeValue']."',              
+                                                           `FamilyValueCode`            = '".$_POST['FamilyValue']."',
+                                                           `FamilyValue`                = '".$FamilyValue[0]['CodeValue']."',
+                                                           `FamilyAffluenceCode`        = '".$_POST['FamilyAffluence']."',
+                                                           `FamilyAffluence`            = '".$FamilyAffluence[0]['CodeValue']."',
+                                                           `AboutMyFamily`              = '".$_POST['AboutMyFamily']."',
+                                                           `MothersOccupationCode`      = '".$_POST['MothersOccupation']."',
+                                                           `MothersOccupation`          = '".$MothersOccupation[0]['CodeValue']."',
+                                                           `MotherOtherOccupation`      = '',
+                                                           `NumberofBrothersCode`       = '".$_POST['NumberofBrother']."',
+                                                           `NumberofBrothers`           = '".$NumberofBrothers[0]['CodeValue']."',
+                                                           `YoungerCode`                = '".$_POST['younger']."',                    
+                                                           `Younger`                    = '".$younger[0]['CodeValue']."',
+                                                           `ElderCode`                  = '".$_POST['elder']."',
+                                                           `Elder`                      = '".$elder[0]['CodeValue']."',
+                                                           `MarriedCode`                = '".$_POST['married']."',
+                                                           `Married`                    = '".$married[0]['CodeValue']."',
+                                                           `NumberofSistersCode`        = '".$_POST['NumberofSisters']."',
+                                                           `NumberofSisters`            = '".$NumberofSisters[0]['CodeValue']."',
+                                                           `ElderSisterCode`            = '".$_POST['elderSister']."',
+                                                           `ElderSister`                = '".$elderSister[0]['CodeValue']."',
+                                                           `YoungerSisterCode`          = '".$_POST['youngerSister']."',
+                                                           `YoungerSister`              = '".$youngerSister[0]['CodeValue']."',
+                                                           `MarriedSisterCode`          = '".$_POST['marriedSister']."',
+                                                           `LastUpdatedOn`              = '".date("Y-m-d H:i:s")."',
+                                                           `MarriedSister`              = '".$marriedSister[0]['CodeValue']."'";
                                                            
              if ($_POST['FathersOccupation']=="OT112") {
                     $DuplicateFathersOccupationType = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='OCCUPATIONTYPES' and `CodeValue`='".trim($_POST['FatherOtherOccupation'])."'");
@@ -2330,16 +2322,16 @@
                                                                 `OccupationTypeCode`    = '".$_POST['OccupationType']."',
                                                                 `OccupationType`        = '".$OccupationType[0]['CodeValue']."',
                                                                 `TypeofOccupationCode`  = '".$_POST['TypeofOccupation']."',
-                                                                `OccupationDescription` = '".$_POST['OccupationDescription']."',
                                                                 `TypeofOccupation`      = '".$TypeofOccupation[0]['CodeValue']."',
+                                                                `OccupationDescription` = '".$_POST['OccupationDescription']."',
                                                                 `AnnualIncomeCode`      = '".$_POST['IncomeRange']."',
+                                                                `AnnualIncome`          = '".$IncomeRange[0]['CodeValue']."'
                                                                 `WorkedCountryCode`     = '".$_POST['WCountry']."',
                                                                 `WorkedCountry`         = '".$Country[0]['CodeValue']."',
                                                                 `WorkedCityName`     = '".$_POST['WorkedCityName']."',
                                                                 `OccupationAttachmentType`     = '".$_POST['OccupationAttachmentType']."',
                                                                 `OccupationDetails`     = '".$_POST['OccupationDetails']."',
-                                                                `LastUpdatedOn`         = '".date("Y-m-d H:i:s")."',
-                                                                `AnnualIncome`          = '".$IncomeRange[0]['CodeValue']."'";
+                                                                `LastUpdatedOn`         = '".date("Y-m-d H:i:s")."'";
                  if (isset($_POST['File'])) {
                     $updateSql .= " , `OccupationAttachmentType`= '".$_POST['OccupationAttachmentType']."' ,`OccupationAttachFileName`     = '".$_POST['File']."' ";
                  }
@@ -3042,6 +3034,7 @@
              return Response::returnSuccess("success",$Profiles);
          }
          /* Favourited Section */
+         
          function AddToFavourite() {
              
              global $mysql,$loginInfo;
@@ -3063,13 +3056,11 @@
                  $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
              }
              
-             
              $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");
              
-              $FirstTime = $mysql->select("select * from `_tbl_profiles_favourites` where `VisterMemberID`='".$loginInfo[0]['MemberID']."'");
+             $FirstTime = $mysql->select("select * from `_tbl_profiles_favourites` where `VisterMemberID`='".$loginInfo[0]['MemberID']."'");
              if(sizeof($FirstTime)==0){
-             
-             $FirstTimeProfileFavorite = $mysql->select("select * from `_tbl_general_settings` where  `Settngs`='FirstTimeProfileFavorite'");
+                 $FirstTimeProfileFavorite = $mysql->select("select * from `_tbl_general_settings` where  `Settngs`='FirstTimeProfileFavorite'");
              
              if($FirstTimeProfileFavorite[0]['Email']=="1"){
              
@@ -3219,40 +3210,28 @@
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has unfavorited.");      
           }
           
-         function GetFavouritedProfiles() {
-              
-          global $mysql,$loginInfo; 
-             $Profiles = array();
-             $sql = "";
-             if (isset($_POST['requestfrom'])) {
-                 $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
-             } else {
-                $_POST['requestfrom']=0; 
-                $_POST['requestto']=5; 
-             }
-
-             $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and`VisterMemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC");
-             $profileCodes  = array();
-             foreach($RecentProfiles as $RecentProfile) {
-                 if (!(in_array($RecentProfile['ProfileCode'], $profileCodes)))
-                 {
-                    $profileCodes[]=$RecentProfile['ProfileCode'];
-                 }
-             }
-             if (sizeof($profileCodes)>0) {
-                for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
-                    if (strlen(trim($profileCodes[$i]))>0)  {
-                        $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
-                    }
-                }
-             }
-                  
-             return Response::returnSuccess("success",$Profiles);
+          function GetFavouritedProfiles() {
+              global $mysql,$loginInfo; 
+              $Profiles = array();
+              $sql = (isset($_POST['requestfrom']) && isset($_POST['requestto'])) ?  " limit ".$_POST['requestfrom'].",". $_POST['requestto'] : " limit 0,5 ";
+              $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and`VisterMemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC ".$sql);
+              $profileCodes  = array();
+              foreach($RecentProfiles as $RecentProfile) {
+                  if (!(in_array($RecentProfile['ProfileCode'], $profileCodes))) {
+                      $profileCodes[]=$RecentProfile['ProfileCode'];
+                  }
+              }
+              if (sizeof($profileCodes)>0) {
+                  for($i=0;$i<sizeof($profileCodes);$i++) {
+                      $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                  }
+              }
+              return Response::returnSuccess("success",$Profiles);
          }
       
          function GetWhoFavouriteMyProfiles() {
-              
-          global $mysql,$loginInfo; 
+             
+             global $mysql,$loginInfo; 
              $Profiles = array();
              $sql = "";
              if (isset($_POST['requestfrom'])) {
@@ -4078,9 +4057,28 @@
                             <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/OccupationDetails/'.$_POST['ProfileCode'].'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';                             
 
-         }     
+         }  
+          function SendRequestForEditPostedProfile() {
+
+             global $mysql,$loginInfo;
+             
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'");
+
+             $updateSql = "update `_tbl_draft_profiles` set `RequestToVerify` = '0' where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'";
+             $mysql->execute($updateSql);
+                  $mysql->insert("_tbl_request_edit",array("MemberID"                => $loginInfo[0]['MemberID'],
+                                                           "ProfileID"               => $Profiles[0]['ProfileID'],
+                                                           "EditRequestFromPostedOn" => date("Y-m-d H:i:s")));
+            
+               return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Edit Profile</h4>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/'.$_POST['FileName'].'/'.$_POST['ProfileCode'].'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                       </div>';
+
+         }   
      
      }  
-   
+//4084   
 ?>                                                            
   

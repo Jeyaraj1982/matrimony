@@ -51,7 +51,7 @@ legend {
     margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px;
 } 
  </style>
-<form method="post" action="" onsubmit="">
+
 <?php if($ProfileInfo['RequestToVerify']=="0"){?>
 <div style="text-align: right" id="">
         <a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
@@ -315,7 +315,7 @@ legend {
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;  
                 <?php if($ProfileInfo['FathersOccupationCode']=="OT112") {?>
                 <?php echo strlen(trim($ProfileInfo['FatherOtherOccupation']))> 0 ? trim($ProfileInfo['FatherOtherOccupation']) : "N/A "; ?>
-                <?php } else { echo $ProfileInfo['FathersOccupation']; } ?>
+                <?php } else { echo strlen(trim($ProfileInfo['FathersOccupation']))> 0 ? trim($ProfileInfo['FathersOccupation']) : "N/A "; } ?>
             </label>
             <label class="col-sm-2 col-form-label">Father's contact</label>            
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersContact'])))>0){?><?php echo "+"; echo $ProfileInfo['FathersContactCountryCode'];?>-<?php echo $ProfileInfo['FathersContact'];?><?php  } else{ echo "N/A";}?></label>
@@ -337,7 +337,7 @@ legend {
               <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;  
                 <?php if($ProfileInfo['MothersOccupationCode']=="OT112") {?>
                 <?php echo strlen(trim($ProfileInfo['MotherOtherOccupation']))> 0 ? trim($ProfileInfo['MotherOtherOccupation']) : "N/A "; ?>
-                <?php } else { echo $ProfileInfo['MothersOccupation']; } ?>
+                <?php } else { echo strlen(trim($ProfileInfo['MothersOccupation']))> 0 ? trim($ProfileInfo['MothersOccupation']) : "N/A ";} ?>
             </label>
             <label class="col-sm-2 col-form-label">Mother's contact</label>           
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['MothersContact'])))>0){?><?php echo "+"; echo $ProfileInfo['MothersContactCountryCode'];?>-<?php echo $ProfileInfo['FathersContact'];?><?php  } else{ echo "N/A";}?></label>
@@ -756,7 +756,6 @@ legend {
   </div>                                                                                                               
 </div>
 
-</form>
  
             
                
@@ -778,9 +777,9 @@ function showConfirmPublish(ProfileID) {
                           + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                         + '<h4 class="modal-title">Profile Publish</h4> <br>'
                         +'<div style="text-align:left"> Dear ,<br>'
-                        +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). DAT has approved your profile, the profile will pubhlish immediately, so please verify all data before publish.<br><br>'
+                        +'<div style="text-align:left">You have selected to "Publish Now", In this action, your details will send to our Document Authentication Team (DAT). DAT has approved your profile, the profile will publish immediately, so please verify all data before publish.<br><br>'
                         + '<input type="checkbox" name="check" id="agreetopublish" onclick="agreeToPublish();" value="1">&nbsp;<label for="check" style="font-weight:normal"> I agree the terms and conditions  </label><br><br>'
-                        +  '<button type="button" disabled="disabled" class="btn btn-primary" name="Publish" id="PublishBtn"  onclick="SendOtpForProfileforPublish(\''+ProfileID+'\')" style="font-family:roboto">Yes, send request</button>&nbsp;&nbsp;&nbsp;'
+                        +  '<button type="button" disabled="disabled" class="btn btn-primary" name="Publish" id="PublishBtn"  onclick="VerifyProfileforPublish(\''+ProfileID+'\')" style="font-family:roboto">Yes, send request</button>&nbsp;&nbsp;&nbsp;'
                         +  '<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
                        +  '</div><br>'
                     +  '</form>'                                                                                                          

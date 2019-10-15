@@ -82,7 +82,7 @@
       selectedPanelInvalidBoxShadow: "0 0 0 0.2rem rgba(220, 53, 69, 0.25)",
       filterInputColor: "#495057",
       containerClass: "dashboardcode-bsmultiselect",
-      dropDownMenuClass: "dropdown-menu",
+      dropDownMenuClass: "dropdown-menu c-menu",
       dropDownItemClass: "px-2",
       selectedPanelClass: "form-control",
       selectedPanelStyle: {

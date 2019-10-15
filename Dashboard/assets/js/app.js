@@ -26,6 +26,14 @@
                         return false;
                     }
                 }
+                function OtherEducationDegree(ElemID,ResultDiv,Message){
+                    $('#'+ResultDiv).html("");
+                    if(/[^a-zA-Z0-9 ]/.test( $('#'+ElemID).val() ) ) {
+                        ErrorCount++;
+                        $('#'+ResultDiv).html(Message);
+                        return false;
+                    }
+                }
                 
                 function IsAlphaNumeric(ElemID,ResultDiv,Message){
                     $('#'+ResultDiv).html("");
@@ -49,7 +57,7 @@
 
                 function IsAlphabet(ElemID,ResultDiv,Message){
                     $('#'+ResultDiv).html("");
-                    if(  /^([\s\.]?[a-zA-Z]+)+$/.test( $('#'+ElemID).val() ) ) {
+                    if( /[^a-zA-Z ]/.test( $('#'+ElemID).val() ) ) {
                         ErrorCount++;
                         $('#'+ResultDiv).html(Message);
                         return false;
@@ -99,7 +107,7 @@
                  function IsPassword(ElemID,ResultDiv,Message){
                   
                     $('#'+ResultDiv).html("");
-                    if(( $('#'+ElemID).val().length < 6 ))  {
+                    if(( $('#'+ElemID).val().length < 8 ))  {
                         ErrorCount++;                           
                         $('#'+ResultDiv).html(Message);
                         return false;
