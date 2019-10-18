@@ -146,7 +146,7 @@ $(document).ready(function() {
             <span class="errorstring" id="ErrPhysicallyImpaired"><?php echo isset($ErrPhysicallyImpaired)? $ErrPhysicallyImpaired : "";?></span>
         </div>
         <div class="col-sm-6" id="pm_input">
-            <input type="text" class="form-control" name="PhysicallyImpairedDescription" id="PhysicallyImpairedDescription" Placeholder='Physical Impaired Description' value="<?php echo (isset($_POST['PhysicallyImpairedDescription']) ? $_POST['PhysicallyImpairedDescription'] : $ProfileInfo['PhysicallyImpaireddescription']);?>">
+            <input type="text" class="form-control" name="PhysicallyImpairedDescription" id="PhysicallyImpairedDescription" maxlength="50" Placeholder='Physical Impaired Description' value="<?php echo (isset($_POST['PhysicallyImpairedDescription']) ? $_POST['PhysicallyImpairedDescription'] : $ProfileInfo['PhysicallyImpaireddescription']);?>">
             <span class="errorstring" id="ErrPhysicallyImpairedDescription"><?php echo isset($ErrPhysicallyImpairedDescription)? $ErrPhysicallyImpairedDescription : "";?></span>
         </div>
     </div>
@@ -162,7 +162,7 @@ $(document).ready(function() {
             <span class="errorstring" id="ErrVisuallyImpaired"><?php echo isset($ErrVisuallyImpaired)? $ErrVisuallyImpaired : "";?></span>
         </div>
         <div class="col-sm-6" id="vs_input">
-            <input type="text" class="form-control" name="VisuallyImpairedDescription" id="VisuallyImpairedDescription" Placeholder="Visual Impaired Description" value="<?php echo (isset($_POST['VisuallyImpairedDescription']) ? $_POST['VisuallyImpairedDescription'] : $ProfileInfo['VisuallyImpairedDescription']);?>">
+            <input type="text" class="form-control" name="VisuallyImpairedDescription" id="VisuallyImpairedDescription" maxlength="50" Placeholder="Visual Impaired Description" value="<?php echo (isset($_POST['VisuallyImpairedDescription']) ? $_POST['VisuallyImpairedDescription'] : $ProfileInfo['VisuallyImpairedDescription']);?>">
             <span class="errorstring" id="ErrVisuallyImpairedDescription"><?php echo isset($ErrVisuallyImpairedDescription)? $ErrVisuallyImpairedDescription : "";?></span>
         </div>
     </div>
@@ -178,7 +178,7 @@ $(document).ready(function() {
             <span class="errorstring" id="ErrVissionImpaired"><?php echo isset($ErrVissionImpaired)? $ErrVissionImpaired : "";?></span>
         </div>
         <div class="col-sm-6" id="vn_input">
-            <input type="text" class="form-control" name="VissionImpairedDescription" Placeholder="Vision Impaired Description" id="VissionImpairedDescription" value="<?php echo (isset($_POST['VissionImpairedDescription']) ? $_POST['VissionImpairedDescription'] : $ProfileInfo['VissionImpairedDescription']);?>">
+            <input type="text" class="form-control" name="VissionImpairedDescription" maxlength="50" Placeholder="Vision Impaired Description" id="VissionImpairedDescription" value="<?php echo (isset($_POST['VissionImpairedDescription']) ? $_POST['VissionImpairedDescription'] : $ProfileInfo['VissionImpairedDescription']);?>">
             <span class="errorstring" id="ErrVissionImpairedDescription"><?php echo isset($ErrVissionImpairedDescription)? $ErrVissionImpairedDescription : "";?></span>
         </div>
     </div>
@@ -194,7 +194,7 @@ $(document).ready(function() {
             <span class="errorstring" id="ErrSpeechImpaired"><?php echo isset($ErrSpeechImpaired)? $ErrSpeechImpaired : "";?></span>
         </div>
         <div class="col-sm-6" id="si_input">
-            <input type="text" class="form-control" name="SpeechImpairedDescription" id="SpeechImpairedDescription" Placeholder="Speech Impaired Description" value="<?php echo (isset($_POST['SpeechImpairedDescription']) ? $_POST['SpeechImpairedDescription'] : $ProfileInfo['SpeechImpairedDescription']);?>">
+            <input type="text" class="form-control" name="SpeechImpairedDescription" maxlength="50" id="SpeechImpairedDescription" Placeholder="Speech Impaired Description" value="<?php echo (isset($_POST['SpeechImpairedDescription']) ? $_POST['SpeechImpairedDescription'] : $ProfileInfo['SpeechImpairedDescription']);?>">
             <span class="errorstring" id="ErrSpeechImpairedDescription"><?php echo isset($ErrSpeechImpairedDescription)? $ErrSpeechImpairedDescription : "";?></span>
         </div>
     </div>

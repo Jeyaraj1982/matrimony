@@ -150,7 +150,7 @@ function submitprofile() {
             <select class="selectpicker form-control" data-live-search="true" id="OccupationType" name="OccupationType" onchange="DraftProfile.addOtherOccupation();">
                 <option value="0">Choose Occupation Types</option>  
                 <?php foreach($response['data']['Occupation'] as $OccupationType){ ?>
-               <?php  if($OccupationType['SoftCode']!= "OT107" && $OccupationType['SoftCode']!= "OT003" && $OccupationType['SoftCode']!= "OT004"){     ?>
+               <?php  if($OccupationType['SoftCode']!= "OT107" && $OccupationType['SoftCode']!= "OT106" && $OccupationType['SoftCode']!= "OT003" && $OccupationType['SoftCode']!= "OT004"){     ?>
                     <option value="<?php echo $OccupationType['SoftCode'];?>" <?php echo (isset($_POST[ 'OccupationType'])) ? (($_POST[ 'OccupationType']==$OccupationType[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'OccupationType']==$OccupationType[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $OccupationType['CodeValue'];?>
                             <?php } } ?>      </option>
@@ -158,7 +158,7 @@ function submitprofile() {
             <span class="errorstring" id="ErrOccupationType"><?php echo isset($ErrOccupationType)? $ErrOccupationType : "";?></span>
         </div>
         <!--<label class="col-sm-2 col-form-label"></label>-->
-            <div class="col-sm-6"  id="Occupation_additionalinfo"><input type="text" class="form-control" id="OtherOccupation" Placeholder="Occupation" name="OtherOccupation" value="<?php echo (isset($_POST['OtherOccupation']) ? $_POST['OtherOccupation'] : $ProfileInfo['OtherOccupation']);?>">
+            <div class="col-sm-6"  id="Occupation_additionalinfo"><input type="text" class="form-control" maxlength="50" id="OtherOccupation" Placeholder="Occupation" name="OtherOccupation" value="<?php echo (isset($_POST['OtherOccupation']) ? $_POST['OtherOccupation'] : $ProfileInfo['OtherOccupation']);?>">
             <span class="errorstring" id="ErrOtherOccupation"><?php echo isset($ErrOtherOccupation)? $ErrOtherOccupation : "";?></span></div>
     </div> 
     <div class="form-group row">
@@ -195,7 +195,7 @@ function submitprofile() {
             </div>
             <label class="col-sm-2 col-form-label">City name<span id="star">*</span></label>
        <div class="col-sm-4">
-           <input type="text" class="form-control" id="WorkedCityName" name="WorkedCityName" value="<?php echo (isset($_POST['WorkedCityName']) ? $_POST['WorkedCityName'] : $ProfileInfo['WorkedCityName']);?>" placeholder="City Name">
+           <input type="text" class="form-control" id="WorkedCityName" maxlength="50" name="WorkedCityName" value="<?php echo (isset($_POST['WorkedCityName']) ? $_POST['WorkedCityName'] : $ProfileInfo['WorkedCityName']);?>" placeholder="City Name">
             <span class="errorstring" id="ErrWorkedCityName"><?php echo isset($ErrWorkedCityName)? $ErrWorkedCityName : "";?></span>
        </div>
     </div>

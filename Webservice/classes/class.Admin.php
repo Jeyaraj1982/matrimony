@@ -2590,4 +2590,14 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
          
     }                                                                                                                         
 }
+?> il`='".(isset($_POST['ApproveProfileEmail']) ? '1' : '0')."' where `Settings`='ApproveProfile'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['RejectProfileSMS']) ? '1' : '0')."' where `Settings`='RejectProfile'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['RejectProfileEmail']) ? '1' : '0')."' where `Settings`='RejectProfile'");    
+        $mysql->execute("update `_tbl_general_settings` set `SMS`='".(isset($_POST['RemodificationRequestSMS']) ? '1' : '0')."' where `Settings`='RemodificationRequest'");    
+        $mysql->execute("update `_tbl_general_settings` set `Email`='".(isset($_POST['RemodificationRequestEmail']) ? '1' : '0')."' where `Settings`='RemodificationRequest'");    
+       
+        return Response::returnSuccess("Success");
+         
+    }                                                                                                                         
+}
 ?> 

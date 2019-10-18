@@ -176,7 +176,7 @@ function submitexpectation() {
             <label for="EmployedAs" class="col-sm-2 col-form-label">Employed as<span id="star">*</span></label>
             <div class="col-sm-10">
                 <?php $sel_employeedas = isset($_POST['EmployedAs']) ? explode(",",$_POST['EmployedAs']) : explode(",",$ProfileInfo[ 'EmployedAsCode']); ?>
-                <select  id="EmployedAs" name="EmployedAs[]" multiple="multiple" style="display: none;">
+                <select  id="EmployedAs" name="EmployedAs[]" multiple="multiple" style="display: none;"  onchange="DraftProfile.addPartnersExpectationAnnualWorkingDetails();">
                     <?php foreach($response['data']['EmployedAs'] as $EmployedAs) { ?>
                     <?php
                         $selected = "";
@@ -196,6 +196,7 @@ function submitexpectation() {
                 </select>
             </div>
         </div>
+        <div id="AnnualadditionalInfo">
         <div class="form-group row">
             <label for="IncomeRange" class="col-sm-2 col-form-label">Annual income<span id="star">*</span></label>
             <div class="col-sm-10">
@@ -218,6 +219,7 @@ function submitexpectation() {
                     <?php } ?>
                 </select>
             </div>
+        </div>
         </div>
         <div class="form-group row">
             <label for="RasiName" class="col-sm-2 col-form-label">Rasi name<span id="star">*</span></label>

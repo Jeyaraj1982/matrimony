@@ -447,6 +447,13 @@
                 $('#Working_additionalinfo').hide();
             }
         },
+        addPartnersExpectationAnnualWorkingDetails: function() {
+            if ($('#EmployedAs').val()=="OT107") {
+                $('#AnnualadditionalInfo').hide();
+            } else {
+                $('#AnnualadditionalInfo').show();
+            }
+        },
         changeAboutLable: function() {
         if ($('#ProfileFor').val()=="Myself") {
             $('#Aboutlabel').html("About me<span style='color:red'>*</span>");                                                         

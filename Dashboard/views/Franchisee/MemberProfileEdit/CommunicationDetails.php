@@ -115,7 +115,7 @@ $(document).ready(function() {
         <div class="form-group row">
             <label for="Email ID" class="col-sm-2 col-form-label">Contact person<span id="star">*</span></label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="ContactPersonName" name="ContactPersonName" placeholder="Contact Person Name" value="<?php echo (isset($_POST['ContactPersonName']) ? $_POST['ContactPersonName'] : $ProfileInfo['ContactPersonName']);?>" placeholder="Contact Person Name">
+                <input type="text" class="form-control" id="ContactPersonName" maxlength="50" name="ContactPersonName" placeholder="Contact Person Name" value="<?php echo (isset($_POST['ContactPersonName']) ? $_POST['ContactPersonName'] : $ProfileInfo['ContactPersonName']);?>" placeholder="Contact Person Name">
                 <span class="errorstring" id="ErrContactPersonName"><?php echo isset($ErrContactPersonName)? $ErrContactPersonName : "";?></span>
             </div>
         </div>
@@ -146,7 +146,7 @@ $(document).ready(function() {
         <div class="form-group row">
             <label for="Email ID" class="col-sm-2 col-form-label">Email id<span id="star">*</span></label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $ProfileInfo['EmailID']);?>" placeholder="Email ID">
+                <input type="text" class="form-control" id="EmailID" name="EmailID" maxlength="50" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $ProfileInfo['EmailID']);?>" placeholder="Email ID">
                 <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span>
             </div>
         </div>
@@ -188,20 +188,20 @@ $(document).ready(function() {
         <div class="form-group row">
             <label for="AddressLine1" class="col-sm-2 col-form-label">Address<span id="star">*</span></label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="AddressLine1" name="AddressLine1" value="<?php echo (isset($_POST['AddressLine1']) ? $_POST['AddressLine1'] : $ProfileInfo['AddressLine1']);?>" placeholder="AddressLine1">
+                <input type="text" class="form-control" id="AddressLine1" name="AddressLine1" maxlength="50" value="<?php echo (isset($_POST['AddressLine1']) ? $_POST['AddressLine1'] : $ProfileInfo['AddressLine1']);?>" placeholder="AddressLine1">
                 <span class="errorstring" id="ErrAddressLine1"><?php echo isset($ErrAddressLine1)? $ErrAddressLine1 : "";?></span>
             </div>
         </div>
         <div class="form-group row">
             <label for="AddressLine2" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="AddressLine2" name="AddressLine2" value="<?php echo (isset($_POST['AddressLine2']) ? $_POST['AddressLine2'] : $ProfileInfo['AddressLine2']);?>" placeholder="AddressLine2">
+                <input type="text" class="form-control" id="AddressLine2" name="AddressLine2" maxlength="50" value="<?php echo (isset($_POST['AddressLine2']) ? $_POST['AddressLine2'] : $ProfileInfo['AddressLine2']);?>" placeholder="AddressLine2">
             </div>
         </div>
         <div class="form-group row">
             <label for="AddressLine3" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="AddressLine3" name="AddressLine3" value="<?php echo (isset($_POST['AddressLine3']) ? $_POST['AddressLine3'] : $ProfileInfo['AddressLine3']);?>" placeholder="AddressLine3">
+                <input type="text" class="form-control" id="AddressLine3" name="AddressLine3" maxlength="50" value="<?php echo (isset($_POST['AddressLine3']) ? $_POST['AddressLine3'] : $ProfileInfo['AddressLine3']);?>" placeholder="AddressLine3">
             </div>
         </div>
         <div class="form-group row">
@@ -214,12 +214,12 @@ $(document).ready(function() {
         <div class="form-group row">
             <label for="City" class="col-sm-2 col-form-label">City name<span id="star">*</span></label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="City" name="City" Placeholder="City Name" value="<?php echo (isset($_POST['City']) ? $_POST['City'] : $ProfileInfo['City']);?>">
+                <input type="text" class="form-control" id="City" name="City" maxlength="50" Placeholder="City Name" value="<?php echo (isset($_POST['City']) ? $_POST['City'] : $ProfileInfo['City']);?>">
                 <span class="errorstring" id="ErrCity"><?php echo isset($ErrCity)? $ErrCity : "";?></span>
             </div>
             <label for="OtherLocation" class="col-sm-2 col-form-label">Landmark</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="OtherLocation" name="OtherLocation" Placeholder="Landmark" value="<?php echo (isset($_POST['OtherLocation']) ? $_POST['OtherLocation'] : $ProfileInfo['OtherLocation']);?>">
+                <input type="text" class="form-control" id="OtherLocation" maxlength="50" name="OtherLocation" Placeholder="Landmark" value="<?php echo (isset($_POST['OtherLocation']) ? $_POST['OtherLocation'] : $ProfileInfo['OtherLocation']);?>">
             </div>
         </div>
         <div class="form-group row">

@@ -121,7 +121,7 @@ function submitEducation()  {
                         </div>
                         <div class="form-group row" id="Education_additionalinfo">
                             <label class="col-sm-2 col-form-label"></label>
-                            <div class="col-sm-10" ><input type="text" class="form-control" id="OtherEducationDegree" placeholder="Education details" name="OtherEducationDegree" value="<?php echo (isset($_POST['OtherEducationDegree']) ? $_POST['OtherEducationDegree'] : $ProfileInfo['OtherEducationDegree']);?>">
+                            <div class="col-sm-10" ><input type="text" class="form-control" maxlength="50" id="OtherEducationDegree" placeholder="Education details" name="OtherEducationDegree" value="<?php echo (isset($_POST['OtherEducationDegree']) ? $_POST['OtherEducationDegree'] : $ProfileInfo['OtherEducationDegree']);?>">
                             <span class="errorstring" id="ErrOtherEducationDegree"><?php echo isset($ErrOtherEducationDegree)? $ErrOtherEducationDegree : "";?></span></div>
                         </div>
                          <div class="form-group row">

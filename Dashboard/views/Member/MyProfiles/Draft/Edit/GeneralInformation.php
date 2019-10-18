@@ -34,7 +34,7 @@
         <div class="form-group row">
             <label for="ProfileName" class="col-sm-2 col-form-label">Name<span id="star">*</span></label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="ProfileName" name="ProfileName" value="<?php echo (isset($_POST['ProfileName']) ? $_POST['ProfileName'] : $ProfileInfo['ProfileName']);?>" placeholder="Name">
+                <input type="text" class="form-control" id="ProfileName" maxlength="50" name="ProfileName" value="<?php echo (isset($_POST['ProfileName']) ? $_POST['ProfileName'] : $ProfileInfo['ProfileName']);?>" placeholder="Name">
                 <span class="errorstring" id="ErrProfileName"><?php echo isset($ErrProfileName)? $ErrProfileName : "";?></span>
             </div>
         </div>
@@ -131,7 +131,7 @@
                 </select>
                 <span class="errorstring" id="ErrReligion"><?php echo isset($ErrReligion)? $ErrReligion : "";?></span>
             </div>
-            <div class="col-sm-6" id="Religion_additionalinfo"><input type="text" placeholder="Religion Name" class="form-control" id="ReligionOthers" name="ReligionOthers" value="<?php echo (isset($_POST['ReligionOthers']) ? $_POST['ReligionOthers'] : $ProfileInfo['OtherReligion']);?>">
+            <div class="col-sm-6" id="Religion_additionalinfo"><input type="text" maxlength="50" placeholder="Religion Name" class="form-control" id="ReligionOthers" name="ReligionOthers" value="<?php echo (isset($_POST['ReligionOthers']) ? $_POST['ReligionOthers'] : $ProfileInfo['OtherReligion']);?>">
             <span class="errorstring" id="ErrReligionOthers"><?php echo isset($ErrReligionOthers)? $ErrReligionOthers : "";?></span></div>
         </div>
         <div class="form-group row">
@@ -145,13 +145,13 @@
                 </select>
                 <span class="errorstring" id="ErrCaste"><?php echo isset($ErrCaste)? $ErrCaste : "";?></span>
             </div>
-            <div class="col-sm-6"  id="CasteName_additionalinfo"><input type="text" placeholder="Caste Name" class="form-control" id="OtherCaste" name="OtherCaste" value="<?php echo (isset($_POST['OtherCaste']) ? $_POST['OtherCaste'] : $ProfileInfo['OtherCaste']);?>">
+            <div class="col-sm-6"  id="CasteName_additionalinfo"><input type="text" maxlength="50" placeholder="Caste Name" class="form-control" id="OtherCaste" name="OtherCaste" value="<?php echo (isset($_POST['OtherCaste']) ? $_POST['OtherCaste'] : $ProfileInfo['OtherCaste']);?>">
             <span class="errorstring" id="ErrOtherCaste"><?php echo isset($ErrOtherCaste)? $ErrOtherCaste : "";?></span></div>
         </div>
         <div class="form-group row">
              <label for="SubCaste" class="col-sm-2 col-form-label" >Sub caste</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" name="SubCaste" id="SubCaste" value="<?php echo (isset($_POST['SubCaste']) ? $_POST['SubCaste'] : $ProfileInfo['SubCaste']);?>" placeholder="Sub Caste">
+                <input type="text" class="form-control" maxlength="50" name="SubCaste" id="SubCaste" value="<?php echo (isset($_POST['SubCaste']) ? $_POST['SubCaste'] : $ProfileInfo['SubCaste']);?>" placeholder="Sub Caste">
             </div>
             <label for="Community" class="col-sm-2 col-form-label" style="text-align: right;padding-left:0px;padding-right:0px;">Community<span id="star">*</span></label>
             <div class="col-sm-4">
@@ -211,6 +211,7 @@
             var text_remaining = text_max - text_length;
             $('#textarea_feedback').html(text_length + ' characters typed');
         });
+         
         getHowmanyChildrenInfo();
         DraftProfile.addOtherReligionName();
         DraftProfile.addOtherCasteName();

@@ -454,7 +454,7 @@
                 }
                 $LastLogin = isset($Profiles[0]['ProfileID'])  ? $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$Profiles[0]['MemberID']."' ORDER BY `LoginID` DESC") : array();
             }
-            $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");     
+            $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
             if (sizeof($ProfilePhotos)<4) {
                 for($i=sizeof($ProfilePhotos);$i<4;$i++) {
                     if (isset($Profiles[0]['SexCode']) && $Profiles[0]['SexCode']=="SX002"){

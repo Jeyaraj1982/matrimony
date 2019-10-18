@@ -61,13 +61,6 @@ legend {
                 <i class="menu-icon mdi mdi-printer" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Print</label> 
             </div>
         </div>
-        <div class="form-group row">
-            <label class="col-sm-10 col-form-label"></label>
-                <div class="col-sm-2">
-                    <i class="menu-icon mdi mdi-download" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Download</label>   
-                </div>
-        </div>
-       
   </div>
 </div>
 </div>

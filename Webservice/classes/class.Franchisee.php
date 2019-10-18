@@ -1140,7 +1140,6 @@
                                                                 `AnnualIncomeCode`      = '".$_POST['IncomeRange']."',
                                                                 `WorkedCountryCode`     = '".$_POST['WCountry']."',
                                                                 `WorkedCountry`         = '".$Country[0]['CodeValue']."',
-                                                                
                                                                 `WorkedCityName`     = '".$_POST['WorkedCityName']."',
                                                                 `OccupationDetails`     = '".$_POST['OccupationDetails']."',
                                                                 `LastUpdatedOn`         = '".date("Y-m-d H:i:s")."',
@@ -1919,6 +1918,49 @@
                                         <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/ProfilePhoto/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
                                    </div>'; 
                          }
+                $AboutMyself =$mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+                     if (strlen(trim($AboutMyself[0]['AboutMe']))==0) {
+                          if($AboutMyself[0]['ProfileFor']=="Myself"){
+                             $About = "about yourself";
+                             }
+                             if($AboutMyself[0]['ProfileFor']=="Brother"){
+                             $About = "about your brother";
+                             }
+                             if($AboutMyself[0]['ProfileFor']=="Sister"){
+                             $About = "about your sister";
+                             }
+                             if($AboutMyself[0]['ProfileFor']=="Daughter"){
+                             $About = "about your daughter";
+                             }
+                             if($AboutMyself[0]['ProfileFor']=="Son"){
+                             $About = "about your son";
+                             }
+                             if($AboutMyself[0]['ProfileFor']=="Brother In Law"){
+                             $About = "about your brother in law";
+                             }
+                             if($AboutMyself[0]['ProfileFor']=="Son In Law"){
+                             $About = "about your son in law";
+                             }
+                             if($AboutMyself[0]['ProfileFor']=="Daughter In Law"){
+                             $About = "about your daughter in law";
+                             } 
+                            return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Missing</h4>  <br><br>
+                                        <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                                        <h5 style="text-align:center;color:#ada9a9">You must enter'.$About.'.</h5>
+                                        <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/GeneralInformation/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
+                                   </div>'; 
+                         } 
+                if (strlen(trim($AboutMyself[0]['AboutMyFamily']))==0) {
+                return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Missing</h4>  <br><br>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">You must enter about your family.</h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/FamilyInformation/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
+                       </div>'; 
+             }
              
              $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
              

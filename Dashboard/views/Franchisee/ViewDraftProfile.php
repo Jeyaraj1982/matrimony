@@ -55,7 +55,7 @@ legend {
 <?php if($ProfileInfo['RequestToVerify']=="0"){?>
 <div style="text-align: right" id="">
         <a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
-        <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
+        <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Submit Now</a>
 </div>
 <?php }?>
 <br>
@@ -69,13 +69,6 @@ legend {
                 <i class="menu-icon mdi mdi-printer" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Print</label> 
             </div>
         </div>
-        <div class="form-group row">
-            <label class="col-sm-10 col-form-label"></label>
-                <div class="col-sm-2">
-                    <i class="menu-icon mdi mdi-download" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Download</label>   
-                </div>
-        </div>
-       
   </div>
 </div>
 </div>

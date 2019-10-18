@@ -884,14 +884,14 @@
                                                                                      "messagedon"=>date("Y-m-d h:i:s"))) ;
                         $formid = "frmMobileNoVerification_".rand(30,3000);
                         $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
-                                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                                return '<div id="otpfrm" style="width:100%;padding:20px;">
                         <form method="POST" id="'.$formid.'">
                         <input type="hidden" value="'.$loginid.'" name="loginId">
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
+                        '.(($updatemsg!="") ? $updatemsg : "").'
                             <div class="form-group">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title">Please verify your email</h4>
-                                    '.(($updatemsg!="") ? $updatemsg : "").'
                                 </div>
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/emailicon.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digits verification Code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
@@ -916,7 +916,7 @@
 
                     $formid = "frmMobileNoVerification_".rand(30,3000);
                  $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
-                                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                                return '<div id="otpfrm" style="width:100%;padding:20px;">
                         <form method="POST" id="'.$formid.'">
                         <input type="hidden" value="'.$loginid.'" name="loginId">
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
@@ -959,7 +959,7 @@
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Please verify your email</h4>
+                                    <h4 class="modal-title"></h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h5>
                             <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
@@ -1116,7 +1116,7 @@
                                                                                      "messagedon"=>date("Y-m-d h:i:s"))) ;
                         $formid = "frmOverAllOTPVerification_".rand(30,3000);
                         $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
-                                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                                return '<div id="otpfrm" style="width:100%;padding:20px;">
                         <form method="POST" id="'.$formid.'" name="'.$formid.'">
                             <div class="form-group">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
@@ -1144,7 +1144,7 @@
                           }
         } else {
             $formid = "frmOverAllOTPVerification_".rand(30,3000);
-                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                 return '<div id="otpfrm" style="width:100%;padding:20px;">
                         <form method="POST" id="'.$formid.'" name="'.$formid.'">
                             <div class="form-group">
                             <input type="hidden" value="'.$reqID.'" name="reqId">
@@ -1264,11 +1264,35 @@
              }
      $AboutMyself =$mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
          if (strlen(trim($AboutMyself[0]['AboutMe']))==0) {
+             if($AboutMyself[0]['ProfileFor']=="Myself"){
+             $About = "about yourself";
+             }
+             if($AboutMyself[0]['ProfileFor']=="Brother"){
+             $About = "about your brother";
+             }
+             if($AboutMyself[0]['ProfileFor']=="Sister"){
+             $About = "about your sister";
+             }
+             if($AboutMyself[0]['ProfileFor']=="Daughter"){
+             $About = "about your daughter";
+             }
+             if($AboutMyself[0]['ProfileFor']=="Son"){
+             $About = "about your son";
+             }
+             if($AboutMyself[0]['ProfileFor']=="Brother In Law"){
+             $About = "about your brother in law";
+             }
+             if($AboutMyself[0]['ProfileFor']=="Son In Law"){
+             $About = "about your son in law";
+             }
+             if($AboutMyself[0]['ProfileFor']=="Daughter In Law"){
+             $About = "about your daughter in law";
+             } 
                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
                              <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Missing</h4>  <br><br>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">You must enter about your self.</h5>
+                            <h5 style="text-align:center;color:#ada9a9">You must enter '.$About.'.</h5>
                             <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/GeneralInformation/'.$ProfileCode.'.htm" style="cursor:pointer">continue</a> <h5>
                        </div>'; 
              } 
@@ -1655,7 +1679,8 @@
          function SelectPlanAndContinue() {
 
              global $mysql,$loginInfo;
-             $Profiles = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileID='".$_POST['Code']."'");               
+             $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$_POST['Code']."'");     
+             $OwnlProfile = $mysql->select("select * from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'");               
               $plan =$mysql->select("select * from `_tbl_member_plan` where `PlanID`='".$_POST['PlanID']."'"); 
               $orderid=SeqMaster::GetNextOrderCode() ;     
             /* $id = $mysql->insert("_tbl_orders",array("ProfileID"       => $_POST['Code'],
@@ -1666,7 +1691,8 @@
 
             $id = $mysql->insert("_tbl_orders",array("OrderDate"            => DATE("Y-m-d H:i:s"),
                                                      "OrderNumber"          => $orderid,
-                                                     "ProfileID"            =>  $Profiles[0]['ProfileCode'],
+                                                     "ProfileID"            =>  $Profiles[0]['ProfileID'],
+                                                     "ProfileCode"          =>  $Profiles[0]['ProfileCode'],
                                                      "ProfileName"          => $Profiles[0]['ProfileName'],
                                                      "EmailID"              => $Profiles[0]['EmailID'],
                                                      "MobileNumber"         => $Profiles[0]['MobileNumber'],
@@ -1678,35 +1704,39 @@
                                                      "Createdon"            => DATE("Y-m-d H:i:s"),
                                                      "OrderedOn"            => "0000-00-00 00:00:00",
                                                      "OrderByMemberID"      => $loginInfo[0]['MemberID'],
+                                                     "OrderByMemberCode"    => $OwnlProfile[0]['MemberCode'],
                                                      "OrderedByProfileID"   => $Profiles[0]['ProfileID'],
+                                                     "OrderedByProfileCode" => $Profiles[0]['ProfileCode'],
                                                      "OrderByFranchisee"    => "0",
                                                      "InvoiceNumber"        => "",
                                                      "InvoiceID"            => "0"));
-                   $mysql->insert("_tbl_orders_items",array("OrderID"       => $orderid,
-                                                            "AddedOn"       => date("Y-m-d H:i:s"),
-                                                            "ProfileID"     => $Profiles[0]['ProfileID'],
-                                                            "ProfileCode"   => $Profiles[0]['ProfileCode'],
-                                                            "ProfileName"   => $Profiles[0]['ProfileName'],
-                                                            "ProductID"     => $plan[0]['PlanID'],
-                                                            "ProductCode"   => $plan[0]['PlanCode'],
-                                                            "ProductName"   => $plan[0]['PlanName'],
-                                                            "ProfileToView" => $plan[0]['FreeProfiles'],
-                                                            "Qty"           => "1",
-                                                            "Amount"        => $plan[0]['Amount'],
-                                                            "TAmount"       => "0",
-                                                            "ServiceCharge" => "0",
-                                                            "TsAmount"      => "0",
-                                                            "Remarks"       => "0"));   
-                $mysql->insert("_tbl_profile_credits",array("MemberID"      => $loginInfo[0]['MemberID'],
-                                                            "ProfileID"     => $Profiles[0]['ProfileID'],
-                                                            "ProfileCode"   => $Profiles[0]['ProfileCode'],
-                                                            "Particulars"   => "0",
-                                                            "Credits"       => $plan[0]['FreeProfiles'],
-                                                            "CreditsOn"     => date("Y-m-d H:i:s"),
-                                                            "Debits"        => "0",
-                                                            "DebitsOn"      => date("Y-m-d H:i:s"),
-                                                            "Available"     => $plan[0]['FreeProfiles']-"0",
-                                                            "PartnerProfileID" => $Profiles[0]['ProfileID']));   
+           $mysql->insert("_tbl_orders_items",array("OrderID"               => $orderid,
+                                                    "AddedOn"               => date("Y-m-d H:i:s"),
+                                                    "ProfileID"             => $Profiles[0]['ProfileID'],
+                                                    "ProfileCode"           => $Profiles[0]['ProfileCode'],
+                                                    "ProfileName"           => $Profiles[0]['ProfileName'],
+                                                    "ProductID"             => $plan[0]['PlanID'],
+                                                    "ProductCode"           => $plan[0]['PlanCode'],
+                                                    "ProductName"           => $plan[0]['PlanName'],
+                                                    "ProfileToView"         => $plan[0]['FreeProfiles'],
+                                                    "Qty"                   => "1",
+                                                    "Amount"                => $plan[0]['Amount'],
+                                                    "TAmount"               => "0",
+                                                    "ServiceCharge"         => "0",
+                                                    "TsAmount"              => "0",
+                                                    "Remarks"               => "0"));   
+         $mysql->insert("_tbl_profile_credits",array("MemberID"             => $loginInfo[0]['MemberID'],
+                                                     "MemberCode"           => $OwnlProfile[0]['MemberCode'],
+                                                     "ProfileID"            => $OwnlProfile[0]['ProfileID'],
+                                                     "ProfileCode"          => $OwnlProfile[0]['ProfileCode'],
+                                                     "Particulars"          => "0",
+                                                     "Credits"              => $plan[0]['FreeProfiles'],
+                                                     "Debits"               => "0",
+                                                     "Available"            => $plan[0]['FreeProfiles']-"0",
+                                                     "DownloadedProfileID"  => $Profiles[0]['ProfileID'],
+                                                     "DownloadedProfileCode"=> $Profiles[0]['ProfileCode'],
+                                                     "DownloadedMemberID"   => $Profiles[0]['MemberID'],
+                                                     "DownloadedMemberCode" => $Profiles[0]['MemberCode']));   
 
              return Response::returnSuccess("succss",array());
          }
@@ -2274,7 +2304,7 @@
                                                                                    `StarNameCode`      = '".$_POST['StarName']."',
                                                                                    `StarName`          = '".substr($StarName_CodeValue,0,strlen($StarName_CodeValue)-2)."',
                                                                                    `ChevvaiDhoshamCode`= '".$_POST['ChevvaiDhosham']."',
-                                                                                   `ChevvaiDhosham`    = '".$ChevvaiDhosham[0]['CodeValue']."',
+                                                                                   `ChevvaiDhoshamChevvaiDhosham`    = '".$ChevvaiDhosham[0]['CodeValue']."',
                                                                                    `Details`           = '".$_POST['Details']."' where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'";
                  $mysql->execute($updateSql);  
              } else {
@@ -2325,7 +2355,7 @@
                                                                 `TypeofOccupation`      = '".$TypeofOccupation[0]['CodeValue']."',
                                                                 `OccupationDescription` = '".$_POST['OccupationDescription']."',
                                                                 `AnnualIncomeCode`      = '".$_POST['IncomeRange']."',
-                                                                `AnnualIncome`          = '".$IncomeRange[0]['CodeValue']."'
+                                                                `AnnualIncome`          = '".$IncomeRange[0]['CodeValue']."',
                                                                 `WorkedCountryCode`     = '".$_POST['WCountry']."',
                                                                 `WorkedCountry`         = '".$Country[0]['CodeValue']."',
                                                                 `WorkedCityName`     = '".$_POST['WorkedCityName']."',
@@ -2717,64 +2747,32 @@
          }
          
           function GetMyActiveProfile() {
-             global $mysql,$loginInfo;
-              $profile= $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'") ;
+              global $mysql,$loginInfo;
+              $profile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'") ;
               return $profile;
           }
          
-          function RequestToDownload() {
-
-             global $mysql,$loginInfo;
-             
-             $PProfileCode = $_GET['PProfileID'];
-             
-             $ActiveProfileID = $this->GetMyActiveProfile();
-             
-             if (sizeof($ActiveProfileID) > 0) {
+          function RequestToDownload() { /* verified */
+              global $mysql,$loginInfo;
+              $myprofile = $this->GetMyActiveProfile();
+              $PartnerProfile =  $mysql->select("select * from _tbl_profiles where ProfileCode='".$_GET['PProfileID']."'") ;
+              
+              $id =  $mysql->insert("_tbl_requestto_download",array("MemberID"           =>  $loginInfo[0]['MemberID'],
+                                                                    "MemberCode"         => (isset($myprofile[0]['MemberCode']) ? $myprofile[0]['MemberCode'] : 0) ,        
+                                                                    "ProfileID"          => (isset($myprofile[0]['ProfileID']) ? $myprofile[0]['ProfileID'] : 0),      
+                                                                    "ProfileCode"        => (isset($myprofile[0]['ProfileCode']) ? $myprofile[0]['ProfileCode'] : 0),      
+                                                                    "DownloadProfileID"  => (isset($PartnerProfile[0]['ProfileID']) ? $PartnerProfile[0]['ProfileID'] : 0),          
+                                                                    "DownloadProfileCode"=> (isset($PartnerProfile[0]['ProfileCode']) ? $PartnerProfile[0]['ProfileCode'] : 0),       
+                                                                    "RequestedOn"        => date("Y-m-d H:i:s"))); 
                  
-                 $memberdata = $mysql->select("select * from `_tbl_profile_credits` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID` ='".$_POST['ProfileCode']."'");
-             
-             $BalanceCredits  = $mysql->select("select sum(Credits) as cr, Sum(Debits) as dr,  (sum(Credits) - Sum(Debits)) as bal from `_tbl_profile_credits` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID` ='".$ActiveProfileID[0]['ProfileID']."'");
-             
-             if (isset($BalanceCredits) && $BalanceCredits[0]['bal']>0) {
-             return '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">
-                               <form method="post" id="frm_'.$PProfileCode.'" name="frm_'.$PProfileCode.'" action="" > 
-                               <button type="button" class="close" data-dismiss="modal" style="margin-top: 0px;margin-right: 10px;">&times;</button>
-                                <input type="hidden" value="'.$PProfileCode.'" name="PProfileCode">
-                                <div align="center" style="padding-top: 33px;">
-                                <table>
-                                <tr>
-                                    <td>Your Total Credits &nbsp;&nbsp;'.$BalanceCredits[0]['cr'].'</td>
-                                </tr>
-                                <tr>
-                                    <td>Used Credits &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$BalanceCredits[0]['dr'].'</td>
-                                </tr>
-                                <tr>
-                                    <td>Balance Credits &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$BalanceCredits[0]['bal'].'</td>
-                                </tr>
-                                </table>
-                                <br>
-                                <button type="button" class="btn btn-primary" name="Continue"  onclick="OverallSendOTP(\''.$PProfileCode.'\')">Continue</button>&nbsp;
-                                    <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
-                                </div><br>
-                            </form>
-                        </div>'; 
-             } else {
-                   return '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">
-                               <form method="post" id="frm_'.$PProfileCode.'" name="frm_'.$PProfileCode.'" action="" > 
-                               <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -12px;">&times;</button>
-                                <input type="hidden" value="'.$PProfileCode.'" name="PProfileCode">
-                                <div style="text-align:center">Overall Profile&nbsp;:&nbsp;0<br><br>Viewed&nbsp;:&nbsp;0<br><br>Remaining&nbsp;:&nbsp;0<br><br> 
-                                    <button type="button" class="btn btn-primary" name="Continue"  onclick="OverallSendOTP(\''.$PProfileCode.'\')">Upgrade</button>&nbsp;
-                                    <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
-                                </div><br>
-                            </form>
-                        </div>'; 
-             }
-             } else {
-                 return "select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'"."you must create and publish your profile".'     <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>';
-             }
-             }
+              if (sizeof($myprofile) > 0) {
+                
+                  $credits  = $mysql->select("select (sum(Credits)-Sum(Debits)) as bal from `_tbl_profile_credits` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode` ='".$myprofile[0]['ProfileCode']."'");
+                  return Response::returnSuccess("success",array("balancecredits"=>isset($credits[0]['bal']) ? $credits[0]['bal'] : 0)); 
+              } else {
+                  return Response::returnError("You must be submit your profile"); 
+              }
+          }
              
           function RequestToshowUpgrades() {
 
@@ -3864,7 +3862,7 @@
               $IsChildrenWithyou = ($_POST['ChildrenWithYou']>0 ? $_POST['ChildrenWithYou'] : 0);
              
                     $mysql->insert("_tbl_publish_profiles",array("ProfileCode"       => $ProfileCode,
-                                                           "PublishProfileID"  => $PublishProfileCode[0]['ProfileID'],
+                                                            "PublishProfileID"  => $PublishProfileCode[0]['ProfileID'],
                                                            "PublishProfileCode"=> $PublishProfileCode[0]['ProfileCode'],
                                                            "ProfileFor"    => $_POST['ProfileFor'],
                                                            "ProfileForCode"        => $ProfileFors[0]['SoftCode'],
@@ -3902,6 +3900,105 @@
              $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'");      
 
              return Response::returnSuccess("success",array("ProfileInfo"      => $Profiles[0],
+                                                            "ProfileSignInFor" => CodeMaster::getData('PROFILESIGNIN'),
+                                                            "Gender"           => CodeMaster::getData('SEX'),
+                                                            "MaritalStatus"    => CodeMaster::getData('MARTIALSTATUS'),
+                                                            "Language"         => CodeMaster::getData('LANGUAGENAMES'),
+                                                            "Religion"         => CodeMaster::getData('RELINAMES'),
+                                                            "Caste"            => CodeMaster::getData('CASTNAMES'),
+                                                            "Community"        => CodeMaster::getData('COMMUNITY'),
+                                                            "Nationality"      => CodeMaster::getData('NATIONALNAMES')));
+         }
+            function EditGeneralInformation() {
+
+             global $mysql, $loginInfo;
+
+             $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
+             $Sex            = CodeMaster::getData("SEX",$_POST['Sex']);
+             $MotherTongue   = CodeMaster::getData("LANGUAGENAMES",$_POST['Language']); 
+             $Religion       = CodeMaster::getData("RELINAMES",$_POST['Religion']); 
+             $Caste          = CodeMaster::getData("CASTNAMES",$_POST['Caste']);  
+             $Community      = CodeMaster::getData("COMMUNITY",$_POST['Community']);  
+             $Nationality    = CodeMaster::getData("NATIONALNAMES",$_POST['Nationality']);
+             $Childrens      = CodeMaster::getData("NUMBEROFBROTHER",$_POST['HowManyChildren']);  
+             $ProfileFors    = CodeMaster::getData("PROFILESIGNIN",$_POST['ProfileFor']);  
+              $ProfileCode   = SeqMaster::GetNextPublishProfileCode();
+              
+             $PublishProfileCode = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['Code']."'");   
+             $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];           
+             
+               
+            $InsertSql = array("ProfileCode"            => $ProfileCode, 
+                               "PublishProfileID"       => $PublishProfileCode[0]['ProfileID'],
+                               "PublishProfileCode"     => $PublishProfileCode[0]['ProfileCode'],
+                               "ProfileFor"             => $_POST['ProfileFor'],
+                               "ProfileName"            => $_POST['ProfileName'],
+                               "DateofBirth"            => $dob,
+                               "SexCode"                => $_POST['Sex'],
+                               "Sex"                    => $Sex[0]['CodeValue'],
+                               "MaritalStatusCode"      => $_POST['MaritalStatus'],
+                               "MaritalStatus"          => $MaritalStatus[0]['CodeValue'],
+                               "ChildrenCode"           => '0',     
+                               "Children"               => '0',
+                               "IsChildrenWithyou"      => '0',
+                               "MotherTongueCode"       => $_POST['Language'],
+                               "MotherTongue"           => $MotherTongue[0]['CodeValue'],
+                               "ReligionCode"           => $_POST['Religion'],
+                               "Religion"               => $Religion[0]['CodeValue'],
+                               "OtherReligion"          => '',
+                               "CasteCode"              => $_POST['Caste'],
+                               "Caste"                  => $Caste[0]['CodeValue'],
+                               "OtherCaste"             => '',
+                               "SubCaste"               => $_POST['SubCaste'],
+                               "CommunityCode"          => $_POST['Community'],
+                               "Community"              => $Community[0]['CodeValue'],
+                               "NationalityCode"        => $_POST['Nationality'],
+                               "Nationality"            => $Nationality[0]['CodeValue'],
+                               "LastUpdatedOn"          => date("Y-m-d H:i:s"),
+                               "AboutMe"                => $_POST['AboutMe'],
+                               "MemberID"                =>$loginInfo[0]['MemberID']); 
+                               
+        if ($_POST['Religion']=="RN009") {
+            $DuplicateReligionNames = $mysql->select("SELECT * FROM _tbl_master_codemaster WHERE HardCode='RELINAMES' and CodeValue='".trim($_POST['ReligionOthers'])."'");
+            if (sizeof($DuplicateReligionNames)>0) {
+                return Response::returnError("Religion Already Exists");    
+            }
+            $InsertSql["OtherReligion"] = $_POST['ReligionOthers'];
+        }
+        if ($_POST['Caste']=="CSTN248") {
+            $DuplicateCasteName = $mysql->select("SELECT * FROM _tbl_master_codemaster WHERE HardCode='CASTNAMES' and CodeValue='".trim($_POST['OtherCaste'])."'");
+            if (sizeof($DuplicateCasteName)>0) {
+                return Response::returnError("Caste  Already Exists");    
+            }
+            $InsertSql["OtherCaste"] = $_POST['OtherCaste'];
+        }
+            if ($_POST['MaritalStatus'] != "MST001") {
+             if($_POST['HowManyChildren']==-1){
+                 return Response::returnError("Please select how many children");
+             } else {
+                 if ($_POST['HowManyChildren']=="NOB001") {
+                     
+                 } else {
+                 if($_POST['ChildrenWithYou']==-1){
+                    return Response::returnError("Please select IsChildrenWithyou");
+                }
+                 }
+             }
+             $InsertSql["ChildrenCode"] = $_POST['HowManyChildren'];
+             $InsertSql["Children"] = $Childrens[0]['CodeValue'];
+             $InsertSql["IsChildrenWithyou"] = $Childrens[0]['ChildrenWithYou'];
+        }
+        $id = $mysql->insert("_tbl_publish_profiles",$InsertSql);
+        $sql[]=$mysql->qry;
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                             "ActivityType"   => 'Generalinformationupdated.',
+                                                             "ActivityString" => 'General Information Updated.',
+                                                             "SqlQuery"       => base64_encode($updateSql),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'");      
+
+             return Response::returnSuccess("success".$sql,array("ProfileInfo"      => $Profiles[0],
                                                             "ProfileSignInFor" => CodeMaster::getData('PROFILESIGNIN'),
                                                             "Gender"           => CodeMaster::getData('SEX'),
                                                             "MaritalStatus"    => CodeMaster::getData('MARTIALSTATUS'),
@@ -4076,6 +4173,11 @@
                             <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/'.$_POST['FileName'].'/'.$_POST['ProfileCode'].'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';
 
+         }
+          function ViewOrders() {
+             global $mysql,$loginInfo;
+             $Orders = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'");
+             return Response::returnSuccess("success",$Orders[0]);
          }   
      
      }  

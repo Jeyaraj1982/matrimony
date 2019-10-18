@@ -87,17 +87,61 @@ function RequestToshowUpgrades(ProfileID) {
             }});
     }
     
-function RequestToDownload(PProfileID) {
+    function RequestToDownload(PProfileID) {
         
         $('#OverAll_body').html(preloader);
         $('#OverAll').modal('show'); 
+        var html_design="";
         $.ajax({
             url: API_URL + "m=Member&a=RequestToDownload&PProfileID="+PProfileID, 
             success: function(result){
-               $('#OverAll_body').html(result); 
+                
+                var obj = JSON.parse(result); 
+                if (obj.status=="success") {
+                    var objdata =obj.data;
+                    if (parseInt(objdata.balancecredits)>0) {
+                        html_design = '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">'
+                                        + '<form method="post" id="frm_'+PProfileID+'" name="frm_'+PProfileID+'" action="" >'
+                                        + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                        + '<h4 class="modal-title">Download Profile</h4>'
+                                        + '<input type="hidden" value="'+PProfileID+'" name="PProfileCode">'
+                                        + '<div align="center" style="padding-top: 33px;">'
+                                            + '<table>'
+                                                + '<tr>'
+                                                    + '<td>You have remainig profiles to download &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+objdata.balancecredits+'</td>'
+                                                + '</tr>'
+                                            + '</table>'
+                                            + '<br>'
+                                            + '<button type="button" class="btn btn-primary" name="Continue"  onclick="OverallSendOTP(\''+PProfileID+'\')">Continue</button>&nbsp;'
+                                            + '<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>'
+                                        + '</div>'
+                                        + '<br>'
+                                        + '</form>'
+                                    + '</div>';
+                        
+                    } else {
+                        html_design = '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">'
+                                        + '<form method="post" id="frm_'+PProfileID+'" name="frm_'+PProfileID+'" action="" >' 
+                                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                            + '<h4 class="modal-title">Download Profile</h4>'
+                                            + '<input type="hidden" value="'+PProfileID+'" name="PProfileCode">'
+                                            + '<div style="text-align:center">'
+                                                + 'You don\'t have credits to download profile in your account<br>'
+                                                + 'Please upgrade your membership.'
+                                                + '<br><br>'
+                                                + '<a href="'+AppUrl+'Matches/Search/ViewPlans/'+PProfileID+'.htm " class="btn btn-primary" name="Continue">Upgrade Membership</a>&nbsp;'
+                                                + '<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>'
+                                            + '</div><br>'
+                                        + '</form>'
+                                    + '</div>';
+                }
+                } else {
+                   html_design = obj.message; 
+                }
+               $('#OverAll_body').html(html_design); 
             }});
     }
-
+ //ReqToDownloadOTP 
 function OverallSendOTP(formid) {
         
         var param = $("#frm_"+formid).serialize();

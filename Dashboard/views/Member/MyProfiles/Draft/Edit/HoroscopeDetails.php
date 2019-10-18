@@ -59,7 +59,7 @@ $(document).ready(function() {
         </div>
         <div class="form-group row">
             <label for="Time Of Birth" class="col-sm-2 col-form-label">Place of birth<span id="star">*</span></label>
-            <div class="col-sm-4"><input type="text" name="PlaceOfBirth" id="PlaceOfBirth" class="form-control" value="<?php echo (isset($_POST['PlaceOfBirth']) ? $_POST['PlaceOfBirth'] : $ProfileInfo['PlaceOfBirth']);?>" placeholder="Place Of Birth"> </div>
+            <div class="col-sm-4"><input type="text" name="PlaceOfBirth" id="PlaceOfBirth" maxlength="50" class="form-control" value="<?php echo (isset($_POST['PlaceOfBirth']) ? $_POST['PlaceOfBirth'] : $ProfileInfo['PlaceOfBirth']);?>" placeholder="Place Of Birth"> </div>
             <label for="Community" class="col-sm-2 col-form-label">Star Name<span id="star">*</span></label>
             <div class="col-sm-4">
                 <select class="selectpicker form-control" data-live-search="true" id="StarName" name="StarName">
