@@ -1,10 +1,10 @@
 <?php
-    $response = $webservice->getData("Admin","GetMemberViewBankRequests",array());
+    $response = $webservice->getData("Admin","GetFranchiseeViewBankRequests",array());
     $BankRequest          = $response['data'];
 ?>
  <?php 
      if (isset($_POST['Approve'])) {  
-        $res = $webservice->getData("Admin","ApproveBankWalletRequest",$_POST);
+        $res = $webservice->getData("Admin","ApproveFranchiseeBankWalletRequest",$_POST);
         if ($res['status']=="success") {  
             echo "<script>location.href='../ViewBankRequests/".$BankRequest['ReqID'].".htm'</script>";   
          } else {
@@ -13,7 +13,7 @@
         }
     }
     if (isset($_POST['Reject'])) {  
-        $res = $webservice->getData("Admin","RejectBankWalletRequest",$_POST);
+        $res = $webservice->getData("Admin","RejectFranchiseeBankWalletRequest",$_POST);
         if ($res['status']=="success") {  
             echo "<script>location.href='../ViewBankRequests/".$BankRequest['ReqID'].".htm'</script>";   
          } else {
@@ -30,8 +30,8 @@
             <div class="col-sm-6"><h4 class="card-title">View Bank Requests</h4></div>
          </div>
        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Member Name</label>                 
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $BankRequest['MemberName'];?></label>
+            <label class="col-sm-2 col-form-label">Franchisee Name</label>                 
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $BankRequest['PersonName'];?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Amount</label>                 

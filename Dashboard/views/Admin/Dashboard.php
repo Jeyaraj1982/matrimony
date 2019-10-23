@@ -112,16 +112,36 @@
             </div> 
            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card" style="height: 164px;">
               <div class="card card-statistics">
-                <div class="card-body">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
                       <i class="mdi mdi-cube text-danger icon-lg"></i>
                     </div>
-                    <?php foreach($response['data']['OrderCount'] as $order) { ?>     
+                    <?php foreach($response['data']['MemberWalletRequestCount'] as $MemberReqCount) { ?>     
                     <div class="float-right">
-                      <p class="mb-0 text-right">Order Value</p>
+                      <p class="mb-0 text-right">Wallet Update Request<br>( Member )</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0"><?php echo $order['cnt'];?></h3>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $MemberReqCount['cnt'];?></h3>
+                      </div>
+                    </div>
+                    <?php }?>
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Accounts/ManageOrder">View</a>
+                  </p>
+                </div>
+              <br>
+              <div class="card card-statistics" style="margin-top: 42px;">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-cube text-danger icon-lg"></i>
+                    </div>
+                    <?php foreach($response['data']['FranchiseeWalletRequestCount'] as $FranchiseeReqCount) { ?>     
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Wallet Update Request<br>( Franchisee )</p>
+                      <div class="fluid-container">
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $FranchiseeReqCount['cnt'];?></h3>
                       </div>
                     </div>
                     <?php }?>
@@ -132,6 +152,7 @@
                 </div>
               </div>
        </div> 
+       </div>
        </div>
        <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">

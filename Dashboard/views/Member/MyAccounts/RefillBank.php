@@ -175,7 +175,7 @@
             <a href="ListOfBankRequests" >List of Previous Requests</a>
             </div>
         </div>
-    </div>
+       </div>
     <div class="col-sm-4" style="border-left:1px solid #e6e6e6;;overflow: auto;">
         <?php foreach($BankNames as $BankName) { ?>
         <div class="form-group row">

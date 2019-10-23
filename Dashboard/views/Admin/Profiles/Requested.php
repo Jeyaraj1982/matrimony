@@ -2,7 +2,15 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Profile Requested</h4>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                     <h4 class="card-title">Profile Requested</h4>
+                </div>
+                <div class="col-sm-6" style="text-align:right">
+                    <a href="<?php echo GetUrl("Profiles/Requested");?>"><img src="<?php echo SiteUrl?>assets/images/listicon.svg" style="width:30px"></a>&nbsp;&nbsp;
+                    <a href="<?php echo GetUrl("Profiles/RequestedProfileDisplay");?>"><img src="<?php echo SiteUrl?>assets/images/rectangleListicon.svg" style="width:30px"></a>
+                </div>
+            </div>
                 <div class="table-responsive">
                     <table id="myTable" class="table table-striped">
                       <thead>

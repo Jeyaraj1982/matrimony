@@ -5,6 +5,9 @@ $response = $webservice->getData("Admin","GetDraftProfileInfo",array("ProfileCod
     $EducationAttachment = $response['data']['EducationAttachments'];
     $PartnerExpectation = $response['data']['PartnerExpectation'];
 ?>
+<script>
+$(window).on("beforeunload", function() { return confirm("Do you really want to close?"); });
+</script>
  <style>
  .table-bordered > tbody > tr > td{
      width: 75px;
@@ -320,7 +323,7 @@ legend {
                 <?php } else { echo strlen(trim($ProfileInfo['MothersOccupation']))> 0 ? trim($ProfileInfo['MothersOccupation']) : "N/A "; } ?>
             </label>
             <label class="col-sm-2 col-form-label">Mother's contact</label>           
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['MothersContact'])))>0){?><?php echo "+"; echo $ProfileInfo['MothersContactCountryCode'];?>-<?php echo $ProfileInfo['FathersContact'];?><?php  } else{ echo "N/A";}?></label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['MothersContact'])))>0){?><?php echo "+"; echo $ProfileInfo['MothersContactCountryCode'];?>-<?php echo $ProfileInfo['MothersContact'];?><?php  } else{ echo "N/A";}?></label>
         </div>
         <div class="form-group row">
             <?php if($ProfileInfo['MothersOccupationCode']!="OT107") {?>
@@ -775,16 +778,32 @@ function RequestToModify(ProfileCode) {
 function ApproveProfile(frmid) {
          var param = $( "#frm_"+frmid).serialize();
          $('#Approve_body').html(preloader);
+         var html = '';
                     $.post( API_URL + "m=Admin&a=ApproveProfile", 
                             param,
                             function(result2) {
                                 var obj = JSON.parse(result2);
                                 if (obj.status=="success") {
+                                   html = '<div style="background:white;width:100%;padding:20px;height:100%;"> '
+                                      + '<p style="text-align:center"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="10%"><p>'
+                                      + '<h5 style="text-align:center;color:#ada9a9">Approved Successfully<br></h5>'
+                                      + '<div style="text-align:center"<a href="'+AppUrl+'Profiles/Requested" class="btn btn-primary">View Requested Profiles</a></div>'
+                                      + '</div>';
+                                      //+ '<h5 style="text-align:center;"><a href="javascript:void(0)" onclick="RequestToModify(\''.$_POST['ProfileID'].'\')" class="btn btn-primary" style="cursor:pointer">Request to modify</a> <h5>'
+                                    $('#Approve_body').html(html);
                                     // $('#Approve_body').html(result2);
-                                     $('#Approve_body').html("success");
-                                   setTimeout(function(){location.href= AppUrl+"Profiles/Approved";},1000);
+                                //     $('#Approve_body').html("success");
+                                 //  setTimeout(function(){location.href= AppUrl+"Profiles/Approved";},1000);
                                 } else {
-                                    alert(obj.message);       
+                                   html = '<div style="background:white;width:100%;padding:20px;height:100%;"> '
+                                      + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                      + '<h4 class="modal-title">Profile Verification</h4>  <br><br>'
+                                      + '<p style="text-align:center"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                      + '<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h5>'
+                                      
+                                      + '</div>';
+                                      //+ '<h5 style="text-align:center;"><a href="javascript:void(0)" onclick="RequestToModify(\''.$_POST['ProfileID'].'\')" class="btn btn-primary" style="cursor:pointer">Request to modify</a> <h5>'
+                                    $('#Approve_body').html(html);
                                 }
                             }
                     );
@@ -822,6 +841,8 @@ function showAttachmentOccupationForView(ProfileCode,MemberID,ProfileID,FileName
                     +  '</div>';                                                                                                
             $('#Approve_body').html(content);
         } 
+        
+        
 </script>
  
    

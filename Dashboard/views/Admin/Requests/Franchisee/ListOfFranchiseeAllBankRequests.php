@@ -1,5 +1,5 @@
 <?php 
-$response = $webservice->getData("Admin","MemberBankRequests",array("Request"=>"All"));
+$response = $webservice->getData("Admin","FranchiseeBankRequests",array("Request"=>"All"));
 ?>
 <form method="post" action="" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
@@ -11,7 +11,7 @@ $response = $webservice->getData("Admin","MemberBankRequests",array("Request"=>"
                 <h4 class="card-title">Member Wallet Refill Requests</h4>
                </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                    <a href="ListOfAllBankRequests" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
+                    <a href="ListOfFranchiseeAllBankRequests" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
                     <a href="ListOfPendingBankRequests"><small style="font-weight:bold;">Pending</small></a>&nbsp;|&nbsp;
                     <a href="ListOfApprovedBankRequests"><small style="font-weight:bold;">Approved</small></a>&nbsp;|&nbsp;
                     <a href="ListOfRejectedBankRequests"><small style="font-weight:bold;">Rejected</small></a>&nbsp;|&nbsp;
@@ -23,7 +23,7 @@ $response = $webservice->getData("Admin","MemberBankRequests",array("Request"=>"
                       <thead>
                         <tr>
                           <th>Req Id</th> 
-                          <th>Member ID</th> 
+                          <th>Franchisee ID</th> 
                           <th>Req Date</th> 
                           <th>Bank Name</th> 
                           <th>A/C Number</th> 
@@ -38,7 +38,7 @@ $response = $webservice->getData("Admin","MemberBankRequests",array("Request"=>"
                         <?php foreach($response['data'] as $Requests) { ?>
                         <tr>
                             <td><?php echo $Requests['ReqID'];?></td>
-                            <td><?php echo $Requests['MemberID'];?></td>
+                            <td><?php echo $Requests['FranchiseeID'];?></td>
                             <td><?php echo $Requests['RequestedOn'];?></td>
                             <td><?php echo $Requests['BankName'];?></td>
                             <td><?php echo $Requests['AccountNumber'];?></td>
@@ -46,7 +46,7 @@ $response = $webservice->getData("Admin","MemberBankRequests",array("Request"=>"
                             <td><?php echo $Requests['TransferedOn'];?></td>
                             <td><?php echo $Requests['TransferMode'];?></td>
                              <td><?php echo $Requests['TxnStatus'];?> </td>
-                             <td><a href="<?php echo GetUrl("Requests/Member/ViewBankRequests/".$Requests['ReqID'].".htm ");?>">view</a></td>
+                             <td><a href="<?php echo GetUrl("Requests/Franchisee/ViewBankRequests/".$Requests['ReqID'].".htm ");?>">view</a></td>
                         </tr>
             <?php } ?> 
                        </tbody>

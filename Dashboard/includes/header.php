@@ -18,7 +18,6 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-        <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>-->
         <script src="<?php echo SiteUrl?>assets/js/app.js" type='text/javascript'></script>
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'> 
         <link href='<?php echo SiteUrl?>assets/simpletoast/simply-toast.css' rel='stylesheet' type='text/css'>
@@ -92,11 +91,25 @@
               function changeMemberStatus(txt) {
         $('#mem_current_status').html(txt);
     }
-                   
+            
+            
+            function doPost(url,param) {
+                $.post(url,param).done(function(data){ 
+                      return data;
+                }).fail(function(xhr, status, error) {
+                    return xhr.responseText;
+                });
+            }
+            
+            var error_htmlText = '<div style="background:white;width:100%;padding:20px;height:100%;">'
+                                        + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                        + '<h4 class="modal-title"></h4>  <br><br>'
+                                        + '<p style="text-align:center"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">An error occured in the application and your request could not be processed.</h5>'
+                                       '</div>';
         </script>
         </head>
     <body>
-   <!-- time_elapsed_string($Profile['IsApprovedOn'])-->
         <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="margin-bottom:0px !important;border-radius:0px !important">
             <?php if (UserRole=="Member") { ?> 
                      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center " style="overflow:hidden">
@@ -104,138 +117,11 @@
                      </div>
                      <div class="navbar-menu-wrapper d-flex align-items-center  bshadow">        
                         <ul class="navbar-nav navbar-nav-right">
-                           <!-- <li class="nav-item dropdown">
-                                <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="mdi mdi-file-document-box"></i>
-                                    <span class="count">0</span>
-                                </a>
-                                <?php  $response = $webservice->GetMyEmails(); ?>
-                                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-                                    <?php if (sizeof($response['data'])>0) {  ?>
-                                    <div class="dropdown-item">
-                                        <p class="mb-0 font-weight-normal float-left">You have 7 unread mails</p>
-                <span class="badge badge-info badge-pill float-right">View all</span>
-            </div>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                    <img src="<?php// echo SiteUrl?>assets/images/faces/face4.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                    <h6 class="preview-subject ellipsis font-weight-medium text-dark"><?php echo $response['data']['EmailSubject'];?>
-                    <span class="float-right font-weight-light small-text">1 Minutes ago</span>
-                  </h6>
-                    <p class="font-weight-light small-text">
-                        The meeting is cancelled
-                    </p>
-                </div>
-            </a>
-            <?php } else{?>
-                <!--<div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <img src="<?php // echo SiteUrl?>assets/images/faces/face2.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium text-dark">Tim Cook
-                    <span class="float-right font-weight-light small-text">15 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    New product launch
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <img src="<?php //echo SiteUrl?>assets/images/faces/face3.jpg" alt="image" class="profile-pic">
-                </div>
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium text-dark"> Johnson
-                    <span class="float-right font-weight-light small-text">18 Minutes ago</span>
-                  </h6>
-                  <p class="font-weight-light small-text">
-                    Upcoming board meeting
-                  </p>
-                </div>
-              </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item preview-item">
-                    <div class="preview-item-content flex-grow">
-                        <h6 class="preview-subject ellipsis font-weight-medium text-dark" style="margin-bottom: -7px;">You don't have mail at this time
-                  </h6>
-                    </div>
-                </a>
-                <?php }?>
-        </div>
-</li> -->
-      <!--    <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-              <i class="mdi mdi-bell"></i>
-              <span class="count">0</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <!--<a class="dropdown-item">
-                <p class="mb-0 font-weight-normal float-left">You have 4 new notifications
-                </p>
-                <span class="badge badge-pill badge-warning float-right">View all</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-success">
-                    <i class="mdi mdi-alert-circle-outline mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium text-dark">Application Error</h6>
-                  <p class="font-weight-light small-text">
-                    Just now
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-warning">
-                    <i class="mdi mdi-comment-text-outline mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium text-dark">Settings</h6>
-                  <p class="font-weight-light small-text">
-                    Private message
-                  </p>
-                </div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="mdi mdi-email-outline mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-medium text-dark">New user registration</h6>
-                  <p class="font-weight-light small-text">
-                    2 days ago
-                  </p>
-                </div>
-              </a> 
-            < <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-item-content flex-grow">
-                  <h6 class="preview-subject ellipsis font-weight-medium text-dark" style="margin-bottom: -7px;">You don't have notifications
-                  </h6>
-                 </div>
-              </a> 
-            </div>
-          </li>  -->
           <?php
                      $response = $webservice->getData("Member","GetLoginHistory");
                ?>
                 <li class="nav-item dropdown d-none d-xl-inline-block" style="text-align: right;margin-right: 0px;">
-                    <img src="<?php echo ImagePath;?>wallet.svg" style="width:40px;color:white"/><br /><span class="profile-text" style="line-height:18px;">Rs.0.00</span> 
+                    <img src="<?php echo ImagePath;?>wallet.svg" style="width:40px;color:white"/><br /><span class="profile-text" style="line-height:18px;">Rs.<?php echo $response['data']['WalletBalance'];?></span> 
                 </li>
                 <li class="nav-item dropdown d-none d-xl-inline-block">
                      <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"></a>
@@ -245,7 +131,7 @@
             </div>
               </li>
               <li class="nav-item dropdown d-none d-xl-inline-block" style="text-align: right;">
-                <span class="profile-text" style="line-height:18px;"><?php echo "<b>".$_Member['MemberName']."</b>";?><br><span style="color:#f9f9f9f"><?php echo $_Member['MemberCode'] ; ?></span><br><span style="color:#f9f9f9f">Last Logged &nbsp;<?php echo putDateTime($response['data'][0]['LoginOn']) ; ?></span></span><br> 
+                <span class="profile-text" style="line-height:18px;"><?php echo "<b>".$_Member['MemberName']."</b>";?><br><span style="color:#f9f9f9f"><?php echo $_Member['MemberCode'] ; ?></span><br><span style="color:#f9f9f9f">Last Logged &nbsp;<?php echo putDateTime($response['data']['LoginHistory']['LoginOn']) ; ?></span></span><br> 
               </li>
              <li class="nav-item dropdown d-none d-xl-inline-block">
              <?php $filename = strlen(trim($_Member['FileName'])) >0 ? $_Member['FileName'] : SiteUrl."assets/images/userimage.jpg"; ?>
@@ -266,6 +152,19 @@
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center">        
         <ul class="navbar-nav navbar-nav-right">
+        <?php
+                     $FranchiseeWallet = $webservice->getData("Franchisee","GetFranchiseeWalletBalance");
+               ?>
+            <li class="nav-item dropdown d-none d-xl-inline-block" style="text-align: right;margin-right: 0px;">
+                    <img src="<?php echo ImagePath;?>wallet.svg" style="width:40px;color:white"/><br /><span class="profile-text" style="line-height:18px;">Rs.<?php echo $FranchiseeWallet['data']['WalletBalance'];?></span> 
+                </li>
+            <li class="nav-item dropdown d-none d-xl-inline-block">
+                     <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"></a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding-top: 10px;padding-bottom: 10px;">
+              <a href="<?php echo GetUrl("MyAccounts/RefillWallet");?>" class="dropdown-item">Wallet Update</a>
+              <a href="<?php echo GetUrl("MyAccounts/MyTransactions");?>" class="dropdown-item">Wallet Transaction</a>
+            </div>
+              </li>
              <li class="nav-item dropdown d-none d-xl-inline-block">
                 <span class="profile-text" style="line-height:10px; ">   
                 <?php echo "<b>";echo $_Franchisee['PersonName'] ; echo "</b>";?></span><br> 
@@ -399,7 +298,7 @@
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;"><?php echo $ProfileInformation['Position'];?></div>    
                     </div>
                     <div class="col-sm-9">
-                        <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
+                        <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color:#514444cc;">
                                 <div class="form-group row">                                                                                     
                                        <div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
                                 </div>

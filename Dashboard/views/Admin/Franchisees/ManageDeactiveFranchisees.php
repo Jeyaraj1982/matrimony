@@ -46,6 +46,7 @@
                                 <td><?php echo putDateTime($Franchisee['CreatedOn']);?></td>
                                 <td><a href="<?php echo GetUrl("Franchisees/Edit/". $Franchisee['FranchiseeID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Franchisees/View/". $Franchisee['FranchiseeID'].".html");?>"><span>View</span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Franchisees/Wallet/RefillTransfer/". $Franchisee['FranchiseeID'].".html");?>"><span>Refill</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Franchisees/Report/". $Franchisee['FranchiseeID'].".html");?>"><span>Report</span></a>
                                 </td>
                                 </tr>

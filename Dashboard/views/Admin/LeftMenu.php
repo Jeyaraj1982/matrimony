@@ -96,7 +96,8 @@
                 </a>
                 <div class="collapse" id="requests">
                     <ul class="nav flex-column sub-menu">                             
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ListOfAllBankRequests");?>">Bank Requests</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ListOfAllBankRequests");?>">Member Bank Requests</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Franchisee/ListOfFranchiseeAllBankRequests");?>">Franchisee Bank Requests</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ListOfAllPaypalRequests");?>">Paypal Request</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Requests/Member/ViewDocumentsVerification");?>">Document Verifications</a></li>
                     </ul>

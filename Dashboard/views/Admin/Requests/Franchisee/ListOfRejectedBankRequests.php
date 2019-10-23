@@ -1,5 +1,5 @@
 <?php 
-$response = $webservice->getData("Admin","MemberBankRequests",array("Request"=>"All"));
+$response = $webservice->getData("Admin","FranchiseeBankRequests",array("Request"=>"Failure"));
 ?>
 <form method="post" action="" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
@@ -11,10 +11,10 @@ $response = $webservice->getData("Admin","MemberBankRequests",array("Request"=>"
                 <h4 class="card-title">Member Wallet Refill Requests</h4>
                </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                    <a href="ListOfAllBankRequests" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
+                    <a href="ListOfFranchiseeAllBankRequests" ><small style="font-weight:bold;">All</small></a>&nbsp;|&nbsp;
                     <a href="ListOfPendingBankRequests"><small style="font-weight:bold;">Pending</small></a>&nbsp;|&nbsp;
                     <a href="ListOfApprovedBankRequests"><small style="font-weight:bold;">Approved</small></a>&nbsp;|&nbsp;
-                    <a href="ListOfRejectedBankRequests"><small style="font-weight:bold;">Rejected</small></a>&nbsp;|&nbsp;
+                    <a href="ListOfRejectedBankRequests"><small style="font-weight:bold;text-decoration:underline">Rejected</small></a>&nbsp;|&nbsp;
                     <a href="BankRequestReport"><small style="font-weight:bold;">Report</small></a>
                 </div>
             </div>
@@ -23,7 +23,7 @@ $response = $webservice->getData("Admin","MemberBankRequests",array("Request"=>"
                       <thead>
                         <tr>
                           <th>Req Id</th> 
-                          <th>Member ID</th> 
+                          <th>Franchisee ID</th> 
                           <th>Req Date</th> 
                           <th>Bank Name</th> 
                           <th>A/C Number</th> 
@@ -36,9 +36,9 @@ $response = $webservice->getData("Admin","MemberBankRequests",array("Request"=>"
                       </thead>
                       <tbody>  
                         <?php foreach($response['data'] as $Requests) { ?>
-                        <tr>
+                <tr>
                             <td><?php echo $Requests['ReqID'];?></td>
-                            <td><?php echo $Requests['MemberID'];?></td>
+                            <td><?php echo $Requests['FranchiseeID'];?></td>
                             <td><?php echo $Requests['RequestedOn'];?></td>
                             <td><?php echo $Requests['BankName'];?></td>
                             <td><?php echo $Requests['AccountNumber'];?></td>

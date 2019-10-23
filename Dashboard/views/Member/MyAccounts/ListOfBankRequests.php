@@ -19,6 +19,7 @@
                     <th>Txn Amount</th>  
                     <th>Txn Date</th>
                     <th>Txn Mode</th>
+                    <th>Txn ID</th>
                     <th>Status</th>
                     <th></th>
                 </tr>  
@@ -30,9 +31,10 @@
                     <td><?php echo $Requests['ReqID'];?></td>
                     <td><?php echo PutDateTime($Requests['RequestedOn']);?></td>
                     <td><?php echo $Requests['BankName'];?></td>
-                    <td style="text-align:right"><?php echo $Requests['RefillAmount'];?></td>
-                    <td><?php echo PutDateTime($Requests['TransferedOn']);?></td>
+                    <td style="text-align:right"><?php echo number_format($Requests['RefillAmount'],2);?></td>
+                    <td><?php echo PutDate($Requests['TransferedOn']);?></td>
                     <td><?php echo $Requests['TransferMode'];?></td>
+                    <td><?php echo $Requests['TransactionID'];?></td>
                     <td><?php if($Requests['IsApproved']==0 && $Requests['IsRejected']==0){
                         echo "Pending";
                         }if($Requests['IsApproved']==1 && $Requests['IsRejected']==0){

@@ -14,27 +14,38 @@
                 <div class="table-responsive">
                     <table id="myTable" class="table table-striped">
                       <thead>  
-                        <tr> 
-                        <th>Refill Amount</th>  
-                        <th>Bank Name</th>
-                        <th>Date of Birth</th>
-                        <th>Transaction ID</th>
-                        <th>Remarks</th>
-                        <th></th>
-                        </tr>  
+                        <tr>
+                            <th>Req Id</th> 
+                            <th>Req Date</th> 
+                            <th>Bank Name</th> 
+                            <th>Txn Amount</th>  
+                            <th>Txn Date</th>
+                            <th>Txn Mode</th>
+                            <th>Txn ID</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr> 
                     </thead>
                      <tbody>  
-                        <?php $Wallets = $mysql->select("select * from _tbl_franchisees_refillwallet"); ?>
-                        <?php foreach($Wallets as $Wallet) { ?>
-                                <tr>
-                                <td><?php echo $Wallet['RefillAmount'];?></td>
-                                <td><?php echo $Wallet['BankName'];?></td>
-                                <td><?php echo $Wallet['DateofBirth'];?></td>
-                                <td><?php echo $Wallet['TransactionID'];?></td>
-                                <td><?php echo $Wallet['Remarks'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Edit/". $Wallet['RefillID'].".html");?>"><span class="glyphicon glyphicon-pencil">Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("View/". $Wallet['RefillID'].".html"); ?>"><span class="glyphicon glyphicon-pencil">View</span></a>&nbsp;&nbsp;&nbsp;
-                                </tr>
+                        <?php $response = $webservice->getData("Franchisee","GetListOfPreviousBankRequests");?>
+                        <?php foreach($response['data'] as $Requests) { ?>
+                        <tr>
+                            <td><?php echo $Requests['ReqID'];?></td>
+                            <td><?php echo PutDateTime($Requests['RequestedOn']);?></td>
+                            <td><?php echo $Requests['BankName'];?></td>
+                            <td style="text-align:right"><?php echo number_format($Requests['RefillAmount'],2);?></td>
+                            <td><?php echo PutDate($Requests['TransferedOn']);?></td>
+                            <td><?php echo $Requests['TransferMode'];?></td>
+                            <td><?php echo $Requests['TransactionID'];?></td>
+                            <td><?php if($Requests['IsApproved']==0 && $Requests['IsRejected']==0){
+                                echo "Pending";
+                                }if($Requests['IsApproved']==1 && $Requests['IsRejected']==0){
+                                    echo "Approved";
+                                }if($Requests['IsApproved']==0 && $Requests['IsRejected']==1){
+                                    echo "Rejected";}
+                            ?></td>
+                            <td><a href="<?php echo GetUrl("MyAccounts/ViewBankRequests/". $Requests['ReqID'].".html"); ?>">View</a></td>
+                        </tr>
                         <?php } ?>            
                       </tbody>                        
                      </table>
