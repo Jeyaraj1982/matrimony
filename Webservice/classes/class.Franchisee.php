@@ -895,9 +895,9 @@
          }
     function GetRefillWalletBankNameAndMode(){
            global $mysql,$loginInfo;    
-              $BankName = $mysql->select("select * from `_tbl_bank_details`");
+              $BankName = $mysql->select("select * from `_tbl_settings_bankdetails` where IsActive='1'");
                 return Response::returnSuccess("success",array("BankName" => $BankName,
-                                                           "ModeOfTransfer" => CodeMaster::getData('MODEOFTRANSFER')));
+                                                           "ModeOfTransfer" => CodeMaster::getData('MODE')));
                                                             
     }
     
@@ -2364,7 +2364,7 @@
                      
                      if ($PostProfiles[0]['IsApproved']>0) {
                          
-                         $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where DraftProfileID='".$PostProfiles['0']['ProfileID']."' and  `MemberID` = '".$loginInfo[0]['MemberID']."'");
+                         $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where DraftProfileID='".$PostProfiles[0]['ProfileID']."' and  `MemberID` = '".$loginInfo[0]['MemberID']."'");
                          foreach($PublishedProfiles as $PublishedProfile) {
                             $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
                             $result['mode']="Published";
@@ -2531,6 +2531,258 @@
                        </div>';
 
          }
+         function SaveBankRequest() {
+
+             global $mysql,$loginInfo;
+             $BankNames = $mysql->select("select * from  `_tbl_bank_details` where BankID='".$_POST['BankName']."'"); 
+             $TransferMode= CodeMaster::getData("MODE",$_POST['Mode']); 
+             $id =  $mysql->insert("_tbl_wallet_bankrequests",array("RequestedOn" => date("Y-m-d H:i:s"),
+                                                              "FranchiseeID"          => $loginInfo[0]['FranchiseeStaffID'],
+                                                              "IsMember"          => "0",
+                                                              "BankCode"          => $BankNames[0]['BankCode'],        
+                                                              "BankName"          => $BankNames[0]['BankName'],      
+                                                              "AccountName"       => $BankNames[0]['AccountName'],      
+                                                              "AccountNumber"     => $BankNames[0]['AccountNumber'],      
+                                                              "IFSCode"           => $BankNames[0]['IFSCode'],      
+                                                              "RefillAmount"      => $_POST['Amount'],      
+                                                              "TransferedOn"      => date("Y-m-d H:i:s"),
+                                                              "TransferModeCode"  =>  $TransferMode[0]['SoftCode'],
+                                                              "TransferMode"      =>  $TransferMode[0]['CodeValue'],
+                                                              "TransactionID"      =>  $_POST['TxnId']));
+             $sql=$mysql->qry;
+             if (sizeof($id)>0) {
+                 return Response::returnSuccess("success",array());
+             } else{
+                 return Response::returnError("Access denied. Please contact support");   
+             }
+         }
+         function GetListOfPreviousBankRequests() {
+
+             global $mysql,$loginInfo;
+
+             $sql = "SELECT * From `_tbl_wallet_bankrequests` ";
+
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql."Where `FranchiseeID`='". $loginInfo[0]['FranchiseeStaffID']."' order by `ReqID` DESC "));    
+             }
+
+             if (isset($_POST['Request']) && $_POST['Request']=="Pending") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `FranchiseeID`='". $loginInfo[0]['FranchiseeStaffID']."' and `IsApproved`='0' and `IsRejected`='0' order by `ReqID` DESC "));    
+             }
+
+             if (isset($_POST['Request']) && $_POST['Request']=="Success") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `FranchiseeID`='". $loginInfo[0]['FranchiseeStaffID']."' and `IsApproved`='1' and `IsRejected`='0' order by `ReqID` DESC "));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Reject") {
+                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `FranchiseeID`='". $loginInfo[0]['FranchiseeStaffID']."' and `IsApproved`='0' and `IsRejected`='1' order by `ReqID` DESC "));    
+             }
+         }
+         function GetWalletBankRequests() {
+
+             global $mysql,$loginInfo;
+
+             $sql = "SELECT * From `_tbl_wallet_transactions` ";
+
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql."Where `FranchiseeID`='". $loginInfo[0]['FranchiseeStaffID']."' and `IsMember`='0' order by `TxnID` DESC"));    
+             }
+         }
+        
+        function GetMemberProfileforView() {
+
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+             $Position = "";   
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
+                                                                                                
+                 $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and `MemberID`='".$_POST['Code']."' and  `RequestToVerify`='0' and IsApproved='0'");
+                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and `MemberID`='".$_POST['Code']."' and  RequestToVerify='1'");
+                 
+                 if (sizeof($DraftProfiles)>0) {
+                     
+                     foreach($DraftProfiles as $DraftProfile) {
+                        $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);    
+                        $result['mode']="Draft";
+                        $Profiles[]= $result;
+                     }
+                     
+                 } else if (sizeof($PostProfiles)>0) {
+                     
+                     if ($PostProfiles[0]['IsApproved']>0) {
+                         
+                         $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where DraftProfileID='".$PostProfiles[0]['ProfileID']."' and  `MemberID` = '".$_POST['Code']."'");
+                         foreach($PublishedProfiles as $PublishedProfile) {
+                            $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
+                            $result['mode']="Published";
+                            $Profiles[]=$result;     
+                         }
+                         
+                     } else {
+                        foreach($PostProfiles as $PostProfile) {
+                            $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode'],1);
+                            $result['mode']="Posted";
+                            $Profiles[]=$result;     
+                        }
+                     }
+                     
+                 }  
+                  return Response::returnSuccess("success",$Profiles);
+             }
+             
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Draft") {  /* Profile => Drafted */
+                 
+                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='0'");
+                 
+                 if (sizeof($DraftProfiles)>0) {
+                     foreach($DraftProfiles as $DraftProfile) {
+                        $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
+                        $result['mode']="Draft";
+                        $Profiles[]=$result;   
+                     }
+                 }
+                 
+                 return Response::returnSuccess("success",$Profiles);
+             }
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Posted") {    /* Profile => Posted */
+                  $PostProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='1' and IsApproved='0'");
+
+                  if (sizeof($PostProfiles)>0) {
+                      foreach($PostProfiles as $PostProfile) {
+                        $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode'],2);
+                        $result['mode']="Posted";
+                        $Profiles[]=$result;  
+                     }
+                 }
+                 
+                return Response::returnSuccess("success",$Profiles);
+             }
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {    /* Profile => Posted */
+             
+                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and IsApproved='1' and RequestToVerify='1'");
+                if (sizeof($PublishedProfiles)>0) {
+                    foreach($PublishedProfiles as $PublishedProfile) {
+                        $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);
+                        $result['mode']="Published"; 
+                        $RecentlyViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['RecentlyViewed']= sizeof($RecentlyViewedcount);
+                        
+                        $MyFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `VisterProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['MyFavorited']= sizeof($MyFavoritedcount);
+                        
+                        $WhoViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `VisterProfileCode` ");
+                        $result['RecentlyWhoViwed']= sizeof($WhoViewedcount);
+                        
+                        $WhoFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['WhoFavorited']= sizeof($WhoFavoritedcount);
+                        
+                        $MutualCount = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' order by FavProfileID DESC)");
+                                       
+                        $result['MutualCount']= sizeof($WhoFavoritedcount);
+                        
+                        $Profiles[]=$result; 
+                        
+                     }                                                                          
+                }
+                return Response::returnSuccess("success",$Profiles);
+             }
+         }
+         function getAvailableBalance() {
+             global $mysql,$loginInfo;
+             $d = $mysql->select("select (sum(Credits)-sum(Debits)) as bal from  _tbl_wallet_transactions where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'");
+             return isset($d[0]['bal']) ? $d[0]['bal'] : 0;      
+         }
+         function GetMemberWalletBalance($memberid) {
+             
+             global $mysql,$loginInfo;
+             
+             $Balance = $mysql->select("select  (sum(Credits)-sum(Debits)) as bal from `_tbl_wallet_transactions` where `MemberID`='".$memberid."' and IsMember='1'");
+             return isset($d[0]['bal']) ? $d[0]['bal'] : 0;
+         } 
+         
+         function FranchiseeTransferAmountToMemberWallet() {
+
+             global $mysql,$loginInfo;
+             
+             $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$_POST['Code']."'");
+             $Franchisee = $mysql->select("select * from `_tbl_franchisees` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+                
+               $id=$mysql->insert("_tbl_wallet_transactions",array("FranchiseeID"     =>$loginInfo[0]['FranchiseeID'],
+                                                                   "MEMFRANCode"      =>$Member[0]['MemberCode'],                    
+                                                                   "Particulars"      =>'Transfer to   '. $Member[0]['MemberCode'],                    
+                                                                   "Credits"          =>"0",                    
+                                                                   "Debits"           => $_POST['AmountToTransfer'], 
+                                                                   "AvailableBalance" => $this->getAvailableBalance()+$_POST['AmountToTransfer'],                   
+                                                                   "TxnDate"          =>date("Y-m-d H:i:s"),
+                                                                   "IsMember"         =>"0"));  
+            
+                   $mysql->insert("_tbl_wallet_transactions",array("MemberID"         =>$_POST['Code'],
+                                                                   "MEMFRANCode"      => $Franchisee[0]['MemberCode'],        
+                                                                   "Particulars"      =>'Transfer from  '. $Franchisee[0]['FranchiseeCode'],                    
+                                                                   "Credits"          => $_POST['AmountToTransfer'],                    
+                                                                   "Debits"           =>"0", 
+                                                                   "AvailableBalance" => $this->GetMemberWalletBalance($_POST['Code'])+$_POST['AmountToTransfer'],                   
+                                                                   "TxnDate"          =>date("Y-m-d H:i:s"),
+                                                                   "IsMember"         =>"1")); 
+             
+             if (sizeof($id)>0) {
+                 return Response::returnSuccess("success",array("sql"=>$mysql->qry));
+             } else{
+                 return Response::returnError("Access denied. Please contact support");   
+             }
+         }
+         
+         function GetFranchiseeWalletBalance() {
+             
+             global $mysql,$loginInfo;
+          
+             return Response::returnSuccess("success",array("WalletBalance" => number_format($this->getAvailableBalance(),2)));
+         }
+         
+         function GetMemberWalletAndProfileDetails() {
+             
+             global $mysql,$loginInfo;
+          
+            if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="WalletRequests") {
+                 $Requests = $mysql->select("select * from `_tbl_wallet_bankrequests` where `MemberID`='".$_POST['Code']."' and `IsMember`='1' order by `ReqID` DESC");
+             return Response::returnSuccess("success",$Requests);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="WalletTransactions") {
+                 $Requests = $mysql->select("select * from `_tbl_wallet_transactions` where `MemberID`='".$_POST['Code']."' and `IsMember`='1' order by `TxnID` DESC");
+             return Response::returnSuccess("success",$Requests);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Recentkyviewed") {
+                
+                 $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$_POST['Code']."' order by LastSeenID DESC");
+                     $profileCodes  = array();
+                     foreach($RecentProfiles as $RecentProfile) {
+                         if (!(in_array($RecentProfile['ProfileCode'], $profileCodes)))
+                         {
+                            $profileCodes[]=$RecentProfile['ProfileCode'];
+                         }
+                     }
+                     if (sizeof($profileCodes)>0) {
+                        for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
+                            if (isset($profileCodes[$i]))  {
+                                $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                            }
+                        }
+                     }
+                  
+             return Response::returnSuccess("success",$Profiles);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="LoginLogs") {
+                 $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$_POST['Code']."' ORDER BY `LoginID` DESC LIMIT 0,10");
+             return Response::returnSuccess("success",$LoginHistory);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Activities") {
+                 $Activities = $mysql->select("select * from `_tbl_logs_activity` where `MemberID`='".$_POST['Code']."' ORDER BY `ActivityID` DESC LIMIT 0,5");
+             return Response::returnSuccess("success",$Activities);
+             }
+         }
     }
-    
+//2747    
 ?> 

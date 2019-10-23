@@ -22,6 +22,10 @@
                 <div class="col-sm-4"><?php echo $Requests['BankName'];?></div>
             </div>
             <div class="form-group row">
+                <div class="col-sm-3">Account Number</div>
+                <div class="col-sm-4"><?php echo $Requests['AccountNumber'];?></div>
+            </div>
+            <div class="form-group row">
                 <div class="col-sm-3">Transaction Amount</div>
                 <div class="col-sm-4"><?php echo number_format($Requests['RefillAmount'],2);?></div>
             </div>
@@ -46,6 +50,16 @@
                         }if($Requests['IsApproved']==0 && $Requests['IsRejected']==1){
                             echo "Rejected";}
                     ?></div>
+            </div>
+            <div class="form-group row">
+            <?php if($Requests['IsApproved']==1 && $Requests['IsRejected']==0){  ?>
+                <div class="col-sm-3">Approved On</div>
+                <div class="col-sm-4"><?php echo $Requests['ApprovedOn'];?></div>
+            <?php } ?>
+            <?php if($Requests['IsApproved']==0 && $Requests['IsRejected']==1){  ?>
+                <div class="col-sm-3">Rejected On</div>
+                <div class="col-sm-4"><?php echo $Requests['RejectedOn'];?></div>
+            <?php } ?>
             </div>
             <div class="form-group row">
                 <div class="col-sm-4"><a href="../ListOfBankRequests" >List of Requests</a></div>

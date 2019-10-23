@@ -73,10 +73,11 @@
         
         function GetNextProfileCode() {
             global $mysql;
-            $prefix = "PID";
-            $length = 6;
-            $Rows   = $mysql->select("select count(*) as rCount from `_tbl_profiles`");
-            return SeqMaster::GenerateCode($prefix,$length,$Rows[0]['rCount']+1); 
+            $data = $mysql->select("select * from _tbl_sequence where SequenceFor='Profile'");
+            $prefix = $data[0]['Prefix'];
+            $length = $data[0]['StringLength'];
+            $LastNumber = $data[0]['LastNumber']+1;
+            return SeqMaster::GenerateCode($prefix,$length,$LastNumber); 
         }
         function GetNextPlanCode() {
             global $mysql;

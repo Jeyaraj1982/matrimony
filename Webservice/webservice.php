@@ -157,4 +157,9 @@
             return true;
         }
     }
+    function getAvailableBalance($memberID) {
+    global $mysql;
+    $d = $mysql->select("select (sum(Credits)-sum(Debits)) as bal from  _tbl_wallet_transactions where MemberID='".$memberID."'");
+    return isset($d[0]['bal']) ? $d[0]['bal'] : 0;      
+}
 ?>

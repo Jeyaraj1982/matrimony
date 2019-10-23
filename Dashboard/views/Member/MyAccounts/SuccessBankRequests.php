@@ -2,7 +2,7 @@
     $page="MyWallet";
     $spage="RefillWallet";
     $sp="Bank";
-    $response = $webservice->getData("Member","GetListOfPreviousBankRequests",array("Request"=>"All"));
+    $response = $webservice->getData("Member","GetListOfPreviousBankRequests",array("Request"=>"Success"));
 ?>
 <?php include_once("accounts_header.php");?>
 <form method="post" action="">
@@ -12,9 +12,9 @@
                <h4 class="card-title">Refill Wallet Bank Requests</h4>
             </div>
             <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                <a href="ListOfBankRequests"><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
+                <a href="ListOfBankRequests"><small style="font-weight:bold;">All</small></a>&nbsp;|&nbsp;
                 <a href="PendingBankRequests"><small style="font-weight:bold;">Pending</small></a>&nbsp;|&nbsp;
-                <a href="SuccessBankRequests"><small style="font-weight:bold;">Success</small></a>&nbsp;|&nbsp;
+                <a href="SuccessBankRequests"><small style="font-weight:bold;text-decoration:underline">Success</small></a>&nbsp;|&nbsp;
                 <a href="RejectBankRequests"><small style="font-weight:bold;">Reject</small></a>
             </div>
         </div>
@@ -23,7 +23,7 @@
         <table id="myTable" class="table table-striped" style="width:100%;border-bottom:1px solid #ccc;">
             <thead>  
                 <tr>
-                    <th>Req Id</th> 
+                    <th>Req Id</th>  
                     <th>Req Date</th> 
                     <th>Bank Name</th> 
                     <th>A/C Number</th> 

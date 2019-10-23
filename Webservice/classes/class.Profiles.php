@@ -60,7 +60,7 @@
                                                                       "FranchiseeID" => "0",
                                                                       "AdminID"      => "0"));
                                                                       
-            $result = array("ProfileInfo"          => $Profiles[0],
+            return array("ProfileInfo"          => $Profiles[0],
                             "Position"             => $Position,
                             "LastSeen"             => (isset($lastseen[0]['LastSeen']) ? $lastseen[0]['LastSeen'] : 0),
                             "Members"              => $members[0],
@@ -69,8 +69,6 @@
                             "PartnerExpectation"   => $PartnersExpectations[0],
                             "ProfilePhotos"        => $ProfilePhotos,  /*array*/
                             "ProfileThumb"         => $ProfileThumbnail);
-            return  $result;
-                                                                                                           
         }
         
         public function getDraftProfileInformationforAdmin($ProfileCode) {
@@ -80,12 +78,12 @@
             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where ProfileCode='".$ProfileCode."'");               
             $lastseen = $mysql->select("select * from `_tbl_draft_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' order by LastSeenID desc limit 0,1");
             
-               $id = $mysql->insert("_tbl_draft_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
-                                                                      "LastSeenBy"   => $loginInfo[0]['AdminID'],
-                                                                      "ProfileID"    => $Profiles[0]['ProfileID'],
-                                                                      "MemberID"     => $Profiles[0]['MemberID'],
-                                                                      "FranchiseeID" => "0",
-                                                                      "AdminID"      => $loginInfo[0]['AdminID'] ));
+            $id = $mysql->insert("_tbl_draft_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
+                                                                       "LastSeenBy"   => $loginInfo[0]['AdminID'],
+                                                                       "ProfileID"    => $Profiles[0]['ProfileID'],
+                                                                       "MemberID"     => $Profiles[0]['MemberID'],
+                                                                       "FranchiseeID" => "0",
+                                                                       "AdminID"      => $loginInfo[0]['AdminID'] ));
             
             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");     
             $PartnersExpectations = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
@@ -95,21 +93,13 @@
             $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where  `ProfileCode`='".$ProfileCode."' and `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
             if (sizeof($ProfilePhotos)<4) {
                 for($i=sizeof($ProfilePhotos);$i<4;$i++) {
-                    if ($Profiles[0]['SexCode']=="SX002"){
-                        $ProfilePhotos[$i]['ProfilePhoto'] = AppPath."assets/images/noprofile_female.png";
-                    } else {
-                        $ProfilePhotos[$i]['ProfilePhoto'] = AppPath."assets/images/noprofile_male.png";
-                    }
+                    $ProfilePhotos[$i]['ProfilePhoto'] = ($Profiles[0]['SexCode']=="SX002") ?  AppPath."assets/images/noprofile_female.png" : AppPath."assets/images/noprofile_male.png";
                 }  
             }
             
             $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where `ProfileCode`='".$ProfileCode."' and `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='1'");
             if (sizeof($ProfileThumb)==0) {
-                if ($Profiles[0]['SexCode']=="SX002"){
-                    $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
-                } else { 
-                    $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
-                }
+                $ProfileThumbnail = ($Profiles[0]['SexCode']=="SX002") ?  AppPath."assets/images/noprofile_female.png" :  AppPath."assets/images/noprofile_male.png";
             } else {
                  $ProfileThumbnail = $ProfileThumb[0]['ProfilePhoto'];                                              
             } 
@@ -150,13 +140,13 @@
                 
             $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$ProfileCode."'");               
             $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' order by LastSeenID desc limit 0,1");
-           
-               $id = $mysql->insert("_tbl_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
-                                                                      "LastSeenBy"   => $loginInfo[0]['AdminID'],
-                                                                      "ProfileID"    => $Profiles[0]['ProfileID'],
-                                                                      "MemberID"     => "0",
-                                                                      "FranchiseeID" => "0",
-                                                                      "AdminID"      => $loginInfo[0]['AdminID']));
+            
+            $id = $mysql->insert("_tbl_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
+                                                                 "LastSeenBy"   => $loginInfo[0]['AdminID'],
+                                                                 "ProfileID"    => $Profiles[0]['ProfileID'],
+                                                                 "MemberID"     => "0",
+                                                                 "FranchiseeID" => "0",
+                                                                 "AdminID"      => $loginInfo[0]['AdminID']));
             
             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");     
             $PartnersExpectations = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
@@ -522,7 +512,7 @@
         $temp = explode(".",$image);
         $temp = trim(strtolower($temp[sizeof($temp)-1]));
         if ($temp=="jpeg"  || $temp=="jpg") {
-            return 'data:image/jpeg;ba se64,'.base64_encode(file_get_contents(file_url($image)));   
+            return 'data:image/jpeg;base64,'.base64_encode(file_get_contents(file_url($image)));   
         } else if ($temp=="png" ) {
             return 'data:image/png;base64,'.base64_encode(file_get_contents(file_url($image))); 
         }
@@ -534,4 +524,5 @@
         $path_parts = array_map('rawurldecode', explode('/', $parts['path']));
         return $parts['scheme'].'://'.$parts['host'].implode('/', array_map('rawurlencode', $path_parts));
     }
+    //537
 ?>

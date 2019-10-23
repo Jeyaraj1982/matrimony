@@ -8,7 +8,12 @@ RewriteRule ^Profiles/ViewPublishProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profil
 RewriteRule ^ViewMemberProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewMemberProfile
 
 RewriteRule ^ViewProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewProfile [QSA]
+RewriteRule ^MyContacts/ViewDownloadProfile(.*)\.htm$ ./index.php?Code=$1&p=MyContacts/ViewDownloadProfile [QSA]
 RewriteRule ^ListOfProfile/(.*)\.htm$ ./index.php?Code=$1&p=ListOfProfile [QSA]
+RewriteRule ^MyFavoritedProfiles/(.*)\.htm$ ./index.php?Code=$1&p=MyFavoritedProfiles [QSA]
+RewriteRule ^RecentlyWhoViewed/(.*)\.htm$ ./index.php?Code=$1&p=RecentlyWhoViewed [QSA]
+RewriteRule ^WhoFavorited/(.*)\.htm$ ./index.php?Code=$1&p=WhoFavorited [QSA]
+RewriteRule ^Mutual/(.*)\.htm$ ./index.php?Code=$1&p=Mutual [QSA]
 
 RewriteRule ^view/(.*)\.htm$ ./index.php?Code=$1&p=view
 
@@ -22,12 +27,19 @@ RewriteRule ^ViewProfileforaddLandingPage/(.*)\.htm$ ./index.php?Code=$1&p=ViewP
 
 
 RewriteRule ^Matches/Search/ViewPlans/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ViewPlans
+RewriteRule ^Matches/Search/ChoosePaymentMode/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ChoosePaymentMode
+RewriteRule ^Matches/Search/ViewOrders/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ViewOrders
 
-RewriteRule ^Members/KYC/ViewKyc/(.*)\.htm$ ./index.php?Code=$1&p=Members/KYC/ViewKyc
+
+RewriteRule ^Requests/Member/ViewBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Member/ViewBankRequests
+RewriteRule ^Requests/Franchisee/ViewBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Franchisee/ViewBankRequests
+RewriteRule ^MyAccounts/ViewBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewBankRequests
+RewriteRule ^MyAccounts/ViewFranchiseeBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewFranchiseeBankRequests
 
 RewriteRule ^MemberProfileEdit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/GeneralInformation
 RewriteRule ^MemberProfileEdit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/EducationDetails
 RewriteRule ^MemberProfileEdit/AddEducationalDetails/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/AddEducationalDetails
+RewriteRule ^MemberProfileEdit/AttachEducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/AttachEducationDetails [QSA]
 RewriteRule ^MemberProfileEdit/OccupationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/OccupationDetails 
 RewriteRule ^MemberProfileEdit/FamilyInformation/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/FamilyInformation
 RewriteRule ^MemberProfileEdit/PhysicalInformation/(.*)\.htm$ ./index.php?Code=$1&p=MemberProfileEdit/PhysicalInformation
@@ -40,6 +52,7 @@ RewriteRule ^MemberProfileEdit/ProfilePhoto/(.*)\.htm$ ./index.php?Code=$1&p=Mem
 RewriteRule ^MyProfiles/Draft/Edit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/GeneralInformation
 RewriteRule ^MyProfiles/Draft/Edit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/EducationDetails
 RewriteRule ^MyProfiles/Draft/Edit/AddEducationalDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/AddEducationalDetails
+RewriteRule ^MyProfiles/Draft/Edit/AttachEducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/AttachEducationDetails [QSA]
 RewriteRule ^MyProfiles/Draft/Edit/OccupationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/OccupationDetails
 RewriteRule ^MyProfiles/Draft/Edit/FamilyInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/FamilyInformation
 RewriteRule ^MyProfiles/Draft/Edit/PhysicalInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/PhysicalInformation
@@ -48,6 +61,18 @@ RewriteRule ^MyProfiles/Draft/Edit/CommunicationDetails/(.*)\.htm$ ./index.php?C
 RewriteRule ^MyProfiles/Draft/Edit/PartnersExpectation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/PartnersExpectation
 RewriteRule ^MyProfiles/Draft/Edit/HoroscopeDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/HoroscopeDetails
 RewriteRule ^MyProfiles/Draft/Edit/ProfilePhoto/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/ProfilePhoto
+
+RewriteRule ^MyProfiles/Published/Edit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/GeneralInformation
+RewriteRule ^MyProfiles/Published/Edit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/EducationDetails
+RewriteRule ^MyProfiles/Published/Edit/AddEducationalDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/AddEducationalDetails
+RewriteRule ^MyProfiles/Published/Edit/OccupationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/OccupationDetails
+RewriteRule ^MyProfiles/Published/Edit/FamilyInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/FamilyInformation
+RewriteRule ^MyProfiles/Published/Edit/PhysicalInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/PhysicalInformation
+RewriteRule ^MyProfiles/Published/Edit/DocumentAttachment/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/DocumentAttachment
+RewriteRule ^MyProfiles/Published/Edit/CommunicationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/CommunicationDetails
+RewriteRule ^MyProfiles/Published/Edit/PartnersExpectation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/PartnersExpectation
+RewriteRule ^MyProfiles/Published/Edit/HoroscopeDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/HoroscopeDetails
+RewriteRule ^MyProfiles/Published/Edit/ProfilePhoto/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/ProfilePhoto
 
 RewriteRule ^MyProfiles/Draft/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/View
 RewriteRule ^MyProfiles/Posted/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Posted/View
@@ -80,6 +105,7 @@ RewriteRule ^Members/Plan/View/(.*)\.htm$ ./index.php?Code=$1&p=Members/Plan/Vie
 RewriteRule ^Franchisees/Edit/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Edit
 RewriteRule ^Franchisees/View/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/View
 RewriteRule ^Franchisees/Report/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Report
+RewriteRule ^Franchisees/Wallet/RefillTransfer/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Wallet/RefillTransfer
 RewriteRule ^Franchisees/ResetPassword/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/ResetPassword
 RewriteRule ^Franchisees/BlockFranchisee/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/BlockFranchisee
 RewriteRule ^Members/ResetPassword/Reset/(.*)\.html$ ./index.php?Code=$1&p=Members/ResetPassword/Reset

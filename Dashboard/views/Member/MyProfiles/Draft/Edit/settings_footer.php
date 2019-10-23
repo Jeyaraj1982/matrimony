@@ -66,22 +66,25 @@ function agreeToPublish() {
     }
 }
 
-function SendOtpForProfileforPublish(formid) {
-     var param = $("#frm_"+formid).serialize();
-     $('#Publish_body').html(preloader);
-        $.post(API_URL + "m=Member&a=SendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
-}
+    function SendOtpForProfileforPublish(formid) {
+        
+        var param = $("#frm_"+formid).serialize();
+        $('#Publish_body').html(preloader);
+        $.post(API_URL + "m=Member&a=SendOtpForProfileforPublish",param).done(function(result2) {
+                            $('#Publish_body').html(result2);
+                        }).fail(function(xhr, status, error) {
+                            $('#Publish_body').html(error_htmlText);
+                        });
+    }
 
-function ProfilePublishOTPVerification(frmid) {
-         var param = $( "#"+frmid).serialize();
-         $('#Publish_body').html(preloader);
-                    $.post( API_URL + "m=Member&a=ProfilePublishOTPVerification", 
-                            param,
-                            function(result2) {
+    function ProfilePublishOTPVerification(frmid) {
+        var param = $( "#"+frmid).serialize();
+        $('#Publish_body').html(preloader);
+        $.post( API_URL + "m=Member&a=ProfilePublishOTPVerification",param).done(function(result2) {
                                 $('#Publish_body').html(result2);   
-                            }
-                    );
-              
+                            }).fail(function(xhr, status, error) {
+                                $('#Publish_body').html(error_htmlText);
+                            });
     }
     
 function ResendSendOtpForProfileforPublish(frmid) {
