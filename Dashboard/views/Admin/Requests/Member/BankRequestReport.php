@@ -8,10 +8,10 @@
                 <h4 class="card-title">Report</h4>
                </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                    <a href="ListOfAllBankRequests" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                    <a href="ListOfPendingBankRequests"><small style="font-weight:bold;text-decoration:underline">Pending</small></a>&nbsp;|&nbsp;
-                    <a href="ListOfApprovedBankRequests"><small style="font-weight:bold;text-decoration:underline">Approved</small></a>&nbsp;|&nbsp;
-                    <a href="ListOfRejectedBankRequests"><small style="font-weight:bold;text-decoration:underline">Rejected</small></a>&nbsp;|&nbsp;
+                    <a href="ListOfAllBankRequests" ><small style="font-weight:bold;">All</small></a>&nbsp;|&nbsp;
+                    <a href="ListOfPendingBankRequests"><small style="font-weight:bold;">Pending</small></a>&nbsp;|&nbsp;
+                    <a href="ListOfApprovedBankRequests"><small style="font-weight:bold;">Approved</small></a>&nbsp;|&nbsp;
+                    <a href="ListOfRejectedBankRequests"><small style="font-weight:bold;">Rejected</small></a>&nbsp;|&nbsp;
                     <a href="BankRequestReport"><small style="font-weight:bold;text-decoration:underline">Report</small></a>
                 </div>
             </div>
@@ -77,8 +77,10 @@
                     <thead>
                         <tr>
                           <th>Req Id</th> 
+                          <th>Member ID</th> 
                           <th>Req Date</th> 
                           <th>Bank Name</th> 
+                          <th>A/C Number</th> 
                           <th>Txn Amount</th>  
                           <th>Txn Date</th>
                           <th>Txn Mode</th>
@@ -89,15 +91,17 @@
                       <tbody>  
                         <?php foreach($response['data'] as $Request) { ?>
                 <tr>
-                    <td><?php echo $Request['ReqID'];?></td>
-                    <td><?php echo $Request['RequestedOn'];?></td>
-                    <td><?php echo $Request['BankName'];?></td>
-                    <td><?php echo $Request['RefillAmount'];?></td>
-                    <td><?php echo $Request['TransferedOn'];?></td>
-                    <td><?php echo $Request['TransferMode'];?></td>
-                     <td><?php echo $Request['TxnStatus'];?> </td>
-                     <td><a href="<?php echo GetUrl("Requests/Member/ViewBankRequests/". $Request['ReqID'].".htm");?>">View</a></td>
-                </tr>
+                            <td><?php echo $Requests['ReqID'];?></td>
+                            <td><?php echo $Requests['MemberID'];?></td>
+                            <td><?php echo $Requests['RequestedOn'];?></td>
+                            <td><?php echo $Requests['BankName'];?></td>
+                            <td><?php echo $Requests['AccountNumber'];?></td>
+                            <td style="text-align: right"><?php echo number_format($Requests['RefillAmount'],2);?></td>
+                            <td><?php echo $Requests['TransferedOn'];?></td>
+                            <td><?php echo $Requests['TransferMode'];?></td>
+                             <td><?php echo $Requests['TxnStatus'];?> </td>
+                             <td><a href="<?php echo GetUrl("Requests/Member/ViewBankRequests/".$Requests['ReqID'].".htm ");?>">view</a></td>
+                        </tr>
             <?php } ?> 
                        </tbody>                        
                 </table>

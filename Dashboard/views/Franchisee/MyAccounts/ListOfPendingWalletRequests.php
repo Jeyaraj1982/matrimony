@@ -14,8 +14,8 @@
                     </ul>
                 </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                    <a href="WalletRequests"><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                    <a href="ListOfPendingWalletRequests"><small style="font-weight:bold;">Pending</small></a>&nbsp;|&nbsp;
+                    <a href="WalletRequests"><small style="font-weight:bold;">All</small></a>&nbsp;|&nbsp;
+                    <a href="ListOfPendingWalletRequests"><small style="font-weight:bold;text-decoration:underline">Pending</small></a>&nbsp;|&nbsp;
                     <a href="SuccessWalletRequests"><small style="font-weight:bold;">Success</small></a>&nbsp;|&nbsp;
                     <a href="RejectWalletRequests"><small style="font-weight:bold;">Reject</small></a>
                 </div>
@@ -38,7 +38,7 @@
                         </tr> 
                     </thead>
                      <tbody>  
-                        <?php $response = $webservice->getData("Franchisee","GetListOfPreviousBankRequests",array("Request"=>"All"));?>
+                        <?php $response = $webservice->getData("Franchisee","GetListOfPreviousBankRequests",array("Request"=>"Pending"));?>
                         <?php foreach($response['data'] as $Requests) { ?>
                         <tr>
                             <td><?php echo $Requests['ReqID'];?></td>
