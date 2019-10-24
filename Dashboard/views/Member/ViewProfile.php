@@ -617,8 +617,8 @@ legend {
                     <img src="<?php echo ImageUrl;?>lockimage.png">
                 </div>
                 <div class="col-sm-12" style="text-align: center;">
-                    Upgrade membership to unlock the horoscope details<br>
-                    <a href="#" class="btn btn-success">UPGRADE BUTTON</a><br><br> 
+                    Upgrade membership to unlock the horoscope details<br><br>
+                    <a href="#" class="btn btn-success">Upgrade now</a><br><br> 
                 </div>
             </div>
          </div>
@@ -745,8 +745,8 @@ legend {
                     <img src="<?php echo ImageUrl;?>lockimage.png">
                 </div>
                 <div class="col-sm-12" style="text-align: center;">
-                    Upgrade membership to unlock the contact details<br>
-                     <a href="#" class="btn btn-success">UPGRADE BUTTON</a><br><br> 
+                    Upgrade membership to unlock the contact details<br><br>
+                     <a href="#" class="btn btn-success">Upgrade now</a><br><br> 
                 </div>
             </div>
          </div>

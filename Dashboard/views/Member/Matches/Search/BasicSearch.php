@@ -5,8 +5,22 @@ $Info = $webservice->GetBasicSearchElements();
 ?>
 <?php                   
   if (isset($_POST['searchBtn'])) {  
+      
   print_r($_POST);
+  
+  $_POST['MaritalStatus']=implode(",",$_POST['MaritalStatus']);
+  $_POST['Religion']=implode(",",$_POST['Religion']);
+  $_POST['Community']=implode(",",$_POST['Community']);
+  
+  $response = $webservice->getData("Member","AddMemberBasicSearchDetails",$_POST);
+        if ($response['status']=="success") {
+            echo "<script>location.href='../BasicSearchResult/".$response['data']['ReqID'].".htm?Req=BasicSearchResult'</script>";
+            // $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
     }
+  
 ?>   
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
@@ -21,14 +35,56 @@ $Info = $webservice->GetBasicSearchElements();
 div, label,a {font-family:'Roboto' !important;}   
 </style>
 <?php include_once("topmenu.php");?>
+<script>
+function submitSearch() {
+                         $('#Errtoage').html("");
+                         $('#Errage').html("");
+                         $('#ErrMaritalStatus').html("");
+                         $('#ErrReligion').html("");
+                         $('#ErrCommunity').html("");
+
+                         ErrorCount=0;
+                         
+                         if(($("#age").val() > $("#toage").val())){
+                            document.getElementById("Errtoage").innerHTML="Please select greater than from age"; 
+                            ErrorCount++;
+                         }
+                          if($('#MaritalStatus option:selected').length==0){
+                            document.getElementById("ErrMaritalStatus").innerHTML="Please select MaritalStatus"; 
+                             ErrorCount++;
+                         }   
+                         //var ReligionCount=0;
+                         // $.each($("#Religion option:selected"), function(){            
+                           // ReligionCount++;
+                        //});
+
+                         if ($('#Religion option:selected').length==0){
+                                document.getElementById("ErrReligion").innerHTML="Please select Religion"; 
+                                ErrorCount++;
+                         }
+                        if($('#Community option:selected').length==0){
+                            document.getElementById("ErrCommunity").innerHTML="Please select Community"; 
+                             ErrorCount++;
+                         }
+                            
+                        if (ErrorCount==0) {
+                            return true;                        
+                        } else{
+                            return false;
+                        }
+                        
+    
+    
+}
+</script>
 <div class="col-lg-12 grid-margin stretch-card" >
     <div class="card">
-        <div class="card-body" style="padding-top: 1.25rem;padding-bottom: 1.25rem;padding-left:0px;padding-right:0px">
-          <form method="post" action="">
+        <div class="card-body" style="padding-top: 1.25rem;padding-bottom: 1.25rem;padding-left:0px;padding-right:0px;width:770px" >
+          <form method="post" action="" onsubmit="return submitSearch();">
         <div class="container"  id="sp">
         <div class="col-sm-7" style="padding-left:3px">
             <div class="form-group row">
-             <div class="col-sm-3" align="left">Age</div>
+              <label for="age" class="col-sm-3 col-form-label">Age</label>
              <div class="col-sm-2" align="left" style="width:100px">
                 <select class="form-control" data-live-search="true" id="age" name="age">
                 <?php for($i=18;$i<=70;$i++) {?>
@@ -36,47 +92,48 @@ div, label,a {font-family:'Roboto' !important;}
                 <?php } ?>
                 </select>           
             </div>
-            <div class="col-sm-1" align="left" style="padding-top: 6px;">To</div>
-            <div class="col-sm-2" align="left" style="width:100px">
-             <select class="form-control" data-live-search="true" id="toage"  name="toage">
+             <label for="toage" class="col-sm-1 col-form-label">To</label>
+            <div class="col-sm-6" align="left" style="width:100px">
+             <select class="form-control" data-live-search="true" id="toage"  name="toage" style="width: 82px;">
                 <?php for($i=18;$i<=70;$i++) {?>
                     <option value="<?php echo $i; ?>"><?php echo $i;?></option>
                 <?php } ?>
-                </select>           
+                </select> 
+                 <span class="errorstring" id="Errtoage"><?php echo isset($Errtoage)? $Errtoage : "";?></span>          
              </div>
             </div>
             <div class="form-group row">
-             <div class="col-sm-3" align="left">Marital Status</div>
+             <label for="MaritalStatus" class="col-sm-3 col-form-label">Marital Status</label>
              <div class="col-sm-9" align="left">
                 <select class="form-control" id="MaritalStatus" name="MaritalStatus[]" style="display: none;" multiple="multiple"> 
-                    <option value="All">All</option>
                     <?php foreach($Info['data']['MaritalStatus'] as $MaritalStatus) { ?>
                     <option value="<?php echo $MaritalStatus['SoftCode'];?>" <?php echo ($_POST['MaritalStatus']==$MaritalStatus['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $MaritalStatus['CodeValue'];?></option>
                     <?php } ?>
-                </select>           
+                </select>
+                <span class="errorstring" id="ErrMaritalStatus"><?php echo isset($ErrMaritalStatus)? $ErrMaritalStatus : "";?></span>           
             </div>
             </div> 
             <div class="form-group row">
-             <div class="col-sm-3" align="left">Religion</div>
+             <label for="Religion" class="col-sm-3 col-form-label">Religion</label>
              <div class="col-sm-9" align="left">
                 <select class="form-control" id="Religion" name="Religion[]" style="display: none;" multiple="multiple"> 
-                    <option value="All">All</option>
                     <?php foreach($Info['data']['Religion'] as $Religion) { ?>
                     <option value="<?php echo $Religion['SoftCode'];?>" <?php echo ($_POST['Religion']==$Religion['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Religion['CodeValue'];?></option>
                     <?php } ?>
-                </select>           
+                </select>  
+                <span class="errorstring" id="ErrReligion"><?php echo isset($ErrReligion)? $ErrReligion : "";?></span>         
             </div>
             </div> 
              
             <div class="form-group row">
-             <div class="col-sm-3" align="left">Community</div>
+             <label for="Community" class="col-sm-3 col-form-label">Community</label>
              <div class="col-sm-9" align="left">
                 <select class="form-control" id="Community" name="Community[]" style="display: none;" multiple="multiple"> 
-                    <option value="All">All</option>
                     <?php foreach($Info['data']['Community'] as $Community) { ?>
                     <option value="<?php echo $Community['SoftCode'];?>" <?php echo ($_POST['Community']==$Community['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Community['CodeValue'];?></option>
                     <?php } ?>
-                </select>           
+                </select>   
+                <span class="errorstring" id="ErrCommunity"><?php echo isset($ErrCommunity)? $ErrCommunity : "";?></span>        
             </div>
             </div> 
             <div class="form-group row">
@@ -90,10 +147,10 @@ div, label,a {font-family:'Roboto' !important;}
                 <a href="javascript:void(0)" onclick="EmailVerification()" class="btn btn-primary">Search</a>
             <?php } else{ ?>
                 <button type="submit" name="searchBtn" class="btn btn-primary" style="font-family:roboto">Search</button>
-            <?php }?></div>
+            <?php }?></div>                                             
             </div>
         </div>
-    </div>
+    </div>                                                                              
 </form> 
 </div>
 </div>

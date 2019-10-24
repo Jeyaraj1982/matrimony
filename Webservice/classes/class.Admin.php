@@ -2663,7 +2663,20 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
      function ApproveBankWalletRequest() {
 
              global $mysql,$loginInfo;
-             $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['Code']."'"); 
+             $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['Code']."'");
+             
+             $member = $mysql->select("select * from  `_tbl_members` where MemberID='".$Requests[0]['MemberID']."'");
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='ApproveWalletRequest'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#otp#",$otp,$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "ApproveWalletRequest",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear '".$member[0]['MemberName']."' your wallet request has been approved");
             
                $id=$mysql->insert("_tbl_wallet_transactions",array("MemberID"         =>$Requests[0]['MemberID'],
                                                                      "Particulars"      =>'Add To Wallet',                    
@@ -2689,6 +2702,19 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
              global $mysql,$loginInfo;
              $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['Code']."'"); 
+             
+             $member = $mysql->select("select * from  `_tbl_members` where MemberID='".$Requests[0]['MemberID']."'");
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RejectWalletRequest'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#otp#",$otp,$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "RejectWalletRequest",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear '".$member[0]['MemberName']."' your wallet request has been rejected");
             
               $updateSql = "update `_tbl_wallet_bankrequests` set `IsApproved` = '0',
                                                                   `ApprovedOn` ='".date("Y-m-d H:i:s")."', 
@@ -2703,6 +2729,19 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
              global $mysql,$loginInfo;
              $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['Code']."'"); 
+             
+             $franchisee = $mysql->select("select * from  `_tbl_franchisees` where FranchiseeID='".$Requests[0]['FranchiseeID']."'");
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='ApproveFranchiseeWalletRequest'");
+             $content  = str_replace("#FranchiseeName#",$franchisee[0]['FranchiseName'],$mContent[0]['Content']);
+             $content  = str_replace("#otp#",$otp,$content);
+
+             MailController::Send(array("MailTo"   => $franchisee[0]['ContactEmail'],
+                                        "Category" => "ApproveFranchiseeWalletRequest",
+                                        "FranchiseeID" => $franchisee[0]['FranchiseeID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($franchisee[0]['ContactNumber'],"Dear '".$franchisee[0]['FranchiseeName']."' your wallet request has been approved");
             
                $id=$mysql->insert("_tbl_wallet_transactions",array("FranchiseeID"     =>$Requests[0]['FranchiseeID'],
                                                                    "Particulars"      =>'Add To Wallet',                    
@@ -2728,6 +2767,19 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
              global $mysql,$loginInfo;
              $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['Code']."'"); 
+             
+              $franchisee = $mysql->select("select * from  `_tbl_franchisees` where FranchiseeID='".$Requests[0]['FranchiseeID']."'");
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RejectFranchiseeWalletRequest'");
+             $content  = str_replace("#FranchiseeName#",$franchisee[0]['FranchiseName'],$mContent[0]['Content']);
+             $content  = str_replace("#otp#",$otp,$content);
+
+             MailController::Send(array("MailTo"   => $franchisee[0]['ContactEmail'],
+                                        "Category" => "RejectFranchiseeWalletRequest",
+                                        "FranchiseeID" => $franchisee[0]['FranchiseeID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($franchisee[0]['ContactNumber'],"Dear '".$franchisee[0]['FranchiseeName']."' your wallet request has been rejected");
             
               $updateSql = "update `_tbl_wallet_bankrequests` set `IsApproved` = '0',
                                                                   `ApprovedOn` ='".date("Y-m-d H:i:s")."', 
@@ -2756,11 +2808,25 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              $d = $mysql->select("select (sum(Credits)-sum(Debits)) as bal from  _tbl_wallet_transactions where FranchiseeID='0' and MemberID='0'");
              return isset($d[0]['bal']) ? $d[0]['bal'] : 0;      
          }
-         function FranchiseeTransferAmountToMemberWallet() {
+         function AdminTransferAmountToFranchiseeWallet() {
 
              global $mysql,$loginInfo;
              
-             $Franchisee = $mysql->select("select * from `_tbl_franchisees` where `FranchiseeID`='".$_POST['Code']."'");
+             $Franchisee = $mysql->select("select * from `_tbl_franchisees` where `FranchiseeID`='".$_POST['Code']."'");         
+             
+             $Admin = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='AdminTransferAmountToFranchisee'");
+             $content  = str_replace("#AdminName#",$Admin[0]['AdminName'],$mContent[0]['Content']);
+             $content  = str_replace("#FranchiseeName#",$Franchisee[0]['FranchiseName'],$mContent[0]['Content']);
+             $content  = str_replace("#Amount#",$_POST['AmountToTransfer'],$content);
+
+             MailController::Send(array("MailTo"   => $Admin[0]['EmailID'],
+                                        "Category" => "AdminTransferAmountToFranchisee",
+                                        "AdminID" => $Admin[0]['AdminID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($Admin[0]['MobileNumber'],"Dear ".$Admin[0]['AdminName']." your transfer amount to ".$Franchisee[0]['FranchiseName']."  has been transfered successfully");
                 
                $id=$mysql->insert("_tbl_wallet_transactions",array("Particulars"      =>'Transfer to  '.$Franchisee[0]['FranchiseeCode'],                    
                                                                    "Credits"          => "0",                    
@@ -2768,6 +2834,21 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                                                  //  "AvailableBalance" => $this->getAdminAvailableBalance()+$_POST['AmountToTransfer'],                   
                                                                    "TxnDate"          =>date("Y-m-d H:i:s"),
                                                                    "IsMember"         =>"0"));  
+                                                                   
+             $Admin = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeAmountReceivedFromAdmin'");
+             $content  = str_replace("#AdminName#",$Admin[0]['AdminName'],$mContent[0]['Content']);
+             $content  = str_replace("#FranchiseeName#",$Franchisee[0]['FranchiseName'],$content);
+             $content  = str_replace("#Amount#",$_POST['AmountToTransfer'],$content);
+
+             MailController::Send(array("MailTo"   => $Franchisee[0]['ContactEmail'],
+                                        "Category" => "FranchiseeAmountReceivedFromAdmin",
+                                        "FranchiseeID" => $Franchisee[0]['FranchiseeID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($Franchisee[0]['ContactNumber'],"Dear ".$Franchisee[0]['FranchiseeName']." your received ".$_POST['AmountToTransfer']." from ".$Admin[0]['AdminName']."");
+             
                $mysql->insert("_tbl_wallet_transactions",array("FranchiseeID"     =>$_POST['Code'],
                                                                    "MEMFRANCode"      =>$Franchisee[0]['FranchiseeCode'],                    
                                                                    "Particulars"      =>'Transfer from Admin',                    

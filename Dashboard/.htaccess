@@ -17,6 +17,9 @@ RewriteRule ^Mutual/(.*)\.htm$ ./index.php?Code=$1&p=Mutual [QSA]
 
 RewriteRule ^view/(.*)\.htm$ ./index.php?Code=$1&p=view
 
+RewriteRule ^Matches/Search/BasicSearch/BasicSearchResult(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/BasicSearch/BasicSearchResult [QSA]
+RewriteRule ^Matches/Search/WalletAmountTransferedSuccessfully/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/WalletAmountTransferedSuccessfully
+
 RewriteRule ^Members/Created/(.*)\.htm$ ./index.php?Code=$1&p=Members/Created
 RewriteRule ^CreateProfile/(.*)\.htm$ ./index.php?Code=$1&p=CreateProfile
 RewriteRule ^ViewMemberProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewMemberProfile           
@@ -28,7 +31,9 @@ RewriteRule ^ViewProfileforaddLandingPage/(.*)\.htm$ ./index.php?Code=$1&p=ViewP
 
 RewriteRule ^Matches/Search/ViewPlans/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ViewPlans
 RewriteRule ^Matches/Search/ChoosePaymentMode/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ChoosePaymentMode
-RewriteRule ^Matches/Search/ViewOrders/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ViewOrders
+RewriteRule ^Order/(.*)\.htm$ ./index.php?Code=$1&p=Order
+RewriteRule ^ChoosePaymentMode/(.*)\.htm$ ./index.php?Code=$1&p=ChoosePaymentMode
+RewriteRule ^Payments/Wallet/Collect/(.*)\.htm$ ./index.php?Code=$1&p=Payments/Wallet/Collect
 
 
 RewriteRule ^Requests/Member/ViewBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Member/ViewBankRequests

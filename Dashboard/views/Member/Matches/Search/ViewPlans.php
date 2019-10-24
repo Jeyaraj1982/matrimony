@@ -5,7 +5,8 @@ $page="BasicSearch";?>
 
         $response = $webservice->getData("Member","SelectPlanAndContinue",$_POST);
         if ($response['status']=="success") {
-            echo "<script>location.href='../ViewOrders/".$_GET['Code'].".htm'</script>";   
+           // echo "<script>location.href='../ViewOrders/".$_GET['Code'].".htm'</script>";   
+            echo "<script>location.href='".SiteUrl."Order/".$response['data']['OrderNumber'].".htm'</script>";   
         } else {
             $errormessage = $response['message']; 
         }
@@ -13,7 +14,7 @@ $page="BasicSearch";?>
     $response = $webservice->getData("Member","BasicSearchViewMemberPlan",array()); 
     if (sizeof($response['data'])>0) {
 ?>
-            <form method="post" action="" onsubmit="">
+           
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
@@ -36,10 +37,14 @@ $page="BasicSearch";?>
                                                     <tr>
                                                         <td><?php echo $plans['PlanName']?></td>
                                                         <td><?php echo $plans['Decreation']?></td>
-                                                        <td><?php echo $plans['Amount']?></td>
-                                                        <td><?php echo $plans['FreeProfiles'];?></td>
+                                                        <td style="text-align: right"><?php echo number_format($plans['Amount'],2);?></td>
+                                                        <td style="text-align: right"><?php echo $plans['FreeProfiles'];?></td>
                                                         <td>
+                                                         <form method="post" action="">
+                                                            <input type="hidden" name="PlanCode" value="<?php echo $plans['PlanCode'];?>">
+                                                            <input type="hidden" name="ProfileCode" value="<?php echo $_GET['Code'];?>">
                                                             <button type="Submit" name="continue" class="btn btn-primary">Continue</button>
+                                                             </form>
                                                         </td>
                                                     </tr>
                                                     <?php  } ?>
@@ -51,7 +56,7 @@ $page="BasicSearch";?>
 
                     </div>
                 </div>
-            </form>
+           
 
             <?php } ?>
 

@@ -504,7 +504,7 @@
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><br><br><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -679,8 +679,8 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="col-sm-12">
-                                        <div class="col-sm-7"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                        <div class="col-sm-5"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                        <div class="col-sm-6"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-6"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                     </div>
                                     <div class="col-sm-12">'.$error.'</div>
                                 </div>
@@ -707,7 +707,7 @@
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
                   return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
+                            <p style="text-align:center"><br><br><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h5>
                             <h5 style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';
@@ -1678,7 +1678,7 @@
              global $mysql,$loginInfo;
              $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$_POST['Code']."'");     
              $OwnlProfile = $mysql->select("select * from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'");               
-              $plan =$mysql->select("select * from `_tbl_member_plan` where `PlanID`='".$_POST['PlanID']."'"); 
+              $plan =$mysql->select("select * from `_tbl_member_plan` where `PlanCode`='".$_POST['PlanCode']."'"); 
               $orderid=SeqMaster::GetNextOrderCode() ;     
             /* $id = $mysql->insert("_tbl_orders",array("ProfileID"       => $_POST['Code'],
                                                       "Plan"       => $plan[0]['PlanName'],
@@ -1707,6 +1707,7 @@
                                                      "OrderByFranchisee"    => "0",
                                                      "InvoiceNumber"        => "",
                                                      "InvoiceID"            => "0"));
+            $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Order'");
            $mysql->insert("_tbl_orders_items",array("OrderID"               => $orderid,
                                                     "AddedOn"               => date("Y-m-d H:i:s"),
                                                     "ProfileID"             => $Profiles[0]['ProfileID'],
@@ -1735,7 +1736,7 @@
                                                      "DownloadedMemberID"   => $Profiles[0]['MemberID'],
                                                      "DownloadedMemberCode" => $Profiles[0]['MemberCode']));   
 
-             return Response::returnSuccess("succss",array());
+             return Response::returnSuccess("succss",array("OrderNumber"=>$orderid));
          }
 
          function updateProfilePhoto() {
@@ -3334,7 +3335,7 @@
                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
                           <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Mobile Number Verification</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <p style="text-align:center"><br><br><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
                             <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
                        </div>';    
@@ -4145,8 +4146,22 @@
          
          function ViewOrders() {
              global $mysql,$loginInfo;
-             $Orders = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'");
-             return Response::returnSuccess("success",$Orders[0]);
+             $Orders = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$loginInfo[0]['MemberID']."' and `OrderNumber`='".$_POST['Code']."'");
+             $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Orders[0]['OrderByMemberID']."'");
+             $plan =$mysql->select("select * from `_tbl_member_plan` where `Amount`='".$Orders[0]['OrderValue']."'");
+             return Response::returnSuccess("success",array("Order" => $Orders[0],
+                                                            "Member" => $Member[0],
+                                                            "Plan"   => $plan));
+         }
+         function ViewOrdersAmountForTransaction() {
+             
+             
+             
+             global $mysql,$loginInfo;
+             $Orders = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$loginInfo[0]['MemberID']."' and OrderNumber='".$_POST['Code']."'");
+             $MemberWallet = number_format($this->getAvailableBalance($loginInfo[0]['MemberID']),2);
+             return Response::returnSuccess("success",array("Order" => $Orders[0],
+                                                            "Wallet" => $MemberWallet));
          }
          
          function GetWalletBankRequests() {
@@ -4156,6 +4171,169 @@
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql."Where `MemberID`='". $loginInfo[0]['MemberID']."' and `IsMember`='1' order by `TxnID` DESC"));    
              }
+         }
+         
+         function AddMemberBasicSearchDetails() {
+
+             global $mysql,$loginInfo;    
+
+             $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",explode(",",$_POST['MaritalStatus']));
+             $Religion       = CodeMaster::getData("RELINAMES",explode(",",$_POST['Religion'])); 
+             $Community       = CodeMaster::getData("COMMUNITY",explode(",",$_POST['Community'])); 
+             
+             $MaritalStatus_CodeValue="";
+             foreach($MaritalStatus as $M) {
+               $MaritalStatus_CodeValue .= $M['CodeValue'].", ";  
+             }
+             $Religion_CodeValue="";
+             foreach($Religion as $R) {
+               $Religion_CodeValue .= $R['CodeValue'].", ";  
+             }
+             $Community_CodeValue="";
+             foreach($Community as $C) {
+               $Community_CodeValue .= $C['CodeValue'].", ";  
+             }
+             
+             $profile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'"); 
+             $Member = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'"); 
+              
+                   $id = $mysql->insert("_tbl_member_basic_search",array("MemberID"          => $loginInfo[0]['MemberID'],
+                                                                         "ProfileID"         => $profile[0]['ProfileID'],
+                                                                         "Sex"               => $Member[0]['Sex'],
+                                                                         "MaritalStatus"     => substr($MaritalStatus_CodeValue,0,strlen($MaritalStatus_CodeValue)-2),
+                                                                         "Religion"          => substr($Religion_CodeValue,0,strlen($Religion_CodeValue)-2),
+                                                                         "Community"         => substr($Community_CodeValue,0,strlen($Community_CodeValue)-2),
+                                                                         "SearchName"        => "ABCD",
+                                                                         "SearchRequestedOn" => date("Y-m-d H:i:s"))) ;
+              
+               if (sizeof($id)>0) {
+                   return Response::returnSuccess("success",array("ReqID"=>$id));
+               // echo "<script>location.href='../BasicSearchResult/".$id.".htm?Req=BasicSearchResult'</script>";
+             } else{
+                 return Response::returnError("Access denied. Please contact support");   
+             }
+                                                                         
+         }
+         
+         function CollectPaymentFromWallet() {
+             
+             
+             global $mysql,$loginInfo;
+             
+             $mysql->execute("TRUNCATE _tbl_orders;
+TRUNCATE _tbl_orders_items;
+TRUNCATE _tbl_profile_credits;");
+             
+             $Orders = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$loginInfo[0]['MemberID']."' and `OrderNumber`='".$_POST['Code']."'");
+             $Profiles = $mysql->select("select * from `_tbl_profiles` where `ProfileCode`='".$Orders[0]['ProfileCode']."'");
+             $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+             
+             if (sizeof($Orders)==0) {
+                  return Response::returnError("Order process failed. Invalid order number."); 
+             }
+             
+             if (sizeof($Orders)>1) {
+                 return Response::returnError("Order process failed. Please contact administrator.");  
+             }
+             
+             if ($Orders[0]['IsPaid']==1) {
+                return Response::returnError("Order process failed. It may be already processed.");   
+             }
+             
+             $WalletBalance=$this->getAvailableBalance($loginInfo[0]['MemberID']);
+             if($WalletBalance < $Orders[0]['OrderValue']) {
+                return Response::returnError("Order process failed. You don't have sufficiant balance in your wallet."); 
+             }
+             
+             $Plan = $mysql->select("select * from `_tbl_member_plan` where `Amount`='".$Orders[0]['OrderValue']."'");
+             
+             $id=$mysql->insert("_tbl_wallet_transactions",array("MemberID"         => $loginInfo[0]['MemberID'],
+                                                                 "MEMFRANCode"      => "",        
+                                                                 "Particulars"      => 'Payments/Odr: '. $Orders[0]['OrderNumber']."/MEMUpgrade: ". $Plan[0]['PlanName'],                    
+                                                                 "Credits"          => "0",                    
+                                                                 "Debits"           => $Orders[0]['OrderValue'], 
+                                                                 "AvailableBalance" => $WalletBalance-$Orders[0]['OrderValue'],                   
+                                                                 "TxnDate"          => date("Y-m-d H:i:s"),
+                                                                 "IsMember"         => "1")); 
+             
+             if (sizeof($id)>0) {
+                 
+                 // Order Table Update 
+                 
+                 // Invoice Table
+                 $invoiceCode=SeqMaster::GetNextInvoiceCode(); 
+                 
+               $invoiceid = $mysql->insert("_tbl_invoices",array("OrderID"              => $Orders[0]['OrderID'],
+                                                                 "OrderDate"            => DATE("Y-m-d H:i:s"),
+                                                                 "OrderNumber"          => $Orders[0]['OrderNumber'],
+                                                                 "InvoiceDate"          => DATE("Y-m-d H:i:s"),
+                                                                 "InvoiceNumber"        => $invoiceCode,
+                                                                 "MemberID"             => $loginInfo[0]['MemberID'],
+                                                                 "MemberCode"           => $Member[0]['MemberCode'],
+                                                                 "ProfileID"            => $Profiles[0]['ProfileID'],
+                                                                 "ProfileCode"          => $Profiles[0]['ProfileCode'],
+                                                                 "MemberName"           => $Member[0]['MemberName'],
+                                                                 "EmailID"              => $Profiles[0]['EmailID'],
+                                                                 "MobileNumber"         => $Profiles[0]['MobileNumber'],
+                                                                 "AddressLine1"         => $Profiles[0]['AddressLine1'],
+                                                                 "AddressLine2"         => $Profiles[0]['AddressLine2'],
+                                                                 "AddressLine3"         => $Profiles[0]['AddressLine3'],
+                                                                 "Pincode"              => $Profiles[0]['Pincode'],
+                                                                 "InvoiceValue"         => $plan[0]['Amount'],
+                                                                 "Createdon"            => DATE("Y-m-d H:i:s"),
+                                                                 "CreatedBy"            => $loginInfo[0]['MemberID'],
+                                                                 "PaidAmount"           => $plan[0]['Amount']));
+               $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Invoice'");
+             if(sizeof($invoiceid)>0){
+                 return Response::returnSuccess("success",array("sql"=>$mysql->qry));
+             } else{
+                 return Response::returnError("Order process failed. Invoice Error.",array("sql"=>$mysql->qry));   
+             }
+                 
+                 // Invoice Item Table
+            $invoiceitemid = $mysql->insert("_tbl_invoices_items",array("InvoiceID"            => $invoiceid,
+                                                                        "AddedOn"               => date("Y-m-d H:i:s"),
+                                                                        "ProfileID"             => $Profiles[0]['ProfileID'],
+                                                                        "ProfileCode"           => $Profiles[0]['ProfileCode'],
+                                                                        "MemberID"              =>  $Member[0]['MemberID'],
+                                                                        "MemberCode"            => $Member[0]['MemberCode'],
+                                                                        "MemberName"           => $Member[0]['MemberName'],
+                                                                        "ProductID"             => $plan[0]['PlanID'],
+                                                                        "ProductCode"           => $plan[0]['PlanCode'],
+                                                                        "ProductName"           => $plan[0]['PlanName'],
+                                                                        "ProfileToView"         => $plan[0]['FreeProfiles'],
+                                                                        "Qty"                   => "1",
+                                                                        "Amount"                => $plan[0]['Amount'],
+                                                                        "TAmount"               => "0",
+                                                                        "ServiceCharge"         => "0",
+                                                                        "TsAmount"              => "0",
+                                                                        "Remarks"               => "0"));   
+             if(sizeof($invoiceitemid)>0){
+                 return Response::returnSuccess("success",array("sql"=>$mysql->qry));
+             } else{
+                 return Response::returnError("Order process failed. Invoice Error.",array("sql"=>$mysql->qry));   
+             }
+                 // Download Table
+                 
+                 // Receipt Table
+                 
+                 // Member Latest Updates
+                 
+                 // Opp Member Latest Updates
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 return Response::returnSuccess("success",array("sql"=>$mysql->qry));
+             } else{
+                 return Response::returnError("Order process failed. Invalid wallet request.");   
+             }
+               
+          
          }   
      }  
 //4084   

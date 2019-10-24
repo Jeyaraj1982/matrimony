@@ -2613,14 +2613,16 @@
                          
                          $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where DraftProfileID='".$PostProfiles[0]['ProfileID']."' and  `MemberID` = '".$_POST['Code']."'");
                          foreach($PublishedProfiles as $PublishedProfile) {
-                            $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
+                            $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);
                             $result['mode']="Published";
                             $Profiles[]=$result;     
                          }
                          
+                         // return Response::returnSuccess("select * from `_tbl_profiles` where DraftProfileID='".$PostProfiles[0]['ProfileID']."' and  `MemberID` = '".$_POST['Code']."'",$Profiles);
+                         
                      } else {
                         foreach($PostProfiles as $PostProfile) {
-                            $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode'],1);
+                            $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode'],2);
                             $result['mode']="Posted";
                             $Profiles[]=$result;     
                         }
@@ -2709,6 +2711,18 @@
              
              $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$_POST['Code']."'");
              $Franchisee = $mysql->select("select * from `_tbl_franchisees` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeTransferAmountToMember'");
+             $content  = str_replace("#FranchiseeName#",$Franchisee[0]['FranchiseName'],$mContent[0]['Content']);
+             $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#Amount#",$_POST['AmountToTransfer'],$content);
+
+             MailController::Send(array("MailTo"   => $Franchisee[0]['ContactEmail'],
+                                        "Category" => "AdminTransferAmountToFranchisee",
+                                        "FranchiseeID" => $Franchisee[0]['FranchiseeID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($Franchisee[0]['ContactNumber'],"Dear ".$Franchisee[0]['FranchiseName']." your transfer amount to ".$Member[0]['MemberName']."  has been transfered successfully");
                 
                $id=$mysql->insert("_tbl_wallet_transactions",array("FranchiseeID"     =>$loginInfo[0]['FranchiseeID'],
                                                                    "MEMFRANCode"      =>$Member[0]['MemberCode'],                    
@@ -2718,6 +2732,9 @@
                                                                    "AvailableBalance" => $this->getAvailableBalance()+$_POST['AmountToTransfer'],                   
                                                                    "TxnDate"          =>date("Y-m-d H:i:s"),
                                                                    "IsMember"         =>"0"));  
+                                                                   
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberAmountReceivedFromAdmin'");
+        
             
                    $mysql->insert("_tbl_wallet_transactions",array("MemberID"         =>$_POST['Code'],
                                                                    "MEMFRANCode"      => $Franchisee[0]['MemberCode'],        
@@ -2754,7 +2771,7 @@
                  $Requests = $mysql->select("select * from `_tbl_wallet_transactions` where `MemberID`='".$_POST['Code']."' and `IsMember`='1' order by `TxnID` DESC");
              return Response::returnSuccess("success",$Requests);
              }
-             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Recentkyviewed") {
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Recentlyviewed") {
                 
                  $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$_POST['Code']."' order by LastSeenID DESC");
                      $profileCodes  = array();
@@ -2767,7 +2784,7 @@
                      if (sizeof($profileCodes)>0) {
                         for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
                             if (isset($profileCodes[$i]))  {
-                                $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                                $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,2);     
                             }
                         }
                      }

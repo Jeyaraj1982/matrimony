@@ -39,5 +39,10 @@ $text= array(
     "my_orders"=>"My Orders",
     "my_invoices"=>"My Invoices",
 );
+
+$lang = array(
+  "logged_out_successfully"=>"Logged out successfully",
+
+);
 ?>
  

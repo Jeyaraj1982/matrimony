@@ -213,7 +213,7 @@ function GetFranchiseeDetails() {
     </script>                                 
     <?php
         if (isset($_POST['BtnNext'])) {         
-            $response =$webservice->getData("Admin","FranchiseeTransferAmountToMemberWallet",$_POST);
+            $response =$webservice->getData("Admin","AdminTransferAmountToFranchiseeWallet",$_POST);
             if ($response['status']=="success") {
         ?>
             <script>location.href='<?php echo AppUrl;?>Franchisees/Wallet/TransferedSuccessfully';</script>
