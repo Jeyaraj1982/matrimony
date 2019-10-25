@@ -9,7 +9,7 @@
             $response = curl_exec($ch);
         }
         
-        function sendSMS($mobileNumber,$text) {
+        static public function sendSMS($mobileNumber,$text) {
             
             global $mysql;
             

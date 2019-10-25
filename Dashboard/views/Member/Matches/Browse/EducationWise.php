@@ -11,10 +11,10 @@
             No profiles found in your account<br><Br><br><Br><br><Br>  -->
             <?php echo $response['message'];?><br>  
             <?php if($response['data']['param']=="mobile") {?>
-                  <a href="javascript:void(0)" onclick="MobileNumberVerification()"  style="font-weight:Bold;font-family:'Roboto';">Verfiy now</a>
+                  <a href="javascript:void(0)" onclick="MobileNumberVerification()"  style="font-weight:Bold;font-family:'Roboto';">Verifynow</a>
             <?php }?>
             <?php if($response['data']['param']=="email") {?>
-                  <a href="javascript:void(0)" onclick="EmailVerification()"  style="font-weight:Bold;font-family:'Roboto';">Verfiy now</a>
+                  <a href="javascript:void(0)" onclick="EmailVerification()"  style="font-weight:Bold;font-family:'Roboto';">Verifynow</a>
             <?php }?>
             <?php if($response['data']['param']=="profile") {?>
                   <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a>

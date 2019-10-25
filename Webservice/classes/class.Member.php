@@ -383,9 +383,10 @@
                                                               "MemberID"          => $loginInfo[0]['MemberID'],
                                                               "MemberCode"        => $member[0]['MemberCode'],
                                                               "CreatedByMemberID" => $loginInfo[0]['MemberID']));
+             $sql=$mysql->qry;
              if (sizeof($id)>0) {
                  $mysql->execute("update `_tbl_sequence` set LastNumber=LastNumber+1 where `SequenceFor`='DraftProfile'");
-                 return Response::returnSuccess("Profile created successfully.",array("Code"=>$ProfileCode));
+                 return Response::returnSuccess("Profile created successfully.".$sql,array("Code"=>$ProfileCode));
              } else{
                  return Response::returnError("Access denied. Please contact support");   
              }
@@ -1235,7 +1236,7 @@
         
         $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
         $ProfileCode = $data[0]['ProfileCode'];
-        $EducationDetails =$mysql->select("Select * from `_tbl_draft_profiles_education_details` where `IsDeleted`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+        $EducationDetails =$mysql->select("Select * from `_tbl_draft_profiles_education_details` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
          if (sizeof($EducationDetails)==0) {
                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -1511,7 +1512,7 @@
 
              global $mysql,$loginInfo;
 
-             $updateSql = "update `_tbl_draft_profiles_education_details` set `IsDeleted` = '1' where `AttachmentID`='".$_POST['AttachmentID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
+             $updateSql = "update `_tbl_draft_profiles_education_details` set `IsDelete` = '1' where `AttachmentID`='".$_POST['AttachmentID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
              $mysql->execute($updateSql);
              $updateSql = "update `_tbl_draft_profile_education_attachments` set `IsDeleted` = '1' where `EducationAttachmentID`='".$_POST['AttachmentID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
              $mysql->execute($updateSql);  
@@ -1560,15 +1561,12 @@
              return Response::returnSuccess("success",$result);
            }
          
+         /*Checked*/
          function GetPublishProfileInfo() {
-               
-                global $mysql,$loginInfo;      
-             $Profiles = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileCode']."'");               
-            
-            
-               $result =  Profiles::getProfileInformation($Profiles[0]['ProfileCode']);
-               return Response::returnSuccess("success",$result);
-           }
+             global $mysql,$loginInfo;      
+             $result =  Profiles::getProfileInformation($_POST['ProfileCode']);
+             return (is_array($result)) ? Response::returnSuccess("success",$result) : Response::returnError($result);
+         }
 
          function GetDraftProfileInformation($ProfileCode="",$rtype="") {
              
@@ -1607,7 +1605,7 @@
                         }
                   }  
               }
-             
+               
             
               
               $result = array("ProfileInfo"            => $Profiles[0],
@@ -1619,18 +1617,17 @@
                               "ProfilePhotos"           => $ProfilePhoto,
                               "ProfilePhotoFirst"      => $ProfilePhotoFirst[0],
                               
-                              "ProfileSignInFor"       => CodeMaster::getData('PROFILESIGNIN'),
-                              
+                              "ProfileSignInFor"       => CodeMaster::getData("PROFILESIGNIN"),
                               "Gender"                 => CodeMaster::getData('SEX'),
-                                                            "MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
-                                                            "Language"               => CodeMaster::getData('LANGUAGENAMES'),
-                                                            "Religion"               => CodeMaster::getData('RELINAMES'),
-                                                            "Caste"                  => CodeMaster::getData('CASTNAMES'),
-                                                            "Community"              => CodeMaster::getData('COMMUNITY'),
-                                                            "Nationality"            => CodeMaster::getData('NATIONALNAMES'),
-                                                            "EmployedAs"             => CodeMaster::getData('OCCUPATIONS'),
-                                                            "Occupation"             => CodeMaster::getData('Occupation'),
-                                                            "TypeofOccupation"       => CodeMaster::getData('TYPEOFOCCUPATIONS'),
+                              "MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
+                              "Language"               => CodeMaster::getData('LANGUAGENAMES'),
+                              "Religion"               => CodeMaster::getData('RELINAMES'),
+                              "Caste"                  => CodeMaster::getData('CASTNAMES'),
+                              "Community"              => CodeMaster::getData('COMMUNITY'),
+                              "Nationality"            => CodeMaster::getData('NATIONALNAMES'),
+                              "EmployedAs"             => CodeMaster::getData('OCCUPATIONS'),
+                              "Occupation"             => CodeMaster::getData('Occupation'),
+                              "TypeofOccupation"       => CodeMaster::getData('TYPEOFOCCUPATIONS'),
                                                             "IncomeRange"            => CodeMaster::getData('INCOMERANGE'),
                                                             "FamilyType"             => CodeMaster::getData('FAMILYTYPE'),
                                                             "FamilyValue"            => CodeMaster::getData('FAMILYVALUE'),
@@ -1679,6 +1676,7 @@
              $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$_POST['Code']."'");     
              $OwnlProfile = $mysql->select("select * from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'");               
               $plan =$mysql->select("select * from `_tbl_member_plan` where `PlanCode`='".$_POST['PlanCode']."'"); 
+              $Member =$mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
               $orderid=SeqMaster::GetNextOrderCode() ;     
             /* $id = $mysql->insert("_tbl_orders",array("ProfileID"       => $_POST['Code'],
                                                       "Plan"       => $plan[0]['PlanName'],
@@ -1688,11 +1686,11 @@
 
             $id = $mysql->insert("_tbl_orders",array("OrderDate"            => DATE("Y-m-d H:i:s"),
                                                      "OrderNumber"          => $orderid,
-                                                     "ProfileID"            =>  $Profiles[0]['ProfileID'],
-                                                     "ProfileCode"          =>  $Profiles[0]['ProfileCode'],
-                                                     "ProfileName"          => $Profiles[0]['ProfileName'],
-                                                     "EmailID"              => $Profiles[0]['EmailID'],
-                                                     "MobileNumber"         => $Profiles[0]['MobileNumber'],
+                                                     "ProfileID"            =>  $OwnlProfile[0]['ProfileID'],
+                                                     "ProfileCode"          =>  $OwnlProfile[0]['ProfileCode'],
+                                                     "MemberName"           => $Member[0]['MemberName'],
+                                                     "EmailID"              => $Member[0]['EmailID'],
+                                                     "MobileNumber"         => $Member[0]['MobileNumber'],
                                                      "AddressLine1"         => $Profiles[0]['AddressLine1'],
                                                      "AddressLine2"         => $Profiles[0]['AddressLine2'],
                                                      "AddressLine3"         => $Profiles[0]['AddressLine3'],
@@ -1702,17 +1700,17 @@
                                                      "OrderedOn"            => "0000-00-00 00:00:00",
                                                      "OrderByMemberID"      => $loginInfo[0]['MemberID'],
                                                      "OrderByMemberCode"    => $OwnlProfile[0]['MemberCode'],
-                                                     "OrderedByProfileID"   => $Profiles[0]['ProfileID'],
-                                                     "OrderedByProfileCode" => $Profiles[0]['ProfileCode'],
+                                                     "OrderedProfileID"     => $Profiles[0]['ProfileID'],
+                                                     "OrderedProfileCode"   => $Profiles[0]['ProfileCode'],
                                                      "OrderByFranchisee"    => "0",
                                                      "InvoiceNumber"        => "",
                                                      "InvoiceID"            => "0"));
             $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Order'");
            $mysql->insert("_tbl_orders_items",array("OrderID"               => $orderid,
                                                     "AddedOn"               => date("Y-m-d H:i:s"),
-                                                    "ProfileID"             => $Profiles[0]['ProfileID'],
-                                                    "ProfileCode"           => $Profiles[0]['ProfileCode'],
-                                                    "ProfileName"           => $Profiles[0]['ProfileName'],
+                                                    "ProfileID"             => $OwnlProfile[0]['ProfileID'],
+                                                    "ProfileCode"           => $OwnlProfile[0]['ProfileCode'],
+                                                    "ProfileName"           => $OwnlProfile[0]['ProfileName'],
                                                     "ProductID"             => $plan[0]['PlanID'],
                                                     "ProductCode"           => $plan[0]['PlanCode'],
                                                     "ProductName"           => $plan[0]['PlanName'],
@@ -1721,7 +1719,6 @@
                                                     "Amount"                => $plan[0]['Amount'],
                                                     "TAmount"               => "0",
                                                     "ServiceCharge"         => "0",
-                                                    "TsAmount"              => "0",
                                                     "Remarks"               => "0"));   
          $mysql->insert("_tbl_profile_credits",array("MemberID"             => $loginInfo[0]['MemberID'],
                                                      "MemberCode"           => $OwnlProfile[0]['MemberCode'],
@@ -1887,7 +1884,7 @@
              return Response::returnSuccess("Privacy information updated.",$Member[0]);
          }
 
-         function EditDraftGeneralInformation() {
+         public function EditDraftGeneralInformation() {
 
              global $mysql, $loginInfo;
 
@@ -2300,7 +2297,7 @@
                                                                                    `StarNameCode`      = '".$_POST['StarName']."',
                                                                                    `StarName`          = '".substr($StarName_CodeValue,0,strlen($StarName_CodeValue)-2)."',
                                                                                    `ChevvaiDhoshamCode`= '".$_POST['ChevvaiDhosham']."',
-                                                                                   `ChevvaiDhoshamChevvaiDhosham`    = '".$ChevvaiDhosham[0]['CodeValue']."',
+                                                                                   `ChevvaiDhosham`    = '".$ChevvaiDhosham[0]['CodeValue']."',
                                                                                    `Details`           = '".$_POST['Details']."' where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'";
                  $mysql->execute($updateSql);  
              } else {
@@ -2328,8 +2325,9 @@
                                                                                      "MemberID"          => $loginInfo[0]['MemberID'],
                                                                                      "ProfileID"         => $profile[0]['ProfileID'],
                                                                                      "ProfileCode"       => $_POST['Code'])) ;
+                 $sql=$mysql->qry;
              }
-            return Response::returnSuccess("Partner's expectations are updated successfully".$MaritalStatus,array());
+            return Response::returnSuccess("Success",array());
          }
 
          function EditDraftOccupationDetails() {
@@ -2630,8 +2628,8 @@
          function GetViewAttachments() {
              global $mysql,$loginInfo;    
              
-             $SAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and  `ProfileCode`='".$_POST['Code']."' and `IsDeleted`='0'");
-             $AttachAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `AttachmentID`='".$_POST['AttachmentID']."' and `IsDeleted`='0'");
+             $SAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and  `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
+             $AttachAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `AttachmentID`='".$_POST['AttachmentID']."' and `IsDelete`='0'");
              
              return Response::returnSuccess("success",array("Attachments"       =>  $SAttachments,
                                                             "AttachAttachments" =>  $AttachAttachments[0],
@@ -2643,7 +2641,7 @@
              global $mysql,$loginInfo;
              $BankNames = $mysql->select("select * from  `_tbl_settings_bankdetails` where `IsActive`='1'");                    
              return Response::returnSuccess("success",array("BankName" => $BankNames,
-                                                            "Mode"     => CodeMaster::getData('MODE')));
+                                                            "ModeOfTransfer"     => CodeMaster::getData('MODE')));
          }
 
          function DeleteMember() {
@@ -2906,6 +2904,13 @@
                
                global $mysql,$loginInfo;      
                $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$_POST['ProfileCode']."'"); 
+               if (sizeof($Profiles)==0) {
+                    return Response::returnError("Requested profile information not found");
+               }
+               if (sizeof($Profiles)>1) {
+                    return Response::returnError("Requested profile may be unauthorized.");
+               }
+               
                $member =$mysql->select("select * from `_tbl_members` where MemberID='".$loginInfo[0]['MemberID']."'"); 
                $visitorsDetails =$mysql->select("select * from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
                
@@ -2920,12 +2925,16 @@
                 } else {
                  $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
                  }
+                 
+              
                 if($Profiles[0]['MemberID']>0 && $Profiles[0]['ProfileID']>0){
+                    
+                    
                 
              $ViewTime = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterMemberID`='".$loginInfo[0]['MemberID']."'");
-             if(sizeof($ViewTime)==0){
              
-             $FirstTimeProfileView = $mysql->select("select * from `_tbl_general_settings` where  `Settngs`='FirstTimeProfileView'");
+             if(sizeof($ViewTime)==0){
+             $FirstTimeProfileView = $mysql->select("select * from `_tbl_general_settings` where  `Settings`='FirstTimeProfileView'");
              
              if($FirstTimeProfileView[0]['Email']=="1"){
              
@@ -2940,13 +2949,14 @@
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
              }
+             
              if($FirstTimeProfileView[0]['SMS']=="1"){
              MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has viewed. Your Profile ID is ".$Profiles[0]['ProfileCode']);
              } 
              }
              if(sizeof($ViewTime)>0){
              
-             $EveryTimeProfileView = $mysql->select("select * from `_tbl_general_settings` where  `Settngs`='EveryTimeProfileView'");
+             $EveryTimeProfileView = $mysql->select("select * from `_tbl_general_settings` where  `Settings`='EveryTimeProfileView'");
              
              if($EveryTimeProfileView[0]['Email']=="1"){
              
@@ -2973,6 +2983,8 @@
                                                                    "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
                                                                   "ViewedOn"           => date("Y-m-d H:i:s")));
                 }
+                
+                
               $mysql->insert("_tbl_latest_updates",array("MemberID"           => $Profiles[0]['MemberID'],
                                                                    "ProfileID"          => $Profiles[0]['ProfileID'],
                                                                    "ProfileCode"        => $Profiles[0]['ProfileCode'],
@@ -2982,6 +2994,7 @@
                                                                    "ProfilePhoto"       => $ProfileThumbnail,
                                                                    "Subject"            => "has viewed your profile",
                                                                    "ViewedOn"           => date("Y-m-d H:i:s")));
+            
             
                $result =  Profiles::getProfileInfo($_POST['ProfileCode'],2);
                return Response::returnSuccess("success",$result);                  
@@ -3694,7 +3707,6 @@
              
              global $mysql,$loginInfo;      
              $Profiles = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");               
-             
              $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");     
              $PartnersExpectations = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
              $ProfilePhoto =      $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_profiles_photos` where `ProfileID`='".$Profiles[0]['ProfileID']."' and `ProfileCode`='".$ProfileCode."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
@@ -4220,12 +4232,9 @@
              
              global $mysql,$loginInfo;
              
-             $mysql->execute("TRUNCATE _tbl_orders;
-TRUNCATE _tbl_orders_items;
-TRUNCATE _tbl_profile_credits;");
-             
              $Orders = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$loginInfo[0]['MemberID']."' and `OrderNumber`='".$_POST['Code']."'");
              $Profiles = $mysql->select("select * from `_tbl_profiles` where `ProfileCode`='".$Orders[0]['ProfileCode']."'");
+             $OwnProfile = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              
              if (sizeof($Orders)==0) {
@@ -4258,69 +4267,129 @@ TRUNCATE _tbl_profile_credits;");
              
              if (sizeof($id)>0) {
                  
-                 // Order Table Update 
-                 
                  // Invoice Table
                  $invoiceCode=SeqMaster::GetNextInvoiceCode(); 
                  
-               $invoiceid = $mysql->insert("_tbl_invoices",array("OrderID"              => $Orders[0]['OrderID'],
-                                                                 "OrderDate"            => DATE("Y-m-d H:i:s"),
-                                                                 "OrderNumber"          => $Orders[0]['OrderNumber'],
-                                                                 "InvoiceDate"          => DATE("Y-m-d H:i:s"),
-                                                                 "InvoiceNumber"        => $invoiceCode,
-                                                                 "MemberID"             => $loginInfo[0]['MemberID'],
-                                                                 "MemberCode"           => $Member[0]['MemberCode'],
-                                                                 "ProfileID"            => $Profiles[0]['ProfileID'],
-                                                                 "ProfileCode"          => $Profiles[0]['ProfileCode'],
-                                                                 "MemberName"           => $Member[0]['MemberName'],
-                                                                 "EmailID"              => $Profiles[0]['EmailID'],
-                                                                 "MobileNumber"         => $Profiles[0]['MobileNumber'],
-                                                                 "AddressLine1"         => $Profiles[0]['AddressLine1'],
-                                                                 "AddressLine2"         => $Profiles[0]['AddressLine2'],
-                                                                 "AddressLine3"         => $Profiles[0]['AddressLine3'],
-                                                                 "Pincode"              => $Profiles[0]['Pincode'],
-                                                                 "InvoiceValue"         => $plan[0]['Amount'],
-                                                                 "Createdon"            => DATE("Y-m-d H:i:s"),
-                                                                 "CreatedBy"            => $loginInfo[0]['MemberID'],
-                                                                 "PaidAmount"           => $plan[0]['Amount']));
-               $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Invoice'");
-             if(sizeof($invoiceid)>0){
-                 return Response::returnSuccess("success",array("sql"=>$mysql->qry));
-             } else{
-                 return Response::returnError("Order process failed. Invoice Error.",array("sql"=>$mysql->qry));   
-             }
+                 $invoiceid = $mysql->insert("_tbl_invoices",array("OrderID"              => $Orders[0]['OrderID'],
+                                                                   "OrderDate"            => DATE("Y-m-d H:i:s"),
+                                                                   "OrderNumber"          => $Orders[0]['OrderNumber'],
+                                                                   "InvoiceDate"          => DATE("Y-m-d H:i:s"),
+                                                                   "InvoiceNumber"        => $invoiceCode,
+                                                                   "MemberID"             => $loginInfo[0]['MemberID'],
+                                                                   "MemberCode"           => $Member[0]['MemberCode'],
+                                                                   "ProfileID"            => $OwnProfile[0]['ProfileID'],
+                                                                   "ProfileCode"          => $OwnProfile[0]['ProfileCode'],
+                                                                   "MemberName"           => $Member[0]['MemberName'],
+                                                                   "EmailID"              => $Member[0]['EmailID'],
+                                                                   "MobileNumber"         => $Member[0]['MobileNumber'],
+                                                                   "AddressLine1"         => $OwnProfile[0]['AddressLine1'],
+                                                                   "AddressLine2"         => $OwnProfile[0]['AddressLine2'],
+                                                                   "AddressLine3"         => $OwnProfile[0]['AddressLine3'],
+                                                                   "Pincode"              => $OwnProfile[0]['Pincode'],
+                                                                   "InvoiceValue"         => $Orders[0]['OrderValue'],
+                                                                   "Createdon"            => DATE("Y-m-d H:i:s"),
+                                                                   "CreatedBy"            => $loginInfo[0]['MemberID'],
+                                                                   "PaidAmount"           => $Orders[0]['OrderValue']));
+                                                                   
+                 $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Invoice'");
                  
+                  // Order Table Update 
+                   $mysql->execute("update `_tbl_orders` set  `InvoiceID`       = '".$invoiceid."',
+                                                           `InvoiceNumber`   = '".$invoiceCode."', 
+                                                           `IsPaid`          = '1' where  `OrderNumber`='".$Orders[0]['OrderNumber']."'");
+             
                  // Invoice Item Table
-            $invoiceitemid = $mysql->insert("_tbl_invoices_items",array("InvoiceID"            => $invoiceid,
-                                                                        "AddedOn"               => date("Y-m-d H:i:s"),
-                                                                        "ProfileID"             => $Profiles[0]['ProfileID'],
-                                                                        "ProfileCode"           => $Profiles[0]['ProfileCode'],
-                                                                        "MemberID"              =>  $Member[0]['MemberID'],
-                                                                        "MemberCode"            => $Member[0]['MemberCode'],
-                                                                        "MemberName"           => $Member[0]['MemberName'],
-                                                                        "ProductID"             => $plan[0]['PlanID'],
-                                                                        "ProductCode"           => $plan[0]['PlanCode'],
-                                                                        "ProductName"           => $plan[0]['PlanName'],
-                                                                        "ProfileToView"         => $plan[0]['FreeProfiles'],
-                                                                        "Qty"                   => "1",
-                                                                        "Amount"                => $plan[0]['Amount'],
-                                                                        "TAmount"               => "0",
-                                                                        "ServiceCharge"         => "0",
-                                                                        "TsAmount"              => "0",
-                                                                        "Remarks"               => "0"));   
-             if(sizeof($invoiceitemid)>0){
-                 return Response::returnSuccess("success",array("sql"=>$mysql->qry));
-             } else{
-                 return Response::returnError("Order process failed. Invoice Error.",array("sql"=>$mysql->qry));   
-             }
+                 $invoiceitemid = $mysql->insert("_tbl_invoices_items",array("InvoiceID"      => $invoiceid,
+                                                                             "AddedOn"        => date("Y-m-d H:i:s"),
+                                                                             "ProfileID"      => $OwnProfile[0]['ProfileID'],
+                                                                             "ProfileCode"    => $OwnProfile[0]['ProfileCode'],
+                                                                             "MemberID"       => $Member[0]['MemberID'],
+                                                                             "MemberCode"     => $Member[0]['MemberCode'],
+                                                                             "MemberName"     => $Member[0]['MemberName'],
+                                                                             "ProductID"      => $Plan[0]['PlanID'],
+                                                                             "ProductCode"    => $Plan[0]['PlanCode'],
+                                                                             "ProductName"    => $Plan[0]['PlanName'],
+                                                                             "Qty"            => "1",
+                                                                             "Amount"         => $Plan[0]['Amount'],
+                                                                             "TAmount"        => $Plan[0]['Amount'],
+                                                                             "ServiceCharge"  => "0",
+                                                                             "Remarks"        => "0"));   
+             
                  // Download Table
-                 
+                 $Did = $mysql->insert("_tbl_profile_download",array("MemberID"             =>  $Member[0]['MemberID'],
+                                                                     "ProfileCode"          =>  $OwnProfile[0]['ProfileCode'],
+                                                                     "PartnerProfileCode"   =>  $Profiles[0]['ProfileCode'],
+                                                                     "DownLoadOn"           =>  date("Y-m-d H:i:s"))) ;  
                  // Receipt Table
                  
+                 $receiptCode=SeqMaster::GetNextReceiptCode(); 
+                 
+                 $receiptid = $mysql->insert("_tbl_receipts",array("InvoiceID"            => $invoiceid,
+                                                                   "InvoiceNumber"        => $invoiceCode,
+                                                                   "ReceiptDate"          => date("Y-m-d H:i:s"),
+                                                                   "ReceiptNumber"        => $receiptCode,
+                                                                   "MemberID"             => $loginInfo[0]['MemberID'],
+                                                                   "MemberCode"           => $Member[0]['MemberCode'],
+                                                                   "ProfileID"            => $OwnProfile[0]['ProfileID'],
+                                                                   "ProfileCode"          => $OwnProfile[0]['ProfileCode'],
+                                                                   "MemberName"           => $Member[0]['MemberName'],
+                                                                   "EmailID"              => $Member[0]['EmailID'],
+                                                                   "MobileNumber"         => $Member[0]['MobileNumber'],
+                                                                   "AddressLine1"         => $OwnProfile[0]['AddressLine1'],
+                                                                   "AddressLine2"         => $OwnProfile[0]['AddressLine2'],
+                                                                   "AddressLine3"         => $OwnProfile[0]['AddressLine3'],
+                                                                   "Pincode"              => $OwnProfile[0]['Pincode'],
+                                                                   "ReceiptAmount"        => $Orders[0]['OrderValue'],
+                                                                   "Createdon"            => DATE("Y-m-d H:i:s"),
+                                                                   "CreatedBy"            => $loginInfo[0]['MemberID'],
+                                                                   "Remarks"              =>"0"));
+                                                                   
+                 $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Receipt'");
+                 
                  // Member Latest Updates
+                 $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$Profiles[0]['ProfileCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
+               
+               if (sizeof($ProfileThumb)==0) {
+                if ($Profiles[0]['SexCode']=="SX002"){
+                    $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
+                } else { 
+                    $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
+                }
+                } else {
+                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
+                 }
+                 
+                        $mysql->insert("_tbl_latest_updates",array("MemberID"           => $loginInfo[0]['MemberID'],
+                                                                   "ProfileID"          => $OwnProfile[0]['ProfileID'],
+                                                                   "ProfileCode"        => $OwnProfile[0]['ProfileCode'],
+                                                                   "VisterMemberID"     => $Profiles[0]['MemberID'],
+                                                                   "VisterProfileID"    => $Profiles[0]['ProfileID'],
+                                                                   "VisterProfileCode"  => $Profiles[0]['ProfileCode'],
+                                                                   "ProfilePhoto"       => $ProfileThumbnail,
+                                                                   "Subject"            => "download profile",
+                                                                   "ViewedOn"           => date("Y-m-d H:i:s")));
                  
                  // Opp Member Latest Updates
-                 
+                 $ProfileThumbs = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$OwnProfile[0]['ProfileCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
+               
+               if (sizeof($ProfileThumbs)==0) {
+                if ($Profiles[0]['SexCode']=="SX002"){
+                    $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
+                } else { 
+                    $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
+                }
+                } else {
+                 $ProfileThumbnail = getDataURI($ProfileThumbs[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
+                 }
+                         $mysql->insert("_tbl_latest_updates",array("MemberID"           => $Profiles[0]['MemberID'],
+                                                                   "ProfileID"          => $Profiles[0]['ProfileID'],
+                                                                   "ProfileCode"        => $Profiles[0]['ProfileCode'],
+                                                                   "VisterMemberID"     => $OwnProfile[0]['MemberID'],
+                                                                   "VisterProfileID"    => $OwnProfile[0]['ProfileID'],
+                                                                   "VisterProfileCode"  => $OwnProfile[0]['ProfileCode'],
+                                                                   "ProfilePhoto"       => $ProfileThumbnail,
+                                                                   "Subject"            => "has download your profile",
+                                                                   "ViewedOn"           => date("Y-m-d H:i:s")));
                  
                  
                  
@@ -4332,9 +4401,23 @@ TRUNCATE _tbl_profile_credits;");
              } else{
                  return Response::returnError("Order process failed. Invalid wallet request.");   
              }
-               
-          
+         }
+         function GetOrderInvoiceReceiptDetails() {
+             
+             global $mysql,$loginInfo;
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Order") {
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_orders` Where `OrderByMemberID`='". $loginInfo[0]['MemberID']."' order by `OrderID` DESC"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Invoice") {
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_invoices` Where `MemberID`='". $loginInfo[0]['MemberID']."' order by `InvoiceID` DESC"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Receipt") {
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_receipts` Where `MemberID`='". $loginInfo[0]['MemberID']."' order by `ReceiptID` DESC"));    
+             }
          }   
+         
+         
      }  
 //4084   
 ?>                                                            

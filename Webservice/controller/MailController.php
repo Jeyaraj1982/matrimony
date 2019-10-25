@@ -1,7 +1,7 @@
 <?php
     class MailController {
         
-        function Send($param,&$mailError) {
+        static public function Send($param,&$mailError) {
             
             global $mail,$mysql;
             

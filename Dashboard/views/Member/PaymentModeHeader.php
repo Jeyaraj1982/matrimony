@@ -11,6 +11,18 @@
     <div class="row flex-grow">
         <div class="col-12">
             <div class="card">
+                <div class="card-body" style="padding: 14PX;padding-bottom: 0px;">
+                    <h4 class="card-title">Payment Options</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 d-flex align-items-stretch grid-margin" style="padding:0px !important">
+    <div class="row flex-grow">
+        <div class="col-12">
+            <div class="card">
                 <div class="card-body">
                     <div class="form-group-row">
                         <div class="col-sm-12">

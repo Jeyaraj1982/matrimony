@@ -1,5 +1,6 @@
 <?php
-  $response = $webservice->GetFranchiseeInfo();
+  $response = $webservice->getData("Admin","GetFranchiseeInfo");
+  print_r($response);
     $Franchisee          = $response['data']['Franchisee'];
 ?>
 <form method="post" action="" onsubmit="">
@@ -10,7 +11,7 @@
                       <form class="forms-sample">
                       <div class="form-group row">
                           <div class="col-sm-3"><small>Franchisee Code</small></div>
-                          <div class="col-sm-3"><small style="color:#737373; padding-top:50px;"><?php echo $Franchisee['FranchiseeCode'];?></small></div>
+                          <div class="col-sm-3"><small style="color:#737373; padding-top:50px;"><?php echo $Franchisee[0]['FranchiseeCode'];?></small></div>
                         </div>
                         <div class="form-group row">
                           <div class="col-sm-3"><small>Franchisee Name</small></div>

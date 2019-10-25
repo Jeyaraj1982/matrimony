@@ -117,7 +117,7 @@
 
     public function select($sql)
     {
-
+        $this->writeSql($sql);
         $stmt = $this->link->prepare($sql);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -135,13 +135,14 @@
             if ($value == "Null") {
                 $l .= "Null,";
             } else {
-                $l .= "'" . escape_string($value) . "',";
+                $l .= "'" . $value . "',";
             }
         }
         $r = substr($r, 0, strlen($r) - 1) . ")";
         $l = substr($l, 0, strlen($l) - 1) . ")";
         $sql = $r . $l;
 
+        $this->writeSql($sql);
         $this->qry = $sql;
         $this->link->exec($sql);
         $last_id = $this->link->lastInsertId();
@@ -150,12 +151,20 @@
 
     public function execute($sql)
     {
+        $this->writeSql($sql);
         return $this->link->exec($sql);
     }
 
     public function __destruct()
     {
         $this->link = null;
+    }
+    
+    public function writeSql($sql) {
+        $myFile = date("Y_m_d").".txt";
+        $fh = fopen($myFile, 'a') or die("can't open file");
+        fwrite($fh, "[".date("Y-m-d H:i:s")."]\t".$sql."\n");
+        fclose($fh);
     }
 
 }

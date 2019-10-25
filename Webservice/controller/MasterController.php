@@ -1,7 +1,7 @@
 <?php
     class CodeMaster {
         
-        function getData($Request,$filter=null) {
+        static public function getData($Request,$filter=null) {  
             
             global $mysql;
             if (is_array($filter)) {
@@ -12,8 +12,8 @@
                 $array_data = substr($array_data,0,strlen($array_data)-1);
                 $filter = (sizeof($filter)>0) ?  " and SoftCode in (".$array_data.")" : "";
             } else {
-                $filter = ($filter!="") ?  " and SoftCode='".trim($filter)."'" : "";
-            }
+                $filter = ($filter!=null) ?  " and SoftCode='".trim($filter)."'" : "";
+            }   
             
             $quries = array("SEX"                => "select * from `_tbl_master_codemaster` Where `HardCode`='SEX'".$filter,
                             "MARTIALSTATUS"      => "select * from `_tbl_master_codemaster` Where `HardCode`='MARTIALSTATUS'".$filter,
@@ -55,28 +55,24 @@
                             "IDPROOF"            => "select * from `_tbl_master_codemaster` Where `HardCode`='IDPROOF'".$filter,
                             "ADDRESSPROOF"       => "select * from `_tbl_master_codemaster` Where `HardCode`='ADDRESSPROOF'".$filter,
                             "MODE"               => "select * from `_tbl_master_codemaster` Where `HardCode`='MODE'".$filter,
-                            
-                             
-                            "STARNAMES"      => "select * from `_tbl_master_codemaster` Where `HardCode`='STARNAMES'".$filter,                          
-                            "MONSIGNS"      => "select * from `_tbl_master_codemaster` Where `HardCode`='MONSIGNS'".$filter,
-                            "LAKANAM"      => "select * from `_tbl_master_codemaster` Where `HardCode`='LAKANAM'".$filter,
-                            "EDUCATETITLES" => "select * from `_tbl_master_codemaster` Where `HardCode`='EDUCATETITLES'".$filter,
-                            
-                            "DistrictName"  => "select * from `_tbl_master_codemaster` Where `HardCode`='DISTNAMES'".$filter,
-                            "Occupation"    => "select * from `_tbl_master_codemaster` Where `HardCode`='OCCUPATIONTYPES'".$filter,
-                            "EMPLOYEDAS"        => "select * from `_tbl_master_codemaster` Where `HardCode`='EMPLOYEDAS'".$filter,
-
-                            "Secure"        => "select * from `_tbl_master_codemaster` Where `HardCode`='SECURE'".$filter,
-                            "AccountType"   => "select * from `_tbl_master_codemaster` Where `HardCode`='ACCOUNTTYPE'".$filter,
-                            "BANKNAMES"        => "select * from `_tbl_master_codemaster` Where `HardCode`='BANKNAMES'".$filter,
-                            "SMSMETHOD"        => "select * from `_tbl_master_codemaster` Where `HardCode`='SMSMETHOD'".$filter,
-                            "TIMEDOUT"        => "select * from `_tbl_master_codemaster` Where `HardCode`='TIMEDOUT'".$filter,
-                            "MODEOFTRANSFER"        => "select * from `_tbl_master_codemaster` Where `HardCode`='MODEOFTRANSFER'".$filter,
-                            "EDUCATIONDEGREES"        => "select * from `_tbl_master_codemaster` Where `HardCode`='EDUCATIONDEGREES'".$filter,
-                            "PARENTSALIVE"        => "select * from `_tbl_master_codemaster` Where `HardCode`='PARENTSALIVE'".$filter,
-                            "CHEVVAIDHOSHAM"        => "select * from `_tbl_master_codemaster` Where `HardCode`='CHEVVAIDHOSHAM'".$filter,
-                            "DELETEREASON"        => "select * from `_tbl_master_codemaster` Where `HardCode`='DELETEREASON'".$filter,
-                            "PRIMARYPRIORITY"        => "select * from `_tbl_master_codemaster` Where `HardCode`='PRIMARYPRIORITY'".$filter,
+                            "STARNAMES"          => "select * from `_tbl_master_codemaster` Where `HardCode`='STARNAMES'".$filter,                          
+                            "MONSIGNS"           => "select * from `_tbl_master_codemaster` Where `HardCode`='MONSIGNS'".$filter,
+                            "LAKANAM"            => "select * from `_tbl_master_codemaster` Where `HardCode`='LAKANAM'".$filter,
+                            "EDUCATETITLES"      => "select * from `_tbl_master_codemaster` Where `HardCode`='EDUCATETITLES'".$filter,
+                            "DistrictName"       => "select * from `_tbl_master_codemaster` Where `HardCode`='DISTNAMES'".$filter,
+                            "Occupation"         => "select * from `_tbl_master_codemaster` Where `HardCode`='OCCUPATIONTYPES'".$filter,
+                            "EMPLOYEDAS"         => "select * from `_tbl_master_codemaster` Where `HardCode`='EMPLOYEDAS'".$filter,
+                            "Secure"             => "select * from `_tbl_master_codemaster` Where `HardCode`='SECURE'".$filter,
+                            "AccountType"        => "select * from `_tbl_master_codemaster` Where `HardCode`='ACCOUNTTYPE'".$filter,
+                            "BANKNAMES"          => "select * from `_tbl_master_codemaster` Where `HardCode`='BANKNAMES'".$filter,
+                            "SMSMETHOD"          => "select * from `_tbl_master_codemaster` Where `HardCode`='SMSMETHOD'".$filter,
+                            "TIMEDOUT"           => "select * from `_tbl_master_codemaster` Where `HardCode`='TIMEDOUT'".$filter,
+                            "MODEOFTRANSFER"     => "select * from `_tbl_master_codemaster` Where `HardCode`='MODEOFTRANSFER'".$filter,
+                            "EDUCATIONDEGREES"   => "select * from `_tbl_master_codemaster` Where `HardCode`='EDUCATIONDEGREES'".$filter,
+                            "PARENTSALIVE"       => "select * from `_tbl_master_codemaster` Where `HardCode`='PARENTSALIVE'".$filter,
+                            "CHEVVAIDHOSHAM"     => "select * from `_tbl_master_codemaster` Where `HardCode`='CHEVVAIDHOSHAM'".$filter,
+                            "DELETEREASON"       => "select * from `_tbl_master_codemaster` Where `HardCode`='DELETEREASON'".$filter,
+                            "PRIMARYPRIORITY"    => "select * from `_tbl_master_codemaster` Where `HardCode`='PRIMARYPRIORITY'".$filter,
                             "RegisterAllowedCountries" => "select *, CONCAT(CodeValue,' (+',ParamA,')') as str FROM `_tbl_master_codemaster`  WHERE `HardCode`='CONTNAMES' and ParamE='1'");
               return $mysql->select($quries[$Request]);
         }

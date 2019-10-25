@@ -2712,6 +2712,10 @@
              $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$_POST['Code']."'");
              $Franchisee = $mysql->select("select * from `_tbl_franchisees` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
              
+             if($this->getAvailableBalance() > $_POST['AmountToTransfer']) {
+                return Response::returnError("You don't have sufficiant balance in your wallet."); 
+             }
+             
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeTransferAmountToMember'");
              $content  = str_replace("#FranchiseeName#",$Franchisee[0]['FranchiseName'],$mContent[0]['Content']);
              $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
@@ -2733,9 +2737,19 @@
                                                                    "TxnDate"          =>date("Y-m-d H:i:s"),
                                                                    "IsMember"         =>"0"));  
                                                                    
-             $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberAmountReceivedFromAdmin'");
-        
-            
+               
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeAmountReceivedFromAdmin'");
+             $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#FranchiseeName#",$Franchisee[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#Amount#",$_POST['AmountToTransfer'],$content);
+
+             MailController::Send(array("MailTo"   => $Member[0]['EmailID'],
+                                        "Category" => "FranchiseeAmountReceivedFromAdmin",
+                                        "MemberID" => $Member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($Member[0]['EmailID'],"Dear ".$Member[0]['MemberName']." your received amount from ".$Franchisee[0]['FranchiseName']."");
+                
                    $mysql->insert("_tbl_wallet_transactions",array("MemberID"         =>$_POST['Code'],
                                                                    "MEMFRANCode"      => $Franchisee[0]['MemberCode'],        
                                                                    "Particulars"      =>'Transfer from  '. $Franchisee[0]['FranchiseeCode'],                    
@@ -2769,6 +2783,14 @@
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="WalletTransactions") {
                  $Requests = $mysql->select("select * from `_tbl_wallet_transactions` where `MemberID`='".$_POST['Code']."' and `IsMember`='1' order by `TxnID` DESC");
+             return Response::returnSuccess("success",$Requests);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Order") {
+                 $Requests = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$_POST['Code']."' order by `OrderID` DESC");
+             return Response::returnSuccess("success",$Requests);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Invoice") {
+                 $Requests = $mysql->select("select * from `_tbl_invoices` where `MemberID`='".$_POST['Code']."' order by `InvoiceID` DESC");
              return Response::returnSuccess("success",$Requests);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Recentlyviewed") {

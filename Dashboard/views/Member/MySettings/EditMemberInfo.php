@@ -96,7 +96,7 @@ $page="MyMemberInfo";
                             </div>
                                 <div class="col-sm-6" style="margin-left: -15px;width: 31%;">
                                 <input type="text" class="form-control" disabled="disabled" blocked maxlength="10" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Member['MobileNumber']);?>" placeholder="Mobile Number"></div>
-                                <div class="col-sm-3" style="color:#5dce37"><img src="<?php echo SiteUrl?>assets/images/Green-Tick-PNG-Picture.png" width="7%">&nbsp;Verified</div>
+                                <div class="col-sm-3" style="color:#5dce37"><img src="<?php echo SiteUrl?>assets/images/Green-Tick-PNG-Picture.png" width="17%">&nbsp;Verified</div>
                             <?php }?>
                     </div>
                 </div>

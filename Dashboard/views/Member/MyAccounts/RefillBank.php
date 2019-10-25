@@ -4,7 +4,8 @@
     $sp    = "Bank";
     $response  = $webservice->getData("Member","GetBankNames");
     $BankNames = $response['data']['BankName'] ;
-    $Modes = $response['data']['Mode'] ;
+    $Modes = $response['data']['ModeOfTransfer'] ;
+    print_r($response);
 ?>
     <script>
         $(document).ready(function() {
@@ -147,7 +148,7 @@
             <div class="col-sm-7">
                 <select id="Mode" class="form-control" name="Mode" style="border: 1px solid #ccc;padding: 3px;padding-left: 3px;padding-left: 10px;">
                     <?php foreach($Modes as $Mode) { ?>
-                        <option value="<?php echo $Mode['SoftCode'];?>" <?php echo ($_POST[ 'MODE']==$Mode[ 'SoftCode']) ? " selected='selected' " : "";?>>
+                        <option value="<?php echo $Mode['SoftCode'];?>"<?php echo ($_POST['Mode']==$Mode[ 'SoftCode']) ? " selected='selected' " : "";?>>
                             <?php echo $Mode['CodeValue'];?>
                         </option>
                     <?php } ?>

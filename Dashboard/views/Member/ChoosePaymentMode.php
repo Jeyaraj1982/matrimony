@@ -41,7 +41,7 @@
             </table>
         </div>
         <div class="Wallet" id="Walletdiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
-            <h5 class="card-title">Wallet</h5>
+            <h5 class="card-title">Using Wallet Balance</h5>
            <?php
                $response = $webservice->getData("Member","ViewOrdersAmountForTransaction",array("Code"=>$_GET['Code']));
                $Oreders= $response['data']['Order'];
@@ -109,5 +109,8 @@
         $('#Wallet').css({"background":"#95abfb"});
      }
  }
+ $(document).ready(function () {
+      loadPaymentOption('Wallet');
+ });
 </script>
 <?php include_once("PaymentModeFooter.php");?>                    

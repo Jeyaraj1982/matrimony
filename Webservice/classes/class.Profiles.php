@@ -1,19 +1,28 @@
 <?php 
     class Profiles {
         
-        public function getProfileInformation($ProfileCode) {
+        /* Need to check this function need or not */
+        static public function getProfileInformation($ProfileCode) {
             
             global $mysql,$loginInfo;  
                 
             $Profiles = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");               
+            if (sizeof($Profiles)==0) {
+                return "Requested profile information not found";
+            }
+             if (sizeof($Profiles)>1) {
+                return "Requested profile may be unauthorized.";
+            }
             $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' order by LastSeenID desc limit 0,1");
             
-            $id = $mysql->insert("_tbl_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
+           /* 
+           Need to be explain :
+           $id = $mysql->insert("_tbl_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
                                                                  "LastSeenBy"   => $loginInfo[0]['MemberID'],
                                                                  "ProfileID"    => $Profiles[0]['ProfileID'],
                                                                  "MemberID"     => $loginInfo[0]['MemberID'],
                                                                  "FranchiseeID" => "0",
-                                                                 "AdminID"      => "0"));
+                                                                 "AdminID"      => "0"));*/
             
             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");     
             $PartnersExpectations = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
@@ -52,14 +61,15 @@
                 $Position = "Published";
             }
             $Profiles[0]['Age'] =  date("Y")-date("Y",strtotime($Profiles[0]['DateofBirth']));
-            
+             /* 
+           Need to be explain :
              $id = $mysql->insert("_tbl_draft_profiles_lastseen", array("LastSeen"     => date("Y-m-d H:i:s"),
                                                                       "LastSeenBy"   => $loginInfo[0]['MemberID'],
                                                                       "ProfileID"    => $Profiles[0]['ProfileID'],
                                                                       "MemberID"     => $loginInfo[0]['MemberID'],
                                                                       "FranchiseeID" => "0",
                                                                       "AdminID"      => "0"));
-                                                                      
+            */                                                          
             return array("ProfileInfo"          => $Profiles[0],
                             "Position"             => $Position,
                             "LastSeen"             => (isset($lastseen[0]['LastSeen']) ? $lastseen[0]['LastSeen'] : 0),
@@ -88,7 +98,7 @@
             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");     
             $PartnersExpectations = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
             $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_draft_profiles_verificationdocs` where `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
-            $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$Profiles[0]['MemberID']."' and `IsDeleted`='0' and ProfileID='".$Profiles[0]['ProfileID']."'");            
+            $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and ProfileID='".$Profiles[0]['ProfileID']."'");            
             
             $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where  `ProfileCode`='".$ProfileCode."' and `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
             if (sizeof($ProfilePhotos)<4) {
@@ -347,14 +357,14 @@
                 $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");               
                 $PartnersExpectations = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
                 $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_draft_profiles_verificationdocs` where `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
-                $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `IsDeleted`='0' and ProfileID='".$Profiles[0]['ProfileID']."'");            
+                $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `IsDelete`='0' and ProfileID='".$Profiles[0]['ProfileID']."'");            
                 $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
                 $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where  `ProfileCode`='".$ProfileCode."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
             } else {   
                 $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where ProfileCode='".$ProfileCode."'");               
                 $PartnersExpectations = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileCode`='".$ProfileCode."'");
                 $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
-                $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where  ProfileCode='".$ProfileCode."' and `IsDeleted`='0'");            
+                $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where  ProfileCode='".$ProfileCode."' and `IsDelete`='0'");            
                 $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
                 $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
             }

@@ -63,7 +63,7 @@
         <div id="FatherOccupation_additionalinfo">
         <div class="form-group row" id="FatherAlive_row_3" >   
              <label class="col-sm-3 col-form-label"></label>
-             <div class="col-sm-4"  id="FatherOccupation_additionalinfo"><input type="text" class="form-control" id="FatherOtherOccupation" maxlength="50" name="FatherOtherOccupation" placeholder="Fathers Occupation" value="<?php echo (isset($_POST['FatherOtherOccupation']) ? $_POST['FatherOtherOccupation'] : $ProfileInfo['FatherOtherOccupation']);?>">
+             <div class="col-sm-4"  id="FatherOccupation_additionalinfo"><input type="text" class="form-control" id="FatherOtherOccupation" maxlength="50" name="FatherOtherOccupation" placeholder="Father's Occupation" value="<?php echo (isset($_POST['FatherOtherOccupation']) ? $_POST['FatherOtherOccupation'] : $ProfileInfo['FatherOtherOccupation']);?>">
               <span class="errorstring" id="ErrFatherOtherOccupation"><?php echo isset($ErrFatherOtherOccupation)? $ErrFatherOtherOccupation : "";?></span></div>
          </div>  
          </div>                                                                                                        
@@ -114,7 +114,7 @@
         <div id="MotherOccupation_additionalinfo">
          <div class="form-group row" id="MotherAlive_row_3" >   
              <label class="col-sm-3 col-form-label"></label>
-             <div class="col-sm-4"  id="MotherOccupation_additionalinfo"><input type="text" class="form-control" id="MotherOtherOccupation" maxlength="50" name="MotherOtherOccupation" placeholder="Mothers Occupation" value="<?php echo (isset($_POST['MotherOtherOccupation']) ? $_POST['MotherOtherOccupation'] : $ProfileInfo['MotherOtherOccupation']);?>">
+             <div class="col-sm-4"  id="MotherOccupation_additionalinfo"><input type="text" class="form-control" id="MotherOtherOccupation" maxlength="50" name="MotherOtherOccupation" placeholder="Mother's Occupation" value="<?php echo (isset($_POST['MotherOtherOccupation']) ? $_POST['MotherOtherOccupation'] : $ProfileInfo['MotherOtherOccupation']);?>">
               <span class="errorstring" id="ErrMotherOtherOccupation"><?php echo isset($ErrMotherOtherOccupation)? $ErrMotherOtherOccupation : "";?></span></div>
          </div>
          </div>

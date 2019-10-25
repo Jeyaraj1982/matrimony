@@ -16,20 +16,21 @@ $page="BasicSearch";?>
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Plans</h4>
+                            <h4 class="card-title">Order</h4>
                                 <div style="width:770px;border:1px solid #737373;padding: 10px 20px;">
                                     <div class="from-group row" style="margin-bottom: -10px;">
                                         <label class="col-sm-6 col-form-label" style="color:#737373;">Order To&nbsp;</label>
-                                        <label class="col-sm-6 col-form-label" style="color:#737373;text-align: right">Order From&nbsp;</label>
+                                        <label class="col-sm-6 col-form-label" style="color:#737373;text-align: right">Order Details&nbsp;</label>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-sm-6 col-form-label" style="color:#737373;">
                                             <?php echo $Member['MemberName'];?><br><br>
-                                            <?php echo $Member['EmailID'];?><br><br>
-                                            <?php echo $Member['MobileNumber'];?>
+                                            Email  :&nbsp;<?php echo $Member['EmailID'];?><br><br>
+                                            Mobile :&nbsp;<?php echo $Member['MobileNumber'];?>
                                         </label>
                                         <label class="col-sm-6 col-form-label" style="color:#737373;text-align: right">
-                                            <?php echo $Oreders['OrderNumber'];?><br>
+                                            Order #&nbsp;:&nbsp;<?php echo $Oreders['OrderNumber'];?><br><br>
+                                            Order Date&nbsp;:&nbsp;<?php echo $Oreders['OrderDate'];?><br>
                                         </label>
                                     </div>
                                     <hr style="margin-right: -22px;margin-left: -19px;">
@@ -52,8 +53,8 @@ $page="BasicSearch";?>
                                             </tr>
                                          <?php } ?>
                                          <tr>
-                                            <td colspan="3"></td>
-                                            <td style="text-align:right">Total&nbsp;:&nbsp;&nbsp;<?php echo number_format($Plans[0]['Amount'],2);?></td>
+                                            <td colspan="3" style="text-align:right">Total</td>
+                                            <td style="text-align:right"><?php echo number_format($Plans[0]['Amount'],2);?></td>
                                          </tr>
                                          </tbody>
                                     </table>

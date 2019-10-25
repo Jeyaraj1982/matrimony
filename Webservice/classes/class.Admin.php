@@ -2988,4 +2988,60 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                                                                                                            
 }
 //2801
+?> Debits)) as bal from `_tbl_wallet_transactions` where `MemberID`='".$memberid."' and IsMember='1'");
+             return isset($d[0]['bal']) ? $d[0]['bal'] : 0;
+         }
+         function GetMemberWalletAndProfileDetails() {
+             
+             global $mysql,$loginInfo;
+          
+            if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="WalletRequests") {
+                 $Requests = $mysql->select("select * from `_tbl_wallet_bankrequests` where `MemberID`='".$_POST['Code']."' and `IsMember`='1' order by `ReqID` DESC");
+             return Response::returnSuccess("success",$Requests);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="WalletTransactions") {
+                 $Requests = $mysql->select("select * from `_tbl_wallet_transactions` where `MemberID`='".$_POST['Code']."' and `IsMember`='1' order by `TxnID` DESC");
+             return Response::returnSuccess("success",$Requests);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Order") {
+                 $Requests = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$_POST['Code']."' order by `OrderID` DESC");
+             return Response::returnSuccess("success",$Requests);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Invoice") {
+                 $Requests = $mysql->select("select * from `_tbl_invoices` where `MemberID`='".$_POST['Code']."' order by `InvoiceID` DESC");
+             return Response::returnSuccess("success",$Requests);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Recentlyviewed") {
+                
+                 $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$_POST['Code']."' order by LastSeenID DESC");
+                     $profileCodes  = array();
+                     foreach($RecentProfiles as $RecentProfile) {
+                         if (!(in_array($RecentProfile['ProfileCode'], $profileCodes)))
+                         {
+                            $profileCodes[]=$RecentProfile['ProfileCode'];
+                         }
+                     }
+                     if (sizeof($profileCodes)>0) {
+                        for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
+                            if (isset($profileCodes[$i]))  {
+                                $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,2);     
+                            }
+                        }
+                     }
+                  
+             return Response::returnSuccess("success",$Profiles);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="LoginLogs") {
+                 $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$_POST['Code']."' ORDER BY `LoginID` DESC LIMIT 0,10");
+             return Response::returnSuccess("success",$LoginHistory);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Activities") {
+                 $Activities = $mysql->select("select * from `_tbl_logs_activity` where `MemberID`='".$_POST['Code']."' ORDER BY `ActivityID` DESC LIMIT 0,5");
+             return Response::returnSuccess("success",$Activities);
+             }
+         }
+         
+                                                                                                                           
+}
+//2801
 ?> 

@@ -1,7 +1,6 @@
 <?php 
     include_once("../../PaymentModeHeader.php");
     $response = $webservice->getData("Member","CollectPaymentFromWallet",$_POST);  
-    print_r($response);
     if ($response['status']=="success") {    
 ?>
     <div class="col-sm-9" style="margin-top: -8px;" >
