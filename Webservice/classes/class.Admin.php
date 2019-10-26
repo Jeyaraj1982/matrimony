@@ -2660,12 +2660,17 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                         ON _tbl_wallet_bankrequests.FranchiseeID=_tbl_franchisees_staffs.PersonID where _tbl_wallet_bankrequests.ReqID='".$_POST['Code']."'");                        
              return Response::returnSuccess("success",$Bank[0]);
          }
+         function getAvailableBalance($memberid) {
+             global $mysql,$loginInfo;
+             $d = $mysql->select("select (sum(Credits)-sum(Debits)) as bal from  _tbl_wallet_transactions where MemberID='".$memberid."'");
+             return isset($d[0]['bal']) ? $d[0]['bal'] : 0;      
+         }
      function ApproveBankWalletRequest() {
 
              global $mysql,$loginInfo;
              $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['Code']."'");
              
-             $member = $mysql->select("select * from  `_tbl_members` where MemberID='".$Requests[0]['MemberID']."'");
+           /* $member = $mysql->select("select * from  `_tbl_members` where MemberID='".$Requests[0]['MemberID']."'");
              
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='ApproveWalletRequest'");
              $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
@@ -2676,13 +2681,13 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                         "MemberID" => $member[0]['MemberID'],
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
-             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear '".$member[0]['MemberName']."' your wallet request has been approved");
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear '".$member[0]['MemberName']."' your wallet request has been approved");*/ 
             
                $id=$mysql->insert("_tbl_wallet_transactions",array("MemberID"         =>$Requests[0]['MemberID'],
                                                                      "Particulars"      =>'Add To Wallet',                    
                                                                      "Credits"          =>$Requests[0]['RefillAmount'],                    
                                                                      "Debits"           =>"0", 
-                                                                     "AvailableBalance" =>getAvailableBalance($Requests[0]['MemberID'])+$Requests[0]['RefillAmount'],                   
+                                                                     "AvailableBalance" =>$this->getAvailableBalance($Requests[0]['MemberID'])+$Requests[0]['RefillAmount'],                   
                                                                      "RequestID"        =>$Requests[0]['RequestID'],                    
                                                                      "TxnDate"          =>date("Y-m-d H:i:s"),
                                                                      "IsMember"          =>"1")); 
@@ -2984,13 +2989,6 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              $Balance = $mysql->select("select  (sum(Credits)-sum(Debits)) as bal from `_tbl_wallet_transactions` where `MemberID`='".$memberid."' and IsMember='1'");
              return isset($d[0]['bal']) ? $d[0]['bal'] : 0;
          }
-         
-                                                                                                                           
-}
-//2801
-?> Debits)) as bal from `_tbl_wallet_transactions` where `MemberID`='".$memberid."' and IsMember='1'");
-             return isset($d[0]['bal']) ? $d[0]['bal'] : 0;
-         }
          function GetMemberWalletAndProfileDetails() {
              
              global $mysql,$loginInfo;
@@ -3040,7 +3038,69 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              return Response::returnSuccess("success",$Activities);
              }
          }
+         function GetOrderInvoiceReceiptDetails() {
+             
+             global $mysql,$loginInfo;
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Order") {
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_orders` order by `OrderID` DESC"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Invoice") {
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_invoices` order by `InvoiceID` DESC"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Receipt") {
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_receipts` order by `ReceiptID` DESC"));    
+             }
+         }
+         function GetSequenceMasterDetails() {      
+             
+             global $mysql,$loginInfo;
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_sequence`"));    
+         }
+         function AddSequenceMaster() {
+             global $mysql,$loginInfo;
+               $data = $mysql->select("select * from  _tbl_sequence where SequenceFor='".trim($_POST['SequenceFor'])."'");
+                    if (sizeof($data)>0) {
+                        return Response::returnError("Sequence For Already Exists");
+               }
+               $data = $mysql->select("select * from  _tbl_sequence where Prefix='".trim($_POST['Prefix'])."'");
+                    if (sizeof($data)>0) {
+                        return Response::returnError("Prefix Already Exists");
+               }   
+                            $id=$mysql->insert("_tbl_sequence",array("SequenceFor"      =>$_POST['SequenceForName'],
+                                                                     "Prefix"           =>$_POST['Prefix'],                    
+                                                                     "StringLength"     =>$_POST['SLength'],                    
+                                                                     "LastNumber"       =>$_POST['LastNumber'])); 
+              
+             if (sizeof($id)>0) {
+                 return Response::returnSuccess("success",array("sql"=>$mysql->qry));
+             } else{
+                 return Response::returnError("Access denied. Please contact support");   
+             }
+         }
+         function GetSequenceMasterDetailsForView() {      
+             
+             global $mysql,$loginInfo;
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_sequence` where SequenceID='".$_POST['Code']."'"));    
+         }
          
+         function EditSequenceMaster() {
+             global $mysql,$loginInfo;
+             
+              $updateSql = "update `_tbl_sequence` set `SequenceFor`  = '".$_POST['SequenceForName']."',
+                                                       `Prefix`       ='".$_POST['Prefix']."', 
+                                                       `StringLength` = '1',
+                                                       `LastNumber`   ='".$_POST['LastNumber']."' 
+                                                                   where `SequenceID`='".$_POST['Code']."'";
+              $mysql->execute($updateSql);  
+             return Response::returnSuccess("success",array("sql"=>$mysql->qry));
+         } 
+          function GetOnlineMembers() {      
+             global $mysql,$loginInfo;
+             $loginmembers = $mysql->select("SELECT * FROM `_tbl_logs_logins` WHERE LoginStatus='1' AND AdminID='0' AND AdminStaffID='0' AND FranchiseeID='0' AND FranchiseeStaffID='0' AND LoginOn='".date("Y-m-d H:i:s")."'"); 
+             $Members = $mysql->select("Sellect * from _tbl_members where MemberID='".$loginmembers[0]['MemberID']."'");
+                return Response::returnSuccess("success",$Members);    
+         }
                                                                                                                            
 }
 //2801
