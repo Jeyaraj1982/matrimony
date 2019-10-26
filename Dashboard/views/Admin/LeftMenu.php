@@ -234,5 +234,24 @@
                     </ul>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#SequenceMaster" aria-expanded="false" aria-controls="ui-basic">
+                    <i class="menu-icon mdi mdi-content-copy "></i>
+                    <span class="menu-title">Sequence Master</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="SequenceMaster">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("SequenceMaster/ManageSequenceMaster");?>">Manage Sequence Master</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo GetUrl("OnlineMembers");?>">
+                    <i class="menu-icon mdi mdi-content-copy "></i>
+                    <span class="menu-title">Online Members</span>
+                    <i class="menu-arrow"></i>
+                </a>
+            </li>
          </ul>
     </nav> 

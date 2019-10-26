@@ -33,7 +33,7 @@
            .shadow {-webkit-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);-moz-box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
            .bshadow {-webkit-box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);-moz-box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);box-shadow: 0px 9px 36px -10px rgba(156, 154, 156, 0.64);}
            .box-shaddow {box-shadow: 0 0 5px #e9e9e9 !important;-moz-box-shadow: 0 0 5px #e9e9e9 !important;-webkit-box-shadow: 0 0 24px #e9e9e9 !important;}
-           .profile_horizontal_row {box-shadow: 0 0 5px #e9e9e9 !important;-moz-box-shadow: 0 0 5px #e9e9e9 !important;-webkit-box-shadow: 0 0 24px #e9e9e9 !important;min-height: 200px;width:100%;background:white;padding:20px;border:1px solid transparent;cursor:poiner;}
+           .profile_horizontal_row {box-shadow: 0 0 5px #e9e9e9 !important;-moz-box-shadow: 0 0 5px #e9e9e9 !important;-webkit-box-shadow: 0 0 24px #e9e9e9 !important;min-height: 200px;max-width:770px !important;background:white;padding:20px;border:1px solid transparent;cursor:poiner;}
            .profile_horizontal_row:hover {background:#f4fbfc;border:1px solid #e5e5e5}
            #slideshow .leftLst, #slideshow .rightLst { position:absolute; border-radius:50%;top:calc(50% - 20px); }
            #slideshow .leftLst { left:0; }
@@ -1065,12 +1065,12 @@
                         </div> 
                                 </div>
                                 <div class="form-group row">
-                                       <div class="col-sm-7">
+                                       <div class="col-sm-6">
                                             <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
                                        </div>
-                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:35px;"></span></div> 
-                                       <div class="col-sm-4" style="float:right;font-size: 12px;">
-                                                <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
+                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:23px;"></span></div> 
+                                       <div class="col-sm-5" style="float:right;font-size: 12px;">
+                                                <?php  echo "Published: ".putDate($Profile['IsApprovedOn']); ?><br>
                                                 <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?>
                                                 <br>
                                                 <br>
@@ -1093,13 +1093,13 @@
                                 </div>
                             </div>
                            <div style="float:right;line-height: 1px;">
-                                <a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <!--<a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php //echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;-->
                                 <?php if ($Profile['IsDownloaded']==0) { ?>
                                     <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
                                 <?php } else { ?>
                                     Alredy Downloaded
                                 <?php } ?>
-                                &nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=BrowseMatches");?>">view</a>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<!--<a href="<?php // echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=BrowseMatches");?>">view</a>-->
                             </div>
                             <div class="modal" id="Upgrades" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
                                 <div class="modal-dialog" style="width: 367px;">

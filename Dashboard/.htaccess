@@ -28,6 +28,9 @@ RewriteRule ^ViewPostedProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewPostedProfil
 RewriteRule ^ViewPublishedProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewPublishedProfile           
 RewriteRule ^ViewProfileforaddLandingPage/(.*)\.htm$ ./index.php?Code=$1&p=ViewProfileforaddLandingPage
 
+RewriteRule ^SequenceMaster/EditSequence/(.*)\.htm$ ./index.php?Code=$1&p=SequenceMaster/EditSequence
+RewriteRule ^SequenceMaster/ViewSequence/(.*)\.htm$ ./index.php?Code=$1&p=SequenceMaster/ViewSequence
+
 
 RewriteRule ^Matches/Search/ViewPlans/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ViewPlans
 RewriteRule ^Matches/Search/ChoosePaymentMode/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ChoosePaymentMode
