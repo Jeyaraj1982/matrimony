@@ -1,14 +1,8 @@
 <?php
-
-    error_reporting(0);                             
-    define("DBHOST","localhost");
-    define("DBUSER","onlin5zs_j2jsss");
-    define("DBPASS","welcome@82");
-    session_start();     
-    define("web_path","website/");
+    include_once("config.php");
     
     include_once(web_path."classes/class.mysql.php");
-     
+    
     $app     = new MySql(DBHOST,DBUSER,DBPASS,"onlin5zs_jframe");
     $appData = $app->select("select * from _japp where Lower(hostname)='".strtolower($_SERVER['HTTP_HOST'])."' or  Lower(hosturl)='".strtolower($_SERVER['HTTP_HOST'])."' ");
   
@@ -64,4 +58,3 @@
         }
     }
 ?>
- 

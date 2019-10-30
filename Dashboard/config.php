@@ -1,6 +1,6 @@
 <?php
     session_start();
-    
+    include_once("../config.php");
     include_once("config_client.php");
     $__Global = $_SERVER;
 
@@ -441,8 +441,6 @@
               return json_decode($this->_callUrl("m=Member&a=UpdateKYC",$param),true);
         }
         
-         
-
         function getData($method,$action,$param=array()) {
             return json_decode($this->_callUrl("m=".$method."&a=".$action,$param),true);
         }
@@ -459,7 +457,7 @@
             }
             $postvars .= "qry=".base64_encode(json_encode(array("UserAgent"=>$__Global['HTTP_USER_AGENT'],"IPAddress"=>$__Global['REMOTE_ADDR'])));
             $ch = curl_init();
-            curl_setopt($ch,CURLOPT_URL,$this->serverURL.$method."&User=".$_SESSION['UserData']['MemberID']);
+            curl_setopt($ch,CURLOPT_URL,$this->serverURL.$method."&User=".(isset($_SESSION['UserData']['MemberID']) ? $_SESSION['UserData']['MemberID'] : ""));
             curl_setopt($ch,CURLOPT_POST, 1);
             curl_setopt($ch,CURLOPT_POSTFIELDS,$postvars);
             curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
@@ -544,5 +542,8 @@
 
     if (!$full) $string = array_slice($string, 0, 1);
     return $string ? implode(', ', $string) . ' ago' : 'just now';
-}   
+}
+
+
+   
 ?>
