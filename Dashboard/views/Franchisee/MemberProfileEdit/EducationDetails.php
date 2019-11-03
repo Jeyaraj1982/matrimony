@@ -40,7 +40,7 @@
                           <?php } else { echo "Attached"; ?>
                                 <br><a href="javascript:void(0)" onclick="ViewAttchment('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
                           <?php }?>
-                         <?php } else { echo "Not Attached";?>
+                         <?php } else { echo "Add your educational attachment and get more responses";?>
                          <br><a href="<?php echo GetUrl("MemberProfileEdit/AttachEducationDetails/". $Document['ProfileCode'].".htm?AttachmentID=".$Document['AttachmentID']."");?>">Attach</a>
                         <?php }?></td>
                     <td style="width:20px">

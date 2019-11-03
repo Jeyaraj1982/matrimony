@@ -23,11 +23,11 @@
                         </div>
                          <div class="form-group row">
                           <div class="col-sm-3"><small>Mobile Number</small></div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Franchisee['ContactNumber'];?></small></div>
+                          <div class="col-sm-3"><small style="color:#737373;">+<?php echo $Franchisee['ContactNumberCountryCode'];?>&nbsp;<?php echo $Franchisee['ContactNumber'];?></small></div>
                         </div>
                          <div class="form-group row">
                           <div class="col-sm-3"><small>Whatsapp Number </small></div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Franchisee['ContactWhatsapp'];?></small></div>
+                          <div class="col-sm-3"><small style="color:#737373;">+<?php echo $Franchisee['ContactWhatsappCountryCode'];?>&nbsp;<?php echo $Franchisee['ContactWhatsapp'];?></small></div>
                         </div>
                         <div class="form-group row">
                           <div class="col-sm-3"><small>Landline Number</small></div>

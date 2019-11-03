@@ -274,11 +274,13 @@ legend {
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Working country</label>                      
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
+            <label class="col-sm-10 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
                 <?php echo strlen(trim($ProfileInfo['WorkedCountry']))> 0 ? trim($ProfileInfo['WorkedCountry']) : "N/A "; ?>&nbsp;&nbsp;
                 <?php if(strlen(trim($ProfileInfo['WorkedCityName']))> 0){
                     echo "(&nbsp;&nbsp;". trim($ProfileInfo['WorkedCityName']) . "&nbsp;&nbsp;)"; }?>
             </label> 
+        </div>
+        <div class="form-group row">
             <label class="col-sm-2 col-form-label">Attachment</label>                      
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
                 <?php if($ProfileInfo['OccupationAttachFileName']==""){ echo "Not Attach";} else{ echo "Attached";?> &nbsp;&nbsp;
@@ -416,7 +418,7 @@ legend {
         </div>
     </div>
   </div>
-  <div class="col-12 grid-margin">
+<div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
         <div class="form-group row">
@@ -500,7 +502,7 @@ legend {
     </div>
   </div>
 </div>
-  <div class="col-12 grid-margin">
+<div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
         <div class="form-group row">
@@ -598,7 +600,7 @@ legend {
         </div>
     </div>
   </div>
-  <div class="col-12 grid-margin">
+<div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
     <div class="form-group row">
@@ -753,23 +755,7 @@ legend {
     </div>
   </div>                                                                                                               
 </div>
-<div class="col-12 grid-margin">
-  <div class="card">                                                                                                               
-    <div class="card-body">
-        <?php if($ProfileInfo['RequestToVerify']=="0"){?>
-        <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Last saved</label>
-                    <label class="col-sm-8 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></label>
-             </div>
-        <?php } else{?>
-            <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Puplished On</label>
-                    <label class="col-sm-3 col-form-label"  style="color:#888;">:&nbsp;&nbsp;<?php echo PutDateTime($ProfileInfo['RequestVerifyOn']);?></label>
-                   </div>
-        <?php }?>
-  </div>
-</div>
-</div>
+
 <div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
     <div class="modal-dialog">
         <div class="modal-content" id="DeleteNow_body" style="height:260px"></div>

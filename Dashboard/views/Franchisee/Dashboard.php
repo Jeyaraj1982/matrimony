@@ -87,7 +87,7 @@ $PostedProfilesCount = $response['data']['PostedProfiles'];
                     </div>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-reload mr-1" aria-hidden="true"></i><a href="#">Renew</a>
+                    <i class="mdi mdi-reload mr-1" aria-hidden="true"></i><a href="<?php echo GetUrl("MyAccounts/RefillWallet");?>">Renew</a>
                   </p>
                 </div>
               </div>

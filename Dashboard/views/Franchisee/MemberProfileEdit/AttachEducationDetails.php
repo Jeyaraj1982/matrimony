@@ -57,7 +57,7 @@
 <?php include_once("settings_header.php");?>
 <div class="col-sm-10  rightwidget">
 <form method="post" action="" name="form1" id="form1" enctype="multipart/form-data">
-                     <h4 class="card-title">Educational Details</h4>
+                     <h4 class="card-title">Education Details</h4>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Education</label>
                             <label class="col-sm-10 col-form-label"><?php echo $Education['EducationDetails'];?></label>

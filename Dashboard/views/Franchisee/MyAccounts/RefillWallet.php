@@ -32,7 +32,7 @@
             $('#ErrAmount').html("");
             $('#Errcheck').html("");
             $('#ErrTxnDate').html("");
-            $('#ErrTxnId').html("");
+            $('#ErrTxnId').html(""); 
             
             IsNonEmpty("TxnDate","ErrTxnDate","Please Enter Transaction Date");
             if(IsNonEmpty("TxnId","ErrTxnId","Please Enter Transaction ID")) {
@@ -49,7 +49,7 @@
                     $("#ErrAmount").html("Please enter only multiples of 100");
                     return false;
                 }
-            }
+            }     
             
             if (document.form1.check.checked == false) {
                 $("#Errcheck").html("Please agree terms and conditions");
@@ -124,7 +124,7 @@
                 <input type="date" class="form-control" name="TxnDate" id="TxnDate" style="border:1px solid #ccc;padding:3px;padding-left:10px;">
                 <span class="errorstring" id="ErrTxnDate"></span> 
             </div>
-        </div>
+        </div>  
         <div class="form-group row">
             <div class="col-sm-5"> Mode<span id="star">*</span></div>
             <div class="col-sm-7">
