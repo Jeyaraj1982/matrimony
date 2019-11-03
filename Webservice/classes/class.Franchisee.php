@@ -1978,10 +1978,9 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
                   return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Publish Profile</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>            
-                            <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
+                            <h5 style="text-align:center;color:#ada9a9">Your profile has been submitted to verify.<br>Once your profile has been approved we will get notify by Sms and Email and it comes immediately in our portal.Minimum 4 to 8 hours will taken to verification process.</h5>
                             <h5 style="text-align:center;"><a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';
 
@@ -2821,6 +2820,39 @@
                  $Activities = $mysql->select("select * from `_tbl_logs_activity` where `MemberID`='".$_POST['Code']."' ORDER BY `ActivityID` DESC LIMIT 0,5");
              return Response::returnSuccess("success",$Activities);
              }
+         }
+         function GetMemberOrderInvoiceReceiptDetails() {
+             
+             global $mysql,$loginInfo;
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="Order") {
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_orders` order by `OrderID` DESC"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Invoice") {
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_invoices` order by `InvoiceID` DESC"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Receipt") {
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_receipts` order by `ReceiptID` DESC"));    
+             }
+         }
+         function ViewMemberOrderInvoiceReceiptDetails() {
+             
+             global $mysql,$loginInfo;
+             
+             $Order=$mysql->select("SELECT * From `_tbl_orders` Where `OrderNumber`='".$_POST['Code']."'"); 
+             $Invoice=$mysql->select("SELECT * From `_tbl_invoices` Where `InvoiceNumber`='".$_POST['Code']."'"); 
+             $Receipt=$mysql->select("SELECT * From `_tbl_receipts` Where `ReceiptNumber`='".$_POST['Code']."'"); 
+              return Response::returnSuccess("success",array("Order"   =>$Order[0],
+                                                             "Invoice" =>$Invoice[0],
+                                                             "Receipt" =>$Receipt[0]));
+         }
+         function GetLoginHistory() {
+             
+             global $mysql,$loginInfo;
+             
+             $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
+             $StaffLoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `FranchiseeStaffID`='".$_POST['Code']."' ORDER BY `LoginID` DESC LIMIT 0,10");
+             return Response::returnSuccess("success",array("LoginHistory" => $LoginHistory,"StaffLoginHistory" => $StaffLoginHistory));
          }
     }
 //2747    

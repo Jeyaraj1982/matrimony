@@ -3,9 +3,10 @@
         <title><?php echo JFrame::getAppSetting('sitetitle');?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
-        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
         <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-        <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
         <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
         <script type="text/javascript" src="<?php echo web_path;?>assets/lib/jquery.mousewheel-3.0.6.pack.js"></script>
@@ -59,91 +60,41 @@
         </style>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
-       
-.topnav .icon {
-  display: none;
-}    
-
-@media screen and (max-width: 600px) {
-  .topnav a:not(:first-child) {display: none;}
-  .topnav a.icon {
-    float: right;
-    display: block;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .topnav.responsive {position: relative;}
-  .topnav.responsive .icon {
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-  .topnav.responsive a {
-    float: none;
-    display: block;
-    text-align: left;
-  }
-}
-</style>
-
-
+            .topnav .icon {display: none;}    
+            @media screen and (max-width: 600px) {
+                .topnav a:not(:first-child) {display: none;}
+                .topnav a.icon {float: right;display: block;}
+            }
+            @media screen and (max-width: 600px) {
+                .topnav.responsive {position: relative;}
+                .topnav.responsive .icon {position: absolute;right: 0;top: 0;}
+                .topnav.responsive a {float: none;display: block;text-align: left;}
+            }
+        </style>
         <script>
-        function myFunction() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
+            function myFunction() {
+                var x = document.getElementById("myTopnav");
+                if (x.className === "topnav") {
+                    x.className += " responsive";
+                } else {
+                    x.className = "topnav";
+                }
+            }
  
-            $(function() {$( "#datepicker" ).datepicker({showOn: 'button',buttonImage:'http://theonlytutorials.com/demo/x_office_calendar.png',width:20,height:20,buttonImageOnly: true,changeMonth: true,changeYear: true,showAnim: 'slideDown',duration: 'fast',dateFormat: 'dd-mm-yy'}); });
+            //$(function() {$( "#datepicker" ).datepicker({showOn: 'button',buttonImage:'http://theonlytutorials.com/demo/x_office_calendar.png',width:20,height:20,buttonImageOnly: true,changeMonth: true,changeYear: true,showAnim: 'slideDown',duration: 'fast',dateFormat: 'dd-mm-yy'}); });
         </script>
          <script src="<?php echo web_path;?>assets/js/bjqs-1.3.min.js"></script>
-         
-         
-         
-         
-         
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  <style>
-    /* Remove the navbar's default margin-bottom and rounded borders */ 
-    .navbar {
-      margin-bottom: 0;
-      border-radius: 0;
-    }
-    
-    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 450px}
-    
-    /* Set gray background color and 100% height */
-    .sidenav {
-      padding-top: 20px;
-      background-color: #f1f1f1;
-      height: 100%;
-    }
-    
-    /* Set black background color, white text and some padding */
-    footer {
-      background-color: #555;
-      color: white;
-      padding: 15px;
-    }
-    
-    /* On small screens, set height to 'auto' for sidenav and grid */
-    @media screen and (max-width: 767px) {
-      .sidenav {
-        height: auto;
-        padding: 15px;
-      }
-      .row.content {height:auto;} 
-    }
-  </style>
-  
-  
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+         <style>
+         .navbar {margin-bottom: 0;border-radius: 0;}
+         .row.content {height: 450px}
+         .sidenav {padding-top: 20px;background-color: #f1f1f1;height: 100%;}
+         footer {background-color: #555;color: white;padding: 15px;}
+         @media screen and (max-width: 767px) {
+             .sidenav {height: auto;padding: 15px;}
+             .row.content {height:auto;} 
+         }
+         </style>
     </head>  
     <body style="background:url('assets/cms/<?php echo JFrame::getAppSetting('backgroundimage');?>')<?php echo JFrame::getAppSetting('sitebgposition');?>;background-color:<?php echo JFrame::getAppSetting('backgroundcolor');?>;margin:0px;">
     
@@ -188,16 +139,18 @@
             </div>
             </div>
         </div>
+        <?php if (!(isset($isShowSlider) && $isShowSlider==false)) {?>
         <div style="width: 100%;">
-         <div id="banner-fade">
+         <div id="banner-fade" style="max-width:1024px !important;margin:0px auto">
                         <ul class="bjqs">
                             <?php foreach(JSlider::getActiveSliders() as $sliderimage) {?>
                             <li><img src='<?php echo $config['slider'].$sliderimage['filepath'];?>' style="width:100%"></li>
                             <?php } ?>
                         </ul>
                     </div>
-                    <script class="secret-source">jQuery(document).ready(function($) {$('#banner-fade').bjqs({heigh:350,width:'100%',responsive:true});});</script>
+                    <script class="secret-source">jQuery(document).ready(function($) {$('#banner-fade').bjqs({heigh:350,responsive:true});});</script>
         </div>
+        <?php } ?>
         <!--<table align="center" cellpadding="0" cellspacing="0"style="width:1024px; border:0px solid #3A3A3A">-->
         <table align="center" cellpadding="0" cellspacing="0"style="width:100%; border:0px solid #3A3A3A">
          <!--   <tr>

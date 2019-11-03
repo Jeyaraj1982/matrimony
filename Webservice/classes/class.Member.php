@@ -26,7 +26,13 @@
                                                                 "APIResponse"   => json_encode($clientinfo),
                                                                 "LoginPassword" => $_POST['Password']));
              if (sizeof($data)==1) { /* Single Information */
-                 
+             
+             /*$settings = $mysql->execute("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='APPSETTINGS' and `CodeValue`='AllowToPasswordCaseSensitive'");
+             if($settings[0]['ParamA']=="1"){
+                 if(md5($data[0]['MemberPassword'])!=md5($_POST['Password'])) {              
+                    return Response::returnError("Invalid username or password ");
+                 }
+             } */
                  if ($data[0]['MemberPassword']!=$_POST['Password']) {              
                     return Response::returnError("Invalid username or password");
                  }
@@ -100,8 +106,9 @@
              global $mysql,$loginInfo;
              
              $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$loginInfo[0]['MemberID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
+             $IsDisplayLoginHistory = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE  `HardCode`='APPSETTINGS' and `CodeValue`='DisplayLastLoginInDashboard'");
              $Member = number_format($this->getAvailableBalance($loginInfo[0]['MemberID']),2);
-             return Response::returnSuccess("success",array("LoginHistory" => $LoginHistory[0],"WalletBalance" => $Member));
+             return Response::returnSuccess("success",array("LoginHistory" => $LoginHistory[0],"WalletBalance" => $Member,"IsDisplayLastLogin" => $IsDisplayLoginHistory[0]));
          }
 
          function GetNotificationHistory() {
@@ -609,8 +616,12 @@
                  return "Invalid request. Please login again.";                               
              }
              if (isset($_POST['new_mobile_number'])) {
+                 
                  if (strlen(trim($_POST['new_mobile_number']))==0) {
                      return $this->ChangeMobileNumber("<span style='color:red';>Please enter mobile number</span>.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
+                 }
+                 if (!($_POST['new_mobile_number']>6000000000 && $_POST['new_mobile_number']<9999999999)) {
+                     return $this->ChangeMobileNumber("<span style='color:red';>Invalid mobile number</span>.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
                  }
                  if (strlen(trim($_POST['new_mobile_number']))!=10) {
                      return $this->ChangeMobileNumber("Invalid Mobile Number.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
@@ -1495,10 +1506,9 @@
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
                   return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Publish Profile</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>            
-                            <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
+                            <h5 style="text-align:center;color:#ada9a9">Your profile has been submitted to verify.<br>Once your profile has been approved we will get notify by Sms and Email and it comes immediately in our portal.Minimum 4 to 8 hours will taken to verification process.</h5>
                             <h5 style="text-align:center;"><a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';
 
@@ -2177,26 +2187,26 @@
              $Country = CodeMaster::getData("RegisterAllowedCountries",$_POST['Country']);
              $State   = CodeMaster::getData("STATNAMES",$_POST['StateName']);
 
-             $updateSql = "update `_tbl_draft_profiles` set `ContactPersonName`        = '".$_POST['ContactPersonName']."',
-                                                            `Relation`        = '".$_POST['Relation']."',
-                                                            `PrimaryPriority`        = '".$_POST['PrimaryPriority']."',
-                                                            `EmailID`        = '".$_POST['EmailID']."',
-                                                            `MobileNumber`   = '".$_POST['MobileNumber']."',
+             $updateSql = "update `_tbl_draft_profiles` set `ContactPersonName`         = '".$_POST['ContactPersonName']."',
+                                                            `Relation`                  = '".$_POST['Relation']."',
+                                                            `PrimaryPriority`           = '".$_POST['PrimaryPriority']."',
+                                                            `EmailID`                   = '".$_POST['EmailID']."',
+                                                            `MobileNumber`              = '".$_POST['MobileNumber']."',
                                                             `MobileNumberCountryCode`   = '".$_POST['MobileNumberCountryCode']."',
-                                                            `WhatsappNumber` = '".$_POST['WhatsappNumber']."',
-                                                            `WhatsappCountryCode` = '".$_POST['WhatsappCountryCode']."',
-                                                            `AddressLine1`   = '".$_POST['AddressLine1']."',
-                                                            `AddressLine2`   = '".$_POST['AddressLine2']."',
-                                                            `AddressLine3`   = '".$_POST['AddressLine3']."',
-                                                            `CountryCode`    = '".$_POST['Country']."',
-                                                            `Country`        = '".$Country[0]['CodeValue']."',
-                                                            `StateCode`      = '".$_POST['StateName']."',
-                                                            `State`          = '".$State[0]['CodeValue']."',
-                                                            `City`           = '".$_POST['City']."',
-                                                            `Pincode`           = '".$_POST['Pincode']."',
-                                                            `CommunicationDescription` = '".$_POST['CommunicationDescription']."',
-                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
-                                                            `OtherLocation`  = '".$_POST['OtherLocation']."' where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'";
+                                                            `WhatsappNumber`            = '".$_POST['WhatsappNumber']."',
+                                                            `WhatsappCountryCode`       = '".$_POST['WhatsappCountryCode']."',
+                                                            `AddressLine1`              = '".$_POST['AddressLine1']."',
+                                                            `AddressLine2`              = '".$_POST['AddressLine2']."',
+                                                            `AddressLine3`              = '".$_POST['AddressLine3']."',
+                                                            `CountryCode`               = '".$_POST['Country']."',
+                                                            `Country`                   = '".$Country[0]['CodeValue']."',
+                                                            `StateCode`                 = '".$_POST['StateName']."',
+                                                            `State`                     = '".$State[0]['CodeValue']."',
+                                                            `City`                      = '".$_POST['City']."',
+                                                            `Pincode`                   = '".$_POST['Pincode']."',
+                                                            `CommunicationDescription`  = '".$_POST['CommunicationDescription']."',
+                                                            `LastUpdatedOn`             = '".date("Y-m-d H:i:s")."',
+                                                            `OtherLocation`             = '".$_POST['OtherLocation']."' where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."'";
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
                                                              "ActivityType"   => 'Communicationdetailsupdated.',
@@ -4415,7 +4425,20 @@
              if (isset($_POST['Request']) && $_POST['Request']=="Receipt") {
                 return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_receipts` Where `MemberID`='". $loginInfo[0]['MemberID']."' order by `ReceiptID` DESC"));    
              }
-         }   
+         }
+         function ViewOrderInvoiceReceiptDetails() {
+             
+             global $mysql,$loginInfo;
+             
+             $Order=$mysql->select("SELECT * From `_tbl_orders` Where `OrderByMemberID`='".$loginInfo[0]['MemberID']."' and `OrderNumber`='".$_POST['Code']."'"); 
+             $Invoice=$mysql->select("SELECT * From `_tbl_invoices` Where `MemberID`='". $loginInfo[0]['MemberID']."' and `InvoiceNumber`='".$_POST['Code']."'"); 
+             $Receipt=$mysql->select("SELECT * From `_tbl_receipts` Where `MemberID`='". $loginInfo[0]['MemberID']."' and `ReceiptNumber`='".$_POST['Code']."'"); 
+              return Response::returnSuccess("success",array("Order"   =>$Order[0],
+                                                             "Invoice" =>$Invoice[0],
+                                                             "Receipt" =>$Receipt[0]));
+         } 
+            
+  
          
          
      }  

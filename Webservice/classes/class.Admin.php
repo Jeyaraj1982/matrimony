@@ -214,7 +214,9 @@ class Admin extends Master {
          $id =  $mysql->insert("_tbl_franchisees",array("FranchiseeCode"       => $_POST['FranchiseeCode'],
                                                         "FranchiseName"        => $_POST['FranchiseeName'],
                                                         "ContactEmail"         => $_POST['FranchiseeEmailID'],
+                                                        "ContactNumberCountryCode"        => $_POST['ContactNumberCountryCode'],
                                                         "ContactNumber"        => $_POST['BusinessMobileNumber'],
+                                                        "ContactWhatsappCountryCode"      => $_POST['ContactWhatsappCountryCode'],
                                                         "ContactWhatsapp"      => $_POST['BusinessWhatsappNumber'],
                                                         "ContactLandline"      => $_POST['BusinessLandlineNumber'],
                                                         "BusinessAddressLine1" => $_POST['BusinessAddress1'],
@@ -891,7 +893,7 @@ class Admin extends Master {
         $FranchiseeStaff = $mysql->select("select * from _tbl_franchisees_staffs where ReferedBy='1' and FranchiseeID='".$_POST['Code']."'");
         $PrimaryBankAccount = $mysql->select("select * from _tbl_bank_details where FranchiseeID='".$_POST['Code']."'");
 
-        return Response::returnSuccess("success",array("Franchisee"         => $Franchisees[0],
+        return Response::returnSuccess("success"."select * from _tbl_franchisees where FranchiseeID='".$_POST['Code']."'",array("Franchisee"         => $Franchisees[0],
                                                        "FranchiseeStaff"    => $FranchiseeStaff[0],
                                                        "CountryNames"        => CodeMaster::getData('CountryName'),
                                                        "StateName"          => CodeMaster::getData('StateName'),
@@ -2449,7 +2451,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return  '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
-                            <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'ViewMemberProfile/'.$data[0]['ProfileCode'].'.htm"  >Yes</a> <h5>
                        </div>';
             } else{
                 return Response::returnError("Access denied. Please contact support");   
@@ -3100,6 +3102,17 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              $loginmembers = $mysql->select("SELECT * FROM `_tbl_logs_logins` WHERE LoginStatus='1' AND AdminID='0' AND AdminStaffID='0' AND FranchiseeID='0' AND FranchiseeStaffID='0' AND LoginOn='".date("Y-m-d H:i:s")."'"); 
              $Members = $mysql->select("Sellect * from _tbl_members where MemberID='".$loginmembers[0]['MemberID']."'");
                 return Response::returnSuccess("success",$Members);    
+         }
+         function ViewOrderInvoiceReceiptDetails() {
+             
+             global $mysql,$loginInfo;
+             
+             $Order=$mysql->select("SELECT * From `_tbl_orders` Where `OrderNumber`='".$_POST['Code']."'"); 
+             $Invoice=$mysql->select("SELECT * From `_tbl_invoices` Where `InvoiceNumber`='".$_POST['Code']."'"); 
+             $Receipt=$mysql->select("SELECT * From `_tbl_receipts` Where `ReceiptNumber`='".$_POST['Code']."'"); 
+              return Response::returnSuccess("success",array("Order"   =>$Order[0],
+                                                             "Invoice" =>$Invoice[0],
+                                                             "Receipt" =>$Receipt[0]));
          }
                                                                                                                            
 }
