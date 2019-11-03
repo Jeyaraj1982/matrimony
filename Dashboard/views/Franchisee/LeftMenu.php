@@ -29,6 +29,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("Members/ResetPassword/SearchMember");?>">Reset Password</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo GetUrl("Members/ManageOrders");?>">Manage Orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo GetUrl("Members/ManageInvoices");?>">Manage Invoices</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo GetUrl("Members/ManageReceipts");?>">Manage Receipts</a>
+                        </li>
                     </ul>
                 </div> 
             </li>
@@ -112,7 +121,7 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#FranchiseeInfo" aria-expanded="false" aria-controls="FranchiseeInfo">
                     <i class="menu-icon mdi mdi-content-copy"></i>
-                    <span class="menu-title">My bussiness</span>
+                    <span class="menu-title">My Business</span>
                     <i class="menu-arrow"></i>
                 </a>
                 <div class="collapse" id="FranchiseeInfo">

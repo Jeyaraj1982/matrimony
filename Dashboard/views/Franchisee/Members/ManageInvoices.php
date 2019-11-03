@@ -4,7 +4,7 @@
             <div class="card-body">
                <h4 class="card-title">Invoices</h4>
         <?php 
-            $response = $webservice->getData("Admin","GetOrderInvoiceReceiptDetails",array("Request"=>"Invoice"));
+            $response = $webservice->getData("Franchisee","GetMemberOrderInvoiceReceiptDetails",array("Request"=>"Invoice"));
             if (sizeof($response['data'])>0) {   ?>
         <div class="table-responsive">
         <table id="myTable" class="table table-striped" style="width:100%;border-bottom:1px solid #ccc;">
@@ -27,7 +27,7 @@
                     <td><?php echo $Invoice['OrderNumber'];?></td>
                     <td><?php echo PutDateTime($Invoice['OrderDate']);?></td>
                     <td style="text-align:right"><?php echo number_format($Invoice['InvoiceValue'],2);?></td>
-                    <td><a href="<?php echo GetUrl("Accounts/Invoice/ViewInvoices/". $Invoice['InvoiceNumber'].".htm");?>">View</a></td>
+                    <td><a href="<?php echo GetUrl("Members/ViewInvoices/". $Invoice['InvoiceNumber'].".htm");?>">View</a></td>
                 </tr>
             <?php } ?>            
             </tbody>                         

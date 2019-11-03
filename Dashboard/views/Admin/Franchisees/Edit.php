@@ -9,7 +9,8 @@
         }
     }
 
-    $response = $webservice->GetFranchiseeInfo();
+    $response = $webservice->getData("Admin","GetFranchiseeInfo");
+    print_R($response);
     $Franchisee          = $response['data']['Franchisee'];
     $FranchiseeBank      = $response['data']['PrimaryBankAccount'];                                
     $FranchiseeStaff = $response['data']['FranchiseeStaff'];

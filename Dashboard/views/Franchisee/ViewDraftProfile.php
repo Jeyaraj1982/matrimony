@@ -273,11 +273,13 @@ legend {
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Working country</label>                      
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
+            <label class="col-sm-10 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
                 <?php echo strlen(trim($ProfileInfo['WorkedCountry']))> 0 ? trim($ProfileInfo['WorkedCountry']) : "N/A "; ?>&nbsp;&nbsp;
                 <?php if(strlen(trim($ProfileInfo['WorkedCityName']))> 0){
                     echo "(&nbsp;&nbsp;". trim($ProfileInfo['WorkedCityName']) . "&nbsp;&nbsp;)"; }?>
             </label> 
+        </div>
+        <div class="form-group row">
             <label class="col-sm-2 col-form-label">Attachment</label>                      
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
                 <?php if($ProfileInfo['OccupationAttachFileName']==""){ echo "Not Attach";} else{ echo "Attached";?> &nbsp;&nbsp;

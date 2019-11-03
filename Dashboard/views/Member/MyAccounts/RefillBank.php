@@ -94,7 +94,7 @@
             <br> <table>
             <tr>
             <td style="width: 25px;"><img src="<?php echo SiteUrl;?>assets/images/exclamation-mark.png"></td>
-            <td>Your documents is not verified. Click to&nbsp;<a href="<?php echo GetUrl("MySettings/KYC");?>">Update now</a></td>
+            <td>In this account kyc not uploaded,you must check and display. Click to&nbsp;<a href="<?php echo GetUrl("MySettings/KYC");?>">Upload Kyc</a></td>
             </tr>
         </table>
          </div>

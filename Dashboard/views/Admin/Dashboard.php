@@ -30,7 +30,7 @@
                     <?php }?>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="#">View</a>
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Members/ManageMember">View</a>
                   </p>
                 </div>
               </div>
@@ -95,7 +95,7 @@
                     <?php }?>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-reload mr-1" aria-hidden="true"></i><a href="#">View</a>
+                    <i class="mdi mdi-reload mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Profiles/Requested">View</a>
                   </p>
                 </div>
               </div>
@@ -127,7 +127,7 @@
                     <?php }?>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Accounts/ManageOrder">View</a>
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Requests/Member/ListOfAllBankRequests">View</a>
                   </p>
                 </div>
               <br>
@@ -147,7 +147,7 @@
                     <?php }?>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Accounts/ManageOrder">View</a>
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Requests/Franchisee/ListOfFranchiseeAllBankRequests">View</a>
                   </p>
                 </div>
               </div>

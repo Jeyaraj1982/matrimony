@@ -111,7 +111,13 @@
                     <?php } ?>
                 </select>
             </div>
-            <label for="Description" class="col-sm-2 col-form-label" id="IsChildrenWithYou" style="text-align: right;padding-left:0px;padding-right:0px;">Is children with you?<span id="star">*</span></label>
+            <label for="Description" class="col-sm-2 col-form-label" id="IsChildrenWithYou" style="text-align: right;padding-left:0px;padding-right:0px;">
+                <?php if(trim($ProfileInfo['IsChildrenWithYou'])=="1") {?>
+                Is child 
+                <?php } else{ ?>
+                    Is Children 
+                 <?php } ?> with you?<span id="star">*</span>
+            </label>
             <div class="col-sm-4" id="Childrenwithyou_input">
                 <select class="selectpicker form-control" data-live-search="true" id="ChildrenWithYou" name="ChildrenWithYou">
                     <option value="-1">Choose Children With You</option>

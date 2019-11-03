@@ -15,7 +15,20 @@ RewriteRule ^RecentlyWhoViewed/(.*)\.htm$ ./index.php?Code=$1&p=RecentlyWhoViewe
 RewriteRule ^WhoFavorited/(.*)\.htm$ ./index.php?Code=$1&p=WhoFavorited [QSA]
 RewriteRule ^Mutual/(.*)\.htm$ ./index.php?Code=$1&p=Mutual [QSA]
 
-RewriteRule ^view/(.*)\.htm$ ./index.php?Code=$1&p=view
+RewriteRule ^view/(.*)\.htm$ ./index.php?Code=$1&p=view         
+RewriteRule ^MyAccounts/ViewOrders/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewOrders
+RewriteRule ^MyAccounts/ViewInvoices/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewInvoices     
+RewriteRule ^MyAccounts/ViewReceipts/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewReceipts
+
+RewriteRule ^Accounts/ViewOrders/(.*)\.htm$ ./index.php?Code=$1&p=Accounts/ViewOrders
+RewriteRule ^Accounts/Invoice/ViewInvoices/(.*)\.htm$ ./index.php?Code=$1&p=Accounts/Invoice/ViewInvoices     
+RewriteRule ^Accounts/Receipt/ViewReceipts/(.*)\.htm$ ./index.php?Code=$1&p=Accounts/Receipt/ViewReceipts
+
+RewriteRule ^Members/ViewOrders/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewOrders
+RewriteRule ^Members/ViewInvoices/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewInvoices     
+RewriteRule ^Members/ViewReceipts/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewReceipts
+
+
 
 RewriteRule ^Matches/Search/BasicSearch/BasicSearchResult(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/BasicSearch/BasicSearchResult [QSA]
 RewriteRule ^Matches/Search/WalletAmountTransferedSuccessfully/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/WalletAmountTransferedSuccessfully
@@ -117,6 +130,8 @@ RewriteRule ^Franchisees/Wallet/RefillTransfer/(.*)\.html$ ./index.php?Code=$1&p
 RewriteRule ^Franchisees/ResetPassword/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/ResetPassword
 RewriteRule ^Franchisees/BlockFranchisee/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/BlockFranchisee
 RewriteRule ^Members/ResetPassword/Reset/(.*)\.html$ ./index.php?Code=$1&p=Members/ResetPassword/Reset
+RewriteRule ^Staffs/LoginHistory/(.*)\.html$ ./index.php?Code=$1&p=Staffs/LoginHistory
+
 
 RewriteRule ^Members/EditMember/(.*)\.html$ ./index.php?Code=$1&p=Members/EditMember
 RewriteRule ^Members/ViewMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMember

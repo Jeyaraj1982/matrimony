@@ -1,12 +1,8 @@
-<?php 
-    $page="LoginHistory";
-    include_once("settings_header.php");
-    $response = $webservice->getData("Franchisee","GetLoginHistory");
-?>
-<div class="col-sm-9" style="margin-top: -8px;">
-    <h4 class="card-title" style="margin-bottom:5px">Login History</h4>
-    <span style="color:#999;">The last 10 logins listed bellow. <!--You can download login history using service request under support category--></span><br><br>
-    <div class="table-responsive" style="width: 120%;">
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title" style="margin-bottom:5px">Login History</h4>
+            <div class="table-responsive" style="width: 120%;">
         <table id="myTable" class="table table-striped" style="width:100%;border-bottom:1px solid #ccc;">
             <thead>  
                 <tr>
@@ -16,12 +12,13 @@
                     <th>Loggedin</th>  
                     <th>Last accessed</th>  
                     <th>Loggedout</th>
-                    <th>IP Address</th>
+                    <th>IP Address</th>                                    
                     <th>Country</th>
                 </tr>  
             </thead>
             <tbody>  
-            <?php foreach($response['data']['LoginHistory'] as $History) {
+            <?php   $response = $webservice->getData("Franchisee","GetLoginHistory");
+             foreach($response['data']['StaffLoginHistory'] as $History) {
                     
                     if ($History['LoginFrom']=="Web") {
                         $LoginFrom   = "domain.svg";
@@ -58,5 +55,6 @@
             </tbody>                        
         </table>
     </div>
+        </div>
+    </div>
 </div>
-<?php include_once("settings_footer.php");?>                   

@@ -28,7 +28,7 @@
                     <td><?php echo $Invoice['OrderNumber'];?></td>
                     <td><?php echo PutDateTime($Invoice['OrderDate']);?></td>
                     <td style="text-align:right"><?php echo number_format($Invoice['InvoiceValue'],2);?></td>
-                    <td><a href="#">View</a></td>
+                    <td><a href="<?php echo GetUrl("MyAccounts/ViewInvoices/". $Invoice['InvoiceNumber'].".htm");?>">View</a></td>
                 </tr>
             <?php } ?>            
             </tbody>                        

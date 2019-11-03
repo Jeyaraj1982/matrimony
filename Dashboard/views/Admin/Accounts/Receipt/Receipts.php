@@ -25,7 +25,7 @@
                     <td><?php echo PutDateTime($Receipt['ReceiptDate']);?></td>
                     <td><?php echo $Receipt['InvoiceNumber'];?></td>
                     <td style="text-align:right"><?php echo number_format($Receipt['ReceiptAmount'],2);?></td>
-                    <td><a href="#">View</a></td>
+                    <td><a href="<?php echo GetUrl("Accounts/Receipt/ViewReceipts/". $Receipt['ReceiptNumber'].".htm");?>">View</a></td>
                 </tr>
             <?php } ?>            
             </tbody>                        

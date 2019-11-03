@@ -82,7 +82,7 @@ $(document).ready(function() {
 <div class="col-sm-10" style="margin-top: -8px;">
 <form method="post" action="" name="form1" id="form1" enctype="multipart/form-data">
                                <div style="height: 315px;">
-                     <h4 class="card-title">Educational Details</h4>
+                     <h4 class="card-title">Education Details</h4>
                         <div class="form-group row">
                            <label class="col-sm-3 col-form-label">Education<span id="star">*</span></label> 
                            <div class="col-sm-8">

@@ -341,9 +341,9 @@ function myFunction() {
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
                     <div class="col-sm-2">
-                        <select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="width: 61px;">
+                        <select class="selectpicker form-control" data-live-search="true" name="ContactNumberCountryCode" id="ContactNumberCountryCode" style="width: 61px;">
                                     <?php foreach($fInfo['data']['CountryCode'] as $CountryCode) { ?>
-                                        <option value="<?php echo $CountryCode['ParamB'];?>"<?php echo ($_POST['CountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
+                                        <option value="<?php echo $CountryCode['ParamB'];?>"<?php echo ($_POST['ContactNumberCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
                                             <?php echo $CountryCode['str'];?>
                                         </option>
                                         <?php } ?>                       
@@ -355,11 +355,22 @@ function myFunction() {
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Whatsapp Number </label>
-                    <div class="col-sm-3">
+                    <label class="col-sm-3 col-form-label">Whatsapp Number<span id="star">*</span></label>
+                    <div class="col-sm-2">
+                        <select class="selectpicker form-control" data-live-search="true" name="ContactWhatsappCountryCode" id="ContactWhatsappCountryCodev" style="width: 61px;">
+                                    <?php foreach($fInfo['data']['CountryCode'] as $CountryCode) { ?>
+                                        <option value="<?php echo $CountryCode['ParamB'];?>"<?php echo ($_POST['ContactWhatsappCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
+                                            <?php echo $CountryCode['str'];?>
+                                        </option>
+                                        <?php } ?>                       
+                                </select>
+                    </div>
+                    <div class="col-sm-7">
                         <input type="text" maxlength="10" class="form-control" id="BusinessWhatsappNumber" name="BusinessWhatsappNumber" Placeholder="Whatsapp Number" value="<?php echo (isset($_POST['BusinessWhatsappNumber']) ? $_POST['BusinessWhatsappNumber'] : "");?>">
                         <span class="errorstring" id="ErrBusinessWhatsappNumber"><?php echo isset($ErrBusinessWhatsappNumber)? $ErrBusinessWhatsappNumber : "";?></span>
                     </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Landline Number </label>
                     <div class="col-sm-3">
                         <input type="text" class="form-control" id="BusinessLandlineNumber" name="BusinessLandlineNumber" Placeholder="Landline Number" value="<?php echo (isset($_POST['BusinessLandlineNumber']) ? $_POST['BusinessLandlineNumber'] : "");?>">

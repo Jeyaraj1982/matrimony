@@ -34,7 +34,7 @@
                       <?php }  ?>
                         
                     </td>
-                    <td><a href="#">View</a></td>
+                    <td><a href="<?php echo GetUrl("Accounts/ViewOrders/". $Orders['OrderNumber'].".htm");?>">View</a></td>
                 </tr>
             <?php } ?>            
             </tbody>                        
@@ -49,7 +49,6 @@
     </div>
                 </div>
               </div>
-            </div>
         </form>   
         
  <script>
