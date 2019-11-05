@@ -1,7 +1,7 @@
 <?php
     include_once("config.php");
     
-    include_once(web_path."classes/class.mysql.php");
+    include_once(web_path."classes/class.pdo.mysql.php");
     
     $app     = new MySql(DBHOST,DBUSER,DBPASS,"onlin5zs_jframe");
     $appData = $app->select("select * from _japp where Lower(hostname)='".strtolower($_SERVER['HTTP_HOST'])."' or  Lower(hosturl)='".strtolower($_SERVER['HTTP_HOST'])."' ");
@@ -43,6 +43,7 @@
 
     if (isset($_GET['x'])) {
         if ($_GET['x']!="") {
+            $isShowSlider = false;
             $d = explode(".",$_GET['x']);
             if (sizeof($d)==1) {
                 $pageContent = $mysql->select("select * from _jpages where pagefilename='".$d[0]."'");
