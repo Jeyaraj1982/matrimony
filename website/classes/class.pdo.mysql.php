@@ -23,7 +23,6 @@
 
     public function select($sql)
     {
-        $this->writeSql($sql);
         $stmt = $this->link->prepare($sql);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -48,7 +47,6 @@
         $l = substr($l, 0, strlen($l) - 1) . ")";
         $sql = $r . $l;
 
-        $this->writeSql($sql);
         $this->qry = $sql;
         $this->link->exec($sql);
         $last_id = $this->link->lastInsertId();
@@ -57,7 +55,6 @@
 
     public function execute($sql)
     {
-        $this->writeSql($sql);
         return $this->link->exec($sql);
     }
 
@@ -65,13 +62,5 @@
     {
         $this->link = null;
     }
-    
-    public function writeSql($sql) {
-        $myFile = date("Y_m_d").".txt";
-        $fh = fopen($myFile, 'a') or die("can't open file");
-        fwrite($fh, "[".date("Y-m-d H:i:s")."]\t".$sql."\n");
-        fclose($fh);
-    }
-
 }
 ?>
