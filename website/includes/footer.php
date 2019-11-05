@@ -1,16 +1,99 @@
-                                </td>
+                </div>
+                
+
+                            
                                 <?php
                                 if (JFrame::getAppSetting('layout')==1) {
+                                    echo '<div class="col-sm-3">';
                                     include_once("includes/side.php");
+                                    echo '</div>';
                                 }
                                 ?>
-                                </tr>
-                        </table> 
+                               
+                                 </div>
+</div>
+
+
+<footer class="footer" style="padding:15px 0px !important;padding-bottom:0px !important;background-color:#222222;color: #999999;">
+    <div class="footer_top">
+        <div class="container" style="padding-top: 40px;padding-bottom: 40px;">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="footer_widget">
+                       <!-- <h3 class="footer_title">
+                            Departments
+                        </h3>-->
+                        <ul style="list-style: none;">
+                            <li><a style="color:#fff" href="<?php echo JFrame::getAppSetting('siteurl')."/terms-of-conditions";?>">Terms of Conditions</a></li>
+                            <li><a style="color:#fff" href="<?php echo JFrame::getAppSetting('siteurl')."/privacy-policy";?>">Privacy Policy</a></li>
+                            <li><a style="color:#fff" href="<?php echo JFrame::getAppSetting('siteurl')."/refund-policy";?>">Refund Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="footer_widget">
+                        <!--<h3 class="footer_title">Useful Links</h3>-->
+                        <ul style="list-style: none;">
+                            <li><a style="color:#fff" href="<?php echo JFrame::getAppSetting('siteurl')."/faq";?>">FAQ</a></li>
+                            <li><a style="color:#fff" href="<?php echo JFrame::getAppSetting('siteurl')."/success-stories";?>">Success Stories</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="footer_widget">
+                        <h3 class="footer_title">
+                            
+                        </h3>
+                        <p>
+                            
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-2" style="background:#111;padding: 15px 0 15px 0;">
+        <div class="container" style="padding-right: 15px;padding-left: 15px;margin-right: auto;margin-left: auto;">
+            <div class="row" style="margin-right: -15px;margin-left: -15px;">
+              <div class="col-sm-12">
+                <div class="col-sm-6">
+                    All Rights Reserved 
+                    <a style="color:#fff" href="http://www.wedlink.in">Wedlink Matrimony</a>
+                    Copyrights © 2019.
+                </div>
+                <div class="col-sm-6">
+                    Trusted By :  
+                    <img src="http://wedlink.in/application/views/front_end/default/source/img/visa.png" alt="visa">
+                    <img src="http://wedlink.in/application/views/front_end/default/source/img/mastercard.png" alt="Master Card">
+                    <img src="http://wedlink.in/application/views/front_end/default/source/img/paypal.png" alt="PayPal">
+                    <img src="http://wedlink.in/application/views/front_end/default/source/img/RuPay2.png" alt="Rupay">
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="copy-right_text" style="background:#111111;">
+        <div class="container">
+            <div class="footer_border"></div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <p class="copy_right text-center">
+                            Copyright ©<script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/javascript">document.write(new Date().getFullYear());</script>2019 All rights reserved
+                        </p>
+                    </div>
+                </div>
+            </div>              
+        </div>-->
+</footer> 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+                 
+                 <?php /*
                     </td>
                 </tr>
                 <tr>
-                    <td bgcolor="<?php echo JFrame::getAppSetting('footerbanner');?>" colspan="2">
-                        <table style="margin:10px;width:100%;"background: none repeat scroll 0 0 #ECD19A;border-top: 0px solid #fff; margin-top: 10; outline: 1px solid #e1e1e1;>
+                    <td bgcolor="<?php echo JFrame::getAppSetting('footerbanner');?>" colspan="2" style="padding:10px">
+                        <table style="width:100%;background: none repeat scroll 0 0 #ECD19A;border-top: 0px solid #fff; margin-top: 10; outline: 1px solid #e1e1e1;">
                             <tr>
                                 <td width="33%">
                                     <table>
@@ -136,6 +219,8 @@
         </td>
     </tr>
   </table>
+  <?php */ ?>
+  
 </body>
 </html>
  

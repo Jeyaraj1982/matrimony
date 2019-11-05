@@ -4,9 +4,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
         <!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>-->
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-        <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  
+        <!--<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>-->
         <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
         <script type="text/javascript" src="<?php echo web_path;?>assets/lib/jquery.mousewheel-3.0.6.pack.js"></script>
@@ -38,25 +44,18 @@
             .rmenu:hover {font-size:13px;font-family:'comic sans ms';text-decoration:underline;color:#222;}
             .Jfooter {text-transform: uppercase;color:<?php echo JFrame::getAppSetting('footerfontcolor');?>;cursor: pointer; float: left; font-family:'<?php echo JFrame::getAppSetting('footerfont');?>';font-size:<?php echo JFrame::getAppSetting('footerfontsize');?>;padding: 5px 15px;text-align: left;text-decoration:none;}
             .Jfooter:hover{color:<?php echo JFrame::getAppSetting('footerhover');?>;font-family:'<?php echo JFrame::getAppSetting('footerfont');?>';font-size:'<?php echo JFrame::getAppSetting('footerfontsize');?>';text-decoration: underline;}
-            
-            ul.bjqs{position:relative; list-style:none;padding:0;margin:0;overflow:hidden; display:none;}
-            li.bjqs-slide{position:absolute; display:none;}
-            ul.bjqs-controls{list-style:none;margin:0;padding:0;z-index:9999;}
-            ul.bjqs-controls.v-centered li a{position:absolute;}
-            ul.bjqs-controls.v-centered li.bjqs-next a{right:0;}
-            ul.bjqs-controls.v-centered li.bjqs-prev a{left:0;}
-            ol.bjqs-markers{list-style: none; padding: 0; margin: 0; width:100%;display:none;}
-            ol.bjqs-markers.h-centered{text-align: center;}
-            ol.bjqs-markers li{display:inline;}
-            ol.bjqs-markers li a{display:inline-block;}
-            p.bjqs-caption{display:block;width:96%;margin:0;padding:2%;position:absolute;bottom:0;}
+            .headerlink{background: #00953d;}   /*#e60058 */
+            .headerlink:hover{background: #00953d;}
+            .nav-link:hover{background: #00953d;}
+             .navbar-expand-lg .navbar-nav .nav-link {
+                padding-right: 1.5rem;
+                padding-left: 1.5rem;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                } 
             #container{max-width:620px;margin:0 auto;padding-bottom:80px;}
             #banner-fade, #banner-slide{margin-bottom:0px;}
-            ul.bjqs-controls.v-centered li a{display:<?php echo JFrame::getAppSetting('sliderhideicon');?>;padding:10px;background:#fff;font-family:Trebuchet MS;font-size:13px;color:#000;text-decoration: none;}
-            ul.bjqs-controls.v-centered li a:hover{background:#000;color:#fff;}
-            ol.bjqs-markers li a{padding:5px 10px;background:#000;color:#fff;margin:5px;text-decoration: none;}
-            ol.bjqs-markers li.active-marker a, ol.bjqs-markers li a:hover{background: #999;}
-            p.bjqs-caption{background: rgba(255,255,255,0.5);}
+            
         </style>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
@@ -84,7 +83,7 @@
             //$(function() {$( "#datepicker" ).datepicker({showOn: 'button',buttonImage:'http://theonlytutorials.com/demo/x_office_calendar.png',width:20,height:20,buttonImageOnly: true,changeMonth: true,changeYear: true,showAnim: 'slideDown',duration: 'fast',dateFormat: 'dd-mm-yy'}); });
         </script>
          <script src="<?php echo web_path;?>assets/js/bjqs-1.3.min.js"></script>
-         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+         <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">-->
          <style>
          .navbar {margin-bottom: 0;border-radius: 0;}
          .row.content {height: 450px}
@@ -94,130 +93,114 @@
              .sidenav {height: auto;padding: 15px;}
              .row.content {height:auto;} 
          }
+         
+  .carousel-inner img {
+      width: 100%;
+     
+  }
+  #registerbtn:hover{
+      background:#d3175f;
+      color:white;
+  }
+  
          </style>
     </head>  
     <body style="background:url('assets/cms/<?php echo JFrame::getAppSetting('backgroundimage');?>')<?php echo JFrame::getAppSetting('sitebgposition');?>;background-color:<?php echo JFrame::getAppSetting('backgroundcolor');?>;margin:0px;">
     
-        <div style="clear:both;background:url('assets/cms/<?php echo JFrame::getAppSetting('headerbgimg');?>');background-color:<?php echo JFrame::getAppSetting('headerbgcolor');?>;padding: 5px 5px 5px 10px;">
-            <a href="<?php echo JFrame::getAppSetting('siteurl');?>"><img src='<?php echo web_path;?>data/<?php echo JFrame::getAppSetting('logo');?>' style="min-height:64px;max-height:64px;max-width:200px ;"></a>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div style="clear:both;background:url('assets/cms/<?php echo JFrame::getAppSetting('headerbgimg');?>');background-color:<?php echo JFrame::getAppSetting('headerbgcolor');?>;padding: 5px 5px 5px 10px;">
+                    <a href="<?php echo JFrame::getAppSetting('siteurl');?>"><img src='<?php echo web_path;?>data/<?php echo JFrame::getAppSetting('logo');?>' style="min-height:64px;max-height:64px;max-width:200px;"></a>
+                </div>
+            </div>
+            <div class="col-sm-6" style="text-align:right;padding: 5px 5px 5px 10px;">
+                <a href="<?php echo JFrame::getAppSetting('siteurl')."/login";?>" class="btn btn-primary" style="margin-top: 12px;padding-top: 2px;padding-bottom: 7px;">Login</a>&nbsp;
+                <a href="<?php echo JFrame::getAppSetting('siteurl')."/register";?>" class="btn btn-default" id="registerbtn" style="background: none;border-color:#d3175f;color:#d3175f;margin-top: 12px;padding-top: 2px;padding-bottom: 7px;">Register Now</a> 
+            </div>
         </div>
-        <div id="subMenu" style="background:url('assets/cms/<?php echo JFrame::getAppSetting('menubackgroundimage');?>');background-color:<?php echo JFrame::getAppSetting('menubgcolor');?>;padding: 5px 5px 5px 10px;margin:0px auto;min-height: 30px;">
-            <div style="max-width:1024px;margin:0px auto">
-                <div class="topnav" id="myTopnav">
-                <a class="sub_Menu" href='<?php echo JFrame::getAppSetting('siteurl');?>'>Home</a>
-                <?php 
-                    foreach(MenuItems::getHeaderMenuItems() as $m) {
-                        
-                        $target  = ($m['target']>0) ? " target='_blank' " : "";
-                
-                        switch($m['linkedto']) {
+    </div>
+    
+    <nav class="navbar navbar-expand-lg  navbar-dark primary-color" style="background:url('assets/cms/<?php echo JFrame::getAppSetting('menubackgroundimage');?>');background-color:<?php echo JFrame::getAppSetting('menubgcolor');?>;padding-top:0px;padding-bottom:0px">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo $_GET['x']=="" ? " active headerlink" : "";?>" href='<?php echo JFrame::getAppSetting('siteurl');?>' <?php echo $target; ?> >Home</a>
+                    </li>
+                    <?php 
+                        foreach(MenuItems::getHeaderMenuItems() as $m) {
                             
-                            case 'frmphotos'  : $pageurl = JFrame::getAppSetting('siteurl')."/photos.php?groupid=".$m['pageid'];
-                                                break;
-                            case 'exturl'     : $pageurl = "http://".$m['customurl'];
-                                                break;
-                            case 'frmpage'    : //$pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
-                                                $pageurl = JFrame::getAppSetting('siteurl')."/".$m['pagefilename'];
-                                                break;
-                            case 'frmevent'   : $pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
-                                                break;
-                            case 'frmnews'    : $pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
-                                                break;
-                            case 'frmdownload': $pageurl = JFrame::getAppSetting('siteurl')."/downloads.php?dalbum=".$m['pageid'];
-                                                break;
-                            case 'frmmusic'   : $pageurl = JFrame::getAppSetting('siteurl')."/musics.php?album=".$m['pageid'];
-                                                break; 
-                            case 'frmvideo'   : $pageurl = JFrame::getAppSetting('siteurl')."/videos.php?viewvid=".$m['pageid'];
-                                                break;  
-                            case 'frmgrp'     : $pageurl = $m['customurl'];
-                                                break;
-                        }
-                ?>
-                <a class="sub_Menu" href='<?php echo $pageurl;?>' <?php echo $target; ?> ><?php echo $m['menuname'];?></a>
-                <?php } ?>
-                <a href="javascript:void(0);" class="icon" onclick="myFunction()"><i class="fa fa-bars"></i></a>
-            </div>
-            </div>
+                            $target  = ($m['target']>0) ? " target='_blank' " : "";
+                            
+                            switch($m['linkedto']) {
+                                
+                                case 'frmphotos'  : $pageurl = JFrame::getAppSetting('siteurl')."/photos.php?groupid=".$m['pageid'];
+                                                    break;
+                                case 'exturl'     : $pageurl = "http://".$m['customurl'];
+                                                    break;
+                                case 'frmpage'    : $pageurl = JFrame::getAppSetting('siteurl')."/".$m['pagefilename'];
+                                                    break;
+                                case 'frmevent'   : $pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
+                                                    break;
+                                case 'frmnews'    : $pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
+                                                    break;
+                                case 'frmdownload': $pageurl = JFrame::getAppSetting('siteurl')."/downloads.php?dalbum=".$m['pageid'];
+                                                    break;
+                                case 'frmmusic'   : $pageurl = JFrame::getAppSetting('siteurl')."/musics.php?album=".$m['pageid'];
+                                                    break; 
+                                case 'frmvideo'   : $pageurl = JFrame::getAppSetting('siteurl')."/videos.php?viewvid=".$m['pageid'];
+                                                    break;  
+                                case 'frmgrp'     : $pageurl = $m['customurl'];
+                                                    break;
+                                case 'predefined' : $pageurl = JFrame::getAppSetting('siteurl')."/".$m['customurl'];
+                                                    break;
+                            }
+                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo $d[0]==$m['pagefilename'] ? " active headerlink" : "";?>" href='<?php echo $pageurl;?>' <?php echo $target; ?> ><?php echo $m['menuname'];?></a>
+                    </li>
+                <?php 
+                        } ?>
+                </ul>
+            </div>  
         </div>
-        <?php if (!(isset($isShowSlider) && $isShowSlider==false)) {?>
-        <div style="width: 100%;">
-         <div id="banner-fade" style="max-width:1024px !important;margin:0px auto">
-                        <ul class="bjqs">
-                            <?php foreach(JSlider::getActiveSliders() as $sliderimage) {?>
-                            <li><img src='<?php echo $config['slider'].$sliderimage['filepath'];?>' style="width:100%"></li>
-                            <?php } ?>
-                        </ul>
-                    </div>
-                    <script class="secret-source">jQuery(document).ready(function($) {$('#banner-fade').bjqs({heigh:350,responsive:true});});</script>
+    </nav>
+    
+    <?php if (!(isset($isShowSlider) && $isShowSlider==false)) {?>
+    <div id="slider" class="carousel slide" data-ride="carousel">
+        <ul class="carousel-indicators">
+            <?php $c=0; $si = JSlider::getActiveSliders(); ?>
+            <?php for($i=0;$i<sizeof($si);$i++) {?>
+                <li data-target="#slider" data-slide-to="<?php echo $i;?>>" <?php echo $i==0 ? ' class="active headerlink" ' : '';?> ></li>
+            <?php } ?>
+            </ul>
+            <div class="carousel-inner">
+            <?php  foreach($si as $sliderimage) {?>
+                <div class="carousel-item <?php echo $c==0 ?  "active headerlink"  : '';?>">
+                    <img src="<?php echo $config['slider'].$sliderimage['filepath'];?>" alt="">
+                </div>
+                <?php $c++; } ?>
+            </div>
+            <a class="carousel-control-prev" href="#slider" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#slider" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
         </div>
         <?php } ?>
-        <!--<table align="center" cellpadding="0" cellspacing="0"style="width:1024px; border:0px solid #3A3A3A">-->
-        <table align="center" cellpadding="0" cellspacing="0"style="width:100%; border:0px solid #3A3A3A">
-         <!--   <tr>
-                <td colspan="2" style="clear:both;background:url('assets/cms/<?php echo JFrame::getAppSetting('headerbgimg');?>');background-color:<?php echo JFrame::getAppSetting('headerbgcolor');?>;padding: 5px 5px 5px 10px;">
-                   <a href="<?php echo JFrame::getAppSetting('siteurl');?>"><img src='<?php echo web_path;?>data/<?php echo JFrame::getAppSetting('logo');?>' style="min-height:64px;max-height:64px;max-width:200px ;"></a>
-                </td>
-            </tr>
-            <tr>
-                <td id="subMenu" style="height:30px;clear:both;background:url('assets/cms/<?php echo JFrame::getAppSetting('menubackgroundimage');?>');background-color:<?php echo JFrame::getAppSetting('menubgcolor');?>;padding: 5px 5px 5px 10px;margin:0px auto">
-                    <div class="topnav" id="myTopnav">
-                        <a class="sub_Menu" href='<?php echo JFrame::getAppSetting('siteurl');?>'>Home</a>
-                        <?php 
-                            foreach(MenuItems::getHeaderMenuItems() as $m) {
-                                
-                                $target  = ($m['target']>0) ? " target='_blank' " : "";
-                        
-                                switch($m['linkedto']) {
-                                    
-                                    case 'frmphotos'  : $pageurl = JFrame::getAppSetting('siteurl')."/photos.php?groupid=".$m['pageid'];
-                                                        break;
-                                    case 'exturl'     : $pageurl = "http://".$m['customurl'];
-                                                        break;
-                                    case 'frmpage'    : //$pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
-                                                        $pageurl = JFrame::getAppSetting('siteurl')."/".$m['pagefilename'];
-                                                        break;
-                                    case 'frmevent'   : $pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
-                                                        break;
-                                    case 'frmnews'    : $pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
-                                                        break;
-                                    case 'frmdownload': $pageurl = JFrame::getAppSetting('siteurl')."/downloads.php?dalbum=".$m['pageid'];
-                                                        break;
-                                    case 'frmmusic'   : $pageurl = JFrame::getAppSetting('siteurl')."/musics.php?album=".$m['pageid'];
-                                                        break; 
-                                    case 'frmvideo'   : $pageurl = JFrame::getAppSetting('siteurl')."/videos.php?viewvid=".$m['pageid'];
-                                                        break;  
-                                    case 'frmgrp'     : $pageurl = $m['customurl'];
-                                                        break;
-                                }
-                        ?>
-                        <a class="sub_Menu" href='<?php echo $pageurl;?>' <?php echo $target; ?> ><?php echo $m['menuname'];?></a>
-                        <?php } ?>
-                        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                            <i class="fa fa-bars"></i>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                   
-                    <div id="banner-fade">
-                        <ul class="bjqs">
-                            <?php foreach(JSlider::getActiveSliders() as $sliderimage) {?>
-                            <li><img src='<?php echo $config['slider'].$sliderimage['filepath'];?>' style="width:100%"></li>
-                            <?php } ?>
-                        </ul>
-                    </div>
-                    <script class="secret-source">jQuery(document).ready(function($) {$('#banner-fade').bjqs({heigh:350,width:'100%',responsive:true});});</script>
-                </td>
-            </tr> -->
-            <tr>
-                <td>
-                    <table cellpadding="0" cellspacing="0" width="100%">
-                        <tr>
-                            <?php
-                                if (JFrame::getAppSetting('layout')==2) {
-                                    include_once("includes/side.php");
-                                }
-                            ?>
-                            <td valign="top" style="background:#fff;padding:10px;">
+        
+        <div class="container" style="margin-top:20px;">
+            <div class="row">
+                <?php
+                    if (JFrame::getAppSetting('layout')==2) {
+                        echo '<div class="col-sm-3">';
+                        include_once("includes/side.php");
+                        echo '</div>';
+                    }
+                ?>
+                <div class="col-sm-9" style="line-height:26px;text-align:justify">
