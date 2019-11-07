@@ -1103,7 +1103,7 @@
                                 <?php } else { ?>
                                     Alredy Downloaded
                                 <?php } ?>
-                                &nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<!--<a href="<?php // echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=BrowseMatches");?>">view</a>-->
+                                &nbsp;&nbsp;&nbsp;&nbsp;<!--<a href="<?php //echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;--><a href="<?php  echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=BrowseMatches");?>">view</a>
                             </div>
                             <div class="modal" id="Upgrades" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
                                 <div class="modal-dialog" style="width: 367px;">
