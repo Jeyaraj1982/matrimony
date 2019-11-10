@@ -22,7 +22,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <div id="Mobile_VerificationBody" style="height: 315px;">
+                        <div id="Mobile_VerificationBody" style="">
                             <img src='../../../images/loader.gif'> Loading ....
                         </div>
                     </div>
@@ -43,7 +43,7 @@
     <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-body">
-                    <div id="Mobile_VerificationBody" style="height: 315px;">
+                    <div id="Mobile_VerificationBody" style="">
                    Loading ....
                 </div>
             </div>
@@ -62,7 +62,7 @@
     <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-body">
-                    <div id="Mobile_VerificationBody" style="height: 315px;">
+                    <div id="Mobile_VerificationBody" style="">
                    Loading ....
                 </div>
             </div>

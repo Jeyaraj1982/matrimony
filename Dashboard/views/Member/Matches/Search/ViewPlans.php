@@ -6,7 +6,7 @@ $page="BasicSearch";?>
         $response = $webservice->getData("Member","SelectPlanAndContinue",$_POST);
         if ($response['status']=="success") {
            // echo "<script>location.href='../ViewOrders/".$_GET['Code'].".htm'</script>";   
-            echo "<script>location.href='".SiteUrl."Order/".$response['data']['OrderNumber'].".htm'</script>";   
+            echo "<script>location.href='".SiteUrl."Orders/".$response['data']['OrderNumber'].".htm'</script>";   
         } else {
             $errormessage = $response['message']; 
         }

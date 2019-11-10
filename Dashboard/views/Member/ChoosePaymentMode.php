@@ -111,6 +111,6 @@
  }
  $(document).ready(function () {
       loadPaymentOption('Wallet');
- });
+ });  
 </script>
 <?php include_once("PaymentModeFooter.php");?>                    

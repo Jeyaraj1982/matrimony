@@ -2,22 +2,22 @@
     $page="Others";
     include_once("browse_topmenu.php");
     $response = $webservice->getData("Matches","MatchesOthers",array()); 
-?>
+?>     
 <?php if ($response['status']=="failed") {?>
 <div style="margin:25px;margin-top:5px;padding:0px !important">
     <div class="card" style="padding:15px;">
-        <div class="card-body" style="padding:80px;text-align:center;color:#aaa">
-            <!--<img src="<?php // echo ImageUrl;?>noprofile.svg" style="height:128px"><Br>
-            No profiles found in your account<br><Br><br><Br><br><Br>  -->
-            <?php echo $response['message'];?><br>  
+        <div class="card-body" style="padding-top:80px;padding-bottom:80px;text-align:center;color:#aaa">
             <?php if($response['data']['param']=="mobile") {?>
-                  <a href="javascript:void(0)" onclick="MobileNumberVerification()"  style="font-weight:Bold;font-family:'Roboto';">Verify now</a>
+                <img src="<?php echo ImageUrl;?>mobile_number_not_verfied.png"><br><br><br>
+                <?php echo $response['message'];?><br><br><a href="javascript:void(0)" onclick="MobileNumberVerification()"  style="font-weight:Bold;font-family:'Roboto';">Verify now</a>
             <?php }?>
             <?php if($response['data']['param']=="email") {?>
-                  <a href="javascript:void(0)" onclick="EmailVerification()"  style="font-weight:Bold;font-family:'Roboto';">Verify now</a>
+                <img src="<?php echo ImageUrl;?>email_address_not_verified.png"><br><br><br>
+                <?php echo $response['message'];?><br><br><a href="javascript:void(0)" onclick="EmailVerification()"  style="font-weight:Bold;font-family:'Roboto';">Verify now</a>
             <?php }?>
             <?php if($response['data']['param']=="profile") {?>
-                  <a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a>
+                <img src="<?php echo ImageUrl;?>profile_informations.png" style="width:128px"><br><br><br>
+                <?php echo $response['message'];?><br><br><a style="font-weight:Bold;font-family:'Roboto'" href="javascript:void(0)" onclick="CheckVerification()">Create Profile</a>
             <?php }?>
             <br>
         </div>
