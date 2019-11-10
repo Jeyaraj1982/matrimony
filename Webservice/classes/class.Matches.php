@@ -47,7 +47,7 @@
              
              $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnError("you must create a profile",array("param"=>"profile"));   
+                return Response::returnError("You must create a profile",array("param"=>"profile"));   
              }
              
              /* validate active profiles */  
@@ -76,7 +76,7 @@
              
              $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnError("you must create a profile",array("param"=>"profile"));   
+                return Response::returnError("You must create a profile",array("param"=>"profile"));   
              }
              
              /* validate active profiles */  
@@ -106,7 +106,7 @@
              
              $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnError("you must create a profile",array("param"=>"profile"));   
+                return Response::returnError("You must create a profile",array("param"=>"profile"));   
              }
              
              /* validate active profiles */  
@@ -135,7 +135,7 @@
              
              $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnError("you must create a profile",array("param"=>"profile"));   
+                return Response::returnError("You must create a profile",array("param"=>"profile"));   
              }
              
              /* validate active profiles */  
@@ -164,7 +164,7 @@
              
              $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnError("you must create a profile",array("param"=>"profile"));   
+                return Response::returnError("You must create a profile",array("param"=>"profile"));   
              }
              
              /* validate active profiles */  
@@ -193,7 +193,7 @@
              
              $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnError("you must create a profile",array("param"=>"profile"));   
+                return Response::returnError("You must create a profile",array("param"=>"profile"));   
              }
              
              /* validate active profiles */  
@@ -222,7 +222,7 @@
              
              $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnError("you must create a profile",array("param"=>"profile"));   
+                return Response::returnError("You must create a profile",array("param"=>"profile"));   
              }
              
              /* validate active profiles */  
@@ -251,7 +251,7 @@
              
              $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnError("you must create a profile",array("param"=>"profile"));   
+                return Response::returnError("You must create a profile",array("param"=>"profile"));   
              }
              
              /* validate active profiles */  
@@ -280,7 +280,7 @@
              
              $myprofile = $mysql->select("select * from _tbl_draft_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
              if (sizeof($myprofile)==0) {
-                return Response::returnError("you must create a profile",array("param"=>"profile"));   
+                return Response::returnError("You must create a profile",array("param"=>"profile"));   
              }
              
              /* validate active profiles */  

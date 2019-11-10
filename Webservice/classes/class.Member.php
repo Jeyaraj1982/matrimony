@@ -27,15 +27,16 @@
                                                                 "LoginPassword" => $_POST['Password']));
              if (sizeof($data)==1) { /* Single Information */
              
-             /*$settings = $mysql->execute("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='APPSETTINGS' and `CodeValue`='AllowToPasswordCaseSensitive'");
+             $settings = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='APPSETTINGS' and `CodeValue`='AllowToPasswordCaseSensitive'");
              if($settings[0]['ParamA']=="1"){
                  if(md5($data[0]['MemberPassword'])!=md5($_POST['Password'])) {              
                     return Response::returnError("Invalid username or password ");
                  }
-             } */
+             } else {
                  if ($data[0]['MemberPassword']!=$_POST['Password']) {              
                     return Response::returnError("Invalid username or password");
                  }
+             }
                  
                  $mysql->execute("update `_tbl_logs_logins` set `LoginStatus`='1' where `LoginID`='".$loginid."'");
                  
@@ -677,26 +678,32 @@
                  $formid = "frmMobileNoVerification_".rand(30,3000);
                  return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">                      
                          <form method="POST" id="'.$formid.'">
-                         <input type="hidden" value="'.$_GET['callfrom'].'" name="callfrom">     
-                         <input type="hidden" value="'.$loginid.'" name="loginId">
-                         <input type="hidden" value="'.$securitycode.'" name="reqId">                          
+                            <input type="hidden" value="'.$_GET['callfrom'].'" name="callfrom">     
+                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                            <input type="hidden" value="'.$securitycode.'" name="reqId">                          
                             <div class="form-group">
-                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Mobile Number Verification</h4>
-                            '.(($updatemsg!="") ? $updatemsg : "").'
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Mobile Number Verification</h4>
+                                '.(($updatemsg!="") ? $updatemsg : "").'
                             </div> 
                             <div style="text-align:left"> Dear '.$memberdata[0]['MemberName'].',<br>
-                                <h5 style="color: #777;line-height:20px;font-weight: 100;">Please enter the verification code which you have received on your mobile number ending with  +'.$memberdata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'</h5>
+                                <h5 style="color: #777;line-height:20px;font-weight: 100;">Please enter the verification code which you have received on your mobile number ending with  +'.$memberdata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'<br></h5>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="col-sm-12">
-                                        <div class="col-sm-6"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                        <div class="col-sm-6"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-4"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-2"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                        <div class="col-sm-3"></div>
                                     </div>
-                                    <div class="col-sm-12">'.$error.'</div>
                                 </div>
                             </div>                                                              
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="col-sm-12">'.$error.'</div>
+                                </div>
+                            </div>
                             <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendMobileNumberVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
                         </form>                                                                                                       
                         </div>'; 
@@ -758,11 +765,11 @@
                             <div class="form-group">
                             <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                 <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;padding-top: 12%;">Please verify your email</h4>
+                                    <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/emailicon.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'&nbsp;&#65372&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>
-                            </div>
+                            </div>                            
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="col-sm-12" style="text-align:center"><a  href="javascript:void(0)" onclick="EmailVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a></div>
@@ -770,7 +777,7 @@
                                 </div>
                             </div>
                         </div>'; 
-             }
+             }                  
          }
 
          function ChangeEmailID($error="",$loginid="",$scode="",$reqID="") {
@@ -879,7 +886,7 @@
                                     <h4 class="modal-title">Email Verification</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
+                            <h5 style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href">Continue</a>
                        </div>';    
              } else {
 
@@ -917,15 +924,21 @@
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title">Please verify your email</h4>
                             </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/emailicon.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
                                 <h4 style="text-align:center;color:#ada9a9">We have sent a 4 digits verification Code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
                             <div class="form-group">
                                 <div class="input-group">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-7"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                        <div class="col-sm-5"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                    <div class="col-sm-12"> 
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-4"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                        <div class="col-sm-3"></div>
                                     </div>
-                                    <div class="col-sm-12">'.$error.'</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="col-sm-12" style="text-align:center;">'.$error.'</div>                                
                                 </div>
                             </div>                                                              
                             <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
@@ -945,19 +958,25 @@
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
+                                    <button type="button" class="close" data-dismiss="modal" style="">&times;</button>
                                     <h4 style="text-align:center;color:#ada9a9">Please verify your email</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/emailicon.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="col-sm-12">
-                                        <div class="col-sm-7"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                        <div class="col-sm-5"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-4"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                        <div class="col-sm-3"></div>
                                     </div>
-                                    <div class="col-sm-12">'.$error.'</div>
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <div class="input-group">
+                                    <div class="col-sm-12"  style="text-align:center;">'.$error.'</div>                                
                                 </div>
                             </div>
                             <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
@@ -1706,6 +1725,7 @@
                                                      "AddressLine3"         => $Profiles[0]['AddressLine3'],
                                                      "Pincode"              => $Profiles[0]['Pincode'],
                                                      "OrderValue"           => $plan[0]['Amount'],
+                                                     "Description"          => "Days :" .$plan[0]['Decreation'] .","."Free Profiles :" .$plan[0]['FreeProfiles'],
                                                      "Createdon"            => DATE("Y-m-d H:i:s"),
                                                      "OrderedOn"            => "0000-00-00 00:00:00",
                                                      "OrderByMemberID"      => $loginInfo[0]['MemberID'],
@@ -3465,7 +3485,7 @@
                                     <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                     <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/emailicon.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
                             </div>
                             <div class="form-group">
@@ -3497,7 +3517,7 @@
                                     <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
                                     <h4 style="text-align:center;color:#ada9a9">Please verify your email</h4>
                                 </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/emailicon.png" width="10%"></p>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
                             </div>
                             <div class="form-group">
@@ -4436,8 +4456,21 @@
               return Response::returnSuccess("success",array("Order"   =>$Order[0],
                                                              "Invoice" =>$Invoice[0],
                                                              "Receipt" =>$Receipt[0]));
-         } 
-            
+         }
+         function CancelOrder() {
+
+             global $mysql,$loginInfo;
+             $mysql->execute("update `_tbl_orders` set `IsCancelled`='1' where `OrderNumber`='".$_POST['OrderNumber']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");
+                       return  '<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirmation For Cancell</h4>
+                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Your order  has been cancel successfully.</h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'MyAccounts/MyOrders" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                       </div>';                            
+
+         }
+        
   
          
          

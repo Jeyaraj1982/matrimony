@@ -442,6 +442,9 @@
                 $Educationattachments = $mysql->select("select * from `_tbl_profiles_education_details` where  ProfileCode='".$ProfileCode."' and `IsDeleted`='0'");            
                 $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
                 $ProfilePhotos = isset($Profiles[0]['ProfileID']) ? $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `IsDelete`='0' and `PriorityFirst`='0'") : array();                                        
+              
+               $IsDownload = $mysql->select("select * from `_tbl_profile_download` where `MemberID`='".$loginInfo[0]['MemberID']."' and `PartnerProfileCode`='".$ProfileCode."'"); 
+              
                 if ($myrecentviewed==1) {
                     if (isset($Profiles[0]['ProfileID']) && isset($loginInfo[0]['MemberID'])) {
                         $lastseen = $mysql->select("select ViewedOn from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
@@ -455,6 +458,7 @@
                 $LastLogin = isset($Profiles[0]['ProfileID'])  ? $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$Profiles[0]['MemberID']."' ORDER BY `LoginID` DESC") : array();
             }
             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
+            
             if (sizeof($ProfilePhotos)<4) {
                 for($i=sizeof($ProfilePhotos);$i<4;$i++) {
                     if (isset($Profiles[0]['SexCode']) && $Profiles[0]['SexCode']=="SX002"){
@@ -485,6 +489,7 @@
              
             $result = array("ProfileInfo"          => $Profiles[0],
                             "Members"             => $members[0],
+                            "IsDownload"           => $IsDownload,
                             "Position"             => $Position,
                             "EducationAttachments" => $Educationattachments,
                             "Documents"            => $Documents,
