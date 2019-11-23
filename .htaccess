@@ -4,11 +4,11 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_URI} !(\.gif|\.jpg|\.png\.js\.css)$ [NC]
 RewriteRule ^(.*)$ index.php?x=$1 [QSA,L]
 
-RewriteCond %{HTTPS} !=on
-RewriteCond %{HTTP_HOST} ^www\. [NC]
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R]
-RewriteCond %{HTTP_HOST} !^www\. [NC]
-RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R]
+#RewriteCond %{HTTPS} !=on
+#RewriteCond %{HTTP_HOST} ^www\. [NC]
+#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R]
+#RewriteCond %{HTTP_HOST} !^www\. [NC]
+#RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R]
 
 <IfModule mime_module>
  AddHandler application/x-httpd-alt-php56 .php .php5 .phtml
