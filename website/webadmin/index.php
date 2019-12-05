@@ -8,7 +8,8 @@ Welcome
     if (isset($_POST['loginbtn'])) {
     
           $record = $mysql->select("select * from _jusertable where uname='".trim($_POST['uname'])."' and pwd='".trim($_POST['upass'])."' and isactive=1");
-          if (sizeof($record)>0) {
+          print_R($record);
+		  if (sizeof($record)>0) {
             $_SESSION['USER'] = $record[0];
             echo "<script>location.href='dashboard.php';</script>";
           } else {
@@ -27,7 +28,7 @@ Welcome
         </td>
     </tr>
     <tr>
-        <td><img src="http://milanacademy.org/images/login_icon.gif" style="width: 120px;"></td>
+        <td><!--<img src="http://milanacademy.org/images/login_icon.gif" style="width: 120px;">--></td>
         <td>
          <table align="center" cellpadding="5" cellspacing="0" style="font-size:12px;color:#666;font-family:'Trebuchet MS'">
     <tr>

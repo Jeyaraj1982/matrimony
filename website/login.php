@@ -11,21 +11,22 @@
     }  
     
     $isShowSlider = false;
+    $layout=0;
     include_once("includes/header.php");
-?>
-<div class="container">
-    <div class="center">
-        <h2>Login</h2>
-    </div>
-    <div class="row contact-wrap">
+?>  <br><br><br>
+    <div class="row">
         <div class="status alert alert-success" style="display: none"></div>
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-sm-3"></div>    
+        <div class="col-sm-6" style="text-align: center;">
+            <div style="text-align: center;">
+                <h2>Login</h2>
+            </div>
             <div id="sendmessage"></div>
             <div id="errormessage"></div>
             <form action="login" method="post" role="form" class="contactForm">
-                <table style="margin: 0px auto;line-height: 28px;color: #333;">
+                <table style="margin: 0px auto;line-height: 28px;color: #333;min-width: 250px;">
                     <tr>
-                        <td style="width:335px"  colspan="2">
+                        <td colspan="2">
                             <div class="form-group">
                                 Member ID / Registered Email <br>
                                 <input type="text" name="UserName" class="form-control" id="UserName" placeholder="Member ID / Registered Email" value="<?php echo isset($_POST['UserName']) ? $_POST['UserName'] : '';?>"  data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
@@ -44,9 +45,7 @@
                     </tr> 
                     <tr>
                         <td style="text-align:left">
-                            <div class="form-group">
-                                <button type="submit" name="login" class="btn btn-primary btn-lg" style="font-size: 13px;font-weight: bold;" required="required">Login</button>
-                            </div>
+                                <button type="submit" name="login" class="btn btn-primary" required="required">Login</button>
                         </td>
                         <td style="text-align:right">
                             <a href="forget-password.php">Forget Password?</a>
@@ -54,17 +53,18 @@
                     </tr>
                     <?php if (isset($loginError)) { ?>
                     <tr>
-                        <td style="text-align:center;color:red">
+                        <td colspan="2" style="color:red">
                             <div class="form-group"><?php echo $loginError; ?></div>
                         </td>
                     </tr>
                     <?php } ?>
              </table>
-             <div class="form-group" style="text-align:center">
+             <div class="form-group" style="text-align:center;margin-top:10px">
                 Not a member yet? <a href="register">Register now</a>
              </div>
         </form>
     </div>
+        <div class="col-sm-3"></div>
     </div>
-</div>
+    <br><br><br>
 <?php include_once("includes/footer.php");?>

@@ -86,7 +86,7 @@
          <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">-->
          <style>
          .navbar {margin-bottom: 0;border-radius: 0;}
-         .row.content {height: 450px}
+       /*.row.content {height: 450px}  */
          .sidenav {padding-top: 20px;background-color: #f1f1f1;height: 100%;}
          footer {background-color: #555;color: white;padding: 15px;}
          @media screen and (max-width: 767px) {
@@ -130,6 +130,9 @@
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link <?php echo $_GET['x']=="" ? " active headerlink" : "";?>" href='<?php echo JFrame::getAppSetting('siteurl');?>' <?php echo $target; ?> >Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo $_GET['x']=="" ? " " : "";?>" href='<?php echo JFrame::getAppSetting('siteurl');?>/search' <?php echo $target; ?> >Search</a>
                     </li>
                     <?php 
                         foreach(MenuItems::getHeaderMenuItems() as $m) {
@@ -193,7 +196,14 @@
             </a>
         </div>
         <?php } ?>
-        
+        <?php 
+            if(isset($layout) && $layout==0) {
+                
+            }
+            else{
+                
+            
+        ?>
         <div class="container" style="margin-top:20px;">
             <div class="row">
                 <?php
@@ -204,3 +214,4 @@
                     }
                 ?>
                 <div class="col-sm-9" style="line-height:26px;text-align:justify">
+                <?php } ?>

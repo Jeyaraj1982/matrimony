@@ -29,7 +29,7 @@
     include_once("includes/sharethis.php");
     }
     
-}  else  if ($_REQUEST['spage']>0) {
+}  else  if ($_REQUEST['spage']>0) {  
     $pageContent = $mysql->select("select * from _jsuccessstory where storyid=".$_REQUEST['spage']);
     echo "<div style='padding:10px;font-family:arial;font-size:13px;text-align:justify;'>";
     echo "<div style='font-family:arial;font-size:18px;font-weight:bold;border-bottom:2px solid #222;margin-bottom:10px;padding-bottom:10px;'>".$pageContent[0]['storytitle']."</div>";

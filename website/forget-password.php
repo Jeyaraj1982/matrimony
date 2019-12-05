@@ -18,34 +18,42 @@
                     } 
             }              
              $isShowSlider = false;
+             $layout=0;
             include_once("includes/header.php");
             ?>
- 
+  <br><br><br> 
   <section id="contact-page">
     <div class="container">
-      <div class="center">
-        <h2>Forget password</h2>
-      </div>
       <div class="row contact-wrap">
         <div class="status alert alert-success" style="display: none"></div>
-        <div class="col-md-6 col-md-offset-3">
-          <div id="sendmessage">Your message has been sent. Thank you!</div>
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div style="text-align:center">
+                <h2>Forget password</h2>
+            </div>
           <div id="errormessage"></div>
           <form action="" method="post" role="form" class="contactForm">
-            <div class="form-group">
-              Please provide your Login Name or Registered Email Address, we'll send a verification code to your email address to reset your password
+            <div class="form-group" style="text-align:center">
+              Please provide your Member ID or Registered Email, we'll send a verification code to your email to reset your password
             </div>
             <div class="form-group">
-              <input type="email" class="form-control"  name="FpUserName" id="FpUserName" placeholder="Login Name / Registered Email Address" data-rule="email" data-msg="Please enter a valid email" />
+              <input type="text" class="form-control"  name="FpUserName" id="FpUserName" placeholder="Member ID / Registered Email" value="<?php echo isset($_POST['FpUserName']) ? $_POST['FpUserName'] : '';?>" required="Please enter a valid email" data-rule="email" data-error="Please enter a valid email" />
               <div class="validation"></div>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="color:red">
                 <?php echo $errormessage;?>
             </div>
-            <div class="text-center"><button type="submit" name="btnResetPassword" class="btn btn-primary btn-lg" required="required">Submit</button></div>
+                <div class="form-group">
+                    <a href="login.php">Back to login</a>
+                    <div style="float: right;">
+                        <button type="submit" name="btnResetPassword" class="btn btn-primary" required="required">Continue</button>
+                    </div>
+                </div>
             </form>
         </div>
+        <div class="col-sm-3"></div>
       </div>
     </div>                                                                               
   </section>
+  <br><br><br>
  <?php include_once("includes/footer.php");?>

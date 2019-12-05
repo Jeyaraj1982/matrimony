@@ -14,31 +14,36 @@
             $errormessage = $response['message']; 
         }  
     } 
+    $layout=0;
     $isShowSlider = false;                              
     include_once("includes/header.php");
  ?>
 
- <div class="container">
-    <div class="center">
-        <h2>Forget password</h2>
-    </div>
+   <br><br><br> 
+   <div class="container">
     <div class="row contact-wrap">
         <div class="status alert alert-success" style="display: none"></div>
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div style="text-align:center">
+                <h2>Forget password</h2>
+            </div>
             <form action="" method="post" role="form" class="contactForm">
-                <div class="form-group">Have sent a verification code to your email. Please enter the code bellow box</div>
+                <div class="form-group" style="text-align: center;">We have sent a verification code to your registered email. Please check your email and  enter the verification code bellow box</div>
                 <input type="hidden"  value="<?php echo $_POST['reqEmail'];?>" name="reqEmail">
                 <input type="hidden"  value="<?php echo $_POST['reqID'];?>" name="reqID">
                 <div class="form-group">
-                    <input type="text" class="form-control"  name="scode" id="scode" placeholder="Verification code here ..." style="height:32px !important" value="<?php echo isset($_POST['scode']) ? $_POST['scode'] : '';?>">
+                    <input type="text" class="form-control"  name="scode" id="scode" placeholder="Verification code here ..." style="height:32px !important" value="<?php echo isset($_POST['scode']) ? $_POST['scode'] : '';?>" required="required">
                     <div class="validation"></div>
                 </div>
                 <?php if (isset($errormessage)) { ?>
-                    <div class="form-group"><?php echo $errormessage; ?></div>
+                    <div class="form-group" style="color: red"><?php echo $errormessage; ?></div>
                 <?php } ?>
-                <div class="text-center"><button type="submit" name="btnVerifyCode" class="btn btn-primary btn-lg" required="required">Verify your code</button></div>
+                <div class="text-center"><button type="submit" name="btnVerifyCode" class="btn btn-primary" required="required">Verify your code</button></div>
             </form>
         </div>
-    </div>                                                                               
-</div>
+        <div class="col-sm-3"></div>
+    </div>    
+    </div>
+    <br><br><br>                                                                               
 <?php include_once("includes/footer.php");?>

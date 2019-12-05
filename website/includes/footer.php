@@ -1,4 +1,13 @@
-                </div>
+            
+                <?php 
+            if(isset($layout) && $layout==0) {
+                
+            }
+            else{
+                
+            
+        ?>
+            </div>
                 
 
                             
@@ -12,7 +21,7 @@
                                
                                  </div>
 </div>
-
+ <?php }?>
 
 <footer class="footer" style="padding:15px 0px !important;padding-bottom:0px !important;background-color:#222222;color: #999999;">
     <div class="footer_top">

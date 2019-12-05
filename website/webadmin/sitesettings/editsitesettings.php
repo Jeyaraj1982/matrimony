@@ -471,7 +471,6 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                      </select>
                      </td> 
                </tr>
-               </tr>
                <tr>
                      <td>Is Enable Faq</td>
                      <td>
@@ -629,6 +628,14 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                <tr>
                     <td>Display ContactUs</td>
                     <td><textarea class="mceEditor" style="height: 350px;width:100%" name="param[57]"><?php echo $data[56]['paramvalue'];?></textarea></td> 
+               </tr>
+               <tr>
+                    <td>Copyright Text</td>
+                    <td><textarea class="mceEditor" style="height: 100px;width:100%" name="param[135]"><?php echo $data[134]['paramvalue'];?></textarea></td> 
+               </tr>
+               <tr>
+                    <td>Copyright Url</td>
+                    <td><textarea class="mceEditor" style="height: 100px;width:100%" name="param[136]"><?php echo $data[135]['paramvalue'];?></textarea></td> 
                </tr>
                <tr>
                     <td align="left">

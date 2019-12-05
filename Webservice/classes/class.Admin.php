@@ -3108,9 +3108,13 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              global $mysql,$loginInfo;
              
              $Order=$mysql->select("SELECT * From `_tbl_orders` Where `OrderNumber`='".$_POST['Code']."'"); 
+             $plan =$mysql->select("select * from `_tbl_member_plan` where `Amount`='".$Order[0]['OrderValue']."'"); 
              $Invoice=$mysql->select("SELECT * From `_tbl_invoices` Where `InvoiceNumber`='".$_POST['Code']."'"); 
+              $Invoiceplan =$mysql->select("select * from `_tbl_member_plan` where `Amount`='".$Invoice[0]['InvoiceValue']."'"); 
              $Receipt=$mysql->select("SELECT * From `_tbl_receipts` Where `ReceiptNumber`='".$_POST['Code']."'"); 
               return Response::returnSuccess("success",array("Order"   =>$Order[0],
+                                                             "Plan" =>$plan,
+                                                             "InvoicePlan" =>$Invoiceplan,
                                                              "Invoice" =>$Invoice[0],
                                                              "Receipt" =>$Receipt[0]));
          }

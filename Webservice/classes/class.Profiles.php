@@ -424,6 +424,7 @@
             $lastseen    = array();
             $isFavourite = array();
             $isMutured   = array();  
+			$IsDownload  = array();
                 
             if ($IsOther==0)  {
                 $Profiles = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");               
@@ -449,11 +450,13 @@
                     if (isset($Profiles[0]['ProfileID']) && isset($loginInfo[0]['MemberID'])) {
                         $lastseen = $mysql->select("select ViewedOn from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
                         $isFavourite = $mysql->select("select ViewedOn from `_tbl_profiles_favourites` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' and `IsFavorite`='1' and `IsVisible`='1' order by FavProfileID desc limit 0,1");
+                        $isWhoFavourite = $mysql->select("select ViewedOn from `_tbl_profiles_favourites` where VisterProfileID='".$Profiles[0]['ProfileID']."' and MemberID='".$loginInfo[0]['MemberID']."' and `IsFavorite`='1' and `IsVisible`='1' order by FavProfileID desc limit 0,1");
                         //$isMutured = $mysql->select("select ViewedOn from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and ProfileCode='".$Profiles[0]['ProfileCode']."' and `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'    and `MemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC)");
                         $isMutured = $mysql->select("select ViewedOn from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and VisterProfileCode='".$Profiles[0]['ProfileCode']."' and `VisterProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'    and `MemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC)");
                     }
                 } else {
                     $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where VisterProfileID='".$Profiles[0]['ProfileID']."' and MemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");   
+                    $Opplastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");   
                 }
                 $LastLogin = isset($Profiles[0]['ProfileID'])  ? $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$Profiles[0]['MemberID']."' ORDER BY `LoginID` DESC") : array();
             }
@@ -475,14 +478,16 @@
                 } else { 
                     $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
                 }
-            } else {
+            } else { 
                  $ProfileThumbnail =  getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
             } 
             
             $Position = "Published";                                             
             $Profiles[0]['LastLogin']    = (isset($LastLogin[0]['LoginOn']) ? $LastLogin[0]['LoginOn'] : 0);
             $Profiles[0]['LastSeen']     = (isset($lastseen[0]['ViewedOn']) ? $lastseen[0]['ViewedOn'] : 0);
+            $Profiles[0]['Opplastseen']     = (isset($Opplastseen[0]['ViewedOn']) ? $Opplastseen[0]['ViewedOn'] : 0);
             $Profiles[0]['isFavourited'] = (isset($isFavourite[0]['ViewedOn']) ? $isFavourite[0]['ViewedOn'] : 0);
+            $Profiles[0]['isFavouriteds'] = (isset($isWhoFavourite[0]['ViewedOn']) ?  1 : 0);
             $Profiles[0]['isMutured']    = (isset($isMutured[0]['ViewedOn']) ? 1 : 0);
             $Profiles[0]['MuturedOn']    = (isset($isMutured[0]['ViewedOn']) ? $isMutured[0]['ViewedOn'] : "");
             $Profiles[0]['Age']          = isset($Profiles[0]['DateofBirth']) ? date("Y")-date("Y",strtotime($Profiles[0]['DateofBirth'])) : "0";   
