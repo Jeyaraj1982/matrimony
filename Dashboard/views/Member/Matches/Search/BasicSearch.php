@@ -6,15 +6,13 @@ $Info = $webservice->GetBasicSearchElements();
 <?php                   
   if (isset($_POST['searchBtn'])) {  
       
-  print_r($_POST);
-  
   $_POST['MaritalStatus']=implode(",",$_POST['MaritalStatus']);
   $_POST['Religion']=implode(",",$_POST['Religion']);
-  $_POST['Community']=implode(",",$_POST['Community']);
+  $_POST['Caste']=implode(",",$_POST['Caste']);
   
   $response = $webservice->getData("Member","AddMemberBasicSearchDetails",$_POST);
         if ($response['status']=="success") {
-            echo "<script>location.href='../BasicSearchResult/".$response['data']['ReqID'].".htm?Req=BasicSearchResult'</script>";
+            echo "<script>location.href='BasicSearchResult/".$response['data']['ReqID'].".htm?Req=BasicSearchResult'</script>";
             // $successmessage = $response['message']; 
         } else {
             $errormessage = $response['message']; 
@@ -41,7 +39,7 @@ function submitSearch() {
                          $('#Errage').html("");
                          $('#ErrMaritalStatus').html("");
                          $('#ErrReligion').html("");
-                         $('#ErrCommunity').html("");
+                         $('#ErrCaste').html("");
 
                          ErrorCount=0;
                          
@@ -62,8 +60,8 @@ function submitSearch() {
                                 document.getElementById("ErrReligion").innerHTML="Please select Religion"; 
                                 ErrorCount++;
                          }
-                        if($('#Community option:selected').length==0){
-                            document.getElementById("ErrCommunity").innerHTML="Please select Community"; 
+                        if($('#Caste option:selected').length==0){
+                            document.getElementById("ErrCaste").innerHTML="Please select Caste"; 
                              ErrorCount++;
                          }
                             
@@ -84,7 +82,7 @@ function submitSearch() {
         <div class="container"  id="sp">
         <div class="col-sm-7" style="padding-left:3px">
             <div class="form-group row">
-              <label for="age" class="col-sm-3 col-form-label">Age</label>
+              <label for="age" class="col-sm-2 col-form-label">Age</label>
              <div class="col-sm-2" align="left" style="width:100px">
                 <select class="form-control" data-live-search="true" id="age" name="age">
                 <?php for($i=18;$i<=70;$i++) {?>
@@ -103,8 +101,8 @@ function submitSearch() {
              </div>
             </div>
             <div class="form-group row">
-             <label for="MaritalStatus" class="col-sm-3 col-form-label">Marital Status</label>
-             <div class="col-sm-9" align="left">
+             <label for="MaritalStatus" class="col-sm-2 col-form-label">Marital Status</label>
+             <div class="col-sm-10" align="left">
                 <select class="form-control" id="MaritalStatus" name="MaritalStatus[]" style="display: none;" multiple="multiple"> 
                     <?php foreach($Info['data']['MaritalStatus'] as $MaritalStatus) { ?>
                     <option value="<?php echo $MaritalStatus['SoftCode'];?>" <?php echo ($_POST['MaritalStatus']==$MaritalStatus['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $MaritalStatus['CodeValue'];?></option>
@@ -114,8 +112,8 @@ function submitSearch() {
             </div>
             </div> 
             <div class="form-group row">
-             <label for="Religion" class="col-sm-3 col-form-label">Religion</label>
-             <div class="col-sm-9" align="left">
+             <label for="Religion" class="col-sm-2 col-form-label">Religion</label>
+             <div class="col-sm-10" align="left">
                 <select class="form-control" id="Religion" name="Religion[]" style="display: none;" multiple="multiple"> 
                     <?php foreach($Info['data']['Religion'] as $Religion) { ?>
                     <option value="<?php echo $Religion['SoftCode'];?>" <?php echo ($_POST['Religion']==$Religion['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Religion['CodeValue'];?></option>
@@ -126,14 +124,14 @@ function submitSearch() {
             </div> 
              
             <div class="form-group row">
-             <label for="Community" class="col-sm-3 col-form-label">Community</label>
-             <div class="col-sm-9" align="left">
-                <select class="form-control" id="Community" name="Community[]" style="display: none;" multiple="multiple"> 
-                    <?php foreach($Info['data']['Community'] as $Community) { ?>
-                    <option value="<?php echo $Community['SoftCode'];?>" <?php echo ($_POST['Community']==$Community['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Community['CodeValue'];?></option>
+             <label for="Caste" class="col-sm-2 col-form-label">Caste</label>
+             <div class="col-sm-10" align="left">
+                <select class="form-control" id="Caste" name="Caste[]" style="display: none;" multiple="multiple"> 
+                    <?php foreach($Info['data']['Caste'] as $Caste) { ?>
+                    <option value="<?php echo $Caste['SoftCode'];?>" <?php echo ($_POST['Caste']==$Caste['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Caste['CodeValue'];?></option>
                     <?php } ?>
                 </select>   
-                <span class="errorstring" id="ErrCommunity"><?php echo isset($ErrCommunity)? $ErrCommunity : "";?></span>        
+                <span class="errorstring" id="ErrCaste"><?php echo isset($ErrCaste)? $ErrCaste : "";?></span>        
             </div>
             </div> 
             <div class="form-group row">
@@ -146,7 +144,7 @@ function submitSearch() {
             <?php } else if ($response['data']['IsEmailVerified']==0) { ?>
                 <a href="javascript:void(0)" onclick="EmailVerification()" class="btn btn-primary">Search</a>
             <?php } else{ ?>
-                <button type="submit" name="searchBtn" class="btn btn-primary" style="font-family:roboto">Search</button>
+                <button type="submit" name="searchBtn" class="btn btn-primary" style="font-family:roboto">Search Profile</button>
             <?php }?></div>                                             
             </div>
         </div>
@@ -158,7 +156,7 @@ function submitSearch() {
 <script>
       $("#MaritalStatus").dashboardCodeBsMultiSelect();
       $("#Religion").dashboardCodeBsMultiSelect();
-      $("#Community").dashboardCodeBsMultiSelect();
+      $("#Caste").dashboardCodeBsMultiSelect();
 </script>
 
             

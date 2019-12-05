@@ -1,8 +1,8 @@
 <?php
 $lang= array( 
 "dashboard"=>"Dashboard",
-"my_profiles"=>"My Profile",
-"manage_profile"=>"Manage Profile",
+"my_profiles"=>"My Profiles",
+"manage_profile"=>"Manage Profiles",
 "recently_who_viewed"=>"Recently who viewed",
 "recently_who_liked"=>"Recently who liked",
 "matches"=>"Matches",

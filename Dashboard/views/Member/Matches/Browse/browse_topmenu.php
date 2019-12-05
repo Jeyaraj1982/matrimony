@@ -4,6 +4,8 @@
   <a href="NearByMe" class="<?php echo ($page=="NearByMe") ? ' linkactive ':'';?>">Near by me</a>
   <a href="RecentlyAdded" class="<?php echo ($page=="RecentlyAdded") ? ' linkactive ':'';?>">Recently added</a>
   <a href="MostPopular" class="<?php echo ($page=="MostPopular") ? ' linkactive ':'';?>">Most popular</a>
+  <a href="FeatureProfiles" class="<?php echo ($page=="FeaturedProfiles") ? ' linkactive ':'';?>">Featured Profiles</a>
+  <a href="MostLiked" class="<?php echo ($page=="MostLiked") ? ' linkactive ':'';?>">Most Liked</a>
   <a href="ReligionWise" class="<?php echo ($page=="ReligionWise") ? ' linkactive ':'';?>">Religion</a>
   <a href="IncomeWise" class="<?php echo ($page=="IncomeWise") ? ' linkactive ':'';?>">Income</a>
   <a href="EducationWise" class="<?php echo ($page=="EducationWise") ? ' linkactive ':'';?>">Education</a>

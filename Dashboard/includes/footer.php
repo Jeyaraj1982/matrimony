@@ -76,12 +76,12 @@
 <script>
 
 
-function RequestToshowUpgrades(ProfileID) {
+function RequestToshowUpgrades(PProfileID) {
         
         $('#Upgrades_body').html(preloader);
         $('#Upgrades').modal('show'); 
         $.ajax({
-            url: API_URL + "m=Member&a=RequestToshowUpgrades&ProfileID="+ProfileID, 
+            url: API_URL + "m=Member&a=RequestToshowUpgrades&ProfileID="+PProfileID, 
             success: function(result){
                $('#Upgrades_body').html(result); 
             }});

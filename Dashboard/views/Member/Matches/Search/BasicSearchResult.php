@@ -2,7 +2,8 @@
     $mainlink="Search";
     $page="BasicSearch";
     include_once("topmenu.php");
-    $response = $webservice->getData("Matches","BasicSearchProfile",array()); 
+    $response = $webservice->getData("Matches","BasicSearchProfile",array("Code"=>$_GET['Code'])); 
+    
 ?>
 <?php  if (sizeof($response['data'])>0) { ?>
         <div class="col-lg-12 grid-margin stretch-card">

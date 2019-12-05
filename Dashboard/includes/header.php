@@ -220,7 +220,7 @@
             function DisplayManageProfileShortInfo($ProfileInformation) {
                 $Profile = $ProfileInformation['ProfileInfo'];
         ?>
-            <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
+            <div class="profile_horizontal_row" >
                 <div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
@@ -293,8 +293,9 @@
             <?php 
             function DisplayPuplishProfileShortInfo($ProfileInformation) {
                 $Profile = $ProfileInformation['ProfileInfo'];
+			
         ?>
-            <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
+            <div  class="profile_horizontal_row">
                 <div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
@@ -307,11 +308,11 @@
                                        <div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
                                 </div>
                                 <div class="form-group row">
-                                       <div class="col-sm-7">
+                                       <div class="col-sm-6">
                                             <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
                                        </div>
                                        <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:27px;"></span></div> 
-                                       <div class="col-sm-4" style="float:right;font-size: 12px;">
+                                       <div class="col-sm-5" style="float:right;font-size: 12px;">
                                                 <?php  echo "Created On: ".time_elapsed_string($Profile['CreatedOn']); ?><br> 
                                                 <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
                                                 <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".putDateTime($Profile['LastSeen']) : ""; ?>
@@ -329,7 +330,7 @@
                                         </div>
                                         <div>
                                             <?php echo $Profile['Caste'];?>
-                                        </div>
+                                        </div> 
                                     </div>
                                     <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
                                         <div>
@@ -347,7 +348,13 @@
                                     </div>
                                 </div>
                             </div>
-                           <div style="float:right;line-height: 1px;">
+							<div class="col-sm-10"><div style="line-height: 1px;">
+                                <a href="<?php echo GetUrl("MyContacts/RecentlyWhoViewed");?>">Who Viewed (<?php echo $ProfileInformation['RecentlyWhoViwedCount'];?>)</a> &nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("MyContacts/RecentlyWhofavourited");?>">Who Liked(<?php echo $ProfileInformation['WhoFavoritedCount'];?>)</a> &nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("MyContacts/MutualProfiles");?>">Mutual(<?php echo $ProfileInformation['MutualCount'];?>)</a></div></div>
+                                <div class="col-sm-1">
+                                    <div style="float:right;line-height: 1px;">
+                          
                                 <?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==0){ ?>
                                     <a href="<?php echo GetUrl("MyProfiles/Posted/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                     <?php } elseif($Profile['IsApproved']==1){  ?>
@@ -356,6 +363,7 @@
                                         <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$Profile['ProfileCode'].".htm ");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/Draft/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                         <?php  }    ?>     
                             </div>
+							</div>
                         </div> 
                   <?php
               }
@@ -481,6 +489,7 @@
             /*fixed  1*/
             function DisplayProfileShortInformation($ProfileInformation) {
                       $Profile = $ProfileInformation['ProfileInfo'];
+					  $IsDownload = $ProfileInformation['IsDownload'];
                       $rnd = rand(3000,3000000);
             ?>
             <div class="profile_horizontal_row" id="div_<?php echo $Profile['ProfileCode']; ?>">
@@ -495,29 +504,31 @@
                                        <div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
                                        <div class="col-sm-4">
                                        <div style="text-align:right;">
-                        <?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
-                                                <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
+											<?php if ($Profile['isFavouriteds']==1) {?>
+                                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">
+											<?php } ?>
+											<?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
+                                                <!-- <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span> -->
                                                 <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
-                                            <?php } else if ($Profile['isMutured']==1) {?>
-                                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
-                                            <?php } else{?>
+                                            <?php } else { ?>
                                                 <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
                                             <?php }?>
-                        </div>
-                        </div> 
+										</div>
+									</div>  	
                                 </div>
                                 <div class="form-group row">
-                                       <div class="col-sm-7">
+                                       <div class="col-sm-6">
                                             <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
                                        </div>
-                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:35px;"></span></div> 
-                                       <div class="col-sm-4" style="float:right;font-size: 12px;">
+                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:21px;"></span></div> 
+                                       <div class="col-sm-5" style="float:right;font-size: 12px;">
                                                 <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
-                                                <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?>
+                                                <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?><br>
+                                                <?php echo ($Profile['Opplastseen']!=0) ? "last seen: ".time_elapsed_string($Profile['Opplastseen']) : ""; ?><br>
                                                 <br>
                                                 <br>
                                        </div>
-                                </div>
+                                </div> 
                                 </div>
                                     <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
                                         <div><?php echo $Profile['Height'];?></div>
@@ -535,13 +546,13 @@
                                 </div>
                             </div>
                            <div style="float:right;line-height: 1px;">
-                                <a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <?php if ($Profile['IsDownloaded']==0) { ?>
-                                    <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
+                                <!--<a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php //echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;  -->
+                                 <?php if(sizeof($IsDownload)>0) {?>
+									<span style="color: #867c7c;color: #867c7c;">Download On : <?php echo putDateTime($IsDownload[0]['DownloadOn']);?></span>
                                 <?php } else { ?>
-                                    Alredy Downloaded
+                                    <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
                                 <?php } ?>
-                                &nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=RecentlyWhoViewed");?>">view</a>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<!--<a href="<?php //echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>-->&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=RecentlyWhoViewed");?>">view</a>
                             </div>
                             <div class="modal" id="Upgrades" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
                                 <div class="modal-dialog" style="width: 367px;">
@@ -561,6 +572,7 @@
             <?php /* 2*/
             function DisplayWhoFavoritedProfileShortInformation($ProfileInformation) {
                       $Profile = $ProfileInformation['ProfileInfo'];
+					  $IsDownload = $ProfileInformation['IsDownload'];
                       $rnd = rand(3000,3000000);
             ?>
             <div class="profile_horizontal_row" id="div_<?php echo $Profile['ProfileCode']; ?>">
@@ -573,16 +585,26 @@
                             <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
                                 <div class="form-group row">                                                                                     
                                        <div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
-                                       <div class="col-sm-4" style="float:right;font-size: 12px;text-align:right">
-                                          <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;float:right">
-                                       </div>
+                                       <div class="col-sm-4">
+                                       <div style="text-align:right;">
+											<?php if ($Profile['isFavouriteds']==1) {?>
+                                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">
+											<?php } ?>
+											<?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
+                                                <!-- <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span> -->
+                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
+                                            <?php } else { ?>
+                                                <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                                            <?php }?>
+										</div>
+									</div>
                                 </div>
                                 <div class="form-group row">
-                                       <div class="col-sm-7">
+                                       <div class="col-sm-6">
                                             <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
                                        </div>
-                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:35px;"></span></div> 
-                                       <div class="col-sm-4" style="float:right;font-size: 12px;">
+                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:21px;"></span></div> 
+                                       <div class="col-sm-5" style="float:right;font-size: 12px;">
                                                 <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
                                                 <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?>
                                                 <br>
@@ -606,13 +628,12 @@
                                 </div>
                             </div>
                            <div style="float:right;line-height: 1px;">
-                                <a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <?php if ($Profile['IsDownloaded']==0) { ?>
-                                    <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
+                                <?php if(sizeof($IsDownload)>0) {?>
+									<span style="color: #867c7c;color: #867c7c;">Download On : <?php echo putDateTime($IsDownload[0]['DownloadOn']);?></span>
                                 <?php } else { ?>
-                                    Alredy Downloaded
+                                    <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
                                 <?php } ?>
-                                &nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=RecentlyWhoFavorited");?>">view</a>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<!--<a href="<?php // echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;--><a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=RecentlyWhoFavorited");?>">view</a>
                             </div>
                             <div class="modal" id="Upgrades" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
                                 <div class="modal-dialog" style="width: 367px;">
@@ -643,9 +664,19 @@
                             <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
                                 <div class="form-group row">                                                                                     
                                        <div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
-                                       <div class="col-sm-4" style="float:right;font-size: 12px;text-align:right">
-                                          <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;float:right">
-                                       </div>
+                                       <div class="col-sm-4">
+                                       <div style="text-align:right;">
+											<?php if ($Profile['isFavouriteds']==1) {?>
+                                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">
+											<?php } ?>
+											<?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
+                                                <!-- <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span> -->
+                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
+                                            <?php } else { ?>
+                                                <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                                            <?php }?>
+										</div>
+									</div>
                                 </div>
                                 <div class="form-group row">
                                        <div class="col-sm-7">
@@ -1043,6 +1074,7 @@
             /*Browse Matches 1*/
             function DisplayBrowseMatchesProfileShortInformation($ProfileInformation) {
                       $Profile = $ProfileInformation['ProfileInfo'];
+                      $IsDownload = $ProfileInformation['IsDownload'];
                       $rnd = rand(3000,3000000);
             ?>
             <div class="profile_horizontal_row" id="div_<?php echo $Profile['ProfileCode']; ?>">
@@ -1098,7 +1130,7 @@
                             </div>
                            <div style="float:right;line-height: 1px;">
                                 <!--<a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php //echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;-->
-                                <?php if ($Profile['IsDownloaded']==0) { ?>
+                                <?php if (sizeof($IsDownload['IsDownloaded']>0)) { ?>
                                     <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
                                 <?php } else { ?>
                                     Alredy Downloaded
@@ -1119,16 +1151,19 @@
                   <?php
               }
             ?>                                                                                                                                     
-            <?php 
-            /*DisplayMyDownloadedProfiles 1*/
-            function DisplayMyDownloadedProfiles($Profile) {
+                                
+			 <?php 
+            /*Browse Matches 1*/
+            function ListProfileShortInformation($ProfileInformation) {
+                      $Profile = $ProfileInformation['ProfileInfo'];
+                      $IsDownload = $ProfileInformation['IsDownload'];
                       $rnd = rand(3000,3000000);
             ?>
             <div class="profile_horizontal_row" id="div_<?php echo $Profile['ProfileCode']; ?>">
                 <div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                        <img src="<?php echo $Profile['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
                     </div>
                     <div class="col-sm-9">
                             <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
@@ -1148,12 +1183,12 @@
                         </div> 
                                 </div>
                                 <div class="form-group row">
-                                       <div class="col-sm-7">
+                                       <div class="col-sm-6">
                                             <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
                                        </div>
-                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:35px;"></span></div> 
-                                       <div class="col-sm-4" style="float:right;font-size: 12px;">
-                                                <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
+                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:23px;"></span></div> 
+                                       <div class="col-sm-5" style="float:right;font-size: 12px;">
+                                                <?php  echo "Published: ".putDate($Profile['IsApprovedOn']); ?><br>
                                                 <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?>
                                                 <br>
                                                 <br>
@@ -1174,14 +1209,31 @@
                                         <?php echo $Profile['AboutMe'];?>
                                     </div>
                                 </div>
-                            </div>
+                            </div>  
                            <div style="float:right;line-height: 1px;">
-                              <a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=MyDownloaded");?>">view</a>
+							 <!--<a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php //echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;-->
+                                <?php if($IsDownload>0) { ?>
+									<span style="color: #867c7c;color: #867c7c;">Download On : <?php echo $IsDownload[0]['DownloadOn'];?></span>
+                                <?php } else { ?>
+                                    <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
+                                <?php } ?>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<!--<a href="<?php //echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;--><a href="<?php  echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=BrowseMatches");?>">view</a>
+                            </div>
+                            <div class="modal" id="Upgrades" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+                                <div class="modal-dialog" style="width: 367px;">
+                                    <div class="modal-content" id="Upgrades_body" style="height:335px"></div>
+                                </div>
+                            </div>
+                            <div class="modal" id="OverAll" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+                                <div class="modal-dialog" style="width: 367px;">
+                                    <div class="modal-content" id="OverAll_body" style="height:335px"></div>
+                                </div>
                             </div>
                         </div>
                   <?php
-              }
-            ?>                                                                                                                                     
+              } 
+			  
+            ?>           						
             
             <?php function DisplayMyContactsProfileShortInfoBrowse($Profile) {  ?>
                       <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
@@ -1299,4 +1351,6 @@
                                <a href="<?php echo GetUrl("ViewMemberProfile/".$Profile['ProfileCode'].".htm ");?>">view</a>
                             </div>
                         </div> 
-                    <?php }?>
+                    <?php  } /* 4 5 Browse Matches 1*/?>
+					
+					

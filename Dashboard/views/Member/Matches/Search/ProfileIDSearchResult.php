@@ -2,7 +2,7 @@
     $mainlink="Search";
     $page="ByProfileID";
     include_once("topmenu.php");
-    $response = $webservice->getData("Matches","BasicSearchProfile",array()); 
+    $response = $webservice->getData("Matches","SearchByProfileID",array()); 
 ?>
 <?php  if (sizeof($response['data'])>0) { ?>
         <div class="col-lg-12 grid-margin stretch-card">
