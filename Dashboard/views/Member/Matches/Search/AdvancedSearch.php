@@ -5,17 +5,33 @@ $Info = $webservice->GetAdvancedSearchElements();
 ?>
 <?php                   
   if (isset($_POST['searchBtn'])) {  
-  print_r($_POST);
   
+
   $_POST['MaritalStatus']=implode(",",$_POST['MaritalStatus']);
   $_POST['Religion']=implode(",",$_POST['Religion']);
-  $_POST['Community']=implode(",",$_POST['Community']);
+  $_POST['Caste']=implode(",",$_POST['Caste']);
+  $_POST['IncomeRange']=implode(",",$_POST['IncomeRange']);
+  $_POST['Occupation']=implode(",",$_POST['Occupation']);
+  $_POST['FamilyType']=implode(",",$_POST['FamilyType']);
+  $_POST['WorkingPlace']=implode(",",$_POST['WorkingPlace']);
+  $_POST['Diet']=implode(",",$_POST['Diet']);
+  $_POST['Smoke']=implode(",",$_POST['Smoke']);
+  $_POST['Drink']=implode(",",$_POST['Drink']);
+  $_POST['BodyType']=implode(",",$_POST['BodyType']);
+  $_POST['Complexion']=implode(",",$_POST['Complexion']);
+  
+  $response = $webservice->getData("Member","AddMemberAdvanceSearchDetails",$_POST);
+        if ($response['status']=="success") {
+            echo "<script>location.href='AdvancedSearchResult/".$response['data']['ReqID'].".htm?Req=AdvancedSearchResult'</script>";
+            // $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
   
   //api service
   //Searchid,memberid,profileid,sex,matrita,rel,community,searchname,searchrequested;
   //return id
-  
-    }
 ?> 
  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
@@ -36,7 +52,11 @@ function submitSearch() {
                          $('#Errage').html("");
                          $('#ErrMaritalStatus').html("");
                          $('#ErrReligion').html("");
-                         $('#ErrCommunity').html("");
+                         $('#ErrCaste').html("");
+                         $('#ErrIncomeRange').html("");
+                         $('#ErrOccupation').html("");
+                         $('#ErrFamilyType').html("");
+                         $('#ErrWorkingPlace').html("");
                          $('#ErrDiet').html("");
                          $('#ErrSmoke').html("");
                          $('#ErrDrink').html("");
@@ -62,8 +82,24 @@ function submitSearch() {
                                 document.getElementById("ErrReligion").innerHTML="Please select Religion"; 
                                 ErrorCount++;
                          }
-                        if($('#Community option:selected').length==0){
-                            document.getElementById("ErrCommunity").innerHTML="Please select Community"; 
+                        if($('#Caste option:selected').length==0){
+                            document.getElementById("ErrCaste").innerHTML="Please select Caste"; 
+                             ErrorCount++;
+                         }
+                         if($('#IncomeRange option:selected').length==0){
+                            document.getElementById("ErrIncomeRange").innerHTML="Please select IncomeRange"; 
+                             ErrorCount++;
+                         }
+                         if($('#Occupation option:selected').length==0){
+                            document.getElementById("ErrOccupation").innerHTML="Please select Occupation"; 
+                             ErrorCount++;
+                         }
+                         if($('#FamilyType option:selected').length==0){
+                            document.getElementById("ErrFamilyType").innerHTML="Please select Family Type"; 
+                             ErrorCount++;
+                         }
+                         if($('#WorkingPlace option:selected').length==0){
+                            document.getElementById("ErrWorkingPlace").innerHTML="Please select WorkingPlace"; 
                              ErrorCount++;
                          }
                          if($('#Diet option:selected').length==0){
@@ -145,14 +181,58 @@ function submitSearch() {
             </div>
             </div> 
             <div class="form-group row">
-             <label for="Community" class="col-sm-3 col-form-label">Community</label>
+             <label for="Caste" class="col-sm-3 col-form-label">Caste</label>
              <div class="col-sm-9" align="left">
-                <select class="form-control" id="Community" name="Community[]" style="display: none;" multiple="multiple">
-                    <?php foreach($Info['data']['Community'] as $Community) { ?>
-                    <option value="<?php echo $Community['SoftCode'];?>" <?php echo ($_POST['Community']==$Community['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Community['CodeValue'];?></option>
+                <select class="form-control" id="Caste" name="Caste[]" style="display: none;" multiple="multiple">
+                    <?php foreach($Info['data']['Caste'] as $Caste) { ?>
+                    <option value="<?php echo $Caste['SoftCode'];?>" <?php echo ($_POST['Caste']==$Caste['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Caste['CodeValue'];?></option>
                     <?php } ?>
                 </select>   
-                <span class="errorstring" id="ErrCommunity"><?php echo isset($ErrCommunity)? $ErrCommunity : "";?></span>    
+                <span class="errorstring" id="ErrCaste"><?php echo isset($ErrCaste)? $ErrCaste : "";?></span>    
+            </div>
+            </div>
+            <div class="form-group row">
+             <label for="IncomeRange" class="col-sm-3 col-form-label">Income Range</label>
+             <div class="col-sm-9" align="left">
+                <select class="form-control" id="IncomeRange" name="IncomeRange[]" style="display: none;" multiple="multiple">
+                    <?php foreach($Info['data']['IncomeRange'] as $IncomeRange) { ?>
+                    <option value="<?php echo $IncomeRange['SoftCode'];?>" <?php echo ($_POST['IncomeRange']==$IncomeRange['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $IncomeRange['CodeValue'];?></option>
+                    <?php } ?>
+                </select>   
+                <span class="errorstring" id="ErrIncomeRange"><?php echo isset($ErrIncomeRange)? $ErrIncomeRange : "";?></span>    
+            </div>
+            </div>
+            <div class="form-group row">
+             <label for="Occupation" class="col-sm-3 col-form-label">Occupation</label>
+             <div class="col-sm-9" align="left">
+                <select class="form-control" id="Occupation" name="Occupation[]" style="display: none;" multiple="multiple">
+                    <?php foreach($Info['data']['Occupation'] as $Occupation) { ?>
+                    <option value="<?php echo $Occupation['SoftCode'];?>" <?php echo ($_POST['Occupation']==$Occupation['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Occupation['CodeValue'];?></option>
+                    <?php } ?>
+                </select>   
+                <span class="errorstring" id="ErrOccupation"><?php echo isset($ErrOccupation)? $ErrOccupation : "";?></span>    
+            </div>
+            </div>
+            <div class="form-group row">
+             <label for="FamilyType" class="col-sm-3 col-form-label">Family Type</label>
+             <div class="col-sm-9" align="left">
+                <select class="form-control" id="FamilyType" name="FamilyType[]" style="display: none;" multiple="multiple">
+                    <?php foreach($Info['data']['FamilyType'] as $FamilyType) { ?>
+                    <option value="<?php echo $FamilyType['SoftCode'];?>" <?php echo ($_POST['FamilyType']==$FamilyType['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $FamilyType['CodeValue'];?></option>
+                    <?php } ?>
+                </select>   
+                <span class="errorstring" id="ErrFamilyType"><?php echo isset($ErrFamilyType)? $ErrFamilyType : "";?></span>    
+            </div>
+            </div>
+            <div class="form-group row">
+             <label for="WorkingPlace" class="col-sm-3 col-form-label">Working In Country</label>
+             <div class="col-sm-9" align="left">
+                <select class="form-control" id="WorkingPlace" name="WorkingPlace[]" style="display: none;" multiple="multiple">
+                    <?php foreach($Info['data']['Country'] as $WorkingPlace) { ?>
+                    <option value="<?php echo $WorkingPlace['SoftCode'];?>" <?php echo ($_POST['WorkingPlace']==$WorkingPlace['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $WorkingPlace['CodeValue'];?></option>
+                    <?php } ?>
+                </select>   
+                <span class="errorstring" id="ErrWorkingPlace"><?php echo isset($ErrWorkingPlace)? $ErrWorkingPlace : "";?></span>    
             </div>
             </div> 
             <hr>
@@ -226,7 +306,11 @@ function submitSearch() {
       $("#ToHeight").dashboardCodeBsMultiSelect();
       $("#MaritalStatus").dashboardCodeBsMultiSelect();
       $("#Religion").dashboardCodeBsMultiSelect();
-      $("#Community").dashboardCodeBsMultiSelect();
+      $("#Caste").dashboardCodeBsMultiSelect();
+      $("#IncomeRange").dashboardCodeBsMultiSelect();
+      $("#Occupation").dashboardCodeBsMultiSelect();
+      $("#FamilyType").dashboardCodeBsMultiSelect();
+      $("#WorkingPlace").dashboardCodeBsMultiSelect();
       $("#Diet").dashboardCodeBsMultiSelect();
       $("#Smoke").dashboardCodeBsMultiSelect();
       $("#Drink").dashboardCodeBsMultiSelect();

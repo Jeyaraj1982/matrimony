@@ -29,7 +29,7 @@
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MyRecentViewed");?>" style="font-size:13px"><?php echo $lang['my_recently_viewed'];?></a></li> 
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MyFavorited");?>" style="font-size:13px"><?php echo $lang['my_liked'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MyDownloaded");?>" style="font-size:13px"><?php echo $lang['my_downloaded'];?></a></li>
-                <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MyInvitations");?>" style="font-size:13px"><?php echo $lang['my_invitations'];?></a></li>
+              <!--  <li class="nav-item"><a class="nav-link" href="<?php// echo GetUrl("MyContacts/MyInvitations");?>" style="font-size:13px"><?php //echo $lang['my_invitations'];?></a></li>-->
               </ul>                                                                                                
             </div>
         </li>

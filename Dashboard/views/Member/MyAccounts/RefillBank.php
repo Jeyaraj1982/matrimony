@@ -5,7 +5,7 @@
     $response  = $webservice->getData("Member","GetBankNames");
     $BankNames = $response['data']['BankName'] ;
     $Modes = $response['data']['ModeOfTransfer'] ;
-    print_r($response);
+   
 ?>
     <script>
         $(document).ready(function() {
@@ -163,7 +163,7 @@
                 <span class="errorstring" id="ErrTxnId"></span>
             </div>
         </div>
-        <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal">I understand terms of wallet udpate </label>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#condition">Lean more</a>
+        <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal">I understand terms of wallet udpate </label>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#condition">Learn more</a>
         <Br><span class="errorstring" id="Errcheck"></span><br>
         <div class="form-group row">
             <div class="col-sm-3">

@@ -3,7 +3,8 @@
     
     include_once("config.php");
     $response = $webservice->getData("Member","ViewOrderInvoiceReceiptDetails");
-    $order=$response['data']['Order'];
+    $order=$response['data']['Order'];   
+    $Plans= $response['data']['Plan'];  
 
 
     $html = '    
@@ -16,36 +17,49 @@
          <table  style="width:100%;color:#555" cellpadding="3" cellspacing="0">
             <tbody>
                 <tr>
-                    <td width="25%">Order Number</td>
-                    <td colspan="3" style="color:#737373;">:&nbsp;&nbsp;';$html .= $order['OrderNumber']; $html .='</td>
+                    <td colspan="2">Order To</td>
+                    <td>Order Details</td>
                 </tr>
                 <tr>
-                    <td width="25%">Member Name</td>
-                    <td colspan="3" style="color:#737373;">:&nbsp;&nbsp;';$html .= $order['MemberName']; $html .= '</td>
+                    <td colspan="2">';$html .= $order['MemberName']; $html .='<br>
+                        Email  :&nbsp;';$html .= $order['EmailID'];$html .='<br>
+                        Mobile :&nbsp;';$html .= $order['MobileNumber'];$html .='
+                    </td>
+                    <td>
+                        Order #&nbsp;:&nbsp;';$html .= $order['OrderNumber'];$html .='<br>
+                        Order Date&nbsp;:&nbsp;';$html .= $order['OrderDate'];$html .='
+                    </td>
                 </tr>
-                 <tr>
-                    <td width="25%">Email ID</td>
-                    <td colspan="3" style="color:#737373;">:&nbsp;&nbsp;';$html .= $order['EmailID']; $html .= '</td>
-                </tr>
-                <tr>
-                    <td width="25%">Mobile Number</td>
-                    <td colspan="3" style="color:#737373;">:&nbsp;&nbsp;';$html .= $order['MobileNumber']; $html .= '</td>
-                </tr>
-                <tr>
-                    <td width="25%">Order Value</td>
-                    <td colspan="3" style="color:#737373;">:&nbsp;&nbsp;';$html .= number_format($order['OrderValue'],2); $html .= '</td>
-                </tr>';
-                if($order['IsPaid']==1){
-                $html .='<tr>
-                    <td width="25%">Invoice Number</td>
-                    <td colspan="3" style="color:#737373;">:&nbsp;&nbsp;';$html .= $order['InvoiceNumber']; $html .='</td>
-                </tr>';
-                }
-            $html .='</tbody>
+            </tbody>
          </table>
-            </div>
+         <hr style="margin-right: -22px;margin-left: -19px;">
+            <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td>Sl No</td>
+                            <td colspan="2">Particulars</td>
+                            <td>Qty</td>
+                            <td>Amount</td>
+                        </tr>
+                    </thead>
+                     <tbody>';
+                      foreach($Plans as $Plan) {
+                        $html .='<tr>
+                            <td>1</td>
+                            <td colspan="2">';$html .="Membership Upgrade to ".$Plan['PlanName'];$html .='<br>';$html .=$order['Description'];$html .='</td>
+                            <td>1</td>
+                            <td style="text-align: right">';$html .=number_format($Plan['Amount'],2);$html .='</td>
+                        </tr>';
+                      } 
+                     $html .='<tr>
+                        <td colspan="4" style="text-align:right">Total</td>
+                        <td style="text-align:right">';$html .=number_format($Plans[0]['Amount'],2);$html .='</td>
+                     </tr>
+                     </tbody>
+                </table>
+                </div>
   </div>
-</div> ';
+  </div> ';
     
     
     

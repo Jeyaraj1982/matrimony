@@ -10,11 +10,11 @@
         -moz-box-shadow: 0 0 5px #e9e9e9 !important;
         -webkit-box-shadow: 0 0 24px #e9e9e9 !important;
     }
-</style>
+</style> 
 <?php
     $response = $webservice->getData("Member","DownloadedProfiles",array());
+ 
     $Profiles = $response['data']['Profiles']; 
-    $ProfileDetails = $response['data']['ProfileDetails']; 
     if (sizeof($Profiles)>0) {
 ?>
         <div class="col-lg-12 grid-margin stretch-card">
@@ -22,7 +22,8 @@
                 <div class="card-body">
                     <h4 class="card-title">Download Profiles</h4>
                     <?php foreach($Profiles as $Profile) { 
-                        echo DisplayMyDownloadedProfiles($Profile);
+                       // echo ListProfileShortInformation($Profile);
+                        echo DisplayProfileShortInformation($Profile);
                         ?>
                        
                         <br> 

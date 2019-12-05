@@ -1,4 +1,4 @@
- <h4 style="margin-top:0px">Browse Matches</h4>
+ <h4 style="margin-top:0px">Search Profile</h4>
 <div class="scrollmenu shadow">
   <a href="BasicSearch" class="<?php echo ($page=="BasicSearch") ? ' linkactive ':'';?>">Basic Search</a>
   <a href="AdvancedSearch" class="<?php echo ($page=="AdvancedSearch") ? ' linkactive ':'';?>">Advanced Search</a>
@@ -7,4 +7,4 @@
 <style>
  .content-wrapper {padding:0px !important;padding-left:2px !important;}
 </style>
-<br> 
+<br>  

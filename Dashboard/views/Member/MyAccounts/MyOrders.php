@@ -29,7 +29,7 @@
                         <?php if($Orders['IsPaid']==1){ 
                              echo $Orders['InvoiceNumber'];
                         } else{ ?>
-                       <?php if($Orders['IsPaid']==0 && $Orders['IsCancelled']==0) { ?>
+                       <?php if($Orders['IsPaid']==1 && $Orders['IsCancelled']==1) { ?>
                          <a href="<?php echo SiteUrl;?>ChoosePaymentMode/<?php echo $Orders['OrderNumber'];?>.htm"><button type="button" name="Paynow" class="btn btn-primary" style="font-family: roboto;padding-top: 1px;padding-bottom: 1px;">Pay Now</button></a>&nbsp;&nbsp; 
                        <?php } ?>
                            <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $Orders['OrderNumber'];?>')" name="Cancel" class="btn btn-danger" style="font-family: roboto;padding-top: 1px;padding-bottom: 1px;">Cancel</a> 
