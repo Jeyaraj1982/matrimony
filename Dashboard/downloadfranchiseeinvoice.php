@@ -2,7 +2,7 @@
     include("lib/mpdf/mpdf.php");
     
     include_once("config.php");
-    $response = $webservice->getData("Member","ViewOrderInvoiceReceiptDetails");
+    $response = $webservice->getData("Franchisee","ViewMemberOrderInvoiceReceiptDetails");
     $Invoice=$response['data']['Invoice']; 
     $Plans= $response['data']['InvoicePlan'];
 

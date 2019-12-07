@@ -2,9 +2,9 @@
     include("lib/mpdf/mpdf.php");
     
     include_once("config.php");
-    $response = $webservice->getData("Member","ViewOrderInvoiceReceiptDetails");
-    $Invoice=$response['data']['Invoice']; 
-    $Plans= $response['data']['InvoicePlan'];
+    $response = $webservice->getData("Admin","ViewOrderInvoiceReceiptDetails");
+    $order=$response['data']['Order'];   
+    $Plans= $response['data']['Plan'];  
 
 
     $html = '    
@@ -12,22 +12,22 @@
   <div class="card" style="border: 0;border-radius: 2px;position: relative;display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color:#fff;background-clip: border-box;">
     <div class="card-body" style="padding: 1.88rem 1.81rem;flex: 1 1 auto;">
     <div class="form-group row">
-            <div class="col-sm-6"><h4 class="card-title">Invoice</h4></div>
+            <div class="col-sm-6"><h4 class="card-title">Order</h4></div>
          </div>
          <table  style="width:100%;color:#555" cellpadding="3" cellspacing="0">
             <tbody>
                 <tr>
-                    <td colspan="2">Invoice To</td>
-                    <td>Invoice Details</td>
+                    <td colspan="2">Order To</td>
+                    <td>Order Details</td>
                 </tr>
                 <tr>
-                    <td colspan="2">';$html .= $Invoice['MemberName']; $html .='<br>
-                        Email  :&nbsp;';$html .= $Invoice['EmailID'];$html .='<br>
-                        Mobile :&nbsp;';$html .= $Invoice['MobileNumber'];$html .='
+                    <td colspan="2">';$html .= $order['MemberName']; $html .='<br>
+                        Email  :&nbsp;';$html .= $order['EmailID'];$html .='<br>
+                        Mobile :&nbsp;';$html .= $order['MobileNumber'];$html .='
                     </td>
                     <td>
-                        Order #&nbsp;:&nbsp;';$html .= $Invoice['InvoiceNumber'];$html .='<br>
-                        Order Date&nbsp;:&nbsp;';$html .= $Invoice['InvoiceDate'];$html .='
+                        Order #&nbsp;:&nbsp;';$html .= $order['OrderNumber'];$html .='<br>
+                        Order Date&nbsp;:&nbsp;';$html .= $order['OrderDate'];$html .='
                     </td>
                 </tr>
             </tbody>

@@ -1,8 +1,8 @@
 <?php 
     include_once("config.php");
-    $response = $webservice->getData("Member","ViewOrderInvoiceReceiptDetails");
-    $Invoice=$response['data']['Invoice'];
-    $Plans= $response['data']['InvoicePlan'];
+    $response = $webservice->getData("Franchisee","ViewMemberOrderInvoiceReceiptDetails");
+    $order=$response['data']['Order'];
+    $Plans= $response['data']['Plan'];
 ?>
 
     
@@ -12,22 +12,22 @@
   <div class="card" style="border: 0;border-radius: 2px;position: relative;display: flex;flex-direction: column;min-width: 0;word-wrap: break-word;background-color:#fff;background-clip: border-box;">
     <div class="card-body" style="padding: 1.88rem 1.81rem;flex: 1 1 auto;">
     <div class="form-group row">
-            <div class="col-sm-6"><h4 class="card-title">Invoice</h4></div>
+            <div class="col-sm-6"><h4 class="card-title">Order</h4></div>
          </div>
          <table  style="width:100%;color:#555" cellpadding="3" cellspacing="0">
             <tbody>
                 <tr>
-                    <td colspan="2">Invoice To</td>
-                    <td>Invoice Details</td>
+                    <td colspan="2">Order To</td>
+                    <td>Order Details</td>
                 </tr>
                 <tr>
-                    <td colspan="2"><?php echo $Invoice['MemberName'];?><br>
-                        Email  :&nbsp;<?php echo $Invoice['EmailID'];?><br>
-                        Mobile :&nbsp;<?php echo $Invoice['MobileNumber'];?>
+                    <td colspan="2"><?php echo $order['MemberName'];?><br>
+                        Email  :&nbsp;<?php echo $order['EmailID'];?><br>
+                        Mobile :&nbsp;<?php echo $order['MobileNumber'];?>
                     </td>
                     <td>
-                        Invoice #&nbsp;:&nbsp;<?php echo $Invoice['InvoiceNumber'];?><br>
-                        Invoice Date&nbsp;:&nbsp;<?php echo $Invoice['InvoiceDate'];?>
+                        Order #&nbsp;:&nbsp;<?php echo $order['OrderNumber'];?><br>
+                        Order Date&nbsp;:&nbsp;<?php echo $order['OrderDate'];?>
                     </td>
                 </tr>
             </tbody>

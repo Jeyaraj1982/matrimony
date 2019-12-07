@@ -10,6 +10,7 @@
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/RecentlyWhoViewed");?>" style="font-size:13px"><?php echo $lang['recently_who_viewed'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/RecentlyWhofavourited");?>" style="font-size:13px"><?php echo $lang['recently_who_liked'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MutualProfiles");?>" style="font-size:13px"><?php echo $lang['mutually_liked_profiles'];?></a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/WhoShortListProfiles");?>" style="font-size:13px"><?php echo $lang['recently_who_shortlisted'];?></a></li>
               </ul>
             </div>
         </li>
@@ -29,6 +30,7 @@
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MyRecentViewed");?>" style="font-size:13px"><?php echo $lang['my_recently_viewed'];?></a></li> 
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MyFavorited");?>" style="font-size:13px"><?php echo $lang['my_liked'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MyDownloaded");?>" style="font-size:13px"><?php echo $lang['my_downloaded'];?></a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/ShortListProfiles");?>" style="font-size:13px"><?php echo $lang['short_list_profiles'];?></a></li>
               <!--  <li class="nav-item"><a class="nav-link" href="<?php// echo GetUrl("MyContacts/MyInvitations");?>" style="font-size:13px"><?php //echo $lang['my_invitations'];?></a></li>-->
               </ul>                                                                                                
             </div>

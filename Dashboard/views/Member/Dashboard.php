@@ -13,19 +13,27 @@
     $MyRecentlyViewed = $myrecentviewed['data'];
 
     $myfavorited = $webservice->getData("Member","GetFavouritedProfiles",array("requestfrom"=>"0","requestto"=>"3"));
-    $MyFavouritedProfiles = $myfavorited['data'];
+    $MyFavouritedProfiles = $myfavorited['data']; 
+	
+	$myshortlisted = $webservice->getData("Member","GetShortListProfiles",array("requestfrom"=>"0","requestto"=>"3"));
+    $MyShortlistedProfiles = $myshortlisted['data'];
+	
+	$whoshortlisted = $webservice->getData("Member","GetWhoShortListedMyProfiles",array("requestfrom"=>"0","requestto"=>"3"));
+    $WhoShortlistedProfiles = $whoshortlisted['data'];
     
     $mutualprofile = $webservice->getData("Member","GetMutualProfiles",array("requestfrom"=>"0","requestto"=>"3"));
     $MutualProfiles = $mutualprofile['data'];
     
     
     $latestupdates = $webservice->getData("Member","GetLatestUpdates");
-
+ 
     $DashboardCounts        = $webservice->getData("Member","DashboardCounts");
-    $MyRecentlyViewedCount  = $DashboardCounts['data']['MyRecentlyViewedCount'];
-    $RecentlyWhoViewedCount = $DashboardCounts['data']['RecentlyWhoViewed'];
-    $MyFavoritedCount       = $DashboardCounts['data']['MyFavorited'];
-    $WhofavoritedCount      = $DashboardCounts['data']['Whofavorited'];
+	$MyRecentlyViewedCount  = $DashboardCounts['data']['MyRecentlyViewed'];
+    $RecentlyWhoViewedCount = $DashboardCounts['data']['MyRecentlyWhoViewed'];
+    $MyFavoritedCount       = $DashboardCounts['data']['MyFavorited']; 
+	$WhofavoritedCount      = $DashboardCounts['data']['WhoFavorited'];
+    $WhoShortListedCount    = $DashboardCounts['data']['WhoShortListed'];
+    $MyShortListedCount    = $DashboardCounts['data']['MyShortListed'];
     $MutualCount            = $DashboardCounts['data']['Mutual'];
 
 ?>
@@ -162,7 +170,7 @@
                             ?> 
                          </div> 
                             <div style="clear:both;padding:3px;text-align:center;">
-                                        <a href="<?php echo SiteUrl;?>RecentlyWhofavourited/RecentlyWhoViewed">View All(<?php echo $RecentlyWhoViewed['cnt'];?>)</a>
+                                        <a href="<?php echo SiteUrl;?>MyContacts/RecentlyWhoViewed">View All(<?php echo $RecentlyWhoViewedCount;?>)</a>
                             </div>
                     <?php } else { ?>
                          <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
@@ -188,7 +196,7 @@
                         ?> 
                     </div> 
                             <div style="clear:both;padding:3px;text-align:center;">
-                                        <a href="<?php echo SiteUrl;?>RecentlyWhofavourited/MutualProfiles">View All (<?php echo $WhoFavoritedCount['cnt'];?>)</a>
+                                        <a href="<?php echo SiteUrl;?>MyContacts/RecentlyWhofavourited">View All (<?php echo $DashboardCounts['data']['WhoFavorited'];?>)</a>
                             </div>
                     <?php } else { ?>
                     <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
@@ -214,7 +222,7 @@
                             ?> 
                          </div> 
                             <div style="clear:both;padding:3px;text-align:center;">
-                                        <a href="<?php echo SiteUrl;?>MyContacts/MutualProfiles">View All (<?php echo $MutualCount['cnt'];?>)</a>
+                                        <a href="<?php echo SiteUrl;?>MyContacts/MutualProfiles">View All (<?php echo $MutualCount;?>)</a>
                             </div>
                     <?php } else { ?>
                          <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
@@ -240,7 +248,7 @@
                     }?> 
                 </div>
                 <div style="clear:both;padding:3px;text-align:center;">
-                            <a href="<?php echo SiteUrl;?>MyContacts/MyRecentViewed">View All (<?php echo $MyRecentlyViewedCount['cnt'];?>)</a>
+                            <a href="<?php echo SiteUrl;?>MyContacts/MyRecentViewed">View All (<?php echo $MyRecentlyViewedCount;?>)</a>
                          </div>
                  <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
@@ -266,7 +274,7 @@
                     ?> 
                 </div>
                 <div style="clear:both;padding:3px;text-align:center;">
-                            <a href="<?php echo SiteUrl;?>MyContacts/MyFavorited">View All <?php echo $MyFavoritedCount['cnt'];?></a>
+                            <a href="<?php echo SiteUrl;?>MyContacts/MyFavorited">View All (<?php echo $MyFavoritedCount;?>)</a>
                          </div>
                  <?php } else { ?>
                     <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
@@ -278,6 +286,62 @@
                 </div>
             </div>
         </div>
+    </div> 
+</div>
+<div class="row">
+    <div class="col-7 grid-margin" style="flex: 0 0 600px;max-width: 600px;">
+        <div>
+            <div class="member_dashboard_widget_title">Who shortlisted my profile</div>
+            <div class="card" style="background:#dee9ea">
+                <div class="card-body member_dashboard_widget_container" id="slideshow" >
+                    <?php if (sizeof($WhoShortlistedProfiles)>0) { ?>
+                        <div style="height:280px;overflow:hidden">
+                            <?php
+                                foreach($WhoShortlistedProfiles as $Profile) {
+                                    echo dashboard_view_1($Profile);
+                                }
+                            ?> 
+                         </div> 
+                            <div style="clear:both;padding:3px;text-align:center;">
+                                        <a href="<?php echo SiteUrl;?>MyContacts/WhoShortListProfiles">View All(<?php echo $WhoShortListedCount;?>)</a>
+                            </div>
+                    <?php } else { ?>
+                         <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
+                            <div style="text-align:center;margin-top: 127px;">
+                                <h5 style="color: #aaa;font-weight: normal;line-height: 19px;"><?php echo $lang['no_profiles_who_shortlisted_your_profile'];?></h5>
+                            </div>
+                         </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div class="col-5 grid-margin" style="max-width: 35.667%;">
+        <div>
+            <div class="member_dashboard_widget_title">My shortlisted profile</div>
+            <div class="card"  style="background:#dee9ea;">
+                <div class="card-body" style="padding:10px !important;height: 480px;">
+                    <?php if (sizeof($MyShortlistedProfiles)>0) { ?>
+                <div>
+                    <?php
+                     foreach($MyShortlistedProfiles as $Profile) { 
+                       echo dashboard_view_2($Profile);
+                    }?> 
+                </div>
+                <div style="clear:both;padding:3px;text-align:center;">
+                            <a href="<?php echo SiteUrl;?>MyContacts/ShortListProfiles">View All (<?php echo $MyShortListedCount;?>)</a>
+                         </div>
+                 <?php } else { ?>
+                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
+                        <div style="text-align:center;">
+                            <h5 style="margin-top: 197px;color: #aaa;font-weight: normal;line-height: 19px;">recently you didn't view any profiles </h5>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+         <br>            
     </div> 
 </div>
 <div class="row">

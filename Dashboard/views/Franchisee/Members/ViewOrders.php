@@ -67,7 +67,9 @@
                                 </div>
                     <div class="form-group row">                                                                                                                                                                                             
                         <label class="col-sm-6 col-form-label"><a href="<?php echo GetUrl("Members/ManageOrders");?>">List Of Orders</a></label>  
-                        <div class="col-sm-6 col-form-label" style="text-align: right"><a href="<?php echo GetUrl("DownloadFranchiseeOrder/".$order['OrderNumber'].".pdf");?>"><i class="menu-icon mdi mdi-download" style="font-size: 15px;color: purple;"></i><label style="background:none;cursor:pointer">Download</label></a> </div>                                            
+                        <div class="col-sm-4 col-form-label" style="text-align: right">
+                            <a href="<?php echo GetUrl("FranchiseeOrder/".$order['OrderNumber'].".htm");?>" data-toggle="tooltip" title="Print Order information" target="_blank"><i class="menu-icon mdi mdi-printer" style="font-size: 15px;color: purple;"></i><label style="background:none;cursor:pointer">Print</label></a> &nbsp;&nbsp;
+                            <a href="<?php echo GetUrl("DownloadFranchiseeOrder/".$order['OrderNumber'].".pdf");?>"><i class="menu-icon mdi mdi-download" style="font-size: 15px;color: purple;"></i><label style="background:none;cursor:pointer">Download</label></a> </div>                                            
                     </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <?php 
     include_once("config.php");
-    $response = $webservice->getData("Member","ViewOrderInvoiceReceiptDetails");
+    $response = $webservice->getData("Admin","ViewOrderInvoiceReceiptDetails");
     $Invoice=$response['data']['Invoice'];
     $Plans= $response['data']['InvoicePlan'];
 ?>

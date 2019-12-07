@@ -276,6 +276,13 @@
                                     </div>
                                 </div>
                             </div>
+							<?php if($Profile['IsApproved']==1){  ?>
+							<div class="col-sm-10"><div style="line-height: 1px;">
+                                <a href="<?php echo GetUrl("MyContacts/RecentlyWhoViewed");?>">Who Viewed (<?php echo $ProfileInformation['RecentlyWhoViwedCount'];?>)</a> &nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("MyContacts/RecentlyWhofavourited");?>">Who Liked(<?php echo $ProfileInformation['WhoFavoritedCount'];?>)</a> &nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("MyContacts/MutualProfiles");?>">Mutual(<?php echo $ProfileInformation['MutualCount'];?>)</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("MyContacts/WhoShortListProfiles");?>">Who Shortisted(<?php echo $ProfileInformation['WhoShortListedcount'];?>)</a></div></div>
+							<?php } ?>
                            <div style="float:right;line-height: 1px;">
                                 <?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==0){ ?>
                                     <a href="<?php echo GetUrl("MyProfiles/Posted/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
@@ -351,10 +358,11 @@
 							<div class="col-sm-10"><div style="line-height: 1px;">
                                 <a href="<?php echo GetUrl("MyContacts/RecentlyWhoViewed");?>">Who Viewed (<?php echo $ProfileInformation['RecentlyWhoViwedCount'];?>)</a> &nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("MyContacts/RecentlyWhofavourited");?>">Who Liked(<?php echo $ProfileInformation['WhoFavoritedCount'];?>)</a> &nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("MyContacts/MutualProfiles");?>">Mutual(<?php echo $ProfileInformation['MutualCount'];?>)</a></div></div>
+                                <a href="<?php echo GetUrl("MyContacts/MutualProfiles");?>">Mutual(<?php echo $ProfileInformation['MutualCount'];?>)</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("MyContacts/WhoShortListProfiles");?>">Who Shortisted(<?php echo $ProfileInformation['WhoShortListedcount'];?>)</a></div></div>
                                 <div class="col-sm-1">
                                     <div style="float:right;line-height: 1px;">
-                          
+                           
                                 <?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==0){ ?>
                                     <a href="<?php echo GetUrl("MyProfiles/Posted/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                     <?php } elseif($Profile['IsApproved']==1){  ?>
@@ -496,7 +504,15 @@
                 <div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px"><br><br>
+						<?php  if ($Profile['isShortList']==0) { ?>                                                                                                                    
+							 <!--<span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span> -->
+						   <!-- <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;">-->  
+							<a href="javascript:void(0)" onclick="AddToShortList('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" style="cursor:pointer !important;">Add to Shortlist</a>
+						<?php } else { ?>
+							<a href="javascript:void(0)" onclick="RemoveFromShortList('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" style="cursor:pointer !important;">Shortlisted</a>
+							<!--<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">-->
+					<?php }?>
                     </div>
                     <div class="col-sm-9">
                             <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
@@ -508,8 +524,8 @@
                                                 <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">
 											<?php } ?>
 											<?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
-                                                <!-- <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span> -->
-                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
+                                                 <!--<span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span> -->
+                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;">  
                                             <?php } else { ?>
                                                 <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
                                             <?php }?>
@@ -579,7 +595,15 @@
                 <div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px"><br><br>
+						<?php  if ($Profile['isShortList']==0) { ?>                                                                                                                    
+							 <!--<span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span> -->
+						   <!-- <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;">-->  
+							<a href="javascript:void(0)" onclick="AddToShortList('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" style="cursor:pointer !important;">Add to Shortlist</a>
+						<?php } else { ?>
+							<a href="javascript:void(0)" onclick="RemoveFromShortList('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" style="cursor:pointer !important;">Shortlisted</a>
+							<!--<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">-->
+					<?php }?>
                     </div>
                     <div class="col-sm-9">
                             <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
@@ -592,7 +616,7 @@
 											<?php } ?>
 											<?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
                                                 <!-- <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span> -->
-                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
+                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;">  
                                             <?php } else { ?>
                                                 <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
                                             <?php }?>
@@ -658,7 +682,15 @@
                 <div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px"><br><br>
+						<?php  if ($Profile['isShortList']==0) { ?>                                                                                                                    
+							 <!--<span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span> -->
+						   <!-- <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;">-->  
+							<a href="javascript:void(0)" onclick="AddToShortList('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" style="cursor:pointer !important;">Add to Shortlist</a>
+						<?php } else { ?>
+							<a href="javascript:void(0)" onclick="RemoveFromShortList('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" style="cursor:pointer !important;">Shortlisted</a>
+							<!--<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">-->
+					<?php }?>
                     </div>
                     <div class="col-sm-9">
                             <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">

@@ -10,12 +10,33 @@ RewriteRule ^ViewMemberProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewMemberProfil
 RewriteRule ^Profile/(.*)\.htm$ ./Profileview.php?Code=$1
 RewriteRule ^Invoice/(.*)\.htm$ ./Invoiceview.php?Code=$1
 RewriteRule ^Order/(.*)\.htm$ ./Orderview.php?Code=$1
+RewriteRule ^Receipt/(.*)\.htm$ ./ReceiptView.php?Code=$1
 RewriteRule ^Download/(.*)\.pdf$ ./downloadprofile.php?Code=$1
 RewriteRule ^DownloadInvoice/(.*)\.pdf$ ./downloadinvoice.php?Code=$1
 RewriteRule ^DownloadOrder/(.*)\.pdf$ ./downloadorder.php?Code=$1
+RewriteRule ^DownloadReceipt/(.*)\.pdf$ ./downloadreceipt.php?Code=$1
+
+RewriteRule ^FranchiseeInvoice/(.*)\.htm$ ./FranchiseeInvoiceview.php?Code=$1
+RewriteRule ^FranchiseeOrder/(.*)\.htm$ ./FranchiseeOrderview.php?Code=$1
+RewriteRule ^FranchiseeReceipt/(.*)\.htm$ ./FranchiseeReceiptView.php?Code=$1
+
 
 RewriteRule ^DownloadFranchiseeOrder/(.*)\.pdf$ ./downloadfranchiseeorder.php?Code=$1
 RewriteRule ^DownloadFranchiseeInvoice/(.*)\.pdf$ ./downloadfranchiseeinvoice.php?Code=$1
+RewriteRule ^DownloadFranchiseeReceipt/(.*)\.pdf$ ./downloadfranchiseereceipt.php?Code=$1
+
+
+
+RewriteRule ^AdminInvoiceView/(.*)\.htm$ ./AdminInvoiceView.php?Code=$1
+RewriteRule ^AdminOrder/(.*)\.htm$ ./AdminOrderview.php?Code=$1
+RewriteRule ^AdminReceipt/(.*)\.htm$ ./AdminReceiptView.php?Code=$1
+
+
+RewriteRule ^DownloadAdminOrder/(.*)\.pdf$ ./downloadadminorder.php?Code=$1
+RewriteRule ^DownloadAdminInvoice/(.*)\.pdf$ ./downloadadmininvoice.php?Code=$1
+RewriteRule ^DownloadAdminReceipt/(.*)\.pdf$ ./downloadadminreceipt.php?Code=$1
+
+
 
 
 RewriteRule ^ViewProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewProfile [QSA]
