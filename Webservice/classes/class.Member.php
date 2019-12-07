@@ -1042,9 +1042,22 @@
                          foreach($PublishedProfiles as $PublishedProfile) {
                             $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
                             $result['mode']="Published";
+							
+							//$WhoViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$PublishedProfile['ProfileCode']."' AND VisterMemberID>0 AND VisterProfileID>0  group by `VisterProfileCode` ");
+							$result['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($PublishedProfile['ProfileCode']));
+
+							//$WhoFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+							$result['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($PublishedProfile['ProfileCode']));
+						
+							//$MutualCount = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' order by FavProfileID DESC)");
+							$result['MutualCount']= sizeof($this->GetMutualProfilesCount($PublishedProfile['ProfileCode']));
+						
+							//$WhoShortListedcount = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+							$result['WhoShortListedcount']= sizeof($this->GetWhoShortListedMyProfile($PublishedProfile['ProfileCode']));
+							
                             $Profiles[]=$result;     
                          }
-                         
+                          
                      } else {
                         foreach($PostProfiles as $PostProfile) {
                             $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode']);
@@ -1095,15 +1108,17 @@
                         $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
                         $result['mode']="Published";
 						
-						$WhoViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$PublishedProfile['ProfileCode']."' AND VisterMemberID>0 AND VisterProfileID>0  group by `VisterProfileCode` ");
-                        $result['RecentlyWhoViwedCount']= sizeof($WhoViewedcount);
+							//$WhoViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$PublishedProfile['ProfileCode']."' AND VisterMemberID>0 AND VisterProfileID>0  group by `VisterProfileCode` ");
+							$result['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($PublishedProfile['ProfileCode']));
 
+							//$WhoFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+							$result['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($PublishedProfile['ProfileCode']));
 						
-						$WhoFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
-                        $result['WhoFavoritedCount']= sizeof($WhoFavoritedcount);
+							//$MutualCount = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' order by FavProfileID DESC)");
+							$result['MutualCount']= sizeof($this->GetMutualProfilesCount($PublishedProfile['ProfileCode']));
 						
-						$MutualCount = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' order by FavProfileID DESC)");
-                        $result['MutualCount']= sizeof($WhoFavoritedcount);
+							//$WhoShortListedcount = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+							$result['WhoShortListedcount']= sizeof($this->GetWhoShortListedMyProfile($PublishedProfile['ProfileCode']));
 						
                         $Profiles[]=$result; 
                      }                                                                          
@@ -3046,12 +3061,12 @@
           global $mysql,$loginInfo; 
              $Profiles = array();
              $sql = "";
-             if (isset($_POST['requestfrom'])) {
+           /*  if (isset($_POST['requestfrom'])) {
                  $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
              } else {
                 $_POST['requestfrom']=0; 
                 $_POST['requestto']=5; 
-             }
+             }*/
 
              $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$loginInfo[0]['MemberID']."' order by LastSeenID DESC");
              $profileCodes  = array();
@@ -3062,11 +3077,12 @@
                  }
              }
              if (sizeof($profileCodes)>0) {
-                for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
-                    if (isset($profileCodes[$i]))  {
-                        $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                //for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
+				foreach($profileCodes as $profileCode) {
+                    if (strlen(trim($profileCode))>0)  {
+                        $Profiles[]=Profiles::getProfileInfo($profileCode,1,1);     
                     }
-                }
+                 } 
              }
                   
              return Response::returnSuccess("success",$Profiles);
@@ -3293,6 +3309,8 @@
                                                         "ViewedOn"          => date("Y-m-d H:i:s")));
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has unfavorited.");      
           }
+		  
+		  
           
          function GetFavouritedProfiles() {
               global $mysql,$loginInfo; 
@@ -3344,6 +3362,37 @@
                   
              return Response::returnSuccess("success",$Profiles);
          }
+		 function GetWhoShortListedMyProfiles() {
+             
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+             $sql = "";
+             if (isset($_POST['requestfrom'])) {
+                 $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
+             } else {
+                $_POST['requestfrom']=0; 
+                $_POST['requestto']=5; 
+             }
+
+             $RecentProfiles = $mysql->select("select VisterProfileCode from `_tbl_profiles_shortlists` where `IsShortList` ='1' and`MemberID` = '".$loginInfo[0]['MemberID']."' order by ShortListProfileID DESC");
+             
+             $profileCodes  = array();
+             foreach($RecentProfiles as $RecentProfile) {
+                 if (!(in_array($RecentProfile['VisterProfileCode'], $profileCodes)))
+                  {
+                      $profileCodes[]=$RecentProfile['VisterProfileCode'];
+                 }                                                                           
+             }
+             if (sizeof($profileCodes)>0) {
+                for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
+                    if (isset($profileCodes[$i]))  {
+                        $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                    }
+                }
+             }
+                  
+             return Response::returnSuccess("success",$Profiles);
+         }
          
          function GetMutualProfiles() {
              global $mysql,$loginInfo; 
@@ -3375,6 +3424,24 @@
              }
                   
              return Response::returnSuccess("success",$Profiles);
+         }
+		 function GetShortListProfiles() {
+              global $mysql,$loginInfo; 
+              $Profiles = array();
+              $sql = (isset($_POST['requestfrom']) && isset($_POST['requestto'])) ?  " limit ".$_POST['requestfrom'].",". $_POST['requestto'] : " limit 0,5 ";
+              $ShortListProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and`VisterMemberID` = '".$loginInfo[0]['MemberID']."' order by ShortListProfileID DESC ".$sql);
+              $profileCodes  = array();
+              foreach($ShortListProfiles as $ShortListProfile) {
+                  if (!(in_array($ShortListProfile['ProfileCode'], $profileCodes))) {
+                      $profileCodes[]=$ShortListProfile['ProfileCode'];
+                  }
+              }
+              if (sizeof($profileCodes)>0) {
+                  for($i=0;$i<sizeof($profileCodes);$i++) {
+                      $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                  }
+              }
+              return Response::returnSuccess("success",$Profiles);
          }
          /* End Favourited Section */
         
@@ -4179,29 +4246,82 @@
                                                             "TypeofOccupation" => CodeMaster::getData('TYPEOFOCCUPATIONS'),
                                                             "IncomeRange"      => CodeMaster::getData('INCOMERANGE')));
          }
+		 
+		 function GetMyRecentlyViewed($ProfileCode) {
+			 
+			global $mysql;           
+			$result = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$ProfileCode."' AND MemberID>0 AND ProfileID>0  group by `ProfileCode`"); 
+			return $result;
+		 }
+		 function GetWhoRecentlyViewedMyProfile($ProfileCode) {
+			 
+			global $mysql;
+                                    
+			$result = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$ProfileCode."' AND VisterMemberID>0 AND VisterProfileID>0  group by `VisterProfileCode`"); 
+			return $result;
+		 }
+		 function GetMyFavorited($ProfileCode) {
+			 
+			global $mysql;
+			$result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `VisterProfileCode`='".$ProfileCode."'");       
+			return $result;
+		 }
+		 function GetWhoFavoritedMyProfile($ProfileCode) {
+			 
+			global $mysql;
+			$result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode`='".$ProfileCode."'");       
+			return $result;
+		 }
+		 function GetMutualProfilesCount($ProfileCode) {
+			 
+			global $mysql;
+			$result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1' and `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$ProfileCode."')");       
+			return $result;
+		 }
+		 
+		 function GetMyShortListed($ProfileCode) {
+			 
+			global $mysql;
+			$result = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and  `VisterProfileCode`='".$ProfileCode."'");       
+			return $result;
+		 }
+		 function GetWhoShortListedMyProfile($ProfileCode) {
+			 
+			global $mysql;
+			$result = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and  `ProfileCode`='".$ProfileCode."'");       
+			return $result;
+		 }
          
          function DashboardCounts() {
-             
-             global $mysql,$loginInfo;
+              
+             global $mysql,$loginInfo; 
              $myProfile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");                         
-             if (isset($myProfile[0]['ProfileCode'])) {     
-                 $RecentlyViewed = $mysql->select("select count(*) as cnt from `_tbl_profiles_lastseen` where `VisterMemberID`='".$loginInfo[0]['MemberID']."'"); 
-                 $RecentlyWhoViewed = $mysql->select("select VisterProfileCode from `_tbl_profiles_lastseen` where `ProfileCode`='".$myProfile[0]['ProfileCode']."'");      
-                 $Myfavorited = $mysql->select("select ProfileCode from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and`VisterMemberID`='".$loginInfo[0]['MemberID']."'");      
-                 $Whofavorited = $mysql->select("select VisterProfileCode from `_tbl_profiles_favourites` where `IsFavorite` ='1' and`MemberID` = '".$loginInfo[0]['MemberID']."'");      
-                 $Mutual = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `MemberID` = '".$loginInfo[0]['MemberID']."'");      
-                 
-                 return Response::returnSuccess("success",array("MyRecentlyViewedCount"  => isset($RecentlyViewed[0]) ? $RecentlyViewed[0] : array(),
-                                                                "RecentlyWhoViewed"      => isset($RecentlyWhoViewed[0]) ? $RecentlyWhoViewed[0] : array(),
-                                                                "MyFavorited"            => isset($Myfavorited[0]) ? $Myfavorited[0] : array(),
-                                                                "WhoFavorited"           => isset($Whofavorited[0]) ? $Whofavorited[0] : array(),
-                                                                "Mutual"                 => isset($Mutual[0]) ? $Mutual[0] : array()));
+			
+			  
+             if (isset($myProfile[0]['ProfileCode'])) {   
+			
+                // $RecentlyWhoViewed = $mysql->select("select VisterProfileCode from `_tbl_profiles_lastseen` where `ProfileCode`='".$myProfile[0]['ProfileCode']."'");      
+				//	$Whofavorited = $mysql->select("select VisterProfileCode from `_tbl_profiles_favourites` where `IsFavorite` ='1' and`MemberID` = '".$loginInfo[0]['MemberID']."'");      
+                // $WhoShortListedCount = $mysql->select("select VisterProfileCode from `_tbl_profiles_shortlists` where `IsShortList` ='1' and`MemberID` = '".$loginInfo[0]['MemberID']."'");      
+                // $Mutual = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `MemberID` = '".$loginInfo[0]['MemberID']."'");    */  
+
+					 
+				return Response::returnSuccess("success",array(/*"MyRecentlyViewedCount"=> isset($RecentlyViewed[0]) ? $RecentlyViewed[0] : array(),
+                                                                "RecentlyWhoViewed"     => isset($RecentlyWhoViewed) ? $RecentlyWhoViewed : array(),*/
+                                                                "MyRecentlyViewed"      => sizeof($this->GetMyRecentlyViewed($myProfile[0]['ProfileCode'])), 
+                                                                "MyRecentlyWhoViewed"   => sizeof($this->GetWhoRecentlyViewedMyProfile($myProfile[0]['ProfileCode'])), 
+                                                                "MyFavorited"           => sizeof($this->GetMyFavorited($myProfile[0]['ProfileCode'])), 
+                                                                "WhoFavorited"          => sizeof($this->GetWhoFavoritedMyProfile($myProfile[0]['ProfileCode'])), 
+                                                                "MyShortListed"         => sizeof($this->GetMyShortListed($myProfile[0]['ProfileCode'])),
+                                                                "WhoShortListed"        => sizeof($this->GetWhoShortListedMyProfile($myProfile[0]['ProfileCode'])),
+                                                                "Mutual"         		=> sizeof($this->GetMutualProfilesCount($myProfile[0]['ProfileCode']))
+                                                                )); 
              } else {
-                 return Response::returnSuccess("success",array("MyRecentlyViewedCount"  => array(),
-                                                                "RecentlyWhoViewed"      => array(),
-                                                                "MyFavorited"            => array(),
-                                                                "WhoFavorited"           => array(),
-                                                                "Mutual"                 => array()));
+                 return Response::returnSuccess("success",array("MyRecentlyViewedCount"  => 0, 
+                                                                "RecentlyWhoViewed"      => 0,
+                                                                "MyFavorited"            => 0,
+                                                                "WhoFavorited"           => 0,
+                                                                "Mutual"                 => 0));
              }
          }
          
@@ -4723,6 +4843,193 @@
                        </div>';                            
 
          }
+		 function AddToShortList() {
+             
+             global $mysql,$loginInfo;
+             
+             $Profiles = $mysql->select("select SexCode,MemberID,ProfileID,ProfileCode from `_tbl_profiles` where ProfileCode='".$_GET['ProfileCode']."'"); 
+			  
+			 
+             if (sizeof($Profiles)==0) {
+                return Response::returnError("Couldn't favorite, please contact support team"); 
+             }
+          
+             $visitorsDetails =$mysql->select("select ProfileID,ProfileCode from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+             $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$visitorsDetails[0]['ProfileCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
+             if (sizeof($ProfileThumb)==0) {
+                 if ($Profiles[0]['SexCode']=="SX002"){
+                     $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
+                 } else { 
+                     $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
+                 }
+             } else {
+                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
+             }
+             
+			  
+			    
+			
+             $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");
+             
+             $FirstTime = $mysql->select("select * from `_tbl_profiles_shortlists` where `VisterMemberID`='".$loginInfo[0]['MemberID']."'");
+			 
+             if(sizeof($FirstTime)==0) {
+                 $FirstTimeProfileShortList = $mysql->select("select * from `_tbl_general_settings` where  `Settings`='FirstTimeProfileShortList'");
+             
+             if($FirstTimeProfileShortList[0]['Email']=="1"){
+              
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddToShortListProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "AddToShortListProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             }
+			 
+             if($FirstTimeProfileShortList[0]['SMS']=="1"){
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has short listed. Your Profile ID is ".$Profiles[0]['ProfileCode']);
+             }
+             }
+             
+			  
+             $EveryTimeProfileShortList = $mysql->select("select * from `_tbl_general_settings` where  `Settings`='EveryTimeProfileShortList'");
+             
+			  
+             if($EveryTimeProfileShortList[0]['Email']=="1"){
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddToShortListProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
+ 
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "AddToShortListProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             }
+			 
+			 
+             if($EveryTimeProfileShortList[0]['SMS']=="1"){
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has short listed. Your Profile ID is ".$Profiles[0]['ProfileCode']);
+             } 
+			 
+			 
+             $id = $mysql->insert("_tbl_profiles_shortlists",array("MemberID"           => $Profiles[0]['MemberID'],
+                                                                   "ProfileID"          => $Profiles[0]['ProfileID'],
+                                                                   "ProfileCode"        => $Profiles[0]['ProfileCode'],
+                                                                   "VisterMemberID"     => $loginInfo[0]['MemberID'],
+                                                                   "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
+                                                                   "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                                   "ViewedOn"           => date("Y-m-d H:i:s"),
+                                                                   "IsShortList"         => "1",
+                                                                   "IsVisible"          => "1",
+                                                                   "IsShortListOn"       => date("Y-m-d H:i:s")));
+                                                                   
+             $mysql->insert("_tbl_latest_updates",array("MemberID"           => $Profiles[0]['MemberID'],
+                                                        "ProfileID"          => $Profiles[0]['ProfileID'],
+                                                        "ProfileCode"        => $Profiles[0]['ProfileCode'],
+                                                        "VisterMemberID"     => $loginInfo[0]['MemberID'],
+                                                        "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
+                                                        "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                        "ProfilePhoto"       => $ProfileThumbnail,
+                                                        "Subject"            => "has short list your profile",
+                                                        "ViewedOn"           => date("Y-m-d H:i:s")));
+                                                            
+             return Response::returnSuccess($Profiles[0]['ProfileCode']." has short list.");                                               
+         }
+		 
+		 function RemoveFromShortList() {
+             
+             global $mysql,$loginInfo;
+             
+             $Profiles = $mysql->select("select MemberID,ProfileID,ProfileCode,SexCode from `_tbl_profiles` where ProfileCode='".$_GET['ProfileCode']."'"); 
+             if (sizeof($Profiles)==0) {
+                return Response::returnError("Couldn't favorite, please contact support team"); 
+             }
+             
+             $visitorsDetails =$mysql->select("select ProfileID,ProfileCode from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+             $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$visitorsDetails[0]['ProfileCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
+             if (sizeof($ProfileThumb)==0) {
+                 if ($Profiles[0]['SexCode']=="SX002"){
+                     $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
+                 } else { 
+                     $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
+                 }
+             } else {
+                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); 
+             }
+             $mysql->execute("update `_tbl_profiles_shortlists` set `IsVisible`='0' where `IsShortList`='1' and  ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."'");
+          
+             $FirstTime = $mysql->select("select * from `_tbl_profiles_shortlists` where `VisterMemberID`='".$loginInfo[0]['MemberID']."'");
+             if(sizeof($FirstTime)==0){
+             
+             $FirstTimeProfileRemoveShortList = $mysql->select("select * from `_tbl_general_settings` where  `Settings`='FirstTimeProfileRemoveShortList'");
+             
+             if($FirstTimeProfileRemoveShortList[0]['Email']=="1"){
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RemoveShortlistProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "RemoveShortListProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'], 
+                                        "Message"  => $content),$mailError);
+             }
+             if($FirstTimeProfileRemoveShortList[0]['SMS']=="1"){
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has remove from shortlist. Your Profile ID is ".$Profiles[0]['ProfileCode']);
+             }
+             }
+          
+          
+             $EveryTimeProfileRemoveShortList = $mysql->select("select * from `_tbl_general_settings` where  `Settings`='EveryTimeProfileRemoveShortList'");
+             
+             if($EveryTimeProfileRemoveShortList[0]['Email']=="1"){
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RemoveShortListProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "RemoveShortListProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             }
+             if($EveryTimeProfileRemoveShortList[0]['SMS']=="1"){
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has remove from shortlist. Your Profile ID is ".$Profiles[0]['ProfileCode']);
+             }
+          
+             $id = $mysql->insert("_tbl_profiles_shortlists",array("MemberID"           => $Profiles[0]['MemberID'],
+                                                                   "ProfileID"          => $Profiles[0]['ProfileID'],
+                                                                   "ProfileCode"        => $Profiles[0]['ProfileCode'],
+                                                                   "VisterMemberID"     => $loginInfo[0]['MemberID'],
+                                                                   "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
+                                                                   "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                                   "ViewedOn"           => date("Y-m-d H:i:s"),
+                                                                   "IsShortList"         => "0",
+                                                                   "IsVisible"          => "0",
+                                                                   "IsShortListOn"       => date("Y-m-d H:i:s")));
+                                                                   
+             $mysql->insert("_tbl_latest_updates",array("MemberID"          => $Profiles[0]['MemberID'],
+                                                        "ProfileID"         => $Profiles[0]['ProfileID'],
+                                                        "ProfileCode"       => $Profiles[0]['ProfileCode'],
+                                                        "VisterMemberID"    => $loginInfo[0]['MemberID'],
+                                                        "VisterProfileID"   => $visitorsDetails[0]['ProfileID'],
+                                                        "VisterProfileCode" => $visitorsDetails[0]['ProfileCode'],
+                                                        "ProfilePhoto"      => $ProfileThumbnail,
+                                                        "Subject"           => "has remove shortlist your profile.",
+                                                        "ViewedOn"          => date("Y-m-d H:i:s")));
+             return Response::returnSuccess($Profiles[0]['ProfileCode']." has remove shorlist.");      
+          }
         
   
          
