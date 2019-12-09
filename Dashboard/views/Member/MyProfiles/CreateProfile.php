@@ -1,11 +1,11 @@
 <?php
     $response = $webservice->GetMyDraftProfiles(); 
     if (sizeof($response['data'])==0) {
-        if (isset($_POST['BtnSaveProfile'])) {   
+        if (isset($_POST['ProfileFor'])) {   
             $response = $webservice->CreateProfile($_POST);
             if ($response['status']=="success") {
-                $successmessage = $response['message']; 
-              //  echo "<script>location.href='Draft/Edit/GeneralInformation/".$response['data']['Code'].".htm?msg=1';</script>";
+             
+              echo "<script>location.href='Draft/Edit/GeneralInformation/".$response['data']['Code'].".htm?msg=1';</script>";
             } else {
                 $errormessage = $response['message']; 
             }
@@ -20,6 +20,7 @@
         $('#Errmonth').html("");
         $('#Erryear').html("");
          $('#ErrSex').html("");
+		 $('#Errcheck').html("");
         
         ErrorCount=0;
         
@@ -40,11 +41,15 @@
             document.getElementById("ErrSex").innerHTML="Please select sex"; 
             ErrorCount++;
         }
+		if (document.form1.check.checked == false) {
+                $("#Errcheck").html("Please accept");
+                return false;
+            }
         
         return (ErrorCount==0)  ? true : false;
     }
 </script>
-<form method="post" action="" name="form" onsubmit="return submitprofile();">
+<form method="post" action="" name="form1" id="form1" >
     <div class="col-12 grid-margin">
         <div class="card">
             <div class="card-body">
@@ -109,20 +114,28 @@
                 <span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>
             </div>
         </div>
+		<input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal">In this profile information does not change in future</label>
+        <Br><span class="errorstring" id="Errcheck"></span><br>
                 <div class="form-group row">
                     <div class="col-sm-12" style="color:red"><?php echo $errormessage;?> <?php echo $successmessage;?></div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row"> 
                     <div class="col-sm-3">
-                    <button type="submit" name="BtnSaveProfile" class="btn btn-primary" style="font-family:roboto">Save &amp; Continue</button></div>
+					<a href="javascript:void(0)" onclick="ConfirmCreateProfile($('#ProfileFor option:selected').text(),$('#ProfileName').val(),$('#date option:selected').text(),$('#month option:selected').text(),$('#year option:selected').text(),$('#Sex option:selected').text())" class="btn btn-primary" style="font-family:roboto">Save &amp; Continue</a></div>
+                 <!--   <button type="submit" name="BtnSaveProfile" class="btn btn-primary" style="font-family:roboto">Save &amp; Continue</button></div>-->
                 </div>
             </div>
             </div>
         </div>
-    </div>
+    </div> 
 </form>
+<div class="modal" id="CreateNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+    <div class="modal-dialog">
+        <div class="modal-content" id="Create_body" style="height:285px"></div>
+    </div>
+</div>
 <?php } if (sizeof($response['data'])>0){ ?>
-<div class="col-12 grid-margin">
+<div class="col-12 grid-margin">  
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Profile Information</h4>  
@@ -132,5 +145,43 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
 <?php }?>
+ 
+<script>
+	function ConfirmCreateProfile(ProfileFor,ProfileName,Date,Month,Year,Sex){
+		if (submitprofile()) {
+			$('#CreateNow').modal('show'); 
+			var content = '<div class="Create_body" style="padding:20px">'
+							+'<div  style="height: 315px;">'
+								+ '<form method="post" id="" name="" > '
+									+ '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+									+ '<h4 class="modal-title">Comfirmation For Create Profile</h4><br>'
+									+ '<div class="form-group row">'
+										+'<div class="col-sm-4">ProfileFor</div>'
+										+'<div class="col-sm-8">'+ProfileFor+'</div>'
+									+ '</div>'
+									+ '<div class="form-group row">'
+										+'<div class="col-sm-4">Profile Name</div>'
+										+'<div class="col-sm-8">'+ProfileName+'</div>'
+									+ '</div>'
+									+ '<div class="form-group row">'
+										+'<div class="col-sm-4">Date of Birth</div>'
+										+'<div class="col-sm-8">'+Date+'-'+Month+'-'+Year+'</div>'
+									+ '</div>'
+									+ '<div class="form-group row">'
+										+'<div class="col-sm-4">Sex</div>'
+										+'<div class="col-sm-8">'+Sex+'</div>'
+									+ '</div>'
+									+  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="BtnSaveProfile" class="btn btn-primary" onclick="$(\'#form1\').submit()" style="font-family:roboto">Save &amp; Continue</button>&nbsp;&nbsp;'
+										+  '<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a>'
+									+ '</div>'
+								+'</form>'
+							+ '</div>'
+						+  '</div>';                                                                                                
+			$('#Create_body').html(content);
+		} else {
+			return false;
+		}
+    }
+</script>

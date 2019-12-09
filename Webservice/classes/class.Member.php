@@ -3813,9 +3813,30 @@
              foreach(explode(",",$_POST['Caste']) as $cc) {
                $CasteCode[] = "'".trim($cc)."'";
              }
-			
-		 $Profiles = $mysql->select("select * from _tbl_profiles where ( (YEAR(DateofBirth)>='".(DATE("Y")-$_POST['toage'])."') and (YEAR(DateofBirth)>='".(DATE("Y")-$_POST['age'])."') ) and `SexCode`='".$_POST['LookingFor']."' and `ReligionCode` in (".implode(",",$ReligionCode).") and `CasteCode` in (".implode(",",$CasteCode).")");
-           
+			 
+			 $AllCaste =explode(",",$_POST['Caste']);
+			 
+
+		if(trim($AllCaste[0])=="All"){ 
+			$Profiles = $mysql->select("select * from _tbl_profiles where ( (YEAR(DateofBirth)>='".(DATE("Y")-$_POST['toage'])."') and (YEAR(DateofBirth)<='".(DATE("Y")-$_POST['age'])."') ) and `SexCode`='".$_POST['LookingFor']."' and `ReligionCode` in (".implode(",",$ReligionCode).")");
+		} else{
+			$Profiles = $mysql->select("select * from _tbl_profiles where ( (YEAR(DateofBirth)>='".(DATE("Y")-$_POST['toage'])."') and (YEAR(DateofBirth)<='".(DATE("Y")-$_POST['age'])."') ) and `SexCode`='".$_POST['LookingFor']."' and `ReligionCode` in (".implode(",",$ReligionCode).") and `CasteCode` in (".implode(",",$CasteCode).")");
+        }
+             foreach($Profiles as $p) { 
+                $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
+             }
+             
+             return Response::returnSuccess("success",$result);
+         }
+		 function GetAllRecentlyAdded() {
+		//	 $result=Matches::MatchesRecentlyAdded();
+		//	 return Response::returnSuccess("success",$result);
+		  global $mysql,$loginInfo;
+                                                                                 
+             $result = array();
+             
+            
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX001")."' order by `ProfileID` DESC");
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
              }
@@ -3883,8 +3904,15 @@
              foreach(explode(",",$_POST['Complexion']) as $cmc) {
                $ComplexionCode[] = "'".trim($cmc)."'"; 
              }
-             
-             $Profiles = $mysql->select("select * from _tbl_profiles where ( (YEAR(DateofBirth)>='".(DATE("Y")-$_POST['toage'])."') and (YEAR(DateofBirth)>='".(DATE("Y")-$_POST['age'])."') ) and `SexCode`='".$_POST['LookingFor']."' and `MaritalStatusCode` in (".implode(",",$MatrialStatusCode).") and `ReligionCode` in (".implode(",",$ReligionCode).") and `CasteCode` in (".implode(",",$CasteCode).") and `AnnualIncomeCode` in (".implode(",",$IncomeRangeCode).") and `OccupationTypeCode` in (".implode(",",$OccupationCode).") and `FamilyTypeCode` in (".implode(",",$FamilyTypeCode).") and `WorkedCountryCode` in (".implode(",",$WorkingPlaceCode).") and `DietCode` in (".implode(",",$DietCode).") and `SmokeCode` in (".implode(",",$SmokeCode).") and `DrinkCode` in (".implode(",",$DrinkCode).") and `BodyTypeCode` in (".implode(",",$BodyTypeCode).") and `ComplexionCode` in (".implode(",",$ComplexionCode).") ");
+			 
+			$AllMaritalStatus =explode(",",$_POST['MaritalStatus']);
+			if (isset($AllMaritalStatus[0])!="All") {
+              $sql .=" and `MaritalStatusCode` in (".implode(",",$MatrialStatusCode).") ";    
+            }  
+			 
+			
+			//$Profiles = $mysql->select("select * from _tbl_profiles where ( (YEAR(DateofBirth)>='".(DATE("Y")-$_POST['toage'])."') and (YEAR(DateofBirth)<='".(DATE("Y")-$_POST['age'])."') ) and `SexCode`='".$_POST['LookingFor']."' and `MaritalStatusCode` in (".implode(",",$MatrialStatusCode).") and `ReligionCode` in (".implode(",",$ReligionCode).") and `CasteCode` in (".implode(",",$CasteCode).") and `AnnualIncomeCode` in (".implode(",",$IncomeRangeCode).") and `OccupationTypeCode` in (".implode(",",$OccupationCode).") and `FamilyTypeCode` in (".implode(",",$FamilyTypeCode).") and `WorkedCountryCode` in (".implode(",",$WorkingPlaceCode).") and `DietCode` in (".implode(",",$DietCode).") and `SmokeCode` in (".implode(",",$SmokeCode).") and `DrinkCode` in (".implode(",",$DrinkCode).") and `BodyTypeCode` in (".implode(",",$BodyTypeCode).") and `ComplexionCode` in (".implode(",",$ComplexionCode).") ");
+			$Profiles = $mysql->select("select * from _tbl_profiles where ( (YEAR(DateofBirth)>='".(DATE("Y")-$_POST['toage'])."') and (YEAR(DateofBirth)<='".(DATE("Y")-$_POST['age'])."') ) and `SexCode`='".$_POST['LookingFor']."' ".$sql);
              
              foreach($Profiles as $p) { 
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 

@@ -83,7 +83,7 @@ function submitSearch() {
                                 <div class="widget-body">
                                     <ul class="widget-list">
                                         <li><a href="search.php">Basic Search</a></li>
-                                        <li><a href="advancsearch.php">Advance Search</a></li>
+                                        <li><a href="advancesearch.php">Advance Search</a></li>
                                         <li><a href="searchbyid">Search By ID</a></li>
                                     </ul>
                                 </div>

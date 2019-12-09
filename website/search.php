@@ -106,7 +106,6 @@ function submitSearch() {
                          <div class="col-sm-3">Religion</div>
                                 <div class="col-sm-8">
                                      <select class="form-control" id="Religion"  name="Religion[]" size="5" multiple="multiple">
-                                            <option value="All">All</option>
                                             <?php foreach($Info['data']['Religion'] as $Religion) { ?>
                                             <option value="<?php echo $Religion['SoftCode'];?>" <?php echo ($_POST['Religion']==$Religion['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Religion['CodeValue'];?></option>
                                             <?php } ?>
@@ -148,7 +147,7 @@ function submitSearch() {
                                 <div class="widget-body">
                                     <ul class="widget-list">
                                         <li><a href="search.php">Basic Search</a></li>
-                                        <li><a href="advancsearch.php">Advance Search</a></li>
+                                        <li><a href="advancesearch.php">Advance Search</a></li>
                                         <li><a href="searchbyid">Search By ID</a></li>
                                     </ul>
                                 </div>
