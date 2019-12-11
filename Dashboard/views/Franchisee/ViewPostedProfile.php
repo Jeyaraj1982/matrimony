@@ -189,6 +189,10 @@ legend {
             <div class="col-sm-6"><h4 class="card-title">Education Details</h4></div>
             <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','EducationDetails')">Edit</a></div>
          </div>
+		 <div class="form-group row">
+            <label  class="col-sm-2 col-form-label">Education</label>              
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['mainEducation']))> 0 ? trim($ProfileInfo['mainEducation']) : "N/A "; ?></label>
+        </div>
          <table class="table table-bordered" id="doctable">           
             <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">
                 <tr>

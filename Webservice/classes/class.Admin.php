@@ -612,9 +612,10 @@ class Admin extends Master {
                                                           "OtherCaste"                   => $draft[0]['OtherCaste'],
                                                           "SubCaste"                     => $draft[0]['SubCaste'],
                                                           "CommunityCode"                => $draft[0]['CommunityCode'],
-                                                          "Community"                    => $draft[0]['Community'],
+                                                          "Community"                    => $draft[0]['Community'], 
                                                           "NationalityCode"              => $draft[0]['NationalityCode'],
                                                           "Nationality"                  => $draft[0]['Nationality'],
+                                                          "mainEducation"                  => $draft[0]['mainEducation'],
                                                           "AboutMe"                      => $draft[0]['AboutMe'],
              /* Occupation Details */                     "EmployedAsCode"               => $draft[0]['EmployedAsCode'],
                                                           "EmployedAs"                   => $draft[0]['EmployedAs'],
@@ -2457,6 +2458,149 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnError("Access denied. Please contact support");   
             }
     }
+	function GetWhoRecentlyViewedMyProfile($ProfileCode) {
+			 
+			global $mysql;
+                                    
+			$result = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$ProfileCode."' AND VisterMemberID>0 AND VisterProfileID>0  group by `VisterProfileCode`"); 
+			return $result;
+	}
+	function GetWhoFavoritedMyProfile($ProfileCode) {
+			 
+			global $mysql;
+			$result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode`='".$ProfileCode."'");       
+			return $result;
+	}
+	function GetMutualProfilesCount($ProfileCode) {
+			 
+			global $mysql;
+			$result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1' and `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$ProfileCode."')");       
+			return $result;
+	}
+	function GetWhoShortListedMyProfile($ProfileCode) {
+			 
+			global $mysql;
+			$result = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and  `ProfileCode`='".$ProfileCode."'");       
+			return $result;
+	}
+	 function GetFeatuerdGrooms() {
+             
+             global $mysql,$loginInfo;
+			 
+			 $Profiles = array();
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+				 
+				$landingpageProfiles = $mysql->select("SELECT * FROM _tbl_landingpage_profiles
+													   LEFT  JOIN _tbl_profiles  
+													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX001' AND `IsShow`='1'");  
+				foreach($landingpageProfiles as $profile) {
+					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['DateTo']=$profile['DateTo'];
+					 $tmp['DateFrom']=$profile['DateFrom'];
+					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
+					 $tmp['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($profile['ProfileCode']));
+					 $tmp['MutualCount']= sizeof($this->GetMutualProfilesCount($profile['ProfileCode']));
+					 $tmp['WhoShortListedcount']= sizeof($this->GetWhoShortListedMyProfile($profile['ProfileCode']));
+					 $Profiles[] =$tmp;
+             }
+             return Response::returnSuccess("success",$Profiles);   
+            }
+			 if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+				 
+				$landingpageProfiles = $mysql->select("SELECT * FROM _tbl_landingpage_profiles
+													   LEFT  JOIN _tbl_profiles  
+													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX001' AND Date(_tbl_landingpage_profiles.`DateTo`)>=Date('".date("Y-m-d")."') AND `IsShow`='1'");  
+				foreach($landingpageProfiles as $profile) {
+					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['DateTo']=$profile['DateTo'];
+					 $tmp['DateFrom']=$profile['DateFrom'];
+					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
+					 $tmp['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($profile['ProfileCode']));
+					 $tmp['MutualCount']= sizeof($this->GetMutualProfilesCount($profile['ProfileCode']));
+					 $tmp['WhoShortListedcount']= sizeof($this->GetWhoShortListedMyProfile($profile['ProfileCode']));
+					 $Profiles[] =$tmp;
+             }
+             return Response::returnSuccess("success",$Profiles);   
+             }
+			 if (isset($_POST['Request']) && $_POST['Request']=="Expired") {
+				 
+				$landingpageProfiles = $mysql->select("SELECT * FROM _tbl_landingpage_profiles
+													   LEFT  JOIN _tbl_profiles  
+													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX001' AND Date(_tbl_landingpage_profiles.`DateTo`)<=Date('".date("Y-m-d")."') AND `IsShow`='1'");  
+				foreach($landingpageProfiles as $profile) {
+					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['DateTo']=$profile['DateTo'];
+					 $tmp['DateFrom']=$profile['DateFrom'];
+					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
+					 $tmp['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($profile['ProfileCode']));
+					 $tmp['MutualCount']= sizeof($this->GetMutualProfilesCount($profile['ProfileCode']));
+					 $tmp['WhoShortListedcount']= sizeof($this->GetWhoShortListedMyProfile($profile['ProfileCode']));
+					 $Profiles[] =$tmp;
+             }
+             return Response::returnSuccess("success",$Profiles);   
+             }
+            
+         }
+	function GetFeatuerdBrides() {
+             
+            global $mysql,$loginInfo;
+			 
+			 $Profiles = array();
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+				 
+				$landingpageProfiles = $mysql->select("SELECT * FROM _tbl_landingpage_profiles
+													   LEFT  JOIN _tbl_profiles  
+													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX002' AND `IsShow`='1'");  
+				foreach($landingpageProfiles as $profile) {
+					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['DateTo']=$profile['DateTo'];
+					 $tmp['DateFrom']=$profile['DateFrom'];
+					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
+					 $tmp['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($profile['ProfileCode']));
+					 $tmp['MutualCount']= sizeof($this->GetMutualProfilesCount($profile['ProfileCode']));
+					 $tmp['WhoShortListedcount']= sizeof($this->GetWhoShortListedMyProfile($profile['ProfileCode']));
+					 $Profiles[] =$tmp;
+             }
+             return Response::returnSuccess("success",$Profiles);   
+             }
+			 if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+				 
+				$landingpageProfiles = $mysql->select("SELECT * FROM _tbl_landingpage_profiles
+													   LEFT  JOIN _tbl_profiles  
+													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX002' AND Date(_tbl_landingpage_profiles.`DateTo`)>=Date('".date("Y-m-d")."') AND `IsShow`='1'");  
+				foreach($landingpageProfiles as $profile) {
+					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['DateTo']=$profile['DateTo'];
+					 $tmp['DateFrom']=$profile['DateFrom'];
+					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
+					 $tmp['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($profile['ProfileCode']));
+					 $tmp['MutualCount']= sizeof($this->GetMutualProfilesCount($profile['ProfileCode']));
+					 $tmp['WhoShortListedcount']= sizeof($this->GetWhoShortListedMyProfile($profile['ProfileCode']));
+					 $Profiles[] =$tmp;
+             }
+             return Response::returnSuccess("success",$Profiles);   
+             }
+			 if (isset($_POST['Request']) && $_POST['Request']=="Expired") {
+				 
+				$landingpageProfiles = $mysql->select("SELECT * FROM _tbl_landingpage_profiles
+													   LEFT  JOIN _tbl_profiles  
+													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX002' AND Date(_tbl_landingpage_profiles.`DateTo`)<=Date('".date("Y-m-d")."') AND `IsShow`='1'");  
+				foreach($landingpageProfiles as $profile) {
+					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['DateTo']=$profile['DateTo'];
+					 $tmp['DateFrom']=$profile['DateFrom'];
+					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
+					 $tmp['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($profile['ProfileCode']));
+					 $tmp['MutualCount']= sizeof($this->GetMutualProfilesCount($profile['ProfileCode']));
+					 $tmp['WhoShortListedcount']= sizeof($this->GetWhoShortListedMyProfile($profile['ProfileCode']));
+					 $Profiles[] =$tmp;
+             }
+             return Response::returnSuccess("success",$Profiles);   
+             }
+            
+         }
     function GetLandingPageProfiles() {                  
              
              global $mysql;
@@ -2471,34 +2615,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              
                  return Response::returnSuccess("success",$Profiles);                                               
                  }
-   function GetActiveLandingPageProfiles() {                  
-             
-             global $mysql;
-             $Profiles = array();
-             $landingpageProfiles = $mysql->select("select * from `_tbl_landingpage_profiles` where Date(`DateTo`)>=Date('".date("Y-m-d")."') and `IsShow`='1'"); 
-             foreach($landingpageProfiles as $profile) {
-                 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
-                 $tmp['DateTo']=$profile['DateTo'];
-                 $tmp['DateFrom']=$profile['DateFrom'];
-                 $Profiles[] =$tmp;
-             }
-             
-                 return Response::returnSuccess("success",$Profiles);                                               
-                 }
-  function GetExpiredLandingPageProfiles() {                  
-             
-             global $mysql;
-             $Profiles = array();
-             $landingpageProfiles = $mysql->select("select * from `_tbl_landingpage_profiles` where Date(`DateTo`)<=Date('".date("Y-m-d")."') and `IsShow`='1'"); 
-             foreach($landingpageProfiles as $profile) {
-                 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
-                 $tmp['DateTo']=$profile['DateTo'];
-                 $tmp['DateFrom']=$profile['DateFrom'];
-                 $Profiles[] =$tmp;
-             }
-             
-                 return Response::returnSuccess("success",$Profiles);                                               
-                 }
+  
     function RequestToModify() {
 
              global $mysql,$loginInfo; 

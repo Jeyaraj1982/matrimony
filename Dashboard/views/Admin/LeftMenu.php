@@ -34,33 +34,21 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Published");?>">Published</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Expired");?>">Expired</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Rejected");?>">Rejected</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/ManageFeatured");?>">Manage Featured</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/DocumentVerification");?>">Document Verification</a></li>
-                    </ul>
+						<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("FeaturedGrooms");?>">Feature Grooms</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("FeaturedBrides");?>">Feature Brides</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("SearchMemberProfile");?>">Add To Feature</a></li>
+				   </ul>
                 </div>                                                                
             </li>                                                      
-            <li class="nav-item">
-                <a class="nav-link" href="<?php echo GetUrl("SearchMemberProfile");?>" >
-                    <i class="menu-icon mdi mdi-content-copy "></i>                    
-                    <span class="menu-title">Add Profile to Home Page</span>
-                    <i class="menu-arrow"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php echo GetUrl("ListOfLandingPageProfiles");?>" >
-                    <i class="menu-icon mdi mdi-content-copy "></i>                    
-                    <span class="menu-title">Landing Page Profiles</span>
-                    <i class="menu-arrow"></i>
-                </a>
-            </li>
-            <li class="nav-item">
+           <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#managefranchisees" aria-expanded="false" aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>
-                    <span class="menu-title">Franchisees</span>
+                    <span class="menu-title">Franchisees</span> 
                     <i class="menu-arrow"></i>
                 </a>
                 <div class="collapse" id="managefranchisees">
-                    <ul class="nav flex-column sub-menu">
+                    <ul class="nav flex-column sub-menu"> 
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Franchisees/Create");?>">New Franchisee</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Franchisees/MangeFranchisees");?>">Manage Franchisees</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Franchisees/Plan/ManagePlan");?>">Manage Plans</a></li>
@@ -138,6 +126,7 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Masters/FamilyType/ManageFamilyType");?>">Family Type</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Masters/FamilyValue/ManageFamilyValue");?>">Family Value</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Masters/FamilyAffluence/ManageAffluence");?>">Family Affluence</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("SequenceMaster/ManageSequenceMaster");?>">Sequence Master</a></li>
                     </ul>
                 </div>
             </li>
@@ -171,7 +160,7 @@
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#website" aria-expanded="false" aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>
                     <span class="menu-title">Website</span>
@@ -185,11 +174,11 @@
                         <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageFAQs");?>">Manage FAQs</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageSuccessStories");?>">Manage Success Stories</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageTestimonials");?>">Manage Testimonials</a></li> -->
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageFeatures");?>">Manage Features</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/ManageFeatures");?>">Manage Features</a></li>
                         <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Websites/Settings");?>">Settings</a></li> -->
-                       </ul>
+                       <!--</ul>
                 </div>
-            </li>
+            </li>-->
            <!-- <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#Tickets" aria-expanded="false" aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>
@@ -231,18 +220,6 @@
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("ConfigurationSettings");?>">Configuration Setings</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("GeneralSettings");?>">General Setings</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#SequenceMaster" aria-expanded="false" aria-controls="ui-basic">
-                    <i class="menu-icon mdi mdi-content-copy "></i>
-                    <span class="menu-title">Sequence Master</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="SequenceMaster">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("SequenceMaster/ManageSequenceMaster");?>">Manage Sequence Master</a></li>
                     </ul>
                 </div>
             </li>

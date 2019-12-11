@@ -163,11 +163,16 @@ legend {margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px
             <div class="col-sm-6"><h4 class="card-title">Education Details</h4></div>
             <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','EducationDetails')">Edit</a></div>
          </div>
+		 <div class="form-group row">
+            <label  class="col-sm-2 col-form-label">Education</label>              
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['mainEducation']))> 0 ? trim($ProfileInfo['mainEducation']) : "N/A "; ?></label>
+        </div>
          <table class="table table-bordered" id="doctable">           
             <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">
                 <tr>
                      <th>Education</th>
                     <th>Education details</th>
+                    <th>Main Education</th>
                     <th>Attachments</th>
                 </tr>
             </thead>
@@ -183,7 +188,7 @@ legend {margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px
                              <?php echo trim($Document['EducationDegree']);?>  
                         <?php } ?> 
                         <br><?php echo $Document['EducationDescription']; ?></td>
-                    <td>   
+					<td>   
                         <?php if($Document['FileName']>0){ ?>
                             <?php echo $Document['IsVerified']== 1 ? "Attachment Verifiled" : "Attached "; ?> <br>
                             <a href="javascript:void(0)" onclick="DraftProfile.showAttachmentEducationInformationForView('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>

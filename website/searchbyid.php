@@ -57,7 +57,7 @@ function submitSearch() {
               <div class="form-group row">
                 <div class="col-sm-12">
                     <div class="form-group row">
-                       <div class="col-sm-3">Profile ID</div>
+                       <div class="col-sm-3">Profile ID<span style="color:red;">*</span></div>
                                 <div class="col-sm-8">
                                      <input type="text" class="form-control" placeholder="Eg:Profile Id" name="profileid" id="profileid">
 <span class="errorstring" id="Errprofileid"><?php echo isset($Errprofileid)? $Errprofileid : "";?></span>									 

@@ -176,6 +176,10 @@
             <div class="col-sm-6"><h4 class="card-title">Education Details</h4></div>
             
          </div>
+		 <div class="form-group row">
+            <label  class="col-sm-2 col-form-label">Education</label>              
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['mainEducation']))> 0 ? trim($ProfileInfo['mainEducation']) : "N/A "; ?></label>
+        </div>
          <table style="width:100%;color: #555;" cellpadding="3" cellspacing="0">           
             <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">
                 <tr>
@@ -189,14 +193,14 @@
                 <?php foreach($EducationAttachment as $Document) { ?>
                 <tr>    
                     <td style="height: 33px;text-align: left;border: 1px solid #ddd;"><?php echo $Document['EducationDetails'];?></td>
-                    <td style="height: 33px;text-align: left;border: 1px solid #ddd;">
+					<td style="height: 33px;text-align: left;border: 1px solid #ddd;">
                         <?php if($Document['EducationDegree']== "Others"){?>
                             <?php echo trim($Document['OtherEducationDegree']);?>
                         <?php } else { ?>
                              <?php echo trim($Document['EducationDegree']);?>  
                         <?php } ?> 
                         <br><?php echo $Document['EducationDescription']; ?></td>
-                    <td style="height: 33px;text-align: left;border: 1px solid #ddd;">   
+					 <td style="height: 33px;text-align: left;border: 1px solid #ddd;">   
                         <?php if($Document['FileName']>0){ ?>
                             <?php echo $Document['IsVerified']== 1 ? "Attachment Verifiled" : "Attached "; ?> <br>
                         <?php } else { echo "Not Attach"; }?></td>

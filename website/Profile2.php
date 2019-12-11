@@ -52,7 +52,15 @@ text-align: left;
          
          <section class="page-container" style="margin-top: -19px">
             <div class="container">
-               <br><br>
+                <div class="page-title breadcrumb-top">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="page-title-left">
+                                <h2>About Best Matrimony</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 container-contentbar">
                         <div class="page-main">
@@ -74,66 +82,53 @@ text-align: left;
             <h4 class="card-title">Profile Information</h4>
               <div class="form-group row">
                 <div class="col-sm-8">
-                <div class="form-group row">
-                    <div class="col-sm-12">
-                        <h3 style="margin-top:0px;color:#d60ccc;"><?php echo $ProfileInfo['ProfileName'];?> <span style="font-size:15px;color:#d60ccc;">[ <?php echo $ProfileInfo['ProfileCode']?> ]</span></h3>
-                    </div>
-                </div>
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Profile Created By</label>
-                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
-                            <?php if ( trim($ProfileInfo['ProfileFor'])=="Myself") { echo "Own"; }?>
-                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother"){ echo "Brother"; }?>
-                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister"){ echo "Sister"; }?>
-                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter"){ echo "Father"; }?>
-                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Son"){ echo "Father"; }?>
-                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister In Law"){ echo "Sister In Law"; }?>
-                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother In Law"){ echo "Brother In Law"; }?>
-                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Son In Law"){ echo "Uncle"; }?>
-                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter In Law"){ echo "Uncle"; }?>
-                        </label>
+                        <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Profile For</label>
+                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['ProfileFor'];?></label>
+                         </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Name</label>
+                        <label class="col-sm-8 col-form-label"  style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['ProfileName'];?></label>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label" >Profile ID</label>
-                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['ProfileCode'];?></label>
+                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Date of birth</label>
+                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['DateofBirth'];?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-4 col-form-label" >Gender & Age</label>
-                         <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['Sex'];?>,&nbsp;<?php echo $ProfileInfo['Age'];?>&nbsp;yrs</label>
-                    </div>
-                   <!-- <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Gender</label>
+                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Sex</label>
                          <label class="col-sm-8 col-form-label"  style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['Sex'];?></label>   
-                    </div>-->
+                    </div>
                     <div class="form-group row">
-                         <label class="col-sm-4 col-form-label" >Marital Status</label>
+                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Marital Status</label>
                          <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MaritalStatus'];?></label>   
                     </div>
-                    <!--<div class="form-group row">
+                    <div class="form-group row">
                          <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Mother Tongue</label>
                          <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MotherTongue'];?></label>  
-                    </div>-->
+                    </div>
                     <div class="form-group row">
-                         <label class="col-sm-4 col-form-label" >Religion</label>
+                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Religion</label>
                          <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['Religion'];?></label>   
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-4 col-form-label" >Caste</label>
+                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Caste</label>
                          <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['Caste'];?></label>   
                     </div>
-                    <?php if(strlen($ProfileInfo['SubCaste']>0)){?>
                     <div class="form-group row">
-                         <label class="col-sm-4 col-form-label" >Sub Caste</label>
+                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Sub Caste</label>
                          <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['SubCaste'];?></label>   
                     </div>
-                    <?php } ?>
                     <div class="form-group row">
-                         <label class="col-sm-4 col-form-label" >Community</label>
+                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Community</label>
                          <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['Community'];?></label>  
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-4 col-form-label">Nationality</label>
+                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">Nationality</label>
                          <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['Nationality'];?></label>   
+                    </div>
+                    <div class="form-group row">
+                         <label class="col-sm-3 col-form-label" style="margin-right: 20px;">About me</label>
+                         <div class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['AboutMe'];?></div> 
                     </div>
               </div>
               <div class="col-sm-4">                                                             
@@ -161,7 +156,6 @@ text-align: left;
                 <tr>
                     <th>Qualification</th>
                     <th>Education Degree</th>
-                    <th>Main Education</th>
                     <th>Remarks</th>
                 </tr>
             </thead>
@@ -170,15 +164,8 @@ text-align: left;
                 <?php foreach($EducationAttachment as $Document) { ?>
                 <tr>    
                     <td style="text-align:left"><?php echo $Document['EducationDetails'];?></td>
-                    <td style="text-align:left">
-                            <?php if($Document['EducationDegree']== "Others"){?>
-                            <?php echo trim($Document['OtherEducationDegree']);?>
-                        <?php } else { ?>
-                             <?php echo trim($Document['EducationDegree']);?>  
-                        <?php } ?> 
-                    </td>
-                    <td style="text-align:left"><?php echo $Document['MainEducation'];?></td>
-                    <td style="text-align:left"><?php echo $Document['EducationDescription'];?></td>
+                    <td style="text-align:left"><?php echo $Document['EducationDegree'];?></td>
+                    <td style="text-align:left"><?php echo $Document['EducationRemarks'];?></td>
                 </tr>
                 <?php } 
             
@@ -199,51 +186,36 @@ text-align: left;
   <div class="card">
     <div class="card-body">
     <h4 class="card-title">Occupation Details</h4>
-     <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Employed as</label>                 
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['EmployedAs']))> 0 ? trim($ProfileInfo['EmployedAs']) : "N/A "; ?></label>
-        </div>
-        <?php if($ProfileInfo['EmployedAsCode']=="O001"){ ?>
         <div class="form-group row">
-            <label  class="col-sm-3 col-form-label">Occupation type</label>              
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['TypeofOccupation']))> 0 ? trim($ProfileInfo['TypeofOccupation']) : "N/A "; ?></label>
+            <label class="col-sm-3 col-form-label">Employed As</label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['EmployedAs'];?></label>
+            <label class="col-sm-3 col-form-label">Annual Income</label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['AnnualIncome'];?></label>
         </div>
         <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Occupation</label>                   
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;  
-                <?php if($ProfileInfo['OccupationTypeCode']=="OT112") {?>
-                <?php echo strlen(trim($ProfileInfo['OtherOccupation']))> 0 ? trim($ProfileInfo['OtherOccupation']) : "N/A "; ?>
-                <?php } else { echo $ProfileInfo['OccupationType']; } ?>&nbsp;&nbsp;
-                <?php if(strlen(trim($ProfileInfo['OccupationDescription']))> 0){
-                    echo "(&nbsp;&nbsp;". trim($ProfileInfo['OccupationDescription']) . "&nbsp;&nbsp;)"; }?>
-            </label>
+            <label class="col-sm-3 col-form-label">Occupation</label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['OccupationType'];?></label>
+            <label  class="col-sm-3 col-form-label">Occupation Type</label>
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['TypeofOccupation'];?>
+             </label>
         </div>
         <div class="form-group row">
-             <label class="col-sm-3 col-form-label">Annual income</label>                
-             <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['AnnualIncome']))> 0 ? trim($ProfileInfo['AnnualIncome']) : "N/A "; ?></label>
+            <label class="col-sm-3 col-form-label">Country</label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['WorkedCountry'];?></label>
         </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Working country</label>                      
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
-                <?php echo strlen(trim($ProfileInfo['WorkedCountry']))> 0 ? trim($ProfileInfo['WorkedCountry']) : "N/A "; ?>&nbsp;&nbsp;
-                <?php if(strlen(trim($ProfileInfo['WorkedCityName']))> 0){
-                    echo "(&nbsp;&nbsp;". trim($ProfileInfo['WorkedCityName']) . "&nbsp;&nbsp;)"; }?>
-            </label> 
-        </div>
-        <?php }?>
     </div>
   </div>
 </div>
 </div>
 <br>
-<!--<div class="article-detail"> 
+<div class="article-detail"> 
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
     <h4 class="card-title">Family Information</h4>
        <div class="form-group row">
             <label class="col-sm-3 col-form-label">Father's Name</label>
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php/* echo $ProfileInfo['FathersName'];?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersName'];?></label>
              <label class="col-sm-3 col-form-label">Father Alive</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['FathersAlive'];?></label> 
         </div>
@@ -309,39 +281,22 @@ text-align: left;
              <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['YoungerSister'];?>
              </label>
              <label class="col-sm-2 col-form-label">Married</label>
-             <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MarriedSister'];*/?>
+             <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['MarriedSister'];?>
              </label>
         </div>
         </div>
     </div>
   </div>
-</div>-->
-<div class="article-detail"> 
-  <div class="col-12 grid-margin">
-  <div class="card">
-    <div class="card-body">
-    <h4 class="card-title">Family Information</h4>
-            <div class="form-group row">
-                <div class="col-sm-12" style="text-align: center;">
-                    <img src="website/assets/images/lockimage.png">
-                </div>
-                <div class="col-sm-12" style="text-align: center;">
-                    <a href="login.php" class="btn btn-success">Login to view full details</a><br><br> 
-                </div>
-            </div>
-         </div>
-    </div>
-  </div>
- </div>
+</div>
 <br>
-<!--<div class="article-detail"> 
+<div class="article-detail"> 
   <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
     <h4 class="card-title">Physical Information</h4>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Physically Impaired?</label>
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php/* echo $ProfileInfo['PhysicallyImpaired'];?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['PhysicallyImpaired'];?></label>
             <?php if($ProfileInfo['PhysicallyImpaired'] =="Yes"){?> 
             <label class="col-sm-2 col-form-label">Description</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['PhysicallyImpaireddescription'];?></label>
@@ -400,37 +355,20 @@ text-align: left;
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['SmokingHabit'];?>
              </label>
              <label class="col-sm-3 col-form-label">Drinking Habit</label>
-             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['DrinkingHabit'];*/?>   
+             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['DrinkingHabit'];?>   
              </label>
         </div>                                                           
     </div>
   </div>
 </div>
-</div>-->
-<div class="article-detail"> 
-  <div class="col-12 grid-margin">
-  <div class="card">
-    <div class="card-body">
-    <h4 class="card-title">Physical Information</h4>
-            <div class="form-group row">
-                <div class="col-sm-12" style="text-align: center;">
-                    <img src="website/assets/images/lockimage.png">
-                </div>
-                <div class="col-sm-12" style="text-align: center;">
-                    <a href="login.php" class="btn btn-success">Login to view full details</a><br><br> 
-                </div>
-            </div>
-         </div>
-    </div>
-  </div>
- </div>
+</div>
 <br>
-<!--<div class="article-detail"> 
+<div class="article-detail"> 
   <div class="col-12 grid-margin">                                              
   <div class="card">
     <div class="card-body">
     <h4 class="card-title">Horoscope Details</h4>
-     <?php /*if($response['data']['ShowHoroscopeDetails']=="1"){?>
+     <?php if($response['data']['ShowHoroscopeDetails']=="1"){?>
          <div class="form-group row">
             <label class="col-sm-3 col-form-label">Time Of Birth</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['TimeOfBirth'];?></label>
@@ -524,28 +462,11 @@ text-align: left;
             <label class="col-sm-3 col-form-label">Chevvai Dhosham</label>
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo "XXXXX";?></label>
         </div>
-        <?php }*/?>
+        <?php }?>
         </div>
     </div>
   </div>
-  </div>-->
-  <div class="article-detail"> 
-  <div class="col-12 grid-margin">
-  <div class="card">
-    <div class="card-body">
-    <h4 class="card-title">Horoscope Details</h4>
-            <div class="form-group row">
-                <div class="col-sm-12" style="text-align: center;">
-                    <img src="website/assets/images/lockimage.png">
-                </div>
-                <div class="col-sm-12" style="text-align: center;">
-                    <a href="login.php" class="btn btn-success">Login to view full details</a><br><br> 
-                </div>
-            </div>
-         </div>
-    </div>
   </div>
- </div>
 <br>
 <div class="article-detail"> 
   <div class="col-12 grid-margin">
@@ -554,44 +475,47 @@ text-align: left;
     <h4 class="card-title">Partner's Expectation</h4>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Age </label>
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeFrom'];?> &nbsp;&nbsp;to&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeTo'];?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeFrom'];?> &nbsp;&nbsp;to&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeTo'];?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Religion</label>
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['Religion'];?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['Religion'];?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Caste</label>
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['Caste'];?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['Caste'];?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Marital Status</label>
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['MaritalStatus'];?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['MaritalStatus'];?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Income Range</label>
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['AnnualIncome'];?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['AnnualIncome'];?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Education</label>
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['Education'];?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['Education'];?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Employed As</label>
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['EmployedAs'];?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['EmployedAs'];?></label>
         </div>
-        
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Description</label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['Details'];?></label>
+        </div>
     </div>
   </div>
 </div>
 </div>
 <br>
-<!--<div class="article-detail"> 
+<div class="article-detail"> 
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
     <h4 class="card-title">Communication Details</h4>
-    <?php /* if($response['data']['ShowCommunicationDetails']=="1"){?>
+    <?php if($response['data']['ShowCommunicationDetails']=="1"){?>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Email ID</label>
             <label class="col-sm-9 col-form-label"style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['EmailID'];?></label>
@@ -669,35 +593,68 @@ text-align: left;
             <label class="col-sm-3 col-form-label">Country</label>
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $ProfileInfo['Country'];?></label>
         </div>    
-        <?php }*/?> 
+        <?php }?> 
         </div>
     </div>
   </div>                                                                
-  </div>--> 
-  <div class="article-detail"> 
-  <div class="col-12 grid-margin">
-  <div class="card">
-    <div class="card-body">
-    <h4 class="card-title">Communication Details</h4>
-            <div class="form-group row">
-                <div class="col-sm-12" style="text-align: center;">
-                    <img src="website/assets/images/lockimage.png">
-                </div>
-                <div class="col-sm-12" style="text-align: center;">
-                    <a href="login.php" class="btn btn-success">Login to view full details</a><br><br> 
-                </div>
-            </div>
-         </div>
-    </div>
   </div>
- </div>   <br><br>
+</form>                                                                                                                     
  
             
                
                             </div>
                         </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 container-sidebar">
-                                                      
+                        <aside id="sidebar">
+                            <div class="widget widget-categories">
+                                <div class="widget-top">
+                                    <h3 class="widget-title">General Search</h3>
+                                </div>
+                                <div class="widget-body">
+                                    <ul class="widget-list">
+                                        <li><a href="search_index.php">Best Search</a></li>
+                                        <li><a href="search_index.php?type=dGFiLXNyY2gtcHJvZmVzc2lvbmFs">Professional Search</a></li>
+                                        <li><a href="search_index.php?type=dGFiLXNyY2gtZWR1Y2F0aW9u">Education Search</a></li>
+                                        <li><a href="search_index.php?type=dGFiLXNyY2gtc3Rhcg">Star Search</a></li>
+                                        <li><a href="search_index.php?type=dGFiLXNyY2gtc3BsY2FzZXM">Special Cases</a></li>
+                                        <li><a href="search_index.php?type=dGFiLXNyY2gtYWR2">Advanced Search</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="widget widget-categories" style="display:none">
+                                <div class="widget-top">
+                                    <h3 class="widget-title">Astro Search</h3>
+                                </div>
+                                <div class="widget-body">
+                                    <ul class="widget-list">
+                                        <li><a href="javascript:;">Generate Horoscope</a></li>
+                                        <li><a href="javascript:;">Horoscope Match</a></li>
+                                        <li><a href="javascript:;">Horoscope Product</a></li>
+                                        <li><a href="javascript:;">Full Horoscope</a></li>
+                                        <li><a href="javascript:;">Gem Finder</a></li>
+                                        <li><a href="javascript:;">Numerology</a></li>
+                                        <li><a href="javascript:;">Super Horoscope</a></li>
+                                        <li><a href="javascript:;">Daily Prediction</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="widget widget-categories">
+                                <div class="widget-top">
+                                    <h3 class="widget-title">Matrimony Service</h3>
+                                </div>
+                                <div class="widget-body">
+                                    <ul class="widget-list">
+                                        <li><a href="javascript:;">Wedding Directory</a></li>
+                                        <li><a href="javascript:;">Branches</a></li>
+                                        <li><a href="javascript:;">Branches Search</a></li>
+                                        <li><a href="compare-pricing-plan.php">Payment Option</a></li>
+                                        <li><a href="index.php">Member Login</a></li>
+                                        <li><a href="index.php">Register Free</a></li>
+                                        <li><a href="contact-us.php">Contact Us</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </aside>
                     </div>
                 </div>
             </div>

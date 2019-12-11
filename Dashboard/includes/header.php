@@ -1342,7 +1342,7 @@
                                                 From&nbsp;:&nbsp;<?php echo putDate($p['DateFrom']);?> <br>
                                                 To&nbsp;:&nbsp;<?php echo putDate($p['DateTo']);?>  
                                            </div>  
-                                       </div>
+                                       </div> 
                                 </div>
                                 <div class="form-group row">
                                        <div class="col-sm-7">
@@ -1375,14 +1375,21 @@
                                         <div><?php echo $Profile['AnnualIncome'];?></div>
                                     </div>
                                     <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
-                                        <?php echo $Profile['AboutMe'];?> <a href="#">More</a>
+                                        <?php echo $Profile['AboutMe'];?>
                                     </div>
                                 </div>
                             </div>
+							<div class="col-sm-10"><div style="line-height: 1px;">
+                                <a href="">Who Viewed (<?php echo $p['RecentlyWhoViwedCount'];?>) </a> &nbsp;&nbsp;&nbsp;
+                                <a href="">Who Liked (<?php echo $p['WhoFavoritedCount'];?>) </a> &nbsp;&nbsp;&nbsp;
+                                <a href="">Mutual (<?php echo $p['MutualCount'];?>) </a>&nbsp;&nbsp;&nbsp;
+                                <a href="">Who Shortisted (<?php echo $p['WhoShortListedcount'];?>) </a></div></div>
                            <div style="float:right;line-height: 1px;">
-                               <a href="<?php echo GetUrl("ViewMemberProfile/".$Profile['ProfileCode'].".htm ");?>">view</a>
+                               <a href="<?php echo GetUrl("ViewMemberProfile/".$Profile['ProfileCode'].".htm ");?>">View Profile</a>&nbsp;&nbsp;
+                               <a href="#">View Details</a>
                             </div>
-                        </div> 
+						</div> 
+                       
                     <?php  } /* 4 5 Browse Matches 1*/?>
 					
 					

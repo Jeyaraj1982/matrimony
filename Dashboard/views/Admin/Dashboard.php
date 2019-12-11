@@ -17,7 +17,7 @@
               <div class="card card-statistics">
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
-                    <div class="float-left">
+                    <div class="float-left"> 
                       <i class="mdi mdi-cube text-danger icon-lg"></i>
                     </div>
                     <?php foreach($response['data']['MemberCount'] as $member) { ?>
@@ -30,10 +30,15 @@
                     <?php }?>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Members/ManageMember">View</a>
+					<p class="float-left"> 
+					<i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Members/ManageMember">View</a>
+					</p>
+					<p class="float-right"> 
+					Banned : 0
+					</p>
                   </p>
                 </div>
-              </div>
+              </div> 
             </div>
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
               <div class="card card-statistics">
@@ -52,33 +57,17 @@
                     <?php }?>
                   </div>
                   <p class="text-muted mt-3 mb-0">
+				  <p class="float-left">
                     <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Profiles/Published">View</a>
-                  </p>
+				</p>	
+				<p class="float-right"> 
+					Banned : 0
+					</p>
+				 </p>
                 </div>
               </div>
             </div>
-            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-              <div class="card card-statistics">
-                <div class="card-body" style="padding: 0.88rem 0.81rem;">
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <i class="mdi mdi-poll-box text-success icon-lg"></i>
-                    </div>
-                    <?php foreach($response['data']['Document'] as $doc) { ?>
-                    <div class="float-right">
-                      <p class="mb-0 text-right">Document Verification</p>
-                      <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0"><?php echo $doc['cnt']?></h3>
-                      </div>
-                    </div>
-                    <?php }?>
-                  </div>
-                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Requests/Member/ViewDocumentsVerification">View</a>
-                  </p></div>
-            </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+			<div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
               <div class="card card-statistics">
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
@@ -87,7 +76,7 @@
                     </div>
                     <?php foreach($response['data']['ProfileVerification'] as $profv) { ?>
                     <div class="float-right">
-                      <p class="mb-0 text-right">Profile Verification</p>
+                      <p class="mb-0 text-right">Submitted Profiles</p>
                       <div class="fluid-container">
                         <h3 class="font-weight-medium text-right mb-0"><?php echo $profv['cnt'];?></h3>
                       </div>
@@ -100,6 +89,28 @@
                 </div>
               </div>
             </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-poll-box text-success icon-lg"></i>
+                    </div>
+                    <?php //foreach($response['data']['Document'] as $doc) { ?>
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Expired Profiles</p>
+                      <div class="fluid-container">
+                        <h3 class="font-weight-medium text-right mb-0">0<?php //echo $doc['cnt']?></h3>
+                      </div>
+                    </div>
+                    <?php// }?>
+                  </div>
+                   <p class="text-muted mt-3 mb-0">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a>View</a>
+                  </p></div>
+            </div>
+            </div>
+            
           </div>
           <div class="row">
             <div class="col-lg-9 grid-margin stretch-card">
@@ -114,40 +125,42 @@
               <div class="card card-statistics">
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
+                    <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-cube text-danger icon-lg"></i>
+                      <i class="mdi mdi-poll-box text-success icon-lg"></i>
                     </div>
-                    <?php foreach($response['data']['MemberWalletRequestCount'] as $MemberReqCount) { ?>     
+                    <?php foreach($response['data']['Document'] as $doc) { ?>
                     <div class="float-right">
-                      <p class="mb-0 text-right">Wallet Update Request<br>( Member )</p>
+                      <p class="mb-0 text-right">Document Verification (Member)</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0"><?php echo $MemberReqCount['cnt'];?></h3>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $doc['cnt']?></h3>
                       </div>
                     </div>
                     <?php }?>
                   </div>
-                  <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Requests/Member/ListOfAllBankRequests">View</a>
+                   <p class="text-muted mt-3 mb-0">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Requests/Member/ViewDocumentsVerification">View</a>
                   </p>
                 </div>
+			</div>
               <br>
               <div class="card card-statistics" style="margin-top: 42px;">
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-cube text-danger icon-lg"></i>
+                      <i class="mdi mdi-poll-box text-success icon-lg"></i>
                     </div>
-                    <?php foreach($response['data']['FranchiseeWalletRequestCount'] as $FranchiseeReqCount) { ?>     
+                    <?php //foreach($response['data']['FranchiseeWalletRequestCount'] as $FranchiseeReqCount) { ?>     
                     <div class="float-right">
-                      <p class="mb-0 text-right">Wallet Update Request<br>( Franchisee )</p>
+                      <p class="mb-0 text-right">Profile Verification</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0"><?php echo $FranchiseeReqCount['cnt'];?></h3>
+                        <h3 class="font-weight-medium text-right mb-0">0<?php //echo $FranchiseeReqCount['cnt'];?></h3>
                       </div>
                     </div>
-                    <?php }?>
+                    <?php// }?>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Requests/Franchisee/ListOfFranchiseeAllBankRequests">View</a>
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a>View</a>
                   </p>
                 </div>
               </div>
@@ -206,17 +219,17 @@
                     <div class="float-left">
                       <i class="mdi mdi-poll-box text-success icon-lg"></i>
                     </div>
-                    <?php foreach($response['data']['PaypalCount'] as $paypal) { ?>  
+                    <?php foreach($response['data']['FranchiseeWalletRequestCount'] as $FranchiseeReqCount) { ?>     
                     <div class="float-right">
-                      <p class="mb-0 text-right">Paypal Balance</p>
+                      <p class="mb-0 text-right">Wallet Update Request<br>( Franchisee )</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0"><?php echo $paypal['cnt']?></h3>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $FranchiseeReqCount['cnt'];?></h3>
                       </div>
                     </div>
                     <?php }?>
                   </div>
                    <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="#">View</a>
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Requests/Franchisee/ListOfFranchiseeAllBankRequests">View</a>
                   </p></div>
             </div>
             </div>
@@ -225,23 +238,24 @@
                 <div class="card-body">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                      <i class="mdi mdi-cube text-danger icon-lg"></i>
                     </div>
+                    <?php foreach($response['data']['MemberWalletRequestCount'] as $MemberReqCount) { ?>     
                     <div class="float-right">
-                      <p class="mb-0 text-right">Bank Transaction</p>
-                       <?php foreach($response['data']['Bank'] as $bank) { ?>
+                      <p class="mb-0 text-right">Wallet Update Request<br>( Member )</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0"><?php echo $bank['cnt'];?></h3>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $MemberReqCount['cnt'];?></h3>
                       </div>
-                      <?php } ?>
                     </div>
+                    <?php }?>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-reload mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Requests/Member/ListOfAllBankRequests">Renew</a>
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Requests/Member/ListOfAllBankRequests">View</a>
                   </p>
                 </div>
               </div>
             </div>
+			
           </div>
           <div class="row">
             <div class="col-lg-6 grid-margin stretch-card">

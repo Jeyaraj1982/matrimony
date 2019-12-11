@@ -8,6 +8,8 @@
     <div align="right">
             <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/AddEducationalDetails/". $_GET['Code'].".htm");?>" class="btn btn-success mr-2" >Add Education Details</a>
     </div>
+    
+	
     <br>
     <table class="table table-bordered">
         <?php if (sizeof($response['data'])>0) { ?>
@@ -29,7 +31,7 @@
                         <?php } else { ?>
                              <?php echo trim($Document['EducationDegree']);?>  
                         <?php } ?><BR><span style='color:#888'><?php echo $Document['EducationDescription'];?></span></td>
-                    <td>
+					 <td>
                         <?php if($Document['FileName']>0){ ?>
                             <?php if($Document['IsVerified']==1) { echo "Attachment Verifiled"; ?>
                                 <br><a href="javascript:void(0)" onclick="DraftProfile.showAttachmentEducationInformation('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>

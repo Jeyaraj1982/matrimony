@@ -191,6 +191,10 @@ $html .='<div class="col-12 grid-margin" style="margin-bottom: 25px;">
      <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Education Details</h4></div>
          </div>
+		 <div class="form-group row">
+            <label  class="col-sm-2 col-form-label">Education</label>              
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;'; $html .=strlen(trim($ProfileInfo['mainEducation']))> 0 ? trim($ProfileInfo['mainEducation']) : "N/A "; $html .='</label>
+        </div>
          <table style="width:100%;color: #555;" cellpadding="3" cellspacing="0">           
             <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">
                 <tr>
@@ -211,7 +215,7 @@ $html .='<div class="col-12 grid-margin" style="margin-bottom: 25px;">
                             $html .=trim($Document['EducationDegree']);  
                          }  
                         $html .='<br>'; $html .=$Document['EducationDescription'];$html .='</td>
-                    <td style="height: 33px;text-align: left;border: 1px solid #ddd;">';   
+					<td style="height: 33px;text-align: left;border: 1px solid #ddd;">';   
                         if($Document['FileName']>0){ 
                             $html .=$Document['IsVerified']== 1 ? "Attachment Verifiled" : "Attached "; $html .='<br>';
                         } else { $html .='Not Attach'; } $html .='</td>

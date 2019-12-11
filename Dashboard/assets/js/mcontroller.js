@@ -219,6 +219,7 @@
             $('#Errdate').html("");
             $('#Errmonth').html("");
             $('#Erryear').html("");
+            $('#ErrMainEducation').html("");
             
             ErrorCount=0;
             
@@ -268,6 +269,10 @@
             
             if($("#Nationality").val()=="0"){
                 document.getElementById("ErrNationality").innerHTML="Please select your nationality";
+                ErrorCount++; 
+            }
+			if($("#MainEducation").val()==""){
+                document.getElementById("ErrMainEducation").innerHTML="Please enter your education";
                 ErrorCount++; 
             }
             

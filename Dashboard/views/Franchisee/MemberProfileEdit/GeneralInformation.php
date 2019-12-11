@@ -12,10 +12,10 @@
     }
     
    $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
-    $ProfileInfo          = $response['data']['ProfileInfo'];
+   $ProfileInfo          = $response['data']['ProfileInfo'];
 ?>
     <?php include_once("settings_header.php");?>
- <script>
+ <script> 
 function submitprofile() {
                          $('#ErrProfileFor').html("");
                          $('#ErrProfileName').html("");
@@ -29,6 +29,7 @@ function submitprofile() {
                          $('#Errdate').html("");
                          $('#Errmonth').html("");
                          $('#Erryear').html("");
+						 $('#ErrMainEducation').html("");
                          
                          ErrorCount=0;
                          
@@ -80,6 +81,10 @@ function submitprofile() {
                             document.getElementById("ErrNationality").innerHTML="Please select your nationality";
                             ErrorCount++; 
                          }
+						 if($("#MainEducation").val()==""){
+							document.getElementById("ErrMainEducation").innerHTML="Please enter your education";
+								ErrorCount++; 
+						}
                          if ($('#Religion').val()=="RN009") {
                             if(IsNonEmpty("ReligionOthers","ErrReligionOthers","Please enter your religion name")){
                                IsAlphabet("ReligionOthers","ErrReligionOthers","Please enter alphabet characters only");
@@ -298,6 +303,11 @@ $(document).ready(function() {
                                 </select> 
                                 <span class="errorstring" id="ErrNationality"><?php echo isset($ErrNationality)? $ErrNationality : "";?></span>                                                                                           
                             </div>
+							<label for="Education" class="col-sm-2 col-form-label" style="text-align: right;padding-left:0px;padding-right:0px;">Education<span id="star">*</span></label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" name="MainEducation" id="MainEducation" value="<?php echo (isset($_POST['MainEducation']) ? $_POST['MainEducation'] : $ProfileInfo['mainEducation']);?>" placeholder="Eg. B.Sc.,B.A.">
+									<span class="errorstring" id="ErrMainEducation"><?php echo isset($ErrMainEducation)? $ErrMainEducation : "";?></span>
+								</div>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <label for="AboutMe" class="col-sm-12 col-form-label" id="Aboutlabel"></label>

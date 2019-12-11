@@ -135,6 +135,7 @@
                         <a class="nav-link <?php echo $_GET['x']=="" ? " " : "";?>" href='<?php echo JFrame::getAppSetting('siteurl');?>/search' <?php echo $target; ?> >Search</a>
                     </li>
                     <?php 
+                        $layout=0;
                         foreach(MenuItems::getHeaderMenuItems() as $m) {
                             
                             $target  = ($m['target']>0) ? " target='_blank' " : "";

@@ -46,7 +46,8 @@ function submitEducation()  {
             $('#ErrEducationDegree').html("");
             $('#ErrOtherEducationDegree').html("");
             
-            ErrorCount=0;
+            
+            ErrorCount=0; 
             
             if($("#Educationdetails").val()=="0"){
                 ErrorCount++;
@@ -57,18 +58,16 @@ function submitEducation()  {
                 ErrorCount++;
                 document.getElementById("ErrEducationDegree").innerHTML="Please select education Details"; 
             }
-            
+			
             if ($('#EducationDegree').val()=="Others") {
                 if(IsNonEmpty("OtherEducationDegree","ErrOtherEducationDegree","Please enter your education details")){
                      OtherEducationDegree("OtherEducationDegree","ErrOtherEducationDegree","Please enter alphabet characters only");
                 }
-            }
-              
-            
+           
             return (ErrorCount==0) ? true : false;
          
         }
-
+ 
 
 </script>
 <div class="col-sm-10 rightwidget">
@@ -103,14 +102,14 @@ function submitEducation()  {
             <div class="col-sm-10" ><input type="text" class="form-control" id="OtherEducationDegree" maxlength="50" placeholder="Education details" name="OtherEducationDegree" value="<?php echo (isset($_POST['OtherEducationDegree']) ? $_POST['OtherEducationDegree'] : $ProfileInfo['OtherEducationDegree']);?>">
             <span class="errorstring" id="ErrOtherEducationDegree"><?php echo isset($ErrOtherEducationDegree)? $ErrOtherEducationDegree : "";?></span></div>
         </div>
-        <div class="form-group row">
+		 <div class="form-group row">
             <label class="col-sm-2 col-form-label">Description</label>
             <div class="col-sm-10">                                                        
                 <input type="text" class="form-control" maxlength="50" name="EducationDescription" id="EducationDescription" placeholder="Education Description" value="<?php echo (isset($_POST['EducationDescription']) ? $_POST['EducationDescription'] : $response['data']['EducationDescription']);?>" style="margin-bottom:5px">
                  <label class="col-form-label" style="padding-top:0px;">Max 50 characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></label>
             </div>
         </div>
-        <div class="form-group row">
+<div class="form-group row">
             <label class="col-sm-2 col-form-label">Attachment</label>
             <div class="col-sm-10">
                 <input type="File" id="File" name="File" Placeholder="File">
@@ -121,7 +120,7 @@ function submitEducation()  {
         <div class="form-group row" style="margin-bottom:0px;">
             <div class="col-sm-12"><span id="server_message_error"><?php echo $errormessage ;?></span><span id="server_message_success"><?php echo $successmessage;?></span></div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row"> 
             <div class="col-sm-12" style="text-align:left">
                 <button type="submit" name="BtnSave" id="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Save Education Details</button>&nbsp;&nbsp;
                 <a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">back</a>

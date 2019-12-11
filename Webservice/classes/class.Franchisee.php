@@ -935,7 +935,7 @@
   function GetDraftProfileInformation() {
              global $mysql,$loginInfo;
              $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");               
-             $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `IsDeleted`='0' and `ProfileCode`='".$_POST['ProfileCode']."'"); 
+             $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileCode']."'"); 
              $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");    
              $PartnersExpectations = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileCode`='".$_POST['ProfileCode']."'"); 
              $ProfilePhoto =      $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where `ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
@@ -964,9 +964,9 @@
                         $ProfilePhotoFirst[0]['ProfilePhoto'] = AppPath."assets/images/noprofile_male.png";
                         }
                    
-              }
-                                                          
-             return Response::returnSuccess("success"."select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where `ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'",array("ProfileInfo"            => $Profiles[0],
+              } 
+             
+             return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
                                                             "ProfilePhotos"          => $ProfilePhoto,
                                                             "ProfilePhotoFirst"      => $ProfilePhotoFirst[0]['ProfilePhoto'],        
                                                             "EducationAttachments"   => $Educationattachments,
@@ -1059,6 +1059,7 @@
                                                            `Community`         = '".trim($Community[0]['CodeValue'])."',
                                                            `NationalityCode`   = '".$_POST['Nationality']."',   
                                                            `Nationality`        = '".trim($Nationality[0]['CodeValue'])."',
+														   `mainEducation`     = '".$_POST['MainEducation']."',
                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                            `AboutMe`           = '".$_POST['AboutMe']."'";  
                 if ($_POST['Religion']=="RN009") {
