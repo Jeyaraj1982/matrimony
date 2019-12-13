@@ -60,20 +60,13 @@ include_once(application_config_path);
       
       <div class="container" style="padding-top:10px">
 			<div class="form-group row">
-                <div class="col-sm-6" style="background:red;">
-					<br>
-				</div>
-				<div class="col-sm-6" style="background:grey;">
-					<br>
-				</div>
-			</div>
-			<div class="form-group row">
-                <div class="col-sm-6" style="background:red">
+                <div class="col-sm-5" style="border-radius: 5px;background:#f4f3f3;">
 					<?php 
 					    include_once("website/includes/hp_featured_grooms.php");
 					?>
 				</div>
-				<div class="col-sm-6" >
+				<div class="col-sm-2"></div>
+				<div class="col-sm-5" style="border-radius: 5px;background:#f4f3f3;">
 					<?php 
 					 include_once("website/includes/hp_featured_brides.php");
 					?>
@@ -81,7 +74,7 @@ include_once(application_config_path);
 			</div>
 			
             <div class="form-group row">
-                <div class="col-sm-12" >
+                <div class="col-sm-12" style="border-radius: 5px;background:#f4f3f3;">
                     <?php 
                         include_once("website/includes/hp_featured_recentlyadded.php");
                     ?>

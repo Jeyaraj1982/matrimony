@@ -51,8 +51,8 @@
             <a class="nav-link" data-toggle="collapse" href="#support" aria-expanded="false" aria-controls="Support"><i class="menu-icon mdi mdi-account-switch"></i><span class="menu-title"  style="font-size:14px"><?php echo $lang['support'];?></span><i class="menu-arrow"></i></a>
             <div class="collapse" id="support">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Support/ServiceRequests");?>"><?php echo $lang['service_requests'];?></a></li>
-                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Support/ResolutionCenter");?>"><?php echo $lang['resolution_center'];?></a></li>
+                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Support/Service/ServiceRequest");?>"><?php echo $lang['service_requests'];?></a></li>
+                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Support/Resolution/ResolutionCenter");?>"><?php echo $lang['resolution_center'];?></a></li>
               </ul>
             </div>
         </li>

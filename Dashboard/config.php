@@ -1,6 +1,5 @@
 <?php
-    session_start();
-    include_once("../config.php");
+   include_once("../config.php");
     include_once("config_client.php");
     $__Global = $_SERVER;
 
@@ -235,7 +234,7 @@
         
         var $serverURL="";
         
-        function Webservice() {
+        public function __construct() {
             global $loginID;
             $this->serverURL  = WebServiceUrl. "webservice.php?rand=2&LoginID=".$loginID."&"; 
         }
@@ -546,5 +545,5 @@
 }
 
 
-   
+ 
 ?>

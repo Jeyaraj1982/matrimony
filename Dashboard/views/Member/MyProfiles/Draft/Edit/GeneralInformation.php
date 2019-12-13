@@ -3,7 +3,7 @@
 
     if (isset($_POST['BtnSaveProfile'])) {
         
-        $response = $webservice->EditDraftGeneralInformation($_POST);
+        $response = $webservice->getData("Member","EditDraftGeneralInformation",$_POST);
         if ($response['status']=="success") {
             $successmessage = $response['message']; 
         } else {
@@ -11,7 +11,7 @@
         }
     }
     
-    $response    = $webservice->GetDraftProfileInformation(array("ProfileCode"=>$_GET['Code']));
+    $response    = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo = $response['data']['ProfileInfo'];
     include_once("settings_header.php");
 ?>
@@ -19,29 +19,22 @@
     <form method="post" action="" onsubmit="return DraftProfile.SubmitGeneralInformation();">
         <h4 class="card-title">General Information</h4>
         <div class="form-group row">
-            <label for="ProfileFor" class="col-sm-2 col-form-label" style="padding-right:0px;">Profile create for<span id="star">*</span></label>
+            <label for="ProfileFor" class="col-sm-2 col-form-label" style="padding-right:0px;">Profile create for</label>
             <div class="col-sm-4">
-                <select class="selectpicker form-control" data-live-search="true" id="ProfileFor" name="ProfileFor" onchange="DraftProfile.changeAboutLable();">
-                    <option value="0">Choose Profile Sign In</option>
-                    <?php foreach($response['data']['ProfileSignInFor'] as $ProfileFor) { ?>
-                    <?php  if($ProfileFor['CodeValue']!= "Father" && $ProfileFor['CodeValue']!= "Mother"){     ?>
-                    <option value="<?php echo $ProfileFor['CodeValue'];?>" <?php echo (isset($_POST[ 'ProfileFor'])) ? (($_POST[ 'ProfileFor']==$ProfileFor[ 'CodeValue']) ? " selected='selected' " : "") : (($ProfileInfo[ 'ProfileFor']==$ProfileFor[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $ProfileFor['CodeValue'];?></option>
-                    <?php } } ?>
-                </select>
-                <span class="errorstring" id="ErrProfileFor"><?php echo isset($ErrProfileFor)? $ErrProfileFor : "";?></span>
+				<input type="text" class="form-control" disabled="disabled" id="ProfileFor" value="<?php echo $ProfileInfo['ProfileFor'];?>" >
             </div>
         </div>
         <div class="form-group row">
-            <label for="ProfileName" class="col-sm-2 col-form-label">Name<span id="star">*</span></label>
+            <label for="ProfileName" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="ProfileName" maxlength="50" name="ProfileName" value="<?php echo (isset($_POST['ProfileName']) ? $_POST['ProfileName'] : $ProfileInfo['ProfileName']);?>" placeholder="Name">
-                <span class="errorstring" id="ErrProfileName"><?php echo isset($ErrProfileName)? $ErrProfileName : "";?></span>
+				<input type="text" class="form-control" disabled="disabled" id="ProfileName" value="<?php echo $ProfileInfo['ProfileName'];?>" >
             </div>
         </div>
         <div class="form-group row">
-            <label for="Name" class="col-sm-2 col-form-label">Date of birth<span id="star">*</span></label>
-            <div class="col-sm-4" >
-                <div class="col-sm-4" style="max-width:60px !important;padding:0px !important;">
+            <label for="Name" class="col-sm-2 col-form-label">Date of birth</label>
+            <div class="col-sm-4" >                                                                         
+				<input type="text" class="form-control" disabled="disabled" id="DateofBirth" value="<?php echo date("M d,Y", strtotime($ProfileInfo['DateofBirth']));?>" >
+                <!--<div class="col-sm-4" style="max-width:60px !important;padding:0px !important;">
                     <?php $dob=strtotime($ProfileInfo['DateofBirth'])  ; ?>
                     <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
                         <option value="0">Day</option>
@@ -65,18 +58,11 @@
                         <option value="<?php echo $i; ?>" <?php echo (isset($_POST['year'])) ? (($_POST['year']==$i) ? " selected='selected' " : "") : ((date("Y",$dob)==$i) ? " selected='selected' " : "");?>><?php echo $i;?></option>
                         <?php } ?>
                     </select>      
-                </div>
-                <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth : "";?></span>
-            </div>
-            <label for="Sex" class="col-sm-2 col-form-label" style="text-align: right;padding-left:0px;padding-right:0px;">Sex<span id="star">*</span></label>
+                </div>-->
+			</div>
+            <label for="Sex" class="col-sm-2 col-form-label" style="text-align: right;padding-left:0px;padding-right:0px;">Gender</label>
             <div class="col-sm-4" >
-                <select class="selectpicker form-control" data-live-search="true" id="Sex" name="Sex" >
-                    <option value="0">Choose Sex</option>
-                    <?php foreach($response['data']['Gender'] as $Sex) { ?>
-                    <option value="<?php echo $Sex['SoftCode'];?>" <?php echo (isset($_POST[ 'Sex'])) ? (($_POST[ 'Sex']==$Sex[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'Sex']==$Sex[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo trim($Sex['CodeValue']);?> </option>
-                    <?php } ?>      
-                </select>
-                <span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>
+				<input type="text" class="form-control" disabled="disabled" id="Sex" value="<?php echo $ProfileInfo['Sex'];?>" >
             </div>
         </div>
         <div class="form-group row">

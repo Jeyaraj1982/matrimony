@@ -1,7 +1,7 @@
 <?php
 $mainlink="Search";
 $page="AdvancedSearch";
-$Info = $webservice->GetAdvancedSearchElements(); 
+$Info = $webservice->getData("Member","GetAdvancedSearchElements"); 
 ?>
 <?php                   
   if (isset($_POST['searchBtn'])) {  

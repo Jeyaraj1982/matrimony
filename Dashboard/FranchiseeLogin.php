@@ -1,23 +1,25 @@
-<!DOCTYPE html>
-    <html lang="en">
-    <?php
-        
+<?php
+session_start();
         if (isset($_POST['btnsubmit'])) {
             include_once("config.php");
             $response = $webservice->getData("Franchisee","Login",$_POST); 
+                        
                      if ($response['status']=="success")  {
                         if (sizeof($response['data']['FranchiseeDetails'])>0) {
                             $_SESSION['UserDetails'] = $response['data']['UserDetails']; 
                             $_SESSION['FranchiseeDetails'] = $response['data']['FranchiseeDetails'];    
                         } else {
                             echo "<script>alert('Franchisee not found');location.href='".SiteUrl."';</script>";
-                        }
+                        }  
+          
                      echo "<script>location.href='".SiteUrl."';</script>";
             } else {
                 $loginError=$response['message'];
             }
         }
     ?>
+    <!DOCTYPE html>
+    <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

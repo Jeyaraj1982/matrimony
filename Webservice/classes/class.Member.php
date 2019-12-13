@@ -1965,7 +1965,6 @@
              global $mysql, $loginInfo;
 
              $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
-             $Sex            = CodeMaster::getData("SEX",$_POST['Sex']);
              $MotherTongue   = CodeMaster::getData("LANGUAGENAMES",$_POST['Language']); 
              $Religion       = CodeMaster::getData("RELINAMES",$_POST['Religion']); 
              $Caste          = CodeMaster::getData("CASTNAMES",$_POST['Caste']);  
@@ -1975,12 +1974,7 @@
 
              $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date']; 
              
-             $updateSql = "update `_tbl_draft_profiles` set `ProfileFor`        = '".$_POST['ProfileFor']."',
-                                                           `ProfileName`       = '".$_POST['ProfileName']."',
-                                                           `DateofBirth`       = '".$dob."',
-                                                           `SexCode`           = '".$_POST['Sex']."',
-                                                           `Sex`               = '".$Sex[0]['CodeValue']."',
-                                                           `MaritalStatusCode` = '".$_POST['MaritalStatus']."',
+             $updateSql = "update `_tbl_draft_profiles` set `MaritalStatusCode` = '".$_POST['MaritalStatus']."',
                                                            `MaritalStatus`     = '".$MaritalStatus[0]['CodeValue']."',
                                                            `ChildrenCode`      ='0',     
                                                            `Children`          ='0',
@@ -3853,8 +3847,12 @@
                                                                                  
              $result = array();
              
-            
-             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX001")."' order by `ProfileID` DESC");
+            if($_POST['ProfileFrom']=="HomePage"){
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX001")."' order by `ProfileID` DESC  LIMIT 18");
+			}
+			if($_POST['ProfileFrom']=="ListPage"){
+             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX001")."' order by `ProfileID` DESC  LIMIT 10");
+			}
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
              }
@@ -5040,6 +5038,8 @@
                                                         "ViewedOn"          => date("Y-m-d H:i:s")));
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has remove shorlist.");      
           }
+		  
+	
      }  
 //4084   5500
 ?>                                                            

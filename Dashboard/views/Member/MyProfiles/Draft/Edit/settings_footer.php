@@ -18,7 +18,8 @@
     ?>
     <div style="text-align: right" id="">
         <a href="<?php echo GetUrl("MyProfiles/Draft/View/".$_GET['Code'].".htm ");?>" class="btn btn-primary" name="Preview" style="font-family:roboto">Preview Profile</a>&nbsp;
-        <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Submit Profile</a>
+        <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Submit Profile</a>&nbsp;
+        <a href="javascript:void(0)" onclick="showConfirmDelete('<?php echo $_GET['Code'];?>')" class="btn btn-danger" name="Delete" style="font-family:roboto">Delete Profile</a>
      </div>    
         
         
@@ -91,6 +92,32 @@ function ResendSendOtpForProfileforPublish(frmid) {
      var param = $("#"+frmid).serialize();
      $('#Publish_body').html(preloader);
         $.post(API_URL + "m=Member&a=ResendSendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
+}
+
+function showConfirmDelete(ProfileID) {
+      $('#PubplishNow').modal('show'); 
+      var content = '<div class="Publish_body" style="padding:20px">'
+                    +   '<div  style="height: 315px;">'                                                                              
+                    +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
+                     + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                          + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        + '<h4 class="modal-title">Delete Profile</h4> <br>'
+                        +'<div style="text-align:left"> Dear ,<br><div>'
+                        +'<div style="text-align:center">Are you sure want to delete?<br><br>'
+                        +  '<button type="button" class="btn btn-primary" name="Delete" id="Delete"  onclick="DeleteProfile(\''+ProfileID+'\')" style="font-family:roboto">Yes</button>&nbsp;&nbsp;&nbsp;'
+                        +  '<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
+                       +  '</div><br>'
+                    +  '</form>'                                                                                                          
+                +  '</div>'
+            +  '</div>';
+            $('#Publish_body').html(content);
+}
+function DeleteProfile(frmid) {
+     var param = $("#"+frmid).serialize();
+     $('#Publish_body').html(preloader);
+        $.post(API_URL + "m=Member&a=DeleteProfile",param,function(result2) {
+			$('#Publish_body').html(result2);
+		});
 } 
 
 </script>
