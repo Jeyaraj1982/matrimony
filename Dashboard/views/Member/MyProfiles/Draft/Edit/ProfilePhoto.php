@@ -1,35 +1,13 @@
-<?php
+<?php                     
     $page="ProfilePhoto";       
-   ?>
-<?php include_once("settings_header.php");?>
+    include_once("settings_header.php");
+    
+   
+?>
 <style>
-.photoviewFirst {
-    float: left;
-    margin-right: 10px;
-    text-align: center;
-    border: 1px solid #eaeaea;
-    height: 230px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    background: #ccc;
-    color:black;
-}
-.photoview {
-    float: left;
-    margin-right: 10px;
-    text-align: center;
-    border: 1px solid #eaeaea;
-    height: 230px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    background: #ccc;
-    color:black;
-}
-.photoview:hover{
-    border:1px solid #9b9a9a;
-}
+.photoviewFirst {float: left;margin-right: 10px;text-align: center;border: 1px solid #eaeaea;height: 230px;padding: 10px;margin-bottom: 10px;border-radius: 10px;background: #ccc;color:black;}
+.photoview {float: left;margin-right: 10px;text-align: center;border: 1px solid #eaeaea;height: 230px;padding: 10px;margin-bottom: 10px;border-radius: 10px;background: #ccc;color:black;}
+.photoview:hover{border:1px solid #9b9a9a;}
 </style>
 <div class="col-sm-10 rightwidget">
 <script>
@@ -55,10 +33,35 @@ function submitUpload() {
 
         }
 </script>
-<form method="post" onsubmit="return submitUpload()" name="form1" id="form1" action="" enctype="multipart/form-data">
+<form method="post" onsubmit="return submitUpload()" name="form1" id="form1" action="<?php echo SiteUrl;?>MyProfiles/Draft/Edit/ProfilePhotoCrop/<?php echo $_GET['Code'];?>.htm" enctype="multipart/form-data">
     <h4 class="card-title">Profile Photo</h4>
     
     <?php
+                 if (isset($_POST['btnCrop'])) {
+            
+    $targ_w = $targ_h = 250;
+    $jpeg_quality = 90;
+    
+    $filename =  md5(time().$_GET['Code']).".jpg";
+    $src =  'uploads/profiles/'.$_GET['Code'].'/uploads/'.$_POST['file'];
+    $dst = 'uploads/profiles/'.$_GET['Code'].'/thumb/'.$filename;
+    
+    $img_r = imagecreatefromjpeg($src);
+    $dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+    imagecopyresampled($dst_r,$img_r,0,0,$_POST['x'],$_POST['y'],$targ_w,$targ_h,$_POST['w'],$_POST['h']);
+    //header('Content-type: image/jpeg');
+    //imagejpeg($dst_r,null,$jpeg_quality);
+    imagejpeg($dst_r,$dst,$jpeg_quality);
+    
+            $_POST['ProfilePhoto']= $filename;
+                        $res =$webservice->getData("Member","AddProfilePhoto",$_POST);
+                        echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
+                                                           : $dashboard->showErrorMsg($res['message']);
+    
+        }
+        
+    
+    
                 if (isset($_POST['UpdateProfilePhoto'])) {
                     
                     $target_dir = "uploads/";
@@ -78,7 +81,7 @@ function submitUpload() {
                         $err++;
                            echo "Invalid file type. Only JPG,PNG,JPEG types are accepted.";
                     }
-
+                                                                
                     
                     if (isset($_FILES["ProfilePhoto"]["name"]) && strlen(trim($_FILES["ProfilePhoto"]["name"]))>0 ) {
                         $profilephoto = time().str_replace(" ","",$_FILES["ProfilePhoto"]["name"]);
@@ -89,6 +92,7 @@ function submitUpload() {
                     }
                     
                     if ($err==0) {
+                    
                         $_POST['ProfilePhoto']= $profilephoto;
                         $res =$webservice->getData("Member","AddProfilePhoto",$_POST);
                         echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
@@ -96,7 +100,7 @@ function submitUpload() {
                     } else {
                         $res =$webservice->getData("Member","AddProfilePhoto");
                     }
-                } else {
+                } else {                     
                      $res =$webservice->getData("Member","AddProfilePhoto");
                      
                 }
@@ -264,7 +268,7 @@ function showLearnMore() {
             available--;
             DisplayAddProfilePhotoForm();
             $('#x').html( available + " out 5 photos");
-        }
+        }                             
     );
 }
 function changeColor(id)

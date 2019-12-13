@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="http://www.matrimony.dev.j2jsoftwaresolutions.com/website/assets/bridegroomslider/es-carousel.css" />
+    <link rel="stylesheet" type="text/css" href="http://www.matrimony.dev.j2jsoftwaresolutions.com/website/assets/css/prettyphoto.css" />
 <?php
     $response = $webservice->getData("Member","GetFullProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
@@ -64,7 +66,16 @@ legend {
                         &nbsp;(<?php if((strlen(trim($ProfileInfo['Age'])))>0) { echo trim($ProfileInfo['Age']); ?> Yrs<?php }?>)
                         </label>
                         <label class="col-sm-12 col-form-label" style="background: none;color: #333;font-size: 14px;padding: 0px 16px;color: #666;">
-                            <?php echo strlen(trim($ProfileInfo['ProfileCode']))> 0 ? trim($ProfileInfo['ProfileCode']) : "N/A "; ?>&nbsp;&nbsp;|&nbsp;&nbsp;::ProfileCreatedFor::
+                            <?php echo strlen(trim($ProfileInfo['ProfileCode']))> 0 ? trim($ProfileInfo['ProfileCode']) : "N/A "; ?>&nbsp;&nbsp;|&nbsp;&nbsp;::ProfileCreatedBy::
+							<?php if ( trim($ProfileInfo['ProfileFor'])=="Myself") { echo "Own"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother"){ echo "Brother"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister"){ echo "Sister"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter"){ echo "Mother"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Son"){ echo "Father"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister In Law"){ echo "Sister In Law"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother In Law"){ echo "Brother In Law"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Son In Law"){ echo "Uncle"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter In Law"){ echo "Aunty"; }?>
                         </label>
                     </div>
             </div>
@@ -98,7 +109,7 @@ legend {
                         </div> 
                     </div>
                     <div style="padding-left:3px;padding-right: 10px;margin-top:7px">
-                      <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/nextarrow.jpg" style="width:30px"></div>
+                     <!-- <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/nextarrow.jpg" style="width:30px"></div>
                         <div class="col-sm-10" style="padding-left:8px;padding-right:5px;">
                         <?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
                             <div class="photoview" style="float: left;">
@@ -106,7 +117,48 @@ legend {
                             </div>
                         <?php }?>
                         </div>
-                       <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/rightarrow.jpg" style="width:30px"></div>
+                       <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/rightarrow.jpg" style="width:30px"></div>-->
+                       <div>
+    <div class="form-group row">
+        <div class="col-md-3" style="margin-top: 20px;margin-bottom: 10px;">
+            <div class="controls pull-right hidden-xs">
+                <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-groom" data-slide="prev"></a>
+                <a class="right fa fa-chevron-right btn btn-primary" href="#carousel-groom" data-slide="next"></a>
+            </div>
+        </div>
+    </div>
+    <div id="carousel-groom" class="carousel slide hidden-xs" data-ride="carousel">
+        <div class="carousel-inner ">
+            <?php
+                foreach($response['data']['ProfilePhotos'] as $p) { 
+                    if ($i==1) {
+                        if ($j==1) {
+                            echo '<div class="item active"><div class="row">';
+                        } else { 
+                            echo '<div class="item"><div class="row">';
+                        }
+                    }
+                    ?>        
+                          <div class="col-sm-4">
+                            <div class="col-item">
+                                <div class="photo">
+                                   <img src="<?php echo $p['ProfilePhoto'];?>" class="img-responsive" alt="a">
+                                </div>
+                            </div>
+                        </div>
+                    <?php 
+                    if ($i==3) { 
+                         echo '</div></div>';
+                        $i=1;
+                    } else {
+                        $i++;
+                    }
+                    $j++;
+                } 
+            ?>
+        </div>
+    </div>
+ </div>
                   </div>
                 </div>
                   
@@ -246,7 +298,6 @@ legend {
                 <tr>
                      <th>Education</th>
                     <th>Education details</th>
-                    <th>Main Education</th>
                     <th>Attachments</th>
                 </tr>
             </thead>
@@ -1010,3 +1061,136 @@ function ViewAttchment(AttachmentID,ProfileID,FileName) {
   $('[data-toggle="tooltip"]').tooltip()
 })
   </script>
+
+
+					      <div>
+    <div class="form-group row" style="width:100%">
+        <div class="col-md-9" style="text-align:center;color:blue;">
+            <h2>Featured Brides</h2>
+        </div>
+        <div class="col-md-3" style="margin-top: 20px;margin-bottom: 10px;">
+            <div class="controls pull-right hidden-xs">
+                <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-bride" data-slide="prev"></a>
+                <a class="right fa fa-chevron-right btn btn-primary" href="#carousel-bride" data-slide="next"></a>
+            </div>
+        </div>
+    </div>
+    <div id="carousel-bride" class="carousel slide hidden-xs " data-ride="carousel">
+        <div class="carousel-inner ">
+            <div class="item"><div class="row">        
+                          <div class="col-sm-4">
+                            <div class="col-item">
+                                <div class="photo">
+                                    <img src="http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/uploads/157165936239321949-passbild-eines-lachenden-geschäftsfrau-türkisch.jpg" class="img-responsive" alt="a">
+                                </div>
+                                <div class="info">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h5>
+                                                sakthi</h5>
+                                            <h5 class="price-text-color">
+                                                20</h5>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                          <div class="col-sm-4">
+                            <div class="col-item">
+                                <div class="photo">
+                                    <img src="http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/uploads/1571654885swfse-Copy(5).jpg" class="img-responsive" alt="a">
+                                </div>
+                                <div class="info">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h5>
+                                                Menaha</h5>
+                                            <h5 class="price-text-color">
+                                                22</h5>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                          <div class="col-sm-4">
+                            <div class="col-item">
+                                <div class="photo">
+                                    <img src="http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/uploads/1570769018index3333.jpg" class="img-responsive" alt="a">
+                                </div>
+                                <div class="info">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h5>
+                                                Subbulekshmi</h5>
+                                            <h5 class="price-text-color">
+                                                24</h5>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div></div><div class="item active"><div class="row">        
+                          <div class="col-sm-4">
+                            <div class="col-item">
+                                <div class="photo">
+                                    <img src="http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/uploads/1571806914gettyimages-926874118-612x612.jpg" class="img-responsive" alt="a">
+                                </div>
+                                <div class="info">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h5>
+                                                Sumithra</h5>
+                                            <h5 class="price-text-color">
+                                                21</h5>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                          <div class="col-sm-4">
+                            <div class="col-item">
+                                <div class="photo">
+                                    <img src="http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/uploads/1571827203Passport-Size-Photo.jpg" class="img-responsive" alt="a">
+                                </div>
+                                <div class="info">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h5>
+                                                Nabisha</h5>
+                                            <h5 class="price-text-color">
+                                                25</h5>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                          <div class="col-sm-4">
+                            <div class="col-item">
+                                <div class="photo">
+                                    <img src="http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/uploads/1571827802531_AM-395.jpg" class="img-responsive" alt="a">
+                                </div>
+                                <div class="info">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h5>
+                                                Subbulekshmi</h5>
+                                            <h5 class="price-text-color">
+                                                22</h5>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div></div>        </div>
+    </div>
+  </div>  				

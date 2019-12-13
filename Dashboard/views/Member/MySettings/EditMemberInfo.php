@@ -1,7 +1,7 @@
 <?php
 $page="MyMemberInfo";
     if (isset($_POST['Btnupdate'])) {
-        $response = $webservice->EditMemberInfo($_POST);
+         $response =$webservice->getData("Member","EditMemberInfo",$_POST);
         if ($response['status']=="success") {   ?>
            <script>location.href='<?php echo AppUrl;?>MySettings/MemberInfoUpdated';</script>
         <?php
@@ -9,7 +9,7 @@ $page="MyMemberInfo";
             $errormessage = $response['message']; 
         }
     }
-    $response = $webservice->GetMemberInfo();
+    $response = $webservice->getData("Member","GetMemberInfo");
     $Member=$response['data'];
     $CountryCodes=$Member['Country'];
 ?>

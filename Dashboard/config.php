@@ -484,7 +484,8 @@
         session_destroy();
         sleep(3);
         //header("Location:".$_GET['redirect']);
-        header("Location:".DomainName);
+        //header("Location: '".DomainName."'");
+        echo "<script>location.href='".DomainName."';</script>";
     }
     
     class J2JDashboard {

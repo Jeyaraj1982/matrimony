@@ -69,7 +69,7 @@
     </div>
   </div>
     
-<!--	<div class="product-slider">
+	<!--<div class="product-slider">
 		<div id="carousel" class="carousel slide" data-ride="carousel1">
 			<div class="carousel-inner">
 				 
@@ -144,7 +144,7 @@
 
 </div>
 </div>
-</div>     -->
+</div>>     -->
 
       
     <!--

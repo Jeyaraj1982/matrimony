@@ -85,12 +85,24 @@
            #server_message_error {color:red}
            #server_message_success {color:green}
         </style>
+                                  
+      <!--<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>-->
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
         <script>
             var AppUrl = "<?php echo AppUrl;?>";
+            var API_URL  = AppUrl;
+            
+            function preloading_withText(txt,paddingTop) {
+                if (txt!="") {
+                return "<div style='text-align:center;padding-top:"+paddingTop+"px;'><img src='http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/assets/images/loader.gif' style='padding-bottom:12px;'><br>"+txt+"</div>";
+                }
+                return "<div style='text-align:center;line-height:"+paddingTop+"px;'><img src='http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/assets/images/loader.gif'></div>";
+            }
           var MyFavoritedPage=0;
               function changeMemberStatus(txt) {
         $('#mem_current_status').html(txt);
-    }
+    }                                
             
             
             function doPost(url,param) {
@@ -100,7 +112,7 @@
                     return xhr.responseText;
                 });
             }
-            
+                                   
             var error_htmlText = '<div style="background:white;width:100%;padding:20px;height:100%;">'
                                         + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                                         + '<h4 class="modal-title"></h4>  <br><br>'

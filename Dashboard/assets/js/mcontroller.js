@@ -159,24 +159,28 @@
                     $.simplyToast("Profile ID: "+ProfileCode+" has been unfavourited", 'warning');
         }});
     }
-	function AddToShortList(ProfileCode,ImgId) {
+    
+	/* Code Checked By J2J*/
+    function AddToShortList(ProfileCode,ImgId) {
         $('#img_'+ImgId).attr("onclick","javascript:void(0)");
-        //var grey = $('#img_'+ImgId).attr("src");
-       // var red = $('#img_'+ImgId).attr("src_a");
-        $.ajax({
-                url: API_URL + "m=Member&a=AddToShortList&ProfileCode="+ProfileCode, 
-                success: function(result){
-                    //$('#img_'+ImgId).attr("src",red);
-                   // $('#img_'+ImgId).attr("src_a",grey);
-					$('#img_'+ImgId).html("Shortlisted");
-                    $('#img_'+ImgId).attr("onclick","RemoveFromShortList('"+ProfileCode+"','"+ImgId+"')");
-                    $.simplyToast("Profile ID: "+ProfileCode+" has been shortlisted", 'info');
-        }});
-    }
+        var request = $.post(API_URL + "m=Member&a=AddToShortList&ProfileCode="+ProfileCode,"",function(result) {
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                $('#img_'+ImgId).html("Shortlisted");
+                $('#img_'+ImgId).attr("onclick","RemoveFromShortList('"+ProfileCode+"','"+ImgId+"')");
+                $.simplyToast(obj.message, 'info');
+            } else {
+                $('#img_'+ImgId).attr("onclick","AddToShortList('"+ProfileCode+"','"+ImgId+"')");
+                $.simplyToast(obj.message, 'danger');
+            }
+        }).fail(function(xhr, status, error) {
+            $('#img_'+ImgId).attr("onclick","AddToShortList('"+ProfileCode+"','"+ImgId+"')");
+            $.simplyToast("Network unavailable" ,'danger');
+        }); 
+    }                    
+    
 	function RemoveFromShortList(ProfileCode,ImgId) {
         $('#img_'+ImgId).attr("onclick","javascript:void(0)");
-       // var grey = $('#img_'+ImgId).attr("src_a");
-      //  var red = $('#img_'+ImgId).attr("src");
         $.ajax({
                 url: API_URL + "m=Member&a=RemoveFromShortList&ProfileCode="+ProfileCode, 
                 success: function(result){
@@ -184,14 +188,14 @@
                     if (MyShortListedPage==1) {
                         $('#div_'+ProfileCode).hide(500);
                     }
-        
-                   // $('#img_'+ImgId).attr("src",grey); 
-                   // $('#img_'+ImgId).attr("src_a",red); 
 					  $('#img_'+ImgId).html("Add To Shortlist");
                     $('#img_'+ImgId).attr("onclick","AddToShortList('"+ProfileCode+"','"+ImgId+"')");
                     $.simplyToast("Profile ID: "+ProfileCode+" has been removed from shortlist", 'warning');
         }});
     }
+    
+    
+    
 	
     function SendToInterest(ProfileCode,ImgId) {
         $('#img_'+ImgId).attr("onclick","javascript:void(0)");

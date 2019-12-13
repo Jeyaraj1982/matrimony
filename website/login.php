@@ -1,7 +1,7 @@
 <?php
     if (isset($_POST['login'])) {
         include_once(application_config_path);
-        $response = $webservice->getData("Member","Login",$_POST);
+        $response = $webservice->getData("Member","Login",$_POST); 
         if ($response['status']=="success")  {
             $_SESSION['MemberDetails'] = $response['data'];
             echo "<script>location.href='".SiteUrl."';</script>";
@@ -14,6 +14,17 @@
     $layout=0;
     include_once("includes/header.php");
 ?>  <br><br><br>
+<script>
+function submitMemberRegistrationform() {
+        $('#ErrUserName').html("");
+        $('#ErrPassword').html("");
+		ErrorCount=0;
+        
+        IsNonEmpty("UserName","ErrUserName","Please Enter Your Member ID / Registered Email");
+        IsNonEmpty("Password","ErrPassword","Please Enter Your Password");
+		 return  (ErrorCount==0) ? true : false;
+    }    
+</script>
     <div class="row">
         <div class="status alert alert-success" style="display: none"></div>
         <div class="col-sm-3"></div>    
@@ -23,14 +34,14 @@
             </div>
             <div id="sendmessage"></div>
             <div id="errormessage"></div>
-            <form action="login" method="post" role="form" class="contactForm">
+            <form action="" method="post" role="form" class="contactForm" onsubmit="return submitMemberRegistrationform();">
                 <table style="margin: 0px auto;line-height: 28px;color: #333;min-width: 250px;">
                     <tr>
                         <td colspan="2">
                             <div class="form-group">
                                 Member ID / Registered Email <br>
                                 <input type="text" name="UserName" class="form-control" id="UserName" placeholder="Member ID / Registered Email" value="<?php echo isset($_POST['UserName']) ? $_POST['UserName'] : '';?>"  data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                                <div class="validation"></div> 
+                                <span class="errorstring" id="ErrUserName"><?php echo isset($ErrUserName)? $ErrUserName : "";?></span>
                             </div>
                         </td>
                     </tr>
@@ -39,7 +50,7 @@
                             <div class="form-group">
                                 Password <br>
                                 <input type="Password" name="Password" class="form-control" id="Password" placeholder="Password" value="<?php echo isset($_POST['Password']) ? $_POST['Password'] : '';?>" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                                <div class="validation"></div> 
+                                <span class="errorstring" id="ErrPassword"><?php echo isset($ErrPassword)? $ErrPassword : "";?></span>
                             </div>
                         </td>
                     </tr> 

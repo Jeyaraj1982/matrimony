@@ -1,10 +1,10 @@
 <?php
-    define("SiteUrl","https://nahami.online/demo/matrimony/Dashboard/");
-    define("WebServiceUrl","https://nahami.online/demo/matrimony/Webservice/");
-    define("AppUrl","https://nahami.online/demo/matrimony/Dashboard/");
-    define("ImageUrl","https://nahami.online/demo/matrimony/Dashboard/assets/images/");
-    define("ImagePath","https://nahami.online/demo/matrimony/Dashboard/assets/images/");
-    define("DomainName","https://nahami.online/demo/matrimony/");
+    define("SiteUrl","http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/");
+    define("WebServiceUrl","http://www.matrimony.dev.j2jsoftwaresolutions.com/Webservice/");
+    define("AppUrl","http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/");
+    define("ImageUrl","http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/assets/images/");
+    define("ImagePath","http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/assets/images/");
+    define("DomainName","http://www.matrimony.dev.j2jsoftwaresolutions.com");
     define("SITE_TITLE","Matrimony") ;
     $config = json_decode(json_encode(array("logoPath"=>"http://nammamarriage.com/assets/newlogo.png")));
 ?> 

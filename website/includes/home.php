@@ -2,12 +2,12 @@
 include_once(application_config_path);
 ?>
     <link rel="stylesheet" type="text/css" href="../assets/bridegroomslider/es-carousel.css" />
-    <link rel="stylesheet" type="text/css" href="http://wedlink.in/application/views/front_end/default/source/css/prettyphoto.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettyphoto.css" />
 <?php
     $home = $mysql->select("select * from _jpages where ishomepage=1");
 
     if (sizeof($home)>0) {
-        
+         
     $pageContent = $mysql->select("select * from _jpages where pageid=".$home[0]['pageid']);
     echo "<div style='padding:10px;font-family:arial;font-size:13px;text-align:justify;'>";
     echo "<div style='font-family:arial;font-size:18px;font-weight:bold;border-bottom:2px solid #222;margin-bottom:10px;padding-bottom:10px;'>".$pageContent[0]['pagetitle']."</div>";
@@ -20,6 +20,8 @@ include_once(application_config_path);
     }
     
 ?> 
+ 
+  
 	 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 <style>
@@ -58,7 +60,15 @@ include_once(application_config_path);
       
       <div class="container" style="padding-top:10px">
 			<div class="form-group row">
-                <div class="col-sm-6" >
+                <div class="col-sm-6" style="background:red;">
+					<br>
+				</div>
+				<div class="col-sm-6" style="background:grey;">
+					<br>
+				</div>
+			</div>
+			<div class="form-group row">
+                <div class="col-sm-6" style="background:red">
 					<?php 
 					    include_once("website/includes/hp_featured_grooms.php");
 					?>
@@ -88,7 +98,7 @@ include_once(application_config_path);
                     <td valign="top">
                         <?php
                         if (JFrame::getAppSetting('isenableevents')) {  
-                        include_once("includes/hp_feature_events.php");
+                        include_once("includes/hp_feature_events.php"); 
                         }
                         ?>
                     </td>

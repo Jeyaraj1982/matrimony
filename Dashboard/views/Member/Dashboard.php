@@ -1,9 +1,11 @@
 <?php
     if (isset($_POST['welcomebutton'])) {
-        $response = $webservice->WelcomeMessage();
+        //$response = $webservice->WelcomeMessage();
+		$response = $webservice->getData("Member","WelcomeMessage");
     }  
     $response = $webservice->getData("Member","GetMyProfiles",array("ProfileFrom"=>"All"));
-    $whoviewed = $webservice->getData("Member","GetRecentlyWhoViewedProfiles",array("requestfrom"=>"0","requestto"=>"3"));
+	//print_r($response);
+	$whoviewed = $webservice->getData("Member","GetRecentlyWhoViewedProfiles",array("requestfrom"=>"0","requestto"=>"3"));
     $WhoViewedYourProfile = $whoviewed['data'];       
 
     $whofavorited = $webservice->getData("Member","GetWhoFavouriteMyProfiles",array("requestfrom"=>"0","requestto"=>"3"));
@@ -242,9 +244,12 @@
                 <div class="card-body" style="padding:10px !important;height: 480px;">
                     <?php if (sizeof($MyRecentlyViewed)>0) { ?>
                 <div>
-                    <?php
-                     foreach($MyRecentlyViewed as $Profile) { 
+                    <?php $i=1; 
+					foreach($MyRecentlyViewed as $Profile) { 
+					   if($i<=3){
                        echo dashboard_view_2($Profile);
+					   }
+					   $i++;
                     }?> 
                 </div>
                 <div style="clear:both;padding:3px;text-align:center;">

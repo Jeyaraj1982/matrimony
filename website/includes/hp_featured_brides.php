@@ -14,10 +14,10 @@
     ?>
   <div >
     <div class="form-group row" style="width:100%">
-        <div class="col-md-9">
-            <h3>Featured Brides</h3>
+        <div class="col-md-9" style="text-align:center;color:blue;">
+            <h2>Featured Brides</h2>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" style="margin-top: 20px;margin-bottom: 10px;">
             <div class="controls pull-right hidden-xs">
                 <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-bride" data-slide="prev"></a>
                 <a class="right fa fa-chevron-right btn btn-primary" href="#carousel-bride" data-slide="next"></a>

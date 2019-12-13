@@ -1,11 +1,14 @@
 <?php
     include_once("config.php");
-    
+     
     include_once(web_path."classes/class.pdo.mysql.php");
+       
+    $app     = new MySql(DBHOST,DBUSER,DBPASS,"j2jsoftw_matri_web");
+    $appData = $app->select("select * from _japp where concat('www.',Lower(hostname))='".strtolower($_SERVER['HTTP_HOST'])."' or  Lower(hostname)='".strtolower($_SERVER['HTTP_HOST'])."' or  concat('www.',Lower(hosturl))='".strtolower($_SERVER['HTTP_HOST'])."' or  Lower(hosturl)='".strtolower($_SERVER['HTTP_HOST'])."' ");
     
-    $app     = new MySql(DBHOST,DBUSER,DBPASS,"onlin5zs_jframe");
-    $appData = $app->select("select * from _japp where Lower(hostname)='".strtolower($_SERVER['HTTP_HOST'])."' or  Lower(hosturl)='".strtolower($_SERVER['HTTP_HOST'])."' ");
-  
+    
+    
+    
     if (sizeof($appData)==0) {
         echo "Configuration Failed. ";
         exit;
@@ -57,5 +60,7 @@
         } else {
             include_once(web_path."index.php");
         }
+    } else {
+         include_once(web_path."index.php");
     }
 ?>

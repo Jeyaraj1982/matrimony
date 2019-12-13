@@ -13,18 +13,18 @@
         $j=1;
 ?>
  <div>
-    <div class="form-group row" style="width:100%">
-        <div class="col-md-9">
-            <h3>Featured Grooms</h3>
+    <div class="form-group row">
+        <div class="col-md-9" style="text-align:center;color:blue;">
+            <h2>Featured Grooms</h2>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" style="margin-top: 20px;margin-bottom: 10px;">
             <div class="controls pull-right hidden-xs">
                 <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-groom" data-slide="prev"></a>
                 <a class="right fa fa-chevron-right btn btn-primary" href="#carousel-groom" data-slide="next"></a>
             </div>
         </div>
     </div>
-    <div id="carousel-groom" class="carousel slide hidden-xs row" data-ride="carousel">
+    <div id="carousel-groom" class="carousel slide hidden-xs" data-ride="carousel">
         <div class="carousel-inner ">
             <?php
                 foreach($response['data'] as $p) { 
@@ -40,7 +40,7 @@
                           <div class="col-sm-4">
                             <div class="col-item">
                                 <div class="photo">
-                                    <img src="<?php echo $p['ProfileThumb'];?>" class="img-responsive" alt="a">
+                                   <img src="<?php echo $p['ProfileThumb'];?>" class="img-responsive" alt="a">
                                 </div>
                                 <div class="info">
                                     <div class="row">
@@ -68,4 +68,6 @@
         </div>
     </div>
  </div>
+
+ 
  

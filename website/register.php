@@ -1,8 +1,10 @@
 <?php 
-    if (isset($_POST['BtnRegister'])) {         
+include_once("includes/header.php");
+    if (isset($_POST['BtnRegister'])) {
+
         include_once(application_config_path);
         $response = $webservice->getData("Member","Register",$_POST);
-        if ($response['status']=="success") {
+		if ($response['status']=="success") {
             $_SESSION['MemberDetails']=$response['data'];
             echo "<script>location.href='Dashboard';</script>";
         } else {
@@ -13,7 +15,7 @@
     $rand=substr(rand(),0,4); 
     $isShowSlider = false;
     $layout=0;
-    include_once("includes/header.php");
+    
 ?>
 <script>
     $(document).ready(function () {
@@ -44,7 +46,7 @@
         ErrorCount=0;
         
         if (IsNonEmpty("Name","ErrName","Please enter your name")) {
-            IsAlphabet("Name","ErrName","Please enter alpha numeric characters only");
+            IsAlphabet("Name","ErrName","Please enter alphabet characters only");
         }
         
         if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please enter your mobile number")) {
@@ -68,7 +70,7 @@
             document.getElementById("ErrCaptchatext").innerHTML="Captcha Not Matched!";
             return false;
         }
-        
+        älert(ErrorCount);
         return  (ErrorCount==0) ? true : false;
     }                                                
 </script>

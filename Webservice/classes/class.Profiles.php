@@ -509,6 +509,17 @@
             return  $result;
         }
         
+        /* Code Jeyaraj */
+     function ActiveProfileInfoByProfileCode($ProfileCode,$Fields=array()) {
+             global $mysql;
+             return $mysql->select("select ".(sizeof($Fields)==0 ? " * " : implode($Fields,","))." from `_tbl_profiles` where ProfileCode='".$ProfileCode."'");
+         }
+         
+         function ActiveProfileInfoByMemberID($MemberID,$Fields=array()) {
+             global $mysql;
+             return $mysql->select("select ".(sizeof($Fields)==0 ? " * " : implode($Fields,","))." from `_tbl_profiles` where MemberID='".$MemberID."'");
+         }
+        
     } 
 
     function getDataURI($image, $mime = '') {
@@ -534,6 +545,7 @@
         // imagedestroy($jpg_image);
         //image/jpeg;
         //image/png
+        return $image;
         $temp = explode(".",$image);
         $temp = trim(strtolower($temp[sizeof($temp)-1]));
         if ($temp=="jpeg"  || $temp=="jpg") {
@@ -544,10 +556,18 @@
         // return 'data: '.(function_exists('mime_content_type') ? mime_content_type($image) : $mime).';base64,'.base64_encode(file_get_contents($image));
     } 
 
-    function file_url($url){
+    function file_url($url){    
+        return $url;
         $parts = parse_url($url);
         $path_parts = array_map('rawurldecode', explode('/', $parts['path']));
         return $parts['scheme'].'://'.$parts['host'].implode('/', array_map('rawurlencode', $path_parts));
     }
     //537
+    
+    
+    
+    
+                              
+    
+     /* End of Code Jeyaraj*/
 ?>

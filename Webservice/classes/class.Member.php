@@ -1,6 +1,10 @@
 <?php
      class Member {
 
+         public function __construct() {
+             
+         }
+         
          function Login() {
 
              global $mysql,$loginInfo,$j2japplication;
@@ -121,18 +125,18 @@
          function Register() {
 
              global $mysql;
-
+				
              if (!(strlen(trim($_POST['Name']))>0)) {
-                return Response::returnError("Please enter your name",array("Name"));
+                return Response::returnError("Please enter your name");
              }
 
              if (!(strlen(trim($_POST['Email']))>0)) {
                 return Response::returnError("Please enter your email");
              }
 
-             if (!(strlen(trim($_POST['Gender']))>0)) {
-                return Response::returnError("Please enter password");
-             }
+            // if (!(strlen(trim($_POST['Gender']))>0)) {
+            //    return Response::returnError("Please enter password");
+            // }
 
              if (!(strlen(trim($_POST['MobileNumber']))>0)) {
                 return Response::returnError("Please enter password");
@@ -143,14 +147,14 @@
              }
 
              $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'");
-             
+            
              if ($allowDuplicateMobile[0]['ParamA']==0) {
                  $data = $mysql->select("select * from `_tbl_members` where  `MobileNumber`='".$_POST['MobileNumber']."'");
                  if (sizeof($data)>0) {
                      return Response::returnError("Mobile Number Already Exists");
                  }
              }
-
+ 
              $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
              
              if ($allowDuplicateEmail[0]['ParamA']==0) {
@@ -170,6 +174,8 @@
                                                        "CountryCode"    => $_POST['CountryCode'],
                                                        "ReferedBy"      => AdminFranchise,
                                                        "CreatedOn"      => date("Y-m-d H:i:s"))); 
+			
+													  
              $data = $mysql->select("select * from `_tbl_members` where `MemberID`='".$id."'");
 
              $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"  => date("Y-m-d H:i:s"),
@@ -370,22 +376,37 @@
              if (!(strlen(trim($_POST['ProfileName']))>0)) {
                 return Response::returnError("Please enter your name",array("param"=>"ProfileName"));
              }
-             if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0" )) {
-                return Response::returnError("Please select sex",array("param"=>"Sex"));
-             }
+            
 
              $member= $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              
+			 if($_POST['ProfileFor']=="PSF001" || $_POST['ProfileFor']=="PSF003" || $_POST['ProfileFor']=="PSF005" || $_POST['ProfileFor']=="PSF006"){
+				  $SexCode = "SX001";
+			 }
+			 if($_POST['ProfileFor']=="PSF002" || $_POST['ProfileFor']=="PSF007" || $_POST['ProfileFor']=="PSF008" || $_POST['ProfileFor']=="PSF009"){
+				$SexCode = "SX002";
+			}
+			if($_POST['ProfileFor']=="PSF004"){
+				if($member[0]['Sex']=="Male"){
+					$SexCode = "SX001";
+				} else {
+					$SexCode = "SX002";
+				}
+			}
+			 
              $ProfileFors   = CodeMaster::getData("PROFILESIGNIN",$_POST["ProfileFor"]);
-             $Sex           = CodeMaster::getData("SEX",$_POST["Sex"]); 
+             $Sex           = CodeMaster::getData("SEX",$SexCode); 
              $ProfileCode   = SeqMaster::GetNextDraftProfileCode();
              $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
+			 
+			 
+			 
              $id =  $mysql->insert("_tbl_draft_profiles",array("ProfileCode"      => $ProfileCode,
                                                               "ProfileForCode"    => $ProfileFors[0]['SoftCode'],
                                                               "ProfileFor"        => $ProfileFors[0]['CodeValue'],
                                                               "ProfileName"       => trim($_POST['ProfileName']),
                                                               "DateofBirth"       => $dob,        
-                                                              "SexCode"           => $_POST['Sex'],      
+                                                              "SexCode"           => $Sex[0]['SoftCode'],      
                                                               "Sex"               => $Sex[0]['CodeValue'],      
                                                               "CreatedOn"         => date("Y-m-d H:i:s"),        
                                                               "MemberID"          => $loginInfo[0]['MemberID'],
@@ -394,7 +415,11 @@
              $sql=$mysql->qry;
              if (sizeof($id)>0) {
                  $mysql->execute("update `_tbl_sequence` set LastNumber=LastNumber+1 where `SequenceFor`='DraftProfile'");
-                 return Response::returnSuccess("Profile created successfully.".$sql,array("Code"=>$ProfileCode));
+                 return Response::returnSuccess('<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><br><br><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your Profile Created Successfully. </h5>
+                            <h5 style="text-align:center;"><a  href="Draft/Edit/GeneralInformation/'+$id+'htm?msg=1">Continue</a>
+                       </div>'.$sql,array("Code"=>$ProfileCode));
              } else{
                  return Response::returnError("Access denied. Please contact support");   
              }
@@ -454,7 +479,7 @@
              if ($memberdata[0]['IsEmailVerified']==0) {
                  return $this->ChangeEmailFromVerificationScreen("",$loginInfo[0]["LoginID"],"","");
              }
-             return "<script>location.href='".AppPath."/MyProfiles/CreateProfile';</script>";
+             return "<script>location.href='".AppPath."MyProfiles/CreateProfile';</script>";
          }
 
          function SaveBasicSearch() {
@@ -1026,8 +1051,9 @@
                  $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and  RequestToVerify='0' and IsApproved='0'");
                  $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and  RequestToVerify='1'");
                  
+				  
                  if (sizeof($DraftProfiles)>0) {
-                     
+                    
                      foreach($DraftProfiles as $DraftProfile) {
                         $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode']);    
                         $result['mode']="Draft";
@@ -1036,29 +1062,23 @@
                      
                  } else if (sizeof($PostProfiles)>0) {
                      
+					  
                      if ($PostProfiles[0]['IsApproved']>0) {
                          
                          $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where DraftProfileID='".$PostProfiles['0']['ProfileID']."' and  `MemberID` = '".$loginInfo[0]['MemberID']."'");
+						 
                          foreach($PublishedProfiles as $PublishedProfile) {
                             $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
-                            $result['mode']="Published";
-							
-							//$WhoViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$PublishedProfile['ProfileCode']."' AND VisterMemberID>0 AND VisterProfileID>0  group by `VisterProfileCode` ");
+                            $result['mode']="Published"; 
 							$result['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($PublishedProfile['ProfileCode']));
-
-							//$WhoFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
 							$result['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($PublishedProfile['ProfileCode']));
-						
-							//$MutualCount = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' order by FavProfileID DESC)");
 							$result['MutualCount']= sizeof($this->GetMutualProfilesCount($PublishedProfile['ProfileCode']));
-						
-							//$WhoShortListedcount = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
-							$result['WhoShortListedcount']= sizeof($this->GetWhoShortListedMyProfile($PublishedProfile['ProfileCode']));
-							
+							$result['WhoShortListedcount']= Shortlist::WhoShortlisted($PublishedProfile['ProfileCode']);
                             $Profiles[]=$result;     
                          }
-                          
+						 
                      } else {
+						  
                         foreach($PostProfiles as $PostProfile) {
                             $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode']);
                             $result['mode']="Posted";
@@ -1118,7 +1138,7 @@
 							$result['MutualCount']= sizeof($this->GetMutualProfilesCount($PublishedProfile['ProfileCode']));
 						
 							//$WhoShortListedcount = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
-							$result['WhoShortListedcount']= sizeof($this->GetWhoShortListedMyProfile($PublishedProfile['ProfileCode']));
+							$result['WhoShortListedcount']= Shortlist::WhoShortlisted($PublishedProfile['ProfileCode']);
 						
                         $Profiles[]=$result; 
                      }                                                                          
@@ -1953,7 +1973,7 @@
              $Nationality    = CodeMaster::getData("NATIONALNAMES",$_POST['Nationality']);
              $Childrens     = CodeMaster::getData("NUMBEROFBROTHER",$_POST['HowManyChildren']);  
 
-             $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
+             $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date']; 
              
              $updateSql = "update `_tbl_draft_profiles` set `ProfileFor`        = '".$_POST['ProfileFor']."',
                                                            `ProfileName`       = '".$_POST['ProfileName']."',
@@ -1978,6 +1998,7 @@
                                                            `Community`         = '".$Community[0]['CodeValue']."',
                                                            `NationalityCode`   = '".$_POST['Nationality']."',
                                                            `Nationality`       = '".$Nationality[0]['CodeValue']."',
+                                                           `mainEducation`     = '".$_POST['MainEducation']."',
                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
                                                            `AboutMe`           = '".$_POST['AboutMe']."'"; 
         if ($_POST['Religion']=="RN009") {
@@ -3146,9 +3167,6 @@
              } else {
                  $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
              }
-             
-			 
-			    
 			
              $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");
              
@@ -3624,7 +3642,7 @@
             }                                                                                     
          }
   
-         function GetLandingPageProfiles() {
+         public function GetLandingPageProfiles() {
              
              global $mysql;
              $Profiles = array();
@@ -3642,7 +3660,7 @@
              
                  return Response::returnSuccess("success",$Profiles);                                               
          }
-		function GetFeatureGroom (){
+		function GetFeatureGroom () {
 			global $mysql;
 				$landingpageProfiles = $mysql->select("select ProfileCode from _tbl_profiles where SexCode='SX001' and  ProfileCode in (select ProfileCode from `_tbl_landingpage_profiles` where `IsShow`='1')"); 
                 foreach($landingpageProfiles as $profile) {
@@ -3842,7 +3860,8 @@
              }
              
              return Response::returnSuccess("success",$result);
-         }
+         
+		 }
 		function SearchByProfileIDResult() {
             global $mysql,$loginInfo;
              $result = array();
@@ -3904,21 +3923,64 @@
              foreach(explode(",",$_POST['Complexion']) as $cmc) {
                $ComplexionCode[] = "'".trim($cmc)."'"; 
              }
-			 
+			$sql=""; 
 			$AllMaritalStatus =explode(",",$_POST['MaritalStatus']);
-			if (isset($AllMaritalStatus[0])!="All") {
+			if (isset($AllMaritalStatus[0]) && $AllMaritalStatus[0]!="All") {
               $sql .=" and `MaritalStatusCode` in (".implode(",",$MatrialStatusCode).") ";    
+            }
+			
+			$AllReligion =explode(",",$_POST['Religion']);
+			if (isset($AllReligion[0]) && $AllReligion[0]!="All") {
+              $sql .=" and `ReligionCode` in (".implode(",",$ReligionCode).") ";    
+            }
+			$AllCaste =explode(",",$_POST['Caste']);
+			if (isset($AllCaste[0]) && $AllCaste[0]!="All") {
+              $sql .=" and `CasteCode` in (".implode(",",$CasteCode).") ";    
+            }
+			$AllIncomeRange =explode(",",$_POST['IncomeRange']);
+			if (isset($AllIncomeRange[0]) && $AllIncomeRange[0]!="All") {
+              $sql .=" and `AnnualIncomeCode` in (".implode(",",$IncomeRangeCode).") ";    
+            }
+			$AllOccupation =explode(",",$_POST['Occupation']);
+			if (isset($AllOccupation[0]) && $AllOccupation[0]!="All") {
+              $sql .=" and `OccupationTypeCode` in (".implode(",",$OccupationCode).") ";    
+            }
+			$AllFamilyType =explode(",",$_POST['FamilyType']); 
+			if (isset($AllFamilyType[0])!="All" && $AllFamilyType[0]!="All") {
+              $sql .=" and `FamilyTypeCode` in (".implode(",",$FamilyTypeCode).") ";    
+            }
+			$AllWorkingPlace =explode(",",$_POST['WorkingPlace']);
+			if (isset($AllWorkingPlace[0]) && $AllWorkingPlace[0]!="All") {
+              $sql .=" and `WorkedCountryCode` in (".implode(",",$WorkingPlaceCode).") ";    
+            } 
+			$AllDiet =explode(",",$_POST['Diet']);
+			if (isset($AllDiet[0]) && $AllDiet[0]!="All") {
+              $sql .=" and `DietCode` in (".implode(",",$DietCode).") ";    
+            }
+			$AllSmoke =explode(",",$_POST['Smoke']);
+			if (isset($AllSmoke[0]) && $AllSmoke[0]!="All") {
+              $sql .=" and `SmokeCode` in (".implode(",",$SmokeCode).") ";    
+            }
+			$AllDrink =explode(",",$_POST['Drink']); 
+			if (isset($AllDrink[0]) && $AllDrink[0]!="All") {
+              $sql .=" and `DrinkCode` in (".implode(",",$DrinkCode).") ";    
+            }
+			$AllBodyType =explode(",",$_POST['BodyType']);
+			if (isset($AllBodyType[0]) && $AllBodyType[0]!="All") {
+              $sql .=" and `BodyTypeCode` in (".implode(",",$BodyTypeCode).") ";    
+            }
+			$AllComplexion =explode(",",$_POST['Complexion']);
+			if (isset($AllComplexion[0]) && $AllComplexion[0]!="All") {
+              $sql .=" and `ComplexionCode` in (".implode(",",$ComplexionCode).") ";    
             }  
 			 
-			
-			//$Profiles = $mysql->select("select * from _tbl_profiles where ( (YEAR(DateofBirth)>='".(DATE("Y")-$_POST['toage'])."') and (YEAR(DateofBirth)<='".(DATE("Y")-$_POST['age'])."') ) and `SexCode`='".$_POST['LookingFor']."' and `MaritalStatusCode` in (".implode(",",$MatrialStatusCode).") and `ReligionCode` in (".implode(",",$ReligionCode).") and `CasteCode` in (".implode(",",$CasteCode).") and `AnnualIncomeCode` in (".implode(",",$IncomeRangeCode).") and `OccupationTypeCode` in (".implode(",",$OccupationCode).") and `FamilyTypeCode` in (".implode(",",$FamilyTypeCode).") and `WorkedCountryCode` in (".implode(",",$WorkingPlaceCode).") and `DietCode` in (".implode(",",$DietCode).") and `SmokeCode` in (".implode(",",$SmokeCode).") and `DrinkCode` in (".implode(",",$DrinkCode).") and `BodyTypeCode` in (".implode(",",$BodyTypeCode).") and `ComplexionCode` in (".implode(",",$ComplexionCode).") ");
 			$Profiles = $mysql->select("select * from _tbl_profiles where ( (YEAR(DateofBirth)>='".(DATE("Y")-$_POST['toage'])."') and (YEAR(DateofBirth)<='".(DATE("Y")-$_POST['age'])."') ) and `SexCode`='".$_POST['LookingFor']."' ".$sql);
              
              foreach($Profiles as $p) { 
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
              }
              
-             return Response::returnSuccess("success",$result);
+             return Response::returnSuccess("success"."select * from _tbl_profiles where ( (YEAR(DateofBirth)>='".(DATE("Y")-$_POST['toage'])."') and (YEAR(DateofBirth)<='".(DATE("Y")-$_POST['age'])."') ) and `SexCode`='".$_POST['LookingFor']."' ".$sql,$result);
          }
          
          function GetMemberDeleteReason() {
@@ -3952,7 +4014,7 @@
                   }  
               }
               
-            
+             
              $ProfilePhotoFirst = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where `ProfileID`='".$Profiles[0]['ProfileID']."' and `ProfileCode`='".$ProfileCode."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='1'");                                        
               $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_profiles_verificationdocs` where `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
               $Educationattachments = $mysql->select("select * from `_tbl_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0'  and ProfileID='".$Profiles[0]['ProfileID']."'");
@@ -4160,6 +4222,7 @@
                                "Community"              => $Community[0]['CodeValue'],
                                "NationalityCode"        => $_POST['Nationality'],
                                "Nationality"            => $Nationality[0]['CodeValue'],
+                               "MainEducation"          => $_POST['MainEducation'],
                                "LastUpdatedOn"          => date("Y-m-d H:i:s"),
                                "AboutMe"                => $_POST['AboutMe'],
                                "MemberID"                =>$loginInfo[0]['MemberID']); 
@@ -4278,14 +4341,14 @@
 		 function GetMyRecentlyViewed($ProfileCode) {
 			 
 			global $mysql;           
-			$result = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$ProfileCode."' AND MemberID>0 AND ProfileID>0  group by `ProfileCode`"); 
+			$result = $mysql->select("select `ProfileCode` from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$ProfileCode."' AND `MemberID`>0 AND `ProfileID`>0  group by `ProfileCode`"); 
 			return $result;
 		 }
 		 function GetWhoRecentlyViewedMyProfile($ProfileCode) {
 			 
 			global $mysql;
                                     
-			$result = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$ProfileCode."' AND VisterMemberID>0 AND VisterProfileID>0  group by `VisterProfileCode`"); 
+			$result = $mysql->select("select `VisterProfileCode` from `_tbl_profiles_lastseen` where `ProfileCode` = '".$ProfileCode."' AND `VisterMemberID`>0 AND `VisterProfileID`>0  group by `VisterProfileCode`"); 
 			return $result;
 		 }
 		 function GetMyFavorited($ProfileCode) {
@@ -4313,12 +4376,13 @@
 			$result = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and  `VisterProfileCode`='".$ProfileCode."'");       
 			return $result;
 		 }
-		 function GetWhoShortListedMyProfile($ProfileCode) {
+		
+        /* function GetWhoShortListedMyProfile($ProfileCode) {
 			 
 			global $mysql;
 			$result = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and  `ProfileCode`='".$ProfileCode."'");       
 			return $result;
-		 }
+		 } */
          
          function DashboardCounts() {
               
@@ -4341,7 +4405,7 @@
                                                                 "MyFavorited"           => sizeof($this->GetMyFavorited($myProfile[0]['ProfileCode'])), 
                                                                 "WhoFavorited"          => sizeof($this->GetWhoFavoritedMyProfile($myProfile[0]['ProfileCode'])), 
                                                                 "MyShortListed"         => sizeof($this->GetMyShortListed($myProfile[0]['ProfileCode'])),
-                                                                "WhoShortListed"        => sizeof($this->GetWhoShortListedMyProfile($myProfile[0]['ProfileCode'])),
+                                                                "WhoShortListed"        => Shortlist::WhoShortlisted($myProfile[0]['ProfileCode']),
                                                                 "Mutual"         		=> sizeof($this->GetMutualProfilesCount($myProfile[0]['ProfileCode']))
                                                                 )); 
              } else {
@@ -4818,12 +4882,6 @@
                                                                    "Subject"            => "has download your profile",
                                                                    "ViewedOn"           => date("Y-m-d H:i:s")));
                  
-                 
-                 
-                 
-                 
-                 
-                 
                  return Response::returnSuccess("success",array("sql"=>$mysql->qry));
              } else{
                  return Response::returnError("Order process failed. Invalid wallet request.");   
@@ -4871,104 +4929,28 @@
                        </div>';                            
 
          }
+         
+        
+         
 		 function AddToShortList() {
              
-             global $mysql,$loginInfo;
+             global $mysql,$loginInfo;    
              
-             $Profiles = $mysql->select("select SexCode,MemberID,ProfileID,ProfileCode from `_tbl_profiles` where ProfileCode='".$_GET['ProfileCode']."'"); 
-			  
-			 
-             if (sizeof($Profiles)==0) {
-                return Response::returnError("Couldn't favorite, please contact support team"); 
-             }
-          
-             $visitorsDetails =$mysql->select("select ProfileID,ProfileCode from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
-             $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$visitorsDetails[0]['ProfileCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
-             if (sizeof($ProfileThumb)==0) {
-                 if ($Profiles[0]['SexCode']=="SX002"){
-                     $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
-                 } else { 
-                     $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
-                 }
-             } else {
-                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
+             $PartnerProfile = Profiles::ActiveProfileInfoByProfileCode($_GET['ProfileCode'],array("SexCode","MemberID","ProfileID","ProfileCode")); 
+             if (sizeof($PartnerProfile)==0) {
+                return Response::returnError("Couldn't be process to add shortlist, please contact support team"); 
              }
              
-			  
-			    
-			
-             $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");
-             
-             $FirstTime = $mysql->select("select * from `_tbl_profiles_shortlists` where `VisterMemberID`='".$loginInfo[0]['MemberID']."'");
-			 
-             if(sizeof($FirstTime)==0) {
-                 $FirstTimeProfileShortList = $mysql->select("select * from `_tbl_general_settings` where  `Settings`='FirstTimeProfileShortList'");
-             
-             if($FirstTimeProfileShortList[0]['Email']=="1"){
-              
-             $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddToShortListProfile'");
-             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
-             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
-             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
-
-             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
-                                        "Category" => "AddToShortListProfile",
-                                        "MemberID" => $member[0]['MemberID'],
-                                        "Subject"  => $mContent[0]['Title'],
-                                        "Message"  => $content),$mailError);
+             $MyProfile = Profiles::ActiveProfileInfoByMemberID($loginInfo[0]['MemberID'],array("SexCode","MemberID","ProfileID","ProfileCode"));
+             if (sizeof($MyProfile)==0) {
+                return Response::returnError("Couldn't be process. You don't have active profile."); 
              }
-			 
-             if($FirstTimeProfileShortList[0]['SMS']=="1"){
-             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has short listed. Your Profile ID is ".$Profiles[0]['ProfileCode']);
-             }
-             }
-             
-			  
-             $EveryTimeProfileShortList = $mysql->select("select * from `_tbl_general_settings` where  `Settings`='EveryTimeProfileShortList'");
-             
-			  
-             if($EveryTimeProfileShortList[0]['Email']=="1"){
-             
-             $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddToShortListProfile'");
-             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
-             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
-             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
  
-             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
-                                        "Category" => "AddToShortListProfile",
-                                        "MemberID" => $member[0]['MemberID'],
-                                        "Subject"  => $mContent[0]['Title'],
-                                        "Message"  => $content),$mailError);
+             if (Shortlist::AddToShortList($MyProfile, $PartnerProfile, $success, $error)) {
+                return Response::returnSuccess($PartnerProfile[0]['ProfileCode']." has shortlisted.");  
+             } else {
+                return Response::returnError($error);  
              }
-			 
-			 
-             if($EveryTimeProfileShortList[0]['SMS']=="1"){
-             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has short listed. Your Profile ID is ".$Profiles[0]['ProfileCode']);
-             } 
-			 
-			 
-             $id = $mysql->insert("_tbl_profiles_shortlists",array("MemberID"           => $Profiles[0]['MemberID'],
-                                                                   "ProfileID"          => $Profiles[0]['ProfileID'],
-                                                                   "ProfileCode"        => $Profiles[0]['ProfileCode'],
-                                                                   "VisterMemberID"     => $loginInfo[0]['MemberID'],
-                                                                   "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
-                                                                   "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
-                                                                   "ViewedOn"           => date("Y-m-d H:i:s"),
-                                                                   "IsShortList"         => "1",
-                                                                   "IsVisible"          => "1",
-                                                                   "IsShortListOn"       => date("Y-m-d H:i:s")));
-                                                                   
-             $mysql->insert("_tbl_latest_updates",array("MemberID"           => $Profiles[0]['MemberID'],
-                                                        "ProfileID"          => $Profiles[0]['ProfileID'],
-                                                        "ProfileCode"        => $Profiles[0]['ProfileCode'],
-                                                        "VisterMemberID"     => $loginInfo[0]['MemberID'],
-                                                        "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
-                                                        "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
-                                                        "ProfilePhoto"       => $ProfileThumbnail,
-                                                        "Subject"            => "has short list your profile",
-                                                        "ViewedOn"           => date("Y-m-d H:i:s")));
-                                                            
-             return Response::returnSuccess($Profiles[0]['ProfileCode']." has short list.");                                               
          }
 		 
 		 function RemoveFromShortList() {
@@ -4977,7 +4959,7 @@
              
              $Profiles = $mysql->select("select MemberID,ProfileID,ProfileCode,SexCode from `_tbl_profiles` where ProfileCode='".$_GET['ProfileCode']."'"); 
              if (sizeof($Profiles)==0) {
-                return Response::returnError("Couldn't favorite, please contact support team"); 
+                return Response::returnError("Couldn't able to remove from shortlisted, please contact support team"); 
              }
              
              $visitorsDetails =$mysql->select("select ProfileID,ProfileCode from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
@@ -5058,11 +5040,7 @@
                                                         "ViewedOn"          => date("Y-m-d H:i:s")));
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has remove shorlist.");      
           }
-        
-  
-         
-         
      }  
-//4084   
+//4084   5500
 ?>                                                            
   

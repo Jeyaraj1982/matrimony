@@ -14,7 +14,7 @@
     require 'lib/mail/src/Exception.php';
     require 'lib/mail/src/PHPMailer.php';
     require 'lib/mail/src/SMTP.php';
-    
+     
     $mail    = new PHPMailer;
     
     include_once($cdata->Language.".php");
@@ -91,9 +91,26 @@
         }
     }
     
-    $j2japplication = new J2JApplication() ;
+   /* $global = json_decode(json_encode(array("default_female_profile"            =>"assets/images/noprofile_female.png",
+                                            "SMSFirstTimeProfileShortList"      =>"1",
+                                            "EmailFirstTimeProfileShortList"    =>"1",
+                                            "SMSEveryTimeProfileShortList"      =>"1",
+                                            "EmailEveryTimeProfileShortList"    =>"1",
     
-  //  echo J2JApplication::hideMobileNumberWithCharacters("9944872965");
+    ))); */
+    
+    class AppConfig {
+        
+        const FIRST_TIME_ADD_SHORTLIST_SMS_TO_PARTNER = 1;
+        const FIRST_TIME_ADD_SHORTLIST_EMAIL_TO_PARTNER = 1;
+        const EVERY_TIME_ADD_SHORTLIST_SMS_TO_PARTNER = 1;
+        const EVERY_TIME_ADD_SHORTLIST_EMAIL_TO_PARTNER = 1;
+        
+        const THUMB_DEFAULT_PROFILE_FEMALE =1;
+        const THUMB_DEFAULT_PROFILE_MALE =1;
+    }
+    
+    $j2japplication = new J2JApplication() ;
     
     include_once("controller/MailController.php");  
     include_once("controller/MobileSMSController.php");  
@@ -102,6 +119,8 @@
     include_once("controller/SequenceController.php");
     include_once("controller/ResponseController.php");
     include_once("classes/class.Profiles.php");
+    
+    include_once("modules/class.Shortlist.php");               
      
     if ($_GET['m']=="Admin") {
         include_once("classes/class.Master.php");    
@@ -118,27 +137,32 @@
         include_once("classes/class.Matches.php");    
     }
     
-    //$mysql   = new MySql($db[0],$db[1],$db[2],$db[3]);
     $mysql   = new MySqlDb($db[0],$db[1],$db[2],$db[3]);
-    $loginid = isset($_GET['LoginID']) ? $_GET['LoginID'] : "";
-    $loginInfo = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'"); 
-    $mysql->execute("update _tbl_logs_logins set LastAccessOn='".date("Y-m-d H:i:s")."' where LoginID='".$loginid."'"); 
     
-    
-    //Cron Job 
-    
+    $loginid = isset($_GET['LoginID']) ? $_GET['LoginID'] : "";  
+    if ($loginid!="") {
+        $loginInfo = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'"); 
+        $mysql->execute("update _tbl_logs_logins set LastAccessOn='".date("Y-m-d H:i:s")."' where LoginID='".$loginid."'"); 
+    }
     
     if (isset($_GET['action'])) {
-       echo json_encode($_GET['action']()); 
+        $action = $_GET['action']();
+        echo json_encode($action()); 
     } else {
         if(isset($_GET['m'])){
-            $obj = new $_GET['m']();
-            echo $obj->$_GET['a']();
+            if (class_exists($_GET['m'])) {
+                $class = $_GET['m'];
+                $method = trim($_GET['a']);
+                $obj = new $class();
+                echo $obj->$method(); 
+            } else {
+                echo "Please Contact Administrator";
+            }
         }else{   
-            echo "error";
+            echo "Please Contact Administrator.";
         }
     }     
-     
+ 
     class Plans{
         function GetFranchiseePlans(){
             global $mysql;

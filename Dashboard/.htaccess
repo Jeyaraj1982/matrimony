@@ -118,6 +118,7 @@ RewriteRule ^MyProfiles/Draft/Edit/CommunicationDetails/(.*)\.htm$ ./index.php?C
 RewriteRule ^MyProfiles/Draft/Edit/PartnersExpectation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/PartnersExpectation
 RewriteRule ^MyProfiles/Draft/Edit/HoroscopeDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/HoroscopeDetails
 RewriteRule ^MyProfiles/Draft/Edit/ProfilePhoto/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/ProfilePhoto
+RewriteRule ^MyProfiles/Draft/Edit/ProfilePhotoCrop/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/ProfilePhotoCrop
 
 RewriteRule ^MyProfiles/Published/Edit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/GeneralInformation
 RewriteRule ^MyProfiles/Published/Edit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/EducationDetails

@@ -1,6 +1,6 @@
 <?php
     $page="MyMemberInfo";
-    $response = $webservice->GetMemberInfo();
+    $response =$webservice->getData("Member","GetMemberInfo");
     $Member=$response['data'];
     $CountryCodes=$Member['Country']; 
 ?>

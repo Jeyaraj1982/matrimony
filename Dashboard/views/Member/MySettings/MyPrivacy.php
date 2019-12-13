@@ -12,7 +12,7 @@
                     echo  ($response['status']=="success") ? $dashboard->showSuccessMsg($response['message'])
                                                            : $dashboard->showErrorMsg($response['message']);
                 } else {
-                    $response = $webservice->GetMemberInfo();
+                    $response = $webservice->getData("Member","GetMemberInfo");
                 }
                 $Member=$response['data'];
             ?> 

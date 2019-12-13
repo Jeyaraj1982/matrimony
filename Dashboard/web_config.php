@@ -1,14 +1,14 @@
 <?php
     
-    define("SiteUrl","https://nahami.online/demo/matrimony/Dashboard/");
-    define("DomainUrl","https://nahami.online/demo/matrimony/");
+    define("SiteUrl","http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/");
+    define("DomainUrl","http://www.matrimony.dev.j2jsoftwaresolutions.com/");
     define("SITE_TITLE","Matrimony") ;
     $__Global = $_SERVER;
      
     class Webservice {
         
         var $serverURL = DomainUrl."Webservice/webservice.php?";
-        
+                    
         function GetLandingPageProfiles($param) {
             return json_decode($this->_callUrl("m=Member&a=GetLandingPageProfiles",$param),true);
         }

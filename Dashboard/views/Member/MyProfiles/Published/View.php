@@ -27,7 +27,16 @@ legend {margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px
                         &nbsp;(<?php if((strlen(trim($ProfileInfo['Age'])))>0) { echo trim($ProfileInfo['Age']); ?> Yrs<?php }?>)
                         </label>
                         <label class="col-sm-12 col-form-label" style="background: none;color: #333;font-size: 14px;padding: 0px 16px;color: #666;">
-                            <?php echo strlen(trim($ProfileInfo['ProfileCode']))> 0 ? trim($ProfileInfo['ProfileCode']) : "N/A "; ?>&nbsp;&nbsp;|&nbsp;&nbsp;::ProfileCreatedFor::
+                            <?php echo strlen(trim($ProfileInfo['ProfileCode']))> 0 ? trim($ProfileInfo['ProfileCode']) : "N/A "; ?>&nbsp;&nbsp;|&nbsp;&nbsp;::ProfileCreatedBy::
+							<?php if ( trim($ProfileInfo['ProfileFor'])=="Myself") { echo "Own"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother"){ echo "Brother"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister"){ echo "Sister"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter"){ echo "Mother"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Son"){ echo "Father"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister In Law"){ echo "Sister In Law"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother In Law"){ echo "Brother In Law"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Son In Law"){ echo "Uncle"; }?>
+            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter In Law"){ echo "Aunty"; }?>
                         </label>
                     </div>
             </div>
@@ -172,7 +181,6 @@ legend {margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px
                 <tr>
                      <th>Education</th>
                     <th>Education details</th>
-                    <th>Main Education</th>
                     <th>Attachments</th>
                 </tr>
             </thead>
