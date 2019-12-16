@@ -327,10 +327,10 @@ $(document).ready(function() {
                         </select>
                     </div>
                     <div class="col-sm-3" align="left" id="div_marriedSister">
-                        <label class="col-form-label">Married</label>
+                        <label class="col-form-label">Married</label> 
                         <select class="form-control" id="marriedSister" name="marriedSister">
                             <?php foreach($response['data']['NumberofMarriedSisters'] as $marriedSister) { ?>
-                            <option value="<?php echo $marriedSister['SoftCode'];?>" <?php echo (isset($_POST[ 'marriedSister'])) ? (($_POST[ 'marriedSister']==$marriedSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MarriedSister']==$marriedSister[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $marriedSister['CodeValue'];?> </option>
+                            <option value="<?php echo $marriedSister['SoftCode'];?>" <?php echo (isset($_POST[ 'marriedSister'])) ? (($_POST[ 'marriedSister']==$marriedSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MarriedSister']==$marriedSister[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $marriedSister['SoftCode'];?> </option>
                             <?php } ?>                                                                                                              
                         </select>
                     </div>
@@ -540,7 +540,7 @@ function verifiyFatherPassedaway() {
                 document.getElementById('youngerSister').appendChild(opt);
             }
             
-            var c = ['MS001','MS002','MS003','MS004','MS005','MS006','MS007','MS008','MS009','MS010'] ;
+            var c = ['MRS001','MRS002','MRS003','MRS004','MRS005','MRS006','MRS007','MRS008','MRS009','MRS010'] ;
             for (var i = 0; i<=nc.indexOf(n_brothers); i++){
                 var opt = document.createElement('option');
                 opt.value = c[i];

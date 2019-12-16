@@ -81,6 +81,20 @@
             </li>
             
             <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#matches" aria-expanded="false" aria-controls="mateches">
+                    <i class="menu-icon mdi mdi-content-copy"></i>
+                    <span class="menu-title">Matches</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="matches">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo GetUrl("Matches/BasicSearch");?>">Serach</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#myaccounts" aria-expanded="false" aria-controls="myaccounts">
                     <i class="menu-icon mdi mdi-content-copy"></i>
                     <span class="menu-title">My Accounts</span>

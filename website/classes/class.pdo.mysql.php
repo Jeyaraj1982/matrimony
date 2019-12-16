@@ -46,7 +46,7 @@
         $r = substr($r, 0, strlen($r) - 1) . ")";
         $l = substr($l, 0, strlen($l) - 1) . ")";
         $sql = $r . $l;
-
+         
         $this->qry = $sql;
         $this->link->exec($sql);
         $last_id = $this->link->lastInsertId();

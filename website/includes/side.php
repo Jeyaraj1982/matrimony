@@ -1,19 +1,51 @@
 <?php if (JFrame::getAppSetting('layout')==1) { ?>
-    <td width="220" valign="top" style="border-left:1px dashed #ccc;background:#fff;padding:10px;">        
+    <td width="242" valign="top" style="border-left:1px dashed #ccc;background:#fff;padding:0px;padding-top:0px">        
 <?php } ?>
 <?php if (JFrame::getAppSetting('layout')==2) { ?>
-    <td width="220" valign="top" style="border-right :1px dashed #ccc;background:#fff;padding:10px;">        
+    <td width="242" valign="top" style="border-right :1px dashed #ccc;background:#fff;padding:0px;padding-top:0px">        
 <?php } ?>
-              <?php
-              if ( ($_SERVER['SERVER_NAME']=="www.maajidmultimart.com") || ($_SERVER['SERVER_NAME']=="maajidmultimart.com") ) {
-                 include_once("additional/maajidmultimart.php") ;
-              }
+             <div style="padding-top:10px"> 
+             <div  class="subMenu" style="clear:both;padding:10px;color:#fff;font-size:13px;font-family:arial;font-weight:bold;height:auto">Latest Products </div>
+             
+             <?php
+              $result= JListing::getLatestPublishedItems(); 
+    $i=0;       
+    foreach ($result as $r)
+    {
+        echo Type_003($r);
+    }
+
+       ?>
+         
+       
+             
+         <!--    <div style="padding:10px; ">Most Viewed</div>-->
+             
+               <?php
+           //   $result= JListing::getMostViewedPublishedItems(); 
+  //  $i=0;       
+   // foreach ($result as $r)
+   // {
+     //   echo Type_003($r);
+   // }
+
+       ?>
               
-              if ( ($_SERVER['SERVER_NAME']=="www.mobilepark.in") || ($_SERVER['SERVER_NAME']=="mobilepark.in") ) {
-                 include_once("additional/mobilepark.php") ;
-              }
-                  
-              ?>
+              
+             
+             
+           <!--   <div style="padding:10px; ">Customized</div>-->
+             
+               <?php
+           //   $result= JListing::getMostViewedPublishedItems(); 
+ //   $i=0;       
+  //  foreach ($result as $r)
+ //   {
+ //       echo Type_003($r);
+   // }
+  //
+       ?>
+              
 
              <div style='font-family:"comic sans ms";font-size:14px;font-weight:bold;color:#222;'>Links</div>
              <table>

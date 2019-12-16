@@ -116,8 +116,15 @@ function submitUpload() {
              <span class="errorstring" id="ErrProfilePhoto"></span>
         </div>
     </div>
-    <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="showLearnMore()">Learn more</a>
-        <br><span class="errorstring" id="Errcheck"></span><br><br>
+	<div class="form-group row">
+		<div class="col-sm-12">
+			<div class="custom-control custom-checkbox mb-3">
+				<input type="checkbox" class="custom-control-input" id="check" name="check">
+				<label class="custom-control-label" for="check" style="vertical-align: middle;"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="showLearnMore()">Learn more</a>
+			</div>
+			<span class="errorstring" id="Errcheck"></span>
+		</div>
+	</div>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-3">
             <button type="submit" id="UpdateProfilePhoto" name="UpdateProfilePhoto" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
@@ -138,9 +145,10 @@ function submitUpload() {
         <?php if($d['PriorityFirst']==0) {?>
         <div id="photoview_<?php echo $d['ProfilePhotoID'];?>" class="photoview">
             <div style="text-align:right;height:22px;">
-                <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
+                <a href="javascript:void(0)" onclick="showConfirmDeleteProfilePhoto('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
             </div>
-            <div><img src="<?php echo AppUrl;?>uploads/<?php echo $d['ProfilePhoto'];?>" style="height:120px;"></div>
+           <!-- <div><img src="<?php echo AppUrl;?>uploads/profiles/<?php echo $d['ProfilePhoto'];?>" style="height:120px;"></div>-->
+            <div><img src="<?php echo AppUrl;?>uploads/profiles/<?php echo $d['ProfileCode'];?>/thumb/<?php echo $d['ProfilePhoto'];?>" style="height:120px;"></div>
             <div>
                 <?php if($d['IsApproved']==0){ echo "verification pending" ; }?>
             <?php if($d['IsApproved']==1){ echo "Approved" ; }?>
@@ -153,9 +161,9 @@ function submitUpload() {
         <?php } else {   ?>
             <div id="photoview_<?php echo $d['ProfilePhotoID'];?>" class="photoview">
             <div style="text-align:right;height:22px;">
-                <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
+                <a href="javascript:void(0)" onclick="showConfirmDeleteProfilePhoto('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
             </div>
-            <div><img src="<?php echo AppUrl;?>uploads/<?php echo $d['ProfilePhoto'];?>" style="height:120px;"></div>
+            <div><img src="<?php echo AppUrl;?>uploads/profiles/<?php echo $d['ProfileCode'];?>/thumb/<?php echo $d['ProfilePhoto'];?>" style="height:120px;"></div>
             <div>
                 <?php if($d['IsApproved']==0){ echo "verification pending" ; }?>
             <?php if($d['IsApproved']==1){ echo "Approved" ; }?>
@@ -239,7 +247,7 @@ function showLearnMore() {
           }
          
  
-    function showConfirmDelete(ProfilePhotoID,ProfileID) {                                           
+    function showConfirmDeleteProfilePhoto(ProfilePhotoID,ProfileID) {                                           
         $('#Delete').modal('show'); 
         var content = '<div class="modal-body" style="padding:20px">'
                         + '<div  style="height: 315px;">'
@@ -249,7 +257,7 @@ function showLearnMore() {
                                   + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                                    + '<h4 class="modal-title">Confirm delete Profile photo</h4><br>'
                                 + '<div style="text-align:center">Are you sure want to Delete?  <br><br>'
-                                    + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+ProfilePhotoID+'\')">Yes</button>&nbsp;&nbsp;'
+                                    + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDeleteProfilePhoto(\''+ProfilePhotoID+'\')">Yes</button>&nbsp;&nbsp;'
                                     + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
                                 + '</div>'
                             + '</form>'
@@ -258,9 +266,8 @@ function showLearnMore() {
         $('#model_body').html(content);
     }
     
-    function ConfirmDelete(ProfilePhotoID) {
-        
-        var param = $( "#form_"+ProfilePhotoID).serialize();
+    function ConfirmDeleteProfilePhoto(ProfilePhotoID) {
+       var param = $( "#form_"+ProfilePhotoID).serialize();
         $('#model_body').html(preloader);
         $.post(API_URL + "m=Member&a=DeletProfilePhoto", param, function(result2) {
             $('#model_body').html(result2);

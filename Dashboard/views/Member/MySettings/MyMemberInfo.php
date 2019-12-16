@@ -17,7 +17,7 @@
             <div class="col-sm-9">:&nbsp;<small style="color:#737373;"><?php echo $Member['MemberName'];?></small></div>
         </div>
         <div class="form-group row">
-            <div class="col-sm-3" style="margin-right: -47px;"><small>Sex</small> </div>
+            <div class="col-sm-3" style="margin-right: -47px;"><small>Gender</small> </div>
             <div class="col-sm-3">:&nbsp;<small style="color:#737373;"><?php echo $Member['Sex'];?></small></div>
         </div>
         <div class="form-group row">

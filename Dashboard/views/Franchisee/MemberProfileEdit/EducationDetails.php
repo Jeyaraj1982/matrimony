@@ -6,13 +6,14 @@
 <div class="col-sm-10 rightwidget" >
     <h4 class="card-title">Education Details</h4>
     <div align="right">
-            <a href="<?php echo GetUrl("MemberProfileEdit/AddEducationalDetails/". $_GET['Code'].".htm");?>" class="btn btn-success mr-2" >Add Education Details</a>
+            <a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/AddEducationalDetails/".$_GET['Code'].".htm");?>" class="btn btn-success mr-2" >Add Education Details</a>
         </div>
         <br>
         
         <table class="table table-bordered">
         <?php                 
             $response = $webservice->getData("Franchisee","GetViewAttachments",(array("ProfileCode"=>$_GET['Code'])));
+			
                     ?>
         <?php if (sizeof($response['data'])>0) { ?>
         <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-top: 1px solid #ccc;">
@@ -41,7 +42,7 @@
                                 <br><a href="javascript:void(0)" onclick="ViewAttchment('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
                           <?php }?>
                          <?php } else { echo "Add your educational attachment and get more responses";?>
-                         <br><a href="<?php echo GetUrl("MemberProfileEdit/AttachEducationDetails/". $Document['ProfileCode'].".htm?AttachmentID=".$Document['AttachmentID']."");?>">Attach</a>
+                         <br><a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/AttachEducationDetails/". $Document['ProfileCode'].".htm?AttachmentID=".$Document['AttachmentID']."");?>">Attach</a>
                         <?php }?></td>
                     <td style="width:20px">
                         <?php  if($Document['IsVerified']==0) {?>

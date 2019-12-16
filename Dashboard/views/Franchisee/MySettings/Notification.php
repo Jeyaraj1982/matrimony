@@ -8,11 +8,11 @@
             <span style="color:#999;">Select your preferences for notifications that are the most common for all members</span><br><Br> 
             <?php
                 if (isset($_POST['savnotification'])) {
-                    $response = $webservice->getData("Member","UpdateNotification",$_POST);
+                    $response = $webservice->getData("Franchisee","UpdateNotification",$_POST);
                     echo  ($response['status']=="success") ? $dashboard->showSuccessMsg($response['message'])
                                                            : $dashboard->showErrorMsg($response['message']);
                 } else {
-                    $response = $webservice->GetMemberInfo();
+                    $response = $webservice->getData("Franchisee","GetFranchiseeInfo");
                 }
                 $Member=$response['data'];
             ?>

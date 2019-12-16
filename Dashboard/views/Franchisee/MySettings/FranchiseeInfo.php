@@ -10,7 +10,7 @@
         <h4 class="card-title">Franchisee Info</h4>
         <div class="form-group row">
             <div class="col-sm-3" style="margin-right: -47px;"><small>Franchisee ID</small> </div>
-            <div class="col-sm-3">:&nbsp;<small style="color:#737373;"><?php echo $Franchisee['StaffCode'];?></small></div>
+            <div class="col-sm-3">:&nbsp;<small style="color:#737373;"><?php echo $Franchisee['FrCode'];?></small></div>
         </div>
         <div class="form-group row">
             <div class="col-sm-3" style="margin-right: -47px;"><small>Franchisee Name</small> </div>
@@ -22,9 +22,9 @@
         </div>
         <div class="form-group row">
             <div class="col-sm-3" style="margin-right: -47px;"><small>Mobile Number</small></div>
-            <div class="col-sm-3">:&nbsp;<small style="color:#737373;"><?php if($Franchisee['IsMobileVerified']==0){ ?><?php echo $Franchisee['CountryCode'];?>-<?php echo $Franchisee['MobileNumber'];?>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="MobileNumberVerification()">Verfiy</a><?php } else {?><?php echo $Franchisee['CountryCode'];?>-<?php echo $Franchisee['MobileNumber'];?><img src="<?php echo SiteUrl?>assets/images/Green-Tick-PNG-Picture.png" width="15%" style="margin-top: -12px;margin-left: 9px;"><?php }?></small></div>
+            <div class="col-sm-3">:&nbsp;<small style="color:#737373;"><?php if($Franchisee['IsMobileVerified']==0){ ?><?php echo $Franchisee['CountryCode'];?>-<?php echo $Franchisee['MobileNumber'];?>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="MobileNumberVerificationForm()">Verfiy</a><?php } else {?><?php echo $Franchisee['CountryCode'];?>-<?php echo $Franchisee['MobileNumber'];?><img src="<?php echo SiteUrl?>assets/images/Green-Tick-PNG-Picture.png" width="15%" style="margin-top: -12px;margin-left: 9px;"><?php }?></small></div>
             <div class="col-sm-2" style="margin-right: -47px;"><small>Email ID</small></div>
-            <div class="col-sm-5">:&nbsp;<small style="color:#737373;"><?php if($Franchisee['IsEmailVerified']==0){ ?><?php echo  $Franchisee['EmailID'];?>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="EmailVerification()">Verfiy</a><?php } else{ ?><?php echo  $Franchisee['EmailID'];?><img src="<?php echo SiteUrl?>assets/images/Green-Tick-PNG-Picture.png" width="10%" style="margin-top: -11px;margin-left:10px;"><?php }?></small></div>
+            <div class="col-sm-5">:&nbsp;<small style="color:#737373;"><?php if($Franchisee['IsEmailVerified']==0){ ?><?php echo  $Franchisee['EmailID'];?>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="EmailVerificationForm()">Verfiy</a><?php } else{ ?><?php echo  $Franchisee['EmailID'];?><img src="<?php echo SiteUrl?>assets/images/Green-Tick-PNG-Picture.png" width="10%" style="margin-top: -11px;margin-left:10px;"><?php }?></small></div>
         </div>
         <div class="form-group row">
             <div class="col-sm-3" style="margin-right: -47px;"><small>Created on</small></div>

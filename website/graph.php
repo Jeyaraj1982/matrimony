@@ -1,22 +1,27 @@
- <style>
- .mytd {border:1px solid #f1f1f1;padding:3px;color:#444}
- .mytd form{height:0px;}
- .mytdhead{font-weight:bold;text-align:center;color:#222;background:#ccc;padding:5px;font-size:12px;}
- .trodd{background:#fff;}
- .treven{background:#f6f6f6}
- .trodd:hover{background:#e9e9e9;cursor:pointer}
- .treven:hover{background:#e9e9e9;cursor:pointer}
-</style>
+ 
 <?php  
     include_once("config.php");        
 ?>
 <html>
   <head>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <style>
+    <style>
+    .mytr:hover{background:#c4e9f2;cursor:pointer}
+    .title_Bar {background:url(webadmin/images/blue/titlebackground.png);padding:5px;color:#589cb5;font-family:'Trebuchet MS';font-size:13px !important;font-weight: bold;padding:11px !important;}   
+    .odd {background:#f2fcff}
+    .odd:hover {background:#c4e9f2}
+    .even {background:#fff}
+    .even:hover {background:#c4e9f2}
+    .label {font-family:arial;font-size:12px;color:#555}
+    input[type="text"] {border:1px solid #ccc;padding:2px}
+    
+    </style>
     <?php
       
       function foldersize($path) {
           $total_size = 0;
+          
           $files = scandir($path);
 
           foreach($files as $t) {
@@ -24,6 +29,7 @@
               if ($t<>"." && $t<>"..") {
                   $size = foldersize(rtrim($path, '/') . '/' . $t);
                   $total_size += $size;
+                   
               }
             } else {
               $size = filesize(rtrim($path, '/') . '/' . $t);
@@ -32,6 +38,21 @@
           }
           return $total_size;
         }  
+        
+        function filescount($directory) {
+           // $directory = '/var/www/ajaxform/';
+$files = glob($directory . '*.*');
+
+if ( $files !== false )
+{
+    $filecount = count( $files );
+    return $filecount;
+}
+else
+{
+    return 0;
+}
+        }
                 
        function format_size($size,$mess=false) {
           $mod = 1024;
@@ -76,7 +97,7 @@
 <script src="assets/js/jquery-1.7.2.js"></script>
 <link rel="stylesheet" href="assets/css/demo.css">
   <body style="margin:0px;">
-  <div class="titleBar">Dash Board</div> 
+  <div class="title_Bar">Dash Board</div> 
   <table cellspacing='0' cellspadding='5' style="font-size:12px;font-family:'Trebuchet MS';">
     <tr>
         <td>  
@@ -88,49 +109,54 @@
             </table>
         </td>
         <td valign="top">
-            <table cellspacing='0' cellspadding='5' style="font-size:12px;font-family:'Trebuchet MS';">
+            <table cellspacing='0' cellspadding='5' style="font-size:12px;font-family:'Trebuchet MS';display:none">
                 <tr>
-                    <td class="mytdhead" style="width:200px">Directory Name</td>
-                    <td class="mytdhead" style="width:180px">Directory Size</td>
+                    <td class="mytdhead" style="width:200px">Dir Name</td>
+                    <td class="mytdhead" style="width:180px">Files Size</td>
+                    <td class="mytdhead" style="width:180px">File(s)</td>
+                    <td class="mytdhead" style="width:180px">Browse</td>
+                    <td></td>
                 </tr>
                 <tr class="<?php echo (($count%2)==0) ? "trodd" : "treven";?>">
                     <td class="mytd">Downloads</td>
                     <td class="mytd" style="text-align:right"><?php echo format_size(foldersize("assets/".$config['downloads']),1); ?></td>
+                    <td></td>
                 </tr>
-          
                 <tr class="<?php echo (($count%2)==0) ? "trodd" : "treven";?>">
                     <td class="mytd">Slider</td>
                     <td class="mytd" style="text-align:right"><?php echo format_size(foldersize("assets/".$config['slider']),1); ?></td>
+                    <td class="mytd" style="text-align:right"><?php echo filescount("assets/".$config['slider']); ?></td>
+                    <td class="mytd" style="text-align:right"><a  href="path.php?path=<?php echo $config['slider'];?>">View Files</a></td>
                 </tr>
-                
                 <tr class="<?php echo (($count%2)==0) ? "trodd" : "treven";?>">
                     <td class="mytd">Musics</td>
                     <td class="mytd" style="text-align:right"><?php echo format_size(foldersize("assets/".$config['musics']),1); ?></td>
+                    <td></td>
                 </tr>
-                
                 <tr class="<?php echo (($count%2)==0) ? "trodd" : "treven";?>">
                     <td class="mytd">Trash</td>
                     <td class="mytd" style="text-align:right"><?php echo format_size(foldersize("assets/".$config['trash']),1); ?></td>
+                    <td></td>
                 </tr>
-                
                 <tr class="<?php echo (($count%2)==0) ? "trodd" : "treven";?>">
                     <td class="mytd">Backup</td>
                     <td class="mytd" style="text-align:right"><?php echo format_size(foldersize("assets/".$config['backup']),1); ?></td>
+                    <td></td>
                 </tr>
-                
-                <tr class="<?php echo (($count%2)==0) ? "trodd" : "treven";?>">
+               <tr class="<?php echo (($count%2)==0) ? "trodd" : "treven";?>">
                     <td class="mytd">Thumb</td>
                     <td class="mytd" style="text-align:right"><?php echo format_size(foldersize("assets/".$config['thumb']),1); ?></td>
+                    <td></td>
                 </tr>
-                
                 <tr class="<?php echo (($count%2)==0) ? "trodd" : "treven";?>">
                     <td class="mytd">Photos</td>
                     <td class="mytd" style="text-align:right"><?php echo format_size(foldersize("assets/".$config['photos']),1); ?></td>
+                    <td></td>
                 </tr>
-                
                 <tr class="<?php echo (($count%2)==0) ? "trodd" : "treven";?>">
                     <td class="mytd">Files</td>
                     <td class="mytd" style="text-align:right"><?php echo format_size(foldersize("assets/".$config['files']),1); ?></td>
+                    <td></td>
                 </tr>
           </table>
         </td>

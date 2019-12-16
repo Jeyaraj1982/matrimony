@@ -358,15 +358,15 @@
                 $PartnersExpectations = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
                 $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_draft_profiles_verificationdocs` where `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
                 $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `IsDelete`='0' and ProfileID='".$Profiles[0]['ProfileID']."'");            
-                $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
-                $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where  `ProfileCode`='".$ProfileCode."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
+				$ProfileThumb = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
+                $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where  `ProfileCode`='".$ProfileCode."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
             } else {   
                 $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where ProfileCode='".$ProfileCode."'");               
                 $PartnersExpectations = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileCode`='".$ProfileCode."'");
                 $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
                 $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where  ProfileCode='".$ProfileCode."' and `IsDelete`='0'");            
-                $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
-                $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
+				$ProfileThumb = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
+                $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
             }
             
             if (sizeof($Profiles)==0) {
@@ -383,7 +383,7 @@
                 }  
             }
             
-            $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
+            $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
             if (sizeof($ProfileThumb)==0) {
                 if ($Profiles[0]['SexCode']=="SX002"){
                     $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";

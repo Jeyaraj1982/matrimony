@@ -1,10 +1,11 @@
 h3 {
   margin: 0;
-  background-image: linear-gradient(bottom, #eeeeee 14%, #dddddd 57%);
-  background-image: -o-linear-gradient(bottom, #eeeeee 14%, #dddddd 57%);
-  background-image: -moz-linear-gradient(bottom, #eeeeee 14%, #dddddd 57%);
-  background-image: -webkit-linear-gradient(bottom, #eeeeee 14%, #dddddd 57%);
-  background-image: -ms-linear-gradient(bottom, #eeeeee 14%, #dddddd 57%);
+  background-image: linear-gradient(bottom, #e1eefe 14%, #cfe1f7 57%);
+  background-image: -o-linear-gradient(bottom, #e1eefe 14%, #cfe1f7 57%);
+  background-image: -moz-linear-gradient(bottom, #e1eefe 14%, #cfe1f7 57%);
+  background-image: -webkit-linear-gradient(bottom, #e1eefe 14%, #cfe1f7 57%);
+  background-image: -ms-linear-gradient(bottom, #e1eefe 14%, #cfe1f7 57%);
+  /*background:rgba(0, 0, 0, 0) url("/../webadmin/images/blue/titlebackground.png") repeat scroll 0 0;*/
 }
 
 h3 a {
@@ -18,24 +19,31 @@ h3 a {
   font-weight: normal;
   font-size:13px;
   font-family:'Trebuchet MS';
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px solid #f1f1f1;
   
 }
 h3:hover {
     margin: 0;
-  background-image: linear-gradient(bottom, #cccccc 14%, #eeeeee 57%);
+  /*background-image: linear-gradient(bottom, #cccccc 14%, #eeeeee 57%);
   background-image: -o-linear-gradient(bottom, #cccccc 14%, #eeeeee 57%);
   background-image: -moz-linear-gradient(bottom, #cccccc 14%, #eeeeee 57%);
   background-image: -webkit-linear-gradient(bottom, #cccccc 14%, #eeeeee 57%);
-  background-image: -ms-linear-gradient(bottom, #cccccc 14%, #eeeeee 57%);  
+  background-image: -ms-linear-gradient(bottom, #cccccc 14%, #eeeeee 57%);
+  */
+  border-top:1px solid #e1eefe;
+  background-image: linear-gradient(bottom, #cfe1f7 14%, #e1eefe 57%);
+  background-image: -o-linear-gradient(bottom, #cfe1f7 14%, #e1eefe 57%);
+  background-image: -moz-linear-gradient(bottom, #cfe1f7 14%, #e1eefe 57%);
+  background-image: -webkit-linear-gradient(bottom, #cfe1f7 14%, #e1eefe 57%);
+  background-image: -ms-linear-gradient(bottom, #cfe1f7 14%, #e1eefe 57%);  
     
 }
 h3.open  {  margin: 0;
-  background-image: linear-gradient(bottom, #cccccc 14%, #eeeeee 57%);
-  background-image: -o-linear-gradient(bottom, #cccccc 14%, #eeeeee 57%);
-  background-image: -moz-linear-gradient(bottom, #cccccc 14%, #eeeeee 57%);
-  background-image: -webkit-linear-gradient(bottom, #cccccc 14%, #eeeeee 57%);
-  background-image: -ms-linear-gradient(bottom, #cccccc 14%, #eeeeee 57%);  
+  background-image: linear-gradient(bottom, #cfe1f7 14%, #e1eefe 57%);
+  background-image: -o-linear-gradient(bottom, #cfe1f7 14%, #e1eefe 57%);
+  background-image: -moz-linear-gradient(bottom, #cfe1f7 14%, #e1eefe 57%);
+  background-image: -webkit-linear-gradient(bottom, #cfe1f7 14%, #e1eefe 57%);
+  background-image: -ms-linear-gradient(bottom, #cfe1f7 14%, #e1eefe 57%);  
 }
 h3.open a { background-position: 13px -29px; }
 h3 + div { padding: 10px; }

@@ -1,6 +1,6 @@
 <?php                   
   if (isset($_POST['BtnMember'])) {         
-    $response = $webservice->CreateMember($_POST);
+    $response = $webservice->getData("Franchisee","CreateMember",$_POST);
     if ($response['status']=="success") {
         ?>
         <script>location.href='<?php echo AppUrl;?>Members/Created/<?php echo $response['data']['MemberCode'].".htm";?>';</script>
@@ -80,7 +80,7 @@ function myFunction() {
 }
 
 function SubmitNewMember() {
-                         $('#ErrMemberCode').html("");
+                      //   $('#ErrMemberCode').html("");
                          $('#ErrMemberName').html("");
                          $('#ErrSex').html("");
                          $('#ErrMobileNumber').html("");
@@ -90,9 +90,9 @@ function SubmitNewMember() {
                          
                          ErrorCount=0;
                         
-                        if (IsNonEmpty("MemberCode","ErrMemberCode","Please Enter Member Code")) {
-                        IsAlphaNumeric("MemberCode","ErrMemberCode","Please Enter Alphabets characters only");
-                        }
+                       // if (IsNonEmpty("MemberCode","ErrMemberCode","Please Enter Member Code")) {
+                        //IsAlphaNumeric("MemberCode","ErrMemberCode","Please Enter Alphabets characters only");
+                       // }
                         if (IsNonEmpty("MemberName","ErrMemberName","Please Enter Member Name")) {
                         IsAlphabet("MemberName","ErrMemberName","Please Enter Alpha Numeric characters only");
                         }
@@ -119,7 +119,7 @@ function SubmitNewMember() {
 }                                                
 </script>                                                                                                
 <?php 
-     $fInfo = $webservice->GetMemberCode(); 
+     $fInfo = $webservice->getData("Franchisee","GetMemberCode"); 
      $MemCode="";
         if ($fInfo['status']=="success") {
             $MemCode  =$fInfo['data']['MemberCode'];
@@ -127,7 +127,7 @@ function SubmitNewMember() {
         
         {
 ?>
-<form method="post" action="<?php $_SERVER['PHP_SELF']?>" onsubmit="return SubmitNewMember();">
+<form method="post" action="<?php $_SERVER['PHP_SELF']?>" name="form1" id="form1" onsubmit="return SubmitNewMember();">
         <div class="col-12 stretch-card">
                   <div class="card">
                     <div class="card-body">
@@ -136,7 +136,7 @@ function SubmitNewMember() {
                       <div class="form-group row">
                           <label for="Member Name" class="col-sm-2 col-form-label">Member Code<span id="star">*</span></label>
                           <div class="col-sm-2">
-                            <input type="text" class="form-control" maxlength="8" id="MemberCode" name="MemberCode" value="<?php echo isset($_POST['MemberCode']) ? $_POST['MemberCode'] : $MemCode;?>">
+                            <input type="text" class="form-control" maxlength="8" disabled="disabled" id="MemberCode" name="MemberCode" value="<?php echo isset($_POST['MemberCode']) ? $_POST['MemberCode'] : $MemCode;?>">
                             <span class="errorstring" id="ErrMemberCode"><?php echo isset($ErrMemberCode)? $ErrMemberCode : "";?></span>
                           </div>
                         </div>
@@ -175,39 +175,41 @@ function SubmitNewMember() {
                             </div>
                             </div>
                             <div class="form-group row">
-                           <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
-                            <div class="col-sm-3">
-                                <select class="selectpicker form-control" data-live-search="true" id="Sex"  name="Sex">
-                            <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
-                            <option value="<?php echo $Sex['CodeValue'];?>" <?php echo ($_POST['Sex']==$Sex['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
-                            <?php } ?>
-                        </select>
+                                <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
+                                <div class="col-sm-3">
+                                    <select class="selectpicker form-control" data-live-search="true" id="Sex"  name="Sex">
+                                            <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
+                                            <option value="<?php echo $Sex['CodeValue'];?>" <?php echo ($_POST['Sex']==$Sex['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
+                                            <?php } ?>
+                                    </select>
+                                </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="MobileNumber" class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
+                                <div class="col-sm-2" style="margin-right:-25px">
+                                    <select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="width:84%">
+                                        <?php foreach($CountryCodes as $CountryCode) { ?>
+                                        <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo ($_POST[ 'CountryCode']) ?  " selected='selected' " : "" ;?>>
+                                            <?php echo $CountryCode['str'];?>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>" placeholder="Mobile Number">
+                                    <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
+                                </div>
                         </div>
                         <div class="form-group row">
-                          <label for="MobileNumber" class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
-                          <div class="col-sm-2" style="margin-right:-25px">
-                            <select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="width:84%">
-                                   <?php foreach($CountryCodes as $CountryCode) { ?>
-                                  <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo ($_POST[ 'CountryCode']) ?  " selected='selected' " : "" ;?>>
+                                <label for="WhatsappNumber" class="col-sm-2 col-form-label">Whatsapp Number</label>
+                                <div class="col-sm-2" style="margin-right:-25px">
+                                    <select name="WhatsappCountryCode" class="selectpicker form-control" data-live-search="true" id="WhatsappCountryCode"> 
+                                        <?php foreach($CountryCodes as $CountryCode) { ?>
+                                            <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo ($_POST[ 'WhatsappCountryCode']) ? " selected='selected' " : "";?>>
                                             <?php echo $CountryCode['str'];?>
-                                   <?php } ?>
-                                </select>
-                          </div>
-                          <div class="col-sm-2">
-                            <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>" placeholder="Mobile Number">
-                            <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
-                          </div>
-                          <label for="WhatsappNumber" class="col-sm-2 col-form-label">Whatsapp Number</label>
-                          <div class="col-sm-2" style="margin-right:-25px">
-                            <select name="WhatsappCountryCode" class="selectpicker form-control" data-live-search="true" id="WhatsappCountryCode"> 
-                     <?php foreach($CountryCodes as $CountryCode) { ?>
-                  <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo ($_POST[ 'WhatsappCountryCode']) ? " selected='selected' " : "";?>>
-                            <?php echo $CountryCode['str'];?>
-                   <?php } ?>
-                </select>
-                          </div>
-                          <div class="col-sm-2">
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
                             <input type="text" maxlength="10" class="form-control" id="WhatsappNumber" name="WhatsappNumber" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : "");?>" placeholder="Whatsapp Number">
                             <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
                           </div>
@@ -234,7 +236,8 @@ function SubmitNewMember() {
                           
                        <div class="form-group row">
                         <div class="col-sm-2">
-                        <button type="submit" name="BtnMember" class="btn btn-primary mr-2" style="font-family:roboto">Create Member</button></div>
+                       <!-- <button type="submit" name="BtnMember" class="btn btn-primary mr-2" style="font-family:roboto">Create Member</button></div>  -->
+                        <a href="javascript:void(0)" onclick="ConfirmCreateMember($('#MemberCode').val(),$('#MemberName').val(),$('#date option:selected').text(),$('#month option:selected').text(),$('#year option:selected').text(),$('#Sex option:selected').text(),$('#CountryCode option:selected').text(),$('#MobileNumber').val(),$('#WhatsappCountryCode option:selected').text(),$('#WhatsappNumber').val(),$('#EmailID').val(),$('#LoginPassword').val())" class="btn btn-primary" style="font-family:roboto">Create Member</a></div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"> <a href="ManageMembers">List of Members </a></div>
                         </div> 
                         </form> 
@@ -243,3 +246,90 @@ function SubmitNewMember() {
                   </div>                              
                 </div>
 </form>  <?php }?>
+<div class="modal" id="CreateNow" data-backdrop="static" >
+    <div class="modal-dialog">
+        <div class="modal-content" id="Create_body" style="max-width:500px;min-height:460px;max-height:460p;overflow:hidden"></div>
+    </div>
+</div>
+
+<script>
+    function ConfirmCreateMember(MemberCode,MemberName,Date,Month,Year,Sex,CountryCode,MobileNumber,WhatsappCountryCode,WhatsappNumber,EmailID,LoginPassword){
+        
+        if (SubmitNewMember()) {
+            
+            $('#CreateNow').modal('show'); 
+           var content =   '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for create member</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                            + '</div>'
+                            + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12"><b>Member Name</b><br>'+MemberName+'</div>'
+                                        + '</div>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12"><b>Date of birth , Gender</b><br>'+Month+' '+Date+', '+Year+'&nbsp;,&nbsp;'+Sex+'</div>'
+                                        + '</div>' 
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12"><b>Mobile Number</b><br>'+CountryCode+'-'+MobileNumber+'</div>'
+                                        + '</div>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12"><b>Whatsapp Number</b><br>'+CountryCode+'-'+WhatsappNumber+'</div>'
+                                        + '</div>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12"><b>Email ID</b><br>'+EmailID+'</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                +  '</div>'                    
+                            + '</div>' 
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="BtnSaveProfile" class="btn btn-primary" onclick="CreateMember()" style="font-family:roboto">Create Member</button>'
+                            + '</div>';                                                                                                  
+            $('#Create_body').html(content);
+        } else {
+            return false;
+        }                                                                                                                                                             
+    }
+    function CreateMember() {
+        
+        var param = $( "#form1").serialize();   
+        $('#Create_body').html(preloading_withText("Creating member ...","170"));
+		$.post(API_URL + "m=Franchisee&a=CreateMember",param,function(result2) {
+            var obj = JSON.parse(result2);
+            if (obj.status=="success") {
+                    var data = obj.data;                                             
+                    var content = '<div class="modal-body" style="text-align:center;padding-top:70px">'
+                                    + '<br><img src="<?php echo ImageUrl;?>icons/new_profile_created.png" width="100px">' 
+                                    + '<br><br>'
+                                    + '<span style="font=size:18px;">Member Created.</span><br>Your Member ID: ' + data.Code
+                                    + '<br><br>'
+									+ '<div class="form-group row"  style="margin-bottom:10px;">'
+										+ '<div class="col-sm-12" style="text-align:center">'
+												+ '<a href="'+AppUrl+'CreateProfile/'+data.Code+'.htm?msg=1" class="btn btn-primary" style="font-family:roboto">Create Profile</a><br>'
+										+ '</div>'
+									+ '</div>'
+									+ '<div class="form-group row">'
+										+ '<div class="col-sm-12" style="text-align:center">'
+												+ '<a href="'+AppUrl+'" >Go to dashboard</a>'
+										+ '</div>'
+									+ '</div>'
+                                  + '</div>' 
+                    $('#Create_body').html(content);  
+            }
+        });
+    }    
+ /*   function CreateMember() {
+        
+        var param = $( "#form1").serialize();
+        $('#Create_body').html(preloader);
+        $('#CreateNow').modal('show'); 
+        $.post(API_URL + "m=Franchisee&a=CreateMember",param,function(result2) {$('#Create_body').html(result2);});
+    }*/
+    
+   
+</script>

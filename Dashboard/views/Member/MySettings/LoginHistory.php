@@ -21,7 +21,7 @@
                 </tr>  
             </thead>
             <tbody>  
-            <?php foreach($response['data'] as $History) {
+            <?php foreach($response['data']['LoginHistory'] as $History) {
                     
                     if ($History['LoginFrom']=="Web") {
                         $LoginFrom   = "domain.svg";
@@ -40,14 +40,15 @@
             ?>
                 <tr>
                     <td style="width:16px">
+					 
                         <?php if ($History['LoginStatus']==1){?>
-                            <img src="<?php echo ImagePath?>tick.gif" tilte="Successed Login" style="border-radius:0px !important;width: 16px;height: 16px;">
+                            <img src="<?php echo ImagePath;?>tick.gif" tilte="Successed Login" style="border-radius:0px !important;width: 16px;height: 16px;">
                         <?php }else{ ?>
-                            <img src="<?php echo ImagePath?>Red-Cross-Mark-PNG-Pic.png" tilte="Failed Login"  style="border-radius:0px !important;width: 10px;height: 10px;">
+                            <img src="<?php echo ImagePath;?>Red-Cross-Mark-PNG-Pic.png" tilte="Failed Login"  style="border-radius:0px !important;width: 10px;height: 10px;">
                         <?php } ?>
                     </td>
-                    <td style="width:16px"><img src="<?php echo ImagePath.$LoginFrom?>" title="<?php echo $accessTitle;?>" style="border-radius:0px !important;width: 16px;height: 16px;"></td>
-                    <td style="width:16px"><img src="<?php echo ImagePath.$device?>" title="<?php echo $deviceTitle;?>" style="border-radius:0px !important;width: 16px;height: 16px;"></td>
+                    <td style="width:16px"><img src="<?php echo ImagePath.$LoginFrom;?>" title="<?php echo $accessTitle;?>" style="border-radius:0px !important;width: 16px;height: 16px;"></td>
+                    <td style="width:16px"><img src="<?php echo ImagePath.$device;?>" title="<?php echo $deviceTitle;?>" style="border-radius:0px !important;width: 16px;height: 16px;"></td>
                     <td style="width:110px"><?php echo putDateTime($History['LoginOn']);?></td>                         
                     <td style="width:110px"><?php echo (strlen(trim($History['LastAccessOn']))>0) ? putDateTime($History['LastAccessOn']) : "";?></td>
                     <td style="width:110px"><?php echo (strlen(trim($History['UserLogout']))>0) ? putDateTime($History['UserLogout']) : "";?></td>

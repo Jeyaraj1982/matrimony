@@ -32,7 +32,7 @@
                     </thead>
                      <tbody>  
                         <?php 
-                         $response = $webservice->GetMyDeactiveMembers(); 
+                         $response = $webservice->getData("Franchisee","GetMyDeactiveMembers"); 
                          if (sizeof($response['data'])>0) {
                     ?>
                         <?php foreach($response['data'] as $Member) { ?>

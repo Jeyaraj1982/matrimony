@@ -8,8 +8,9 @@
   class JFrame{
       
             function getAppSetting($property){
-                global $mysql;
-                $settings = $mysql->select("select * from _jsitesettings");    
+                
+                global $mysql,$settings;
+              
                 $f = 0;
                 
             switch($property) {
@@ -53,7 +54,7 @@
                                                   $settings[$keyvalue]['paramvalue']=$f[0]['fontname'];break;
                 case 'footerfontsize'           : $keyvalue = 41; break;
                 case 'layout'                   : $keyvalue = 43; break;  
-                case 'headerhover'              : $keyvalue = 44; break;  
+                case 'menu_hover_font_color'              : $keyvalue = 44; break;  
                 case 'footerhover'              : $keyvalue = 45; break;  
                 case 'linkedpage'               : $keyvalue = 46; break;  
                 case 'emailto'                  : $keyvalue = 47; break;
@@ -70,6 +71,108 @@
                 case 'headerbgimg'              : $keyvalue = 57; break;
                 case 'headerbgcolor'            : $keyvalue = 58; break;
                 case 'sliderhideicon'           : $keyvalue = 59; break;   
+                case 'favoriteicon'             : $keyvalue = 4; break;   
+                case 'headernoimagenocolor'     : $keyvalue = 60; break;   
+                case 'headerheight'             : $keyvalue = 61; break;   
+                case 'showheader'               : $keyvalue = 62; break;  
+                case 'menu_font_bold'           : $keyvalue = 63; break;  
+                case 'menu_font_italic'                : $keyvalue = 64; break;  
+                case 'menu_font_underline'             : $keyvalue = 65; break;  
+                case 'menu_hover_font_bold'            : $keyvalue = 66; break;  
+                case 'menu_hover_font_italic'          : $keyvalue = 67; break;  
+                case 'menu_hover_font_underline'       : $keyvalue = 68; break;  
+                case 'menu_hover_backgroundcolor'      : $keyvalue = 69; break;  
+                case 'menu_border_left_size'           : $keyvalue = 70; break;  
+                case 'menu_border_right_size'          : $keyvalue = 71; break;  
+                case 'menu_border_top_size'            : $keyvalue = 72; break;  
+                case 'menu_border_bottom_size'         : $keyvalue = 73; break;  
+                case 'menu_border_left_style'          : $keyvalue = 74; break;  
+                case 'menu_border_right_style'         : $keyvalue = 75; break;  
+                case 'menu_border_top_style'           : $keyvalue = 76; break;  
+                case 'menu_border_bottom_style'        : $keyvalue = 77; break;  
+                case 'menu_border_left_color'          : $keyvalue = 78; break;  
+                case 'menu_border_right_color'         : $keyvalue = 79; break;  
+                case 'menu_border_top_color'           : $keyvalue = 80; break;  
+                case 'menu_border_bottom_color'        : $keyvalue = 81; break;  
+                case 'menu_radius_left_top'            : $keyvalue = 82; break;  
+                case 'menu_radius_right_top'           : $keyvalue = 83; break;  
+                case 'menu_radius_left_bottom'         : $keyvalue = 84; break;  
+                case 'menu_radius_right_bottom'        : $keyvalue = 85; break;  
+                case 'menu_radius_left_top_scale'      : $keyvalue = 86; break;  
+                case 'menu_radius_right_top_scale'     : $keyvalue = 87; break;  
+                case 'menu_radius_left_bottom_scale'   : $keyvalue = 88; break;  
+                case 'menu_radius_right_bottom_scale'  : $keyvalue = 89; break;  
+                case 'menu_height'                     : $keyvalue = 90; break;  
+                case 'need_menu_hover_backgroundcolor' : $keyvalue = 91; break; 
+                case 'menu_text_padding_left'          : $keyvalue = 92; break;  
+                case 'menu_text_padding_right'         : $keyvalue = 93; break;  
+                case 'menu_text_padding_top'           : $keyvalue = 94; break;  
+                case 'menu_text_padding_bottom'        : $keyvalue = 95; break;  
+                
+                case 'menu_background_image_color_noneed'  : $keyvalue = 96; break;  
+                
+                
+                 
+                case 'menu_seperator_need'  : $keyvalue = 97; break;  
+                case 'menu_seperator_size'  : $keyvalue = 98; break;  
+                case 'menu_seperator_color'  : $keyvalue = 99; break;  
+                
+                
+                case 'slider_border_top_size'  : $keyvalue = 100; break;  
+                case 'slider_border_bottom_size'  : $keyvalue = 101; break;  
+                case 'slider_border_left_size'  : $keyvalue = 102; break;  
+                case 'slider_border_right_size'  : $keyvalue = 103; break;  
+                case 'slider_border_top_color'  : $keyvalue = 104; break;  
+                case 'slider_border_bottom_color'  : $keyvalue = 105; break;  
+                case 'slider_border_left_color'  : $keyvalue = 106; break;  
+                case 'slider_border_right_color'  : $keyvalue = 107; break;  
+                case 'slider_top_space'  : $keyvalue = 108; break;  
+                case 'slider_bottom_space'  : $keyvalue = 109; break;  
+             
+                
+                
+                
+                case 'menu_text_transform'  : $keyvalue = 110; break;  
+                case 'menu_text_hover_transform'  : $keyvalue = 111; break;  
+                
+                case 'slider_border_radius_left_top'  : $keyvalue = 112; break;  
+                case 'slider_border_radius_right_top'  : $keyvalue = 113; break;  
+                case 'slider_border_radius_left_bottom'  : $keyvalue = 114; break;  
+                case 'slider_border_radius_right_bottom'  : $keyvalue = 115; break;  
+                
+                case 'showslider'  : $keyvalue = 116; break;  
+                case 'slider_height'  : $keyvalue = 117; break;
+                
+                
+                  
+                case 'slider_top_space_need_color'  : $keyvalue = 118; break;  
+                case 'slider_top_space_color'  : $keyvalue = 119; break;  
+                case 'slider_bottom_space_need_color'  : $keyvalue = 120; break;  
+                case 'slider_bottom_space_color'  : $keyvalue = 121; break;  
+                
+                case 'video_page_video_height'  : $keyvalue = 122; break;  
+                case 'video_page_video_width'  : $keyvalue = 123; break;  
+                case 'video_page_video_layout'  : $keyvalue = 124; break;  
+                case 'video_page_clicktoplay'  : $keyvalue = 125; break;  
+                case 'video_page_details_open_neworself'  : $keyvalue = 126; break;  
+                case 'video_page_content'  : $keyvalue = 127; break;  
+                case 'header_logo_padding_right'  : $keyvalue = 128;break;  
+                case 'header_logo_padding_left'  : $keyvalue = 129;break;  
+                case 'header_logo_padding_top'  : $keyvalue = 130;break; 
+                case 'header_logo_padding_bottom'  : $keyvalue = 131;break;
+                case 'header_background_repeat'  : $keyvalue = 132;break;
+                
+                case 'currencysymbol'  : $keyvalue = 133;break;
+               
+                
+                
+                
+                
+                
+                
+                
+                
+                 
             } 
             return $settings[$keyvalue]['paramvalue'];
         }
@@ -84,8 +187,8 @@
           return $mysql->insert("_jmenu",array("menuname"=>$param['menuname'],"pageid"=>$param['pagenameid'],"isheader"=>$param['isHeader'],"target"=>$param['target'],"customurl"=>$param['customurl'],"linkedto"=>$param['linkedto'],"orderf"=>$param['orderf'])); 
        }
        
-       function updateMenu($param,$menuid){
-          global $mysql;                                                                                                                                                                                                                    
+       function updateMenu($param,$menuid=""){
+          global $mysql;         
           return $mysql->execute("UPDATE _jmenu SET menuname='".$param['menuname']."',pageid='".$param['pagenameid']."',isheader='".$param['isHeader']."',target='".$param['target']."',customurl='".$param['customurl']."',orderf='".$param['orderf']."',linkedto='".$param['linkedto']."' WHERE menuid='".$param['menuid']."'"); 
        }
        
@@ -101,21 +204,12 @@
        
        function getHeaderMenuItems(){
           global $mysql;
-          $data = $mysql->select("select * from _jmenu where isheader=1 order by orderf");
-          $result = array();
-          foreach($data as $d) {
-              if ($d['pageid']>0) {
-                  $p = $mysql->select("select * from _jpages  where pageid='".$d['pageid']."'");
-                  $d['pagefilename']=$p[0]['pagefilename'];
-              }
-              $result[]  = $d;
-          }
-          return $result;// $mysql->select("select * from _jmenu where isheader=1 order by orderf"); 
+          return $mysql->select("SELECT * FROM _jmenu LEFT JOIN _jpages ON _jmenu.pageid=_jpages.pageid where _jmenu.isheader=1 order by _jmenu.orderf"); 
        }
        
        function getFooterMenuItems(){
           global $mysql;
-          return $mysql->select("select * from _jmenu where isheader=0 order by orderf"); 
+          return $mysql->select("SELECT * FROM _jmenu LEFT JOIN _jpages ON _jmenu.pageid=_jpages.pageid where _jmenu.isheader=0 order by _jmenu.orderf"); 
        } 
   }
   
@@ -341,7 +435,7 @@
         }
                 
         if(!(move_uploaded_file($file['tmp_name'],strtolower($uploadTo.$filename)))){
-            $this->printError("There was an error uploading the file, please try again!".$uploadTo.$filename);
+            $this->printError("There was an error uploading the file, please try again!");
             return false;
         }
             return true;
@@ -356,4 +450,345 @@
         return $return;
     }
   } 
+  
+  
+  Class JListing {
+                
+      function getCategories($categoryid=0){ 
+           global $mysql;
+           return ($categoryid==0) ?  $mysql->select("select * from _jitemcategory") : $mysql->select("select * from _jitemcategory where categoryid='".$categoryid."'");  
+      }
+      
+      function addCategory($categoryname,&$returnString){
+           global $mysql; 
+           $categoryname = str_replace("'","\'",trim($categoryname));
+           $categoryname = str_replace('"','\"',$categoryname);
+           $categoryname = str_replace('$','\$',$categoryname);
+           $oldData = $mysql->select("Select * from _jitemcategory where categoryname='".$categoryname."'");
+           if (sizeof($oldData)>0) {
+               $returnString = "This Category name is already exists";
+               return -1; 
+           }
+            $returnString = "Category saved successfully";
+           return $mysql->insert("_jitemcategory",array("categoryname"=>$categoryname)); 
+       }
+       
+       function deleteCategory($rowid){
+           global $mysql;
+           return $mysql->execute("delete from _jitemcategory where categoryid='".$rowid."'");
+       }
+     
+       function updateCategory($categoryname,$rowid){
+           global $mysql;
+           return $mysql->execute("update _jitemcategory set categoryname='".$categoryname."' where categoryid='".$rowid."'");
+       }
+       
+         function getFeatures($featureid=0){ 
+           global $mysql;
+           return ($featureid==0) ?  $mysql->select("select * from _jfeature") : $mysql->select("select * from _jfeature where featureid='".$featureid."'");  
+      }
+      
+      function addFeatures($featurename,&$returnString){
+           global $mysql; 
+           $featurename = str_replace("'","\'",trim($featurename));
+           $featurename = str_replace('"','\"',$featurename);
+           $featurename = str_replace('$','\$',$featurename);
+           $oldData = $mysql->select("Select * from _jfeature where featurename='".$featurename."'");
+           if (sizeof($oldData)>0) {
+               $returnString = "This Feature name is already exists";
+               return -1; 
+           }
+            $returnString = "Feature saved successfully";
+           return $mysql->insert("_jfeature",array("featurename"=>$featurename)); 
+       }
+       
+       
+        function getItem($itemid){ 
+           global $mysql;
+           return ($itemid==0) ?  $mysql->select("select * from _jlisting as list, _jitemcategory as lcategory where lcategory.categoryid=list.categoryid") : 
+                                     $mysql->select("select * from _jlisting  as list, _jitemcategory as lcategory where lcategory.categoryid=list.categoryid and list.itemid='".$itemid."'");   
+       }  
+       
+       function getItemByTitle($itemtitle){ 
+           global $mysql;
+           return $mysql->select("select * from _jlisting  as list, _jitemcategory as lcategory where lcategory.categoryid=list.categoryid and list.itemfilename='".$itemtitle."'");   
+       }
+       
+        function getPublishedItems($sql=""){ 
+           global $mysql;
+           return  $mysql->select("select * from _jlisting as list, _jitemcategory as lcategory where list.ispublished=1 and lcategory.categoryid=list.categoryid ".$sql);
+                                    
+       }
+       
+        function getLatestPublishedItems(){ 
+           global $mysql;
+           return  $mysql->select("select * from _jlisting as list, _jitemcategory as lcategory where list.ispublished=1 and lcategory.categoryid=list.categoryid order by list.itemid desc limit 0,5");
+                                    
+       }
+       
+          
+        function getMostViewedPublishedItems(){ 
+           global $mysql;
+           return  $mysql->select("select * from _jlisting as list, _jitemcategory as lcategory where list.ispublished=1 and lcategory.categoryid=list.categoryid order by list.itemid desc limit 0,5");
+                                    
+       }
+       
+       function addItem($param) {
+       
+           global $mysql; 
+           
+           $itemdesc = str_replace("'","\'",$param['itemdesc']);
+           $itemdesc = str_replace('"','\"',$itemdesc);
+           
+           $itemname = str_replace("'","\'",$param['itemname']);
+           $itemname = str_replace('"','\"',$itemname);
+           $itemname = str_replace('  ',' ',$itemname);
+                     
+           return $mysql->insert("_jlisting",array("categoryid"         => $param['categoryid'],
+                                                   "itemname"           => $itemname,
+                                                   "itemdesc"           => $itemdesc,
+                                                   "filename"           => $param['filename'],
+                                                   "keywords"           => $param['keywords'],
+                                                   "shortdescription"   => $param['shortdescription'],
+                                                   "itemfilename"       => String2FileName($itemname),
+                                                   "itemprice"          => $param['itemprice'],
+                                                   "ispublished"        => $param['ispublished'],
+                                                   "postedon"           => date("Y-m-d H:i:s"))); 
+       }
+       
+           
+       function updateItem($param) { 
+           
+           global $mysql; 
+           
+           $itemdesc = str_replace("'","\'",$param['itemdesc']);
+           $itemdesc = str_replace('"','\"',$itemdesc);
+           
+           $itemname = str_replace("'","\'",$param['itemname']);
+           $itemname = str_replace('"','\"',$itemname);
+           $itemname = str_replace('  ',' ',$itemname);
+           
+           $sql = "update _jlisting set categoryid='".$param['categoryid']."',
+                                        itemname='".$itemname."',
+                                        itemdesc='".$itemdesc."',
+                                        ispublished='".$param['ispublished']."',
+                                        keywords='".$param['keywords']."',
+                                        shortdescription='".$param['shortdescription']."',
+                                        itemfilename='".String2FileName($itemname)."',
+                                        itemprice='".$param['itemprice']."',
+                                        
+                                        ispublished='".$param['ispublished']."' " ;
+           $sql .= (isset($param['filename']) && strlen($param['filename'])>5) ? " , filename='".$param['filename']."' " : "";
+           $sql .= " where itemid=".$param['itemid'];
+          // echo $sql;
+           return $mysql->execute($sql);
+       }
+       
+       
+        function DeleteItem($itemid) { 
+           global $mysql; 
+           return $mysql->execute("delete from _jlisting where itemid=".$itemid);
+           
+       }
+       
+       
+       
+       function addItemImage($param) {
+             global $mysql; 
+             return $mysql->insert("_jlistingimg",array("itemid"    => $param['itemid'],
+                                                        "filename"    => $param['filename'],
+                                                        "ispublished" => '1',
+                                                        "postedon"    => date("Y-m-d H:i:s"))); 
+       }
+       
+         function getItemImages($itemid){ 
+           global $mysql;
+           return $mysql->select("select * from _jlistingimg where itemid=".$itemid);
+       }
+       
+           function deleteItemImages($itemid){ 
+           global $mysql;
+           return $mysql->select("delete from _jlistingimg where itemid=".$itemid);
+       }
+       
+       function deleteProduct($rowid){
+           global $mysql;
+           return $mysql->execute("delete from _jproduct where productid='".$rowid."'");
+       }
+     
+       function updateProduct($itemname,$itemdescription,$itemprice,$ispublished,$rowid){
+           global $mysql;
+           return $mysql->execute("update _jproduct set itemname='".$itemname."',itemdesc='".$itemdescription."',itemprice='".$itemprice."',ispublished='".$ispublished."' where productid='".$rowid."'");
+       }
+  }
+  
+  
+  function Type_001($r) {
+        
+        global $config;
+        
+        $result = '<div class="listitems">
+                        <div><a href="browse.php?/='.$r['itemid'].'-'.$r["itemname"].' class="iistitemTitleLink">'.$r["itemname"].'</a></div>
+                        <div class="listitemSubTitle">'.$r["categoryname"].'&nbsp;-&nbsp;'.$r["postedon"].'</div>
+                            <table width="100%" cellpadding="0" cellspacing="0" style="font-family:arial;font-size:12px">
+                                <tr>
+                                    <td style="vertical-align:top;text-align:justify;padding-right:10px;font-family:arial;font-size:12px;">'.substr(strip_tags($r["itemdesc"]),0,500).'</td>
+                                    <td style="width:150px;"> <img src="assets/'.$config['thumb'].'/'.$r["filename"].'" style="height:120px;width:150px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top:5px;padding-top:5px;">
+                                        <div>
+                                            <div style="float: left; background: #ccc none repeat scroll 0 0;border: 1px solid #ccc;float: left;font-weight: bold;padding: 5px 15px;width: auto;">
+                                                <a href="enquiry.php?/='.$r['itemid'].'-'.trim($r["itemname"]).'" >Enquiry Now</a>
+                                            </div>
+                                            <div style="margin-left:20px;float: left; background: #ccc none repeat scroll 0 0;border: 1px solid #ccc;float: left;font-weight: bold;padding: 5px 15px;;width: auto;">
+                                                <a href="browse.php?/='.$r['itemid'].'-'.trim($r["itemname"]).'" >View Details</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding-top:5px;padding-top:5px;">
+                                        <div style="width: 100%; background: #ccc none repeat scroll 0 0;border: 1px solid #ccc;float: left;font-weight: bold;text-align: center;padding-top:5px;padding-bottom:5px">'.$r["itemprice"].'</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>';
+        return $result;
+    
+    }
+    
+     function Type_002($r) {
+        
+        global $config,$_SITEPATH;
+        
+        $result = '<div class="listitems">
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="text-align:center;height:50px;"><a title="'.$r["itemname"].'" href="'.$_SITEPATH.'item/'.$r['itemfilename'].'.html" class="iistitemTitleLink">'.$r["itemname"].'</a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a title="'.$r["itemname"].'" href="'.$_SITEPATH.'item-'.$r['itemid'].'-'.String2FileName($r["itemname"]).'.html" class="iistitemTitleLink">
+                                    <img class="itemimage" src="'.$_SITEPATH.'assets/'.$config['thumb'].'/'.$r["filename"].'"></a>
+                                </td>
+                            </tr>';
+         $displayPrice=false;
+        if ($displayPrice) { 
+            $result .= '<tr>
+                                <td class="itemprice">'.JFrame::getAppSetting("currencysymbol")." ".$r["itemprice"].'</td>
+                            </tr>';
+                            }
+                            
+                        $result .='      <tr>
+                                <td style="padding:5px;text-align:center">
+                                    <a title="Send Enquiry for '.$r["itemname"].'" style="color:#555;font-family:airal;font-size:12px"   href="'.$_SITEPATH.'enquiry/'.$r['itemfilename'].'.html">Enquiry Now</a>&nbsp;&nbsp;
+                                    <a title="View Details of '.$r["itemname"].'" style="color:#555;font-family:airal;font-size:12px"  href="'.$_SITEPATH.'item/'.$r['itemfilename'].'.html">View Details</a>
+                                </td>
+                            </tr>
+                        </table>
+                   </div>';
+        return $result;
+    }
+                    
+    
+      function Type_002A($r) {
+        
+        global $config,$_SITEPATH;
+        
+        $result = '<div style="border:1px solid #ccc;padding:5px;margin-top:5px;margin-bottom:5px">
+                        <table cellpadding="0" cellspacing="0" style="width:100%">
+                          
+                            <tr>
+                                <td style="vertical-align:top;width:140px">
+                                    <a title="'.$r["itemname"].'" href="'.$_SITEPATH.'item/'.$r['itemfilename'].'.html" class="iistitemTitleLink">
+                                    <img  src="'.$_SITEPATH.'assets/'.$config['thumb'].'/'.$r["filename"].'" style="height:90px"></a>
+                                   
+                                </td>
+                            
+                                <td style="text-align:left;vertical-align:top">
+                                    <a title="'.$r["itemname"].'" href="'.$_SITEPATH.'item/'.$r['itemfilename'].'.html" class="iistitemTitleLink" style="color:blue">'.$r["itemname"].'</a>
+                                    <div style="padding-top:5px;padding-bottom:5px;font-size:11px;font-family:arial;color:#666">
+                                        '.substr(strip_tags($r['itemdesc']),0,400).'
+                                    </div>
+                                   
+                                </td>
+                            
+                            </tr>
+                            <tr>
+                                <td  class="itemprice" style="font-family:arial;font-size:12px;;font-weight:bold">'.JFrame::getAppSetting("currencysymbol").' '.$r["itemprice"].'</td>
+                                <td style="text-align:right;">
+                                                                             <a title="Send Enquiry for '.$r["itemname"].'" style="color:#555"   href="'.$_SITEPATH.'enquiry/'.$r['itemfilename'].'.html">Enquiry Now</a>&nbsp;&nbsp;
+                                        <a title="View Details of '.$r["itemname"].'" style="color:#555"  href="'.$_SITEPATH.'item/'.$r['itemfilename'].'.html">View Details</a>
+
+                                </td>
+                            </tr>
+                        </table>
+                   </div>';
+        return $result;
+    }
+    
+    function Type_003($r) {
+        
+        global $config,$_SITEPATH;
+        
+        $result = '<div class="listitems"  style="border-left:0px solid #ccc;border-right:0px solid #ccc;margin:0px !important">
+                            <table width="100%" cellpadding="2" cellspacing="0" style="font-family:arial;font-size:12px;">
+                                <tr>
+                                    <td style="width:100px;">
+                                        <a style="color:#666;" href="'.$_SITEPATH.'item/'.$r['itemfilename'].'.html" class="iistitemTitleLink"><img src="'.$_SITEPATH.'assets/'.$config['thumb'].'/'.$r["filename"].'" style="height:75px;width:100px;"></a>
+                                    </td>
+                                    <td style="height:50px;vertical-align:top">
+                                        <div style="font-family:arial;font-size:12px;color:#555">
+                                            <a style="color:#666;" href="'.$_SITEPATH.'item/'.$r['itemfilename'].'.html" class="iistitemTitleLink">'.trim($r["itemname"]).'</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                               
+                            </table>
+                        </div>';
+        return $result;
+        $q = ' <tr>
+                                    <td>
+                                        <div class="subMenu" style="display:none;font-weight: bold;text-align: center;padding-top:3px;padding-bottom:3px;font-family:arial;font-size:12px;color:#fff;height:auto">'.JFrame::getAppSetting("currencysymbol")." ".$r["itemprice"].'</div>
+                                    </td>
+                                    <td style="text-align:right">
+                                    <a style="color:#666;" href="'.$_SITEPATH.'item/'.$r['itemfilename'].'.html" class="iistitemTitleLink">More</a> 
+                                    </td>
+                                </tr>';
+    
+    }
+    
+     function Type_enquiry($r) {
+        
+        global $config,$_SITEPATH;
+        
+        $result = '<div class="listitems" style="float:left;width:auto;margin-left:5px;margin-bottom:5px;">
+                       
+                        
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="text-align:center;height:50px;">
+                                        <div style="width:240px;text-align:center;">
+                                    <a style="font-weight:bold;font-family:arial;font-size:13px;color:#444" href="'.$_SITEPATH.'item/'.$r['itemfilename'].'.html" class="iistitemTitleLink">'.$r["itemname"].'</a>
+                                    </div>
+                                    </td>
+                                <tr>
+                                    <td style="width:240px;"> <img src="'.$_SITEPATH.'assets/'.$config['thumb'].'/'.$r["filename"].'" style="height:180px;width:240px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top:5px;padding-top:5px;display:none">
+                                        <div style="width: 100%; background: #ccc none repeat scroll 0 0;border: 1px solid #ccc;float: left;font-weight: bold;text-align: center;padding-top:5px;padding-bottom:5px">'.$r["itemprice"].'</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top:5px;padding-top:5px;text-align:center">
+                                       
+                                        <a style="font-family:arial;font-size:12px;color:#444"   href="'.$_SITEPATH.'item/'.$r['itemfilename'].'.html">View Details</a>
+                                    </td>
+                                </td>
+                                
+                            </table>
+                        </div>';
+        return $result;
+    
+    }
 ?>

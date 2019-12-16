@@ -102,8 +102,8 @@
                                 </div>
                             </div>
                            <div style="float:right;line-height: 1px;">
-                                <a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/". $Profile['ProfileCode'].".htm");?>">Edit</a>&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("ViewDraftProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
+                                <a href="<?php echo GetUrl("Member/".$Profile['MemberCode']."/ProfileEdit/GeneralInformation/". $Profile['ProfileCode'].".htm");?>">Edit</a>&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Member/".$Profile['MemberCode']."/ViewDraftProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
                             </div>
                         </div>  
                         <br> 

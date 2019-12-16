@@ -24,38 +24,30 @@
     }
   
   class youTube {
+      
+      var $videoData = "";
     
-    var $videoData = "";
-       function youTube($videoid) {
-       $url = "http://gdata.youtube.com/feeds/api/videos/".$videoid."?v=2&alt=json";
-       $ch = curl_init($url); 
-       curl_setopt($ch, CURLOPT_URL, $url); 
-       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  
-
-       $output = curl_exec($ch); 
-       curl_close($ch);  
-
-       $this->videoData =  json_decode($output);
+      function youTube($videoid) {
+          
+          $url = "https://www.youtube.com/oembed?format=json&url=www.youtube.com/watch?v=".$videoid;
+          $ch = curl_init($url); 
+          curl_setopt($ch, CURLOPT_URL, $url); 
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  
+          $output = curl_exec($ch); 
+          curl_close($ch);  
+          $this->videoData =  json_decode($output);
        }
     
         function getTitle() {
-        
-        $d = $this->videoData;
-        foreach($d->entry->title as $e) {
-            return $e;
-        }
-        
+            $d = $this->videoData;
+            return $d->title;
         }
     
         function getImage() {
-        
-        $d = $this->videoData;
-        $d = $d->entry->{'media$group'};
-        
-        return $d->{'media$thumbnail'}[2]->url;
+            $d = $this->videoData;
+            return $d->thumbnail_url;
         }
- 
-}
+  }
   
  
 ?>

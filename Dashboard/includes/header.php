@@ -145,7 +145,7 @@
               <li class="nav-item dropdown d-none d-xl-inline-block" style="text-align: right;">
                 <span class="profile-text" style="line-height:18px;"><?php echo "<b>".$_Member['MemberName']."</b>";?><br><span style="color:#f9f9f9f"><?php echo $_Member['MemberCode'] ; ?></span><br>
                     <?Php if($response['data']['IsDisplayLastLogin']['ParamA']=="1"){ ?>
-                    <span style="color:#f9f9f9f">Last Logged &nbsp;<?php echo putDateTime($response['data']['LoginHistory']['LoginOn']) ; ?></span>
+                    <span style="color:#f9f9f9f">Last Logged &nbsp;<?php echo putDateTime($response['data']['LoginHistory'][0]['LoginOn']) ; ?></span>
                     <?php } ?>
                     </span><br> 
               </li>
@@ -190,7 +190,7 @@
              <li class="nav-item dropdown d-none d-xl-inline-block">
              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"><img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image"></a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding-top: 10px;padding-bottom: 10px;">
-              <a href="<?php echo GetUrl("MyAccounts/RefillWallet");?>" class="dropdown-item">My Accounts</a>
+              <a href="<?php echo GetUrl("MyAccounts/MyWallet");?>" class="dropdown-item">My Accounts</a>
               <a href="<?php echo GetUrl("MySettings/FranchiseeInfo");?>" class="dropdown-item">My Settings</a>
               <a href="<?php echo SiteUrl;?>?action=logout&redirect=../index" class="dropdown-item">Log Out</a>
             </div>
@@ -400,7 +400,7 @@
             <div class="form-group row">
                             <div class="col-sm-12" style="text-align:center">
                                <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;background:#fff;padding:6px">
+                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;background:#fff;padding:6px">
                             </div>
                         </div>
                         <div class="form-group row">

@@ -56,14 +56,17 @@
         <h4 class="card-title">Change Password</h4>
         <form class="forms-sample" method="post" action="" onsubmit="return SubmitChangePassword();">
             <div class="form-group">
+				<label>Current Password<span id="star">*</span></label>
                 <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword" value="<?php echo (isset($_POST['CurrentPassword']) ? $_POST['CurrentPassword'] : "");?>" placeholder="Current Password">
                 <span class="errorstring" id="ErrCurrentPassword"><?php echo isset($ErrCurrentPassword)? $ErrCurrentPassword : "";?></span>
             </div>
             <div class="form-group">
+				<label>New Password<span id="star">*</span></label>
                 <input type="password" class="form-control" id="NewPassword"  name="NewPassword" value="<?php echo (isset($_POST['NewPassword']) ? $_POST['NewPassword'] : "");?>" placeholder="New Password">
                 <span class="errorstring" id="ErrNewPassword"><?php echo isset($ErrNewPassword)? $ErrNewPassword : "";?></span>
             </div>
             <div class="form-group">
+				<label>Confirm New Password<span id="star">*</span></label>
                 <input type="password" class="form-control" id="ConfirmNewPassword"  name="ConfirmNewPassword" value="<?php echo (isset($_POST['ConfirmNewPassword']) ? $_POST['ConfirmNewPassword'] : "");?>" placeholder="Confirm New Password">
                 <span class="errorstring" id="ErrConfirmNewPassword"><?php echo isset($ErrConfirmNewPassword)? $ErrConfirmNewPassword : "";?></span>
             </div>

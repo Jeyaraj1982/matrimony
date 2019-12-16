@@ -1,10 +1,8 @@
 <?php 
 include_once("config.php");
 include_once("includes/header.php");
-
-
 ?>
- <div class="jTitle">Video Galary</div>
+<!-- <div class="jTitle">Video Galary</div> -->
  
     <?php if (isset($_REQUEST['viewvid']) && ($_REQUEST['viewvid']>0)) { 
         
@@ -63,17 +61,29 @@ include_once("includes/header.php");
             foreach(JVideos::getVideos() as $videos) {
                 $youtube = new youTube($videos['videourl']);
         ?>
-        <div style="margin:2px;float:left;width:131px;height:138px;margin-right:13px;overflow:hidden">
+        <div style="float:left;margin-right:13px;margin-bottom:13px;overflow:hidden">
             <table cellpadding="0" cellpadding="0">
                 <tr>
                     <td style="padding-left:0px">
-                        <div style='background:#fff;padding:3px'>
-                            <a href="videos.php?viewvid=<?php echo $videos['videoid'];?>" style="outline:none"><img onmouseout="$(this).css('border','none')" onmouseover="$(this).css('border','1px solid #333')" style=";cursor:pointer;border:1px solid #ccc;border-bottom:none;" src="<?php echo $youtube->getImage();?>" height="93" width="129"></a>
-                            <br><img src="assets/images/shadow_220.png" style="margin-top:0px;width:129px">
+                        <?php
+                            if (JFrame::getAppSetting('video_page_clicktoplay')==1) {
+                        ?>
+                        <iframe width='<?php echo JFrame::getAppSetting('video_page_video_width'); ?>' height='<?php echo JFrame::getAppSetting('video_page_video_height'); ?>' src='http://www.youtube.com/embed/<?php echo $videos['videourl'];?>' frameborder='0' allowfullscreen></iframe>
+                        
+                       <?php
+                            } else {
+                                ?>
+                                      <div style='background:#fff;padding:3px'>
+                            <a href="videos.php?viewvid=<?php echo $videos['videoid'];?>" style="outline:none">
+                                <img onmouseout="$(this).css('border','none')" onmouseover="$(this).css('border','1px solid #333')" style="height:<?php echo JFrame::getAppSetting('video_page_video_height'); ?>px;width:<?php echo JFrame::getAppSetting('video_page_video_width'); ?>px;cursor:pointer;border:1px solid #ccc;border-bottom:none;" src="<?php echo $youtube->getImage();?>">
+                            </a>
                         </div>
                         <div class="jContent" style="font-size:10px;color:#222;text-align:center">
-                            <a href="videos.php?viewvid=<?php echo $videos['videoid'];?>" class="viewmore"><?php echo $youtube->getTitle();?></a>
+                            <a href="videos.php?viewvid=<?php echo $videos['videoid'];?>" class="viewmore" <?php echo JFrame::getAppSetting('video_page_clicktoplay')==1 ? " target='_blank'" : ""; ?> ><?php echo $youtube->getTitle();?></a>
                         </div>
+                                <?php 
+                            }
+                        ?>
                     </td>
                 </tr>
             </table>

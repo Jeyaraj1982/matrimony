@@ -1,11 +1,7 @@
-<html>    
-    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="./../../assets/js/jquery-1.7.2.js"></script>
-    <link rel="stylesheet" href="./../../assets/css/demo.css">     
-    <body style="margin:0px;">
-        <div class="titleBar">Add Menu Page</div>
+<?php include_once(__DIR__."/../header.php"); ?>
+<div class="title_Bar">Menu </div> 
         <?php 
-            include_once("../../config.php");
+           
             
             $obj = new CommonController(); 
                 
@@ -16,7 +12,7 @@
                 
             if (isset($_POST{"save"})) {
             
-                $param=array("menuname"=>$_POST['menuname'],"isHeader"=>$_POST['isHeader'],"target"=>$_POST['target'],"linkedto"=>$_POST['linkTo']);               
+                $param=array("menuname"=>str_replace('"','\"',str_replace("'","\'",$_POST['menuname'])),"isHeader"=>$_POST['isHeader'],"target"=>$_POST['target'],"linkedto"=>$_POST['linkTo']);               
  
                 if (!((strlen(trim($_POST['menuname']))>=3))) {
                     echo $obj->printError("Please Enter Valid Menu Name");    
@@ -72,11 +68,11 @@
                 <tr>
                     <td style="padding-left:10px;">Target</td>
                     <td>
-                        <select style="width:100px;" name="target" id="target">
+                        <select style="width:110px;" name="target" id="target">
                             <option value="0">Self Window</option>
                             <option value="1">New Window</option>
                         </select>
-                        &nbsp;&nbsp;Menu Position&nbsp;
+                        &nbsp;Menu Position
                         <select name="isHeader">
                             <option value="1">Header</option>
                             <option value="0">Footer</option>
@@ -147,9 +143,9 @@
                         </div>
                         <div id='frmvideo' style="display:none;">
                             <select style="width:272px;" name="frmvideoNo" id="frmvideoNo">
-                                <?php foreach(JVideos::getVideos() as $video) {?>
+                                <?php //foreach(JVideos::getVideos() as $video) {?>
                                 <option value="<?php echo $video['videoid'];?>"><?php echo $video['videotitle'];?></option>
-                                <?php } ?>
+                                <?php //} ?>
                             </select>
                         </div>  
                         <div id='frmgrp' style="display:none;">       
@@ -171,7 +167,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><input type="submit" name="save" value="Save Menu" bgcolor="grey"></td>
+                    <td colspan="2"><input type="submit" name="save" value="Save Menu" bgcolor="grey" class="submitbtnblue"></td>
                 </tr>
             </table>
         </form>

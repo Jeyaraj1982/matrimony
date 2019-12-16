@@ -111,7 +111,8 @@
         }
         $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
          $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
-       $id =  $mysql->insert("_tbl_members",array("MemberCode"              => $_POST['MemberCode'],
+         $MemberCode   = SeqMaster::GetNextMemberNumber();
+       $id =  $mysql->insert("_tbl_members",array("MemberCode"              => $MemberCode,
                                                   "MemberName"               => $_POST['MemberName'],  
                                                   "DateofBirth"              => $dob,
                                                   "Sex"                      => $_POST['Sex'],
@@ -126,8 +127,13 @@
                                                   "MemberPassword"           => $_POST['LoginPassword']));
         if (sizeof($id)>0) {
             $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Member'");
-                return Response::returnSuccess("success",array("MemberCode"=>$_POST['MemberCode']));
-            } else{
+            //    return Response::returnSuccess("success",array("MemberCode"=>$MemberCode));
+           return Response::returnSuccess('<div style="background:white;width:100%;padding:20px;height:100%;">
+                            <p style="text-align:center"><br><br><img src="'.AppUrl.'CreateProfile/'.$MemberCode.'.htm" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your Profile Created Successfully. </h5>
+                            <h5 style="text-align:center;"><a  href="Draft/Edit/GeneralInformation/'+$id+'htm?msg=1">Continue</a>
+                       </div>'.$sql,array("Code"=>$MemberCode));
+            } else{                                                 
                 return Response::returnError("Access denied. Please contact support");   
             }
     }
@@ -188,12 +194,10 @@
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="form-group">
-                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -12px;">&times;</button>
-                                <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
-                                    <h5 style="color: #969292;font-weight: 100;padding-top: 21px;">In order to protect the security of your account,we will send you a text message with a verification that you will need to enter the next screen</h4>
-                                </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.ImagePath.'smallmobile.png" width="10%"></p>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Please verify your mobile number</h4>
+                                    <h5 style="color: #777;line-height:20px;font-weight: 100;padding-top: 21px;">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen</h4>
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/smallmobile.png" width="10%"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['CountryCode'].'&nbsp;'.$franchiseedata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumberF()">Change</h4>
                             </div>
                             <div class="form-group">
@@ -235,11 +239,8 @@
                         <form method="POST" id="'.$formid.'">
                         <input type="hidden" value="'.$loginid.'" name="loginId">
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
-                           <div class="form-group">
-                                <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;padding-top: 15%;">Change Mobile Number</h4>
-                                </div>
-                            </div> 
+                           <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Change Mobile Number</h4>
                             <div class="form-group"> 
                                 <div class="input-group">
                                     <div class="col-sm-12">
@@ -885,7 +886,8 @@
              global $mysql,$loginInfo;
              $Franchisee=$mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'"); 
              $Franchisee[0]['Country'] = CodeMaster::getData('RegisterAllowedCountries');
-             return Response::returnSuccess("success",$Franchisee[0]);
+             $Document = $mysql->select("select * from `_tbl_franchisee_documents` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+             return Response::returnSuccess("success",$Franchisee[0],array("Documents" => $Document));
          }
     function GetFranchiseeInformation(){
              global $mysql,$loginInfo;
@@ -1026,7 +1028,6 @@
              global $mysql, $loginInfo;
              
             $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
-             $Sex            = CodeMaster::getData("SEX",$_POST['Sex']);
              $MotherTongue   = CodeMaster::getData("LANGUAGENAMES",$_POST['Language']); 
              $Religion       = CodeMaster::getData("RELINAMES",$_POST['Religion']); 
              $Caste          = CodeMaster::getData("CASTNAMES",$_POST['Caste']);  
@@ -1034,14 +1035,7 @@
              $Nationality    = CodeMaster::getData("NATIONALNAMES",$_POST['Nationality']);  
              $Childrens     = CodeMaster::getData("NUMBEROFBROTHER",$_POST['HowManyChildren']); 
              
-             $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
-          
-             $updateSql =  "update `_tbl_draft_profiles` set `ProfileFor`        = '".$_POST['ProfileFor']."',
-                                                           `ProfileName`       = '".$_POST['ProfileName']."',
-                                                           `DateofBirth`       = '".$dob."',
-                                                           `SexCode`           = '".$_POST['Sex']."',
-                                                           `Sex`               = '".trim($Sex[0]['CodeValue'])."',
-                                                           `MaritalStatusCode` = '".$_POST['MaritalStatus']."',
+             $updateSql =  "update `_tbl_draft_profiles` set`MaritalStatusCode` = '".$_POST['MaritalStatus']."',
                                                            `MaritalStatus`     = '".trim($MaritalStatus[0]['CodeValue'])."',
                                                            `ChildrenCode`      ='0',     
                                                            `Children`          ='0',
@@ -1113,8 +1107,8 @@
          }                                                                                                                           
          function GetViewAttachments() {
              global $mysql,$loginInfo;    
-             $SAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['Code']."' and `IsDeleted`='0'");
-              $AttachAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['Code']."' and `IsDeleted`='0' and `AttachmentID`='".$_POST['AttachmentID']."'");
+             $SAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['Code']."' and  `IsDelete`='0'");
+              $AttachAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0' and `AttachmentID`='".$_POST['AttachmentID']."'");
              return Response::returnSuccess("success",array("Attachments"     =>$SAttachments,
                                                             "AttachAttachments" =>  $AttachAttachments[0],    
                                                             "EducationDetail" => CodeMaster::getData('EDUCATETITLES'),
@@ -1330,7 +1324,7 @@
              $NumberofSisters   = CodeMaster::getData("NOOFSISTER",$_POST['NumberofSisters']);
              $elderSister       = CodeMaster::getData("ELDERSIS",$_POST['elderSister']);
              $youngerSister     = CodeMaster::getData("YOUNGERSIS",$_POST['youngerSister']);
-             $marriedSister     = CodeMaster::getData("MARRIEDSIS",$_POST['marriedSister']);
+             $ms     = CodeMaster::getData("MARRIEDSIS",$_POST['marriedSister']);
             // $FathersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['FathersAlive']);
             // $MothersAlive     = CodeMaster::getData("PARENTSALIVE",$_POST['MothersAlive']);
              $MothersIncome     = CodeMaster::getData("INCOMERANGE",$_POST['MothersIncome']);
@@ -1351,34 +1345,34 @@
                       return Response::returnError("Please select equal to number of sisters");
                  }
              }
-             $updateSql = "update `_tbl_draft_profiles` set `FathersName`           = '".$_POST['FatherName']."',
+             $updateSql = "update `_tbl_draft_profiles` set `FathersName`          = '".$_POST['FatherName']."',
                                                            `FathersOccupationCode` = '".$_POST['FathersOccupation']."',
                                                            `FathersOccupation`     = '".$FathersOccupation[0]['CodeValue']."',
                                                            `FatherOtherOccupation`     = '',
                                                            `FathersContactCountryCode` = '".$_POST['FathersContactCountryCode']."',
                                                            `FathersContact`        = '".$_POST['FathersContact']."',
-                                                           `FathersIncomeCode`         = '".$_POST['FathersIncome']."',
+                                                           `FathersIncomeCode`     = '".$_POST['FathersIncome']."',
                                                            `FathersIncome`         = '".$FathersIncome[0]['CodeValue']."',
-                                                           `FathersAlive`       = '".$Fathersstatus."',
+                                                           `FathersAlive`          = '".$Fathersstatus."',
                                                            `MothersName`           = '".$_POST['MotherName']."',
                                                            `MothersContactCountryCode`= '".$_POST['MotherContactCountryCode']."',
                                                            `MothersContact`        = '".$_POST['MotherContact']."',
                                                            `MothersIncomeCode`     = '".$_POST['MothersIncome']."',
                                                            `MothersIncome`         = '".$MothersIncome[0]['CodeValue']."',
-                                                           `MothersAlive`           = '".$Mothersstatus."',
-                                                           `FamilyLocation1`        = '".$_POST['FamilyLocation1']."',
-                                                           `FamilyLocation2`        = '".$_POST['FamilyLocation2']."',
-                                                           `Ancestral`              = '".$_POST['Ancestral']."',
+                                                           `MothersAlive`          = '".$Mothersstatus."',
+                                                           `FamilyLocation1`       = '".$_POST['FamilyLocation1']."',
+                                                           `FamilyLocation2`       = '".$_POST['FamilyLocation2']."',
+                                                           `Ancestral`             = '".$_POST['Ancestral']."',
                                                            `FamilyTypeCode`        = '".$_POST['FamilyType']."',
                                                            `FamilyType`            = '".$FamilyType[0]['CodeValue']."',              
                                                            `FamilyValueCode`       = '".$_POST['FamilyValue']."',
                                                            `FamilyValue`           = '".$FamilyValue[0]['CodeValue']."',
                                                            `FamilyAffluenceCode`   = '".$_POST['FamilyAffluence']."',
                                                            `FamilyAffluence`       = '".$FamilyAffluence[0]['CodeValue']."',
-                                                           `AboutMyFamily`       = '".$_POST['AboutMyFamily']."',
+                                                           `AboutMyFamily`         = '".$_POST['AboutMyFamily']."',
                                                            `MothersOccupationCode` = '".$_POST['MothersOccupation']."',
                                                            `MothersOccupation`     = '".$MothersOccupation[0]['CodeValue']."',
-                                                           `MotherOtherOccupation`     = '',
+                                                           `MotherOtherOccupation` = '',
                                                            `NumberofBrothersCode`  = '".$_POST['NumberofBrother']."',
                                                            `NumberofBrothers`      = '".$NumberofBrothers[0]['CodeValue']."',
                                                            `YoungerCode`           = '".$_POST['younger']."',                    
@@ -1395,7 +1389,7 @@
                                                            `YoungerSister`         = '".$youngerSister[0]['CodeValue']."',
                                                            `MarriedSisterCode`     = '".$_POST['marriedSister']."',
                                                            `LastUpdatedOn`         = '".date("Y-m-d H:i:s")."',
-                                                           `MarriedSister`         = '".$marriedSister[0]['CodeValue']."'";
+                                                           `MarriedSister`         = '".$ms[0]['CodeValue']."'";
                                                            
              if ($_POST['FathersOccupation']=="OT112") {
                     $DuplicateFathersOccupationType = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='OCCUPATIONTYPES' and `CodeValue`='".trim($_POST['FatherOtherOccupation'])."'");
@@ -1700,7 +1694,7 @@
 
              global $mysql,$loginInfo;
 
-             $updateSql = "update `_tbl_draft_profiles_education_details` set `IsDeleted` = '1' where `AttachmentID`='".$_POST['AttachmentID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
+             $updateSql = "update `_tbl_draft_profiles_education_details` set `IsDelete` = '1' where `AttachmentID`='".$_POST['AttachmentID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
                                                              "ActivityType"   => 'Delete Attachment',
@@ -1759,44 +1753,56 @@
          function CreateProfile() {
 
              global $mysql,$loginInfo;
-             
-             if ((strlen(trim($_POST['ProfileFor']))==0 || $_POST['ProfileFor']=="0" )) {
-                return Response::returnError("Please select ProfileFor");
-             }
 
+             if ((strlen(trim($_POST['ProfileFor']))==0 || $_POST['ProfileFor']=="0" )) {
+                return Response::returnError("Please select ProfileFor",array("param"=>"ProfileFor"));
+             }
              if (!(strlen(trim($_POST['ProfileName']))>0)) {
-                return Response::returnError("Please enter your name");
+                return Response::returnError("Please enter your name",array("param"=>"ProfileName"));
              }
+            
+
+             $member= $mysql->select("select * from `_tbl_members` where `MemberCode`='".$_POST['MemberCode']."'");
              
-             if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0" )) {
-                return Response::returnError("Please select sex");
+             if($_POST['ProfileFor']=="PSF001" || $_POST['ProfileFor']=="PSF003" || $_POST['ProfileFor']=="PSF005" || $_POST['ProfileFor']=="PSF006"){
+                  $SexCode = "SX001";
              }
+             if($_POST['ProfileFor']=="PSF002" || $_POST['ProfileFor']=="PSF007" || $_POST['ProfileFor']=="PSF008" || $_POST['ProfileFor']=="PSF009"){
+                $SexCode = "SX002";
+            }
+            if($_POST['ProfileFor']=="PSF004"){
+                if($member[0]['Sex']=="Male"){
+                    $SexCode = "SX001";
+                } else {
+                    $SexCode = "SX002";
+                }
+            }
              
-             $member =$mysql->select("Select * from `_tbl_members` where `MemberCode`='".$_POST['MemberCode']."'");
-             if (sizeof($member)>0)  {
              $ProfileFors   = CodeMaster::getData("PROFILESIGNIN",$_POST["ProfileFor"]);
-             $Sex           = CodeMaster::getData("SEX",$_POST["Sex"]); 
-             $ProfileCode   =SeqMaster::GetNextDraftProfileCode();
+             $Sex           = CodeMaster::getData("SEX",$SexCode); 
+             $ProfileCode   = SeqMaster::GetNextDraftProfileCode();
              $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
+             
+             
+             
              $id =  $mysql->insert("_tbl_draft_profiles",array("ProfileCode"      => $ProfileCode,
-                                                               "ProfileForCode"    => $ProfileFors[0]['SoftCode'],
+                                                              "ProfileForCode"    => $ProfileFors[0]['SoftCode'],
                                                               "ProfileFor"        => $ProfileFors[0]['CodeValue'],
-                                                              "ProfileName"       => $_POST['ProfileName'],
+                                                              "ProfileName"       => trim($_POST['ProfileName']),
                                                               "DateofBirth"       => $dob,        
-                                                              "SexCode"           => $_POST['Sex'],      
+                                                              "SexCode"           => $Sex[0]['SoftCode'],      
                                                               "Sex"               => $Sex[0]['CodeValue'],      
-                                                              "CreatedOn"         => date("Y-m-d H:i:s"), 
+                                                              "CreatedOn"         => date("Y-m-d H:i:s"),        
                                                               "MemberID"          => $member[0]['MemberID'],
                                                               "MemberCode"        => $member[0]['MemberCode'],
-                                                              "CreatedByFranchiseeStaffID" => $loginInfo[0]['FranchiseeID']));
+                                                              "CreatedByFranchiseeStaffID" => $loginInfo[0]['FranchiseeStaffID']));
+             $sql=$mysql->qry;
              if (sizeof($id)>0) {
-                 $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='DraftProfile'");
-                 return Response::returnSuccess("success",array("Code"=>$ProfileCode));
+                 $mysql->execute("update `_tbl_sequence` set LastNumber=LastNumber+1 where `SequenceFor`='DraftProfile'");
+                 return Response::returnSuccess("Profile Created.",array("Code"=>$ProfileCode,"MCode"=>$_POST['MemberCode']));
              } else{
                  return Response::returnError("Access denied. Please contact support");   
-             }
-             } else{
-                 return Response::returnError("Access denied. Please contact support..");     
+                 
              }
          }
          
@@ -2062,7 +2068,7 @@
          function EditFranchiseeInfo() {
 
              global $mysql,$loginInfo;
-
+                                                                                                                                     
              $Franchisee = $mysql->select("select * from `_tbl_franchisees_staffs` where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
 
              $sqlQry = " update `_tbl_franchisees_staffs` set `PersonName`='".$_POST['FranchiseeName']."'   ";
@@ -2072,7 +2078,7 @@
                  //mobile format
 
                  //duplicate, 
-                 $data = $mysql->select("select * from `_tbl_franchisees_staffs` where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+                 $data = $mysql->select("select * from `_tbl_franchisees_staffs` where `MobileNumber`='".trim($_POST['MobileNumber'])."' and PersonID <>'".$loginInfo[0]['FranchiseeStaffID']."'");
                  if (sizeof($data)>0) {
                     return Response::returnError("Mobile Number Already Exists");    
                  }
@@ -2364,7 +2370,7 @@
                      
                      if ($PostProfiles[0]['IsApproved']>0) {
                          
-                         $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where DraftProfileID='".$PostProfiles[0]['ProfileID']."' and  `MemberID` = '".$loginInfo[0]['MemberID']."'");
+                         $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where DraftProfileID='".$PostProfiles[0]['ProfileID']."'");
                          foreach($PublishedProfiles as $PublishedProfile) {
                             $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
                             $result['mode']="Published";
@@ -2386,7 +2392,7 @@
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Draft") {  /* Profile => Drafted */
                  
-                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='0'");
+                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and `RequestToVerify`='0'");
                  
                  if (sizeof($DraftProfiles)>0) {
                      foreach($DraftProfiles as $DraftProfile) {
@@ -2857,6 +2863,350 @@
              $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
              $StaffLoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `FranchiseeStaffID`='".$_POST['Code']."' ORDER BY `LoginID` DESC LIMIT 0,10");
              return Response::returnSuccess("success",array("LoginHistory" => $LoginHistory,"StaffLoginHistory" => $StaffLoginHistory));
+         }
+         function UpdateNotification() {
+
+             global $mysql,$loginInfo;
+             $sqlQry = "update `_tbl_franchisees_staffs` set `SMSNotification`='".(($_POST['Sms']=="on") ? '1' : '0')."',`EmailNotification`='".(($_POST['Email']=="on")? '1':'0')."' where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `PersonID`='".$loginInfo[0]['FranchiseeStaffID']."'";
+             $mysql->execute($sqlQry);
+             $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
+                                                             "ActivityType"   => 'Yournotificationupdated.',
+                                                             "ActivityString" => 'Your notification updated.',
+                                                             "SqlQuery"       => base64_encode($sqlQry),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s"))); 
+             $Franchisee=$mysql->select("select * from `_tbl_franchisees_staffs` where `PersonID`='".$loginInfo[0]['FranchiseeID']."'"); 
+             return Response::returnSuccess("Notifications are updated.",$Franchisee[0]);
+         }
+         function UpdatePrivacy() {
+
+             global $mysql,$loginInfo;
+             $sqlQry="update `_tbl_franchisees_staffs` set `PrivacyVerifiedMember`='".(($_POST['VerfiedMembers']=="on") ? '1' : '0')."',`PrivacyNonVerifiedMember`='".(($_POST['nonVerfiedMembers']=="on")? '1':'0')."' where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `PersonID`='".$loginInfo[0]['FranchiseeStaffID']."'";
+             $mysql->execute($sqlQry);
+              $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
+                                                             "ActivityType"   => 'Yourprivacyupdated.',
+                                                             "ActivityString" => 'Your privacy updated.',
+                                                             "SqlQuery"       => base64_encode($sqlQry),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s"))); 
+             $Franchisee=$mysql->select("select * from `_tbl_franchisees_staffs` where `PersonID`='".$loginInfo[0]['FranchiseeID']."'"); 
+             return Response::returnSuccess("Notifications are updated.",$Franchisee[0]);
+         }
+     function GetBasicSearchElements() {
+             return Response::returnSuccess("success",array("MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
+                                                            "Religion"      => CodeMaster::getData('RELINAMES'),
+                                                            "Caste"      => CodeMaster::getData('CASTNAMES'),
+                                                            ));
+         }
+     function AddMemberBasicSearchDetails() {
+
+             global $mysql,$loginInfo;    
+
+             $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",explode(",",$_POST['MaritalStatus']));
+             $Religion       = CodeMaster::getData("RELINAMES",explode(",",$_POST['Religion'])); 
+             $Caste       = CodeMaster::getData("CASTNAMES",explode(",",$_POST['Caste'])); 
+             
+             $MaritalStatus_CodeValue="";
+             foreach($MaritalStatus as $M) {
+               $MaritalStatus_CodeValue .= $M['CodeValue'].", ";
+               $MaritalStatus_SoftCode .= $M['SoftCode'].", ";  
+             }
+             $Religion_CodeValue="";
+             foreach($Religion as $R) {
+               $Religion_CodeValue .= $R['CodeValue'].", ";  
+               $Religion_SoftCode .= $R['SoftCode'].", ";  
+             }
+             $Caste_CodeValue="";
+             foreach($Caste as $C) {
+               $Caste_CodeValue .= $C['CodeValue'].", ";  
+               $Caste_SoftCode .= $C['SoftCode'].", ";  
+             }
+             
+             //$profile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'"); 
+             $Franchisee = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'"); 
+              
+                   $id = $mysql->insert("_tbl_member_basic_search",array("MemberID"          => $loginInfo[0]['FranchiseeID'],
+                                                                         //"ProfileID"         => $profile[0]['ProfileID'],
+                                                                         "Sex"               => $Franchisee[0]['Sex'],
+                                                                         "MaritalStatusCode" => substr($MaritalStatus_SoftCode,0,strlen($MaritalStatus_SoftCode)-2),
+                                                                         "MaritalStatus"     => substr($MaritalStatus_CodeValue,0,strlen($MaritalStatus_CodeValue)-2),
+                                                                         "ReligionCode"      => substr($Religion_SoftCode,0,strlen($Religion_SoftCode)-2),
+                                                                         "Religion"          => substr($Religion_CodeValue,0,strlen($Religion_CodeValue)-2),
+                                                                         "CasteCode"         => substr($Caste_SoftCode,0,strlen($Caste_SoftCode)-2),
+                                                                         "Caste"             => substr($Caste_CodeValue,0,strlen($Caste_CodeValue)-2),
+                                                                         "SearchName"        => "ABCD",
+                                                                         "SearchFrom"        => "Franchisee",
+                                                                         "SearchRequestedOn" => date("Y-m-d H:i:s"))) ;
+              
+               if (sizeof($id)>0) {
+                   return Response::returnSuccess("success",array("ReqID"=>$id));
+               // echo "<script>location.href='../BasicSearchResult/".$id.".htm?Req=BasicSearchResult'</script>";
+             } else{
+                 return Response::returnError("Access denied. Please contact support");   
+             }
+                                                                         
+         }
+         function GetViewBankRequests() {
+             global $mysql,$loginInfo;
+             $Paypal = $mysql->select("select * from  `_tbl_wallet_bankrequests` where `FranchiseeID`='". $loginInfo[0]['FranchiseeStaffID']."' and `ReqID`='".$_POST['Code']."'");                    
+             return Response::returnSuccess("success",$Paypal[0]);
+         }
+          function GetAdvancedSearchElements() {
+             return Response::returnSuccess("success",array("SkinType"      => CodeMaster::getData('COMPLEXIONS'),
+                                                            "MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
+                                                            "Religion"      => CodeMaster::getData('RELINAMES'),
+                                                            "Caste"         => CodeMaster::getData('CASTNAMES'),
+                                                            "IncomeRange"   => CodeMaster::getData('INCOMERANGE'),
+                                                            "Occupation"    => CodeMaster::getData('Occupation'),
+                                                            "Country"       => CodeMaster::getData('CONTNAMES'),
+                                                            "FamilyType"    => CodeMaster::getData('FAMILYTYPE'),
+                                                            "Height"        => CodeMaster::getData('HEIGHTS'),
+                                                            "Diet"          => CodeMaster::getData('DIETS'),
+                                                            "SmokingHabit"  => CodeMaster::getData('SMOKINGHABITS'),
+                                                            "DrinkingHabit" => CodeMaster::getData('DRINKINGHABITS'),
+                                                            "BodyType"      => CodeMaster::getData('BODYTYPES')));
+         }
+         function AddFranchiseeAdvanceSearchDetails() {
+
+             global $mysql,$loginInfo;  
+             
+             $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",explode(",",$_POST['MaritalStatus']));
+             $Religion       = CodeMaster::getData("RELINAMES",explode(",",$_POST['Religion'])); 
+             $Caste          = CodeMaster::getData("CASTNAMES",explode(",",$_POST['Caste'])); 
+             $IncomeRange    = CodeMaster::getData("INCOMERANGE",explode(",",$_POST['IncomeRange'])); 
+             $Occupation     = CodeMaster::getData("Occupation",explode(",",$_POST['Occupation'])); 
+             $WorkingPlace        = CodeMaster::getData("CONTNAMES",explode(",",$_POST['WorkingPlace'])); 
+             $FamilyType     = CodeMaster::getData("FAMILYTYPE",explode(",",$_POST['FamilyType'])); 
+             $Diet           = CodeMaster::getData("DIETS",explode(",",$_POST['Diet'])); 
+             $Smoke          = CodeMaster::getData("SMOKINGHABITS",explode(",",$_POST['Smoke'])); 
+             $Drink          = CodeMaster::getData("DRINKINGHABITS",explode(",",$_POST['Drink'])); 
+             $BodyType       = CodeMaster::getData("BODYTYPES",explode(",",$_POST['BodyType'])); 
+             $Complexion     = CodeMaster::getData("COMPLEXIONS",explode(",",$_POST['Complexion'])); 
+             
+             $MaritalStatus_CodeValue="";
+             foreach($MaritalStatus as $M) {
+               $MaritalStatus_CodeValue .= $M['CodeValue'].", ";
+               $MaritalStatus_SoftCode .= $M['SoftCode'].", ";  
+             }
+             $Religion_CodeValue="";
+             foreach($Religion as $R) {
+               $Religion_CodeValue .= $R['CodeValue'].", ";  
+               $Religion_SoftCode .= $R['SoftCode'].", ";  
+             }
+             $Caste_CodeValue="";
+             foreach($Caste as $C) {
+               $Caste_CodeValue .= $C['CodeValue'].", ";  
+               $Caste_SoftCode .= $C['SoftCode'].", ";  
+             }
+             $IncomeRange_CodeValue="";
+             foreach($IncomeRange as $IR) {
+               $IncomeRange_CodeValue .= $IR['CodeValue'].", ";  
+               $IncomeRange_SoftCode .= $IR['SoftCode'].", ";  
+             }
+             $Occupation_CodeValue="";
+             foreach($Occupation as $ON) {
+               $Occupation_CodeValue .= $ON['CodeValue'].", ";  
+               $Occupation_SoftCode .= $ON['SoftCode'].", ";  
+             }
+             $FamilyType_CodeValue="";
+             foreach($FamilyType as $FT) {
+               $FamilyType_CodeValue .= $FT['CodeValue'].", ";  
+               $FamilyType_SoftCode .= $FT['SoftCode'].", ";  
+             }
+             $WorkingPlace_CodeValue="";
+             foreach($WorkingPlace as $WP) {
+               $WorkingPlace_CodeValue .= $WP['CodeValue'].", ";  
+               $WorkingPlace_SoftCode .= $WP['SoftCode'].", ";  
+             }
+             $Diet_CodeValue="";
+             foreach($Diet as $DT) {
+               $Diet_CodeValue .= $DT['CodeValue'].", ";  
+               $Diet_SoftCode .= $DT['SoftCode'].", ";  
+             }
+             $Smoke_CodeValue="";
+             foreach($Smoke as $SK) {
+               $Smoke_CodeValue .= $SK['CodeValue'].", ";  
+               $Smoke_SoftCode .= $SK['SoftCode'].", ";  
+             }
+             $Drink_CodeValue="";
+             foreach($Drink as $DK) {
+               $Drink_CodeValue .= $DK['CodeValue'].", ";  
+               $Drink_SoftCode .= $DK['SoftCode'].", ";  
+             }
+             $BodyType_CodeValue="";
+             foreach($BodyType as $BT) {
+               $BodyType_CodeValue .= $BT['CodeValue'].", ";  
+               $BodyType_SoftCode .= $BT['SoftCode'].", ";  
+             }
+             $Complexion_CodeValue="";
+             foreach($Complexion as $CN) {
+               $Complexion_CodeValue .= $CN['CodeValue'].", ";  
+               $Complexion_SoftCode .= $CN['SoftCode'].", ";  
+             }
+             
+             //$profile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'"); 
+            // $Member = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'"); 
+                $Franchisee = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'");               
+                  $id = $mysql->insert("_tbl_member_advance_search",array("MemberID"         => $loginInfo[0]['FranchiseeID'],
+                                                                        // "ProfileID"         => $profile[0]['ProfileID'],
+                                                                         "Sex"               => $Franchisee[0]['Sex'],
+                                                                         "MaritalStatusCode" => substr($MaritalStatus_SoftCode,0,strlen($MaritalStatus_SoftCode)-2),
+                                                                         "MaritalStatus"     => substr($MaritalStatus_CodeValue,0,strlen($MaritalStatus_CodeValue)-2),
+                                                                         "ReligionCode"      => substr($Religion_SoftCode,0,strlen($Religion_SoftCode)-2),
+                                                                         "Religion"          => substr($Religion_CodeValue,0,strlen($Religion_CodeValue)-2),
+                                                                         "CasteCode"         => substr($Caste_SoftCode,0,strlen($Caste_SoftCode)-2),
+                                                                         "Caste"             => substr($Caste_CodeValue,0,strlen($Caste_CodeValue)-2),
+                                                                         "IncomeRangeCode"   => substr($IncomeRange_SoftCode,0,strlen($IncomeRange_SoftCode)-2),
+                                                                         "IncomeRange"       => substr($IncomeRange_CodeValue,0,strlen($IncomeRange_CodeValue)-2),
+                                                                         "OccupationCode"    => substr($Occupation_SoftCode,0,strlen($Occupation_SoftCode)-2),
+                                                                         "Occupation"        => substr($Occupation_CodeValue,0,strlen($Occupation_CodeValue)-2),
+                                                                         "FamilyTypeCode"    => substr($FamilyType_SoftCode,0,strlen($FamilyType_SoftCode)-2),
+                                                                         "FamilyType"        => substr($FamilyType_CodeValue,0,strlen($FamilyType_CodeValue)-2),
+                                                                         "WorkingPlaceCode"  => substr($WorkingPlace_SoftCode,0,strlen($WorkingPlace_SoftCode)-2),
+                                                                         "WorkingPlace"      => substr($WorkingPlace_CodeValue,0,strlen($WorkingPlace_CodeValue)-2),
+                                                                         "DietCode"          => substr($Diet_SoftCode,0,strlen($Diet_SoftCode)-2),
+                                                                         "Diet"              => substr($Diet_CodeValue,0,strlen($Diet_CodeValue)-2),
+                                                                         "SmokeCode"         => substr($Smoke_SoftCode,0,strlen($Smoke_SoftCode)-2),
+                                                                         "Smoke"             => substr($Smoke_CodeValue,0,strlen($Smoke_CodeValue)-2),
+                                                                         "DrinkCode"         => substr($Drink_SoftCode,0,strlen($Drink_SoftCode)-2),
+                                                                         "Drink"             => substr($Drink_CodeValue,0,strlen($Drink_CodeValue)-2),
+                                                                         "BodyTypeCode"      => substr($BodyType_SoftCode,0,strlen($BodyType_SoftCode)-2),
+                                                                         "BodyType"          => substr($BodyType_CodeValue,0,strlen($BodyType_CodeValue)-2),
+                                                                         "ComplexionCode"    => substr($Complexion_SoftCode,0,strlen($Complexion_SoftCode)-2),
+                                                                         "Complexion"        => substr($Complexion_CodeValue,0,strlen($Complexion_CodeValue)-2),
+                                                                         "SearchName"        => "ABCD",
+                                                                         "SearchFrom"        => "Franchisee",
+                                                                         "SearchRequestedOn" => date("Y-m-d H:i:s"))) ;
+                $sql =$mysql->qry;
+              
+               if (sizeof($id)>0) {
+                   return Response::returnSuccess("success".$sql,array("ReqID"=>$id));
+               // echo "<script>location.href='../BasicSearchResult/".$id.".htm?Req=BasicSearchResult'</script>";
+             } else{
+                 return Response::returnError("Access denied. Please contact support".$sql);   
+             }
+                                                                         
+         }
+         function AddFranchiseeProfileSearchByProfileID() {
+
+             global $mysql,$loginInfo;    
+           
+           //  $profile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'"); 
+              
+                   $id = $mysql->insert("_tbl_member_search_by_profileid",array("MemberID"          => $loginInfo[0]['FranchiseeID'],
+                                                                                "ProfileID"         => $_POST['profileid'],
+                                                                                "SearchName"        => "ABCD",
+                                                                                "SearchFrom"        => "Franchisee",
+                                                                                "SearchRequestedOn" => date("Y-m-d H:i:s"))) ;
+              
+               if (sizeof($id)>0) {
+                   return Response::returnSuccess("success",array("ReqID"=>$id));
+               // echo "<script>location.href='../BasicSearchResult/".$id.".htm?Req=BasicSearchResult'</script>";
+             } else{
+                 return Response::returnError("Access denied. Please contact support");   
+             }
+                                                                         
+         }
+         function GetMemberProfile() {
+
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+             $Position = "";   
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
+                                                                                                
+                 $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `MemberCode`='".$_POST['Code']."' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  `RequestToVerify`='0' and IsApproved='0'");
+                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `MemberCode`='".$_POST['Code']."' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  RequestToVerify='1'");
+                 
+                 if (sizeof($DraftProfiles)>0) {
+                     
+                     foreach($DraftProfiles as $DraftProfile) {
+                        $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);    
+                        $result['mode']="Draft";
+                        $Profiles[]= $result;
+                     }
+                     
+                 } else if (sizeof($PostProfiles)>0) {
+                     
+                     if ($PostProfiles[0]['IsApproved']>0) {
+                         
+                         $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where DraftProfileID='".$PostProfiles[0]['ProfileID']."'");
+                         foreach($PublishedProfiles as $PublishedProfile) {
+                            $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
+                            $result['mode']="Published";
+                            $Profiles[]=$result;     
+                         }
+                         
+                     } else {
+                        foreach($PostProfiles as $PostProfile) {
+                            $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode']);
+                            $result['mode']="Posted";
+                            $Profiles[]=$result;     
+                        }
+                     }
+                     
+                 }  
+                  return Response::returnSuccess("success",$Profiles);
+             }
+             
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Draft") {  /* Profile => Drafted */
+                 
+                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberCode`='".$_POST['Code']."' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and `RequestToVerify`='0'");
+                 
+                 if (sizeof($DraftProfiles)>0) {
+                     foreach($DraftProfiles as $DraftProfile) {
+                        $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
+                        $result['mode']="Draft";
+                        $Profiles[]=$result;   
+                     }
+                 }
+                 
+                 return Response::returnSuccess("success",$Profiles);
+             }
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Posted") {    /* Profile => Posted */
+                  $PostProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberCode`='".$_POST['Code']."' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='1' and IsApproved='0'");
+
+                  if (sizeof($PostProfiles)>0) {
+                      foreach($PostProfiles as $PostProfile) {
+                        $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode'],2);
+                        $result['mode']="Posted";
+                        $Profiles[]=$result;  
+                     }
+                 }
+                 
+                return Response::returnSuccess("success",$Profiles);
+             }
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {    /* Profile => Posted */
+             
+                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `MemberCode`='".$_POST['Code']."' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and IsApproved='1' and RequestToVerify='1'");
+                if (sizeof($PublishedProfiles)>0) {
+                    foreach($PublishedProfiles as $PublishedProfile) {
+                        $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);
+                        $result['mode']="Published"; 
+                        $RecentlyViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['RecentlyViewed']= sizeof($RecentlyViewedcount);
+                        
+                        $MyFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `VisterProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['MyFavorited']= sizeof($MyFavoritedcount);
+                        
+                        $WhoViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `VisterProfileCode` ");
+                        $result['RecentlyWhoViwed']= sizeof($WhoViewedcount);
+                        
+                        $WhoFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['WhoFavorited']= sizeof($WhoFavoritedcount);
+                        
+                        $MutualCount = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' order by FavProfileID DESC)");
+                        $result['MutualCount']= sizeof($WhoFavoritedcount);
+                        
+                        $Profiles[]=$result; 
+                        
+                     }                                                                          
+                }
+                return Response::returnSuccess("success",$Profiles);
+             }
          }
     }
 //2747    

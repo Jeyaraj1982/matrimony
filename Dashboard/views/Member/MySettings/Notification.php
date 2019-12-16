@@ -17,14 +17,22 @@
                 $Member=$response['data'];
             ?>
             <div class="form-group row" style="margin-bottom:0px;">
-                <div class="col-sm-1" style="margin-right: -23px;"><input type="checkbox"  id="Sms" name="Sms" <?php echo ($Member['SMSNotification']==1) ? ' checked="checked" ' :'';?> style="margin-top: 0px;"></div>
-                <label for="Sms" class="col-sm-11" style="margin-top: 2px;padding-left: 3px;color:#444">SMS Notification</label>
+				<div class="col-sm-6">
+					<div class="custom-control custom-checkbox mb-3">
+						<input type="checkbox" class="custom-control-input" id="Sms" name="Sms" <?php echo ($Member['SMSNotification']==1) ? ' checked="checked" ' :'';?>>
+						<label class="custom-control-label" for="Sms" style="vertical-align: middle;">SMS Notification</label>
+					</div>
+                </div>
             </div>
-            <div class="form-group row" style="margin-bottom:0px;">
-                <div class="col-sm-1" style="margin-right: -23px;"><input type="checkbox"  id="Email" name="Email" <?php echo ($Member['EmailNotification']==1) ? ' checked="checked" ' :'';?> style="margin-top: 0px;"></div>
-                <label for="Email" class="col-sm-11" style="margin-top: 2px;padding-left: 3px;color:#444">Email Notification</label>
+			<div class="form-group row" style="margin-bottom:0px;">
+				<div class="col-sm-6">
+					<div class="custom-control custom-checkbox mb-3">
+						<input type="checkbox" class="custom-control-input" id="Email" name="Email" <?php echo ($Member['EmailNotification']==1) ? ' checked="checked" ' :'';?>>
+						<label class="custom-control-label" for="Email" style="vertical-align: middle;">Email Notification</label>
+					</div>
+                </div>
             </div>
-            <br><br>
+            
             <div class="form-group row">
                 <div class="col-sm-3"><button type="submit" name="savnotification" id="savprivacy" class="btn btn-primary" style="font-family:roboto">Update Notifications</button></div>
             </div>

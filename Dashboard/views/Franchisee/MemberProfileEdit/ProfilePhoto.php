@@ -1,35 +1,13 @@
-<?php
+<?php                     
     $page="ProfilePhoto";       
-   ?>
-<?php include_once("settings_header.php");?>
+    include_once("settings_header.php");
+    
+   
+?>
 <style>
-.photoviewFirst {
-    float: left;
-    margin-right: 10px;
-    text-align: center;
-    border: 1px solid #eaeaea;
-    height: 230px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    background: #ccc;
-    color:black;
-}
-.photoview {
-    float: left;
-    margin-right: 10px;
-    text-align: center;
-    border: 1px solid #eaeaea;
-    height: 230px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    background: #ccc;
-    color:black;
-}
-.photoview:hover{
-    border:1px solid #9b9a9a;
-}
+.photoviewFirst {float: left;margin-right: 10px;text-align: center;border: 1px solid #eaeaea;height: 230px;padding: 10px;margin-bottom: 10px;border-radius: 10px;background: #ccc;color:black;}
+.photoview {float: left;margin-right: 10px;text-align: center;border: 1px solid #eaeaea;height: 230px;padding: 10px;margin-bottom: 10px;border-radius: 10px;background: #ccc;color:black;}
+.photoview:hover{border:1px solid #9b9a9a;}
 </style>
 <div class="col-sm-10 rightwidget">
 <script>
@@ -55,9 +33,35 @@ function submitUpload() {
 
         }
 </script>
-<form method="post" onsubmit="return submitUpload()" name="form1" id="form1" action="" enctype="multipart/form-data">
+<form method="post" onsubmit="return submitUpload()" name="form1" id="form1" action="<?php echo SiteUrl;?>Member/<?php echo $_GET['MCode'];?>/ProfileEdit/ProfilePhotoCrop/<?php echo $_GET['Code'];?>.htm" enctype="multipart/form-data">
     <h4 class="card-title">Profile Photo</h4>
+    
     <?php
+                 if (isset($_POST['btnCrop'])) {
+            
+    $targ_w = $targ_h = 250;
+    $jpeg_quality = 90;
+    
+    $filename =  md5(time().$_GET['Code']).".jpg";
+    $src =  'uploads/profiles/'.$_GET['Code'].'/uploads/'.$_POST['file'];
+    $dst = 'uploads/profiles/'.$_GET['Code'].'/thumb/'.$filename;
+    
+    $img_r = imagecreatefromjpeg($src);
+    $dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+    imagecopyresampled($dst_r,$img_r,0,0,$_POST['x'],$_POST['y'],$targ_w,$targ_h,$_POST['w'],$_POST['h']);
+    //header('Content-type: image/jpeg');
+    //imagejpeg($dst_r,null,$jpeg_quality);
+    imagejpeg($dst_r,$dst,$jpeg_quality);
+    
+            $_POST['ProfilePhoto']= $filename;
+                        $res =$webservice->getData("Franchisee","AddProfilePhoto",$_POST);
+                        echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
+                                                           : $dashboard->showErrorMsg($res['message']);
+    
+        }
+        
+    
+    
                 if (isset($_POST['UpdateProfilePhoto'])) {
                     
                     $target_dir = "uploads/";
@@ -77,10 +81,10 @@ function submitUpload() {
                         $err++;
                            echo "Invalid file type. Only JPG,PNG,JPEG types are accepted.";
                     }
-
+                                                                
                     
                     if (isset($_FILES["ProfilePhoto"]["name"]) && strlen(trim($_FILES["ProfilePhoto"]["name"]))>0 ) {
-                        $profilephoto = time().$_FILES["ProfilePhoto"]["name"];
+                        $profilephoto = time().str_replace(" ","",$_FILES["ProfilePhoto"]["name"]);
                         if (!(move_uploaded_file($_FILES["ProfilePhoto"]["tmp_name"], $target_dir . $profilephoto))) {
                            $err++;
                            echo "Sorry, there was an error uploading your file.";
@@ -88,6 +92,7 @@ function submitUpload() {
                     }
                     
                     if ($err==0) {
+                    
                         $_POST['ProfilePhoto']= $profilephoto;
                         $res =$webservice->getData("Franchisee","AddProfilePhoto",$_POST);
                         echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
@@ -95,32 +100,31 @@ function submitUpload() {
                     } else {
                         $res =$webservice->getData("Franchisee","AddProfilePhoto");
                     }
-                } else {
+                } else {                     
                      $res =$webservice->getData("Franchisee","AddProfilePhoto");
                      
                 }
                 $profile = $res['data'];
               
-            ?>
-    <div id="AddPhotoDiv">
-    <span style="color:#555">"A picture is worth a thousand words". Adding your picture is one of the most important aspects of your profile, as per statistics it increases your chances up to 20 times. Most members won't even search a profile without a picture. Picture is the first impression that is given to the viewers and you don't want to give them a blank first impression.<Br><Br><br></span>
+            ?>    
+<div id="AddPhotoDiv">
+   <span style="color:#555">"A picture is worth a thousand words". Adding your picture is one of the most important aspects of your profile, as per statistics it increases your chances up to 20 times. Most members won't even search a profile without a picture. Picture is the first impression that is given to the viewers and you don't want to give them a blank first impression.<Br><Br><br></span>          
     <div class="form-group row">
         <div class="col-sm-12">
             <input type="File" id="ProfilePhoto" name="ProfilePhoto" Placeholder="File">
-            <span style="color:#888">supports png, jpg, jpeg & File size Lessthan 5 MB </span> <br>
-            <span class="errorstring" id="ErrProfilePhoto"></span>
+            <span style="color:#888">supports png, jpg, jpeg & File size Lessthan 5 MB </span><br>
+             <span class="errorstring" id="ErrProfilePhoto"></span>
         </div>
     </div>
     <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="showLearnMore()">Learn more</a>
-        <br><span class="errorstring" id="Errcheck"></span><br>
+        <br><span class="errorstring" id="Errcheck"></span><br><br>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-3">
             <button type="submit" id="UpdateProfilePhoto" name="UpdateProfilePhoto" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
         </div>
-    </div>
+    </div><br>
     </div>
     <div style="text-align: right;" id="x"></div>
-    <br>
     <br>
     </form>
     <div>
@@ -136,13 +140,13 @@ function submitUpload() {
             <div style="text-align:right;height:22px;">
                 <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
             </div>
-            <div><img src="<?php echo AppUrl;?>uploads/<?php echo $d['ProfilePhoto'];?>" style="height:120px;"></div>
+            <div><img src="<?php echo AppUrl;?>uploads/profiles/<?php echo $d['ProfileCode'];?>/thumb/<?php echo $d['ProfilePhoto'];?>" style="height:120px;"></div>
             <div>
                 <?php if($d['IsApproved']==0){ echo "verification pending" ; }?>
             <?php if($d['IsApproved']==1){ echo "Approved" ; }?>
                 <br><small><?php echo PutDateTime($d['UpdateOn']);?></small><br>
                 
-                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>')" style="cursor: pointer;border: 1px;padding: 3px 10px;background:#eee;color:#353535">set as default</span>
+                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" style="cursor: pointer;border: 1px;padding: 3px 10px;background:#eee;color:#353535">set as default</span>
                 <br/>  
             </div>
         </div>
@@ -151,13 +155,13 @@ function submitUpload() {
             <div style="text-align:right;height:22px;">
                 <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
             </div>
-            <div><img src="<?php echo AppUrl;?>uploads/<?php echo $d['ProfilePhoto'];?>" style="height:120px;"></div>
+            <div><img src="<?php echo AppUrl;?>uploads/profiles/<?php echo $d['ProfileCode'];?>/thumb/<?php echo $d['ProfilePhoto'];?>" style="height:120px;"></div>
             <div>
                 <?php if($d['IsApproved']==0){ echo "verification pending" ; }?>
             <?php if($d['IsApproved']==1){ echo "Approved" ; }?>
                 <br><small><?php echo PutDateTime($d['UpdateOn']);?></small> <br>
                 
-                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>')" style="cursor: pointer;border: 1px ;padding: 3px 10px;background:green;color:white">set as default</span>
+                <span id="priority_<?php echo $d['ProfilePhotoID'];?>" class="Profile_photo" onclick="_select('<?php echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" style="cursor: pointer;border: 1px ;padding: 3px 10px;background:green;color:white">set as default</span>
                 <br/>  
             </div>
         </div>
@@ -219,7 +223,7 @@ function showLearnMore() {
          
          $('#x').html( available + " out 5 photos");
          
-          function _select(ProfilePhotoID) {
+          function _select(ProfilePhotoID,ProfileID) {
          var mvar = "";
             $(".Profile_photo").each(function() {
                
@@ -229,9 +233,11 @@ function showLearnMore() {
                 $.ajax({
                 url: API_URL + "m=Franchisee&a=ProfilePhotoBringToFront&ProfilePhotoID="+ProfilePhotoID, 
                 success: function(result){
-                    $.simplyToast("Selected profile photo has been set to default photo   ", 'info');
+                    //$.simplyToast("Profile photo ID: "+ProfileID+" has been set as Front", 'info');
+                    $.simplyToast("Selected profile photo has been set to default photo"  , 'info');
             }});
           }
+         
  
     function showConfirmDelete(ProfilePhotoID,ProfileID) {                                           
         $('#Delete').modal('show'); 
@@ -262,7 +268,7 @@ function showLearnMore() {
             available--;
             DisplayAddProfilePhotoForm();
             $('#x').html( available + " out 5 photos");
-        }
+        }                             
     );
 }
 function changeColor(id)

@@ -54,7 +54,7 @@ legend {
 
 <?php if($ProfileInfo['RequestToVerify']=="0"){?>
 <div style="text-align: right" id="">
-        <a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
+        <a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
         <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Submit Now</a>
 </div>
 <?php }?>
@@ -77,7 +77,7 @@ legend {
         <div class="card-body">
          <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Profile Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/GeneralInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
               <div class="form-group row">
                 <div class="col-sm-5">
@@ -183,7 +183,7 @@ legend {
             <?php if ((trim($ProfileInfo['ProfileFor']))=="Son In Law"){ echo "About My Son In Law"; }?>
             <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter In Law"){ echo "About My Daughter In Law"; }?>
             </h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/GeneralInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
          <div class="form-group row">
             <label class="col-sm-12 col-form-label" style="color:#737373;font-size:13px"><?php echo trim($ProfileInfo['AboutMe']);?></label>
@@ -196,7 +196,7 @@ legend {
     <div class="card-body">
      <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Education Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MemberProfileEdit/EducationDetails/". $_GET['Code'].".htm");?>">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/EducationDetails/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
 		 <div class="form-group row">
             <label  class="col-sm-2 col-form-label">Education</label>              
@@ -250,7 +250,7 @@ legend {
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Occupation details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MemberProfileEdit/OccupationDetails/". $_GET['Code'].".htm");?>">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/OccupationDetails/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Employed as</label>                 
@@ -309,7 +309,7 @@ legend {
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Family Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MemberProfileEdit/FamilyInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/FamilyInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Father's name</label>                
@@ -433,7 +433,7 @@ legend {
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Physical Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MemberProfileEdit/PhysicalInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/PhysicalInformation/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Physically impaired?</label>         
@@ -517,7 +517,7 @@ legend {
     <div class="card-body">
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Horoscope details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MemberProfileEdit/HoroscopeDetails/". $_GET['Code'].".htm");?>">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/HoroscopeDetails/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" >Date of birth</label>               
@@ -615,7 +615,7 @@ legend {
     <div class="card-body">
     <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Partner's Expectations</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MemberProfileEdit/PartnersExpectation/". $_GET['Code'].".htm");?>">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/PartnersExpectation/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
         <div class="form-group row">                                                                                                                                                                                             
             <label class="col-sm-2 col-form-label">Age </label>                       
@@ -675,7 +675,7 @@ legend {
     <div class="card-body">
     <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Communication Details</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("MemberProfileEdit/CommunicationDetails/". $_GET['Code'].".htm");?>">Edit</a></div>
+            <div class="col-sm-6" style="text-align:right"><a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/CommunicationDetails/". $_GET['Code'].".htm");?>">Edit</a></div>
          </div>
          <div class="form-group row">                                                   
             <label class="col-sm-2 col-form-label">Person Name</label>                    
@@ -749,7 +749,7 @@ legend {
     <div class="form-group row">
         <div class="col-sm-6"><h4 class="card-title">Attached Documents</h4></div>
         <div class="col-sm-6" style="text-align: right;"><h4 class="card-title" style="color:green">For Admnistrative Purpose only</h4><br>
-            <a href="<?php echo GetUrl("MemberProfileEdit/DocumentAttachment/".$_GET['Code'].".htm ");?>">Edit</a>                    
+            <a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ProfileEdit/DocumentAttachment/".$_GET['Code'].".htm ");?>">Edit</a>                    
         </div>
     </div>
     

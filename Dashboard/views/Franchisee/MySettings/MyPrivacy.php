@@ -8,11 +8,11 @@
             <span style="color:#999;">Protect your personal data and you can control it shares data.</span><br><br>
             <?php
                 if (isset($_POST['savprivacy'])) {         
-                    $response = $webservice->getData("Member","UpdatePrivacy",$_POST);
+                    $response = $webservice->getData("Franchisee","UpdatePrivacy",$_POST);
                     echo  ($response['status']=="success") ? $dashboard->showSuccessMsg($response['message'])
                                                            : $dashboard->showErrorMsg($response['message']);
                 } else {
-                    $response = $webservice->GetMemberInfo();
+                    $response = $webservice->getData("Franchisee","GetMemberInfo");
                 }
                 $Member=$response['data'];
             ?> 

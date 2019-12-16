@@ -1,5 +1,6 @@
+<?php include_once(__DIR__."/../header.php"); ?>
 <?php error_reporting(0);
-     include_once("../../config.php");
+   
 
      $obj = new CommonController();
     
@@ -14,7 +15,7 @@
         if ((isset($_FILES['backgroundimage']['tmp_name'])) && (strlen(trim($_FILES['backgroundimage']['tmp_name']))>0)) {
             
             $filename    = strtolower("_".time()."_".basename($_FILES['backgroundimage']['name']));
-            $target_path  = strtolower("../../assets/cms/".$filename); 
+            $target_path  = strtolower(__DIR__."/../../assets/".$config['thumb'].$filename); 
                 
             if(move_uploaded_file($_FILES['backgroundimage']['tmp_name'], $target_path)) {
                  $_POST['param'][3] = $filename;
@@ -28,7 +29,7 @@
            if (in_array($_FILES["favoriteicon"]["type"],$iconimgArray)) {
               
             $filename    = strtolower("_".time()."_".basename($_FILES['favoriteicon']['name']));
-            $target_path  = strtolower("../../assets/cms/".$filename); 
+            $target_path  = strtolower(__DIR__."/../../assets/".$config['thumb'].$filename); 
                 
                 if(move_uploaded_file($_FILES['favoriteicon']['tmp_name'], $target_path)) {
                      $_POST['param'][5] = $filename;
@@ -39,23 +40,12 @@
                  echo $obj->printError("Please upload .ico Format Image"); 
              }
         }  
-        
-       if ((isset($_FILES['menubackgroundimage']['tmp_name'])) && (strlen(trim($_FILES['menubackgroundimage']['tmp_name']))>0)) {
-            
-            $filename    = strtolower("_".time()."_".basename($_FILES['menubackgroundimage']['name']));
-            $target_path  = strtolower("../../assets/cms/".$filename); 
-                
-            if(move_uploaded_file($_FILES['menubackgroundimage']['tmp_name'], $target_path)) {
-                 $_POST['param'][24] = $filename;
-            } else {
-                echo $obj->printError("Error: Background File upload"); 
-            }
-        }  
+ 
         
        if ((isset($_FILES['logo']['tmp_name'])) && (strlen(trim($_FILES['logo']['tmp_name']))>0)) {
             
             $filename    = strtolower("_".time()."_".basename($_FILES['logo']['name']));
-            $target_path  = strtolower("website/data/".$filename); 
+            $target_path  = strtolower(__DIR__."/../../assets/".$config['thumb'].$filename); 
                 
             if(move_uploaded_file($_FILES['logo']['tmp_name'], $target_path)) {
                  $_POST['param'][25] = $filename;
@@ -67,7 +57,7 @@
         if ((isset($_FILES['noimg']['tmp_name'])) && (strlen(trim($_FILES['noimg']['tmp_name']))>0)) {
             
             $filename    = strtolower("_".time()."_".basename($_FILES['noimg']['name']));
-            $target_path  = strtolower("../../assets/cms/".$filename); 
+            $target_path  = strtolower(__DIR__."/../../assets/".$config['thumb'].$filename); 
                 
             if(move_uploaded_file($_FILES['noimg']['tmp_name'], $target_path)) {
                  $_POST['param'][30] = $filename;
@@ -79,7 +69,7 @@
         if ((isset($_FILES['footerbgimage']['tmp_name'])) && (strlen(trim($_FILES['footerbgimage']['tmp_name']))>0)) {
             
             $filename    = strtolower("_".time()."_".basename($_FILES['footerbgimage']['name']));
-            $target_path  = strtolower("../../assets/cms/".$filename); 
+            $target_path  = strtolower(__DIR__."/../../assets/".$config['thumb'].$filename); 
                 
             if(move_uploaded_file($_FILES['footerbgimage']['tmp_name'], $target_path)) {
                  $_POST['param'][38] = $filename;
@@ -91,7 +81,7 @@
          if ((isset($_FILES['headerbgimg']['tmp_name'])) && (strlen(trim($_FILES['headerbgimg']['tmp_name']))>0)) {
             
             $filename    = strtolower("_".time()."_".basename($_FILES['headerbgimg']['name']));
-            $target_path  = strtolower("../../assets/cms/".$filename); 
+            $target_path  = strtolower(__DIR__."/../../assets/".$config['thumb'].$filename); 
                 
             if(move_uploaded_file($_FILES['headerbgimg']['tmp_name'], $target_path)) {
                  $_POST['param'][58] = $filename;
@@ -109,7 +99,9 @@
                $tsql = "update _jsitesettings set paramvalue='".$h."' where settingsid=".$key; 
                $mysql->execute($tsql); 
            }else{
+              
                 $sql = "update _jsitesettings set paramvalue='".$value."' where settingsid=".$key;
+               
                 $mysql->execute($sql);  
            }
                       
@@ -130,10 +122,7 @@
              echo $obj->printSuccess("Image Removed Successfully");
       }
         
-      if (isset($_POST['rmimagemenu'])) {
-             $mysql->execute("update _jsitesettings set paramvalue='' where param='menubackgroundimage'");
-             echo $obj->printSuccess("Image Removed Successfully");
-      }
+ 
         
       if (isset($_POST['rmimagelogo'])) {
              $mysql->execute("update _jsitesettings set paramvalue='' where param='logo'");
@@ -161,9 +150,11 @@
 ?>
 <script src="./../../assets/js/tiny_mce/tiny_mce.js"></script> 
 <script type="text/javascript">tinyMCE.init({mode : "specific_textareas",editor_selector : "mceEditor",theme : "advanced",plugins : "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave",theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak,restoredraft",theme_advanced_toolbar_location : "top",theme_advanced_toolbar_align : "left",theme_advanced_statusbar_location : "bottom",theme_advanced_resizing : true,content_css : "css/content.css",template_external_list_url : "lists/template_list.js",external_link_list_url : "lists/link_list.js",external_image_list_url : "lists/image_list.js",media_external_list_url : "lists/media_list.js",style_formats : [{title : 'Bold text', inline : 'b'},{title : 'Red text', inline : 'span', styles : {color : '#ff0000'}},{title : 'Red header', block : 'h1', styles : {color : '#ff0000'}},{title : 'Example 1', inline : 'span', classes : 'example1'},{title : 'Example 2', inline : 'span', classes : 'example2'},{title : 'Table styles'},{title : 'Table row 1', selector : 'tr', classes : 'tablerow1'}],template_replace_values : {username : "Some User",staffid : "991234"}});</script>
-<script type="text/javascript" src="../../assets/js/jscolor.js"></script>
-<script src="./../../assets/js/jquery-1.7.2.js"></script>
-<link rel="stylesheet" href="./../../assets/css/demo.css"> 
+
+ <script type="text/javascript" src="<?php echo BaseUrl;?>/../assets/js/jscolor.js"></script>
+    <script src="<?php echo BaseUrl;?>/../assets/js/jquery-1.7.2.js"></script>
+    <link rel="stylesheet" href="<?php echo BaseUrl;?>/../assets/css/demo.css">
+    
 <body style="margin:0px;">
 <style>
 table {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
@@ -189,7 +180,7 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                     <td>Logo</td>
                     <td>
                     <?php if (strlen(trim($data[24]['paramvalue']))>0) {?>
-                    <img src="../../assets/cms/<?php echo $data[24]['paramvalue'];?>" height="100"><br>
+                    <img src="<?php echo BaseUrl;?>/assets/<?php echo $config['thumb'].$data[24]['paramvalue'];?>" height="100"><br>
                     <input type="submit" value="Remove" name="rmimagelogo">
                     <?php } ?>
                     <input type="file" class="input" size="30" name="logo"/>
@@ -200,7 +191,7 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                     <td>Favorite Icon</td>
                     <td>
                     <?php if (strlen(trim($data[4]['paramvalue']))>0) {?>  
-                    <img src="../../assets/cms/<?php echo $data[4]['paramvalue'];?>" width="20">
+                    <img src="<?php echo BaseUrl;?>/assets/<?php echo $config['thumb'].$data[4]['paramvalue'];?>" width="20">
                     <input type="submit" value="Remove" name="rmimageicon">
                     <?php } ?>
                     <input type="file" class="input" name="favoriteicon" size="30"/>
@@ -210,7 +201,7 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                     <td>Header Background Image</td>
                     <td>
                     <?php if (strlen(trim($data[57]['paramvalue']))>0) {?>
-                    <img src="../../assets/cms/<?php echo $data[57]['paramvalue'];?>" height="100"> <br>
+                    <img src="<?php echo BaseUrl;?>>assets/<?php echo $config['thumb'].$data[57]['paramvalue'];?>" height="100"> <br>
                     <input type="submit" value="Remove" name="rmimageheader">
                     <?php } ?>
                     <input type="file" class="input" size="30" name="headerbgimg"/><br>
@@ -220,6 +211,34 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                     <td>Header Background Color</td>
                     <td><input name="param[59]" class="color" value="<?php echo $data[58]['paramvalue'];?>" style="width:60px;"></td> 
                   </tr>
+                  <tr>
+                    <td>Hide Header Background Image & Color</td>
+                    <td>
+                        <select name="param[61]">
+                            <option value="0" <?php echo ($data[60]['paramvalue']==0) ? "selected='selected'" : ""; ?>>No</option>
+                            <option value="1" <?php echo ($data[60]['paramvalue']==1) ? "selected='selected'" : ""; ?>>Yes</option>
+                        </select> 
+                        
+                    </td>
+                  </tr>
+                  
+                  <tr>
+                    <td>Header Height</td>
+                    <td><input name="param[62]"  value="<?php echo $data[61]['paramvalue'];?>" style="width:60px;">px</td> 
+                  </tr>
+                  
+                          <tr>
+                    <td>Show Header </td>
+                    <td>
+                        <select name="param[63]">
+                            <option value="0" <?php echo ($data[62]['paramvalue']==0) ? "selected='selected'" : ""; ?>>No</option>
+                            <option value="1" <?php echo ($data[62]['paramvalue']==1) ? "selected='selected'" : ""; ?>>Yes</option>
+                        </select> 
+                        
+                    </td>
+                  </tr>
+                  
+                  
                   <tr>
                      <td>Display Slider Prev/Next Icon</td>
                      <td>
@@ -258,56 +277,9 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                     <td> BackgroundColor</td>
                     <td><input name="param[4]" class="color" value="<?php echo $data[3]['paramvalue'];?>" style="width:60px;"></td> 
                 </tr>
-               
-                <tr>   
-                    <td colspan="4"><hr style="border:none;border-bottom:1px solid #e5e5e5"</td>
-               </tr>
-               <tr>
-                    <td>Menu Background Image</td>
-                    <td>
-                    <?php if (strlen(trim($data[23]['paramvalue']))>0) {?>
-                    <img src="../../assets/cms/<?php echo $data[23]['paramvalue'];?>" height="100"><br>
-                    <input type="submit" value="Remove" name="rmimagemenu">
-                    <?php } ?> 
-                    <input type="file" class="input" size="30" name="menubackgroundimage"/>
-                    </td>
-               </tr>
-                <tr>
-                    <td>Menu BackgroundColor</td>
-                    <td><input name="param[43]" class="color" value="<?php echo $data[42]['paramvalue'];?>" style="width:60px;"></td> 
-                </tr>
-                <tr>
-                    <td>Menu Font Family</td>
-                    <td>
-                        <select id="param[36]" name="param[36]" onchange="window.open('loadfont.php?fontid='+this.value,'loadfont')">
-                        <?php foreach($mysql->select("select * from _jfonts") as $font) { ?>
-                                <option value="<?php echo $font['fontid'];?>" <?php echo ($font['fontid']==$data[35]['paramvalue'])? 'selected="selected"' : '';?>><?php echo $font['fontname'];?></option>
-                        <?php } ?>
-                            
-                        </select>
-                        <br>
-                        <iframe src="loadfont.php?fontid=<?php echo $data[35]['paramvalue']; ?>" id="loadfont" name="loadfont" style="height: 100px;width:500px;border:none;" scrolling="no">
-                        </iframe>
-                    </td>  
-                </tr>
-                <tr>
-                    <td >Menu Font Color</td>
-                    <td><input name="param[35]" class="color" value="<?php echo $data[34]['paramvalue'];?>" style="width:60px;"></td> 
-                </tr>
-                <tr>
-                    <td>Menu-Hover</td>
-                    <td><input name="param[45]" class="color" value="<?php echo $data[44]['paramvalue'];?>" style="width:60px;"></td>
-                    
-                </tr>
-                <tr>
-                    <td>Menu Font Size</td>
-                    <td><select name="param[37]" value="<?php echo $data[36]['paramvalue'];?>">
-                            <?php for ($i=8;$i<=70;$i++){ ?>
-                            <option value="<?php echo $i;?>"<?php echo ($i==$data[36]['paramvalue']) ? 'selected="selected"' :'';?>><?php echo $i;?></option>
-                             <?php  } ?> 
-                         </select>
-                    </td>
-                </tr>
+        
+          
+ 
                 <tr>
                     <td colspan="4"><hr style="border:none;border-bottom:1px solid #e5e5e5"</td>
                </tr>
@@ -471,6 +443,7 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                      </select>
                      </td> 
                </tr>
+               </tr>
                <tr>
                      <td>Is Enable Faq</td>
                      <td>
@@ -628,14 +601,6 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                <tr>
                     <td>Display ContactUs</td>
                     <td><textarea class="mceEditor" style="height: 350px;width:100%" name="param[57]"><?php echo $data[56]['paramvalue'];?></textarea></td> 
-               </tr>
-               <tr>
-                    <td>Copyright Text</td>
-                    <td><textarea class="mceEditor" style="height: 100px;width:100%" name="param[135]"><?php echo $data[134]['paramvalue'];?></textarea></td> 
-               </tr>
-               <tr>
-                    <td>Copyright Url</td>
-                    <td><textarea class="mceEditor" style="height: 100px;width:100%" name="param[136]"><?php echo $data[135]['paramvalue'];?></textarea></td> 
                </tr>
                <tr>
                     <td align="left">

@@ -1,16 +1,43 @@
-<?php
-include_once(application_config_path);
-?>
-    <link rel="stylesheet" type="text/css" href="../assets/bridegroomslider/es-carousel.css" />
-    <link rel="stylesheet" type="text/css" href="../assets/css/prettyphoto.css" />
+<table style="width:100%;">
+<tr>
+                <td>
+            <?php 
+                          
+                if (JFrame::getAppSetting('showslider')==1) { 
+                    include (web_path."/includes/hp_slider.php"); 
+                }
+            ?>
+            </td>
+            </tr>
+            <tr>
+                <td>
+               
+                    <table style="width:100%;">
+                        <tr>
+                            <td colspan="3"><br /></td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align:top;width:45%;background:#f1f1f1;padding-left:15px;padding-right:15px"><?php include_once(web_path."includes/user_includes/hp_featured_grooms.php");?></td>
+                            <td></td>
+                            <td style="vertical-align:top;width:45%;background:#f1f1f1;padding-left:15px;padding-right:15px"><?php include_once(web_path."includes/user_includes/hp_featured_brides.php");?></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><br /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="background:#f1f1f1;;padding-left:15px;padding-right:15px"><?php include_once(web_path."includes/user_includes/hp_featured_recentlyadded.php");?></td>                        
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+</table>
 <?php
     $home = $mysql->select("select * from _jpages where ishomepage=1");
-
+ 
     if (sizeof($home)>0) {
-         
+        
     $pageContent = $mysql->select("select * from _jpages where pageid=".$home[0]['pageid']);
-    echo "<div style='padding:10px;font-family:arial;font-size:13px;text-align:justify;'>";
-    echo "<div style='font-family:arial;font-size:18px;font-weight:bold;border-bottom:2px solid #222;margin-bottom:10px;padding-bottom:10px;'>".$pageContent[0]['pagetitle']."</div>";
+    echo "<div style='font-family:arial;font-size:13px;text-align:justify;'>";
     if ( (strlen(trim($pageContent[0]['filepath']))>0) && (file_exists("assets/cms/".$pageContent[0]['filepath']))) {
         echo "<img style='border:1px solid #ccc;height:140px' src='assets/cms/".$pageContent[0]['filepath']."'  align='right'>";    
     }
@@ -19,79 +46,14 @@ include_once(application_config_path);
     
     }
     
-?> 
- 
-  
-	 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
-<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
-<style>
-  .product-slider { padding: 45px; }
-
-.product-slider #carousel { border: 0px solid #1089c0; margin: 0; }
-
-.product-slider #thumbcarousel { margin: 12px 0 0; padding: 0 45px; }
-
-.product-slider #thumbcarousel .item { text-align: center; }
-
-.product-slider #thumbcarousel .item .thumb { border: 4px solid #cecece; width: 20%; margin: 0 2%; display: inline-block; vertical-align: middle; cursor: pointer; max-width: 98px; }
-
-.product-slider #thumbcarousel .item .thumb:hover { border-color: #1089c0; }
-
-.product-slider .item img { width: 100%; height: auto; }
-
-.carousel-control { color: #0284b8; text-align: center; text-shadow: none; font-size: 30px; width: 30px; height: 30px; line-height: 20px; top: 23%; }
-
-.carousel-control:hover, .carousel-control:focus, .carousel-control:active { color: #333; }
-
-.carousel-caption, .carousel-control .fa { font: normal normal normal 30px/26px FontAwesome; }
-.carousel-control { background-color: rgba(0, 0, 0, 0); bottom: auto; font-size: 20px; left: 0; position: absolute; top: 30%; width: auto; }
-
-.carousel-control.right, .carousel-control.left { background-color: rgba(0, 0, 0, 0); background-image: none; }
-</style>
-<script>
-  window.console = window.console || function(t) {};
- 
-  if (document.location.search.match(/type=embed/gi)) {
-    window.parent.postMessage("resize", "*");
-  }
-</script> 
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-      
-      <div class="container" style="padding-top:10px">
-			<div class="form-group row">
-                <div class="col-sm-5" style="border-radius: 5px;background:#f4f3f3;">
-					<?php 
-					    include_once("website/includes/hp_featured_grooms.php");
-					?>
-				</div>
-				<div class="col-sm-2"></div>
-				<div class="col-sm-5" style="border-radius: 5px;background:#f4f3f3;">
-					<?php 
-					 include_once("website/includes/hp_featured_brides.php");
-					?>
-				</div>
-			</div>
-			
-            <div class="form-group row">
-                <div class="col-sm-12" style="border-radius: 5px;background:#f4f3f3;">
-                    <?php 
-                        include_once("website/includes/hp_featured_recentlyadded.php");
-                    ?>
-                </div>
-               
-            </div>
-			
-	</div>		 
-            
- 
+?>
        <table style="width:100%;" cellpadding="0" cellspacing="0">
             <tr>
                 <?php if ( (JFrame::getAppSetting('isenablephoto')) || (JFrame::getAppSetting('isenablevideo')) )  {?>
                     <td valign="top">
                         <?php
                         if (JFrame::getAppSetting('isenableevents')) {  
-                        include_once("includes/hp_feature_events.php"); 
+                        include_once("includes/hp_feature_events.php");
                         }
                         ?>
                     </td>

@@ -85,7 +85,7 @@ $page="MyFranchiseeInfo";
                             <div class="col-sm-6" style="margin-left: -25px;width: 31%;">
                                 <input type="text" class="form-control" maxlength="10" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Franchisee['MobileNumber']);?>" placeholder="Mobile Number">
                                 <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span></div>
-                            <div class="col-sm-3" style="padding-top: 7px;padding-left: 0px;"><a href="javascript:void(0)" onclick="MobileNumberVerification()">Verfiy now</a></div>
+                            <div class="col-sm-3" style="padding-top: 7px;padding-left: 0px;"><a href="javascript:void(0)" onclick="MobileNumberVerificationForm()">Verfiy now</a></div>
                             <?php } else{ ?>
                                 <div class="col-sm-4" style="margin-left: -15px;">
                                 <select class="selectpicker form-control" disabled="disabled" blocked data-live-search="true" name="CountryCode" id="CountryCode" style="width: 61px;">
@@ -108,7 +108,7 @@ $page="MyFranchiseeInfo";
                         <div class="col-sm-8" style="margin-left: -15px;">
                             <input type="text" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $Franchisee['EmailID']);?>" placeholder="Email ID">
                             <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span></div>
-                            <div class="col-sm-4" style="padding-top: 7px;padding-left: 0px;"><a href="javascript:void(0)" onclick="MobileNumberVerification()">Verfiy now</a> </div>
+                            <div class="col-sm-4" style="padding-top: 7px;padding-left: 0px;"><a href="javascript:void(0)" onclick="EmailVerificationForm()">Verfiy now</a> </div>
                             <?php } else{ ?>
                             <div class="col-sm-8" style="margin-left: -15px;">
                                 <input type="text" disabled="disabled" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $Franchisee['EmailID']);?>" placeholder="Email ID"> </div>

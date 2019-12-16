@@ -1,28 +1,197 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title><?php echo JFrame::getAppSetting('sitetitle');?></title>
+        <link rel="icon" href="<?php echo $_SITEPATH."assets/".$config['thumb'].JFrame::getAppSetting('favoriteicon');?>" type="image/gif" sizes="16x16"> 
+        <meta http-equiv="Content-Type" charset="utf-8"/>
+       
+        <title><?php echo $title;?></title>
+        <meta name="description" content="<?php echo $description;?>" />
+        <meta name="Keywords" content="<?php echo $keywords;?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
-        <!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
-        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
-        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>-->
+        <meta name="robots" content="index,follow" />
         
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <meta itemprop="name" content="<?php echo $itemname;?>">
+        <meta itemprop="description" content="<?php echo $description; ?>">
+        <meta itemprop="image" content="<?php echo $ogImage; ?>">
+        
+        <meta property="og:title" content="<?php echo $itemname;?>"/>
+        <meta property="og:url" content="<?php echo $ogUrl;?>" />
+        <meta property="og:image" content="<?php echo $ogImage;?>" />
+        <meta property="og:image:url" content="<?php echo $ogImage;?>" />
+        <meta property="og:image:alt" content="<?php echo $ogImage;?>" />
+        <?php if (isset($imgData)) {?>
+            <meta property="og:image:type" content="<?php echo $imgData['mime'];?>" />
+            <meta property="og:image:width" content="<?php echo $imgData[0];?>" />
+            <meta property="og:image:height" content="<?php echo $imgData[1];?>" />
+        <?php }?>
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:description" content="<?php echo $description; ?>"/>
+        <meta property="og:site_name" content="<?php echo $_SITEPATH;?>" />
+        <meta property="og:type" content="article" />
+        <meta property="article:published_time" content="<?php echo date("Y-m-d H:i:s");?>" />
+        <meta property="article:modified_time" content="<?php echo date("Y-m-d H:i:s");?>" />
+        <meta property="article:expiration_time" content="<?php echo date("Y-m-d H:i:s");?>" />
+        <meta property="og:type" content="article">
+        <meta itemprop="og:headline" content="<?php echo $itemname;?>" />
+        <meta itemprop="og:description" content="<?php echo $description;?>" />
+        
+         
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   
-        <!--<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>-->
+  
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> 
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> 
+        <!--<script src="http://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
+        <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js" type="text/javascript"></script>      -->
+        <script src="<?php echo BaseUrl;?>assets/lib/jquery.mousewheel-3.0.6.pack.js" type="text/javascript"></script>
+        <script src="<?php echo BaseUrl;?>assets/source/jquery.fancybox.pack.js?v=2.1.5" type="text/javascript"></script>
+        <script src="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-buttons.js?v=1.0.5" type="text/javascript"></script>
+        <script src="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-media.js?v=1.0.6" type="text/javascript"></script>
+        <script src="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7" type="text/javascript"></script>   
+        
+        <link href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
         <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
-        <script type="text/javascript" src="<?php echo web_path;?>assets/lib/jquery.mousewheel-3.0.6.pack.js"></script>
-        <link rel="stylesheet" href="<?php echo web_path;?>assets/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
-        <script type="text/javascript" src="<?php echo web_path;?>assets/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-        <link rel="stylesheet" href="<?php echo web_path;?>assets/source/helpers/jquery.fancybox-buttons.css?v=1.0.5" type="text/css" media="screen" />
-        <script type="text/javascript" src="<?php echo web_path;?>assets/source/helpers/jquery.fancybox-buttons.js?v=1.0.5"></script>
-        <script type="text/javascript" src="<?php echo web_path;?>assets/source/helpers/jquery.fancybox-media.js?v=1.0.6"></script>
-        <link rel="stylesheet" href="<?php echo web_path;?>assets/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" />
-        <script type="text/javascript" src="<?php echo web_path;?>assets/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+        <link href="<?php echo BaseUrl;?>assets/source/jquery.fancybox.css?v=2.1.5" type="text/css"   media="screen" rel="stylesheet"/>
+        <link href="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-buttons.css?v=1.0.5"   media="screen" rel="stylesheet"/>
+        <link href="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7"  media="screen" rel="stylesheet"/>
+        <script>
+        /*Facebook Start*/
+        //Whatsspp
+    function postToWhatsApp(sharemessage) {
+
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            var text =sharemessage;// $(".Article_Headline ").text();
+            var url = location.href;
+            var message = encodeURIComponent(text) + encodeURIComponent(url);           
+            var whatsapp_url = "whatsapp://send?text=" + message;
+            window.location.href = whatsapp_url;
+        } else {
+            alert("You are not in Mobile Device");
+        }
+    }
+        /*Twitter*/
+function postToTWTTR(placement, url, title, shareObject) {
+    // social_button_clicked('twitter', placement);
+
+    var width = 575,
+                    height = 400,
+                    left = (window.outerWidth - width) / 2,
+                    top = (window.outerHeight - height) / 2,
+                    url = url,
+                    opts = 'resizable=1,scrollbars=1,status=1' +
+                             ',width=' + width +
+                             ',height=' + height +
+                             ',top=' + top +
+                             ',left=' + left, twitterVia = 'dt_next';
+
+    var articleSharingUrl = 'http://twitter.com/intent/tweet?text=' + encodeURIComponent(' ' + url + '');
+    var shareObjectSharingUrl = getSharingUrl(shareObject);
+    var sharingUrl = shareObjectSharingUrl || articleSharingUrl;
+    var newwindow = window.open(sharingUrl, "", opts);
+
+    function getSharingUrl(shareObject) {
+        var sharingUrl = null;
+        if (shareObject) {
+            var parsedShareObject = JSON.parse(shareObject);
+            sharingUrl = 'https://twitter.com/share?' +
+                                 (parsedShareObject.url ? 'url=' + encodeURIComponent(parsedShareObject.url) : '');
+        }
+        return sharingUrl;
+    }
+}
+/*End*/
+
+function postToFB(placement, url, shareObject) {
+    var caption = $("#item_title").text();
+    var picture = $("#item_image").attr('src');
+    var description = $("#item_shortdesc").text();
+    var link = window.location.href;
+    var width = 600,
+                    height = 450,
+                    left = (window.outerWidth - width) / 2,
+                    top = (window.outerHeight - height) / 2,
+                    url = url,
+                    opts = 'resizable=1,scrollbars=1,status=1' +
+                             ',width=' + width +
+                             ',height=' + height +
+                             ',top=' + top +
+                             ',left=' + left;
+
+    var sharingUrl = getSharingUrl(shareObject) || ("http://www.facebook.com/sharer/sharer.php?u=" + url);
+
+    var newwindow = window.open(sharingUrl, "", opts);
+
+    function getSharingUrl(shareObject) {
+        var sharingUrl = null;
+        if (shareObject) {
+            shareObject = JSON.parse(shareObject);
+            sharingUrl = 'https://www.facebook.com/dialog/feed?app_id=146202712090395' +
+                                 (shareObject.link ? '&link=' + encodeURIComponent(link) : '') +
+                                 (shareObject.picture ? '&picture=' + encodeURIComponent(picture) : '') +
+                                 (shareObject.name ? '&name=' + encodeURIComponent(link) : '') +
+                                 (shareObject.caption ? '&caption=' + encodeURIComponent(caption) : '') +
+                                 (shareObject.description ? '&description=' + encodeURIComponent(description) : '') +
+                                 (shareObject.redirect_uri ? '&redirect_uri=' + encodeURIComponent(link) : '');
+        }
+        return sharingUrl;
+    };
+
+}
+
+/*Google Plus*/
+function postToGPlus(placement, url, shareObject) {
+    
+    var width = 300,
+                    height = 500,
+                    left = (window.outerWidth - width) / 2,
+                    top = (window.outerHeight - height) / 2,
+                    url = url,
+                    opts = 'resizable=1,scrollbars=1,status=1' +
+                             ',width=' + width +
+                             ',height=' + height +
+                             ',top=' + top +
+                             ',left=' + left;
+    var headline = $("#item_title").text();
+    var Abstract = $("#item_shortdesc ").text();
+    var sharingUrl = getSharingUrl(shareObject) || ("https://plus.google.com/share?url=" + url);
+
+    var newwindow = window.open(sharingUrl, "", opts);
+
+    function getSharingUrl(shareObject) {
+        var sharingUrl = null;
+        if (shareObject) {
+            shareObject = JSON.parse(shareObject);
+            sharingUrl = (shareObject.link ? '&link=' + encodeURIComponent(shareObject.link) : '') +
+                                 (shareObject.picture ? '&picture=' + encodeURIComponent(shareObject.picture) : '') +
+                                 (shareObject.name ? '&name=' + encodeURIComponent(shareObject.name) : '') +
+                                 (shareObject.caption ? '&caption=' + encodeURIComponent(shareObject.caption) : '') +
+                                 (shareObject.description ? '&description=' + encodeURIComponent(shareObject.description) : '') +
+                                 (shareObject.redirect_uri ? '&redirect_uri=' + encodeURIComponent(shareObject.redirect_uri) : '');
+        }
+        return sharingUrl;
+    };
+}
+/*End*/
+
+/*End*/
+
+
+function gobrowsepage() {
+    var page="<?php echo isset($_REQUEST['p']) ? '&page='.$_REQUEST['p'] : '&p=1'?> ";
+    location.href='browse.php?l='+$("#browse_allitems_categorywise").val()+'&o='+$("#browse_allitems_orderby").val()+'&s='+$('#searchkeyword').val()+page;
+}
+$(document).ready(function(){
+    $('#searchkeyword').keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+        gobrowsepage();
+    }
+});
+});
+        </script>
+    
         <style >
             .jTitle {font-family:Oswald;font-size:18px;border-bottom:3px solid #222;color:#222;margin-bottom:5px;}
             .jContent {font-family:'Droid Sans';font-size:13px;color:#444444}
@@ -38,181 +207,222 @@
             .content{color:#222;font-family:arial;font-size:13px;line-height:20px;text-align: justify;padding:10px;}
             .table{font-size:12px;font-family:arial;text-align: justify;}
             .textBox {background-color:#FFFFFF;border: 2px solid #ebebeb;border-radius: 4px;color: #999;display: block;font-size: 14px;height: 34px;line-height: 1.42857;padding: 6px 0 6px 12px;transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;vertical-align: middle;width: 45%;}
-            .sub_Menu {text-transform: uppercase;color:<?php echo JFrame::getAppSetting('menufontcolor');?>;cursor: pointer; float: left; font-family: '<?php echo JFrame::getAppSetting('menufont');?>';font-size:<?php echo JFrame::getAppSetting('menufontsize');?>;padding: 5px 15px;text-align: left;text-decoration:none;}
-            .sub_Menu:hover{color:<?php echo JFrame::getAppSetting('headerhover');?>;font-family:'<?php echo JFrame::getAppSetting('menufont');?>';font-size:'<?php echo JFrame::getAppSetting('menufontsize');?>';text-decoration: underline;}                                              
-            .rmenu {font-size:13px;font-family:'comic sans ms';text-decoration:none;color:#333;}
+              .rmenu {font-size:13px;font-family:'comic sans ms';text-decoration:none;color:#333;}
             .rmenu:hover {font-size:13px;font-family:'comic sans ms';text-decoration:underline;color:#222;}
-            .Jfooter {text-transform: uppercase;color:<?php echo JFrame::getAppSetting('footerfontcolor');?>;cursor: pointer; float: left; font-family:'<?php echo JFrame::getAppSetting('footerfont');?>';font-size:<?php echo JFrame::getAppSetting('footerfontsize');?>;padding: 5px 15px;text-align: left;text-decoration:none;}
-            .Jfooter:hover{color:<?php echo JFrame::getAppSetting('footerhover');?>;font-family:'<?php echo JFrame::getAppSetting('footerfont');?>';font-size:'<?php echo JFrame::getAppSetting('footerfontsize');?>';text-decoration: underline;}
-            .headerlink{background: #00953d;}   /*#e60058 */
-            .headerlink:hover{background: #00953d;}
-            .nav-link:hover{background: #00953d;}
-             .navbar-expand-lg .navbar-nav .nav-link {
-                padding-right: 1.5rem;
-                padding-left: 1.5rem;
-                padding-top: 1rem;
-                padding-bottom: 1rem;
-                } 
-            #container{max-width:620px;margin:0 auto;padding-bottom:80px;}
-            #banner-fade, #banner-slide{margin-bottom:0px;}
+            .Jfooter {text-transform: uppercase;color:#<?php echo JFrame::getAppSetting('footerfontcolor');?>;cursor: pointer; float: left; font-family:'<?php echo JFrame::getAppSetting('footerfont');?>';font-size:<?php echo JFrame::getAppSetting('footerfontsize');?>px;padding: 5px 15px;text-align: left;text-decoration:none;}
+            .Jfooter:hover{color:#<?php echo JFrame::getAppSetting('footerhover');?>;font-family:'<?php echo JFrame::getAppSetting('footerfont');?>';font-size:<?php echo JFrame::getAppSetting('footerfontsize');?>px;text-decoration: underline;}
+           
+        .listitems{width:237px;padding:5px;margin-top:5px;margin-top:10px;border:1px solid #eee;float:left;margin-left:5px;margin-bottom:5px;}
+        .listitems table {font-family:arial;font-size:12px;width:100%;}
+        .itemimage {height:177px;width:237px;}
+        .itemprice {background: #ccc none repeat scroll 0 0;border: 1px solid #ccc;font-weight: bold;text-align: center;padding:5px;}
+        .listitems:hover{background:#f1f1f1;border:1px solid #ccc}
+        
+        .iistitemTitleLink{font-family:arial;font-size:13px;color:blue;text-decoration: none;color:#555;font-weight:bold;}
+        .iistitemTitleLink:hover{text-decoration:underline;}
+        .listitemSubTitle{color:#666;font-family:arial;font-size:12px;padding-bottom:12px;}
+     
+    
+            .subMenu {
+                height:<?php echo JFrame::getAppSetting('menu_height');?>px;
+                clear:both;
+               
+                 <?php if (JFrame::getAppSetting('menu_background_image_color_noneed')==0) { ?> 
+                    <?php if (strlen(trim(JFrame::getAppSetting('menubackgroundimage')))>0) {?>                 
+                        background:url('<?php echo $_SITEPATH;?>assets/<?php echo $config['thumb'].JFrame::getAppSetting('menubackgroundimage');?>');
+                    <?php } ?>
+                background-color:#<?php echo JFrame::getAppSetting('menubgcolor');?>;
+                <?php } ?>
+                
+                background-color:#<?php echo JFrame::getAppSetting('menubgcolor');?>;
+                border-left: <?php echo JFrame::getAppSetting('menu_border_left_size');?>px <?php echo JFrame::getAppSetting('menu_border_left_style');?> #<?php echo JFrame::getAppSetting('menu_border_left_color');?>;
+                border-right: <?php echo JFrame::getAppSetting('menu_border_right_size');?>px <?php echo JFrame::getAppSetting('menu_border_right_style');?> #<?php echo JFrame::getAppSetting('menu_border_right_color');?>;
+                border-top: <?php echo JFrame::getAppSetting('menu_border_top_size');?>px <?php echo JFrame::getAppSetting('menu_border_top_style');?> #<?php echo JFrame::getAppSetting('menu_border_top_color');?>;
+                border-bottom: <?php echo JFrame::getAppSetting('menu_border_bottom_size');?>px <?php echo JFrame::getAppSetting('menu_border_bottom_style');?> #<?php echo JFrame::getAppSetting('menu_border_bottom_color');?>;
+                border-radius: <?php echo JFrame::getAppSetting('menu_radius_left_top');?><?php echo JFrame::getAppSetting('menu_radius_left_top_scale');?> <?php echo JFrame::getAppSetting('menu_radius_right_top');?><?php echo JFrame::getAppSetting('menu_radius_right_top_scale');?> <?php echo JFrame::getAppSetting('menu_radius_right_bottom');?><?php echo JFrame::getAppSetting('menu_radius_right_bottom_scale');?> <?php echo JFrame::getAppSetting('menu_radius_left_bottom');?><?php echo JFrame::getAppSetting('menu_radius_left_bottom_scale');?>;
+            }
             
-        </style>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <style>
-            .topnav .icon {display: none;}    
-            @media screen and (max-width: 600px) {
-                .topnav a:not(:first-child) {display: none;}
-                .topnav a.icon {float: right;display: block;}
+              .sub_Menu {
+                text-transform: <?php echo JFrame::getAppSetting('menu_text_transform');?>;
+                cursor: pointer;
+                float: left;
+                text-align: left;
+                
+                color:#<?php echo JFrame::getAppSetting('menufontcolor');?>;
+                font-family: '<?php echo JFrame::getAppSetting('menufont');?>';
+                font-size:<?php echo JFrame::getAppSetting('menufontsize');?>px;
+                
+                font-weight:<?php echo JFrame::getAppSetting('menu_font_bold')==1 ? 'bold' : 'none';?>;
+                font-style: <?php echo JFrame::getAppSetting('menu_font_italic')==1 ? 'italic' : 'none';?>;
+                text-decoration: <?php echo JFrame::getAppSetting('menu_font_underline')==1 ? 'underline' : 'none';?>;
+                
+                padding-left:<?php echo JFrame::getAppSetting('menu_text_padding_left');?>px;
+                padding-right:<?php echo JFrame::getAppSetting('menu_text_padding_right');?>px;
+                padding-top:<?php echo JFrame::getAppSetting('menu_text_padding_top');?>px;
+                padding-bottom:<?php echo JFrame::getAppSetting('menu_text_padding_bottom');?>px;
+                
+                <?php if (JFrame::getAppSetting('menu_seperator_need')==1) {?>
+                border-right:<?php echo JFrame::getAppSetting('menu_seperator_size'); ?>px solid #<?php echo JFrame::getAppSetting('menu_seperator_color'); ?>;
+                <?php } ?>       
             }
-            @media screen and (max-width: 600px) {
-                .topnav.responsive {position: relative;}
-                .topnav.responsive .icon {position: absolute;right: 0;top: 0;}
-                .topnav.responsive a {float: none;display: block;text-align: left;}
-            }
+            
+            .sub_Menu:hover {
+                
+                text-transform: <?php echo JFrame::getAppSetting('menu_text_hover_transform');?>;
+               
+                color:#<?php echo JFrame::getAppSetting('menu_hover_font_color');?>;
+                font-family:'<?php echo JFrame::getAppSetting('menufont');?>';
+                font-size:'<?php echo JFrame::getAppSetting('menufontsize');?>px';
+                
+                font-weight:<?php echo JFrame::getAppSetting('menu_hover_font_bold')==1 ? 'bold' : 'none';?>;
+                font-style: <?php echo JFrame::getAppSetting('menu_hover_font_italic')==1 ? 'italic' : 'none';?>;
+                text-decoration: <?php echo JFrame::getAppSetting('menu_hover_font_underline')==1 ? 'underline' : 'none';?>;
+                
+                <?php if (JFrame::getAppSetting('need_menu_hover_backgroundcolor')==1) {?>
+                background: #<?php echo JFrame::getAppSetting('menu_hover_backgroundcolor'); ?>;
+                <?php } ?>
+            }    
+                                                     
+       
+         
         </style>
         <script>
-            function myFunction() {
-                var x = document.getElementById("myTopnav");
-                if (x.className === "topnav") {
-                    x.className += " responsive";
-                } else {
-                    x.className = "topnav";
-                }
-            }
- 
-            //$(function() {$( "#datepicker" ).datepicker({showOn: 'button',buttonImage:'http://theonlytutorials.com/demo/x_office_calendar.png',width:20,height:20,buttonImageOnly: true,changeMonth: true,changeYear: true,showAnim: 'slideDown',duration: 'fast',dateFormat: 'dd-mm-yy'}); });
+           // $(function() {$( "#datepicker" ).datepicker({showOn: 'button',buttonImage:'http://theonlytutorials.com/demo/x_office_calendar.png',width:20,height:20,buttonImageOnly: true,changeMonth: true,changeYear: true,showAnim: 'slideDown',duration: 'fast',dateFormat: 'dd-mm-yy'}); });
         </script>
-         <script src="<?php echo web_path;?>assets/js/bjqs-1.3.min.js"></script>
-         <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">-->
-         <style>
-         .navbar {margin-bottom: 0;border-radius: 0;}
-       /*.row.content {height: 450px}  */
-         .sidenav {padding-top: 20px;background-color: #f1f1f1;height: 100%;}
-         footer {background-color: #555;color: white;padding: 15px;}
-         @media screen and (max-width: 767px) {
-             .sidenav {height: auto;padding: 15px;}
-             .row.content {height:auto;} 
-         }
-         
+        
+       
+  <style>
+  /* Make the image fully responsive */
   .carousel-inner img {
       width: 100%;
-     
+      height: 100%;
   }
-  #registerbtn:hover{
-      background:#d3175f;
-      color:white;
-  }
-  
-         </style>
-    </head>  
-    <body style="background:url('assets/cms/<?php echo JFrame::getAppSetting('backgroundimage');?>')<?php echo JFrame::getAppSetting('sitebgposition');?>;background-color:<?php echo JFrame::getAppSetting('backgroundcolor');?>;margin:0px;">
-    
-    <div class="container">
-        <div class="row">
+  </style>
+   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'> 
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+
+  <style>
+  .product-slider { padding: 45px; }
+
+.product-slider #carousel { border: 0px solid #1089c0; margin: 0; }
+
+.product-slider #thumbcarousel { margin: 12px 0 0; padding: 0 45px; }
+
+.product-slider #thumbcarousel .item { text-align: center; }
+
+.product-slider #thumbcarousel .item .thumb { border: 4px solid #cecece; width: 20%; margin: 0 2%; display: inline-block; vertical-align: middle; cursor: pointer; max-width: 98px; }
+
+.product-slider #thumbcarousel .item .thumb:hover { border-color: #1089c0; }
+
+.product-slider .item img { width: 100%; height: auto; }
+
+.carousel-control { color: #0284b8; text-align: center; text-shadow: none; font-size: 30px; width: 30px; height: 30px; line-height: 20px; top: 23%; }
+
+.carousel-control:hover, .carousel-control:focus, .carousel-control:active { color: #333; }
+
+.carousel-caption, .carousel-control .fa { font: normal normal normal 30px/26px FontAwesome; }
+.carousel-control { background-color: rgba(0, 0, 0, 0); bottom: auto; font-size: 20px; left: 0; position: absolute; top: 30%; width: auto; }
+
+.carousel-control.right, .carousel-control.left { background-color: rgba(0, 0, 0, 0); background-image: none; }
+</style>
+
+    </head> 
+    <?php if (strlen(trim(JFrame::getAppSetting('backgroundimage')))==0) {?>
+        <body style="background-color:#<?php echo JFrame::getAppSetting('backgroundcolor');?>;margin:0px;">
+    <?php } else { ?> 
+        <body style="background:url('<?php echo $_SITEPATH;?>assets/<?php echo $config['thumb'].JFrame::getAppSetting('backgroundimage');?>') <?php echo JFrame::getAppSetting('sitebgposition');?> ;background-color:#<?php echo JFrame::getAppSetting('backgroundcolor');?>;margin:0px;">
+    <?php } ?>   
+          
+          
+                                                
+          
+        <table align="center" cellpadding="0" cellspacing="0" style="width:1024px; border:0px solid #3A3A3A">
+        
+         <?php if (JFrame::getAppSetting("showheader")==1) { ?> 
+            <tr>
+              <!--   <td colspan="2">                                                                                                                                                                    
+               <?php if (JFrame::getAppSetting("headernoimagenocolor")==0) { ?> 
+                    <div style="padding-right:<?php echo JFrame::getAppSetting('header_logo_padding_right');?>px;padding-left:<?php echo JFrame::getAppSetting('header_logo_padding_left');?>px;padding-top:<?php echo JFrame::getAppSetting('header_logo_padding_top');?>px;padding-bottom:<?php echo JFrame::getAppSetting('header_logo_padding_bottom');?>px;overflow:hidden;height:<?php echo JFrame::getAppSetting('headerheight');?>px;clear:both;background:url('assets/<?php echo $config['thumb'].JFrame::getAppSetting('headerbgimg');?>');background-repeat:<?php echo JFrame::getAppSetting('header_background_repeat');?>;background-color:#<?php echo JFrame::getAppSetting('headerbgcolor');?>;">
+                <?php } else { ?>
+                    <div style="padding-right:<?php echo JFrame::getAppSetting('header_logo_padding_right');?>px;padding-left:<?php echo JFrame::getAppSetting('header_logo_padding_left');?>px;padding-top:<?php echo JFrame::getAppSetting('header_logo_padding_top');?>px;padding-bottom:<?php echo JFrame::getAppSetting('header_logo_padding_bottom');?>px;overflow:hidden;clear:both;height:<?php echo JFrame::getAppSetting('headerheight');?>px">
+                <?php } ?>
+                   <a href="<?php echo JFrame::getAppSetting('siteurl');?>/index.php"><img src='<?php echo BaseUrl;?>assets/<?php echo $config['thumb'].JFrame::getAppSetting('logo');?>' style="height:80px;" ></a>
+                   </div>
+                </td>-->
+                <td colspan="2">
+                <div class="">
             <div class="col-sm-6">
-                <div style="clear:both;background:url('assets/cms/<?php echo JFrame::getAppSetting('headerbgimg');?>');background-color:<?php echo JFrame::getAppSetting('headerbgcolor');?>;padding: 5px 5px 5px 10px;">
-                    <a href="<?php echo JFrame::getAppSetting('siteurl');?>"><img src='<?php echo web_path;?>data/<?php echo JFrame::getAppSetting('logo');?>' style="min-height:64px;max-height:64px;max-width:200px;"></a>
+                <div style="clear:both;background:url('assets/cms/');background-color:FFFFFF;padding: 5px 5px 5px 10px;">
+                    <a href="<?php echo JFrame::getAppSetting('siteurl');?>/index.php"><img src='<?php echo BaseUrl;?>assets/<?php echo $config['thumb'].JFrame::getAppSetting('logo');?>' style="height:80px;" ></a>
                 </div>
             </div>
             <div class="col-sm-6" style="text-align:right;padding: 5px 5px 5px 10px;">
-                <a href="<?php echo JFrame::getAppSetting('siteurl')."/login";?>" class="btn btn-primary" style="margin-top: 12px;padding-top: 2px;padding-bottom: 7px;">Login</a>&nbsp;
-                <a href="<?php echo JFrame::getAppSetting('siteurl')."/register";?>" class="btn btn-default" id="registerbtn" style="background: none;border-color:#d3175f;color:#d3175f;margin-top: 12px;padding-top: 2px;padding-bottom: 7px;">Register Now</a> 
+                <a href="<?php echo JFrame::getAppSetting('siteurl');?>/login" class="btn btn-primary" style="margin-top: 12px;padding-top: 2px;padding-bottom: 7px;">Login</a>&nbsp;
+                <a href="<?php echo JFrame::getAppSetting('siteurl');?>/register" class="btn btn-default" id="registerbtn" style="background: none;border-color:#d3175f;color:#d3175f;margin-top: 12px;padding-top: 2px;padding-bottom: 7px;">Register Now</a> 
             </div>
         </div>
-    </div>
-    
-    <nav class="navbar navbar-expand-lg  navbar-dark primary-color" style="background:url('assets/cms/<?php echo JFrame::getAppSetting('menubackgroundimage');?>');background-color:<?php echo JFrame::getAppSetting('menubgcolor');?>;padding-top:0px;padding-bottom:0px">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link <?php echo $_GET['x']=="" ? " active headerlink" : "";?>" href='<?php echo JFrame::getAppSetting('siteurl');?>' <?php echo $target; ?> >Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link <?php echo $_GET['x']=="" ? " " : "";?>" href='<?php echo JFrame::getAppSetting('siteurl');?>/search' <?php echo $target; ?> >Search</a>
-                    </li>
-                    <?php 
-                        $layout=0;
-                        foreach(MenuItems::getHeaderMenuItems() as $m) {
-                            
-                            $target  = ($m['target']>0) ? " target='_blank' " : "";
-                            
-                            switch($m['linkedto']) {
-                                
-                                case 'frmphotos'  : $pageurl = JFrame::getAppSetting('siteurl')."/photos.php?groupid=".$m['pageid'];
-                                                    break;
-                                case 'exturl'     : $pageurl = "http://".$m['customurl'];
-                                                    break;
-                                case 'frmpage'    : $pageurl = JFrame::getAppSetting('siteurl')."/".$m['pagefilename'];
-                                                    break;
-                                case 'frmevent'   : $pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
-                                                    break;
-                                case 'frmnews'    : $pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
-                                                    break;
-                                case 'frmdownload': $pageurl = JFrame::getAppSetting('siteurl')."/downloads.php?dalbum=".$m['pageid'];
-                                                    break;
-                                case 'frmmusic'   : $pageurl = JFrame::getAppSetting('siteurl')."/musics.php?album=".$m['pageid'];
-                                                    break; 
-                                case 'frmvideo'   : $pageurl = JFrame::getAppSetting('siteurl')."/videos.php?viewvid=".$m['pageid'];
-                                                    break;  
-                                case 'frmgrp'     : $pageurl = $m['customurl'];
-                                                    break;
-                                case 'predefined' : $pageurl = JFrame::getAppSetting('siteurl')."/".$m['customurl'];
-                                                    break;
-                            }
-                    ?>
-                    <li class="nav-item">
-                        <a class="nav-link <?php echo $d[0]==$m['pagefilename'] ? " active headerlink" : "";?>" href='<?php echo $pageurl;?>' <?php echo $target; ?> ><?php echo $m['menuname'];?></a>
-                    </li>
-                <?php 
-                        } ?>
-                </ul>
-            </div>  
-        </div>
-    </nav>
-    
-    <?php if (!(isset($isShowSlider) && $isShowSlider==false)) {?>
-    <div id="slider" class="carousel slide" data-ride="carousel">
-        <ul class="carousel-indicators">
-            <?php $c=0; $si = JSlider::getActiveSliders(); ?>
-            <?php for($i=0;$i<sizeof($si);$i++) {?>
-                <li data-target="#slider" data-slide-to="<?php echo $i;?>>" <?php echo $i==0 ? ' class="active headerlink" ' : '';?> ></li>
-            <?php } ?>
-            </ul>
-            <div class="carousel-inner">
-            <?php  foreach($si as $sliderimage) {?>
-                <div class="carousel-item <?php echo $c==0 ?  "active headerlink"  : '';?>">
-                    <img src="<?php echo $config['slider'].$sliderimage['filepath'];?>" alt="">
-                </div>
-                <?php $c++; } ?>
-            </div>
-            <a class="carousel-control-prev" href="#slider" data-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </a>
-            <a class="carousel-control-next" href="#slider" data-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </a>
-        </div>
-        <?php } ?>
-        <?php 
-            if(isset($layout) && $layout==0) {
-                
-            }
-            else{
-                
+                </td>
+            </tr>
+         <?php } ?>   
             
-        ?>
-        <div class="container" style="margin-top:20px;">
-            <div class="row">
-                <?php
-                    if (JFrame::getAppSetting('layout')==2) {
-                        echo '<div class="col-sm-3">';
-                        include_once("includes/side.php");
-                        echo '</div>';
-                    }
-                ?>
-                <div class="col-sm-9" style="line-height:26px;text-align:justify">
-                <?php } ?>
+            <tr>
+                 
+                <td>
+                <div id="subMenu" class="subMenu">
+                    <a class="sub_Menu" href='<?php echo JFrame::getAppSetting('siteurl');?>'>Home</a>
+                    <?php foreach(MenuItems::getHeaderMenuItems() as $m) { ?>
+                    <?php 
+                        $target  = ($m['target']>0) ? " target='_blank' " : "";
+                        
+                        switch($m['linkedto']) {
+                            
+                            case 'frmphotos'  :  $pageurl = JFrame::getAppSetting('siteurl')."/photos.php?groupid=".$m['pageid'];
+                                                 break;
+                            case 'exturl'     :  $pageurl = "http://".$m['customurl'];
+                                                 break;
+                            case 'frmpage'    :  
+                                                //$pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
+                                                $pageurl = $_SITEPATH."/".$m['pagefilename'].".html";
+                                                $pageurl = $_SITEPATH.$m['pagefilename'];
+                                                break;
+                                                
+                            case 'frmevent'   :  $pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
+                                                 break;
+                            case 'frmnews'    :  $pageurl = JFrame::getAppSetting('siteurl')."/index.php?page=".$m['pageid'];
+                                                 break;
+                            case 'frmdownload':  $pageurl = JFrame::getAppSetting('siteurl')."/downloads.php?dalbum=".$m['pageid'];
+                                                 break;
+                            case 'frmmusic'   :  $pageurl = JFrame::getAppSetting('siteurl')."/musics.php?album=".$m['pageid'];
+                                                 break; 
+                            case 'frmvideo'   :  $pageurl="videos.php";
+                                                //$pageurl = JFrame::getAppSetting('siteurl')."/videos.php?viewvid=".$m['pageid'];
+                                                 break;  
+                            case 'frmgrp'     :  $pageurl = $m['customurl'];
+                                                 break;
+                        }
+                        ?>
+                        <a class="sub_Menu" href='<?php echo $pageurl;?>' <?php echo $target; ?> ><?php echo $m['menuname'];?></a>
+                    <?php } ?>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+               
+                    <table cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <?php
+                                if (JFrame::getAppSetting('layout')==2) {
+                                    include_once(DOCPATH.web_path."/includes/side.php");
+                                }
+                            ?>
+                            <?php
+                                $style="";
+                                if ($browse || $enquiry) {
+                                $style="";
+                                }
+                            ?>
+                            <td valign="top" style="background:#fff;<?php echo $style; ?>">

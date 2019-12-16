@@ -1,12 +1,12 @@
+<?php include_once(__DIR__."/../header.php"); ?>
  <style>
 .mytr:hover{background:#f6f6f6;cursor:pointer}
 </style>
-<script src="./../../assets/js/jquery-1.7.2.js"></script>
-<link rel="stylesheet" href="./../../assets/css/demo.css">
+
 <body style="margin:0px;">
 <div class="titleBar">List of Sliders</div>
 <?php 
-include_once("../../config.php");
+ 
 
      $obj = new CommonController();  
             if (!($obj->isLogin())){
@@ -22,7 +22,7 @@ include_once("../../config.php");
           ?>
             <tr class='mytr'>
                 <td style='padding:5px;width:70px'>
-                    <img src="../../assets/<?php echo $config['slider'].$r["filepath"];?>"  style="height:70px;width:70px;"></img>
+                    <img src="<?php echo BaseUrl;?>assets/<?php echo $config['slider'].$r["filepath"];?>"  style="height:70px;"></img>
                 </td>
                 <td style="vertical-align: top;padding:10px;">
                     <b><?php echo $r["slidertitle"]?></b> 

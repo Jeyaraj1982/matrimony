@@ -24,7 +24,10 @@
                 <span class="errorstring" id="ErrFatherName"><?php echo isset($ErrFatherName)? $ErrFatherName : "";?></span>
             </div>
             <div class="col-sm-2">
-                <input type="checkbox" onclick="verifiyFatherPassedaway()" name="FathersAlive" id="FathersAlive" <?php echo (isset($_POST[ 'FathersAlive'])) ? (($_POST[ 'FathersAlive']=="on") ? " Checked='Checked' " : "") : (($ProfileInfo['FathersAlive']=="1") ? " Checked='Checked' " : "");?>>&nbsp;<label for="FathersAlive">Passed away</label>  
+				<div class="custom-control custom-checkbox mb-3">
+					<input type="checkbox" class="custom-control-input" onclick="verifiyFatherPassedaway()" name="FathersAlive" id="FathersAlive" <?php echo (isset($_POST[ 'FathersAlive'])) ? (($_POST[ 'FathersAlive']=="on") ? " Checked='Checked' " : "") : (($ProfileInfo['FathersAlive']=="1") ? " Checked='Checked' " : "");?>>
+					<label class="custom-control-label" for="FathersAlive" style="vertical-align: middle;"> Passed away</label>
+				</div>
             </div>
         </div>
         <div class="form-group row" id="FatherAlive_row_1" >
@@ -74,7 +77,11 @@
                 <span class="errorstring" id="ErrMotherName"><?php echo isset($ErrMotherName)? $ErrMotherName : "";?></span>
             </div>
             <div class="col-sm-2">
-                <input type="checkbox" onclick="verifiyMotherPassedaway()"  name="MothersAlive" id="MothersAlive" <?php echo (isset($_POST[ 'MothersAlive'])) ? (($_POST[ 'MothersAlive']=="on") ? " Checked='Checked' " : "") : (($ProfileInfo['MothersAlive']=="1") ? " Checked='Checked' " : "");?>>&nbsp;<label for="MothersAlive">Passed away</label>  
+				<div class="custom-control custom-checkbox mb-3">
+					<input type="checkbox" class="custom-control-input" onclick="verifiyMotherPassedaway()" name="MothersAlive" id="MothersAlive" <?php echo (isset($_POST[ 'MothersAlive'])) ? (($_POST[ 'MothersAlive']=="on") ? " Checked='Checked' " : "") : (($ProfileInfo['MothersAlive']=="1") ? " Checked='Checked' " : "");?>>
+					<label class="custom-control-label" for="MothersAlive" style="vertical-align: middle;"> Passed away</label>
+				</div>
+                
             </div>
         </div>
         <div class="form-group row" id="MotherAlive_row_1" >

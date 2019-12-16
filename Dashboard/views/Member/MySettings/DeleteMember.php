@@ -45,7 +45,7 @@ function submitdelete() {
         <h4 class="card-title">Delete Member</h4>
         <span style="color:#666;">If you delete a member it will delete all associated data immediately and permanently. This will also affect your analytics, so we only recommend deleting members that never used in future.</span><br><br>
         <div class="form-group row">
-            <label for="DeleteReason" class="col-sm-12 col-form-label" style="margin-bottom: -15px;">Select the reason for deleting your account</label>
+            <label for="DeleteReason" class="col-sm-12 col-form-label" style="margin-bottom: -15px;">Select the reason for deleting your account<span id="star">*</span></label>
         </div>
         <div class="form-group row">
             <div class="col-sm-9">
@@ -57,15 +57,22 @@ function submitdelete() {
             </div>
         </div>
         <div class="form-group row">
-            <label for="Comments" class="col-sm-12 col-form-label" style="margin-bottom: -15px;">Add your Comments</label>
+            <label for="Comments" class="col-sm-12 col-form-label" style="margin-bottom: -15px;">Add your Comments<span id="star">*</span></label>
         </div>
         <div class="form-group row">
             <div class="col-sm-9">
                 <textarea id="Comments" name="Comments" class="form-control"><?php echo (isset($_POST['Comments']) ? $_POST['Comments'] : "");?></textarea>
             </div>
         </div>
-        <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal">I understand that all content will be delete  </label>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#condition">Learn more</a>
-        <br><span class="errorstring" id="Errcheck"></span><br><br>
+		<div class="form-group row">
+			<div class="col-sm-12">
+				<div class="custom-control custom-checkbox mb-3">
+					<input type="checkbox" class="custom-control-input" id="check" name="check">
+					<label class="custom-control-label" for="check" style="vertical-align: middle;">I understand that all content will be delete  </label>&nbsp;&nbsp;<a href="#" data-toggle="modal" data-target="#condition">Learn more</a>
+				</div>
+				<span class="errorstring" id="Errcheck"></span>
+			</div>
+		</div>
         <div class="form-group row">
             <div class="col-sm-4">
                 <button type=button onclick="submitdelete()" class="btn btn-primary mr-2" style="font-family: roboto;color:white">Delete Member</button>

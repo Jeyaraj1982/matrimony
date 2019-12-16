@@ -1,12 +1,9 @@
-<style>
- .mytr:hover{background:#f1f1f1;cursor:pointer}
- </style>
- <script src="./../../assets/js/jquery-1.7.2.js"></script>
- <link rel="stylesheet" href="./../../assets/css/demo.css"> 
-<body style="margin:0px;">
-<div class="titleBar">Edit Menu Page</div>
+<?php include_once(__DIR__."/../header.php"); ?>
+
+ 
+<div class="title_Bar">Edit Menu Page</div>
   <?php 
-        include_once("../../config.php");
+        
              $obj = new CommonController(); 
         
              if (!($obj->isLogin())){

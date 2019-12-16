@@ -1,5 +1,5 @@
+<?php include_once(__DIR__."/../header.php"); ?>
 <body style="margin:0px;">
-    <script src="./../../assets/js/jquery-1.7.2.js"></script>  
     <script>
      
     function getOpt() {
@@ -16,6 +16,7 @@
                                 $('#frmmusic').hide();
                                 $('#frmgrp').hide();
                                 $('#frmvideo').hide(); 
+                                $('#frmitems').hide();
                                 break;
                                 
             case 'exturl'  :    $('#exturl').show();
@@ -27,6 +28,7 @@
                                 $('#frmmusic').hide();
                                 $('#frmgrp').hide();
                                 $('#frmvideo').hide(); 
+                                $('#frmitems').hide();
                                 break;
                                 
             case 'frmevent':    $('#frmevent').show();
@@ -38,6 +40,7 @@
                                 $('#frmmusic').hide();
                                 $('#frmgrp').hide();
                                 $('#frmvideo').hide(); 
+                                $('#frmitems').hide();
                                 break;
                              
             case 'frmnews' :    $('#frmnews').show();
@@ -49,6 +52,7 @@
                                 $('#frmmusic').hide();
                                 $('#frmgrp').hide();
                                 $('#frmvideo').hide(); 
+                                $('#frmitems').hide();
                                 break;
                                  
             case 'frmphotos' :  $('#frmphotos').show();
@@ -60,6 +64,7 @@
                                 $('#frmmusic').hide();
                                 $('#frmgrp').hide();
                                 $('#frmvideo').hide(); 
+                                $('#frmitems').hide();
                                 break;
             
             case 'frmdownload': $('#frmdownload').show();
@@ -70,7 +75,8 @@
                                 $('#frmphotos').hide();
                                 $('#frmmusic').hide();
                                 $('#frmgrp').hide();
-                                $('#frmvideo').hide(); 
+                                $('#frmvideo').hide();
+                               $('#frmitems').hide();
                                 break;
                                 
             case 'frmmusic'   : $('#frmmusic').show();
@@ -82,6 +88,7 @@
                                 $('#frmdownload').hide();
                                 $('#frmgrp').hide();
                                 $('#frmvideo').hide();
+                                $('#frmitems').hide();
                                 break;
                                  
             case 'frmvideo'   : $('#frmvideo').show();
@@ -93,6 +100,7 @@
                                 $('#frmdownload').hide();
                                 $('#frmgrp').hide();
                                 $('#frmmusic').hide();
+                                $('#frmitems').hide();
                                 break; 
                                    
             case 'frmgrp'     : $('#frmgrp').show();
@@ -104,6 +112,19 @@
                                 $('#frmphotos').hide();
                                 $('#frmdownload').hide();
                                 $('#frmvideo').hide(); 
+                                $('#frmitems').hide();
+                                break;
+                                
+            case 'frmitems'   : $('#frmitems').show();
+                                $('#frmgrp').show();
+                                $('#frmmusic').hide();
+                                $('#frmpage').hide();
+                                $('#exturl').hide();
+                                $('#frmevent').hide();
+                                $('#frmnews').hide();
+                                $('#frmphotos').hide();
+                                $('#frmdownload').hide();
+                                $('#frmvideo').hide();  
                                 break; 
                                                        
         }
@@ -111,7 +132,7 @@
     setTimeout("getOpt()",1500);
 </script>
     <?php 
-        include_once("../../config.php");
+    
             $obj = new CommonController();  
             if (!($obj->isLogin())){
                 echo $obj->printError("Login Session Expired. Please Login Again");
@@ -157,14 +178,23 @@
                     case 'frmmusic'     :  $param["customurl"] = "";
                                            $param['pagenameid'] = $_POST['frmmusicNo'];
                                            break;
-                    case 'frmvideo'     :  $param["customurl"] = "";
+                  /*  case 'frmvideo'     :  $param["customurl"] = "";
                                            $param['pagenameid'] = $_POST['frmvideoNo'];
+                                           break;*/
+                    case 'frmitems'     :  $param["customurl"] = "";
+                                           $param['pagenameid'] = $_POST['frmitems'];
                                            break;
                 }
-         
+              
            
          if ($obj->err==0) {
-             echo (MenuItems::updateMenu($param)>0) ? $obj->printSuccess("Menu Updated  Successfully") : $obj->printError("Error Updating Menu Items");
+             $result = MenuItems::updateMenu($param);
+          if ($result==1) {
+            echo $obj->printSuccess("Menu Updated  Successfully") ; 
+          } elseif ($result==0)
+            echo $obj->printError("No changes made");
+         } else {
+             echo $obj->printError("Error upload");
          }
         
          $_POST{"editbtn"}="editbtn";       
@@ -221,6 +251,7 @@
                         <option value="frmvideo" <?php echo ($pageContent[0]['linkedto']=='frmvideo') ? "selected='selected'" : "";?>>From Video</option>  
                         <option value="exturl" <?php echo ($pageContent[0]['linkedto']=='exturl') ? "selected='selected'" : "";?>>External Url</option>
                         <option value="frmgrp" <?php echo ($pageContent[0]['linkedto']=='frmgrp') ? "selected='selected'" : "";?>>From Group</option>
+                        <option value="frmgrp" <?php echo ($pageContent[0]['linkedto']=='frmitems') ? "selected='selected'" : "";?>>From Listing</option>
                     </select>
                 </td>
             </tr>
@@ -235,6 +266,7 @@
                             <?php } ?>
                         </select>
                     </div>
+                     
                     <div id='frmevent' style="display:none;">
                         <select style="width:272px;" name="frmeventNo" id="frmeventNo">
                             <?php foreach(JPages::getEvents() as $event) {?>
@@ -271,10 +303,15 @@
                         </select>
                     </div> 
                     <div id='frmvideo' style="display:none;">
+                        <select style="width:272px;" name="frmvideoNo" id="frmvideoNo">
+                            <option value="videos">All Videos</option>
+                        </select>
+                    </div>
+                    <div id='frmvideo2' style="display:none;">
                             <select style="width:272px;" name="frmvideoNo" id="frmvideoNo">
-                                <?php foreach(JVideos::getVideos() as $video) {?>
+                                <?php //foreach(JVideos::getVideos() as $video) {?>
                                 <option value="<?php echo $video['videoid'];?>" <?php echo ($video['videoid']==$pageContent[0]['pageid'])? 'selected="selected"' : '';?>><?php echo $video['videotitle'];?></option>
-                                <?php } ?>
+                                <?php //} ?>
                             </select>
                         </div>   
                     <div id='frmgrp' style="display:none;">       
@@ -288,6 +325,8 @@
                             <option value="<?php echo JFrame::getAppSetting('siteurl');?>/successstory.php" <?php echo ($pageContent[0]['customurl']==JFrame::getAppSetting('siteurl').'/successstory.php') ? "selected='selected'" : "";?>>Success Story</option>
                             <option value="<?php echo JFrame::getAppSetting('siteurl');?>/testimonials.php"<?php echo ($pageContent[0]['customurl']==JFrame::getAppSetting('siteurl').'/testimonials.php') ? "selected='selected'" : "";?>>Testimonials</option>
                             <option value="<?php echo JFrame::getAppSetting('siteurl');?>/faq.php" <?php echo ($pageContent[0]['customurl']==JFrame::getAppSetting('siteurl').'/faq.php') ? "selected='selected'" : "";?>>FAQ</option>
+                            <option value="<?php echo JFrame::getAppSetting('siteurl');?>/browse.php" <?php echo ($pageContent[0]['customurl']==JFrame::getAppSetting('siteurl').'/browse.php') ? "selected='selected'" : "";?>>Listing Category</option>
+                            <option value="<?php echo JFrame::getAppSetting('siteurl');?>/browse.php?list=i" <?php echo ($pageContent[0]['customurl']==JFrame::getAppSetting('siteurl').'/browse.php?list=i') ? "selected='selected'" : "";?>>Listing Items</option>
                         </select>
                     </div>   
                     <div id="exturl" style="display:none;">

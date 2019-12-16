@@ -132,9 +132,14 @@ function submitUpload() {
         </div>
     </div>
     <div class="form-group row">                                                                                                                                                
-        <div class="col-sm-12"><input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)"  onclick="showLearnMore()">Learn more</a>
-        <br><span class="errorstring" id="Errcheck"></span></div>
-    </div>
+        <div class="col-sm-12">
+			<div class="custom-control custom-checkbox mb-3">
+					<input type="checkbox" class="custom-control-input" id="check" name="check">
+					<label class="custom-control-label" for="check" style="vertical-align: middle;"> I read the instructions  </label>&nbsp;&nbsp;<a href="javascript:void(0)"  onclick="showLearnMore()">Learn more</a>
+			</div>
+			<span class="errorstring" id="Errcheck"></span>
+		</div>
+	</div>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-3">
             <button type="submit" name="BtnSave" id="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>

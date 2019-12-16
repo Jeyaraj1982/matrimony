@@ -4567,6 +4567,7 @@
                                                                          "CasteCode"         => substr($Caste_SoftCode,0,strlen($Caste_SoftCode)-2),
                                                                          "Caste"             => substr($Caste_CodeValue,0,strlen($Caste_CodeValue)-2),
                                                                          "SearchName"        => "ABCD",
+                                                                         "SearchFrom"        => "Member",
                                                                          "SearchRequestedOn" => date("Y-m-d H:i:s"))) ;
               
                if (sizeof($id)>0) {
@@ -4705,6 +4706,7 @@
                                                                          "ComplexionCode"    => substr($Complexion_SoftCode,0,strlen($Complexion_SoftCode)-2),
                                                                          "Complexion"        => substr($Complexion_CodeValue,0,strlen($Complexion_CodeValue)-2),
                                                                          "SearchName"        => "ABCD",
+                                                                         "SearchFrom"        => "Member",
                                                                          "SearchRequestedOn" => date("Y-m-d H:i:s"))) ;
               
                if (sizeof($id)>0) {
