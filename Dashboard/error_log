@@ -1,2 +1,0 @@
-[13-Dec-2019 14:39:20 UTC] PHP Warning:  session_start(): Cannot start session when headers already sent in /home/j2jsoftware/public_html/apps/dev/matrimony/config.php on line 2
-[13-Dec-2019 14:41:04 UTC] PHP Warning:  session_start(): Cannot start session when headers already sent in /home/j2jsoftware/public_html/apps/dev/matrimony/config.php on line 2
