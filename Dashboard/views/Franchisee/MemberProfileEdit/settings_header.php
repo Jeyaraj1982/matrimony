@@ -1,3 +1,6 @@
+<?php 
+
+?>
 <style>
     .ft-left-nav li a{color:#333}
     .ft-left-nav li:hover{background: #dee7fc;} 

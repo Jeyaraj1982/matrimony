@@ -163,7 +163,7 @@ function submitUpload() {
         foreach($res['data'] as $d) { ?> 
         <div id="photoview_<?php echo $d['AttachmentID'];?>" class="photoview">
             <div style="text-align:right;height:22px;">
-                <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $d['AttachmentID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
+                <a href="javascript:void(0)" onclick="showConfirmDeleteAttachment('<?php  echo $d['AttachmentID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
             </div>
             <div><img src="<?php echo AppUrl;?>uploads/<?php echo $d['AttachFileName'];?>" style="height:120px;"></div>
             <div>
@@ -224,7 +224,7 @@ function showLearnMore() {
             $('#LearnMore_body').html(content);                                                   
 }
 
-    function showConfirmDelete(AttachmentID,ProfileID) {
+    function showConfirmDeleteAttachment(AttachmentID,ProfileID) {
         $('#Delete').modal('show'); 
         var content = '<div class="modal-body" style="padding:20px">'
                         + '<div  style="height: 315px;">'

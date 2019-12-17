@@ -936,7 +936,7 @@
     } 
   function GetDraftProfileInformation() {
              global $mysql,$loginInfo;
-             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");               
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."' and `RequestToVerify`='0' and `IsApproved`='0'");               
              $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileCode']."'"); 
              $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");    
              $PartnersExpectations = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileCode`='".$_POST['ProfileCode']."'"); 
@@ -1880,51 +1880,27 @@
              $updateSql = "update `_tbl_draft_profiles_photos` set `PriorityFirst` = '1' where `ProfilePhotoID`='".$ProfilePhotoID."'";
              $mysql->execute($updateSql);  
           }
-          
-        function PublishMemberProfile() {
+        function SendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
 
-             global $mysql,$loginInfo ;
-             
-                $EducationDetails =$mysql->select("Select * from `_tbl_draft_profiles_education_details` where `IsDeleted`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+        global $mysql,$mail,$loginInfo;      
+        
+        $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'");
+                $EducationDetails =$mysql->select("Select * from `_tbl_draft_profiles_education_details` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
                  if (sizeof($EducationDetails)==0) {
-                        return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Missing</h4>  <br><br>
-                                    <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
-                                    <h5 style="text-align:center;color:#ada9a9">You must Provide Your Education Details.</h5>
-                                    <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/EducationDetails/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
-                               </div>'; 
-                     }
+					return Response::returnError("You must Provide Your Education Details.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"EducationDetails"));
+				}
                  $Documents =$mysql->select("Select * from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
                  if (sizeof($Documents)==0) {
-                        return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Missing</h4>  <br><br>
-                                    <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
-                                    <h5 style="text-align:center;color:#ada9a9">You must upload Documents Details.</h5>
-                                    <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/DocumentAttachment/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
-                               </div>';                                                                      
-                     }
+					return Response::returnError("You must upload Documents Details.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"DocumentAttachment"));
+				}
                  $ProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
-                     if (sizeof($ProfilePhoto)==0) {
-                            return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Missing</h4>  <br><br>
-                                        <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
-                                        <h5 style="text-align:center;color:#ada9a9">You must upload Profile photo.</h5>
-                                        <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/ProfilePhoto/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
-                                   </div>'; 
-                         }
+                 if (sizeof($ProfilePhoto)==0) {
+					return Response::returnError("You must upload Profile photo.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"ProfilePhoto"));
+                }
                  $DefaultProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `PriorityFirst`='1' and `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
-                     if (sizeof($DefaultProfilePhoto)==0) {
-                            return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Missing</h4>  <br><br>
-                                        <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
-                                        <h5 style="text-align:center;color:#ada9a9">You must Select Default Profile photo.</h5>
-                                        <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/ProfilePhoto/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
-                                   </div>'; 
-                         }
+                  if (sizeof($DefaultProfilePhoto)==0) {
+					return Response::returnError("You must Select Default Profile photo.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"ProfilePhoto"));	
+				}
                 $AboutMyself =$mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
                      if (strlen(trim($AboutMyself[0]['AboutMe']))==0) {
                           if($AboutMyself[0]['ProfileFor']=="Myself"){
@@ -1951,48 +1927,239 @@
                              if($AboutMyself[0]['ProfileFor']=="Daughter In Law"){
                              $About = "about your daughter in law";
                              } 
-                            return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Missing</h4>  <br><br>
-                                        <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
-                                        <h5 style="text-align:center;color:#ada9a9">You must enter'.$About.'.</h5>
-                                        <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/GeneralInformation/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
-                                   </div>'; 
-                         } 
+							return Response::returnError("You must enter ".$About.".",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"GeneralInformation"));	
+                 } 
                 if (strlen(trim($AboutMyself[0]['AboutMyFamily']))==0) {
-                return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Missing</h4>  <br><br>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/exclamationmark.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">You must enter about your family.</h5>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/FamilyInformation/'.$_POST['ProfileID'].'.htm" style="cursor:pointer">continue</a> <h5>
-                       </div>'; 
+					return Response::returnError("You must enter about your family.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));	
              }
+			$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+          
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+        if ($reqID=="")      {
+             $otp=rand(1000,9999);
+
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToVerifyPublishMemberProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#otp#",$otp,$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "RequestToVerifyPublishMemberProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['ProfileName']." Verification Security Code is ".$otp);
+
+            if($mailError){
+                        return "Mailer Error: " . $mail->ErrorInfo.
+                        "Error. unable to process your request.";
+                     } else {
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" =>$member[0]['MemberID'],
+                                                                                     "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                                     "EmailTo" =>$member[0]['EmailID'],
+                                                                                     "SMSTo" =>$member[0]['MobileNumber'],
+                                                                                     "SecurityCode" =>$otp,
+                                                                                     "Type" =>"RequestToVerifyPublishMemberProfile",
+                                                                                     "messagedon"=>date("Y-m-d h:i:s"))) ;
+                        $formid = "frmPuplishOTPVerification_".rand(30,3000);
+                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");                                                          
+                                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                        <form method="POST" id="'.$formid.'" name="'.$formid.'">
+                            <div class="form-group">
+                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                            <input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
+                                   <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                   <h4 class="modal-title">Submit profile for verify</h4> <br>
+                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+									<div class="col-sm-12">
+										<div class="col-sm-3"></div>
+                                        <div class="col-sm-6">
+											<input type="text"  class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
+											<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+										</div>
+										<div class="col-sm-3"></div>
+									</div>
+                                    <div class="col-sm-12" style="text-align:center">'.$error.'</div>
+                                </div>
+                            </div>                                                                      
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+                        </form>                                                                                                       
+                        </div>
+                        '; 
+                          }
+        } else {
+            $formid = "frmPuplishOTPVerification_".rand(30,3000);
+                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                        <form method="POST" id="'.$formid.'" name="'.$formid.'">
+                            <div class="form-group">
+                            <input type="hidden" value="'.$reqID.'" name="reqId">
+                              <input type="hidden" value="'.$ProfileID.'" name="ProfileID">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                   <h4 class="modal-title">Submit profile for verify</h4> <br>
+                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-6">
+											<input type="text"  class="form-control" value="'.$otpdata.'" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
+											<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+										</div>
+                                        <div class="col-sm-3"></div>
+								   </div>
+                                    <div class="col-sm-12" style="text-align:center">'.$errormessage.'</div>
+                                </div>
+                            </div>
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+                        </form>                                                                                                       
+                        </div>
+                        '; 
+        }
+                                                                                                                                                                              
+         }
+         function ProfilePublishOTPVerification() {
+
+             global $mysql,$loginInfo ;
              
              $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
-             
-              $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+            
+           $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+             $otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
+             if (strlen(trim($_POST['PublishOtp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['PublishOtp']))  {
 
                     $updateSql = "update `_tbl_draft_profiles` set  `RequestToVerify`      = '1',
                                                             `RequestVerifyOn`      = '".date("Y-m-d H:i:s")."'
-                                                             where  `MemberID`='".$member[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
+                                                             where  `MemberID`='".$data[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
              $mysql->execute($updateSql);  
-                                                             
-             $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"   => $loginInfo[0]['FranchiseeID'],
-                                                             "ActivityType"   => 'RequestToVerifyPublishProfile.',
-                                                             "ActivityString" => 'Request To Verify PublishProfile.',
+             $mysql->insert("_tbl_request_edit",array("MemberID"                => $data[0]['MemberID'],
+                                                      "ProfileID"               => $data[0]['ProfileID'],
+                                                      "PostedRequestOn" => date("Y-m-d H:i:s")));
+													 
+			
+			 $mContent = $mysql->select("select * from `mailcontent` where `Category`='SubmitToVerifyPublishMemberProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$data[0]['ProfileCode'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "SubmitToVerifyPublishMemberProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']." [ ".$data[0]['ProfileCode']." ] Your profile submitted to verify ");
+			
+													 
+            $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
+                                                             "ActivityType"   => 'RequestToVerifyPublishMemberProfile.',
+                                                             "ActivityString" => 'Request To Verify Publish Member Profile.',
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                  return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <h4 class="modal-title">Publish Profile</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>            
-                            <h5 style="text-align:center;color:#ada9a9">Your profile has been submitted to verify.<br>Once your profile has been approved we will get notify by Sms and Email and it comes immediately in our portal.Minimum 4 to 8 hours will taken to verification process.</h5>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';
+				return Response::returnSuccess("Your profile has been submitted to verify.");
+                 
+             } else {
+                 return $this->SendOtpForProfileforPublish("<span style='color:red'>Invalid verification code.</span>",$_POST['PublishOtp'],$_POST['reqId'],$_POST['ProfileID']);
+             } 
 
-         } 
-         
+         }
+		function ResendSendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
+
+        global $mysql,$mail,$loginInfo;      
+			$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+           
+           $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");  
+           
+             $resend = $mysql->insert("_tbl_resend",array("MemberID" =>$data[0]['MemberID'],
+                                                          "Reason" =>"Resend Profile Publish Verfication Code",
+                                                          "ResendOn"=>date("Y-m-d h:i:s"))) ;
+
+            
+        if ($reqID=="")      {
+             $otp=rand(1000,9999);
+
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToVerifyPublishMemberProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#otp#",$otp,$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "RequestToVerifyPublishMemberProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']." Verification Security Code is ".$otp);
+                                                                                                                          
+            if($mailError){
+                        return "Mailer Error: " . $mail->ErrorInfo.
+                        "Error. unable to process your request.";                                                               
+                     } else {
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" =>$member[0]['MemberID'],
+                                                                                     "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                                     "EmailTo" =>$member[0]['EmailID'],
+                                                                                     "SMSTo" =>$member[0]['MobileNumber'],
+                                                                                     "SecurityCode" =>$otp,
+                                                                                     "Type" =>"RequestToVerifyPublishMemberProfile",
+                                                                                     "messagedon"=>date("Y-m-d h:i:s"))) ;
+                        $formid = "frmPuplishOTPVerification_".rand(30,3000);
+                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");                                                          
+                                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                        <form method="POST" id="'.$formid.'" name="'.$formid.'">
+                            <div class="form-group">
+                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                            <input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
+                                   <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                   <h4 class="modal-title">Submit profile for verify</h4> <br>
+                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="col-sm-12">
+										<div class="col-sm-3"></div>
+                                        <div class="col-sm-6">
+											<input type="text"  class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"> 
+											<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+										</div>
+										<div class="col-sm-3"></div>
+								   </div>
+                                    <div class="col-sm-12">'.$error.'</div>
+                                </div>
+                            </div>                                                                      
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+                        </form>                                                                                                       
+                        </div>
+                        '; 
+                          }
+        } else {
+            $formid = "frmPuplishOTPVerification_".rand(30,3000);
+                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                        <form method="POST" id="'.$formid.'" name="'.$formid.'">
+                            <div class="form-group">
+                            <input type="hidden" value="'.$reqID.'" name="reqId">
+                              <input type="hidden" value="'.$ProfileID.'" name="ProfileID">
+                               <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                   <h4 class="modal-title">Submit profile for verify</h4>
+                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="col-sm-12">
+										<div class="col-sm-3"></div>
+                                        <div class="col-sm-6">
+											<input type="text"  class="form-control" value="'.$otpdata.'" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
+											<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+										</div>
+                                    </div>
+                                    <div class="col-sm-12">'.$errormessage.'</div>
+                                </div>
+                            </div>
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+                        </form>                                                                                                       
+                        </div>
+                        '; 
+        }
+
+         }
          function GetDraftProfileInfo() {
              
              global $mysql,$loginInfo;      
@@ -2521,7 +2688,7 @@
 
              global $mysql,$loginInfo;
              
-             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'");
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$data[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'");
 
              $updateSql = "update `_tbl_draft_profiles` set `RequestToVerify` = '0' where `ProfileCode`='".$_POST['ProfileCode']."'";
              $mysql->execute($updateSql);
@@ -3208,6 +3375,23 @@
                 return Response::returnSuccess("success",$Profiles);
              }
          }
+		 function checkdraftprofile (){
+			 global $mysql,$loginInfo; 
+             $Profiles = array();
+             $Position = "";   
+			$DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberCode`='".$_POST['Code']."' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and `RequestToVerify`='0'");
+                 
+                 if (sizeof($DraftProfiles)>0) {
+                     foreach($DraftProfiles as $DraftProfile) {
+                        $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
+                        $result['mode']="Draft";
+                        $Profiles[]=$result;   
+                     }
+                 }
+                 
+                 return Response::returnSuccess("success",$Profiles);
+             }
+			 
     }
 //2747    
 ?> 

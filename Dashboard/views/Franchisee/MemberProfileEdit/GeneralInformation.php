@@ -1,5 +1,7 @@
 <?php
-    $page="GeneralInformation";
+    $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
+	//if (sizeof($response['data'])==0) {
+	 $page="GeneralInformation";
 
     if (isset($_POST['BtnSaveProfile'])) {
         $response = $webservice->getData("Franchisee","EditDraftGeneralInformation",$_POST);
@@ -11,7 +13,7 @@
         }
     }
 
-   $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
+   
    $ProfileInfo          = $response['data']['ProfileInfo'];
 ?>
     <?php include_once("settings_header.php");?>
@@ -388,3 +390,6 @@
             }, 1000);
         </script>
         <?php include_once("settings_footer.php");?>
+	<?php// } else { echo HtmlDesign::InformationNotFound("Your requested profile already submitted");
+	//}
+	  ?>
