@@ -481,13 +481,25 @@ class Admin extends Master {
 
     function GetProfilesRequestVerify() {
            global $mysql;    
-              $Profiles = $mysql->select("SELECT *
+		   $Profiles = array();
+             $Position = "";
+          /*    $Profiles = $mysql->select("SELECT *
                                FROM _tbl_draft_profiles
                                LEFT  JOIN _tbl_members
                                ON _tbl_draft_profiles.MemberID=_tbl_members.MemberID WHERE _tbl_draft_profiles.RequestToVerify='1' and _tbl_draft_profiles.IsApproved='0'");
 
-                return Response::returnSuccess("success",$Profiles);
-
+                return Response::returnSuccess("success",$Profiles);*/
+			$DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `RequestToVerify`='1' and IsApproved='0' Order by `RequestVerifyOn` DESC");
+			if (sizeof($DraftProfiles)>0) {
+                     
+                     foreach($DraftProfiles as $DraftProfile) {
+                        $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);    
+                        $result['mode']="Draft";
+                        $Profiles[]= $result;
+                     }
+                     
+                 }
+            return Response::returnSuccess("success",$Profiles);
     }
     
      function ViewRequestedProfile() {         
@@ -540,24 +552,6 @@ class Admin extends Master {
                  return Response::returnError("Already processed.");
              }
               
-             $EducationDetails =$mysql->select("Select * from `_tbl_draft_profiles_education_details` where `IsDeleted`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
-                 if (sizeof($EducationDetails)==0) {
-                        return Response::returnError("Education details not found."); 
-                     }
-             $Documents =$mysql->select("Select * from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
-             if (sizeof($Documents)==0) {
-                return Response::returnError("Document details not found.");                                                                  
-             }
-             
-             $ProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
-                if (sizeof($ProfilePhoto)==0) {
-                    return Response::returnError("Profile photo not found.");
-             } 
-             $DefaultProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `PriorityFirst`='1' and `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
-             if (sizeof($DefaultProfilePhoto)==0) {
-                return Response::returnError("Default Profile photo not found.");
-             }                                                
-             
              $draft = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'");
              
              $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$draft[0]['MemberID']."'");
@@ -776,7 +770,7 @@ class Admin extends Master {
                                                           "IsApprovedOn"                 => date("Y-m-d H:i:s")));
              $sql[]=$mysql->qry;
                                                   
-     $draftEducationDetails = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['ProfileID']."' and IsDeleted='0'");   
+     $draftEducationDetails = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['ProfileID']."' and IsDelete='0'");   
        foreach($draftEducationDetails as $ded) {
        $mysql->insert("_tbl_profiles_education_details",array("EducationDetails"         => $ded['EducationDetails'],
                                                               "EducationDegree"          => $ded['EducationDegree'],
@@ -786,7 +780,7 @@ class Admin extends Master {
                                                               "DraftProfileID"           => $ded['ProfileID'],
                                                               "DraftProfileCode"         => $ded['ProfileCode'],
                                                               "DraftEducationID"         => $ded['AttachmentID'],
-                                                              "IsDeleted"                => $ded['IsDeleted'],
+                                                              "IsDelete"                => $ded['IsDeleted'],
                                                               "ProfileID"                => $pid,
                                                               "ProfileCode"              => $ProfileCode,
                                                               "MemberID"                 => $draft[0]['MemberID'],
@@ -852,8 +846,8 @@ class Admin extends Master {
                                                                   "DocumentType"        => $dPD['DocumentType'],
                                                                   "AttachFileName"      => $dPD['AttachFileName'],
                                                                   "AttachedOn"          => $dPD['AttachedOn'],
-                                                                  "IsVerified"          => $dPD['IsVerified'],
-                                                                  "IsDelete"            => $dPD['IsDelete'],
+                                                                  "IsVerified"          => $dPD['IsApproved'],
+                                                                  "IsDelete"            => $dPD['IsDeleted'],
                                                                   "Type"                => $dPD['Type'],
                                                                   "DraftProfileID"      => $dPD['ProfileID'],
                                                                   "DraftProfileCode"    => $dPD['ProfileCode'],
@@ -870,8 +864,78 @@ class Admin extends Master {
                             <h5 style="text-align:center;color:#ada9a9">Your profile Approved.</h5>
                             <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
                        </div>',array("ProfileCode"=>$ProfileCode));  */
-             return Response::returnSuccess("success".$sql,array("ProfileCode"=>$ProfileCode,"Sql"=>$sql));
+             return (array("ProfileCode"=>$ProfileCode));
+			 return Response::returnSuccess("success".$sql,array("ProfileCode"=>$ProfileCode,"Sql"=>$sql));
          }
+		 
+		function TransactionPasswordSubmit($errormessage="",$ProfileID="") {
+
+			global $mysql,$mail,$loginInfo;      
+        
+			$d = $mysql->select("select * from _tbl_profiles where DraftProfileCode='".$_POST['ProfileID']."'");
+             if (sizeof($d)>0) {
+                 return Response::returnError("Already processed.");
+             }
+              
+             $EducationDetails =$mysql->select("Select * from `_tbl_draft_profiles_education_details` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+                 if (sizeof($EducationDetails)==0) {
+                        return Response::returnError("Education details not found."); 
+                     }
+             $Documents =$mysql->select("Select * from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+             if (sizeof($Documents)==0) {
+                return Response::returnError("Document details not found.");                                                                  
+             }
+             
+             $ProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+                if (sizeof($ProfilePhoto)==0) {
+                    return Response::returnError("Profile photo not found.");
+             } 
+             $DefaultProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `PriorityFirst`='1' and `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+             if (sizeof($DefaultProfilePhoto)==0) {
+                return Response::returnError("Default Profile photo not found.");
+             } 
+			 $formid = "frmPuplishOTPVerification_".rand(30,3000);
+		     return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+						<form method="POST" id="'.$formid.'" name="'.$formid.'">
+							<div class="form-group">
+								<input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Submit profile for verify</h4> <br>
+								<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>
+							</div>
+							<div class="form-group">
+								<div class="input-group">
+									<div class="col-sm-12">
+										<div class="col-sm-2"></div>
+										<div class="col-sm-8">
+											<input type="text"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="width: 67%;font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">
+											<button type="button" onclick="TransactionPasswordVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+										</div>
+										<div class="col-sm-2"></div>
+									</div>
+									<div class="col-sm-12" style="text-align:center">'.$errormessage.'</div>
+								</div>
+							</div>                                                                      
+							
+						</form>                                                                                                       
+					</div>'; 
+              
+        }
+		function TransactionPasswordVerification() {
+
+            global $mysql,$loginInfo ;
+            
+            $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+            $TransactionPassword = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (strlen(trim($TransactionPassword[0]['TransactionPassword']==$_POST['TransactionPassword'])))  {
+				$res = $this->ApproveProfile();
+				return Response::returnSuccess("Profile has been Published. Profile Code ".$res['ProfileCode']);
+            } else {
+                return $this->TransactionPasswordSubmit("<span style='color:red'>Invalid Transaction Password.</span>",$_POST['ProfileID']);
+            } 
+
+        }
 
     function GetManageActiveFranchisee() {
            global $mysql;    
@@ -2293,14 +2357,15 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
     
     
     function GetDraftProfileInfo() {
-               
-                global $mysql,$loginInfo;      
-             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where ProfileCode='".$_POST['ProfileCode']."'");               
-            
-            
-               $result =  Profiles::getDraftProfileInformationforAdmin($Profiles[0]['ProfileCode']);
-               return Response::returnSuccess("success".$Educationattachments,$result);
-           }
+             
+             global $mysql,$loginInfo;      
+             $result =  Profiles::getDraftProfileInformation($_POST['ProfileCode'],2);
+             if (sizeof($result)>0) {
+                 return Response::returnSuccess("success",$result);
+             } else {
+                 return Response::returnError("No profile found");
+             }
+         }
     function GetPublishedProfiles() {
            global $mysql;    
              $sql = "SELECT *

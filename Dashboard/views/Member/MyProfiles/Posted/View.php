@@ -743,36 +743,95 @@ legend {
         <div class="modal-content" id="DeleteNow_body" style="height:260px"></div>
     </div>
 </div>
-<div class="modal" id="EditNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-    <div class="modal-dialog" style="width: 367px;">
-        <div class="modal-content" id="Edit_body" style="height:260px"></div>
-    </div>
-</div>
+
+<div class="modal" id="EditNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Edit_body"  style="max-height: 300px;min-height: 300px;" >
+            
+                </div>
+            </div>
+        </div>
 <script>
+
+
 function showConfirmEdit(ProfileCode,FileName) {
       $('#EditNow').modal('show'); 
-      var content = '<div class="Edit_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'                                                                              
-                    +  '<form method="post" id="frm_'+ProfileCode+'" name="frm_'+ProfileCode+'" action="" >'
-                     + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
-                     + '<input type="hidden" value="'+FileName+'" name="FileName">'
-                          + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                        + '<h4 class="modal-title">Profile Edit</h4> <br>'
-                        +'<div style="text-align:left">Are you sure want to edit this profile.<br><br></div>'
-                        +  '<div style="text-align:center;"><button type="button" class="btn btn-primary" onclick="SendRequestForEditPostedProfile(\''+ProfileCode+'\')" style="font-family:roboto">Yes,continue</button>&nbsp;&nbsp;&nbsp;'
-                        +  '<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
-                       +  '</div><br>'
-                    +  '</form>'                                                                                                          
-                +  '</div>'
-            +  '</div>';
-            $('#Edit_body').html(content);
+      var content = '<div>'
+						+'<form method="post" id="frm_'+ProfileCode+'" name="frm_'+ProfileCode+'" action="">'
+							+'<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
+							+'<input type="hidden" value="'+FileName+'" name="FileName">'
+							+'<div class="modal-header">'
+								+'<h4 class="modal-title">Profile Edit</h4>'
+								+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+							+'</div>'
+							+'<div class="modal-body">'
+								+'<div style="text-align:left"> Dear ,<br></div>'
+								+'<div style="text-align:left">Are you sure want to edit this profile<br><br><br><br><br><br>'+'</div>'
+							+'</div>' 
+							+'<div class="modal-footer">'  
+								+'<button type="button" class="btn btn-primary" onclick="SendOtpForEditSubmittedProfile(\''+ProfileCode+'\')" style="font-family:roboto">Yes,continue</button>&nbsp;&nbsp;&nbsp;'
+								+'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
+							+'</div>'
+						+'</form>'                                                                                                          
+					+'</div>'
+			$('#Edit_body').html(content);
 }
-function SendRequestForEditPostedProfile(formid) {
-     var param = $("#frm_"+formid).serialize();
-     $('#Edit_body').html(preloader);
-        $.post(API_URL + "m=Member&a=SendRequestForEditPostedProfile",param,function(result2) {$('#Edit_body').html(result2);});
-}  
-
+ 
+function SendOtpForEditSubmittedProfile(formid) {
+    var param = $("#frm_"+formid).serialize();
+	$('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
+	
+		$.post(API_URL + "m=Member&a=SendOtpForEditSubmittedProfile",param,function(result) {
+			
+			if (!(isJson(result))) {
+				$('#Edit_body').html(result);
+				return ;
+			}
+			var obj = JSON.parse(result);
+			if (obj.status=="success") {
+				$('#Edit_body').html(result);
+			} else {
+				var data = obj.data; 
+				var content = '';
+            $('#Edit_body').html(content);
+			
+			 
+			}
+		});
+}
+function SubmittedProfileforEditOTPVerification(frmid) {
+        var param = $( "#"+frmid).serialize();
+        $('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
+        $.post( API_URL + "m=Member&a=SubmittedProfileforEditOTPVerification",param).done(function(result) {
+			if (!(isJson(result))) {
+				$('#Edit_body').html(result);
+				return ;
+			}
+			var obj = JSON.parse(result);
+			if (obj.status=="success") {
+				
+				var data = obj.data; 
+				var content = '<div  style="height: 300px;">'                                                                              
+								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+									+ '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+									+ '<h3 style="text-align:center;">Successfully Switched to Draft</h3>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
+									+ '<p style="text-align:center;"><a href="'+AppUrl+'MyProfiles/Draft/Edit/'+data.FileName+'/'+data.ProfileCode+'.htm" style="cursor:pointer">Continue</a></p>'
+								+'</div>' 
+							+'</div>';
+            $('#Edit_body').html(content);
+			
+			 
+			}
+            
+    });
+}
+function ResendSendOtpForSubmittedProfileProfileForEdit(frmid) {
+     var param = $("#"+frmid).serialize();
+      $('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
+	  
+        $.post(API_URL + "m=Member&a=ResendSendOtpForSubmittedProfileProfileForEdit",param,function(result2) {$('#Edit_body').html(result2);});
+} 
 </script>
  
             

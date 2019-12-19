@@ -14,7 +14,7 @@
 </style>
 <?php
      $response = $webservice->getData("Admin","GetProfilesRequestVerify");
-  
+	
     if (sizeof($response['data'])>0) {
 ?>
     <form method="post" onsubmit="">
@@ -30,14 +30,15 @@
                     <a href="<?php echo GetUrl("Profiles/RequestedProfileDisplay");?>"><img src="<?php echo SiteUrl?>assets/images/rectangleListicon.svg" style="width:30px"></a>
                 </div>
             </div>
-                   
-                         <?php foreach($response['data'] as $Profile) { ?>  
-                         
+                   <?php foreach($response['data']as $P) { 
+                            $Profile = $P['ProfileInfo'];
+                            ?>
+                        
                        <div style="min-height: 200px;width:100%;background:white;padding:20px" class="box-shaddow">
                 <div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                        <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
+                        <img src="<?php echo $P['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;"><?php echo $ProfileInformation['Position'];?></div>    
                     </div>
                     <div class="col-sm-9">
@@ -91,11 +92,11 @@
                             </div>
                            <div style="float:right;line-height: 1px;">
                                 <?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==0){ ?>
-                                    <a href="<?php echo GetUrl("MyProfiles/Posted/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <a href="<?php echo GetUrl("Profiles/ViewRequestProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
                                     <?php } elseif($Profile['IsApproved']==1){  ?>
-                                    <a href="<?php echo GetUrl("MyProfiles/Published/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <a href="<?php echo GetUrl("Profiles/ViewRequestProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
                                     <?php } else {?>
-                                        <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$Profile['ProfileCode'].".htm ");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/Draft/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                        <a href="<?php echo GetUrl("Profiles/ViewRequestProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
                                         <?php  }    ?>     
                             </div>
                         </div>

@@ -4,6 +4,16 @@ $response = $webservice->getData("Admin","GetDraftProfileInfo",array("ProfileCod
     $Member = $response['data']['Members'];
     $EducationAttachment = $response['data']['EducationAttachments'];
     $PartnerExpectation = $response['data']['PartnerExpectation'];
+	
+	if (isset($_POST['Verify'])) {
+        $_POST['ApproveProfilePhoto']=implode(",",$_POST['ApproveProfilePhoto']);
+        $response = $webservice->getData("Admin","VerifyProfileDetails",$_POST);
+        if ($response['status']=="success") {
+            $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
 ?>
 <script>
 $(window).on("beforeunload", function() { return confirm("Do you really want to close?"); });
@@ -156,6 +166,22 @@ legend {
                      <div class="form-group row">
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['City'])))>0){ echo trim($ProfileInfo['City']);?>,&nbsp;&nbsp;<?php }?><?php if((strlen(trim($ProfileInfo['State'])))>0){ echo trim($ProfileInfo['State']);?>,&nbsp;&nbsp;<?php }?><?php echo trim($ProfileInfo['Country']);?></label>
                     </div>
+					<div class="form-group row">
+						<div class="col-sm-12">
+							<?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
+							<?PHP PRINT_R($ProfileP); ?>
+                            <div class="photoview" style="float: left;text-align:center">
+                                <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 100px;width: 88px;"><br>
+								<select class="form-control" name="ApproveProfilePhoto[]" id="ApproveProfilePhoto" style="width:83px;padding:4px;margin-top:7px;height: 28px;">
+									<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#0";?>" <?php echo ($ProfileP['IsApproved']==0) ? " selected='selected' " : "";?>>No Action</option>
+									<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#1";?>" <?php echo ($ProfileP['IsApproved']==1) ? " selected='selected' " : "";?>>Approve</option>
+                                    <option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#2";?>" <?php echo ($ProfileP['IsApproved']==2) ? " selected='selected' " : "";?>>Reject</option>
+								</select>
+							</div>
+                            <?php }?>
+							<img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 100px;width: 88px;">
+						</div>
+					</div>
                   
               </div>
               </div>
@@ -750,6 +776,7 @@ legend {
       <!--  <button type="submit" class="btn btn-success" name="Approve" style="font-family:roboto">Approve</button>&nbsp; -->
         <button type="submit" class="btn btn-warning" name="Reject" style="font-family:roboto">Reject</button>
         <button type="submit" class="btn btn-danger" name="Delete" style="font-family:roboto">Delete</button>
+        <button type="submit" class="btn btn-success" name="Verify" style="font-family:roboto">Save</button>
         <?php }?>
     </div>
   
@@ -761,25 +788,37 @@ legend {
                 </div>
             </div>
         </div>
-                                                                                                                      
+       <div class="modal" id="PubplishNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >
+            
+                </div>
+            </div>
+        </div>                                                                                                              
 <script>
+
 function showConfirmPublish(ProfileID) {
-      $('#ApproveNow').modal('show'); 
-      var content = '<div class="Publish_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'                                                                              
-                    +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
-                     + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                          + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                        + '<h4 class="modal-title">Profile Publish</h4> <br>'
-                        +'<div style="text-align:left"> Dear ,<br>'
-                        +'<div style="text-align:left">Are you sure want to publish this profile  </label><br><br>'
-                        +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Publish" id="PublishBtn"  onclick="ApproveProfile(\''+ProfileID+'\')" style="font-family:roboto">Yes</button>&nbsp;&nbsp;&nbsp;'
-                        +  '<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a></div>'
-                       +  '</div><br>'
-                    +  '</form>'                                                                                                          
-                +  '</div>'
-            +  '</div>';
-            $('#Approve_body').html(content);     
+      $('#PubplishNow').modal('show'); 
+      var content = '<div >'
+						+'<div>'                                                                              
+							+'<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
+								+'<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+								+'<div class="modal-header">'
+									+'<h4 class="modal-title">Profile Publish</h4>'
+									+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+								+'</div>'
+								+'<div class="modal-body">'
+									+'<div style="text-align:left"> Dear ,<br></div>'
+									+'<div style="text-align:left">Are you sure want to publish this profile<br><br><br><br><br><br></div>'
+								+'</div>' 
+								+'<div class="modal-footer">'  
+									+'<button type="button" class="btn btn-primary" name="Publish" id="PublishBtn"  onclick="TransactionPasswordSubmit(\''+ProfileID+'\')" style="font-family:roboto">Yes</button>&nbsp;&nbsp;&nbsp;'
+									+'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
+								+'</div>'
+							+'</form>'                                                                                                          
+						+'</div>'
+					+'</div>';
+            $('#Publish_body').html(content);
 }
 function RequestToModify(ProfileCode) {
        //  var param = $( "#"+frmid).serialize();
@@ -792,39 +831,64 @@ function RequestToModify(ProfileCode) {
                     );
               
     } 
-function ApproveProfile(frmid) {
-         var param = $( "#frm_"+frmid).serialize();
-         $('#Approve_body').html(preloader);
-         var html = '';
-                    $.post( API_URL + "m=Admin&a=ApproveProfile", 
-                            param,
-                            function(result2) {
-                                var obj = JSON.parse(result2);
-                                if (obj.status=="success") {
-                                   html = '<div style="background:white;width:100%;padding:20px;height:100%;"> '
-                                      + '<p style="text-align:center"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="10%"><p>'
-                                      + '<h5 style="text-align:center;color:#ada9a9">Approved Successfully<br></h5>'
-                                      + '<div style="text-align:center"<a href="'+AppUrl+'Profiles/Requested" class="btn btn-primary">View Requested Profiles</a></div>'
-                                      + '</div>';
-                                      //+ '<h5 style="text-align:center;"><a href="javascript:void(0)" onclick="RequestToModify(\''.$_POST['ProfileID'].'\')" class="btn btn-primary" style="cursor:pointer">Request to modify</a> <h5>'
-                                    $('#Approve_body').html(html);
-                                    // $('#Approve_body').html(result2);
-                                //     $('#Approve_body').html("success");
-                                 //  setTimeout(function(){location.href= AppUrl+"Profiles/Approved";},1000);
-                                } else {
-                                   html = '<div style="background:white;width:100%;padding:20px;height:100%;"> '
-                                      + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                                      + '<h4 class="modal-title">Profile Verification</h4>  <br><br>'
-                                      + '<p style="text-align:center"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
-                                      + '<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h5>'
-                                      
-                                      + '</div>';
-                                      //+ '<h5 style="text-align:center;"><a href="javascript:void(0)" onclick="RequestToModify(\''.$_POST['ProfileID'].'\')" class="btn btn-primary" style="cursor:pointer">Request to modify</a> <h5>'
-                                    $('#Approve_body').html(html);
-                                }
-                            }
-                    );
-    }
+
+	function TransactionPasswordSubmit(formid) {
+    var param = $("#frm_"+formid).serialize();
+	$('#Publish_body').html(preloading_withText("Submitting profile ...","95"));
+		$.post(API_URL + "m=Admin&a=TransactionPasswordSubmit",param,function(result) {
+			
+			if (!(isJson(result))) {
+				$('#Publish_body').html(result);
+				return ;
+			}
+			var obj = JSON.parse(result);
+			if (obj.status=="success") {
+				$('#Publish_body').html(result);
+			} else {
+				var data = obj.data; 
+				var content = '<div  style="height: 300px;">'                                                                              
+								+'<div class="modal-header">'
+									+'<h4 class="modal-title">Profile Verification</h4>'
+									+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+								+'</div>'
+								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+									+ '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
+								+'</div>' 
+							+'</div>';
+            $('#Publish_body').html(content);
+			
+			 
+			}
+		});
+}
+function TransactionPasswordVerification(frmid) {
+        var param = $( "#"+frmid).serialize();
+        $('#Publish_body').html(preloading_withText("Submitting profile ...","95"));
+        $.post( API_URL + "m=Admin&a=TransactionPasswordVerification",param).done(function(result) {
+			if (!(isJson(result))) {
+				$('#Publish_body').html(result);
+				return ;
+			}
+			var obj = JSON.parse(result);
+			if (obj.status=="success") {
+				
+				var data = obj.data; 
+				var content = '<div  style="height: 300px;">'                                                                              
+								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+									+ '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+									+ '<h3 style="text-align:center;">Submission Successful</h3>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
+									+ '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
+								+'</div>' 
+							+'</div>';
+            $('#Publish_body').html(content);
+			
+			 
+			}
+            
+    });
+}
     function showAttachmentEducationInformationForView(AttachmentID,ProfileID,FileName) {
       $('#ApproveNow').modal('show'); 
       var content = '<div class="Approve_body" style="padding:20px">'

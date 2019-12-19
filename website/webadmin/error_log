@@ -12,16 +12,3 @@
 [29-Oct-2019 05:58:12 Etc/GMT] PHP Parse error:  syntax error, unexpected '?>' in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 47
 [29-Oct-2019 05:58:13 Etc/GMT] PHP Parse error:  syntax error, unexpected '?>' in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 47
 [29-Oct-2019 05:58:47 Etc/GMT] PHP Notice:  Undefined variable: msg in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 45
-[05-Dec-2019 05:32:22 Etc/GMT] PHP Notice:  Undefined variable: mysql in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 10
-[05-Dec-2019 05:32:22 Etc/GMT] PHP Fatal error:  Call to a member function select() on null in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 10
-[05-Dec-2019 05:32:39 Etc/GMT] PHP Notice:  Undefined variable: mysql in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 10
-[05-Dec-2019 05:32:39 Etc/GMT] PHP Fatal error:  Call to a member function select() on null in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 10
-[05-Dec-2019 05:32:53 Etc/GMT] PHP Notice:  Undefined variable: mysql in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 10
-[05-Dec-2019 05:32:53 Etc/GMT] PHP Fatal error:  Call to a member function select() on null in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 10
-[05-Dec-2019 05:33:17 Etc/GMT] PHP Warning:  include_once(../config.php): failed to open stream: No such file or directory in /home/nahami/public_html/demo/matrimony/website/webadmin/dashboard.php on line 5
-[05-Dec-2019 05:33:17 Etc/GMT] PHP Warning:  include_once(): Failed opening '../config.php' for inclusion (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/nahami/public_html/demo/matrimony/website/webadmin/dashboard.php on line 5
-[05-Dec-2019 05:33:17 Etc/GMT] PHP Fatal error:  Class 'CommonController' not found in /home/nahami/public_html/demo/matrimony/website/webadmin/dashboard.php on line 14
-[05-Dec-2019 05:33:43 Etc/GMT] PHP Notice:  Undefined variable: mysql in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 10
-[05-Dec-2019 05:33:43 Etc/GMT] PHP Fatal error:  Call to a member function select() on null in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 10
-[05-Dec-2019 05:34:57 Etc/GMT] PHP Notice:  Undefined variable: mysql in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 10
-[05-Dec-2019 05:34:57 Etc/GMT] PHP Fatal error:  Call to a member function select() on null in /home/nahami/public_html/demo/matrimony/website/webadmin/index.php on line 10
