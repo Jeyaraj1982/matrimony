@@ -73,7 +73,7 @@
            /**IE Hacks - see http://css3pie.com/ for more info on how to use CS3Pie and to download the latest version**/
            div.enlarge img, div.enlarge span{behavior: url(pie/PIE.htc);}  
            /* end of Thumb image */
-           div, label,a,ul,li,p,h1,h2,h3,h4,h5,h6,span,i,b,u {font-family:'Roboto' !important;}
+           div, label,a,ul,li,p,h1,h2,h3,h4,h5,h6,span,  b,u {font-family:'Roboto' !important;}
            .widget_title {font-family:'Roboto' !important;font-size: 22px;margin-top:0px;margin-bottom:10px;text-transform:none;}
            .widget_subtitle {font-family:'Roboto' !important;color:#888;font-weight: normal;margin-top: -5px;font-size: 13px;margin-bottom: 0px;}
            .widget_message {text-align:center;font-family:'Roboto';color:#666}
@@ -88,6 +88,9 @@
                                   
       <!--<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>-->
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+ 
+ 
+ 
 
         <script>
             var AppUrl = "<?php echo AppUrl;?>";
@@ -418,7 +421,7 @@
                                    <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$Profile['ProfileCode'].".htm ");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("MyProfiles/Draft/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                 <?php } ?>
                                 
-                                <?php if($ProfileInformation['mode']=="Posted") { ?>
+                                <?php if($ProfileInformation['mode']=="Submitted") { ?>
                                      <a href="<?php echo GetUrl("MyProfiles/Posted/View/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                 <?php } ?>                        
                                 
@@ -1403,5 +1406,14 @@
 						</div> 
                        
                     <?php  } /* 4 5 Browse Matches 1*/?>
-					
+		<script>
+			function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+</script>		
 					

@@ -356,17 +356,35 @@
             if ($IsOther==0)  {
                 $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");               
                 $PartnersExpectations = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
-                $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_draft_profiles_verificationdocs` where `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
+                $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType,IsVerified,IsVerifiedOn,RejectedOn,ReasonForReject,ProfileCode,AttachmentID from `_tbl_draft_profiles_verificationdocs` where `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
                 $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `IsDelete`='0' and ProfileID='".$Profiles[0]['ProfileID']."'");            
-				$ProfileThumb = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
-                $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where  `ProfileCode`='".$ProfileCode."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
+				$ProfileThumb = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto,IsApproved,ReasonForReject from `_tbl_draft_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
+                $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto,IsApproved,ReasonForReject from `_tbl_draft_profiles_photos` where  `ProfileCode`='".$ProfileCode."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
+                $AllProfilePhotos = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto ,ProfilePhotoID,ProfileCode,IsApproved,IsApprovedOn,RejectedOn,ReasonForReject,PriorityFirst from `_tbl_draft_profiles_photos` where  `ProfileCode`='".$ProfileCode."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0'");                                        
+				$GIVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Gi_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$ODVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Oc_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$FIVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Fi_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$PIVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Pi_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$HDobVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Hd_Dob']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$HDVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Hd_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$PEVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Pe_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$CDVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Cd_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
             } else {   
                 $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where ProfileCode='".$ProfileCode."'");               
                 $PartnersExpectations = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileCode`='".$ProfileCode."'");
-                $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
+                $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType,IsVerified,IsVerifiedOn,RejectedOn,ReasonForReject,ProfileCode,AttachmentID from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
                 $Educationattachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where  ProfileCode='".$ProfileCode."' and `IsDelete`='0'");            
-				$ProfileThumb = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
-                $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
+				$ProfileThumb = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto,IsApproved,ReasonForReject from `_tbl_draft_profiles_photos` where `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
+                $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto,IsApproved,ReasonForReject from `_tbl_draft_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
+                $AllProfilePhotos = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto,ProfilePhotoID,ProfileCode,IsApproved,IsApprovedOn,RejectedOn,ReasonForReject,PriorityFirst  from `_tbl_draft_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `IsDelete`='0'");                                        
+				$GIVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Gi_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$ODVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Oc_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$FIVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Fi_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$PIVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Pi_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$HDobVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Hd_Dob']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$HDVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Hd_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$PEVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Pe_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$CDVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Cd_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
             }
             
             if (sizeof($Profiles)==0) {
@@ -383,7 +401,7 @@
                 }  
             }
             
-            $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto from `_tbl_draft_profiles_photos` where `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
+            $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/profiles/".$ProfileCode."/thumb/',ProfilePhoto) as ProfilePhoto,IsApproved,ReasonForReject from `_tbl_draft_profiles_photos` where `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
             if (sizeof($ProfileThumb)==0) {
                 if ($Profiles[0]['SexCode']=="SX002"){
                     $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
@@ -391,14 +409,15 @@
                     $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
                 }
             } else {
-                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']);                                              
+                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']);   
+					$ProfileThumbnailDetails = $ProfileThumb[0]['IsApproved'];    				 
             } 
                
             if ($Profiles[0]['RequestToVerify']==0) {
                 $Position = "Drafted";
             }
             if ($Profiles[0]['RequestToVerify']==1) {
-                $Position = "Posted Requested to verifiy";
+                $Position = "Submitted to verifiy";
             }
             if ($Profiles[0]['IsApproved']==1) {
                 $Position = "Publish";
@@ -407,11 +426,21 @@
             $Profiles[0]['Age'] =  date("Y")-date("Y",strtotime($Profiles[0]['DateofBirth']));
              
             $result = array("ProfileInfo"          => $Profiles[0],
+                            "GIVerification"       => $GIVerification[0],
+                            "ODVerification"       => $ODVerification[0],
+                            "FIVerification"       => $FIVerification[0],
+                            "PIVerification"       => $PIVerification[0],
+                            "HDobVerification"     => $HDobVerification[0],
+                            "HDVerification"       => $HDVerification[0],
+                            "PEVerification"       => $PEVerification[0],
+                            "CDVerification"       => $CDVerification[0],
                             "Position"             => $Position,
                             "EducationAttachments" => $Educationattachments,
                             "Documents"            => $Documents,
+							"ProfileThumbDetails"  => $ProfileThumbnailDetails,  
                             "PartnerExpectation"   => isset($PartnersExpectations[0]) ? $PartnersExpectations[0] : array(),
                             "ProfilePhotos"        => $ProfilePhotos,  /*array*/
+                            "AllProfilePhotos"     => $AllProfilePhotos,  /*array*/
                             "ProfileThumb"         => $ProfileThumbnail);
             
             return  $result;
@@ -431,7 +460,7 @@
                 $PartnersExpectations = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
                 $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_profiles_verificationdocs` where `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
                 $Educationattachments = $mysql->select("select * from `_tbl_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDeleted`='0' ProfileID='".$Profiles[0]['ProfileID']."'");            
-                $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
+                $ProfileThumb = $mysql->select("select IsApproved, concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
                 $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `IsDelete`='0' and `PriorityFirst`='0'");                                        
                 $lastseen = $mysql->select("select * from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
                 $isFavourite = $mysql->select("select ViewedOn from `_tbl_profiles_favourites` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' and `IsFavorite`='1' and `IsVisible`='1' order by FavProfileID desc limit 0,1");
@@ -442,7 +471,7 @@
                 $PartnersExpectations = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `ProfileCode`='".$ProfileCode."'");
                 $Documents = $mysql->select("select concat('".AppPath."uploads/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_profiles_verificationdocs` where `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
                 $Educationattachments = $mysql->select("select * from `_tbl_profiles_education_details` where  ProfileCode='".$ProfileCode."' and `IsDeleted`='0'");            
-                $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
+                $ProfileThumb = $mysql->select("select IsApproved, concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
                 $ProfilePhotos = isset($Profiles[0]['ProfileID']) ? $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `IsDelete`='0' and `PriorityFirst`='0'") : array();                                        
               
                $IsDownload = $mysql->select("select * from `_tbl_profile_download` where `MemberID`='".$loginInfo[0]['MemberID']."' and `PartnerProfileCode`='".$ProfileCode."'"); 
@@ -482,7 +511,8 @@
                     $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
                 }
             } else { 
-                 $ProfileThumbnail =  getDataURI($ProfileThumb[0]['ProfilePhoto']); //$ProfileThumb[0]['ProfilePhoto'];                                              
+                 $ProfileThumbnail =  getDataURI($ProfileThumb[0]['ProfilePhoto']); 
+				 $ProfileThumbnailDetails = $ProfileThumb[0]['IsApproved'];                                              
             } 
             
             $Position = "Published";                                             
@@ -496,7 +526,6 @@
             $Profiles[0]['isMutured']    = (isset($isMutured[0]['ViewedOn']) ? 1 : 0);
             $Profiles[0]['MuturedOn']    = (isset($isMutured[0]['ViewedOn']) ? $isMutured[0]['ViewedOn'] : "");
             $Profiles[0]['Age']          = isset($Profiles[0]['DateofBirth']) ? date("Y")-date("Y",strtotime($Profiles[0]['DateofBirth'])) : "0";   
-             
             $result = array("ProfileInfo"          => $Profiles[0],
                             "Members"             => $members[0],
                             "IsDownload"           => $IsDownload,
@@ -505,6 +534,7 @@
                             "Documents"            => $Documents,
                             "PartnerExpectation"   => isset($PartnersExpectations[0]) ? $PartnersExpectations[0] : array(),
                             "ProfilePhotos"        => $ProfilePhotos,  
+                            
                             "ProfileThumb"         => $ProfileThumbnail);
             return  $result;
         }

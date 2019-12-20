@@ -210,9 +210,6 @@
     
         SubmitGeneralInformation:function() {
             
-            $('#ErrProfileFor').html("");
-            $('#ErrProfileName').html("");
-            $('#ErrSex').html("");
             $('#ErrMaritalStatus').html("");
             $('#ErrLanguage').html("");
             $('#ErrReligion').html("");
@@ -220,26 +217,10 @@
             $('#ErrCommunity').html("");
             $('#ErrNationality').html(""); 
             $('#ErrReligionOthers').html(""); 
-            $('#Errdate').html("");
-            $('#Errmonth').html("");
-            $('#Erryear').html("");
             $('#ErrMainEducation').html("");
             
             ErrorCount=0;
             
-            if (IsNonEmpty("ProfileName","ErrProfileName","Please enter your profile name")) {
-                IsAlphabet("ProfileName","ErrProfileName","Please enter alpha numeric characters only");
-            }
-            
-            if($("#ProfileFor").val()=="0"){
-                ErrorCount++;
-                document.getElementById("ErrProfileFor").innerHTML="Please select profile for"; 
-            } 
-            
-            if($("#Sex").val()=="0"){
-                ErrorCount++;
-                document.getElementById("ErrSex").innerHTML="Please select sex"; 
-            }
             
             if($("#MaritalStatus").val()=="0"){  
                 ErrorCount++;   
@@ -290,10 +271,7 @@
                      IsAlphabet("OtherCaste","ErrOtherCaste","Please enter alphabet characters only");
                 }
             }
-            if($("#date").val()=="0" || $("#month").val()=="0" || $("#year").val()=="0"){
-                document.getElementById("ErrDateofBirth").innerHTML="Please select date of birth"; 
-                ErrorCount++;
-            }   
+              
             
             return (ErrorCount==0) ? true : false;
          
@@ -348,14 +326,14 @@
                     +  '</div>';                                                                                                
             $('#DeleteNow_body').html(content);
         },
-           showAttachmentEducationInformationForView:function(AttachmentID,ProfileID,FileName){
+           showAttachmentEducationInformationForView:function(AttachmentID,ProfileID,FileName,Status){
              $('#DeleteNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
                         +'<div  style="height: 315px;">'
                             + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                             + '<h4 class="modal-title">Education Attachment</h4>'
                              + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div><br>'
-                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"><br><br>'+Status+'<br><br></div> <br>'
                         + '</div>'
                     +  '</div>';                                                                                                
             $('#DeleteNow_body').html(content);
