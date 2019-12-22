@@ -1,17 +1,16 @@
-Options +FollowSymlinks
-RewriteEngine On
+RewriteEngine on
 
-RewriteRule ^([a-zA-Z0-9_-]+)$ index.php?wpage=$1
+RewriteRule ^wpg-([0-9]+).html$ content.php?id=$1
+
+RewriteRule ^item-([0-9]+)-([^/]+).html$ browse.php?/=$1
+RewriteRule ^wenquiry-([0-9]+)-([^/]+).html$ enquiry.php?/=$1
+
+RewriteRule ^item/([^/]+).html$ browse.php?itemtitle=$1
+
+RewriteRule ^enquiry/([^/]+).html$ ht_enquiry.php?itemtitle=$1
+
+RewriteRule ^pages/([^/]+).html$ ht_pages.php?pageurl=$1
+
+
+
  
-
-
-
-
- 
- 
-                                                                               
-
-
-
-
-
