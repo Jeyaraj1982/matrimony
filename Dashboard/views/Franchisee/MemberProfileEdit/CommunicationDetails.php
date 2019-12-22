@@ -247,7 +247,7 @@ $(document).ready(function() {
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px">
-            <label for="CommunicationDescription" class="col-sm-12 col-form-label">Additional information</label>
+            <label for="CommunicationDescription" class="col-sm-12 col-form-label">Additional information<span id="star">*</span></label>
         </div>
         <div class="form-group row">
             <div class="col-sm-12">                                                        

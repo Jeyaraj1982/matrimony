@@ -217,7 +217,7 @@ function submitprofile() {
     </div>
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
-        <label for="Details" class="col-sm-12 col-form-label">Additional information</label>
+        <label for="Details" class="col-sm-12 col-form-label">Additional information<span id="star">*</span></label>
         </div>
      <div class="form-group row">
         <div class="col-sm-12">                                                                           

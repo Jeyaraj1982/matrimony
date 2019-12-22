@@ -6,11 +6,11 @@
     if (isset($_POST['BtnSaveProfile'])) {
         $response = $webservice->getData("Franchisee","EditDraftGeneralInformation",$_POST);
 
-        if ($response['status']=="success") {
-             $successmessage = $response['message']; 
-        } else {
-            $errormessage = $response['message']; 
-        }
+        if ($response['status']=="success") {  ?>
+         <script> $(document).ready(function() {   $.simplyToast("Success", 'info'); });  </script>
+      <?php  } else {              ?>
+           <script> $(document).ready(function() {   $.simplyToast("failed", 'danger'); });  </script>
+     <?php   }
     }
 
    
@@ -271,7 +271,7 @@
                     </div>
                 </div>
                 <div class="form-group row" style="margin-bottom:0px;">
-                    <label for="AboutMe" class="col-sm-12 col-form-label" id="Aboutlabel"></label>
+                    <label for="AboutMe" class="col-sm-12 col-form-label" id="Aboutlabel"><span id="star">*</span></label>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-12">
@@ -280,9 +280,6 @@
                     </div>
                 </div>
                 <!-- <i class="fa fa-plus"></i> -->
-                <div class="form-group row" style="margin-bottom:0px;">
-                    <div class="col-sm-12"><span id="server_message_error"><?php echo $errormessage ;?></span><span id="server_message_success"><?php echo $successmessage;?></span></div>
-                </div>
                 <div class="form-group row" style="margin-bottom:0px;">
                     <div class="col-sm-6">
                         <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>

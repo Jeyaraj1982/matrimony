@@ -18,7 +18,7 @@
         </script>     
         <script src="<?php echo SiteUrl?>assets/js/mcontroller.js?rand=<?php echo rand(3000,3300000);?>"></script>
         
-        <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+      <!--  <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -26,6 +26,13 @@
                             <img src='../../../images/loader.gif'> Loading ....
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>   -->
+        <div class="modal" id="myModal" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Mobile_VerificationBody"  style="/*max-height: 300px;min-height: 300px;*/" >
+                    <img src='../../../images/loader.gif'> Loading ....
                 </div>
             </div>
         </div>
@@ -39,17 +46,7 @@
         </script>
         <script src="<?php echo SiteUrl?>assets/js/fcontroller.js?rand=<?php echo rand(3000,3300000);?>"></script>
         
-        <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" style="padding-top:200px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-    <div class="modal-dialog" >
-        <div class="modal-content">
-            <div class="modal-body">
-                    <div id="Mobile_VerificationBody" style="">
-                   Loading ....
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+       
         <?php } ?>
 <?php if (isset($_Admin['LoginID']) && $_Admin['LoginID']>0) { ?>
          <script>
@@ -58,17 +55,7 @@
         </script>
         <script src="<?php echo SiteUrl?>assets/js/Admincontroller.js?rand=<?php echo rand(3000,3300000);?>"></script>
         
-        <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" style="padding-top:200px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-    <div class="modal-dialog" >
-        <div class="modal-content">
-            <div class="modal-body">
-                    <div id="Mobile_VerificationBody" style="">
-                   Loading ....
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        
         <?php } ?>
          
     </body>

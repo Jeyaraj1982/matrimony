@@ -2,11 +2,11 @@
     $page="FamilyInformation";
     if (isset($_POST['BtnSaveProfile'])) {
         $response = $webservice->getData("Member","EditDraftFamilyInformation",$_POST);
-        if ($response['status']=="success") {
-             $successmessage = $response['message']; 
-        } else {
-            $errormessage = $response['message']; 
-        }
+       if ($response['status']=="success") {  ?>
+         <script> $(document).ready(function() {   $.simplyToast("Success", 'info'); });  </script>
+      <?php  } else {              ?>
+           <script> $(document).ready(function() {   $.simplyToast("failed", 'danger'); });  </script>
+     <?php   }
     }
     $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
@@ -259,9 +259,6 @@
                 <textarea class="form-control" maxlength="250" name="AboutMyFamily" id="AboutMyFamily" style="margin-bottom:5px;height:75px"><?php echo (isset($_POST['AboutMyFamily']) ? $_POST['AboutMyFamily'] : $ProfileInfo['AboutMyFamily']);?></textarea>
                  <label class="col-form-label" style="padding-top:0px;">Max 250 characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></label>
             </div>
-        </div>
-        <div class="form-group row" style="margin-bottom:0px;">
-            <div class="col-sm-12"><span id="server_message_error"><?php echo $errormessage ;?></span><span id="server_message_success"><?php echo $successmessage;?></span></div>
         </div>
         <div class="form-group row" style="margin-bottom:0px;">
             <div class="col-sm-6">

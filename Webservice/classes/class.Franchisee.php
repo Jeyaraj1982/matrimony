@@ -181,30 +181,34 @@
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==1) {
-                return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
-                       </div>';    
+                return '<div class="modal-header">
+                            <h4 class="modal-title">Mobile Number Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
             } else {
                 
                 $formid = "frmChangeMobileNumber_".rand(30,3000);
              
-                return '<div id="otpfrm" style="width:100%;padding:15px;height:100%;">
+                return '<div id="otpfrm" >
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
-                            <div class="form-group">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Please verify your mobile number</h4>
-                                    <h5 style="color: #777;line-height:20px;font-weight: 100;padding-top: 21px;">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen</h4>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/smallmobile.png" width="10%"></p>
-                                <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['CountryCode'].'&nbsp;'.$franchiseedata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumberF()">Change</h4>
+                            <div class="modal-header">
+                                <h4 class="modal-title">Please verify mobile number</h4>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12" style="text-align:center"><a  href="javascript:void(0)" onclick="MobileNumberVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a></div>
-                                    </div>
-                                </div>
+                            <div class="modal-body" style="max-height:400px;min-height:400px;">
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                <h4 style="text-align:center;color:#ada9a9">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen.</h4>
+                                <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">+'.$franchiseedata[0]['CountryCode'].'&nbsp;'.$franchiseedata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumberF()">Change</h4>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="javascript:void(0)" onclick="MobileNumberVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a>&nbsp;&nbsp;
+                                <a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>
                             </div>
                         </div>'; 
                 }
@@ -227,38 +231,45 @@
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==1) {
-                return '<div style="background:white;width:100%;padding:20px;">
-                            <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
-                       </div>';    
+                return '<div class="modal-header">
+                            <h4 class="modal-title">Mobile Number Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
             } else {
                 $formid = "frmChangeMobileNo_".rand(30,3000);
-                
-                return '<div id="otpfrm" style="width:100%;padding-bottom: 0px;padding-top:20px;padding-left: 20px;padding-right: 20px;">
-                        <form method="POST" id="'.$formid.'">
-                        <input type="hidden" value="'.$loginid.'" name="loginId">
-                        <input type="hidden" value="'.$securitycode.'" name="reqId">
-                           <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Change Mobile Number</h4>
-                            <div class="form-group"> 
-                                <div class="input-group">
-                                    <div class="col-sm-12">
-                                        <select name="CountryCode" id="CountryCode" style="padding-top: 12px;padding-bottom: 7px;padding-top: 4px;padding-bottom: 4px;text-align: center;font-family: Roboto;"> 
-                                           <option value="+91">+91</option>
-                                        </select>
-                                        <input type="text" value="'.$scode.'" id="new_mobile_number" name="new_mobile_number"  maxlength="10" style="width: 73%;height: 27px;text-align: center;font-family:Roboto;"></div>
-                                    </div>  
+                 $countrycode=CodeMaster::getData('RegisterAllowedCountries');
+                return '<div id="otpfrm">
+                            <form method="POST" id="'.$formid.'">
+                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Change Mobile Number</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
                                 </div>
-                            </div> 
-                            <div class="col-sm-12" id="errormsg">'.$error.'</div>
-                            <div class="col-sm-12" style="text-align:center">
-                                    <button type="button" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Save and verify</button>&nbsp;&nbsp;
-                                    <a  href="javascript:void(0)" onclick="FCheckVerification()">back</a></div>
+                                <div class="modal-body">
+                                    <br><br><br>
+                                    <div class="form-group row">
+                                        <div class="col-sm-5" style="margin-right:-15px">
+                                            <select name="CountryCode" Class="form-control" id="CountryCode" style="padding-top: 12px;padding-bottom: 7px;padding-top: 4px;padding-bottom: 4px;text-align: center;font-family: Roboto;"> 
+                                               <option value="+91">+91</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-7">                                                                                                                                                                                          
+                                            <input type="text" class="form-control" value="'.$scode.'" id="new_mobile_number"  name="new_mobile_number"  maxlength="10" style="font-family:Roboto;"></div>
+                                        </div>
+                                        <div class="col-sm-12" id="errormsg">'.$error.'</div>
                                 </div>
-                            </div>
-                           </div>
-                        </form>                                                                                                       
+                                 <div style="text-align:center">
+                                        <a href="javascript:void(0)" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify" style="font-family:roboto">Save and verify</a>
+                                        <a href="javascript:void(0)" onclick="FCheckVerification()">back</a>
+                                 </div>
+                             </div>
+                            </form>                                                                                                       
                         </div>'; 
             }   
         }
@@ -272,7 +283,7 @@
             global $mysql,$loginInfo;
             
            // $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
-            
+            $updatemsg = "";
             if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
             } 
@@ -292,21 +303,27 @@
                 $update = "update _tbl_franchisees_staffs set MobileNumber='".$_POST['new_mobile_number']."' , CountryCode='".$_POST['CountryCode']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'";
                 $mysql->execute($update);
                 $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
+                                                                "RequestSentOn" =>date("Y-m-d H:i:s"),    
                                                              "ActivityType"   => 'MobileNumberChanged.',
                                                              "ActivityString" => 'Mobile Number Changed.',
                                                              "SqlQuery"       => base64_encode($sqlQry),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
+                $updatemsg = "<div class='successmessage'>Your new mobile number has been updated.</div>";
             }
                                                                                                                                     
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==1) {
-                return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
-                       </div>';    
+                return '<div class="modal-header">
+                            <h4 class="modal-title">Mobile Number Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
             } else {
                           
                 if ($error=="") {
@@ -324,31 +341,99 @@
                                                           
                 $formid = "frmMobileNoVerification_".rand(30,3000);
                 
-                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
-                        <form method="POST" id="'.$formid.'">
-                        <input type="hidden" value="'.$loginid.'" name="loginId">
-                        <input type="hidden" value="'.$securitycode.'" name="reqId">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;">Please verify your mobile number</h4>
-                                </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.ImagePath.'smallmobile.png" width="10%"></p>
-                                <h5 style="text-align:center;color:#ada9a9;font-size: 18px;">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['CountryCode'].'-'.$franchiseedata[0]['MobileNumber'].'</h4>
+                return '<div id="otpfrm">
+                            <form method="POST" id="'.$formid.'">
+                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                            <input type="hidden" value="'.$securitycode.'" name="reqId">   
+                            <div class="modal-header">                                                             
+                                <h4 class="modal-title">Please verify your mobile number</h4>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-7"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                        <div class="col-sm-5"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Verify</button></div>
+                            <div class="modal-body">
+                                 '.(($updatemsg!="") ? $updatemsg : "").'
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>                                 
+                                <h4 style="text-align:center;color:#ada9a9">Please enter the verification code which you have received on your mobile number ending with  '.$franchiseedata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($franchiseedata[0]['MobileNumber']).'</h4>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="col-sm-12"> 
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-4"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-2"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-12" style="text-align:center;color:red">'.$error.'</div>
                                     </div>
-                                    <div class="col-sm-12" id="errormsg">'.$error.'</div>
                                 </div>
                             </div>
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the PIN?<a href="#">&nbsp;Resend</a><h5> 
-                        </form>                                                                                                       
-                        </div>'; 
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendMobileNumberVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
+                            </form>                                                                                                       
+                           </div>'; 
             }
         }
+        function ResendMobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
+                                                                                                                                             
+             if ($loginid=="") {
+                 $loginid = $_GET['LoginID'];
+             }
+             global $mysql;
+             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
+             if (sizeof($login)==0) {
+                 return "Invalid request. Please login again.";
+             }
+             
+             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+             
+             if ($franchiseedata[0]['IsMobileVerified']==1) {
+                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Mobile Number Verification</h4>
+                            <p style="text-align:center"><br><br><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
+                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
+                       </div>';    
+             } else {
+                 if ($error=="") {                                          
+                    $otp=rand(1111,9999);
+                    MobileSMSController::sendSMS($franchiseedata[0]['MobileNumber'],"Mobile Verification Security Code is ".$otp);
+                    $securitycode = $mysql->insert("_tbl_verification_code",array("FranchiseeID" =>$franchiseedata[0]['FranchiseeID'],
+                                                                                  "StaffID" =>$franchiseedata[0]['PersonID'],
+                                                                                  "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                                 "SMSTo" =>$franchiseedata[0]['MobileNumber'],
+                                                                                 "SecurityCode" =>$otp,
+                                                                                 "Type" =>"Franchisee Mobile Verificatiom",
+                                                                                 "Messagedon"=>date("Y-m-d h:i:s"))) ; 
+                }  else {
+                    $securitycode = $reqID;
+                }
+                 $formid = "frmMobileNoVerification_".rand(30,3000);
+                 return '<div id="otpfrm">
+                            <form method="POST" id="'.$formid.'">
+                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                            <input type="hidden" value="'.$securitycode.'" name="reqId">   
+                            <div class="modal-header">                                                             
+                                <h4 class="modal-title">Please verify your mobile number</h4>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                 '.(($updatemsg!="") ? $updatemsg : "").'
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>                                 
+                                <h4 style="text-align:center;color:#ada9a9">Please enter the verification code which you have received on your mobile number ending with  '.$franchiseedata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($franchiseedata[0]['MobileNumber']).'</h4>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="col-sm-12"> 
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-4"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                        <div class="col-sm-2"><a onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn" style="color:white">Verify</a></div>
+                                        <div class="col-sm-3"></div>                         
+                                        <div class="col-sm-12" style="text-align:center;color:red" id="errormsg">'.$error.'</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendMobileNumberVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
+                            </form>                                                                                                       
+                           </div>';
+             }
+         }
+        
                                                                                                                     
         function MobileNumberOTPVerification() {
             
@@ -365,18 +450,20 @@
                                                              "SqlQuery"       => base64_encode($sql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"></p>
-                            <h5 style="text-align:center;color:#ada9a9">
-                                Great! Your number has been<br>
-                                successfully verified.
-                            </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a> <h5>
-                       </div>';
+                return '<div class="modal-header">
+                            <h4 class="modal-title">Please verify your mobile number</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';
             } else {
                 return $this->MobileNumberVerificationForm("You entered, invalid pin.",$_POST['loginId'],$_POST['mobile_otp_2'],$_POST['reqId']);
             }
         }
+        
         
         function ChangeEmailFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
             
@@ -395,11 +482,15 @@
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
              if ($franchiseedata[0]['IsEmailVerified']==1) {
-                return '<div style="background:white;padding:20px;">
-                            <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="FCheckVerification()">Continue</a>
-                       </div>';    
+                return '<div class="modal-header">
+                            <h4 class="modal-title">Email Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
             } else {
                 
                 $formid = "frmChangeEmail_".rand(30,3000);
@@ -407,18 +498,17 @@
                 return '<div id="otpfrm" style="width:100%;padding:20px;">
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;padding-top: 12%;">Please verify your email</h4>
-                                </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.ImagePath.'emailicon.png" width="10%"></p>
+                            <div class="modal-header">
+                                <h4 class="modal-title">Please verify your email</h4>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                            </div>
+                            <div class="modal-body" style="max-height:400px;min-height:400px;">
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12" style="text-align:center"><a  href="javascript:void(0)" onclick="EmailVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to Verify</a></div>
-                                    </div>
-                                </div>
+                            <div class="modal-footer">
+                                <a href="javascript:void(0)" onclick="EmailVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a>&nbsp;&nbsp;
+                                <a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>
                             </div>
                         </div>'; 
                 }
@@ -441,38 +531,35 @@
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsEmailVerified']==1) {
-                return '<div style="background:white;width:100%;padding:20px;">
-                            <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
-                       </div>';    
+                return '<div class="modal-header">
+                            <h4 class="modal-title">Email Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
             } else {
             $formid = "frmChangeEmail_".rand(30,3000);
                 
-                return '<div id="otpfrm" style="padding-bottom: 0px;padding-top:20px;padding-right:20px;padding-left:20px;">
-                        <form method="POST" id="'.$formid.'">
-                        <input type="hidden" value="'.$loginid.'" name="loginId">
-                        <input type="hidden" value="'.$securitycode.'" name="reqId">
-                           <div class="form-group">
-                                 <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;padding-top: 15%;">Change Email ID</h4>
+                return ' <div id="otpfrm">
+                            <form method="POST" id="'.$formid.'">
+                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Change Email ID</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
                                 </div>
-                            </div> 
-                            <div class="form-group"> 
-                                <div class="input-group">
-                                    <div class="col-sm-12">
-                                        <input type="text" value="'.$scode.'" id="new_email" name="new_email" class="form-control" style="font-family:Roboto;"></div>
-                                    </div>  
+                                <div class="modal-body">
+                                    <br><br><br><input type="text" value="'.$scode.'" id="new_email" name="new_email" class="form-control" style="font-family:Roboto;">
+                                    <div class="col-sm-12" id="errormsg">'.$error.'</div>
+                                    <div style="text-align:center">
+                                        <a href="javascript:void(0)" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Save to verify</a>&nbsp;&nbsp;
+                                        <a href="javascript:void(0)" onclick="FCheckVerification()">back</a>
+                                    </div>
                                 </div>
-                            </div> 
-                            <div class="col-sm-12" id="errormsg">'.$error.'</div>
-                            <div class="col-sm-12" style="text-align:center">
-                                    <div class="col-sm-12" style="text-align:center"><button type="button" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Save and Verify</button>&nbsp;&nbsp;
-                                    <a  href="javascript:void(0)" onclick="FCheckVerification()">back</a></div>
-                                </div>
-                            </div>
-                           </div>
-                        </form>                                                                                                       
+                            </form>                                                                                                       
                         </div>'; 
             }
         }
@@ -512,14 +599,15 @@
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
            
             if ($franchiseedata[0]['IsEmailVerified']==1) {
-                return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">
-                                Great! Your email has been<br> 
-                                successfully verified.
-                            </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
-                       </div>';    
+                return '<div class="modal-header">
+                            <h4 class="modal-title">Email Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
             } else {
                 if ($error=="") {
                      $otp=rand(1111,9999);
@@ -548,28 +636,31 @@
                 
                         $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");                                                          
                         
-                        return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
-                                    <form method="POST" id="'.$formid.'">
-                                        <input type="hidden" value="'.$loginid.'" name="loginId">
-                                        <input type="hidden" value="'.$securitycode.'" name="reqId">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
+                        return '<div id="otpfrm">
+                                            <form method="POST" id="'.$formid.'">
+                                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Please verify your email</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
                                             </div>
-                                            <p style="text-align:center;padding: 20px;"><img src=""'.ImagePath.'emailicon.png" width="10%"></p>
-                                            <h5 style="text-align:center;color:#ada9a9;font-size: 18px;">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <div class="col-sm-12">
-                                                    <div class="col-sm-7"><input type="text" value="'.$scode.'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                                    <div class="col-sm-5"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Verify</button></div>
+                                            <div class="modal-body">
+                                                 '.(($updatemsg!="") ? $updatemsg : "").'
+                                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                                <h4 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-12"> 
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                        <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-12" style="text-align:center;">'.$error.'</div>
+                                                    </div>
                                                 </div>
-                                                <div class="col-sm-12" id="errormsg">'.$error.'</div>
                                             </div>
-                                        </div>
-                                        <h5 style="text-align:center;color:#ada9a9">Did not receive the PIN?<a href="#">&nbsp;Resend</a><h5> 
-                                    </form>                                                                                                       
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
+                                            </form>                                                                                                       
                                 </div>'; 
                     }
 
@@ -580,29 +671,148 @@
                     $formid = "frmMobileNoVerification_".rand(30,3000);
                     $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");                                                           
                     
-                    return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
-                                <form method="POST" id="'.$formid.'">
-                                    <input type="hidden" value="'.$loginid.'" name="loginId">
-                                    <input type="hidden" value="'.$securitycode.'" name="reqId">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <h4 style="text-align:center;color:#ada9a9">Please verify your email</h4>
-                                        </div>
-                                        <p style="text-align:center;padding: 20px;"><img src="'.ImagePath.'emailicon.png" width="10%"></p>
-                                        <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="col-sm-12">
-                                                <div class="col-sm-7"><input type="text" value="'.$scode.'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                                <div class="col-sm-5"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                    return '<div id="otpfrm">
+                                            <form method="POST" id="'.$formid.'">
+                                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Please verify your email</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
                                             </div>
-                                            <div class="col-sm-12" id="errormsg">'.$error.'</div>
-                                        </div>
-                                    </div>
-                                    <h5 style="text-align:center;color:#ada9a9">Did not receive the PIN?<a href="#">&nbsp;Resend</a><h5> 
-                                </form>                                                                                                       
-                            </div>'; 
+                                            <div class="modal-body">
+                                                 '.(($updatemsg!="") ? $updatemsg : "").'
+                                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                                <h4 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-12"> 
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                        <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-12" style="text-align:center;" id="errormsg">'.$error.'</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
+                                            </form>                                                                                                       
+                                </div>'; 
+                }
+            }                                    
+        }
+        
+        function ResendEmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
+
+             if ($loginid=="") {                     
+                $loginid = $_GET['LoginID'];
+             }
+
+             global $mysql;
+             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
+
+             if (sizeof($login)==0) {
+                 return "Invalid request. Please login again.";
+             }
+             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+             if ($franchiseedata[0]['IsEmailVerified']==1) {
+                 return '<div class="modal-header">
+                            <h4 class="modal-title">Email Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
+             } else {
+
+                 if ($error=="") {
+                      $otp=rand(1111,9999);
+                     
+                     $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeEmailVerification'");
+                     $content  = str_replace("#FranchiseeName#",$franchiseedata[0]['PersonName'],$mContent[0]['Content']);
+                     $content  = str_replace("#otp#",$otp,$content);
+                     
+                     MailController::Send(array("MailTo"   => $franchiseedata[0]['EmailID'],
+                                                "Category" => "Email Verifications",
+                                                "FranchiseeID" => $franchiseedata[0]['FranchiseeID'],
+                                                "Subject"  => $mContent[0]['Title'],
+                                                "Message"  => $content),$mailError);
+                                                
+                     if($mailError){
+                        return "Mailer Error: " . $mail->ErrorInfo.
+                        "Error. unable to process your request.";
+                     } else {
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("FranchiseeID"  => $franchiseedata[0]['FranchiseeID'],
+                                                                                      "StaffID"  => $franchiseedata[0]['PersonID'],
+                                                                                      "EmailTo"      => $franchiseedata[0]['EmailID'],
+                                                                                      "SecurityCode" => $otp,
+                                                                                      "Type"         => "Franchisee Email Verification",
+                                                                                      "Messagedon"   => date("Y-m-d h:i:s"))) ;
+                        $formid = "frmMobileNoVerification_".rand(30,3000); 
+                
+                        $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");                                                          
+                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
+                                return '<div id="otpfrm">
+                                            <form method="POST" id="'.$formid.'">
+                                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Please verify your email</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                                </div>
+                                                 <div class="modal-body">
+                                                    <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                                    <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="col-sm-12">
+                                                                <div class="col-sm-3"></div>
+                                                                <div class="col-sm-4"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                                <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                                <div class="col-sm-3"></div>
+                                                            </div>
+                                                            <div class="col-sm-12"  style="text-align:center;">'.$error.'</div>
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
+                                        </form>                                                                                                       
+                                    </div>'; 
+                          }
+
+                 }  else {
+                   $securitycode = $reqID;
+                    
+                    $formid = "frmMobileNoVerification_".rand(30,3000);
+                    $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");                                                           
+                    
+                    return '<div id="otpfrm">
+                                            <form method="POST" id="'.$formid.'">
+                                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Please verify your email</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                 '.(($updatemsg!="") ? $updatemsg : "").'
+                                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                                <h4 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-12"> 
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                        <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-12" style="text-align:center;" id="errormsg">'.$error.'</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
+                                            </form>                                                                                                       
+                                </div>'; 
                 }
             }                                    
         }
@@ -621,12 +831,11 @@
                                                              "SqlQuery"       => base64_encode($sql),                               
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.ImagePath.'verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
-                            <p style="text-align:center"><a href="../Dashboard" class="btn btn-primary">Continue</a></p>
-                            
-                       </div>';
+                return '<div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';
                                     } else {
                                         return $this->EmailVerificationForm("<span style='color:red'>You entered, invalid Pin.</span>",$_POST['loginId'],$_POST['email_otp'],$_POST['reqId']);
                                     }  

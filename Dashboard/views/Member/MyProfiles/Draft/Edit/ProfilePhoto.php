@@ -218,13 +218,11 @@ function showLearnMore() {
             $('#LearnMore_body').html(content);
 }
 </script>
-<div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-            <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="model_body" style="height: 220px;">
-            
-                </div>
-            </div>
-        </div>
+<div class="modal" id="Delete" data-backdrop="static" >
+    <div class="modal-dialog">
+        <div class="modal-content" id="model_body" style="max-width:500px;min-height:300px;overflow:hidden"></div>
+    </div>
+</div>
         
         <script>
          var available = "<?php echo sizeof($res['data']);?>";
@@ -249,26 +247,29 @@ function showLearnMore() {
  
     function showConfirmDeleteProfilePhoto(ProfilePhotoID,ProfileID) {                                           
         $('#Delete').modal('show'); 
-        var content = '<div class="modal-body" style="padding:20px">'
-                        + '<div  style="height: 315px;">'
-                            + '<form method="post" id="form_'+ProfilePhotoID+'" name="form_'+ProfilePhotoID+'" > '
+         var content =  '<form method="post" id="form_'+ProfilePhotoID+'" name="form_'+ProfilePhotoID+'" > '
                                 + '<input type="hidden" value="'+ProfilePhotoID+'" name="ProfilePhotoID">'
                                 + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                                  + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                                   + '<h4 class="modal-title">Confirm delete Profile photo</h4><br>'
-                                + '<div style="text-align:center">Are you sure want to Delete?  <br><br>'
-                                    + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDeleteProfilePhoto(\''+ProfilePhotoID+'\')">Yes</button>&nbsp;&nbsp;'
-                                    + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
-                                + '</div>'
-                            + '</form>'
-                        + '</div>'
-                     +  '</div>';
+                             +'<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for Delete Profile Photo</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
+                            + '</div>'
+                            + '<div class="modal-body" style="min-height:170px">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                     +'<div class="col-sm-12">Are sure want to add this educational details</div>'
+                                +  '</div>'                    
+                            + '</div>' 
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDeleteProfilePhoto(\''+ProfilePhotoID+'\')">Yes, Remove</button>&nbsp;&nbsp;'
+                                + '<button type="button" data-dismiss="modal" class="btn btn-primary">No, i will do later</button>'
+                            + '</div>'
+                          + '</form>' ; 
         $('#model_body').html(content);
     }
     
     function ConfirmDeleteProfilePhoto(ProfilePhotoID) {
        var param = $( "#form_"+ProfilePhotoID).serialize();
-        $('#model_body').html(preloader);
+        $('#model_body').html(preloading_withText("Deleting profile photo ...","95"));
         $.post(API_URL + "m=Member&a=DeletProfilePhoto", param, function(result2) {
             $('#model_body').html(result2);
             $('#photoview_'+ProfilePhotoID).hide();

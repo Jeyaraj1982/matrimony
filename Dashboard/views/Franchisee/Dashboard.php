@@ -199,7 +199,13 @@ chart.render();
 </div>
 
 
-
+<div class="modal" id="myModal" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Mobile_VerificationBody"  style="max-height: 529px;min-height: 529px;" >
+                    <img src='../../../images/loader.gif'> Loading ....
+                </div>
+            </div>
+        </div>
   <?php //   $fInfo = $webservice->getData("Franchisee","GetMyProfile");  ?>   
 <script>
    <?php  

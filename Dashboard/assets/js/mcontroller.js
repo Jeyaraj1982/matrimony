@@ -1,22 +1,20 @@
     function MobileNumberVerification() {
-        
-        $('#Mobile_VerificationBody').html(preloader);
-        $('#myModal').modal('show'); 
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+        $('#myModal').modal('show');
         $.ajax({
             url: API_URL + "m=Member&a=ChangeMobileNumberFromVerificationScreen", 
             success: function(result){
                $('#Mobile_VerificationBody').html(result); 
-               
-               if ( $( "#verifydiv" ).length ) {
-                    $( "#verifydiv").hide(500);
+               if ($("#verifydiv" ).length ) {
+                    $("#verifydiv").hide(500);
                }
             }});
     }
     
     function EmailVerification() {
         
-        $('#Mobile_VerificationBody').html(preloader);
-        $('#myModal').modal('show'); 
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+        $('#myModal').modal('show');
         $.ajax({
             url: API_URL + "m=Member&a=ChangeEmailFromVerificationScreen", 
             success: function(result){
@@ -27,13 +25,13 @@
     function MobileNumberVerificationForm(frmid1) {
         
         var param = $( "#"+frmid1).serialize();
-        $('#Mobile_VerificationBody').html(preloader);
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
         $.post(API_URL + "m=Member&a=MobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
     }
     
     function ChangeMobileNumber() {
-        $('#Mobile_VerificationBody').html(preloader);
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
         $.ajax({url: API_URL + "m=Member&a=ChangeMobileNumber",success: function(result2){$('#Mobile_VerificationBody').html(result2);}});
     } 
@@ -41,7 +39,7 @@
     function EmailVerificationForm(frmid1) {
         
         var param = $( "#"+frmid1).serialize();
-        $('#Mobile_VerificationBody').html(preloader);
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
         $.post(API_URL + "m=Member&a=EmailVerificationForm",param,function(result2) {
             $('#Mobile_VerificationBody').html(result2);  
@@ -49,7 +47,7 @@
     }
     
     function ChangeEmailID() {
-        $('#Mobile_VerificationBody').html(preloader);
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
         $.ajax({url: API_URL + "m=Member&a=ChangeEmailID", success: function(result2){
             $('#Mobile_VerificationBody').html(result2);
@@ -57,7 +55,7 @@
     } 
     
     function CheckVerification() {
-        $('#Mobile_VerificationBody').html(preloader);
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Member&a=CheckVerification", 
@@ -69,7 +67,7 @@
     }
      function MobileNumberOTPVerification(frmid) {
          var param = $( "#"+frmid).serialize();
-         $('#Mobile_VerificationBody').html(preloader);
+         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
                     $.post( API_URL + "m=Member&a=MobileNumberOTPVerification", 
                             param,
                             function(result2) {
@@ -100,7 +98,7 @@
     }*/
     function EmailOTPVerification(frmid1) {
          var param = $( "#"+frmid1).serialize();
-         $('#Mobile_VerificationBody').html(preloader);
+         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
                     $.post(API_URL + "m=Member&a=EmailOTPVerification", 
                             param,
                             function(result2) {
@@ -115,14 +113,14 @@
      function ResendMobileNumberVerificationForm(frmid1) {
         
         var param = $( "#"+frmid1).serialize();
-        $('#Mobile_VerificationBody').html(preloader);
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
         $.post(API_URL + "m=Member&a=ResendMobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
     }
     function ResendEmailVerificationForm(frmid1) {
         
         var param = $( "#"+frmid1).serialize();
-        $('#Mobile_VerificationBody').html(preloader);
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
         $.post(API_URL + "m=Member&a=ResendEmailVerificationForm", param,function(result2) { $('#Mobile_VerificationBody').html(result2); });
     }

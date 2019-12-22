@@ -138,9 +138,6 @@
                 return Response::returnError("Please enter your email");
              }
 
-            // if (!(strlen(trim($_POST['Gender']))>0)) {
-            //    return Response::returnError("Please enter password");
-            // }
 			if (!(strlen(trim($_POST['LoginPassword']))>0)) {
                 return Response::returnError("Please enter password");
              }
@@ -278,9 +275,9 @@
              return Response::returnSuccess("New Password saved successfully",$data[0]);  
          }
 
-         function IsMobileVerified() {
+        /* function IsMobileVerified() {
              return false;
-         }
+         }*/
          
          function getAvailableBalance($memberID) {
              global $mysql;
@@ -288,7 +285,7 @@
              return isset($d[0]['bal']) ? $d[0]['bal'] : 0;      
          }
 
-         function GetMemberInfo(){
+         function GetMemberInfo() {
              global $mysql,$loginInfo;
              $Member=$mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
              $Profile=$mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."'");
@@ -538,31 +535,34 @@
 
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==1) {
-                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><br><br><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
-                       </div>';    
+                 return '<div class="modal-header">
+                            <h4 class="modal-title">Mobile Number Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
              } else {
                 $formid = "frmChangeMobileNumber_".rand(30,3000);
-                return '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">
-
+                return '<div id="otpfrm" >
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
-                            <div class="form-group">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Please verify your mobile number</h4>
-                                    <h5 style="color: #777;line-height:20px;font-weight: 100;padding-top: 21px;">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen</h4>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/smallmobile.png" width="10%"></p>
+                            <div class="modal-header">
+                                <h4 class="modal-title">Please verify mobile number</h4>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                            </div>
+                            <div class="modal-body" style="max-height:400px;min-height:400px;">
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                <h4 style="text-align:center;color:#ada9a9">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen.</h4>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">+'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumber()">Change</h4>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group">                                                                                                                                                                           
-                                    <div class="col-sm-12" style="text-align:center"><a href="javascript:void(0)" onclick="MobileNumberVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a></div>
-                                    </div>
-                                </div>
+                            <div class="modal-footer">
+                                <a href="javascript:void(0)" onclick="MobileNumberVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a>&nbsp;&nbsp;
+                                <a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>
                             </div>
-                        </div>'; 
+                        </div>';
              }
          } 
 
@@ -583,48 +583,49 @@
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
 
              if ($memberdata[0]['IsMobileVerified']==1) {
-                 return '<div style="background:white;width:100%;padding:20px;">
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Please Verify Your Mobile</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="CheckVerification()">Continue</a>
-                       </div>';    
+                 return '<div class="modal-header">
+                            <h4 class="modal-title">Mobile Number Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
             } else {
                 $formid = "frmChangeMobileNo_".rand(30,3000);
                 
                 $countrycode=CodeMaster::getData('RegisterAllowedCountries');
                                                                                                           
-                $return = '<div id="otpfrm" style="width:100%;padding-bottom: 0px;padding-top:20px;">
-                        <form method="POST" id="'.$formid.'">
-                        <input type="hidden" value="'.$loginid.'" name="loginId">
-                        <input type="hidden" value="'.$securitycode.'" name="reqId">
-                           <div class="form-group">
-                                <div class="input-group">
-                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                $return = '<div id="otpfrm">
+                            <form method="POST" id="'.$formid.'">
+                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                <div class="modal-header">
                                     <h4 class="modal-title">Change Mobile Number</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
                                 </div>
-                            </div> 
-                            <div class="form-group">
-                                    <div class="col-sm-5" style="margin-right:-15px">
+                                <div class="modal-body">
+                                    <br><br><br>
+                                    <div class="form-group row">
+                                        <div class="col-sm-5" style="margin-right:-15px">
                                         <select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="padding-top: 4px;padding-bottom: 4px;text-align: center;font-family: Roboto;"> ';
                                              foreach($countrycode as $CountryCode) {  
                                                 $return .=' <option value="'.$CountryCode['ParamA'].'"  '.(($_POST[ 'CountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "").' >'.$CountryCode['str'].'</option>';
                                              }
                                         $return .=   '</select>
-                                    </div>
-                                    <div class="col-sm-7">                                                                                                                                                                                          
-                                        <input type="text" class="form-control" value="'.$scode.'" id="new_mobile_number"  name="new_mobile_number"  maxlength="10" style="font-family:Roboto;"></div>
-                                    </div>                  
-                            </div> 
-                            <div class="col-sm-12" id="errormsg">'.$error.'</div>
-                            <div class="col-sm-12" style="text-align:center">
-                                    <a  href="javascript:void(0)" onclick="CheckVerification()">back</a>&nbsp;&nbsp;
-                                    <button type="button" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify" style="font-family:roboto">Save and verify</button>
-                                    </div>
+                                        </div>
+                                        <div class="col-sm-7">                                                                                                                                                                                          
+                                            <input type="text" class="form-control" value="'.$scode.'" id="new_mobile_number"  name="new_mobile_number"  maxlength="10" style="font-family:Roboto;"></div>
+                                        </div>
+                                        <div class="col-sm-12" id="errormsg">'.$error.'</div>
                                 </div>
-                           </div>
-                        </form>                                                                                                       
+                                 <div style="text-align:center">
+                                        <a href="javascript:void(0)" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify" style="font-family:roboto">Save and verify</a>
+                                        <a href="javascript:void(0)" onclick="CheckVerification()">back</a>
+                                 </div>
+                             </div>
+                            </form>                                                                                                       
                         </div>';  
                         return $return;
             
@@ -683,11 +684,15 @@
              }
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==1) {
-                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
-                       </div>';    
+                 return '<div class="modal-header">
+                            <h4 class="modal-title">Mobile Number Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
              } else {
                  if ($error=="") {
                      $otp=rand(1111,9999);
@@ -702,42 +707,40 @@
                      $securitycode = $reqID;
                  }
                  $formid = "frmMobileNoVerification_".rand(30,3000);
-                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">                      
-                         <form method="POST" id="'.$formid.'">
+                 return '<div id="otpfrm">
+                            <form method="POST" id="'.$formid.'">
                             <input type="hidden" value="'.$_GET['callfrom'].'" name="callfrom">     
                             <input type="hidden" value="'.$loginid.'" name="loginId">
-                            <input type="hidden" value="'.$securitycode.'" name="reqId">                          
-                            <div class="form-group">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Mobile Number Verification</h4>
-                                '.(($updatemsg!="") ? $updatemsg : "").'
-                            </div> 
-                            <div style="text-align:left"> Dear '.$memberdata[0]['MemberName'].',<br>
-                                <h5 style="color: #777;line-height:20px;font-weight: 100;">Please enter the verification code which you have received on your mobile number ending with  +'.$memberdata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'<br></h5>
+                            <input type="hidden" value="'.$securitycode.'" name="reqId">    
+                            <div class="modal-header">                                                             
+                                <h4 class="modal-title">Please verify your mobile number</h4>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12">
+                            <div class="modal-body">
+                                 '.(($updatemsg!="") ? $updatemsg : "").'
+                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                <h4 style="text-align:center;color:#ada9a9">Please enter the verification code which you have received on your mobile number ending with  +'.$memberdata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'</h4>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="col-sm-12"> 
                                         <div class="col-sm-3"></div>
                                         <div class="col-sm-4"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
                                         <div class="col-sm-2"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                         <div class="col-sm-3"></div>
+                                        <div class="col-sm-12" style="text-align:center;">'.$error.'</div>
                                     </div>
-                                </div>
-                            </div>                                                              
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12">'.$error.'</div>
                                 </div>
                             </div>
                             <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendMobileNumberVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
-                        </form>                                                                                                       
-                        </div>'; 
+                            </form>                                                                                                       
+                           </div>'; 
              }
          }
 
          function MobileNumberOTPVerification() {
 
+             
+             
              global $mysql;
 
              $otpInfo = $mysql->select("select * from `_tbl_verification_code` where RequestID='".$_POST['reqId']."'");
@@ -750,12 +753,15 @@
                                                              "SqlQuery"       => base64_encode($sql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                  return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
-                            <p style="text-align:center"><br><br><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h5>
-                            <h5 style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';
+                  return '<div class="modal-header">
+                            <h4 class="modal-title">Please verify your mobile number</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';
                  
                  } else {
                      return $this->MobileNumberVerificationForm("<span style='color:red'>You entered, invalid pin.</span>",$_POST['loginId'],$_POST['mobile_otp_2'],$_POST['reqId']);
@@ -776,33 +782,34 @@
 
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
              if ($memberdata[0]['IsEmailVerified']==1) {
-                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Email Verification</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
-                       </div>';    
+                 return '<div class="modal-header">
+                            <h4 class="modal-title">Email Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
              } else {
                  $formid = "frmChangeEmail_".rand(30,3000);
-                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+                 return '<div id="otpfrm" >
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
-                            <div class="form-group">
-                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
-                                <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
-                                </div>
+                            <div class="modal-header">
+                                <h4 class="modal-title">Please verify your email</h4>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                            </div>
+                            <div class="modal-body" style="max-height:400px;min-height:400px;">
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'&nbsp;&#65372&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>
-                            </div>                            
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12" style="text-align:center"><a  href="javascript:void(0)" onclick="EmailVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a></div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="javascript:void(0)" onclick="EmailVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a>&nbsp;&nbsp;
+                                <a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>
                             </div>
                         </div>'; 
+                 
              }                  
          }
 
@@ -822,39 +829,34 @@
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
 
              if ($memberdata[0]['IsEmailVerified']==1) {
-                 return '<div style="background:white;width:100%;padding:20px;">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Email Verification</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
-                       </div>';    
+                 return '<div class="modal-header">
+                            <h4 class="modal-title">Email Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
              } else {
                  $formid = "frmChangeEmail_".rand(30,3000);
-                 return '<div id="otpfrm" style="width:100%;padding-bottom: 0px;padding-top:20px;padding-right:20px;padding-left:20px;">
-                        <form method="POST" id="'.$formid.'">
-                        <input type="hidden" value="'.$loginid.'" name="loginId">
-                        <input type="hidden" value="'.$securitycode.'" name="reqId">
-                           <div class="form-group">
-                           <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
-                                 <div class="input-group">
-                                    <h4 style="text-align:center;color:#6c6969;padding-top: 15%;">Change Email ID</h4>
+                 return '<div id="otpfrm">
+                            <form method="POST" id="'.$formid.'">
+                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Change Email ID</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
                                 </div>
-                            </div> 
-                            <div class="form-group"> 
-                                <div class="input-group">
-                                    <div class="col-sm-12">
-                                        <input type="text" value="'.$scode.'" id="new_email" name="new_email" class="form-control" style="font-family:Roboto;"></div>
-                                    </div>  
+                                <div class="modal-body">
+                                    <br><br><br><input type="text" value="'.$scode.'" id="new_email" name="new_email" class="form-control" style="font-family:Roboto;">
+                                    <div class="col-sm-12" id="errormsg">'.$error.'</div>
+                                    <div style="text-align:center">
+                                        <a href="javascript:void(0)" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Save to verify</a>&nbsp;&nbsp;
+                                        <a href="javascript:void(0)" onclick="CheckVerification()">back</a>
+                                    </div>
                                 </div>
-                            </div> 
-                            <div class="col-sm-12" id="errormsg">'.$error.'</div>
-                            <div class="col-sm-12" style="text-align:center">
-                                    <div class="col-sm-12" style="text-align:center"><button type="button" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify">Save and Verify</button>&nbsp;&nbsp;
-                                    <a  href="javascript:void(0)" onclick="CheckVerification()">back</a></div>
-                                </div>
-                           </div>
-                        </form>                                                                                                       
+                            </form>                                                                                                       
                         </div>'; 
              }
          }
@@ -907,13 +909,15 @@
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
 
              if ($memberdata[0]['IsEmailVerified']==1) {
-                 return '<div style="background:white;width:100%;padding:20px;height:70%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Email Verification</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href">Continue</a>
-                       </div>';    
+                 return '<div class="modal-header">
+                            <h4 class="modal-title">Email Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
              } else {
 
                  if ($error=="") {
@@ -941,36 +945,32 @@
                                                                                      "messagedon"=>date("Y-m-d h:i:s"))) ;
                         $formid = "frmMobileNoVerification_".rand(30,3000);
                         $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
-                                return '<div id="otpfrm" style="width:100%;padding:20px;height:70%">
-                        <form method="POST" id="'.$formid.'">
-                        <input type="hidden" value="'.$loginid.'" name="loginId">
-                        <input type="hidden" value="'.$securitycode.'" name="reqId">
-                        '.(($updatemsg!="") ? $updatemsg : "").'
-                            <div class="form-group">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Please verify your email</h4>
-                            </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
-                                <h4 style="text-align:center;color:#ada9a9">We have sent a 4 digits verification Code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12"> 
-                                        <div class="col-sm-3"></div>
-                                        <div class="col-sm-4"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                        <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
-                                        <div class="col-sm-3"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12" style="text-align:center;">'.$error.'</div>                                
-                                </div>
-                            </div>                                                              
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
-                        </form>                                                                                                       
-                        </div>
-                        '; 
+                                return '<div id="otpfrm">
+                                            <form method="POST" id="'.$formid.'">
+                                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Please verify your email</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                 '.(($updatemsg!="") ? $updatemsg : "").'
+                                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                                <h4 style="text-align:center;color:#ada9a9">We have sent a 4 digits verification Code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-12"> 
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                        <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-12" style="text-align:center;">'.$error.'</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
+                                            </form>                                                                                                       
+                                </div>'; 
                           }
                                                                                                                                                          
                  }  else {
@@ -978,36 +978,32 @@
 
                     $formid = "frmMobileNoVerification_".rand(30,3000);
                  $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
-                                return '<div id="otpfrm" style="width:100%;padding:20px;">
+                 return '<div id="otpfrm">
                         <form method="POST" id="'.$formid.'">
                         <input type="hidden" value="'.$loginid.'" name="loginId">
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <button type="button" class="close" data-dismiss="modal" style="">&times;</button>
-                                    <h4 style="text-align:center;color:#ada9a9">Please verify your email</h4>
-                                </div>
+                            <div class="modal-header">
+                                <h4 class="modal-title">Please verify your email</h4>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                            </div>
+                             <div class="modal-body">
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
                                 <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-3"></div>
-                                        <div class="col-sm-4"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                        <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
-                                        <div class="col-sm-3"></div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-3"></div>
+                                            <div class="col-sm-4"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                            <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                            <div class="col-sm-3"></div>
+                                        </div>
+                                        <div class="col-sm-12"  style="text-align:center;">'.$error.'</div>
                                     </div>
                                 </div>
-                            </div>
-                             <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12"  style="text-align:center;">'.$error.'</div>                                
-                                </div>
-                            </div>
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
-                        </form>                                                                                                       
-                        </div>'; 
+                             </div>
+                        <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
+                    </form>                                                                                                       
+                    </div>'; 
                 }
             }                                    
          }
@@ -1025,13 +1021,11 @@
                                                              "SqlQuery"       => base64_encode($sql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                           <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title"></h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h5>
-                            <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';
+                 return '<div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';
                        
              } else {
                  return $this->EmailVerificationForm("<span style='color:red'>Invalid verification code.</span>",$_POST['loginId'],$_POST['email_otp'],$_POST['reqId']);
@@ -1079,7 +1073,7 @@
 						  
                         foreach($PostProfiles as $PostProfile) {
                             $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode']);
-                            $result['mode']="Posted";
+                            $result['mode']="Submitted";
                             $Profiles[]=$result;     
                         }
                      }
@@ -1282,7 +1276,7 @@
 
          }
 
-         function VerifyProfileforPublish() {                          
+        function VerifyProfileforPublish() {                          
 
              global $mysql,$loginInfo;
 
@@ -1303,262 +1297,275 @@
                        </div>';
 
          }
-         
-         function SendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
-
-        global $mysql,$mail,$loginInfo;      
+        /* Submit Profile */ 
+        function SendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
+			global $mysql,$mail,$loginInfo;      
         
-        $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
-        $ProfileCode = $data[0]['ProfileCode'];
-        $EducationDetails =$mysql->select("Select * from `_tbl_draft_profiles_education_details` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
-         if (sizeof($EducationDetails)==0) {
-			return Response::returnError("You must Provide Your Education Details.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"EducationDetails"));
-          }
-        $Documents =$mysql->select("Select * from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
-         if (sizeof($Documents)==0) {
-			return Response::returnError("You must upload Documents Details.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"DocumentAttachment"));
-         }
-		$ProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
-         if (sizeof($ProfilePhoto)==0) {
-			return Response::returnError("You must upload Profile photo.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"ProfilePhoto"));
-         }
-		$DefaultProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `PriorityFirst`='1' and `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
-         if (sizeof($DefaultProfilePhoto)==0) {
-			return Response::returnError("You must Select Default Profile photo.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"ProfilePhoto"));
-         }
-     $AboutMyself =$mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
-         if (strlen(trim($AboutMyself[0]['AboutMe']))==0) {
-             if($AboutMyself[0]['ProfileFor']=="Myself"){
-             $About = "about yourself";
-             }
-             if($AboutMyself[0]['ProfileFor']=="Brother"){
-             $About = "about your brother";
-             }
-             if($AboutMyself[0]['ProfileFor']=="Sister"){
-             $About = "about your sister";
-             }
-             if($AboutMyself[0]['ProfileFor']=="Daughter"){
-             $About = "about your daughter";
-             }
-             if($AboutMyself[0]['ProfileFor']=="Son"){
-             $About = "about your son";
-             }
-             if($AboutMyself[0]['ProfileFor']=="Brother In Law"){
-             $About = "about your brother in law";
-             }
-             if($AboutMyself[0]['ProfileFor']=="Son In Law"){
-             $About = "about your son in law";
-             }
-             if($AboutMyself[0]['ProfileFor']=="Daughter In Law"){
-             $About = "about your daughter in law";
-             } 
-				return Response::returnError("You must enter ".$About.".",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"GeneralInformation"));
-                
-             } 
-			if (strlen(trim($AboutMyself[0]['AboutMyFamily']))==0) {
-				return Response::returnError("You must enter about your family",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));
-             }
-        $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
-        /* return $data[0]['ProfileName'].strlen(trim($data[0]['ProfileName'])); 
-          /*   if (sizeof($data)==0) {
-                return "Record not found.<a data-dismiss='modal' style='cursor:pointer'>Continue</a>"; 
-             }
-             
-             if ($data[0]['RequestToVerify']==1) {
-                return "Already sent request to verify.<a data-dismiss='modal' style='cursor:pointer'>Continue</a>"; 
-             }
-             
-             if (strlen(trim($data[0]['ProfileFor']))==0) {
-                return "Please choose Profile for in General Information.<a data-dismiss='modal' style='cursor:pointer;text-align:center'>Continue</a>"; 
-             }
-             
-             if (strlen(trim($data[0]['ProfileName']))==0) {
-                return "Please choose Profile for Name in General Information.<a data-dismiss='modal' style='cursor:pointer;text-align:center'>Continue</a>"; 
-             }
-                                                                                                                         
-             if (strlen(trim($data[0]['DateofBirth']))==0) {
-                return "Please choose Date of Birth in General Information.<a data-dismiss='modal' style='cursor:pointer;text-align:center'>Continue</a>"; 
-             }
-             if (strlen(trim($data[0]['Sex']))==0) {
-                return "Please choose Sex in General Information.<a data-dismiss='modal' style='cursor:pointer;text-align:center'>Continue</a>"; 
-             }
-             if (strlen(trim($data[0]['MaritalStatus']))==0) {
-                return "Please choose Marital Status in General Information.<a data-dismiss='modal' style='cursor:pointer;text-align:center'>Continue</a>"; 
-             }
-             if (strlen(trim($data[0]['MotherTongue']))==0) {
-                return "Please choose Mother Tongue in General Information.<a data-dismiss='modal' style='cursor:pointer;text-align:center'>Continue</a>"; 
-             }
-             if (strlen(trim($data[0]['Religion']))==0) {
-                return "Please choose Religion in General Information.<a data-dismiss='modal' style='cursor:pointer;text-align:center'>Continue</a>"; 
-             }
-             if (strlen(trim($data[0]['Caste']))==0) {
-                return "Please choose Caste in General Information.<a data-dismiss='modal' style='cursor:pointer;text-align:center'>Continue</a>"; 
-             }
-             if (strlen(trim($data[0]['Community']))==0) {
-                return "Please choose Community in General Information.<a data-dismiss='modal' style='cursor:pointer;text-align:center'>Continue</a>"; 
-             }
-             if (strlen(trim($data[0]['Nationality']))==0) {
-                return "Please choose Nationality in General Information.<a data-dismiss='modal' style='cursor:pointer;text-align:center'>Continue</a>"; 
-             }
-             if (strlen(trim($data[0]['AboutMe']))=="") {
-                return "Please choose About Me in General Information.<a data-dismiss='modal' style='cursor:pointer;text-align:center'>Continue</a>"; 
-             } */     
+			$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+			$member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+        
+			$EducationDetails =$mysql->select("Select * from `_tbl_draft_profiles_education_details` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+				if (sizeof($EducationDetails)==0) {
+					return Response::returnError("You must Provide Your Education Details.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"EducationDetails"));
+				}
+			$Documents =$mysql->select("Select * from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+				if (sizeof($Documents)==0) {
+					return Response::returnError("You must upload Documents Details.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"DocumentAttachment"));
+				}		
+			$ProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+				if (sizeof($ProfilePhoto)==0) {
+					return Response::returnError("You must upload Profile photo.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"ProfilePhoto"));
+				}
+			$DefaultProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `PriorityFirst`='1' and `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
+				if (sizeof($DefaultProfilePhoto)==0) {
+					return Response::returnError("You must Select Default Profile photo.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"ProfilePhoto"));
+				}
+			$AboutMyself =$mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+				if (strlen(trim($AboutMyself[0]['AboutMe']))==0) {
+					 if($AboutMyself[0]['ProfileFor']=="Myself"){
+					 $About = "about yourself";
+					 }
+					 if($AboutMyself[0]['ProfileFor']=="Brother"){
+					 $About = "about your brother";
+					 }
+					 if($AboutMyself[0]['ProfileFor']=="Sister"){
+					 $About = "about your sister";
+					 }
+					 if($AboutMyself[0]['ProfileFor']=="Daughter"){
+					 $About = "about your daughter";
+					 }
+					 if($AboutMyself[0]['ProfileFor']=="Son"){
+					 $About = "about your son";
+					 }
+					 if($AboutMyself[0]['ProfileFor']=="Brother In Law"){
+					 $About = "about your brother in law";
+					 }
+					 if($AboutMyself[0]['ProfileFor']=="Son In Law"){
+					 $About = "about your son in law";
+					 }
+					 if($AboutMyself[0]['ProfileFor']=="Daughter In Law"){
+					 $About = "about your daughter in law";
+					 } 
+					return Response::returnError("You must enter ".$About.".",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"GeneralInformation"));
+				} 
+				if (strlen(trim($AboutMyself[0]['AboutMyFamily']))==0) {
+					return Response::returnError("You must enter about your family",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));
+				}
+				   
+				if ($reqID=="")      {
+					$otp=rand(1000,9999);
+					$mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToVerifyPublishProfile'");
+					$content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+					$content  = str_replace("#otp#",$otp,$content);
 
-           $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileID`='".$_POST['ProfileID']."'");   
+					MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+											   "Category" => "RequestToVerifyPublishProfile",
+											   "MemberID" => $member[0]['MemberID'],
+											   "Subject"  => $mContent[0]['Title'],
+											   "Message"  => $content),$mailError);
+					MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']."Verification Security Code is ".$otp);
 
-           $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
-        if ($reqID=="")      {
-             $otp=rand(1000,9999);
-
-             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToVerifyPublishProfile'");
-             $content  = str_replace("#ProfileName#",$data[0]['ProfileName'],$mContent[0]['Content']);
-             $content  = str_replace("#otp#",$otp,$content);
-
-             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
-                                        "Category" => "RequestToVerifyPublishProfile",
-                                        "MemberID" => $member[0]['MemberID'],
-                                        "Subject"  => $mContent[0]['Title'],
-                                        "Message"  => $content),$mailError);
-             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Mobile Verification Security Code is ".$otp);
-
-            if($mailError){
+					if($mailError){
                         return "Mailer Error: " . $mail->ErrorInfo.
                         "Error. unable to process your request.";
-                     } else {
-                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" =>$member[0]['MemberID'],
-                                                                                     "RequestSentOn" =>date("Y-m-d H:i:s"),
-                                                                                     "EmailTo" =>$member[0]['EmailID'],
-                                                                                     "SMSTo" =>$member[0]['MobileNumber'],
-                                                                                     "SecurityCode" =>$otp,
-                                                                                     "Type" =>"RequestToVerifyPublishProfile",
-                                                                                     "messagedon"=>date("Y-m-d h:i:s"))) ;
+                    } else {
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
+                                                                                      "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                                      "EmailTo"       =>$member[0]['EmailID'],
+                                                                                      "SMSTo"         =>$member[0]['MobileNumber'],
+                                                                                      "SecurityCode"  =>$otp,
+                                                                                      "Type"          =>"RequestToVerifyPublishProfile",
+                                                                                      "messagedon"    =>date("Y-m-d h:i:s"))) ;
                         $formid = "frmPuplishOTPVerification_".rand(30,3000);
                         $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
                                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
-                        <form method="POST" id="'.$formid.'" name="'.$formid.'">
-                            <div class="form-group">
-                            <input type="hidden" value="'.$securitycode.'" name="reqId">
-                            <input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
-                                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                   <h4 class="modal-title">Submit profile for verify</h4> <br>
-                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-									<div class="col-sm-12">
-										<div class="col-sm-3"></div>
-                                        <div class="col-sm-6">
-											<input type="text"  class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
-											<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+											<form method="POST" id="'.$formid.'" name="'.$formid.'">
+												<div class="form-group">
+													<input type="hidden" value="'.$securitycode.'" name="reqId">
+													<input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
+													<button type="button" class="close" data-dismiss="modal">&times;</button>
+													<h4 class="modal-title">Submit profile for verify</h4> <br>
+													<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+												</div>
+												<div class="form-group">
+													<div class="input-group">
+														<div class="col-sm-12">
+															<div class="col-sm-3"></div>
+															<div class="col-sm-6">
+																<input type="text"  class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
+																<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+															</div>
+															<div class="col-sm-3"></div>
+														</div>
+														<div class="col-sm-12" style="text-align:center">'.$error.'</div>
+													</div>
+												</div>
+												<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+											</form>                                                                                                       
+										</div>'; 
+					}
+				} else {
+						$formid = "frmPuplishOTPVerification_".rand(30,3000);
+								return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+									<form method="POST" id="'.$formid.'" name="'.$formid.'">
+										<div class="form-group">
+											<input type="hidden" value="'.$reqID.'" name="reqId">
+											<input type="hidden" value="'.$ProfileID.'" name="ProfileID">
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h4 class="modal-title">Submit profile for verify</h4> <br>
+											<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
 										</div>
-										<div class="col-sm-3"></div>
-									</div>
-                                    <div class="col-sm-12" style="text-align:center">'.$error.'</div>
-                                </div>
-                            </div>                                                                      
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
-                        </form>                                                                                                       
-                        </div>
-                        '; 
-                          }
-        } else {
-            $formid = "frmPuplishOTPVerification_".rand(30,3000);
-                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
-                        <form method="POST" id="'.$formid.'" name="'.$formid.'">
-                            <div class="form-group">
-                            <input type="hidden" value="'.$reqID.'" name="reqId">
-                              <input type="hidden" value="'.$ProfileID.'" name="ProfileID">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                   <h4 class="modal-title">Submit profile for verify</h4> <br>
-                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-3"></div>
-                                        <div class="col-sm-6">
-											<input type="text"  class="form-control" value="'.$otpdata.'" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
-											<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+										<div class="form-group">
+											<div class="input-group">
+												<div class="col-sm-12">
+													<div class="col-sm-3"></div>
+													<div class="col-sm-6">
+														<input type="text"  class="form-control" value="'.$otpdata.'" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
+														<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+													</div>
+													<div class="col-sm-3"></div>
+												</div>
+											</div>
+											<div class="col-sm-12" style="text-align:center">'.$errormessage.'</div>
 										</div>
-                                        <div class="col-sm-3"></div>
-								   </div>
-                                    <div class="col-sm-12" style="text-align:center">'.$errormessage.'</div>
-                                </div>
-                            </div>
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
-                        </form>                                                                                                       
-                        </div>
-                        '; 
+										<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+									</form>                                                                                                       
+								</div>'; 
+				}
         }
-                                                                                                                                                                              
-         }
          
-         function ProfilePublishOTPVerification() {
+        function ProfilePublishOTPVerification() {
+            global $mysql,$loginInfo ;
+             
+            $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
+			$otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
+			
+            if (strlen(trim($_POST['PublishOtp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['PublishOtp']))  {
 
-             global $mysql,$loginInfo ;
+                $mysql->execute("update `_tbl_draft_profiles` set  `RequestToVerify`      = '1',
+																`RequestVerifyOn`      = '".date("Y-m-d H:i:s")."'
+																 where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'");
+				
+				$mysql->insert("_tbl_request_edit",array("MemberID"          	=> $loginInfo[0]['MemberID'],
+														 "MemberCode"        	=> $member[0]['MemberCode'],
+														 "DraftProfileID"    	=> $data[0]['ProfileID'],
+														 "DraftProfileCode"  	=> $data[0]['ProfileCode'],
+														 "RequestToSubmit"   	=> "1",
+														 "RequestToSubmittedOn" => date("Y-m-d H:i:s")));
              
-             $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
-             
-           /*  if (sizeof($data)==0) {
-                return "Record not found.<a data-dismiss='modal' style='cursor:pointer'>Continue</a>"; 
-             }
-             
-             if ($data[0]['RequestToVerify']==1) {
-                return "Already sent request to verify.<a data-dismiss='modal' style='cursor:pointer'>Continue</a>"; 
-             }
-             
-             if (strlen(trim($data[0]['ProfileFor']))>0) {
-                return "Please choose Profile for in General Information.<a data-dismiss='modal' style='cursor:pointer'>Continue</a>"; 
-             }
-             
-             if (strlen(trim($data[0]['ProfileName']))>0) {
-                return "Please choose Profile for .<a data-dismiss='modal' style='cursor:pointer'>Continue</a>"; 
-             }
-                  */ 
-               
-             
-           $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
-             $otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
-             if (strlen(trim($_POST['PublishOtp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['PublishOtp']))  {
+				$mContent = $mysql->select("select * from `mailcontent` where `Category`='SubmitToVerifyPublishProfile'");
+				$content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+				$content  = str_replace("#ProfileCode#",$data[0]['ProfileCode'],$content);
 
-                    $updateSql = "update `_tbl_draft_profiles` set  `RequestToVerify`      = '1',
-                                                            `RequestVerifyOn`      = '".date("Y-m-d H:i:s")."'
-                                                             where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
-             $mysql->execute($updateSql);  
-             $mysql->insert("_tbl_request_edit",array("MemberID"                => $loginInfo[0]['MemberID'],
-                                                      "ProfileID"               => $data[0]['ProfileID'],
-                                                      "PostedRequestOn" => date("Y-m-d H:i:s")));
-           /*  $mysql->execute("update `_tbl_draft_profiles_photos` set  `IsPublished`      = '1',
-                                                            `PublishedOn`      = '".date("Y-m-d H:i:s")."'
-                                                             where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$data[0]['ProfileID']."'");  */
-              
+				MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+										   "Category" => "SubmitToVerifyPublishProfile",
+										   "MemberID" => $member[0]['MemberID'],
+										   "Subject"  => $mContent[0]['Title'],
+										   "Message"  => $content),$mailError);
+				MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']." [ ".$data[0]['ProfileCode']." ] Your profile submitted to verify ");
 			  
-			 $mContent = $mysql->select("select * from `mailcontent` where `Category`='SubmitToVerifyPublishProfile'");
-             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
-             $content  = str_replace("#ProfileCode#",$data[0]['ProfileCode'],$content);
-
-             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
-                                        "Category" => "SubmitToVerifyPublishProfile",
-                                        "MemberID" => $member[0]['MemberID'],
-                                        "Subject"  => $mContent[0]['Title'],
-                                        "Message"  => $content),$mailError);
-             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']." [ ".$data[0]['ProfileCode']." ] Your profile submitted to verify ");
-			  
-			  
-             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
-                                                             "ActivityType"   => 'RequestToVerifyPublishProfile.',
-                                                             "ActivityString" => 'Request To Verify PublishProfile.',
-                                                             "SqlQuery"       => base64_encode($updateSql),
-                                                             //"oldData"        => base64_encode(json_encode($oldData)),
-                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+				$id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+																"ActivityType"   => 'RequestToVerifyPublishProfile.',
+																"ActivityString" => 'Request To Verify PublishProfile.',
+																"SqlQuery"       => base64_encode($updateSql),
+																//"oldData"      => base64_encode(json_encode($oldData)),
+																"ActivityOn"     => date("Y-m-d H:i:s")));
 				return Response::returnSuccess("Your profile has been submitted to verify.");
                 
-             } else {
+            } else {
                  return $this->SendOtpForProfileforPublish("<span style='color:red'>Invalid verification code.</span>",$_POST['PublishOtp'],$_POST['reqId'],$_POST['ProfileID']);
-             } 
+				} 
+        }
+		function ResendSendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
+			global $mysql,$mail,$loginInfo;      
+			
+			$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+			$member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
+             
+				$resend = $mysql->insert("_tbl_resend",array("MemberID" =>$member[0]['MemberID'],
+															 "Reason" 	=>"Resend Profile Publish Verfication Code",
+															 "ResendOn" =>date("Y-m-d h:i:s"))) ;
+				if ($reqID=="") {
+					$otp=rand(1000,9999);
 
-         }
-      
+					$mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToVerifyPublishProfile'");
+					$content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+					$content  = str_replace("#otp#",$otp,$content);
+
+					MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+											   "Category" => "RequestToVerifyPublishProfile",
+											   "MemberID" => $member[0]['MemberID'],
+											   "Subject"  => $mContent[0]['Title'],
+											   "Message"  => $content),$mailError);
+					MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']." Verification Security Code is ".$otp);
+                                                                                                                          
+					if($mailError){
+                        return "Mailer Error: " . $mail->ErrorInfo.
+                        "Error. unable to process your request.";                                                               
+                    } else {
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" 	=>$member[0]['MemberID'],
+                                                                                     "RequestSentOn"=>date("Y-m-d H:i:s"),
+                                                                                     "EmailTo" 		=>$member[0]['EmailID'],
+                                                                                     "SMSTo" 		=>$member[0]['MobileNumber'],
+                                                                                     "SecurityCode" =>$otp,
+                                                                                     "Type"         =>"RequestToVerifyPublishProfile",
+                                                                                     "messagedon"  	=>date("Y-m-d h:i:s"))) ;
+                        $formid = "frmPuplishOTPVerification_".rand(30,3000);
+                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
+                            return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+										<form method="POST" id="'.$formid.'" name="'.$formid.'">
+											<div class="form-group">
+												<input type="hidden" value="'.$securitycode.'" name="reqId">
+												<input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Submit profile for verify</h4> <br>
+												<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+											</div>
+											<div class="form-group">
+												<div class="input-group">
+													<div class="col-sm-12">
+													<div class="col-sm-3"></div>
+													<div class="col-sm-6">
+														<input type="text"  class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"> 
+														<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+													</div>
+													<div class="col-sm-3"></div>
+													<div class="col-sm-12">'.$error.'</div>
+												</div>
+											</div>
+											<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+										</form>                                                                                                       
+									</div>'; 
+                    }
+			    } else {
+						$formid = "frmPuplishOTPVerification_".rand(30,3000);
+							return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+										<form method="POST" id="'.$formid.'" name="'.$formid.'">
+											<div class="form-group">
+												<input type="hidden" value="'.$reqID.'" name="reqId">
+												<input type="hidden" value="'.$ProfileID.'" name="ProfileID">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Submit profile for verify</h4>
+												<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+											</div>
+											<div class="form-group">
+												<div class="input-group">
+													<div class="col-sm-12">
+													<div class="col-sm-3"></div>
+													<div class="col-sm-6">
+														<input type="text"  class="form-control" value="'.$otpdata.'" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
+														<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+													</div>
+													<div class="col-sm-12">'.$errormessage.'</div>
+												</div>
+											</div>
+											<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+										</form>                                                                                                       
+									</div>'; 
+				}
+        }
+    /* end Submit profile */  
          function DeleteAttach() {
 
              global $mysql,$loginInfo;
@@ -2493,7 +2500,7 @@
                                                                             "ProfileCode"           => $profile[0]['ProfileCode'], 
                                                                             "FileName"              => $_POST['File'])); 
              
-             return (sizeof($id)>0) ? Response::returnSuccess("success",$_POST)
+             return (sizeof($id)>0) ? Response::returnSuccess("success",$_POST,array("Code"=>$_POST['Code']))
                                     : Response::returnError("Access denied. Please contact support");   
          }
          
@@ -2583,7 +2590,7 @@
          function DeletProfilePhoto() {
 
              global $mysql,$loginInfo;
-             $mysql->execute("update `_tbl_draft_profiles_photos` set `IsDelete`='1' where `ProfilePhotoID`='".$_POST['ProfilePhotoID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'");
+             $mysql->execute("update `_tbl_draft_profiles_photos` set `IsDelete`='1',`IsDeletedOn`='".date("Y-m-d H:i:s")."' where `ProfilePhotoID`='".$_POST['ProfilePhotoID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'");
                        return  '<div style="background:white;width:100%;padding:20px;height:100%;">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Confirmation For Delete</h4>
@@ -3472,30 +3479,33 @@
                      $securitycode = $reqID;
                  }
                  $formid = "frmMobileNoVerification_".rand(30,3000);
-                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">                      
-                         <form method="POST" id="'.$formid.'">
-                         <input type="hidden" value="'.$_GET['callfrom'].'" name="callfrom">     
-                         <input type="hidden" value="'.$loginid.'" name="loginId">
-                         <input type="hidden" value="'.$securitycode.'" name="reqId">     
-                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          '.(($updatemsg!="") ? $updatemsg : "").'
-                         <h4 class="modal-title">Please verify your mobile number</h4>                     
-                            
-                            <div style="text-align:left"> Dear '.$memberdata[0]['MemberName'].',<br>
-                                <h5 style="color: #777;line-height:20px;font-weight: 100;">Please enter the verification code which you have received on your mobile number ending with  +'.$memberdata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'</h5>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-7"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                        <div class="col-sm-5"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
-                                    </div>
-                                    <div class="col-sm-12">'.$error.'</div>
-                                </div>
-                            </div>                                                              
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendMobileNumberVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
-                        </form>                                                                                                       
-                        </div>';
+                 return '<div id="otpfrm">
+                                            <form method="POST" id="'.$formid.'">
+                                            <input type="hidden" value="'.$_GET['callfrom'].'" name="callfrom">     
+                                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                                            <input type="hidden" value="'.$securitycode.'" name="reqId">    
+                                            <div class="modal-header">                                                             
+                                                <h4 class="modal-title">Please verify your mobile number</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                 '.(($updatemsg!="") ? $updatemsg : "").'
+                                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                                <h4 style="text-align:center;color:#ada9a9">Please enter the verification code which you have received on your mobile number ending with  +'.$memberdata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'</h4>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-12"> 
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-4"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                        <div class="col-sm-2"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-12" style="text-align:center;">'.$error.'</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendMobileNumberVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
+                                            </form>                                                                                                       
+                                </div>';
              }
          }
   
@@ -3517,13 +3527,15 @@
                                                           "ResendOn"=>date("Y-m-d h:i:s"))) ;
 
              if ($memberdata[0]['IsEmailVerified']==1) {
-                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Email Verification</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
-                       </div>';    
+                 return '<div class="modal-header">
+                            <h4 class="modal-title">Email Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
              } else {
 
                  if ($error=="") {
@@ -3551,32 +3563,32 @@
                                                                                      "messagedon"=>date("Y-m-d h:i:s"))) ;
                         $formid = "frmMobileNoVerification_".rand(30,3000);
                         $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
-                                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
-                        <form method="POST" id="'.$formid.'">
-                        <input type="hidden" value="'.$loginid.'" name="loginId">
-                        <input type="hidden" value="'.$securitycode.'" name="reqId">
-                            <div class="form-group">
-                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
-                                <div class="input-group">
-                                    <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
-                                    <h4 style="text-align:center;color:#6c6969;">Please verify your email</h4>
-                                </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
-                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-7"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                        <div class="col-sm-5"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
-                                    </div>
-                                    <div class="col-sm-12">'.$error.'</div>
-                                </div>
-                            </div>                                                              
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
-                        </form>                                                                                                       
-                        </div>
-                        '; 
+                                return '<div id="otpfrm">
+                                            <form method="POST" id="'.$formid.'">
+                                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Please verify your email</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                                </div>
+                                                 <div class="modal-body">
+                                                    <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                                    <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="col-sm-12">
+                                                                <div class="col-sm-3"></div>
+                                                                <div class="col-sm-4"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                                <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                                <div class="col-sm-3"></div>
+                                                            </div>
+                                                            <div class="col-sm-12"  style="text-align:center;">'.$error.'</div>
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
+                                        </form>                                                                                                       
+                                    </div>'; 
                           }
 
                  }  else {
@@ -3584,30 +3596,32 @@
 
                     $formid = "frmMobileNoVerification_".rand(30,3000);
                  $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
-                                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
-                        <form method="POST" id="'.$formid.'">
-                        <input type="hidden" value="'.$loginid.'" name="loginId">
-                        <input type="hidden" value="'.$securitycode.'" name="reqId">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <button type="button" class="close" data-dismiss="modal" style="margin-top: -20px;margin-right: -20px;">&times;</button>
-                                    <h4 style="text-align:center;color:#ada9a9">Please verify your email</h4>
-                                </div>
-                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
-                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-7"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                        <div class="col-sm-5"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
-                                    </div>
-                                    <div class="col-sm-12">'.$error.'</div>
-                                </div>
-                            </div>
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer">&nbsp;Resend</a><h5> 
-                        </form>                                                                                                       
-                        </div>'; 
+                                return '<div id="otpfrm">
+                                            <form method="POST" id="'.$formid.'">
+                                            <input type="hidden" value="'.$loginid.'" name="loginId">
+                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Please verify your email</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                                </div>
+                                                 <div class="modal-body">
+                                                    <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                                    <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="col-sm-12">
+                                                                <div class="col-sm-3"></div>
+                                                                <div class="col-sm-4"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                                <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                                <div class="col-sm-3"></div>
+                                                            </div>
+                                                            <div class="col-sm-12"  style="text-align:center;">'.$error.'</div>
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
+                                        </form>                                                                                                       
+                                    </div>'; 
                 }
             }                                                                                     
          }
@@ -3670,103 +3684,7 @@
                  return Response::returnSuccess("success",$Latestupdates);                                               
      } 
          
-         function ResendSendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
-
-        global $mysql,$mail,$loginInfo;      
-        $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
-           //$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileID`='".$_POST['ProfileID']."'");   
-
-           $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
-           
-             $resend = $mysql->insert("_tbl_resend",array("MemberID" =>$member[0]['MemberID'],
-                                                          "Reason" =>"Resend Profile Publish Verfication Code",
-                                                          "ResendOn"=>date("Y-m-d h:i:s"))) ;
-
-            
-        if ($reqID=="")      {
-             $otp=rand(1000,9999);
-
-             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToVerifyPublishProfile'");
-             $content  = str_replace("#ProfileName#",$data[0]['ProfileName'],$mContent[0]['Content']);
-             $content  = str_replace("#otp#",$otp,$content);
-
-             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
-                                        "Category" => "RequestToVerifyPublishProfile",
-                                        "MemberID" => $member[0]['MemberID'],
-                                        "Subject"  => $mContent[0]['Title'],
-                                        "Message"  => $content),$mailError);
-             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Mobile Verification Security Code is ".$otp);
-                                                                                                                          
-            if($mailError){
-                        return "Mailer Error: " . $mail->ErrorInfo.
-                        "Error. unable to process your request.";                                                               
-                     } else {
-                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" =>$member[0]['MemberID'],
-                                                                                     "RequestSentOn" =>date("Y-m-d H:i:s"),
-                                                                                     "EmailTo" =>$member[0]['EmailID'],
-                                                                                     "SMSTo" =>$member[0]['MobileNumber'],
-                                                                                     "SecurityCode" =>$otp,
-                                                                                     "Type" =>"RequestToVerifyPublishProfile",
-                                                                                     "messagedon"=>date("Y-m-d h:i:s"))) ;
-                        $formid = "frmPuplishOTPVerification_".rand(30,3000);
-                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
-                                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
-                        <form method="POST" id="'.$formid.'" name="'.$formid.'">
-                            <div class="form-group">
-                            <input type="hidden" value="'.$securitycode.'" name="reqId">
-                            <input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
-                                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                   <h4 class="modal-title">Submit profile for verify</h4> <br>
-                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12">
-										<div class="col-sm-3"></div>
-                                        <div class="col-sm-6">
-											<input type="text"  class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"> 
-											<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
-										</div>
-										<div class="col-sm-3"></div>
-								   </div>
-                                    <div class="col-sm-12">'.$error.'</div>
-                                </div>
-                            </div>                                                                      
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
-                        </form>                                                                                                       
-                        </div>
-                        '; 
-                          }
-        } else {
-            $formid = "frmPuplishOTPVerification_".rand(30,3000);
-                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
-                        <form method="POST" id="'.$formid.'" name="'.$formid.'">
-                            <div class="form-group">
-                            <input type="hidden" value="'.$reqID.'" name="reqId">
-                              <input type="hidden" value="'.$ProfileID.'" name="ProfileID">
-                               <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                   <h4 class="modal-title">Submit profile for verify</h4>
-                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="col-sm-12">
-										<div class="col-sm-3"></div>
-                                        <div class="col-sm-6">
-											<input type="text"  class="form-control" value="'.$otpdata.'" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
-											<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
-										</div>
-                                    </div>
-                                    <div class="col-sm-12">'.$errormessage.'</div>
-                                </div>
-                            </div>
-                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
-                        </form>                                                                                                       
-                        </div>
-                        '; 
-        }
-
-         }
+         
          
          function HideLatestUpdates() {
 
@@ -4462,25 +4380,7 @@
 
          }  
          
-         function SendRequestForEditPostedProfile() {
-
-             global $mysql,$loginInfo;
-             
-             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'");
-
-             $updateSql = "update `_tbl_draft_profiles` set `RequestToVerify` = '0' where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'";
-             $mysql->execute($updateSql);
-                  $mysql->insert("_tbl_request_edit",array("MemberID"                => $loginInfo[0]['MemberID'],
-                                                           "ProfileID"               => $Profiles[0]['ProfileID'],
-                                                           "EditRequestFromPostedOn" => date("Y-m-d H:i:s")));
-            
-               return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Edit Profile</h4>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/'.$_POST['FileName'].'/'.$_POST['ProfileCode'].'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';
-
-         }
+         
          
          function ViewOrders() {
              global $mysql,$loginInfo;
@@ -4911,8 +4811,6 @@
 
          }
          
-        
-         
 		 function AddToShortList() {
              
              global $mysql,$loginInfo;    
@@ -5021,9 +4919,219 @@
                                                         "ViewedOn"          => date("Y-m-d H:i:s")));
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has remove shorlist.");      
           }
-		  
+/*Edit submitted Profile */
+	function SendOtpForEditSubmittedProfile($errormessage="",$otpdata="",$reqID="",$ProfileCode="") {
+        global $mysql,$mail,$loginInfo;      
+        
+        $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'"); 
+		$member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
+        if ($reqID=="")      {
+            $otp=rand(1000,9999);
+			$mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToEditForSubmittedProfile'");
+            $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+            $content  = str_replace("#otp#",$otp,$content);
+
+            MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                       "Category" => "RequestToEditForSubmittedProfile",
+                                       "MemberID" => $member[0]['MemberID'],
+                                       "Subject"  => $mContent[0]['Title'],
+                                       "Message"  => $content),$mailError);
+            MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']." Verification Security Code is ".$otp);
+            if($mailError){
+                    return "Mailer Error: " . $mail->ErrorInfo.
+                        "Error. unable to process your request.";
+                    } else {
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
+                                                                                      "RequestSentOn" =>date("Y-m-d H:i:s"),
+																					  "EmailTo" 	  =>$member[0]['EmailID'],
+                                                                                      "SMSTo" 		  =>$member[0]['MobileNumber'],
+                                                                                      "SecurityCode"  =>$otp,
+                                                                                      "Type" 		  =>"RequestToEditForSubmittedProfile",
+                                                                                      "messagedon"    =>date("Y-m-d h:i:s"))) ;
+                        $formid = "frmEditForSubmittedProfileOTPVerification_".rand(30,3000);
+                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
+                            return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+										<form method="POST" id="'.$formid.'" name="'.$formid.'">
+											<div class="form-group">
+												<input type="hidden" value="'.$securitycode.'" name="reqId">
+												<input type="hidden" value="'.$_POST['ProfileCode'].'" name="ProfileCode">
+												<input type="hidden" value="'.$_POST['FileName'].'" name="FileName">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Profile Edit</h4> <br>
+												<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+											</div>
+											<div class="form-group">
+												<div class="input-group">
+													<div class="col-sm-12">
+														<div class="col-sm-3"></div>
+														<div class="col-sm-6">
+															<input type="text"  class="form-control" id="EditOtp" maxlength="4" name="EditOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
+															<button type="button" onclick="SubmittedProfileforEditOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+														</div>
+														<div class="col-sm-3"></div>
+													</div>
+													<div class="col-sm-12" style="text-align:center">'.$error.'</div>
+												</div>
+											</div>                                                                      
+											<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForSubmittedProfileProfileForEdit(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+										</form>                                                                                                       
+									</div>'; 
+                    }
+        } else {
+            $formid = "frmEditForSubmittedProfileOTPVerification_".rand(30,3000);
+                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+							<form method="POST" id="'.$formid.'" name="'.$formid.'">
+								<div class="form-group">
+									<input type="hidden" value="'.$reqID.'" name="reqId">
+									<input type="hidden" value="'.$ProfileCode.'" name="ProfileCode">
+									<input type="hidden" value="'.$_POST['FileName'].'" name="FileName">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Profile Edit</h4> <br>
+									<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<div class="col-sm-12">
+											<div class="col-sm-3"></div>
+											<div class="col-sm-6">
+												<input type="text"  class="form-control" value="'.$otpdata.'" id="EditOtp" maxlength="4" name="EditOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
+												<button type="button" onclick="SubmittedProfileforEditOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+											</div>
+											<div class="col-sm-3"></div>
+										</div>
+										<div class="col-sm-12" style="text-align:center">'.$errormessage.'</div>
+									</div>
+								</div>
+								<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForSubmittedProfileProfileForEdit(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+							</form>                                                                                                       
+                        </div>'; 
+        }
+    }
 	
-     }  
+	function SubmittedProfileforEditOTPVerification() {
+        
+		global $mysql,$loginInfo ;
+             
+        $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'"); 
+		$member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
+        $otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
+            if (strlen(trim($_POST['EditOtp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['EditOtp']))  {
+				
+				$mysql->execute("update `_tbl_draft_profiles` set `RequestToVerify` = '0' where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'");
+				
+				$mysql->insert("_tbl_request_edit",array("MemberID"                		=> $loginInfo[0]['MemberID'],
+														 "MemberCode"            		=> $member[0]['MemberCode'],
+														 "DraftProfileID"            	=> $data[0]['ProfileID'],
+														 "DraftProfileCode"            	=> $data[0]['ProfileCode'],
+														 "RequestToEditFromSubmitted"   => "1",
+														 "RequestToEditFromSubmittedOn" => date("Y-m-d H:i:s")));
+         
+				$id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+																"ActivityType"   => 'EditForSubmittedProfile.',
+																"ActivityString" => 'Edit For Submitted Profile.',
+																"SqlQuery"       => base64_encode($updateSql),
+																//"oldData"      => base64_encode(json_encode($oldData)),
+																"ActivityOn"     => date("Y-m-d H:i:s")));
+				return Response::returnSuccess("Your submitted profile has been changed to draft profile.",array("FileName"=>$_POST['FileName'],"ProfileCode"=>$_POST['ProfileCode']));
+            } else {
+                 return $this->SendOtpForEditSubmittedProfile("<span style='color:red'>Invalid verification code.</span>",$_POST['EditOtp'],$_POST['reqId'],$_POST['ProfileCode']);
+            } 
+	}
+	
+	function ResendSendOtpForSubmittedProfileProfileForEdit($errormessage="",$otpdata="",$reqID="",$ProfileCode="") {
+        
+		global $mysql,$mail,$loginInfo;   
+			
+		$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'"); 
+		$member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
+        
+		$resend = $mysql->insert("_tbl_resend",array("MemberID" =>$member[0]['MemberID'],
+                                                     "Reason"   =>"Resend Edit For Submitted Profile Verfication Code",
+                                                     "ResendOn" =>date("Y-m-d h:i:s"))) ;
+		if ($reqID=="")      {
+            $otp=rand(1000,9999);
+			$mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToEditForSubmittedProfile'");
+            $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+            $content  = str_replace("#otp#",$otp,$content);
+
+            MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                       "Category" => "RequestToEditForSubmittedProfile",
+                                       "MemberID" => $member[0]['MemberID'],
+                                       "Subject"  => $mContent[0]['Title'],
+                                       "Message"  => $content),$mailError);
+            MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']." Verification Security Code is ".$otp);
+                                                                                                                          
+            if($mailError){
+                return "Mailer Error: " . $mail->ErrorInfo.
+                    "Error. unable to process your request.";                                                               
+            } else {
+                $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
+                                                                              "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                              "EmailTo" 	  =>$member[0]['EmailID'],
+                                                                              "SMSTo" 		  =>$member[0]['MobileNumber'],
+                                                                              "SecurityCode"  =>$otp,
+                                                                              "Type"          =>"RequestToEditForSubmittedProfile",
+                                                                              "messagedon"    =>date("Y-m-d h:i:s"))) ;
+                $formid = "frmEditForSubmittedProfileOTPVerification_".rand(30,3000);
+                $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
+                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+							<form method="POST" id="'.$formid.'" name="'.$formid.'">
+								<div class="form-group">
+									<input type="hidden" value="'.$securitycode.'" name="reqId">
+									<input type="hidden" value="'.$_POST['ProfileCode'].'" name="ProfileCode">
+									<input type="hidden" value="'.$_POST['FileName'].'" name="FileName">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Profile Edit</h4> <br>
+									<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<div class="col-sm-12">
+											<div class="col-sm-3"></div>
+											<div class="col-sm-6">
+												<input type="text"  class="form-control" id="EditOtp" maxlength="4" name="EditOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"> 
+												<button type="button" onclick="SubmittedProfileforEditOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+											</div>
+											<div class="col-sm-3"></div>
+										</div>
+										<div class="col-sm-12">'.$error.'</div>
+									</div>
+								</div>                                                                      
+								<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForSubmittedProfileProfileForEdit(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+							</form>                                                                                                       
+                        </div>'; 
+            }
+        } else {
+            $formid = "frmEditForSubmittedProfileOTPVerification_".rand(30,3000);
+                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
+							<form method="POST" id="'.$formid.'" name="'.$formid.'">
+								<div class="form-group">
+									<input type="hidden" value="'.$reqID.'" name="reqId">
+									<input type="hidden" value="'.$ProfileCode.'" name="ProfileCode">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Submit profile for verify</h4>
+									<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<div class="col-sm-12">
+											<div class="col-sm-3"></div>
+											<div class="col-sm-6">
+												<input type="text"  class="form-control" value="'.$otpdata.'" id="EditOtp" maxlength="4" name="EditOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
+												<button type="button" onclick="SubmittedProfileforEditOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
+											</div>
+										</div>
+										<div class="col-sm-12">'.$errormessage.'</div>
+									</div>
+								</div>
+								<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForSubmittedProfileProfileForEdit(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+							</form>                                                                                                       
+                        </div>'; 
+        }
+
+    }
+   /*end edit submit profile */      
+ }  
 //4084   5500
 ?>                                                            
   

@@ -13,7 +13,7 @@ function VisitedWelcomeMsg() {
         
         var param = $( "#"+frmid1).serialize();
         
-        $('#Mobile_VerificationBody').html(preloader);
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
         
         $.post(API_URL + "m=Franchisee&a=MobileNumberVerificationForm", 
@@ -24,7 +24,7 @@ function VisitedWelcomeMsg() {
                     );
     }
     function ChangeMobileNumberF() {
-        $('#Mobile_VerificationBody').html(preloader);
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Franchisee&a=ChangeMobileNumber", 
@@ -39,7 +39,7 @@ function VisitedWelcomeMsg() {
         
         var param = $( "#"+frmid1).serialize();
         
-        $('#Mobile_VerificationBody').html(preloader);
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
         
         $.post(API_URL + "m=Franchisee&a=EmailVerificationForm", 
@@ -51,7 +51,7 @@ function VisitedWelcomeMsg() {
     }  
     
     function ChangeEmailID() {
-        $('#Mobile_VerificationBody').html(preloader);
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
          $('#myModal').modal('show'); 
         $.ajax({
                         url: API_URL + "m=Franchisee&a=ChangeEmailID", 
@@ -63,7 +63,7 @@ function VisitedWelcomeMsg() {
     }
     
     function FCheckVerification() {
-        $('#Mobile_VerificationBody').html(preloader);
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
          $('#myModal').modal('show'); 
           
         $.ajax({
@@ -80,16 +80,16 @@ function VisitedWelcomeMsg() {
                         }
                     });
     } 
-     function MobileNumberOTPVerification(frmid) {
+   /* function MobileNumberOTPVerification(frmid) {
          
          $('#errormsg').html("");
          if ($.trim($("#mobile_otp_2").val()).length!=4){
          $('#errormsg').html("Verification code is invalid");
          return false;
-         }
+         }                       
                          
          var param = $( "#"+frmid).serialize();
-         $('#Mobile_VerificationBody').html(preloader);
+         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
                     $.post(API_URL+"m=Franchisee&a=MobileNumberOTPVerification", 
                             param,
                             function(result2) {
@@ -97,8 +97,22 @@ function VisitedWelcomeMsg() {
                             }
                     );
               
+    }       */
+    function MobileNumberOTPVerification(frmid1) {
+        
+        var param = $( "#"+frmid1).serialize();
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+        $('#myModal').modal('show'); 
+        $.post(API_URL + "m=Franchisee&a=MobileNumberOTPVerification",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
     }
-     function EmailOTPVerification(frmid1) {
+    function EmailOTPVerification(frmid1) {
+        
+        var param = $( "#"+frmid1).serialize();
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+        $('#myModal').modal('show'); 
+        $.post(API_URL + "m=Franchisee&a=EmailOTPVerification",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
+    }
+  /*   function EmailOTPVerification(frmid1) {
          
          $('#errormsg').html("");
          if ($.trim($("#email_otp").val()).length!=4){
@@ -107,7 +121,7 @@ function VisitedWelcomeMsg() {
          }
          
          var param = $( "#"+frmid1).serialize();
-         $('#Mobile_VerificationBody').html(preloader);
+         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
                     $.post(API_URL+"m=Franchisee&a=EmailOTPVerification", 
                             param,
                             function(result2) {
@@ -115,4 +129,18 @@ function VisitedWelcomeMsg() {
                             }
                     );
               
+    }   */
+     function ResendMobileNumberVerificationForm(frmid1) {
+        
+        var param = $( "#"+frmid1).serialize();
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+        $('#myModal').modal('show'); 
+        $.post(API_URL + "m=Franchisee&a=ResendMobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
+    }
+    function ResendEmailVerificationForm(frmid1) {
+        
+        var param = $( "#"+frmid1).serialize();
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+        $('#myModal').modal('show'); 
+        $.post(API_URL + "m=Franchisee&a=ResendEmailVerificationForm", param,function(result2) { $('#Mobile_VerificationBody').html(result2); });
     }
