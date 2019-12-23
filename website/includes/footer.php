@@ -1,4 +1,3 @@
-            
                 <?php 
             if(isset($layout) && $layout==0) {
                 
@@ -22,7 +21,12 @@
                                  </div>
 </div>
  <?php }?>
-
+     </td>
+                </tr>
+                </table>
+                </td>
+                </tr>
+                </table>
 <footer class="footer" style="padding:15px 0px !important;padding-bottom:0px !important;background-color:#222222;color: #999999;">
     <div class="footer_top">
         <div class="container" style="padding-top: 40px;padding-bottom: 40px;">
@@ -67,15 +71,16 @@
               <div class="col-sm-12">
                 <div class="col-sm-6">
                     All Rights Reserved 
-                    <a style="color:#fff" href="http://www.wedlink.in">Wedlink Matrimony</a>
-                    Copyrights © 2019.
+                    <a style="color:#fff" href=""></a>
+                    Copyrights &copy; 2019.
                 </div>
                 <div class="col-sm-6">
-                    Trusted By :  
+                  <!--  Trusted By :  
                     <img src="http://wedlink.in/application/views/front_end/default/source/img/visa.png" alt="visa">
                     <img src="http://wedlink.in/application/views/front_end/default/source/img/mastercard.png" alt="Master Card">
                     <img src="http://wedlink.in/application/views/front_end/default/source/img/paypal.png" alt="PayPal">
                     <img src="http://wedlink.in/application/views/front_end/default/source/img/RuPay2.png" alt="Rupay">
+                    ==>
                 </div>
               </div>
             </div>

@@ -229,7 +229,7 @@ $(document).ready(function(){
                
                  <?php if (JFrame::getAppSetting('menu_background_image_color_noneed')==0) { ?> 
                     <?php if (strlen(trim(JFrame::getAppSetting('menubackgroundimage')))>0) {?>                 
-                        background:url('<?php echo $_SITEPATH;?>assets/<?php echo $config['thumb'].JFrame::getAppSetting('menubackgroundimage');?>');
+                        background:url('<?php echo $_SITEPATH;?>/<?php echo $config['thumb'].JFrame::getAppSetting('menubackgroundimage');?>');
                     <?php } ?>
                 background-color:#<?php echo JFrame::getAppSetting('menubgcolor');?>;
                 <?php } ?>
@@ -281,7 +281,24 @@ $(document).ready(function(){
                 <?php if (JFrame::getAppSetting('need_menu_hover_backgroundcolor')==1) {?>
                 background: #<?php echo JFrame::getAppSetting('menu_hover_backgroundcolor'); ?>;
                 <?php } ?>
-            }    
+            }  
+            
+            .sub_Menu_active {
+                
+                text-transform: <?php echo JFrame::getAppSetting('menu_text_hover_transform');?>;
+               
+                color:#<?php echo JFrame::getAppSetting('menu_hover_font_color');?>;
+                font-family:'<?php echo JFrame::getAppSetting('menufont');?>';
+                font-size:'<?php echo JFrame::getAppSetting('menufontsize');?>px';
+                
+                font-weight:<?php echo JFrame::getAppSetting('menu_hover_font_bold')==1 ? 'bold' : 'none';?>;
+                font-style: <?php echo JFrame::getAppSetting('menu_hover_font_italic')==1 ? 'italic' : 'none';?>;
+                text-decoration: <?php echo JFrame::getAppSetting('menu_hover_font_underline')==1 ? 'underline' : 'none';?>;
+                
+                <?php if (JFrame::getAppSetting('need_menu_hover_backgroundcolor')==1) {?>
+                background: #<?php echo JFrame::getAppSetting('menu_hover_backgroundcolor'); ?>;
+                <?php } ?>
+            }   
                                                      
        
          
@@ -326,19 +343,33 @@ $(document).ready(function(){
 .carousel-control { background-color: rgba(0, 0, 0, 0); bottom: auto; font-size: 20px; left: 0; position: absolute; top: 30%; width: auto; }
 
 .carousel-control.right, .carousel-control.left { background-color: rgba(0, 0, 0, 0); background-image: none; }
+
+/* Red */
+.btn-danger-outline {
+  border-color: #d43f3a;;
+  color: red ;
+  background:#fff;
+}
+
+.btn-danger-outline:hover {
+  background: #d43f3a;;
+  color: white;
+}
+
+
 </style>
 
     </head> 
     <?php if (strlen(trim(JFrame::getAppSetting('backgroundimage')))==0) {?>
         <body style="background-color:#<?php echo JFrame::getAppSetting('backgroundcolor');?>;margin:0px;">
     <?php } else { ?> 
-        <body style="background:url('<?php echo $_SITEPATH;?>assets/<?php echo $config['thumb'].JFrame::getAppSetting('backgroundimage');?>') <?php echo JFrame::getAppSetting('sitebgposition');?> ;background-color:#<?php echo JFrame::getAppSetting('backgroundcolor');?>;margin:0px;">
+        <body style="background:url('<?php echo BaseUrl;?><?php echo $config['thumb'].JFrame::getAppSetting('backgroundimage');?>') <?php echo JFrame::getAppSetting('sitebgposition');?> ;background-color:#<?php echo JFrame::getAppSetting('backgroundcolor');?>;margin:0px;">
     <?php } ?>   
           
           
                                                 
           
-        <table align="center" cellpadding="0" cellspacing="0" style="width:1024px; border:0px solid #3A3A3A">
+        <table class="container" align="center" cellpadding="0" cellspacing="0" style="min-width:1024px; border:0px solid #3A3A3A">
         
          <?php if (JFrame::getAppSetting("showheader")==1) { ?> 
             <tr>
@@ -351,27 +382,34 @@ $(document).ready(function(){
                    <a href="<?php echo JFrame::getAppSetting('siteurl');?>/index.php"><img src='<?php echo BaseUrl;?>assets/<?php echo $config['thumb'].JFrame::getAppSetting('logo');?>' style="height:80px;" ></a>
                    </div>
                 </td>-->
-                <td colspan="2">
+                                                                                                                                        
+                                                                                                                                                                                   
+               <?php if (JFrame::getAppSetting("headernoimagenocolor")==0) { ?> 
+                    <td colspan="2" style="padding-right:<?php echo JFrame::getAppSetting('header_logo_padding_right');?>px;padding-left:<?php echo JFrame::getAppSetting('header_logo_padding_left');?>px;padding-top:<?php echo JFrame::getAppSetting('header_logo_padding_top');?>px;padding-bottom:<?php echo JFrame::getAppSetting('header_logo_padding_bottom');?>px;overflow:hidden;height:<?php echo JFrame::getAppSetting('headerheight');?>px;clear:both;background:url('assets/<?php echo $config['thumb'].JFrame::getAppSetting('headerbgimg');?>');background-repeat:<?php echo JFrame::getAppSetting('header_background_repeat');?>;background-color:#<?php echo JFrame::getAppSetting('headerbgcolor');?>;">
+                <?php } else { ?>
+                    <td colspan="2" style="padding-right:<?php echo JFrame::getAppSetting('header_logo_padding_right');?>px;padding-left:<?php echo JFrame::getAppSetting('header_logo_padding_left');?>px;padding-top:<?php echo JFrame::getAppSetting('header_logo_padding_top');?>px;padding-bottom:<?php echo JFrame::getAppSetting('header_logo_padding_bottom');?>px;overflow:hidden;clear:both;height:<?php echo JFrame::getAppSetting('headerheight');?>px">
+                <?php } ?>
+                   
+                            
+                
                 <div class="">
             <div class="col-sm-6">
-                <div style="clear:both;background:url('assets/cms/');background-color:FFFFFF;padding: 5px 5px 5px 10px;">
-                    <a href="<?php echo JFrame::getAppSetting('siteurl');?>/index.php"><img src='<?php echo BaseUrl;?>assets/<?php echo $config['thumb'].JFrame::getAppSetting('logo');?>' style="height:80px;" ></a>
+                <div>
+                    <a href="<?php echo JFrame::getAppSetting('siteurl');?>/index.php"><img src='<?php echo BaseUrl;?>/<?php echo $config['thumb'].JFrame::getAppSetting('logo');?>' style="height:80px;" ></a>
                 </div>
             </div>
-            <div class="col-sm-6" style="text-align:right;padding: 5px 5px 5px 10px;">
-                <a href="<?php echo JFrame::getAppSetting('siteurl');?>/login" class="btn btn-primary" style="margin-top: 12px;padding-top: 2px;padding-bottom: 7px;">Login</a>&nbsp;
-                <a href="<?php echo JFrame::getAppSetting('siteurl');?>/register" class="btn btn-default" id="registerbtn" style="background: none;border-color:#d3175f;color:#d3175f;margin-top: 12px;padding-top: 2px;padding-bottom: 7px;">Register Now</a> 
+            <div class="col-sm-6" style="text-align:right;">
+                <a href="<?php echo JFrame::getAppSetting('siteurl');?>/login" class="btn btn-danger" style="margin-top: 12px;padding-bottom: 7px;">Login</a>&nbsp;
+                <a href="<?php echo JFrame::getAppSetting('siteurl');?>/register" class="btn btn-success" style="margin-top: 12px;padding-bottom: 7px;">Register Now</a> 
             </div>
         </div>
                 </td>
             </tr>
          <?php } ?>   
-            
             <tr>
-                 
                 <td>
                 <div id="subMenu" class="subMenu">
-                    <a class="sub_Menu" href='<?php echo JFrame::getAppSetting('siteurl');?>'>Home</a>
+                    <a class="sub_Menu <?php echo $_SERVER['REQUEST_URI']=='/' ? 'sub_Menu_active' : '';?>" href='<?php echo JFrame::getAppSetting('siteurl');?>'>Home</a>
                     <?php foreach(MenuItems::getHeaderMenuItems() as $m) { ?>
                     <?php 
                         $target  = ($m['target']>0) ? " target='_blank' " : "";
@@ -403,7 +441,7 @@ $(document).ready(function(){
                                                  break;
                         }
                         ?>
-                        <a class="sub_Menu" href='<?php echo $pageurl;?>' <?php echo $target; ?> ><?php echo $m['menuname'];?></a>
+                        <a class="sub_Menu  <?php echo $_SERVER['REQUEST_URI']=="/".$m['pagefilename'] ? 'sub_Menu_active' : '';?>" href='<?php echo $pageurl;?>' <?php echo $target; ?> ><?php echo $m['menuname'];?></a>
                     <?php } ?>
                     </div>
                 </td>

@@ -80,7 +80,7 @@ include_once("includes/header.php");
          <div class="row">
         <div class="status alert alert-success" style="display: none"></div>
         <div class="col-sm-3"></div>    
-        <div class="col-sm-6" style="text-align: center;">
+        <div class="col-sm-6">
                 <div style="text-align: center;">
                     <h2>Registration</h2>
                     <p>Registration Free.</p>
@@ -88,11 +88,11 @@ include_once("includes/header.php");
                     <div id="sendmessage"></div>
                     <div id="errormessage"></div>
                     <form action="<?php $_SERVER['PHP_SELF']?>" name="form1" onsubmit="return submitMemberRegistrationform();" method="post" role="form" class="contactForm"> 
-                    <table style="margin: 0px auto;line-height: 28px;color: #333;min-width: 250px;">
+                    <table style="margin: 0px auto;line-height: 28px;color: #333;min-width: 290px;max-width:100%">
                         <tr>
                             <td colspan="2">
                                 <div class="form-group">
-                                Name<br>
+                                <label for="Name">Name</label>
                                     <input type="text" name="Name" class="form-control" id="Name" value="<?php echo isset($_POST['Name']) ? $_POST['Name'] : '';?>" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
                                     <span class="errorstring" id="ErrName"><?php echo isset($ErrName)? $ErrName : "";?></span>
                                     <div class="validation"></div> 
@@ -102,7 +102,7 @@ include_once("includes/header.php");
                         <tr>
                             <td colspan="2">
                                 <div class="form-group">
-                                Gender<br>
+                                    <label for="Gender">Gender</label>
                                     <select name="Gender" class="form-control" id="Gender" style="padding: 4px;">
                                         <option>Male</option>
                                         <option>Female</option>
@@ -114,11 +114,13 @@ include_once("includes/header.php");
                         <tr>
                             <td colspan="2">
                                 <div class="form-group">
-                                    Mobile Number<br>
+                                    <label for="MobileNumber">Mobile Number</label>
+                                    <div>
                                     <select name="CountryCode" class="form-control" id="CountryCode" style="width:70px;float:left">
                                         <option value="+91">+91</option>
                                     </select>
                                     <input type="text" class="form-control" name="MobileNumber" id="MobileNumber" maxlength="10" placeholder="Mobile Number" value="<?php echo isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : '';?>" style="width:75%">
+                                    </div>
                                 </div>
                                 <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
                             </td>
@@ -126,7 +128,7 @@ include_once("includes/header.php");
                         <tr>                                                                     
                             <td colspan="2"> 
                                 <div class="form-group">
-                                    Email<br>
+                                    <label for="Email">Email</label>
                                     <input type="text" class="form-control" name="Email" id="Email" placeholder="Email" value="<?php echo isset($_POST['Email']) ? $_POST['Email'] : '';?>" >
                                 </div>
                                 <span class="errorstring" id="ErrEmail"><?php echo isset($ErrEmail)? $ErrEmail : "";?></span>
@@ -135,7 +137,8 @@ include_once("includes/header.php");
                         <tr>
                             <td colspan="2">
                                 <div class="form-group">
-                                Login Password<br>
+                                <label for="LoginPassword">Login Password</label>
+                                
                                     <input type="password" class="form-control" name="LoginPassword" id="LoginPassword" placeholder="Login Password" value="<?php echo isset($_POST['LoginPassword']) ? $_POST['LoginPassword'] : '';?>" >
                                 </div>
                                 <span class="errorstring" id="ErrLoginPassword"><?php echo isset($ErrLoginPassword)? $ErrLoginPassword : "";?></span>
@@ -157,9 +160,17 @@ include_once("includes/header.php");
                             </td>
                         </tr>
                         <?php } ?>
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                            <button type="submit" name="BtnRegister" class="btn btn-primary" required="required">Register &amp; Continue</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><hr></td>
+                        </tr>
                     </table>
                     
-                    <div class="text-center"><button type="submit" name="BtnRegister" class="btn btn-primary" required="required">Register &amp; Continue</button></div>
+                    
                 </form>
                 <div class="form-group" style="text-align:center">
                     Already a member? <a href="login">Login Now</a>

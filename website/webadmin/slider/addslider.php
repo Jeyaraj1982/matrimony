@@ -23,7 +23,7 @@
                 
                 if (isset($_FILES['filepath']['name'])&& (strlen(trim($_FILES["filepath"]["name"])))) {
                         
-                    $obj->fileUpload($_FILES['filepath'],__DIR__."/../../assets/".$config['slider'],$config['imageArray'],$config['imgMaxSize'],$param["filename"]);
+                    $obj->fileUpload($_FILES['filepath'],__DIR__."/../../".$config['slider'],$config['imageArray'],$config['imgMaxSize'],$param["filename"]);
                 } else {
                        echo $obj->printError("Please Attach Slider Image");     
                 }

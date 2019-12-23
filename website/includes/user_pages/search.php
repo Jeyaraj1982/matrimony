@@ -152,19 +152,10 @@ function submitSearch() {
                                     </ul>
                                 </div>
                             </div>
-                            <div class="widget widget-categories">
-                                <div class="widget-top">
-                                    <h3 class="widget-title">Matrimony Service</h3>
-                                </div>
-                                <div class="widget-body">
-                                    <ul class="widget-list">
-                                        <li><a href="javascript:;">Wedding Directory</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                            
                         </aside>
                     </div>
-                </div>
+                </div>          
             </div>
         </section>
          

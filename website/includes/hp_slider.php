@@ -12,7 +12,7 @@
   <div class="carousel-inner">
     <?php $i=0; foreach(JSlider::getActiveSliders() as $sliderimage) {?>
     <div class="item <?php echo ($i==0) ? ' active ' : "";?>">
-        <img src="<?php echo BaseUrl;?>assets/<?php echo $config['slider'].$sliderimage['filepath'];?>" alt="Los Angeles">
+        <img src="<?php echo BaseUrl;?><?php echo $config['slider'].$sliderimage['filepath'];?>" alt="Los Angeles">
     </div>
   <?php $i++;} ?>
   </div>

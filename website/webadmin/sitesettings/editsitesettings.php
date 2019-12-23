@@ -11,11 +11,11 @@
 
    if (isset($_POST{"update"})) {
        
-        /* for Background Image */
+        /* for Background Image */                               
         if ((isset($_FILES['backgroundimage']['tmp_name'])) && (strlen(trim($_FILES['backgroundimage']['tmp_name']))>0)) {
             
             $filename    = strtolower("_".time()."_".basename($_FILES['backgroundimage']['name']));
-            $target_path  = strtolower(__DIR__."/../../assets/".$config['thumb'].$filename); 
+            $target_path  = strtolower(__DIR__."/../../".$config['thumb'].$filename); 
                 
             if(move_uploaded_file($_FILES['backgroundimage']['tmp_name'], $target_path)) {
                  $_POST['param'][3] = $filename;
@@ -29,7 +29,7 @@
            if (in_array($_FILES["favoriteicon"]["type"],$iconimgArray)) {
               
             $filename    = strtolower("_".time()."_".basename($_FILES['favoriteicon']['name']));
-            $target_path  = strtolower(__DIR__."/../../assets/".$config['thumb'].$filename); 
+            $target_path  = strtolower(__DIR__."/../../".$config['thumb'].$filename); 
                 
                 if(move_uploaded_file($_FILES['favoriteicon']['tmp_name'], $target_path)) {
                      $_POST['param'][5] = $filename;
@@ -45,7 +45,7 @@
        if ((isset($_FILES['logo']['tmp_name'])) && (strlen(trim($_FILES['logo']['tmp_name']))>0)) {
             
             $filename    = strtolower("_".time()."_".basename($_FILES['logo']['name']));
-            $target_path  = strtolower(__DIR__."/../../assets/".$config['thumb'].$filename); 
+            $target_path  = strtolower(__DIR__."/../../".$config['thumb'].$filename); 
                 
             if(move_uploaded_file($_FILES['logo']['tmp_name'], $target_path)) {
                  $_POST['param'][25] = $filename;
@@ -57,7 +57,7 @@
         if ((isset($_FILES['noimg']['tmp_name'])) && (strlen(trim($_FILES['noimg']['tmp_name']))>0)) {
             
             $filename    = strtolower("_".time()."_".basename($_FILES['noimg']['name']));
-            $target_path  = strtolower(__DIR__."/../../assets/".$config['thumb'].$filename); 
+            $target_path  = strtolower(__DIR__."/../../".$config['thumb'].$filename); 
                 
             if(move_uploaded_file($_FILES['noimg']['tmp_name'], $target_path)) {
                  $_POST['param'][30] = $filename;
@@ -69,7 +69,7 @@
         if ((isset($_FILES['footerbgimage']['tmp_name'])) && (strlen(trim($_FILES['footerbgimage']['tmp_name']))>0)) {
             
             $filename    = strtolower("_".time()."_".basename($_FILES['footerbgimage']['name']));
-            $target_path  = strtolower(__DIR__."/../../assets/".$config['thumb'].$filename); 
+            $target_path  = strtolower(__DIR__."/../../".$config['thumb'].$filename); 
                 
             if(move_uploaded_file($_FILES['footerbgimage']['tmp_name'], $target_path)) {
                  $_POST['param'][38] = $filename;
@@ -81,7 +81,7 @@
          if ((isset($_FILES['headerbgimg']['tmp_name'])) && (strlen(trim($_FILES['headerbgimg']['tmp_name']))>0)) {
             
             $filename    = strtolower("_".time()."_".basename($_FILES['headerbgimg']['name']));
-            $target_path  = strtolower(__DIR__."/../../assets/".$config['thumb'].$filename); 
+            $target_path  = strtolower(__DIR__."/../../".$config['thumb'].$filename); 
                 
             if(move_uploaded_file($_FILES['headerbgimg']['tmp_name'], $target_path)) {
                  $_POST['param'][58] = $filename;
@@ -180,7 +180,7 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                     <td>Logo</td>
                     <td>
                     <?php if (strlen(trim($data[24]['paramvalue']))>0) {?>
-                    <img src="<?php echo BaseUrl;?>/assets/<?php echo $config['thumb'].$data[24]['paramvalue'];?>" height="100"><br>
+                    <img src="<?php echo BaseUrl;?>/<?php echo $config['thumb'].$data[24]['paramvalue'];?>" height="100"><br>
                     <input type="submit" value="Remove" name="rmimagelogo">
                     <?php } ?>
                     <input type="file" class="input" size="30" name="logo"/>
@@ -191,7 +191,7 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                     <td>Favorite Icon</td>
                     <td>
                     <?php if (strlen(trim($data[4]['paramvalue']))>0) {?>  
-                    <img src="<?php echo BaseUrl;?>/assets/<?php echo $config['thumb'].$data[4]['paramvalue'];?>" width="20">
+                    <img src="<?php echo BaseUrl;?>/<?php echo $config['thumb'].$data[4]['paramvalue'];?>" width="20">
                     <input type="submit" value="Remove" name="rmimageicon">
                     <?php } ?>
                     <input type="file" class="input" name="favoriteicon" size="30"/>
@@ -201,7 +201,7 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                     <td>Header Background Image</td>
                     <td>
                     <?php if (strlen(trim($data[57]['paramvalue']))>0) {?>
-                    <img src="<?php echo BaseUrl;?>>assets/<?php echo $config['thumb'].$data[57]['paramvalue'];?>" height="100"> <br>
+                    <img src="<?php echo BaseUrl;?>><?php echo $config['thumb'].$data[57]['paramvalue'];?>" height="100"> <br>
                     <input type="submit" value="Remove" name="rmimageheader">
                     <?php } ?>
                     <input type="file" class="input" size="30" name="headerbgimg"/><br>

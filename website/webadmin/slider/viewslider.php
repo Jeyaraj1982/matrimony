@@ -22,7 +22,7 @@
           ?>
             <tr class='mytr'>
                 <td style='padding:5px;width:70px'>
-                    <img src="<?php echo BaseUrl;?>assets/<?php echo $config['slider'].$r["filepath"];?>"  style="height:70px;"></img>
+                    <img src="<?php echo BaseUrl;?><?php echo $config['slider'].$r["filepath"];?>"  style="height:70px;"></img>
                 </td>
                 <td style="vertical-align: top;padding:10px;">
                     <b><?php echo $r["slidertitle"]?></b> 

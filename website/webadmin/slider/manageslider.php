@@ -30,7 +30,7 @@
                  
                 if ( (isset($_FILES['filepath']['name'])) && (strlen(trim($_FILES['filepath']['name']))>0) ) {
                     
-                      $obj->fileUpload($_FILES['filepath'],"../../assets/".$config['slider'],$config['imageArray'],$config['imgMaxSize'],$param["filename"]); 
+                      $obj->fileUpload($_FILES['filepath'],"../../".$config['slider'],$config['imageArray'],$config['imgMaxSize'],$param["filename"]); 
                     } else {
                        echo $obj->printError("Please Add Slider Image");     
                 }
@@ -86,7 +86,7 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                         <tr>
                              <td style="text-align:left;">
                                 <?php if (strlen(trim($pageContent[0]['filepath']))>0) {?> 
-                                <img src="<?php echo BaseUrl;?>assets/<?php echo $config['slider'].$pageContent[0]['filepath'];?>" style="border:1px solid #ccc;padding:3px;margin-right:0px;" height="120"> <br>
+                                <img src="<?php echo BaseUrl;?>/<?php echo $config['slider'].$pageContent[0]['filepath'];?>" style="border:1px solid #ccc;padding:3px;margin-right:0px;" height="120"> <br>
                                 <input type="submit" value="Remove Image" name="rmimage" id="rmimage">
                                 <?php }?>
                             </td>
@@ -123,7 +123,7 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
             <td>Slider Description</td>
             <td style="text-align:justify;font-family:arial;font-size:12px;">
                 <?php if (strlen(trim($pageContent[0]['filepath']))>0) {?>    
-                <img src="<?php echo BaseUrl;?>assets/<?php echo $config['slider'].$pageContent[0]['filepath'];?>" align="right" style="margin:5px;border:1px solid #ccc;padding:3px;margin-right:0px;" height="120">
+                <img src="<?php echo BaseUrl;?>/<?php echo $config['slider'].$pageContent[0]['filepath'];?>" align="right" style="margin:5px;border:1px solid #ccc;padding:3px;margin-right:0px;" height="120">
                 <?php } ?>
                 <?php echo $pageContent[0]['sliderdescription'];?>
             </td>
