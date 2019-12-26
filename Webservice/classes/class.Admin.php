@@ -1,6 +1,5 @@
 <?php
-
-class Admin extends Master {
+ class Admin extends Master {
 
     function AdminLogin() {
 
@@ -49,8 +48,6 @@ class Admin extends Master {
         }
 
         function GetFranchiseeCode() {
-            
-            
             return Response::returnSuccess("success",array("FranchiseeCode" => SeqMaster::GetNextFranchiseeNumber(),
                                                            "Plans"          => Plans::GetFranchiseePlans(),
                                                            "CountryCode"    => CodeMaster::getData('RegisterAllowedCountries'),
@@ -66,6 +63,11 @@ class Admin extends Master {
             
             global $mysql,$loginInfo;
             
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+            }
+			
             if (!(strlen(trim($_POST['FranchiseeName']))>0)) {
                 return Response::returnError("Please enter your name");                                          
             }
@@ -166,133 +168,151 @@ class Admin extends Master {
             }
             
             $data = $mysql->select("select * from  _tbl_franchisees where ContactEmail='".trim($_POST['FranchiseeEmailID'])."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("EmailID Already Exists");
-        }
-        $data = $mysql->select("select * from  _tbl_franchisees where ContactNumber='".trim($_POST['BusinessMobileNumber'])."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Business MobileNumber Already Exists");
-        }
-        if(strlen(trim($_POST['BusinessWhatsappNumber']))>0){
-        $data = $mysql->select("select * from  _tbl_franchisees where ContactWhatsapp='".trim($_POST['BusinessWhatsappNumber'])."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Business WhatsappNumber Already Exists");
-        }
-        }
-        if(strlen(trim($_POST['BusinessLandlineNumber']))>0){
-        $data = $mysql->select("select * from  _tbl_franchisees where ContactLandline='".trim($_POST['BusinessLandlineNumber'])."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Business LandlineNumber Already Exists");
-        }
-        }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".trim($_POST['EmailID'])."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Email ID Already Exists");
-        }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where MobileNumber='".trim($_POST['MobileNumber'])."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Mobile Number Already Exists");
-        }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where WhatsappNumber='".trim($_POST['WhatsappNumber'])."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Whatsapp Number Already Exists");
-        }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where LandlineNumber='".trim($_POST['LandlineNumber'])."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Landline Number Already Exists");
-        }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where AadhaarNumber='".trim($_POST['AadhaarCard'])."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Aadhaar Number Already Exists");
-        }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where LoginName='".trim($_POST['UserName'])."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Login Name Already Exists");
-        }
-        $plan = $mysql->select("select * from _tbl_franchisees_plans where PlanID='".$_POST['Plan']."'");
-        $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
-         $id =  $mysql->insert("_tbl_franchisees",array("FranchiseeCode"       => $_POST['FranchiseeCode'],
-                                                        "FranchiseName"        => $_POST['FranchiseeName'],
-                                                        "ContactEmail"         => $_POST['FranchiseeEmailID'],
-                                                        "ContactNumberCountryCode"        => $_POST['ContactNumberCountryCode'],
-                                                        "ContactNumber"        => $_POST['BusinessMobileNumber'],
-                                                        "ContactWhatsappCountryCode"      => $_POST['ContactWhatsappCountryCode'],
-                                                        "ContactWhatsapp"      => $_POST['BusinessWhatsappNumber'],
-                                                        "ContactLandline"      => $_POST['BusinessLandlineNumber'],
-                                                        "BusinessAddressLine1" => $_POST['BusinessAddress1'],
-                                                        "BusinessAddressLine2" => $_POST['BusinessAddress2'],
-                                                        "BusinessAddressLine3" => $_POST['BusinessAddress3'],
-                                                        "Landmark"             => $_POST['Landmark'],
-                                                        "DistrictName"         => $_POST['DistrictName'],
-                                                        "StateName"            => $_POST['StateName'],
-                                                        "CountryName"          => $_POST['CountryName'],
-                                                        "CityName"             => $_POST['CityName'],
-                                                        "PinCode"              => $_POST['PinCode'],
-                                                        "ValidUpto"            => $_POST['Validupto'],
-                                                        "MondayF"              => $_POST['MonFH']." ". $_POST['MonFM']." ". $_POST['MonFN'],
-                                                        "TuesdayF"             => $_POST['TueFH']." ". $_POST['TueFM']." ". $_POST['TueFN'],
-                                                        "WednessdayF"          => $_POST['WedFH']." ". $_POST['WedFM']." ". $_POST['WedFN'],
-                                                        "ThursdayF"            => $_POST['ThuFH']." ". $_POST['ThuFM']." ". $_POST['ThuFN'],
-                                                        "FridayF"              => $_POST['FriFH']." ". $_POST['FriFM']." ". $_POST['FriFN'],
-                                                        "SaturdayF"            => $_POST['SatFH']." ". $_POST['SatFM']." ". $_POST['SatFN'],
-                                                        "SundayF"              => $_POST['SunFH']." ". $_POST['SunFM']." ". $_POST['SunFN'],
-                                                        "MondayT"              => $_POST['MonTH']." ".$_POST['MonTM']." ".$_POST['MonTN'],
-                                                        "TuesdayT"             => $_POST['TueTH']." ".$_POST['TueTM']." ".$_POST['TueTN'],
-                                                        "WednessdayT"          => $_POST['WedTH']." ".$_POST['WedTM']." ".$_POST['WedTN'],
-                                                        "ThursdayT"            => $_POST['ThuTH']." ".$_POST['ThuTM']." ".$_POST['ThuTN'],
-                                                        "FridayT"              => $_POST['FriTH']." ".$_POST['FriTM']." ".$_POST['FriTN'],
-                                                        "SaturdayT"            => $_POST['SatTH']." ".$_POST['SatTM']." ".$_POST['SatTN'],
-                                                        "SundayT"              => $_POST['SunTH']." ".$_POST['SunTM']." ".$_POST['SunTN'],
-                                                        "CreatedOn"            => date("Y-m-d H:i:s"),
-                                                        "PlanID"               => $plan[0]['PlanID'],
-                                                        "Plan"                 => $plan[0]['PlanName'] )); 
+			if (sizeof($data)>0) {
+				return Response::returnError("EmailID Already Exists");
+			}
+			$data = $mysql->select("select * from  _tbl_franchisees where ContactNumber='".trim($_POST['BusinessMobileNumber'])."'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Business MobileNumber Already Exists");
+			}
+			if(strlen(trim($_POST['BusinessWhatsappNumber']))>0) {
+			$data = $mysql->select("select * from  _tbl_franchisees where ContactWhatsapp='".trim($_POST['BusinessWhatsappNumber'])."'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Business WhatsappNumber Already Exists");
+			}
+			}
+			if(strlen(trim($_POST['BusinessLandlineNumber']))>0){
+			$data = $mysql->select("select * from  _tbl_franchisees where ContactLandline='".trim($_POST['BusinessLandlineNumber'])."'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Business LandlineNumber Already Exists");
+			}
+			}
+			$data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".trim($_POST['EmailID'])."'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Email ID Already Exists");
+			}
+			$data = $mysql->select("select * from  _tbl_franchisees_staffs where MobileNumber='".trim($_POST['MobileNumber'])."'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Mobile Number Already Exists");
+			}
+			$data = $mysql->select("select * from  _tbl_franchisees_staffs where WhatsappNumber='".trim($_POST['WhatsappNumber'])."'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Whatsapp Number Already Exists");
+			}
+			
+			$data = $mysql->select("select * from  _tbl_franchisees_staffs where AadhaarNumber='".trim($_POST['AadhaarCard'])."'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Aadhaar Number Already Exists");
+			}
+			$data = $mysql->select("select * from  _tbl_franchisees_staffs where LoginName='".trim($_POST['UserName'])."'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Login Name Already Exists");
+			}
+			$plan = $mysql->select("select * from _tbl_franchisees_plans where PlanID='".$_POST['Plan']."'");
+			$dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
+			
+			 $id =  $mysql->insert("_tbl_franchisees",array("FranchiseeCode"       => $_POST['FranchiseeCode'],
+															"FranchiseName"        => $_POST['FranchiseeName'],
+															"ContactEmail"         => $_POST['FranchiseeEmailID'],
+															"ContactNumberCountryCode"        => $_POST['ContactNumberCountryCode'],
+															"ContactNumber"        => $_POST['BusinessMobileNumber'],
+															"ContactWhatsappCountryCode"      => $_POST['ContactWhatsappCountryCode'],
+															"ContactWhatsapp"      => $_POST['BusinessWhatsappNumber'],
+															"LandlineCountryCode"     => $_POST['LandlineCountryCode'],
+															"ContactLandline"      => $_POST['BusinessLandlineNumber'],
+															"BusinessAddressLine1" => $_POST['BusinessAddress1'],
+															"BusinessAddressLine2" => $_POST['BusinessAddress2'],
+															"BusinessAddressLine3" => $_POST['BusinessAddress3'],
+															"Landmark"             => $_POST['Landmark'],
+															"DistrictName"         => $_POST['DistrictName'],
+															"StateName"            => $_POST['StateName'],
+															"CountryName"          => $_POST['CountryName'],
+															"CityName"             => $_POST['CityName'],
+															"PinCode"              => $_POST['PinCode'],
+															"ValidUpto"            => date("Y-m-d H:i:s"),
+														/*	"MondayF"              => $_POST['MonFH']." ". $_POST['MonFM']." ". $_POST['MonFN'],
+															"TuesdayF"             => $_POST['TueFH']." ". $_POST['TueFM']." ". $_POST['TueFN'],
+															"WednessdayF"          => $_POST['WedFH']." ". $_POST['WedFM']." ". $_POST['WedFN'],
+															"ThursdayF"            => $_POST['ThuFH']." ". $_POST['ThuFM']." ". $_POST['ThuFN'],
+															"FridayF"              => $_POST['FriFH']." ". $_POST['FriFM']." ". $_POST['FriFN'],
+															"SaturdayF"            => $_POST['SatFH']." ". $_POST['SatFM']." ". $_POST['SatFN'],
+															"SundayF"              => $_POST['SunFH']." ". $_POST['SunFM']." ". $_POST['SunFN'],
+															"MondayT"              => $_POST['MonTH']." ".$_POST['MonTM']." ".$_POST['MonTN'],
+															"TuesdayT"             => $_POST['TueTH']." ".$_POST['TueTM']." ".$_POST['TueTN'],
+															"WednessdayT"          => $_POST['WedTH']." ".$_POST['WedTM']." ".$_POST['WedTN'],
+															"ThursdayT"            => $_POST['ThuTH']." ".$_POST['ThuTM']." ".$_POST['ThuTN'],
+															"FridayT"              => $_POST['FriTH']." ".$_POST['FriTM']." ".$_POST['FriTN'],
+															"SaturdayT"            => $_POST['SatTH']." ".$_POST['SatTM']." ".$_POST['SatTN'],
+															"SundayT"              => $_POST['SunTH']." ".$_POST['SunTM']." ".$_POST['SunTN'],*/
+															"CreatedOn"            => date("Y-m-d H:i:s"),
+															"PlanID"               => $plan[0]['PlanID'],
+															"Plan"                 => $plan[0]['PlanName'] )); 
+				 $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Franchisees'");  
+				$mysql->insert("_tbl_bank_details",array("BankName"      => $_POST['BankName'],
+														 "FranchiseeID"  => $id,
+														 "AccountName"   => $_POST['AccountName'],
+														 "AccountNumber" => $_POST['AccountNumber'],  
+														 "IFSCode"       => $_POST['IFSCode'],
+														 "AccountType"   => $_POST['AccountType']));
 
-            $mysql->insert("_tbl_bank_details",array("BankName"      => $_POST['BankName'],
-                                                     "FranchiseeID"  => $id,
-                                                     "AccountName"   => $_POST['AccountName'],
-                                                     "AccountNumber" => $_POST['AccountNumber'],  
-                                                     "IFSCode"       => $_POST['IFSCode'],
-                                                     "AccountType"   => $_POST['AccountType']));
+				$mysql->insert("_tbl_franchisees_staffs",array("PersonName"     => $_POST['PersonName'],
+															   "FatherName"     => $_POST['FatherName'],
+															   "FranchiseeID"   => $id,
+															   "DateofBirth"    => $dob,
+															   "Sex"            => $_POST['Sex'],
+															   "FrCode"         => $_POST['FranchiseeCode'],
+															   "EmailID"        => $_POST['EmailID'],
+															   "CountryCode"   => $_POST['MobileNumberCountryCode'],
+															   "MobileNumber"   => $_POST['MobileNumber'],
+															   "WhatsappNumberCountryCode" => $_POST['WhatsappNumberCountryCode'],
+															   "WhatsappNumber" => $_POST['WhatsappNumber'],
+															   "AddressLine1"   => $_POST['Address1'],
+															   "AddressLine2"   => $_POST['Address2'],
+															   "CreatedOn"      => date("Y-m-d H:i:s"),
+															   "AddressLine3"   => $_POST['Address3'],
+															   "AadhaarNumber"  => $_POST['AadhaarCard'],
+															   "IsActive"       => "1",
+															   "LoginName"      => $_POST['UserName'],
+															   "ReferedBy"      => $loginInfo[0]['AdminID'],
+															   "LoginPassword"  => $_POST['Password']));
+                                                               
+			 $mContent = $mysql->select("select * from `mailcontent` where `Category`='CreateFranchisee'");
+             $content  = str_replace("#FranchiseeName#",$_POST['FranchiseeName'],$mContent[0]['Content']);
+             $content  = str_replace("#FranchiseeCode#",$_POST['FranchiseeCode'],$content);
 
-            $mysql->insert("_tbl_franchisees_staffs",array("PersonName"     => $_POST['PersonName'],
-                                                           "FatherName"     => $_POST['FatherName'],
-                                                           "FranchiseeID"   => $id,
-                                                           "DateofBirth"    => $dob,
-                                                           "Sex"            => $_POST['Sex'],
-                                                           "FrCode"         => $_POST['FranchiseeCode'],
-                                                           "EmailID"        => $_POST['EmailID'],
-                                                           "CountryCode"   => $_POST['MobileNumberCountryCode'],
-                                                           "MobileNumber"   => $_POST['MobileNumber'],
-                                                           "WhatsappNumberCountryCode" => $_POST['WhatsappNumberCountryCode'],
-                                                           "WhatsappNumber" => $_POST['WhatsappNumber'],
-                                                           "LandlineNumber" => $_POST['LandlineNumber'],
-                                                           "AddressLine1"   => $_POST['Address1'],
-                                                           "AddressLine2"   => $_POST['Address2'],
-                                                           "CreatedOn"      => date("Y-m-d H:i:s"),
-                                                           "AddressLine3"   => $_POST['Address3'],
-                                                           "AadhaarNumber"  => $_POST['AadhaarCard'],
-                                                           "IsActive"       => "1",
-                                                           "LoginName"      => $_POST['UserName'],
-                                                           "ReferedBy"      => $loginInfo[0]['AdminID'],
-                                                           "LoginPassword"  => $_POST['Password']));
-
-           $mail2 = new MailController();
-
-            $mail2->NewFranchisee(array("mailTo"         => $_POST['FranchiseeEmailID'] ,
-                                        "FranchiseeName" => $_POST['FranchiseeName'],
+             MailController::Send(array("MailTo"         => $_POST['FranchiseeEmailID'],
+                                        "Category"       => "CreateFranchisee",
                                         "FranchiseeCode" => $_POST['FranchiseeCode'],
-                                        "LoginName"      => $_POST['UserName'],
-                                        "LoginPassword"  => $_POST['Password']));   
-        if (sizeof($id)>0) {
-                return Response::returnSuccess("success",array());
-            } else{
-                return Response::returnError("Access denied. Please contact support");   
-            }
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
+             MobileSMSController::sendSMS($_POST['BusinessMobileNumber']," Dear ".$_POST['FranchiseeName'].",Your Profile has been created successfully");  
+
+			 $mContent = $mysql->select("select * from `mailcontent` where `Category`='CreateFranchiseeStaffFromAdmin'");
+             $content  = str_replace("#PersonName#",$_POST['PersonName'],$mContent[0]['Content']);
+             
+             MailController::Send(array("MailTo"         => $_POST['EmailID'],
+                                        "Category"       => "CreateFranchiseeStaffFromAdmin",
+                                        "FranchiseeCode" => $_POST['FranchiseeID'],
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
+             MobileSMSController::sendSMS($_POST['MobileNumber']," Dear ".$_POST['PersonName'].",Your Profile has been created successfully");  
+			 
+			if (sizeof($id)>0) {
+				
+				return Response::returnSuccess("success",array("FranchiseeCode" => $_POST['FranchiseeCode']));
+				} else{
+					return Response::returnError("Access denied. Please contact support");   
+				}
     }
 
     function EditFranchisee(){
               global $mysql,$loginInfo;
 
+        $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+              
         if (!(strlen(trim($_POST['FranchiseeName']))>0)) {
             return Response::returnError("Please enter your name");
         }
@@ -329,10 +349,7 @@ class Admin extends Master {
         if (!(strlen(trim($_POST['FatherName']))>0)) {
             return Response::returnError("Please enter Father Name");
         }
-        if (!(strlen(trim($_POST['DateofBirth']))>0)) {
-            return Response::returnError("Please enter Date of Birth");
-        }
-        if (!(strlen(trim($_POST['EmailID']))>0)) {
+         if (!(strlen(trim($_POST['EmailID']))>0)) {
             return Response::returnError("Please enter EmailID");
         }
         if (!(strlen(trim($_POST['MobileNumber']))>0)) {
@@ -344,65 +361,64 @@ class Admin extends Master {
         if (!(strlen(trim($_POST['AadhaarCard']))>0)) {
             return Response::returnError("Please enter AadhaarCard");
         }
-        $data = $mysql->select("select * from  _tbl_franchisees where FranchiseeCode='".trim($_POST['FranchiseeCode'])."' and FranchiseeID <>'".$_POST['Code']."'");
+        $data = $mysql->select("select * from  _tbl_franchisees where FranchiseeCode='".trim($_POST['FranchiseeCode'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Franchisee Code Already Exists");
         }
-        $data = $mysql->select("select * from  _tbl_franchisees where ContactEmail='".trim($_POST['FranchiseeEmailID'])."' and FranchiseeID <>'".$_POST['Code']."'");
+        $data = $mysql->select("select * from  _tbl_franchisees where ContactEmail='".trim($_POST['FranchiseeEmailID'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("EmailID Already Exists");
         }
-        $data = $mysql->select("select * from  _tbl_franchisees where ContactNumber='".trim($_POST['BusinessMobileNumber'])."' and FranchiseeID <>'".$_POST['Code']."'");
+        $data = $mysql->select("select * from  _tbl_franchisees where ContactNumber='".trim($_POST['BusinessMobileNumber'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Business MobileNumber Already Exists");
         }
         if(strlen(trim($_POST['BusinessWhatsappNumber']))>0){
-        $data = $mysql->select("select * from  _tbl_franchisees where ContactWhatsapp='".trim($_POST['BusinessWhatsappNumber'])."' and FranchiseeID <>'".$_POST['Code']."'");
+        $data = $mysql->select("select * from  _tbl_franchisees where ContactWhatsapp='".trim($_POST['BusinessWhatsappNumber'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Business WhatsappNumber Already Exists");
         }
         }
-        if(strlen(trim($_POST['BusinessLandlineNumber']))>0){
-        $data = $mysql->select("select * from  _tbl_franchisees where ContactLandline='".trim($_POST['BusinessLandlineNumber'])."' and FranchiseeID <>'".$_POST['Code']."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Business LandlineNumber Already Exists");
-        }
-        }
-        $data = $mysql->select("select * from  _tbl_bank_details where AccountNumber='".trim($_POST['AccountNumber'])."' and FranchiseeID <>'".$_POST['Code']."'");
+        $data = $mysql->select("select * from  _tbl_bank_details where AccountNumber='".trim($_POST['AccountNumber'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Account Number Already Exists");
         }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".trim($_POST['EmailID'])."' and FranchiseeID <>'".$_POST['Code']."'");
+        $data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".trim($_POST['EmailID'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Email ID Already Exists");
         }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where MobileNumber='".trim($_POST['MobileNumber'])."' and FranchiseeID <>'".$_POST['Code']."'");
+        $data = $mysql->select("select * from  _tbl_franchisees_staffs where MobileNumber='".trim($_POST['MobileNumber'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Mobile Number Already Exists");
         }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where WhatsappNumber='".trim($_POST['WhatsappNumber'])."' and FranchiseeID <>'".$_POST['Code']."'");
+        $data = $mysql->select("select * from  _tbl_franchisees_staffs where WhatsappNumber='".trim($_POST['WhatsappNumber'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Whatsapp Number Already Exists");
         }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where LandlineNumber='".trim($_POST['LandlineNumber'])."' and FranchiseeID <>'".$_POST['Code']."'");
+        $data = $mysql->select("select * from  _tbl_franchisees_staffs where LandlineNumber='".trim($_POST['LandlineNumber'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Landline Number Already Exists");
         }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where AadhaarNumber='".trim($_POST['AadhaarCard'])."' and FranchiseeID <>'".$_POST['Code']."'");
+        $data = $mysql->select("select * from  _tbl_franchisees_staffs where AadhaarNumber='".trim($_POST['AadhaarCard'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Aadhaar Number Already Exists");
         }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where LoginName='".trim($_POST['UserName'])."' and FranchiseeID <>'".$_POST['Code']."'");
+        $data = $mysql->select("select * from  _tbl_franchisees_staffs where LoginName='".trim($_POST['UserName'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Login Name Already Exists");
         } 
         $dob = strtotime($_POST['DateofBirth']);
                $dob = date("Y",$dob)."-".date("m",$dob)."-".date("d",$dob);
+			   
+		$Franchisee = $mysql->select("select * from  _tbl_franchisees where FranchiseeCode='".$_POST['FranCode']."'");
 
-    $mysql->execute("update _tbl_franchisees set FranchiseName='".$_POST['FranchiseeName']."',
+     $Fid = $mysql->execute("update _tbl_franchisees set FranchiseName='".$_POST['FranchiseeName']."',
                                                  ContactEmail='".$_POST['FranchiseeEmailID']."',
+                                                 ContactNumberCountryCode='".$_POST['ContactNumberCountryCode']."',
                                                  ContactNumber='".$_POST['BusinessMobileNumber']."',
                                                  ContactWhatsapp='".$_POST['BusinessWhatsappNumber']."',
+                                                 ContactWhatsappCountryCode='".$_POST['ContactWhatsappCountryCode']."',
+                                                 LandlineCountryCode='".$_POST['LandlineCountryCode']."',
                                                  ContactLandline='".$_POST['BusinessLandlineNumber']."',
                                                  BusinessAddressLine1='".$_POST['BusinessAddress1']."',
                                                  BusinessAddressLine2='".$_POST['BusinessAddress2']."',
@@ -427,28 +443,61 @@ class Admin extends Master {
                                                  FridayT='".$_POST['FriTH']." ".$_POST['FriTM']." ".$_POST['FriTN']."',
                                                  SaturdayT='".$_POST['SatTH']." ".$_POST['SatTM']." ".$_POST['SatTN']."',
                                                  SundayT='".$_POST['SunTH']." ".$_POST['SunTM']." ".$_POST['SunTN']."'
-                                                 where FranchiseeID='".$_POST['Code']."'");
+                                                 where FranchiseeCode='".$_POST['FranCode']."'");
 
-              $mysql->execute("update _tbl_bank_details set BankName='".$_POST['BankName']."',
+        $FidB   =   $mysql->execute("update _tbl_bank_details set BankName='".$_POST['BankName']."',
                                                  AccountName='".$_POST['AccountName']."',
                                                  AccountNumber='".$_POST['AccountNumber']."',
                                                  IFSCode='".$_POST['IFSCode']."',
                                                  AccountType='".$_POST['AccountType']."'
-                                                 where FranchiseeID='".$_POST['Code']."'");
+                                                 where FranchiseeID='".$Franchisee[0]['FranchiseeID']."'");
 
-              $mysql->execute("update _tbl_franchisees_staffs set PersonName='".$_POST['PersonName']."',
+          $FSid = $mysql->execute("update _tbl_franchisees_staffs set PersonName='".$_POST['PersonName']."',
                                                  FatherName='".$_POST['FatherName']."',
-                                                 DateofBirth='".$_POST['DateofBirth']."',
+                                                 DateofBirth='".$_POST['year']."-".$_POST['month']."-".$_POST['date']."',
                                                  Sex='".$_POST['Sex']."',
                                                  EmailID='".$_POST['EmailID']."',
+                                                 CountryCode='".$_POST['CountryCode']."',
                                                  MobileNumber='".$_POST['MobileNumber']."',
+                                                 WhatsappNumberCountryCode='".$_POST['WhatsappNumberCountryCode']."',
                                                  WhatsappNumber='".$_POST['WhatsappNumber']."',
-                                                 LandlineNumber='".$_POST['LandlineNumber']."',
                                                  AddressLine1='".$_POST['Address1']."',
                                                  AddressLine2='".$_POST['Address2']."',
                                                  AddressLine3='".$_POST['Address3']."',
                                                  AadhaarNumber='".$_POST['AadhaarCard']."'
-                                                  where  ReferedBy='1' and FranchiseeID='".$_POST['Code']."'");
+                                                  where  ReferedBy='1' and FrCode='".$_POST['FranCode']."'");
+				//$FidB
+			if($Fid>0 ) {
+			
+			 $mContent = $mysql->select("select * from `mailcontent` where `Category`='EditFranchisee'");
+             $content  = str_replace("#FranchiseeName#",$_POST['FranchiseeName'],$mContent[0]['Content']);
+             $content  = str_replace("#FranchiseeCode#",$_POST['FranchiseeCode'],$content);
+
+             MailController::Send(array("MailTo"         => $_POST['FranchiseeEmailID'],
+                                        "Category"       => "EditFranchisee",
+                                        "FranchiseeCode" => $_POST['FranchiseeCode'],
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
+             MobileSMSController::sendSMS($_POST['BusinessMobileNumber']," Dear ".$_POST['FranchiseeName'].",Your Profile has been updated successfully");  
+			} 
+			
+			if($FSid>0) {
+			
+			 $mContent = $mysql->select("select * from `mailcontent` where `Category`='EditFranchiseeStaff'");
+             $content  = str_replace("#PersonName#",$_POST['PersonName'],$mContent[0]['Content']);
+             
+
+             MailController::Send(array("MailTo"         => $_POST['EmailID'],
+                                        "Category"       => "EditFranchiseeStaff",
+                                        "FranchiseeCode" => $_POST['FranchiseeCode'],
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
+             MobileSMSController::sendSMS($_POST['MobileNumber']," Dear ".$_POST['PersonName'].",Your Profile has been updated successfully");  
+			}
+
+
+
+			
                 return Response::returnSuccess("success",array());
 
     } 
@@ -563,7 +612,7 @@ class Admin extends Master {
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='ProfilePublished'");
              $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
              $content  = str_replace("#ProfileCode#",$draft[0]['ProfileCode'],$content);
-             $content  = str_replace("#PersonName#",$draft[0]['PersonName'],$content);
+             $content  = str_replace("#ProfileName#",$draft[0]['ProfileName'],$content);
 
              MailController::Send(array("MailTo"   => $member[0]['EmailID'],
                                         "Category" => "ProfilePublished",
@@ -572,6 +621,23 @@ class Admin extends Master {
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$draft[0]['PersonName'].") has been published. Your Profile ID is ".$draft[0]['ProfileCode']);  
              
+			if($draft[0]['CreatedByFranchiseeStaffID']>0){ 
+				$Franchisee = $mysql->select("select * from `_tbl_franchisees_staffs` where `PersonID`='".$draft[0]['CreatedByFranchiseeStaffID']."'");
+				
+			 $mContent = $mysql->select("select * from `mailcontent` where `Category`='CreatedByFranchiseeStaffProfilePublished'");
+             $content  = str_replace("#FranchiseeName#",$Franchisee[0]['PersonName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$draft[0]['ProfileCode'],$content);
+             $content  = str_replace("#ProfileName#",$draft[0]['ProfileName'],$content);
+
+             MailController::Send(array("MailTo"   => $Franchisee[0]['EmailID'],
+                                        "Category" => "CreatedByFranchiseeStaffProfilePublished",
+                                        "FranchiseeID" => $Franchisee[0]['PersonID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($Franchisee[0]['MobileNumber']," Dear ".$Franchisee[0]['PersonName'].",Profile (".$draft[0]['ProfileName'].") has been published. Profile ID is ".$draft[0]['ProfileCode']);  
+			 
+			 }
+			 
              $updateSql = "update `_tbl_draft_profiles` set `IsApproved`      = '1',
                                                              `IsApprovedOn`    = '".date("Y-m-d H:i:s")."'
                                                               where `ProfileCode`='".$_POST['ProfileID']."'";
@@ -780,7 +846,7 @@ class Admin extends Master {
                                                               "DraftProfileID"           => $ded['ProfileID'],
                                                               "DraftProfileCode"         => $ded['ProfileCode'],
                                                               "DraftEducationID"         => $ded['AttachmentID'],
-                                                              "IsDelete"                => $ded['IsDeleted'],
+                                                              "IsDeleted"                => $ded['IsDelete'],
                                                               "ProfileID"                => $pid,
                                                               "ProfileCode"              => $ProfileCode,
                                                               "MemberID"                 => $draft[0]['MemberID'],
@@ -794,17 +860,18 @@ class Admin extends Master {
                       $mysql->insert("_tbl_profiles_photos",array("ProfilePhoto"         => $dPp['ProfilePhoto'],
                                                                   "UpdateOn"             => $dPp['UpdateOn'],
                                                                   "PriorityFirst"        => $dPp['PriorityFirst'],
-                                                                  "IsPublished"          => $dPp['IsPublished'],
-                                                                  "PublishedOn"          => $dPp['PublishedOn'],
                                                                   "DraftProfileID"       => $dPp['ProfileID'],
                                                                   "DraftProfileCode"     => $dPp['ProfileCode'],
                                                                   "IsDelete"             => $dPp['IsDelete'],
+                                                                  "IsDeletedOn"          => $dPp['IsDeletedOn'],
                                                                   "DraftProfilePhotoID"  => $dPp['ProfilePhotoID'],
                                                                   "ProfileID"            => $pid,
                                                                   "ProfileCode"          => $ProfileCode,
                                                                   "MemberID"             => $draft[0]['MemberID'],
                                                                   "IsApproved"           => "1",
-                                                                  "IsApprovedOn"         => date("Y-m-d H:i:s")));
+                                                                  "IsApprovedOn"         => date("Y-m-d H:i:s"),
+																  "IsPublished"           => "1",
+                                                                  "PublishedOn"         => date("Y-m-d H:i:s")));
        }
        
        $draftProfilePartnersExpectatipns = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `ProfileCode`='".$_POST['ProfileID']."'");   
@@ -846,8 +913,8 @@ class Admin extends Master {
                                                                   "DocumentType"        => $dPD['DocumentType'],
                                                                   "AttachFileName"      => $dPD['AttachFileName'],
                                                                   "AttachedOn"          => $dPD['AttachedOn'],
-                                                                  "IsVerified"          => $dPD['IsApproved'],
-                                                                  "IsDelete"            => $dPD['IsDeleted'],
+                                                                  "IsVerified"          => $dPD['IsVerified'],
+                                                                  "IsDelete"            => $dPD['IsDelete'],
                                                                   "Type"                => $dPD['Type'],
                                                                   "DraftProfileID"      => $dPD['ProfileID'],
                                                                   "DraftProfileCode"    => $dPD['ProfileCode'],
@@ -855,7 +922,7 @@ class Admin extends Master {
                                                                   "ProfileID"           => $pid,
                                                                   "ProfileCode"         => $ProfileCode,
                                                                   "MemberID"            => $draft[0]['MemberID'],
-                                                                  "IsApproved"          =>  $dPD['IsApproved'],
+                                                                  "IsApproved"          =>  "1",
                                                                   "ApprovedOn"          => date("Y-m-d H:i:s")));
        }
         $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Profile'");
@@ -908,7 +975,7 @@ class Admin extends Master {
 									<div class="col-sm-12">
 										<div class="col-sm-2"></div>
 										<div class="col-sm-8">
-											<input type="text"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="width: 67%;font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">
+											<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="width: 67%;font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">
 											<button type="button" onclick="TransactionPasswordVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
 										</div>
 										<div class="col-sm-2"></div>
@@ -960,13 +1027,14 @@ class Admin extends Master {
 
         return Response::returnSuccess("success"."select * from _tbl_franchisees where FranchiseeID='".$_POST['Code']."'",array("Franchisee"         => $Franchisees[0],
                                                        "FranchiseeStaff"    => $FranchiseeStaff[0],
-                                                       "CountryNames"        => CodeMaster::getData('CountryName'),
-                                                       "StateName"          => CodeMaster::getData('StateName'),
+                                                       "CountryNames"        => CodeMaster::getData('CONTNAMES'),
+                                                       "CountryCode"    	=> CodeMaster::getData('RegisterAllowedCountries'),
+                                                       "StateName"          => CodeMaster::getData('STATNAMES'),
                                                        "DistrictName"       => CodeMaster::getData('DistrictName'),
                                                        "BankNames"          => CodeMaster::getData('BANKNAMES'),
                                                        "AccountType"        => CodeMaster::getData('AccountType'),
                                                        "PrimaryBankAccount" => $PrimaryBankAccount[0],
-                                                       "Gender"             => CodeMaster::getData('Gender')));
+                                                       "Gender"             => CodeMaster::getData('SEX')));
 
     }                                                                                  
     
@@ -3300,7 +3368,564 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                                              "Invoice" =>$Invoice[0],
                                                              "Receipt" =>$Receipt[0]));
          }
-                                                                                                                           
+		 function VerifyProfileDetails(){  
+
+              global $mysql;     
+			$photoapprovals = explode(",",$_POST['ApproveProfilePhoto']);
+			$size = sizeof($photoapprovals);
+			$i=1;
+			foreach($photoapprovals as $p) {
+				$pval = explode("#",$p);
+				if ($pval[2]==1) {
+				$mysql->execute("update `_tbl_draft_profiles_photos` set `IsPublished`='1', 
+																	     `IsApproved` ='".$pval[2]."',
+																		 `PublishedOn`='".date("Y-m-d H:i:s")."', 
+																		 `IsApprovedOn`='".date("Y-m-d H:i:s")."' 
+																		where `ProfilePhotoID`='".$pval[1]."' and `ProfileCode`='".$pval[0]."'");
+				}
+				if ($pval[2]==2) {
+				$mysql->execute("update `_tbl_draft_profiles_photos` set `IsApproved`='".$pval[2]."',
+																	     `ReasonForReject`='".$_POST['ReasonForRejectProfilePhoto_'.$i]."',
+																		 `IsPublished`='0',
+																	     `RejectedOn`='".date("Y-m-d H:i:s")."' 
+																          where  `ProfilePhotoID`='".$pval[1]."' and `ProfileCode`='".$pval[0]."'");
+				}
+				$i++;
+			}
+              return Response::returnSuccess("success",array());
+		}
+		function VerifyEducationDetails(){  
+
+              global $mysql;     
+			$educationapprovals = explode(",",$_POST['ApproveEducation']);
+			$size = sizeof($educationapprovals);
+			$i=1;
+			foreach($educationapprovals as $E) {
+				$pval = explode("#",$E);
+				if ($pval[2]==1) {
+				$mysql->execute("update `_tbl_draft_profiles_education_details` set `IsVerified`='1', 
+																					`IsVerifiedOn`='".date("Y-m-d H:i:s")."' 
+																				    where `AttachmentID`='".$pval[1]."' and `ProfileCode`='".$pval[0]."'");
+				}
+				if ($pval[2]==2) {
+				$mysql->execute("update `_tbl_draft_profiles_education_details` set `IsVerified`='".$pval[2]."',
+																					`ReasonForReject`='".$_POST['ReasonForRejectEducation_'.$i]."',
+																					`RejectedOn`='".date("Y-m-d H:i:s")."' 
+																					where  `AttachmentID`='".$pval[1]."' and `ProfileCode`='".$pval[0]."'");
+				}
+				$i++;
+			}
+              return Response::returnSuccess("success",array());
+		}
+		function VerifyDocumentDetails(){  
+
+              global $mysql;     
+			$documentapprovals = explode(",",$_POST['ApproveDocument']);
+			$size = sizeof($documentapprovals);
+			$i=1;
+			foreach($documentapprovals as $DA) {
+				$pval = explode("#",$DA);
+				if ($pval[2]==1) {
+				$mysql->execute("update `_tbl_draft_profiles_verificationdocs` set `IsVerified`='1', 
+																					`IsVerifiedOn`='".date("Y-m-d H:i:s")."' 
+																				    where `AttachmentID`='".$pval[1]."' and `ProfileCode`='".$pval[0]."'");
+				}
+				if ($pval[2]==2) {
+				$mysql->execute("update `_tbl_draft_profiles_verificationdocs` set `IsVerified`='".$pval[2]."',
+																					`ReasonForReject`='".$_POST['ReasonForRejectDocuments_'.$i]."',
+																					`RejectedOn`='".date("Y-m-d H:i:s")."' 
+																					where  `AttachmentID`='".$pval[1]."' and `ProfileCode`='".$pval[0]."'");
+				}
+				$i++;
+			}
+              return Response::returnSuccess("success",array());
+		}
+		function VerifyAboutMeDetails(){  
+            global $mysql;     
+			$aboutmeapprovals = explode(",",$_POST['ApproveAboutMeInfo']);
+			$size = sizeof($aboutmeapprovals);
+			$i=1;
+			foreach($aboutmeapprovals as $AM) {
+				$pval = explode("#",$AM);
+				if ($pval[2]==1) {
+						
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"     =>$pval[0],
+																			 "MemberID"      =>$pval[1],                    
+																			 "FieldName"     =>"Verify_Gi_Desc",                    
+																			 "IsVerified"    =>"1",                    
+																			 "IsVerifiedOn"  =>date("Y-m-d H:i:s"))); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Gi_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+				}
+				if ($pval[2]==2) {
+					
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"       =>$pval[0],
+																			 "MemberID"        =>$pval[1],                    
+																			 "FieldName"       =>"Verify_Gi_Desc",                    
+																			 "IsVerified"      =>"2",                    
+																			 "RejectedOn"      =>date("Y-m-d H:i:s"),
+																			 "ReasonForReject" => $_POST['ReasonForRejectAboutMeInformation'])); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Gi_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+					
+				
+				}
+				$i++; 
+			}
+              return Response::returnSuccess("success",array());
+		}
+		function VerifyOccupationAdditionalInfo(){  
+            global $mysql;     
+			$ApproveOccupationDESCapprovals = explode(",",$_POST['ApproveOccupationDESC']);
+			$size = sizeof($ApproveOccupationDESCapprovals);
+			$i=1;
+			foreach($ApproveOccupationDESCapprovals as $OD) {
+				$pval = explode("#",$OD);
+				if ($pval[2]==1) {
+						
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"     =>$pval[0],
+																			 "MemberID"      =>$pval[1],                    
+																			 "FieldName"     =>"Verify_Oc_Desc",                    
+																			 "IsVerified"    =>"1",                    
+																			 "IsVerifiedOn"  =>date("Y-m-d H:i:s"))); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Oc_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+				}
+				if ($pval[2]==2) {
+					
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"       =>$pval[0],
+																			 "MemberID"        =>$pval[1],                    
+																			 "FieldName"       =>"Verify_Oc_Desc",                    
+																			 "IsVerified"      =>"2",                    
+																			 "RejectedOn"      =>date("Y-m-d H:i:s"),
+																			 "ReasonForReject" => $_POST['ReasonForRejectOccupationAdditionalInformation'])); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Oc_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+					
+				
+				}
+				$i++; 
+			}
+              return Response::returnSuccess("success",array());
+		}
+		function VerifyFamilyAdditionalInfo(){  
+            global $mysql;     
+			$familyadditionalinfoapprovals = explode(",",$_POST['ApproveFamilyInfoAdditionalInfo']);
+			$size = sizeof($familyadditionalinfoapprovals);
+			$i=1;
+			foreach($familyadditionalinfoapprovals as $FI) {
+				$pval = explode("#",$FI);
+				if ($pval[2]==1) {
+						
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"     =>$pval[0],
+																			 "MemberID"      =>$pval[1],                    
+																			 "FieldName"     =>"Verify_Fi_Desc",                    
+																			 "IsVerified"    =>"1",                    
+																			 "IsVerifiedOn"  =>date("Y-m-d H:i:s"))); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Fi_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+				}
+				if ($pval[2]==2) {
+					
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"       =>$pval[0],
+																			 "MemberID"        =>$pval[1],                    
+																			 "FieldName"       =>"Verify_Fi_Desc",                    
+																			 "IsVerified"      =>"2",                    
+																			 "RejectedOn"      =>date("Y-m-d H:i:s"),
+																			 "ReasonForReject" => $_POST['ReasonForRejectFamilyInfoAdditionalInformation'])); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Fi_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+					
+				
+				}
+				$i++; 
+			}
+              return Response::returnSuccess("success",array());
+		}
+		function VerifyPhysicallAdditionalInfo(){  
+            global $mysql;     
+			$physicaladditionalinfoapprovals = explode(",",$_POST['ApprovePhysicalInfoAdditionalInfo']);
+			$size = sizeof($physicaladditionalinfoapprovals);
+			$i=1;
+			foreach($physicaladditionalinfoapprovals as $PI) {
+				$pval = explode("#",$PI);
+				if ($pval[2]==1) {
+						
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"     =>$pval[0],
+																			 "MemberID"      =>$pval[1],                    
+																			 "FieldName"     =>"Verify_Pi_Desc",                    
+																			 "IsVerified"    =>"1",                    
+																			 "IsVerifiedOn"  =>date("Y-m-d H:i:s"))); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Pi_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+				}
+				if ($pval[2]==2) {
+					
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"       =>$pval[0],
+																			 "MemberID"        =>$pval[1],                    
+																			 "FieldName"       =>"Verify_Pi_Desc",                    
+																			 "IsVerified"      =>"2",                    
+																			 "RejectedOn"      =>date("Y-m-d H:i:s"),
+																			 "ReasonForReject" => $_POST['ReasonForRejectPhysicalInfoAdditionalInformation'])); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Pi_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+					
+				
+				}
+				$i++; 
+			}
+              return Response::returnSuccess("success",array());
+		}
+		function VerifyHoroscopeDOB() {  
+            global $mysql;     
+			$horoscopedobapprovals = explode(",",$_POST['ApproveHoroscopeDob']);
+			$size = sizeof($horoscopedobapprovals);
+			$i=1;
+			foreach($horoscopedobapprovals as $HDOB) {
+				$pval = explode("#",$HDOB);
+				if ($pval[2]==1) {
+						
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"     =>$pval[0],
+																			 "MemberID"      =>$pval[1],                    
+																			 "FieldName"     =>"Verify_Hd_Dob",                    
+																			 "IsVerified"    =>"1",                    
+																			 "IsVerifiedOn"  =>date("Y-m-d H:i:s"))); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Hd_Dob`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+				}
+				if ($pval[2]==2) {
+					
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"       =>$pval[0],
+																			 "MemberID"        =>$pval[1],                    
+																			 "FieldName"       =>"Verify_Hd_Dob",                    
+																			 "IsVerified"      =>"2",                    
+																			 "RejectedOn"      =>date("Y-m-d H:i:s"),
+																			 "ReasonForReject" => $_POST['ReasonForRejectHoroscopeDobInfo'])); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Hd_Dob`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+					
+				
+				}
+				$i++; 
+			}
+              return Response::returnSuccess("success",array());
+		}
+		function VerifyHoroscopeAdditionInfo() {  
+            global $mysql;     
+			$horoscopeadditionalinfoapprovals = explode(",",$_POST['ApproveHoroscopeAdditionalInfo']);
+			$size = sizeof($horoscopeadditionalinfoapprovals);
+			$i=1;
+			foreach($horoscopeadditionalinfoapprovals as $HD) {
+				$pval = explode("#",$HD);
+				if ($pval[2]==1) {
+						
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"     =>$pval[0],
+																			 "MemberID"      =>$pval[1],                    
+																			 "FieldName"     =>"Verify_Hd_Desc",                    
+																			 "IsVerified"    =>"1",                    
+																			 "IsVerifiedOn"  =>date("Y-m-d H:i:s"))); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Hd_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+				}
+				if ($pval[2]==2) {
+					
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"       =>$pval[0],
+																			 "MemberID"        =>$pval[1],                    
+																			 "FieldName"       =>"Verify_Hd_Desc",                    
+																			 "IsVerified"      =>"2",                    
+																			 "RejectedOn"      =>date("Y-m-d H:i:s"),
+																			 "ReasonForReject" => $_POST['ReasonForRejectHoroscopeAdditionalInformation'])); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Hd_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+					
+				
+				}
+				$i++; 
+			}
+              return Response::returnSuccess("success",array());
+		}
+		function VerifyPartnersexpectationAdditionInfo() {  
+            global $mysql;     
+			$partnersexpectadditionalinfoapprovals = explode(",",$_POST['ApprovePartnerExpectationAdditionalInfo']);
+			$size = sizeof($partnersexpectadditionalinfoapprovals);
+			$i=1;
+			foreach($partnersexpectadditionalinfoapprovals as $PE) {
+				$pval = explode("#",$PE);
+				if ($pval[2]==1) {
+						
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"     =>$pval[0],
+																			 "MemberID"      =>$pval[1],                    
+																			 "FieldName"     =>"Verify_Pe_Desc",                    
+																			 "IsVerified"    =>"1",                    
+																			 "IsVerifiedOn"  =>date("Y-m-d H:i:s"))); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Pe_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+				}
+				if ($pval[2]==2) {
+					
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"       =>$pval[0],
+																			 "MemberID"        =>$pval[1],                    
+																			 "FieldName"       =>"Verify_Pe_Desc",                    
+																			 "IsVerified"      =>"2",                    
+																			 "RejectedOn"      =>date("Y-m-d H:i:s"),
+																			 "ReasonForReject" => $_POST['ReasonForRejectPartnerExpectationAdditionalInformation'])); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Pe_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+					
+				
+				}
+				$i++; 
+			}
+              return Response::returnSuccess("success",array());
+		}
+		function VerifyCommunicationAdditionalInfo() {  
+            global $mysql;     
+			$communicationadditionalinfoapprovals = explode(",",$_POST['ApproveCommunicationAdditionalInfo']);
+			$size = sizeof($communicationadditionalinfoapprovals);
+			$i=1;
+			foreach($communicationadditionalinfoapprovals as $CD) {
+				$pval = explode("#",$CD);
+				if ($pval[2]==1) {
+						
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"     =>$pval[0],
+																			 "MemberID"      =>$pval[1],                    
+																			 "FieldName"     =>"Verify_Cd_Desc",                    
+																			 "IsVerified"    =>"1",                    
+																			 "IsVerifiedOn"  =>date("Y-m-d H:i:s"))); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Cd_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+				}
+				if ($pval[2]==2) {
+					
+						$id=$mysql->insert("_tbl_profile_verification",array("ProfileID"       =>$pval[0],
+																			 "MemberID"        =>$pval[1],                    
+																			 "FieldName"       =>"Verify_Cd_Desc",                    
+																			 "IsVerified"      =>"2",                    
+																			 "RejectedOn"      =>date("Y-m-d H:i:s"),
+																			 "ReasonForReject" => $_POST['ReasonForRejectCommunicationAdditionalInformation'])); 
+				
+							$mysql->execute("update `_tbl_draft_profiles` set `Verify_Cd_Desc`='".$id."' where `ProfileID`='".$pval[0]."' and `MemberID`='".$pval[1]."'");
+					
+				
+				}
+				$i++; 
+			}
+              return Response::returnSuccess("success",array());
+		}
+        function GetManageStaffs() {
+           global $mysql;    
+              $Staffs = $mysql->select("select * from _tbl_admin");
+                return Response::returnSuccess("success",$Staffs);
+        }
+        function CreateAdminStaff() {
+            
+            global $mysql,$loginInfo;
+            
+            if (!(strlen(trim($_POST['StaffCode']))>0)) {
+                return Response::returnError("Please enter admin code");                                          
+            }
+            
+            if (!(strlen(trim($_POST['StaffName']))>0)) {
+                return Response::returnError("Please enter admin name");
+            }
+            if (!(strlen(trim($_POST['MobileNumber']))>0)) {
+                return Response::returnError("Please enter mobile number");
+            }       
+            
+            if (!(strlen(trim($_POST['EmailID']))>0)) {
+                return Response::returnError("Please enter email id");
+            }                        
+            if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0")) {
+                return Response::returnError("Please select gender");
+            }
+            
+            if (!(strlen(trim($_POST['LoginName']))>0)) {
+                return Response::returnError("Please enter login name");
+            }
+            
+            if (!(strlen(trim($_POST['LoginPassword']))>0)) {
+                return Response::returnError("Please enter login password");
+            }
+            
+            $data = $mysql->select("select * from  _tbl_admin where AdminCode='".trim($_POST['StaffCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Staff Code Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_admin where MobileNumber='".trim($_POST['MobileNumber'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Mobile Number Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_admin where EmailID='".trim($_POST['EmailID'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Email ID Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_admin where AdminLogin='".trim($_POST['LoginName'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Login Name Already Exists");
+            }
+            
+            $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
+            
+                  $id = $mysql->insert("_tbl_admin",array("AdminCode"       => $_POST['StaffCode'],   
+                                                                 "AdminName"       => $_POST['StaffName'], 
+                                                                 "DateofBirth"     => $dob,
+                                                                 "Sex"             => $_POST['Sex'],
+                                                                 "MobileNumber"    => $_POST['MobileNumber'],
+                                                                 "EmailID"         => $_POST['EmailID'],
+                                                                 "AdminLogin"       => $_POST['LoginName'],
+                                                                 "AdminPassword"   => $_POST['LoginPassword'],
+                                                                 "StaffRole"   => $_POST['UserRole'],
+                                                                 "IsActive"        => "1"));
+                                                                 $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='AdminStaffs'");
+              
+            if (sizeof($id)>0) {
+                
+                return Response::returnSuccess("success",array());
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+    
+    function GetAdminStaffInfo(){
+
+        global $mysql;
+        $Staffs = $mysql->select("select * from _tbl_admin where AdminID='".$_POST['Code']."'");
+
+        return Response::returnSuccess("success",array("Staffs"             => $Staffs[0],
+                                                       "AdminStaffCode"     => SeqMaster::GetNextAdminStaffNumber(),
+                                                       "Gender"             => CodeMaster::getData('SEX'),
+                                                       "CountryName"        => CodeMaster::getData('RegisterAllowedCountries')));
+
+    }
+        
+        function EditAdminStaff(){
+              global $mysql,$loginInfo;
+        
+                         
+            if (!(strlen(trim($_POST['AdminLogin']))>0)) {
+                return Response::returnError("Please enter staff name");
+            }
+            if (!(strlen(trim($_POST['MobileNumber']))>0)) {
+                return Response::returnError("Please enter mobile number");
+            }       
+            
+            if (!(strlen(trim($_POST['EmailID']))>0)) {
+                return Response::returnError("Please enter email id");
+            }                        
+            if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0")) {
+                return Response::returnError("Please select gender");
+            }
+            
+            if (!(strlen(trim($_POST['AdminPassword']))>0)) {
+                return Response::returnError("Please enter login password");
+            }
+        $data = $mysql->select("select * from  _tbl_admin where MobileNumber='".trim($_POST['MobileNumber'])."' and StaffID<>'".$_POST['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Mobile Number Code Already Exists");
+        }
+        $data = $mysql->select("select * from  _tbl_admin where EmailID='".trim($_POST['EmailID'])."' and StaffID<>'".$_GET['Code']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("EmailID Already Exists");
+        }
+         
+        $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date']; 
+    
+             $mysql->execute("update _tbl_admin set AdminName='".$_POST['StaffName']."', 
+                                                           DateofBirth='".$dob."',
+                                                           Sex='".$_POST['Sex']."',
+                                                           MobileNumber='".$_POST['MobileNumber']."',
+                                                           EmailID='".$_POST['EmailID']."',
+                                                           StaffRole='".$_POST['UserRole']."',
+                                                           AdminPassword='".$_POST['LoginPassword']."'
+                                                           where  AdminID='".$_POST['Code']."'");
+
+              
+                return Response::returnSuccess("success",array());
+
+    }
+	function ViewPlanForCreateFranchisee() { 
+		global $mysql,$loginInfo;
+		$Plans = Plans::GetFranchiseePlans();
+		
+			$result = "";
+			foreach ($Plans as $Pan) {
+				$result .='<tr>
+							<td><div class="custom-control custom-radio">
+								  <input type="radio" class="custom-control-input" id="'.$Pan['PlanID'].'" name="defaultExampleRadios">
+								  <label class="custom-control-label" for="'.$Pan['PlanID'].'"></label>
+								</div></td>
+							<td>'.$Pan['PlanName'].'</td>
+							<td>'.$Pan['Duration'].'</td>
+							<td>'.$Pan['Amount'].'</td>
+						</tr>';
+		 }  
+		
+		$res ='<div class="modal-header">
+					<h4 class="modal-title">Plan</h4>
+				</div>
+				<div class="modal-body" style="text-align:center">
+					<div id="content" style="height: 160px;overflow: scroll;">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<td></td>
+								<td>Plan Name</td>
+								<td>Duration</td>
+								<td>Amount</td>
+							</tr>
+						</thead>
+						<tbody>
+							'.$result.'
+						</tbody>
+					</table>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-primary" name="Select" id="Select" style="color:white">Select</a>&nbsp;&nbsp;
+					<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">Cancel</a>
+				</div>';
+		return $res;
+	}
+	function ViewFranchiseePlanDetails() { 
+		global $mysql,$loginInfo;
+		$Plan = $mysql->select("select * from  _tbl_franchisees_plans where IsActive='1' and PlanName='".$_POST['PlanName']."'");
+			
+		$res ='<div class="modal-header">
+					<h4 class="modal-title">Plan</h4>
+				</div>
+				<div class="modal-body" style="text-align:center">
+					<div id="content" style="height: 160px;overflow: scroll;">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<td></td>
+								<td>Plan Name</td>
+								<td>Duration</td>
+								<td>Amount</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+							<td><div class="custom-control custom-radio">
+								  <input type="radio" class="custom-control-input" id="'.$Pan[0]['PlanID'].'" name="defaultExampleRadios">
+								  <label class="custom-control-label" for="'.$Pan[0]['PlanID'].'"></label>
+								</div></td>
+							<td>'.$Plan[0]['PlanName'].'</td>
+							<td>'.$Plan[0]['Duration'].'</td>
+							<td>'.$Plan[0]['Amount'].'</td>
+						</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-primary" name="Change" id="Change" style="color:white">Change</a>&nbsp;&nbsp;
+					<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">Cancel</a>
+				</div>';
+		return $res;
+	}
+
+	 
 }
 //2801
 ?> 

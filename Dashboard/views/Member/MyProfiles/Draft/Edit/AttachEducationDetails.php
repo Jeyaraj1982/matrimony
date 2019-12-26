@@ -89,13 +89,45 @@
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12" style="text-align:left">
-                                <button type="submit" name="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Save Education Details</button>&nbsp;&nbsp;
-                                <a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">back</a>
+								<input type="submit" name="BtnSave" id="BtnSave" style="display:none">
+								<a href="javascript:void(0)" onclick="ConfirmAddEducationalAttachment()" class="btn btn-primary" style="font-family:roboto">Save Education Details</a>
+								<a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">back</a>
                             </div>
                         </div>
                 </form>
                 
 
 </div>
+<script>
+	function ConfirmAddEducationalAttachment(){
+        $('#PubplishNow').modal('show'); 
+		var content = '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for Save Educational Details</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" tyle="padding-top:5px;"></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+								+ '<div class="col-sm-4">'
+									+ '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+								+ '</div>'
+								+ '<div class="col-sm-8"><br>'
+									+ '<div class="form-group row">'
+										+'<div class="col-sm-12">Are sure want to add this educational details</div>'
+									+ '</div>'                                                     
+								+ '</div>'
+							+  '</div>'                    
+						+ '</div>' 
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" class="btn btn-primary" name="BtnSaveEducation" class="btn btn-primary" onclick="AddEducationalAttachment()" style="font-family:roboto">Save Education Details</button>'
+						+ '</div>';                                                                                               
+            $('#Publish_body').html(content);
+    }
+    
+    function AddEducationalAttachment() {
+				$( "#BtnSave" ).trigger( "click" );
+	}
+    
+</script>
 <?php include_once("settings_footer.php");?>      
              

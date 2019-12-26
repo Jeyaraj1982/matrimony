@@ -142,7 +142,8 @@ function submitUpload() {
 	</div>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-3">
-            <button type="submit" name="BtnSave" id="BtnSave" class="btn btn-primary mr-2" style="font-family:roboto">Update</button>
+			<input type="submit" name="BtnSave" id="BtnSave" style="display:none">
+			<a href="javascript:void(0)" onclick="ConfirmAttachDocument()" class="btn btn-primary" style="font-family:roboto">Update</a>
         </div>
     </div>
       <br><br><br>
@@ -223,6 +224,36 @@ function showLearnMore() {
                 +  '</div>'
             $('#LearnMore_body').html(content);                                                   
 }
+
+	function ConfirmAttachDocument(){
+        if(submitprofile()) {
+            $('#PubplishNow').modal('show'); 
+            var content ='<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for Attach Document</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                            + '</div>'
+							+ '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are sure want to add this occupation details</div>'
+                                        + '</div>'                                                     
+                                    + '</div>'
+                                +  '</div>'                    
+                            + '</div>' 
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="BtnSave" id="BtnSave" class="btn btn-primary" onclick="AddOccupationDetails()" style="font-family:roboto">Save Occupation Details</button>'
+                            + '</div>';                                                                                               
+            $('#Publish_body').html(content);
+      } else {
+            return false;
+     }
+    }
+
 
     function showConfirmDeleteAttachment(AttachmentID,ProfileID) {
         $('#Delete').modal('show'); 

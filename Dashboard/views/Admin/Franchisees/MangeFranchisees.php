@@ -15,8 +15,8 @@
                 </ul></div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                     <a href="MangeFranchisees" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                    <a href="ManageActiveFranchisees"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
-                    <a href="ManageDeactiveFranchisees"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>
+                    <a href="ManageActiveFranchisees"><small>Active</small></a>&nbsp;|&nbsp;
+                    <a href="ManageDeactiveFranchisees"><small>Deactive</small></a>
                 </div>
                 </div>
                 <br><br>
@@ -34,8 +34,8 @@
                     </thead>
                      <tbody>  
                         <?php 
-                         $response = $webservice->GetManageFranchisee(); 
-                         if (sizeof($response['data'])>0) {
+                            $response = $webservice->getData("Admin","GetManageFranchisee");
+                            if (sizeof($response['data'])>0) {
                          ?>
                         <?php foreach($response['data'] as $Franchisee) { ?>
                                 <tr>
@@ -44,8 +44,9 @@
                                 <td><?php echo $Franchisee['DistrictName'];?></td>
                                 <td><?php echo $Franchisee['Plan'];?></td>
                                 <td><?php echo putDateTime($Franchisee['CreatedOn']);?></td>
-                                <td><a href="<?php echo GetUrl("Franchisees/Edit/". $Franchisee['FranchiseeID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Franchisees/View/". $Franchisee['FranchiseeID'].".html");?>"><span>View</span></a>&nbsp;&nbsp;&nbsp;
+                                <td>
+								<a href="javascript:void(0)" onclick="ConfirmationfrEdit('<?php echo $Franchisee['FranchiseeID'];?>')"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
+								<a href="<?php echo GetUrl("Franchisees/View/". $Franchisee['FranchiseeID'].".html");?>"><span>View</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Franchisees/Wallet/RefillTransfer/". $Franchisee['FranchiseeID'].".html");?>"><span>Refill</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Franchisees/Report/". $Franchisee['FranchiseeID'].".html");?>"><span>Report</span></a>
                                 </td>
@@ -58,7 +59,31 @@
               </div>
             </div>
         </form>   
+		<div class="modal" id="PubplishNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >
+            
+                </div>
+            </div>
+        </div>
  <script>
+ function ConfirmationfrEdit(FranchiseeID) {
+	$('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+						+ '<h4 class="modal-title">Confirmation for Edit</h4>'
+						+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+					+ '</div>'
+					+ '<div class="modal-body">'
+						+'<div class="col-sm-12">Are you sure want to Edit</div>'
+					+ '</div>' 
+					+ '<div class="modal-footer">'
+						+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+						+ '<a href="'+AppUrl+'Franchisees/Edit/'+FranchiseeID+'.html" class="btn btn-primary" name="Create" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
+					+ '</div>';
+            $('#Publish_body').html(content);
+	 
+     }
+ 
 $(document).ready(function(){
     $('#myTable').dataTable();
     setTimeout("DataTableStyleUpdate()",500);

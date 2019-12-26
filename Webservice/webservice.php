@@ -121,6 +121,7 @@
     include_once("classes/class.Profiles.php");
     
     include_once("modules/class.Shortlist.php");               
+    include_once("modules/class.MailContent.php");               
      
     if ($_GET['m']=="Admin") {
         include_once("classes/class.Master.php");    

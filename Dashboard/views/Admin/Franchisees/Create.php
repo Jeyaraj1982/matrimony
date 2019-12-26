@@ -9,6 +9,7 @@ $(document).ready(function () {
   $("#BusinessMobileNumber").keypress(function (e) {
      if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
         $("#ErrBusinessMobileNumber").html("Digits Only").fadeIn().fadeIn("slow");
+		
                return false;
     }
    });
@@ -26,14 +27,7 @@ $(document).ready(function () {
                return false;
     }
    });
-   
-    $("#AccountNumber").keypress(function (e) {
-     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-        $("#ErrAccountNumber").html("Digits Only").show().fadeIn("fast");
-               return false;
-    }
-   });
-    $("#MobileNumber").keypress(function (e) {
+   $("#MobileNumber").keypress(function (e) {
      if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
         $("#ErrMobileNumber").html("Digits Only").show().fadeIn("slow");
                return false;
@@ -46,12 +40,7 @@ $(document).ready(function () {
                return false;
     }
    });
-   $("#LandlineNumber").keypress(function (e) {
-     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-        $("#ErrLandlineNumber").html("Digits Only").show().fadeIn("slow");
-               return false;
-    }
-   });
+ 
     $("#AadhaarCard").keypress(function (e) {
      if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
         $("#ErrAadhaarCard").html("Digits Only").show().fadeIn("slow");
@@ -196,7 +185,7 @@ function myFunction() {
                          $('#ErrEmailID').html("");
                          $('#ErrMobileNumber').html("");
                          $('#ErrWhatsappNumber').html("");
-                         $('#ErrLandlineNumber').html("");
+                       
                          $('#ErrAddress1').html("");
                          $('#ErrAddress2').html("");
                          $('#ErrAddress3').html("");
@@ -206,8 +195,11 @@ function myFunction() {
                          
                          ErrorCount=0;
                         if (IsNonEmpty("FranchiseeCode","ErrFranchiseeCode","Please Enter Franchisee Code")) {
+							$('html, body').animate({
+							scrollTop: $("#FranchiseeCode").offset().top
+							}, 2000);
                         IsAlphaNumeric("FranchiseeCode","ErrFranchiseeCode","Please Enter Alpha Numeric characters only");
-                        }
+						}
                         if (IsNonEmpty("FranchiseeName","ErrFranchiseeName","Please Enter Franchisee Name")) {
                         IsAlphabet("FranchiseeName","ErrFranchiseeName","Please Enter Alpha Numeric characters only");
                         }
@@ -239,8 +231,10 @@ function myFunction() {
                         if (IsNonEmpty("AccountName","ErrAccountName","Please Enter Account Name")) {
                         IsAlphabet("AccountName","ErrAccountName","Please Enter Alpha Numeric Characters only");
                         }
-                        IsNonEmpty("AccountNumber","ErrAccountNumber","Please Enter Account Number");
-                        if (IsNonEmpty("IFSCode","ErrIFSCode","Please Enter Valid IFSCode")) {
+                        if (IsNonEmpty("AccountNumber","ErrAccountNumber","Please Enter Account Number")) {
+                        IsAlphaNumeric("AccountNumber","ErrAccountNumber","Please Enter Alpha Numeric Characters only");
+                        }
+						if (IsNonEmpty("IFSCode","ErrIFSCode","Please Enter Valid IFSCode")) {
                         IsAlphaNumeric("IFSCode","ErrIFSCode","Please Enter Alpha Numeric Characters only");
                         }
                         if (IsNonEmpty("PersonName","ErrPersonName","Please Enter Person Name")) {
@@ -260,15 +254,13 @@ function myFunction() {
                             IsWhatsappNumber("WhatsappNumber","ErrWhatsappNumber","Please Enter Valid Whatsapp Number");
                         }
                         
-                        if ($('#LandlineNumber').val().trim().length>0) {
-                            IsNumeric("LandlineNumber","ErrLandlineNumber","Please Enter Valid Landline");
-                        }
+                        
                         
                         IsNonEmpty("Address1","ErrAddress1","Please Enter Valid Address Line1");
                         if (IsNonEmpty("AadhaarCard","ErrAadhaarCard","Please Enter Aadhaar Number")) {
                         IsNumeric("AadhaarCard","ErrAadhaarCard","Please Enter Numeric Charactors only");
                         }
-                        //IsNonEmpty("UserName","ErrUserName","Please Enter User Name");
+                        //IsNonEmpty("UserName","ErrUserName","Please Enter User Name");  
                         if (IsNonEmpty("UserName","ErrUserName","Please Enter Login Name")) {
                         IsAlphaNumerics("UserName","ErrUserName","Please Enter Alpha Numeric Character only");
                         }
@@ -288,13 +280,12 @@ function myFunction() {
 </script>
 <?php                   
   if (isset($_POST['BtnSaveCreate'])) {   
-    $response = $webservice->CreateFranchisee($_POST);
-    if ($response['status']=="success") {
-       $successmessage = $response['message']; 
+    $response = $webservice->getData("Admin","CreateFranchisee",$_POST);
+    if ($response['status']=="success") { echo  $successmessage = $response['message']; 
        unset($_POST);
     } else {
         $errormessage = $response['message']; 
-    }
+    } 
     }
   $fInfo = $webservice->getData("Admin","GetFranchiseeCode");
      $FranchiseeCode="";
@@ -303,19 +294,23 @@ function myFunction() {
         }
         {
 ?>
-    <form method="post" action="<?php $_SERVER['PHP_SELF']?>" id="frmfrn" onsubmit="return SubmitNewFranchisee();">
+    <form method="post" id="frmfrn">
+	<input type="hidden" value="" name="txnPassword" id="txnPassword">
     <div class="col-12 grid-margin">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Franchisees</h4>
-                <h4 class="card-title">Create Franchisee</h4> Franchising your matrimony business is a proven route to rapid growth. Follow simple bellow steps, you will create a Franchisee.
-            </div>
+				<div style="padding:15px !important;max-width:770px !important;">
+					<h4 class="card-title">Franchisees</h4>
+					<h4 class="card-title">Create Franchisee</h4> Franchising your matrimony business is a proven route to rapid growth. Follow simple bellow steps, you will create a Franchisee.
+				</div>
+			</div>
         </div>
     </div>
 
     <div class="col-12 grid-margin">
         <div class="card">
             <div class="card-body">
+			<div style="padding:15px !important;max-width:770px !important;">
                 <h4 class="card-title">Business Information</h4>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Franchisee Code<span id="star">*</span></label>
@@ -340,39 +335,48 @@ function myFunction() {
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <select class="selectpicker form-control" data-live-search="true" name="ContactNumberCountryCode" id="ContactNumberCountryCode" style="width: 61px;">
                                     <?php foreach($fInfo['data']['CountryCode'] as $CountryCode) { ?>
-                                        <option value="<?php echo $CountryCode['ParamB'];?>"<?php echo ($_POST['ContactNumberCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
+                                        <option value="<?php echo $CountryCode['ParamA'];?>"<?php echo ($_POST['ContactNumberCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
                                             <?php echo $CountryCode['str'];?>
                                         </option>
                                         <?php } ?>                       
                                 </select>
                     </div>
-                    <div class="col-sm-7">
+                    <div class="col-sm-6">
                         <input type="text" maxlength="10" class="form-control" id="BusinessMobileNumber" name="BusinessMobileNumber" Placeholder="Mobile Number" value="<?php echo (isset($_POST['BusinessMobileNumber']) ? $_POST['BusinessMobileNumber'] : "");?>">
                         <span class="errorstring" id="ErrBusinessMobileNumber"><?php echo isset($ErrBusinessMobileNumber)? $ErrBusinessMobileNumber : "";?></span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Whatsapp Number<span id="star">*</span></label>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <select class="selectpicker form-control" data-live-search="true" name="ContactWhatsappCountryCode" id="ContactWhatsappCountryCodev" style="width: 61px;">
                                     <?php foreach($fInfo['data']['CountryCode'] as $CountryCode) { ?>
-                                        <option value="<?php echo $CountryCode['ParamB'];?>"<?php echo ($_POST['ContactWhatsappCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
+                                        <option value="<?php echo $CountryCode['ParamA'];?>"<?php echo ($_POST['ContactWhatsappCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
                                             <?php echo $CountryCode['str'];?>
                                         </option>
                                         <?php } ?>                       
                                 </select>
                     </div>
-                    <div class="col-sm-7">
+                    <div class="col-sm-6">
                         <input type="text" maxlength="10" class="form-control" id="BusinessWhatsappNumber" name="BusinessWhatsappNumber" Placeholder="Whatsapp Number" value="<?php echo (isset($_POST['BusinessWhatsappNumber']) ? $_POST['BusinessWhatsappNumber'] : "");?>">
                         <span class="errorstring" id="ErrBusinessWhatsappNumber"><?php echo isset($ErrBusinessWhatsappNumber)? $ErrBusinessWhatsappNumber : "";?></span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Landline Number </label>
-                    <div class="col-sm-3">
+					<div class="col-sm-3">                                                      
+						<select class="selectpicker form-control" data-live-search="true" name="LandlineCountryCode" id="LandlineCountryCode" style="width: 61px;">
+							<?php foreach($fInfo['data']['CountryCode'] as $CountryCode) { ?>
+								<option value="<?php echo $CountryCode['ParamA'];?>"<?php echo ($_POST['LandlineCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
+									<?php echo $CountryCode['str'];?>
+								</option>
+								<?php } ?>                       
+						</select>
+					</div>
+                    <div class="col-sm-6">
                         <input type="text" class="form-control" id="BusinessLandlineNumber" name="BusinessLandlineNumber" Placeholder="Landline Number" value="<?php echo (isset($_POST['BusinessLandlineNumber']) ? $_POST['BusinessLandlineNumber'] : "");?>">
                         <span class="errorstring" id="ErrBusinessLandlineNumber"><?php echo isset($ErrBusinessLandlineNumber)? $ErrBusinessLandlineNumber : "";?></span>
                     </div>
@@ -402,8 +406,8 @@ function myFunction() {
                         <input type="text" class="form-control" id="CityName" name="CityName" Placeholder="City Name" value="<?php echo (isset($_POST['CityName']) ? $_POST['CityName'] : "");?>">
                         <span class="errorstring" id="ErrCityName"><?php echo isset($ErrCityName)? $ErrCityName : "";?></span>
                     </div>
-                    <label class="col-sm-3 col-form-label">Landmark<span id="star">*</span></label>
-                    <div class="col-sm-3">
+                    <label class="col-sm-2 col-form-label">Landmark<span id="star">*</span></label>
+                    <div class="col-sm-4">
                         <input type="text" class="form-control" id="Landmark" name="Landmark" Placeholder="Landmark" value="<?php echo (isset($_POST['Landmark']) ? $_POST['Landmark'] : "");?>">
                         <span class="errorstring" id="ErrLandmark"><?php echo isset($ErrLandmark)? $ErrLandmark : "";?></span>
                     </div>
@@ -433,8 +437,8 @@ function myFunction() {
                                 <?php } ?>
                         </select>
                     </div>
-                    <label class="col-sm-3 col-form-label">District Name<span id="star">*</span></label>
-                    <div class="col-sm-3">
+                    <label class="col-sm-2 col-form-label">District Name<span id="star">*</span></label>
+                    <div class="col-sm-4">
                         <select class="selectpicker form-control" data-live-search="true" id="DistrictName" name="DistrictName">
                             <option value="0">--Choose Your District Name--</option>
                             <?php foreach($fInfo['data']['DistrictName'] as $DistrictName) { ?>
@@ -451,8 +455,8 @@ function myFunction() {
                         <input type="text" maxlength="10" class="form-control" id="PinCode" name="PinCode" Placeholder="Pin Code" value="<?php echo (isset($_POST['PinCode']) ? $_POST['PinCode'] : "");?>">
                         <span class="errorstring" id="ErrPinCode"><?php echo isset($ErrPinCode)? $ErrPinCode : "";?></span>
                     </div>
-                    <label class="col-sm-3 col-form-label">Plan<span id="star">*</span></label>
-                    <div class="col-sm-3">
+                    <label class="col-sm-2 col-form-label">Plan<span id="star">*</span></label>
+                    <div class="col-sm-4">
                         <select class="selectpicker form-control" data-live-search="true" id="Plan" name="Plan">
                             <option value="0">--Choose Your Plan--</option>
                             <?php foreach($fInfo['data']['Plans'] as $Plan) { ?>
@@ -461,14 +465,18 @@ function myFunction() {
                                 </option>
                                 <?php } ?>
                         </select>
+						<br>
+						<a href="javascript:void(0)" onclick="ViewPlan()">view plan</a>
                     </div>
                 </div>
             </div>
         </div>
+		</div>
     </div>
     <div class="col-12 grid-margin">
         <div class="card">
             <div class="card-body">
+				<div style="padding:15px !important;max-width:770px !important;">
                 <h4 class="card-title">Bank Account Details</h4>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Bank Name<span id="star">*</span></label>
@@ -484,7 +492,7 @@ function myFunction() {
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Account Name<span id="star">*</span></label>
+                    <label class="col-sm-3 col-form-label">Account Holder Name<span id="star">*</span></label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="AccountName" name="AccountName" Placeholder="Account Name" value="<?php echo (isset($_POST['AccountName']) ? $_POST['AccountName'] : "");?>">
                         <span class="errorstring" id="ErrAccountName"><?php echo isset($ErrAccountName)? $ErrAccountName : "";?></span>
@@ -503,8 +511,8 @@ function myFunction() {
                         <input type="text" maxlength="15" class="form-control" id="IFSCode" name="IFSCode" Placeholder="IFS Code" value="<?php echo (isset($_POST['IFSCode']) ? $_POST['IFSCode'] : "");?>">
                         <span class="errorstring" id="ErrIFSCode"><?php echo isset($ErrIFSCode)? $ErrIFSCode : "";?></span>
                     </div>
-                    <label class="col-sm-3 col-form-label">Account Type<span id="star">*</span></label>
-                    <div class="col-sm-3">
+                    <label class="col-sm-2 col-form-label">Account Type<span id="star">*</span></label>
+                    <div class="col-sm-4">
                         <select class="selectpicker form-control" data-live-search="true" id="AccountType" name="AccountType">
                             <option value="0">--Choose Your Account Type--</option>
                             <?php foreach($fInfo['data']['AccountType'] as $AccountType) { ?>
@@ -515,12 +523,15 @@ function myFunction() {
                         </select>
                     </div>
                 </div>
+				</div>
             </div>
         </div>
        </div>
-        <div class="col-12 grid-margin">
+        
+		<div class="col-12 grid-margin">
             <div class="card">
                 <div class="card-body">
+					<div style="padding:15px !important;max-width:770px !important;">
                     <h4 class="card-title">Profile Information</h4>
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Person Name<span id="star">*</span></label>
@@ -538,33 +549,35 @@ function myFunction() {
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Date of birth<span id="star">*</span></label>
-                        <div class="col-sm-1" style="max-width:160px !important;">
-                                    <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
-                                        <?php for($i=1;$i<=31;$i++) {?>
-                                            <option value="<?php echo $i; ?>" <?php echo ($_POST[ 'date']==$i) ? " selected='selected' " : "";?>>
-                                            <?php echo $i;?>
-                                            </option>
-                                        <?php } ?>
-                                    </select>
+						<div class="col-sm-4">
+                            <div class="col-sm-4" style="max-width:60px !important;padding:0px !important;">
+                                <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
+									<?php for($i=1;$i<=31;$i++) {?>
+										<option value="<?php echo $i; ?>" <?php echo ($_POST[ 'date']==$i) ? " selected='selected' " : "";?>>
+										<?php echo $i;?>
+										</option>
+									<?php } ?>
+								</select>
                             </div>
-                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">        
-                                    <select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px">
-                                        <?php foreach($_Month as $key=>$value) {?>
-                                            <option value="<?php echo $key+1; ?>" <?php echo ($_POST[ 'month']==$key+1) ? " selected='selected' " : "";?>>
-                                            <?php echo $value;?>
-                                            </option>
-                                        <?php } ?>
-                                    </select>                                    
+                            <div class="col-sm-4" style="max-width:90px !important;padding:0px !important;margin-right:6px;margin-left:4px;">        
+								<select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px">
+									<?php foreach($_Month as $key=>$value) {?>
+										<option value="<?php echo $key+1; ?>" <?php echo ($_POST[ 'month']==$key+1) ? " selected='selected' " : "";?>>
+										<?php echo $value;?>
+										</option>
+									<?php } ?>
+								</select>                                    
                             </div>
-                            <div class="col-sm-2" style="max-width: 148px;">
-                                    <select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
-                                        <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
-                                            <option value="<?php echo $i; ?>" <?php echo ($_POST['year']==$i) ? " selected='selected' " : "";?>><?php echo $i;?>
-                                            </option>                             
-                                        <?php } ?>                                  
-                                    </select>
-                     </div>
-                       <label class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
+                            <div class="col-sm-4" style="max-width:110px !important;padding:0px !important;">
+								<select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
+									<?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
+										<option value="<?php echo $i; ?>" <?php echo ($_POST['year']==$i) ? " selected='selected' " : "";?>><?php echo $i;?>
+										</option>                             
+									<?php } ?>                                  
+								</select>
+							</div>
+                      </div>
+                       <label class="col-sm-2 col-form-label">Gender<span id="star">*</span></label>
                         <div class="col-sm-3">
                             <select class="selectpicker form-control" data-live-search="true" id="Sex" name="Sex">
                                 <option value="0">--Choose Gender--</option>
@@ -585,39 +598,34 @@ function myFunction() {
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                         <select class="selectpicker form-control" data-live-search="true" name="MobileNumberCountryCode" id="MobileNumberCountryCode" style="width: 61px;">
                                     <?php foreach($fInfo['data']['CountryCode'] as $CountryCode) { ?>
-                                        <option value="<?php echo $CountryCode['ParamB'];?>"<?php echo ($_POST['MobileNumberCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
+                                        <option value="<?php echo $CountryCode['ParamA'];?>"<?php echo ($_POST['MobileNumberCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
                                             <?php echo $CountryCode['str'];?>
                                         </option>
                                         <?php } ?>                       
                                 </select>
                     </div>
-                        <div class="col-sm-7">
+                        <div class="col-sm-6">
                             <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" Placeholder="Mobile Number" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>">
                             <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Whatsapp Number </label>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                         <select class="selectpicker form-control" data-live-search="true" name="WhatsappNumberCountryCode" id="WhatsappNumberCountryCode" style="width: 61px;">
                                     <?php foreach($fInfo['data']['CountryCode'] as $CountryCode) { ?>
-                                        <option value="<?php echo $CountryCode['ParamB'];?>"<?php echo ($_POST['WhatsappNumberCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
+                                        <option value="<?php echo $CountryCode['ParamA'];?>"<?php echo ($_POST['WhatsappNumberCountryCode']==$CountryCode['SoftCode']) ? " selected='selected' " : "";?>>
                                             <?php echo $CountryCode['str'];?>
                                         </option>
                                         <?php } ?>                       
                                 </select>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-6">
                             <input type="text" maxlength="10" class="form-control" id="WhatsappNumber" name="WhatsappNumber" Placeholder="Whatsapp Number" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : "");?>">
                             <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
-                        </div>
-                        <label class="col-sm-3 col-form-label">Landline Number </label>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control" id="LandlineNumber" name="LandlineNumber" Placeholder="Landline Number" value="<?php echo (isset($_POST['LandlineNumber']) ? $_POST['LandlineNumber'] : "");?>">
-                            <span class="errorstring" id="ErrLandlineNumber"><?php echo isset($ErrLandlineNumber)? $ErrLandlineNumber : "";?></span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -648,24 +656,33 @@ function myFunction() {
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Login Name<span id="star">*</span></label>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <input type="text" minlength="6" class="form-control" id="UserName" name="UserName" Placeholder="Login Name" value="<?php echo (isset($_POST['UserName']) ? $_POST['UserName'] : "");?>">
                             <span class="errorstring" id="ErrUserName"><?php echo isset($ErrUserName)? $ErrUserName : "";?> </span>
                         </div>
                         <label class="col-sm-2 col-form-label">Login Password<span id="star">*</span></label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <input type="Password" maxlength="8" class="form-control" id="Password" name="Password" Placeholder="Password" value="<?php echo (isset($_POST['Password']) ? $_POST['Password'] : "");?>">
-                            <span class="errorstring" id="ErrPassword"><?php echo isset($ErrPassword)? $ErrPassword : "";?> </span></div>
-                        <div class="col-sm-2">
-                            <input type="checkbox" onclick="myFunction()">&nbsp;show</div>
-                    </div>
-                    <div class="col-sm-12">
+                            <span class="errorstring" id="ErrPassword"><?php echo isset($ErrPassword)? $ErrPassword : "";?> </span><br><input type="checkbox" onclick="myFunction()">show
+						</div>
+					</div>
+                    <div class="col-sm-12" style="text-align:center;color:red">
                         <?php echo $errormessage;?>
                     </div>
+					</div>
                 </div>
             </div>
         </div>
-<div class="col-12 grid-margin">
+		<div class="col-12 grid-margin">
+			<div style="padding:15px !important;max-width:770px !important;text-align:right">
+				<span style="padding-top:5px;text-decoration: underline; color: skyblue;"> <a href="javascript:void(0)" onclick="ConfirmGotoBack()"><small>Back</small> </a></span>&nbsp;&nbsp;
+				<a href="javascript:void(0)" onclick="Franchisee.ConfirmCreateFranchisee()" class="btn btn-primary" name="BtnSaveCreate">Create Franchisee</a>
+			</div>
+		</div>
+		
+		
+		
+<!--<div class="col-12 grid-margin">
                   <div class="card">                                                             
                     <div class="card-body">                                                                            
                       <h4 class="card-title">Office Timing</h4>  
@@ -1219,13 +1236,146 @@ function myFunction() {
                            </div>
                          <div class="col-sm-1"><input type="checkbox" class="form-control" id="Sunday" name="Sunday" value=""></div>
                       </div>
-                    <div class="form-group row">
-                        <div class="col-sm-3"><button type="submit" class="btn btn-primary" name="BtnSaveCreate">Create Franchisee</button></div>
-                        <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"> <a href="MangeFranchisees"><small>List of Franchisees</small> </a></div>
-                      </div>
+                    
                       </form>
                     </div> 
                </div>
- </div> 
+ </div> -->
  </form>   
 <?php }?>
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 313px;min-height: 313px;" >
+            
+                </div>
+            </div>
+        </div>
+<script>
+var Franchisee = { 
+	ConfirmCreateFranchisee:function() {
+	if(SubmitNewFranchisee()) {
+      $('#PubplishNow').modal('show'); 
+      var content = ''
+					+''
+					+'<div class="modal-header">'
+						+ '<h4 class="modal-title">Confirmation for create franchisee</h4>'
+						+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+					+ '</div>'
+					+ '<div class="modal-body">'
+						+ '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+							+ '<div class="col-sm-4">'
+								+ '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+							+ '</div>'
+							+ '<div class="col-sm-8"><br>'
+								+ '<div class="form-group row">'
+									+'<div class="col-sm-12">Are you sure want create franchisee</div>'
+								+ '</div>'
+							+ '</div>'
+						+  '</div>'                    
+					+ '</div>' 
+					+ '<div class="modal-footer">'
+						+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+						+ '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Franchisee.GetTxnPassword()" style="font-family:roboto">Create Franchisee</button>'
+					+ '</div>';
+            $('#Publish_body').html(content);
+	 } else {
+            return false;
+     }
+}, 
+GetTxnPassword:function() {
+	
+	var content = 	'<div class="modal-header">'
+						+ '<h4 class="modal-title">Confirmation for create franchisee</h4>'
+						+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+					+ '</div>'
+					+ '<div class="modal-body">'
+						+ '<div class="form-group">'
+								+ '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
+						 + '</div>'
+						 + '<div class="form-group">'
+							+ '<div class="input-group">'
+								+ '<div class="col-sm-2"></div>'
+								+ '<div class="col-sm-8">'
+									+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="width: 67%;font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+								+ '</div>'
+								+ '<div class="col-sm-2"></div>'
+							+ '</div>'
+						+ '</div>'
+					+ '</div>'
+					+ '<div class="modal-footer">'
+						+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+						+ '<button type="button" onclick="Franchisee.CreateFranchisee()" class="btn btn-primary" name="btnVerify" id="verifybtn">Create Franchisee</button>'
+					+ '</div>';
+            $('#Publish_body').html(content);			
+},
+CreateFranchisee:function() {
+	$("#txnPassword").val($("#TransactionPassword").val());
+    var param = $("#frmfrn").serialize();
+	$('#Publish_body').html(preloading_withText("Submitting Franchisee ...","95"));
+		$.post(API_URL + "m=Admin&a=CreateFranchisee",param,function(result) {
+			alert(result);
+			if (!(isJson(result.trim()))) {
+				alert(result+"66666");
+				$('#Publish_body').html(result);
+				return ;
+			}
+			var obj = JSON.parse(result.trim());
+			if (obj.status=="success") {
+				alert(result+"77777");
+				var data = obj.data; 
+				var content = '<div  style="height: 300px;">'                                                                              
+								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+									+ '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+									+ '<h3 style="text-align:center;">Franchisee Created</h3>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">FranchiseeCode:' + obj.FranchiseeCode+'</h5>'
+									+ '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
+								+'</div>' 
+							+'</div>';
+				$('#Publish_body').html(content);
+			} else {
+				var data = obj.data; 
+				var content = '<div  style="height: 300px;">'                                                                              
+								+'<div class="modal-header">'
+									+'<h4 class="modal-title">Create Franchisee</h4>'
+									+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+								+'</div>'
+								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+									+ '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+										+'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+								+'</div>' 
+							+'</div>';
+            $('#Publish_body').html(content);
+			}
+		});
+}
+};
+
+function ViewPlan() {
+	$('#Publish_body').html(preloading_withText("Loading ...","95"));
+        $('#PubplishNow').modal('show');
+        $.ajax({
+            url: API_URL + "m=Admin&a=ViewPlanForCreateFranchisee", 
+            success: function(result){
+               $('#Publish_body').html(result); 
+            }});
+}
+function ConfirmGotoBack() {
+	$('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+						+ '<h4 class="modal-title">Confirmation for Exit</h4>'
+						+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+					+ '</div>'
+					+ '<div class="modal-body">'
+						+'<div class="col-sm-12">Are you sure want to cancel create franchisee</div>'
+					+ '</div>' 
+					+ '<div class="modal-footer">'
+						+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+						+ '<a href="'+AppUrl+'Franchisees/MangeFranchisees" class="btn btn-primary" name="Create" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
+					+ '</div>';
+            $('#Publish_body').html(content);
+	 
+     }
+	 
+
+</script>

@@ -12,7 +12,6 @@
 </style>
 <?php
     $response = $webservice->getData("Member","GetMyProfiles",array("ProfileFrom"=>"All")); 
-     
     
     if (sizeof($response['data'])>0) {
 ?>

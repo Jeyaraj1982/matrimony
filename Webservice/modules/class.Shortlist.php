@@ -20,16 +20,12 @@
                        
                   if (AppConfig::FIRST_TIME_ADD_SHORTLIST_EMAIL_TO_PARTNER) {
                       
-                      $mContent = $mysql->select("select Content,Title from `mailcontent` where `Category`='AddToShortListProfile'");
-                      $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
-                      $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
-                      $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
-
+                      $mContent = MailContent::getMailContent('AddToShortListProfile');
                       MailController::Send(array("MailTo"   => $member[0]['EmailID'],
                                                  "Category" => "AddToShortListProfile",
                                                  "MemberID" => $member[0]['MemberID'],
-                                                 "Subject"  => $mContent[0]['Title'],
-                                                 "Message"  => $content),$mailError);
+                                                 "Subject"  => $mContent['Title'],
+                                                 "Message"  => MailContent::getMailContent($mContent['Content'],$member[0],$Profiles[0])),$mailError);
                   }
                         
                   if (AppConfig::FIRST_TIME_ADD_SHORTLIST_SMS_TO_PARTNER) {
@@ -40,16 +36,12 @@
                 
                  if (AppConfig::EVERY_TIME_ADD_SHORTLIST_EMAIL_TO_PARTNER) {
             
-                     $mContent = $mysql->select("select Content,Title from `mailcontent` where `Category`='AddToShortListProfile'");
-                     $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
-                     $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
-                     $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
-                     
+                     $mContent = MailContent::getMailContent('AddToShortListProfile');
                      MailController::Send(array("MailTo"   => $member[0]['EmailID'],
                                                 "Category" => "AddToShortListProfile",
                                                 "MemberID" => $member[0]['MemberID'],
-                                                "Subject"  => $mContent[0]['Title'],
-                                                "Message"  => $content),$mailError);
+                                                "Subject"  => $mContent['Title'],
+                                                "Message"  => MailContent::getMailContent($mContent['Content'],$member[0],$Profiles[0])),$mailError);
                  }
                  
                  if (AppConfig::EVERY_TIME_ADD_SHORTLIST_SMS_TO_PARTNER){

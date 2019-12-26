@@ -469,10 +469,12 @@
              global $mysql,$loginInfo;
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==0) {
-                 return $this->ChangeMobileNumberFromVerificationScreen("",$loginInfo[0]["LoginID"],"","");
+				
+               return $this->ChangeMobileNumberFromVerificationScreen("",$loginInfo[0]["LoginID"],"","");
              }
              if ($memberdata[0]['IsEmailVerified']==0) {
-                 return $this->ChangeEmailFromVerificationScreen("",$loginInfo[0]["LoginID"],"","");
+				 
+               return $this->ChangeEmailFromVerificationScreen("",$loginInfo[0]["LoginID"],"","");
              }
              return "<script>location.href='".AppPath."MyProfiles/CreateProfile';</script>";
          }
@@ -619,12 +621,12 @@
                                             <input type="text" class="form-control" value="'.$scode.'" id="new_mobile_number"  name="new_mobile_number"  maxlength="10" style="font-family:Roboto;"></div>
                                         </div>
                                         <div class="col-sm-12" id="errormsg">'.$error.'</div>
+									</div>
                                 </div>
-                                 <div style="text-align:center">
-                                        <a href="javascript:void(0)" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify" style="font-family:roboto">Save and verify</a>
-                                        <a href="javascript:void(0)" onclick="CheckVerification()">back</a>
-                                 </div>
-                             </div>
+								 <div class="modal-footer">
+									<a href="javascript:void(0)" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify" style="font-family:roboto">Save and verify</a>&nbsp;&nbsp;
+									<a href="javascript:void(0)" onclick="CheckVerification()">back</a>
+								 </div>
                             </form>                                                                                                       
                         </div>';  
                         return $return;
@@ -727,7 +729,7 @@
                                         <div class="col-sm-4"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
                                         <div class="col-sm-2"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                         <div class="col-sm-3"></div>
-                                        <div class="col-sm-12" style="text-align:center;">'.$error.'</div>
+                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error" >'.$error.'&nbsp;</div>
                                     </div>
                                 </div>
                             </div>
@@ -764,7 +766,7 @@
                          </div>';
                  
                  } else {
-                     return $this->MobileNumberVerificationForm("<span style='color:red'>You entered, invalid pin.</span>",$_POST['loginId'],$_POST['mobile_otp_2'],$_POST['reqId']);
+                     return $this->MobileNumberVerificationForm("<span style='color:red'>Invalid verification code.</span>",$_POST['loginId'],$_POST['mobile_otp_2'],$_POST['reqId']);
                  }
          }
 
@@ -802,6 +804,7 @@
                             </div>
                             <div class="modal-body" style="max-height:400px;min-height:400px;">
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+								<h4 style="text-align:center;color:#ada9a9">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen.</h4>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'&nbsp;&#65372&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>
                             </div>
                             <div class="modal-footer">
@@ -851,10 +854,10 @@
                                 <div class="modal-body">
                                     <br><br><br><input type="text" value="'.$scode.'" id="new_email" name="new_email" class="form-control" style="font-family:Roboto;">
                                     <div class="col-sm-12" id="errormsg">'.$error.'</div>
-                                    <div style="text-align:center">
-                                        <a href="javascript:void(0)" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Save to verify</a>&nbsp;&nbsp;
-                                        <a href="javascript:void(0)" onclick="CheckVerification()">back</a>
-                                    </div>
+								</div>
+								<div class="modal-footer">
+                                    <a href="javascript:void(0)" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Save to verify</a>&nbsp;&nbsp;
+                                    <a href="javascript:void(0)" onclick="CheckVerification()">back</a>
                                 </div>
                             </form>                                                                                                       
                         </div>'; 
@@ -964,7 +967,7 @@
                                                         <div class="col-sm-4"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
                                                         <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                                         <div class="col-sm-3"></div>
-                                                        <div class="col-sm-12" style="text-align:center;">'.$error.'</div>
+                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error">'.$error.'</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -996,8 +999,8 @@
                                             <div class="col-sm-4"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
                                             <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                             <div class="col-sm-3"></div>
-                                        </div>
-                                        <div class="col-sm-12"  style="text-align:center;">'.$error.'</div>
+                                        </div>															
+                                        <div class="col-sm-12"  style="text-align:center;color:red" id="frmMobileNoVerification_error">'.$error.'&nbsp;</div>
                                     </div>
                                 </div>
                              </div>
@@ -1120,18 +1123,10 @@
                         $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
                         $result['mode']="Published";
 						
-							//$WhoViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$PublishedProfile['ProfileCode']."' AND VisterMemberID>0 AND VisterProfileID>0  group by `VisterProfileCode` ");
 							$result['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($PublishedProfile['ProfileCode']));
-
-							//$WhoFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
 							$result['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($PublishedProfile['ProfileCode']));
-						
-							//$MutualCount = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' order by FavProfileID DESC)");
 							$result['MutualCount']= sizeof($this->GetMutualProfilesCount($PublishedProfile['ProfileCode']));
-						
-							//$WhoShortListedcount = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
 							$result['WhoShortListedcount']= Shortlist::WhoShortlisted($PublishedProfile['ProfileCode']);
-						
                         $Profiles[]=$result; 
                      }                                                                          
                 }
@@ -1565,6 +1560,13 @@
 									</div>'; 
 				}
         }
+		function DeleteProfile() {
+			return '<div class="modal-body" style="text-align:center;height: 300px;">
+						<p style="text-align:center;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+						<h5 style="text-align:center;color:#ada9a9">Your Profile has been deleted</h4>    <br>
+						<a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+					</div>';
+		}
     /* end Submit profile */  
          function DeleteAttach() {
 
@@ -1580,13 +1582,15 @@
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-               return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+               return  '<div class="modal-header">
                             <h4 class="modal-title">Confirmation For Remove</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Record has been removed successfully.</h5>
-                            <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="height:100px;"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Record has been removed successfully</h4>    <br>
+                            <a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';
 
          }
          
@@ -1601,13 +1605,15 @@
              $updateSql = "update `_tbl_draft_profile_education_attachments` set `FileName` = '' where `EducationAttachmentID`='".$_POST['AttachmentID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'";
              $mysql->execute($updateSql);  
           
-               return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+               return  '<div class="modal-header">
                             <h4 class="modal-title">Confirmation For Remove</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Attachment has been removed successfully.</h5>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/EducationDetails/'.$ProfileCode.'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';                             
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="height:100px;"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Record has been removed successfully</h4>    <br>
+                            <a href="'.AppPath.'MyProfiles/Draft/Edit/EducationDetails/'.$ProfileCode.'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';                             
 
          }
          
@@ -1622,7 +1628,7 @@
          /*Checked*/
          function GetPublishProfileInfo() {
              global $mysql,$loginInfo;      
-             $result =  Profiles::getProfileInformation($_POST['ProfileCode']);
+             $result =  Profiles::getProfileInfo($_POST['ProfileCode']);
              return (is_array($result)) ? Response::returnSuccess("success",$result) : Response::returnError($result);
          }
 
@@ -2469,9 +2475,9 @@
              if (!(trim($_POST['EducationDegree']))>0) {                                
                  return Response::returnError("Please select education degree ");
              }
-             $data = $mysql->select("select * from `_tbl_draft_profiles_education_details` where  `FileName`='".$_POST['File']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
+             $data = $mysql->select("select * from `_tbl_draft_profiles_education_details` where  `FileName`='".$_POST['FileName']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
              if (sizeof($data)>0) {
-                return Response::returnError("Document  Already attached",$data);
+				 return Response::returnError("Document  Already attached.");
              }
              $profile = $mysql->select("select * from _tbl_draft_profiles where ProfileCode='".$_POST['Code']."'"); 
              if($_POST['EducationDegree']=="Others"){
@@ -2500,7 +2506,7 @@
                                                                             "ProfileCode"           => $profile[0]['ProfileCode'], 
                                                                             "FileName"              => $_POST['File'])); 
              
-             return (sizeof($id)>0) ? Response::returnSuccess("success",$_POST,array("Code"=>$_POST['Code']))
+             return (sizeof($id)>0) ? Response::returnSuccess("success",array("Code"=>$_POST['Code']))
                                     : Response::returnError("Access denied. Please contact support");   
          }
          

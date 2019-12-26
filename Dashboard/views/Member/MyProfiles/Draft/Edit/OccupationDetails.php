@@ -1,6 +1,6 @@
 <?php
     $page="OccupationDetails";
-   /* if (isset($_POST['BtnSaveProfile'])) {
+  /*  if (isset($_POST['BtnSaveProfile'])) {
         
         $response = $webservice->getData("Member","EditDraftOccupationDetails",$_POST);
         if ($response['status']=="success") {
@@ -8,7 +8,7 @@
         } else {
             $errormessage = $response['message']; 
         }
-    }    */
+    } */   
     
     $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
@@ -114,7 +114,7 @@ function submitprofile() {
 }
 </script>
 <div class="col-sm-10 rightwidget">
-<form method="post" action="" name="form1" id="form1" enctype="multipart/form-data" onsubmit="return submitprofile();">
+<form method="post" action="" name="form1" id="form1" enctype="multipart/form-data" >
     <h4 class="card-title">Occupation Details</h4>
     <div class="form-group row">
         <label for="Employed As" class="col-sm-2 col-form-label">Employed as<span id="star">*</span></label>   
@@ -230,9 +230,9 @@ function submitprofile() {
         </div>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-6">
-            <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
-            <br>
-            <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
+			<input type="submit" name="BtnSaveProfile" id="BtnSaveProfile" style="display:none">
+			<a href="javascript:void(0)" onclick="ConfirmAddOccupationDetails()" class="btn btn-primary" style="font-family:roboto">Save</a>
+		  <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
         <div class="col-sm-6" style="text-align: right;">
             <ul class="pager" style="float: right;">
@@ -245,11 +245,7 @@ function submitprofile() {
     
 </form>
 </div>
-<div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-    <div class="modal-dialog">
-        <div class="modal-content" id="DeleteNow_body" style="height:285px"></div>
-    </div>
-</div>
+
 <script>
    $(document).ready(function() {
     var text_max = 250;
@@ -265,12 +261,48 @@ function submitprofile() {
         DraftProfile.addOtherOccupation();
         DraftProfile.addOtherWorkingDetails();
     });
+	
+	function ConfirmAddOccupationDetails(){
+        if(submitprofile()) {
+            
+            $('#PubplishNow').modal('show'); 
+            
+            var content =   '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for Save Occupation Details</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                            + '</div>'
+							+ '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are sure want to add this occupation details</div>'
+                                        + '</div>'                                                     
+                                    + '</div>'
+                                +  '</div>'                    
+                            + '</div>' 
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="BtnSave" id="BtnSave" class="btn btn-primary" onclick="AddOccupationDetails()" style="font-family:roboto">Save Occupation Details</button>'
+                            + '</div>';                                                                                               
+            $('#Publish_body').html(content);
+      } else {
+            return false;
+     }
+    }
+	
+	function AddOccupationDetails() {
+		$( "#BtnSaveProfile" ).trigger( "click" );
+	}
+	
     
    function DeleteOccupationAttachmentOnly(ProfileID) {
         var param = $("#Occupationform_"+ProfileID).serialize();
-        $('#DeleteNow_body').html(preloader);
+        $('#Publish_body').html(preloading_withText("Deleting education details ...","95"));
         $.post(API_URL + "m=Member&a=DeleteOccupationAttachmentOnly", param, function(result2) {                                             
-            $('#DeleteNow_body').html(result2);                                     
+            $('#Publish_body').html(result2);                                     
            $('#attachfilediv').hide();
         }
     );

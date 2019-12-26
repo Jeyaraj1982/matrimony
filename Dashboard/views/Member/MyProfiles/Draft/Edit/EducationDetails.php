@@ -46,7 +46,7 @@
                     </td>
                     <td style="width:20px">
                         <?php  if($Document['IsVerified']==0) {?>
-                            <a href="javascript:void(0)" onclick="DraftProfile.showConfirmDeleteAttachmentEducationalInformation('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['EducationDetails'];?>','<?php  echo $Document['EducationDegree'];?>','<?php  echo $Document['OtherEducationDegree'];?>')"><img src="<?php echo SiteUrl?>assets/images/document_delete.png" style="width:16px;height:16px"></a>
+                            <a href="javascript:void(0)" onclick="DraftProfile.showConfirmDeleteAttachmentEducationalInformation('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['EducationDetails'];?>','<?php  echo $Document['EducationDegree'];?>','<?php  echo $Document['OtherEducationDegree'];?>','<?php  echo $Document['FileName'];?>')"><img src="<?php echo SiteUrl?>assets/images/document_delete.png" style="width:16px;height:16px"></a>
                         <?php }?>
                     </td>
                 </tr>
@@ -71,16 +71,19 @@
         </div>
     </div>
 </div>  
-<div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-    <div class="modal-dialog">
-        <div class="modal-content" id="DeleteNow_body" style="height:285px"></div>
-    </div>
-</div>
+
+<div class="modal" id="DeleteNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="DeleteNow_body"  style="max-height: 300px;min-height: 300px;" >
+            
+                </div>
+            </div>
+        </div>
 <script>
     function DeleteAttach(AttachmentID) {
         var param = $("#form_"+AttachmentID).serialize();
-        $('#DeleteNow_body').html(preloader);
-        $.post(API_URL + "m=Member&a=DeleteAttach", param, function(result2) {                                             
+		$('#DeleteNow_body').html(preloading_withText("Deleting education details ...","95"));
+		$.post(API_URL + "m=Member&a=DeleteAttach", param, function(result2) {                                             
             $('#DeleteNow_body').html(result2);                                     
             $('#Documentview_'+AttachmentID).hide();
         }
@@ -89,7 +92,7 @@
 } 
 function DeleteEducationAttachmentOnly(AttachmentID) {
         var param = $("#form_"+AttachmentID).serialize();
-        $('#DeleteNow_body').html(preloader);
+        $('#DeleteNow_body').html(preloading_withText("Deleting education details ...","95"));
         $.post(API_URL + "m=Member&a=DeleteEducationAttachmentOnly", param, function(result2) {                                             
             $('#DeleteNow_body').html(result2);                                     
           //  $('#Documentview_'+AttachmentID).hide();

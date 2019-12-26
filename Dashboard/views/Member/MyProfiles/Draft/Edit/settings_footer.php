@@ -128,7 +128,6 @@ function agreeToPublish() {
 			}
 			var obj = JSON.parse(result);
 			if (obj.status=="success") {
-				
 				var data = obj.data; 
 				var content = '<div  style="height: 300px;">'                                                                              
 								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
@@ -157,25 +156,28 @@ function ResendSendOtpForProfileforPublish(frmid) {
 
 function showConfirmDelete(ProfileID) {
       $('#PubplishNow').modal('show'); 
-      var content = '<div class="Publish_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'                                                                              
-                    +  '<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
-                     + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                          + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                        + '<h4 class="modal-title">Delete Profile</h4> <br>'
-                        +'<div style="text-align:left"> Dear ,<br><div>'
-                        +'<div style="text-align:center">Are you sure want to delete?<br><br>'
-                        +  '<button type="button" class="btn btn-primary" name="Delete" id="Delete"  onclick="DeleteProfile(\''+ProfileID+'\')" style="font-family:roboto">Yes</button>&nbsp;&nbsp;&nbsp;'
-                        +  '<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
-                       +  '</div><br>'
-                    +  '</form>'                                                                                                          
-                +  '</div>'
-            +  '</div>';
-            $('#Publish_body').html(content);
+      var content = '<div>'
+						+'<form method="post" id="frm_'+ProfileID+'" name="frm_'+ProfileID+'" action="" >'
+						+'<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+							+'<div class="modal-header">'
+								+'<h4 class="modal-title">Delete Profile</h4>'
+								+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+							+'</div>'
+							+'<div class="modal-body">'
+								+'<div style="text-align:left"> Dear ,<br></div>'
+								+'<div style="text-align:left">Are you sure want to delete?<br><br><br><br><br><br></div>'
+							+'</div>'
+							+'<div class="modal-footer">'  
+								+'<button type="button" class="btn btn-primary" name="Delete" id="Delete"  onclick="DeleteProfile(\''+ProfileID+'\')" style="font-family:roboto">Yes</button>&nbsp;&nbsp;&nbsp;'
+								+'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
+							+'</div>'
+						+'</form>'                                                                                                          
+					+'</div>';
+				$('#Publish_body').html(content);
 }
 function DeleteProfile(frmid) {
      var param = $("#"+frmid).serialize();
-     $('#Publish_body').html(preloader);
+     $('#Publish_body').html(preloading_withText("Deleting profile ...","95"));
         $.post(API_URL + "m=Member&a=DeleteProfile",param,function(result2) {
 			$('#Publish_body').html(result2);
 		});

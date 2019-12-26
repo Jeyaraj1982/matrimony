@@ -1,4 +1,5 @@
 <?php
+<?php
     class Franchisee {
         
         function GetMyProfile() {
@@ -1024,8 +1025,9 @@
         if (sizeof($data)>0) {
             return Response::returnError("LoginName Already Exists");
         }
+        $Franchisee = $mysql->select("select * from _tbl_franchisees where FranchiseeCode='".$loginInfo[0]['FranchiseeID']."'"); 
         $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
-       $id =  $mysql->insert("_tbl_franchisees_staffs",array("FrCode"          => $loginInfo[0]['FranchiseeCode'],
+          $id =  $mysql->insert("_tbl_franchisees_staffs",array("FrCode"          => $Franchisee[0]['FranchiseeCode'],
                                                                  "StaffCode"       => $_POST['staffCode'],   
                                                                  "PersonName"      => $_POST['staffName'], 
                                                                  "Sex"             => $_POST['Sex'],                                 
@@ -1056,7 +1058,8 @@
     }
     function GetFranchiseeStaffCodeCode(){
             return Response::returnSuccess("success",array("staffCode" => SeqMaster::GetNextFranchiseeStaffNumber(),
-                                                           "Gender"     => CodeMaster::getData('SEX')));
+                                                           "Gender"     => CodeMaster::getData('SEX'),
+                                                           "Country"     => CodeMaster::getData('RegisterAllowedCountries')));
         }
     function EditFranchiseeStaff(){
               global $mysql,$loginInfo;    
@@ -2363,6 +2366,13 @@
 								</form>                                                                                                       
 							</div>'; 
 			}
+		}
+		function DeleteProfile() {
+			return '<div class="modal-body" style="text-align:center;height: 300px;">
+						<p style="text-align:center;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+						<h5 style="text-align:center;color:#ada9a9">Your Profile has been deleted</h4>    <br>
+						<a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+					</div>';
 		}
 	/* End profile submit */
          function GetDraftProfileInfo() {

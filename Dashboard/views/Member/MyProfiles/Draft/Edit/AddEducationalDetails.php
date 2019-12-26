@@ -63,12 +63,11 @@ function submitEducation()  {
                 if(IsNonEmpty("OtherEducationDegree","ErrOtherEducationDegree","Please enter your education details")){
                      OtherEducationDegree("OtherEducationDegree","ErrOtherEducationDegree","Please enter alphabet characters only");
                 }
-           
+			}
             return (ErrorCount==0) ? true : false;
          
-        }
- 
-
+       
+}
 </script>
 <div class="col-sm-10 rightwidget">
     <form method="post" action="" name="form1" id="form1" enctype="multipart/form-data">
@@ -119,17 +118,14 @@ function submitEducation()  {
         </div>
         <div class="form-group row"> 
             <div class="col-sm-12" style="text-align:left">
+				<input type="submit" name="BtnSave" id="BtnSave" style="display:none">
                 <a href="javascript:void(0)" onclick="ConfirmAddEducationalDetails()" class="btn btn-primary" style="font-family:roboto">Save Education Details</a>
                 <a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">back</a>
             </div>
         </div>
     </form>
 </div>
-<div class="modal" id="CreateNow" data-backdrop="static" >
-    <div class="modal-dialog">
-        <div class="modal-content" id="Create_body" style="max-width:500px;min-height:300px;overflow:hidden"></div>
-    </div>
-</div> 
+
 <script>
 $(document).ready(function() {
     var text_max = 50;
@@ -145,15 +141,15 @@ $(document).ready(function() {
 
     function ConfirmAddEducationalDetails(){
         
-       // if (submitEducation()) {
+        if(submitEducation()) {
             
-            $('#CreateNow').modal('show'); 
+            $('#PubplishNow').modal('show'); 
             
             var content =   '<div class="modal-header">'
-                                + '<h4 class="modal-title">Confirmation for Add Educational Details</h4>'
-                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                + '<h4 class="modal-title">Confirmation for Save Educational Details</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
                             + '</div>'
-                            + '<div class="modal-body">'
+							+ '<div class="modal-body">'
                                 + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
                                     + '<div class="col-sm-4">'
                                         + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
@@ -167,27 +163,18 @@ $(document).ready(function() {
                             + '</div>' 
                             + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="BtnSaveProfile" class="btn btn-primary" onclick="AddEducationalDetails()" style="font-family:roboto">Add Education Details</button>'
+                                + '<button type="button" class="btn btn-primary" name="BtnSaveEducation" class="btn btn-primary" onclick="AddEducationalDetails()" style="font-family:roboto">Save Education Details</button>'
                             + '</div>';                                                                                               
-            $('#Create_body').html(content);
-     //   } else {
-     ////       return false;
-        //}
+            $('#Publish_body').html(content);
+      } else {
+            return false;
+     }
     }
     
     function AddEducationalDetails() {
-        
-        var param = $( "#form1").serialize();   
-        $('#Create_body').html(preloading_withText("Creating profile ...","95"));
-        $.post(API_URL + "m=Member&a=AddEducationalDetails",param,function(result2) {
-            var obj = JSON.parse(result2);
-            if (obj.status=="success") {
-                    var data = obj.data;                                             
-                    var content = 'location.href="../EducationDetails/'+data.Code+'.htm"'
-                    $('#Create_body').html(content);  
-            }
-        });
-    }
+				$( "#BtnSave" ).trigger( "click" );
+	}
+    
 </script> 
 <?php include_once("settings_footer.php");?>      
              

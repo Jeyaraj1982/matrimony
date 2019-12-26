@@ -66,6 +66,11 @@
                     });
     }
      function MobileNumberOTPVerification(frmid) {
+		 $("#frmMobileNoVerification_error").html("&nbsp;");
+		 if ($("#mobile_otp_2").val().trim()=="") {
+			 $("#frmMobileNoVerification_error").html("Please enter verification code");
+			 return false;
+		 }
          var param = $( "#"+frmid).serialize();
          $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
                     $.post( API_URL + "m=Member&a=MobileNumberOTPVerification", 
@@ -76,7 +81,7 @@
                     );
               
     } 
-   /* function EmailVerificationForm() {
+   /* function EmailVerificationForm() {  
         $('#Mobile_VerificationBody').html("loging....");
          $('#myModal').modal('show');  
         $.ajax({
@@ -97,6 +102,11 @@
               
     }*/
     function EmailOTPVerification(frmid1) {
+		 $("#frmMobileNoVerification_error").html("&nbsp;");
+		 if ($("#email_otp").val().trim()=="") {
+			 $("#frmMobileNoVerification_error").html("Please enter verification code");
+			 return false;
+		 }
          var param = $( "#"+frmid1).serialize();
          $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
                     $.post(API_URL + "m=Member&a=EmailOTPVerification", 
@@ -274,54 +284,61 @@
             return (ErrorCount==0) ? true : false;
          
         },                                                                    
-        showConfirmDeleteAttachmentEducationalInformation:function(AttachmentID,ProfileID,EducationDetails,EducationDegree,OtherEducationDegree){
+        showConfirmDeleteAttachmentEducationalInformation:function(AttachmentID,ProfileID,EducationDetails,EducationDegree,OtherEducationDegree,FileName){
             $('#DeleteNow').modal('show'); 
-            var content = '<div class="Publish_body" style="padding:20px">'
-                            +'<div  style="height: 315px;">'
-                                + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
-                                    + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
-                                    + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                                    + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                                    + '<h4 class="modal-title">Confirmation For Remove</h4> <br>'
-                                        + '<div>Are you sure want to remove below records?  <br><br>'
-                                            + '<table class="table table-bordered">'
-                                                + '<thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-top: 1px solid #ccc;"> '
-                                                    +'<tr>'
-                                                        +'<th>Education</th>'
-                                                        +'<th>Education Details</th>'
-                                                    +'</tr>'
-                                                +'</thead>'
-                                                +'<tbody> '
-                                                    +'<tr>'                                                  
-                                                        +'<td>'+EducationDetails+'</td>'
-                                                        +'<td>'+EducationDegree +', '+OtherEducationDegree+'</td>'
-                                                    +'</tr>'
-                                                +'</tbody>'
-                                            +'</table>'
-                                        +'<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteAttach(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;'
-                                        +'<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
-                                    +'</div><br>'
-                            +'</form>'
-                       +'</div>'
-            +  '</div>';                                                                                                
-            $('#DeleteNow_body').html(content); 
+		  var content = '<div >'
+							+'<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
+								+'<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
+								+'<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+								+'<div class="modal-header">'
+									+'<h4 class="modal-title">Confirmation For Remove</h4>'
+									+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+								+'</div>'
+								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+									+'<div style="text-align:left">Are you sure want to remove below records?<br><br></div>'
+									+'<table class="table table-bordered">'
+										+'<thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-top: 1px solid #ccc;"> '
+											+'<tr>'
+												+'<th>Education</th>'
+												+'<th>Education Details</th>'
+											+'</tr>'
+										+'</thead>'
+										+'<tbody> '
+											+'<tr>'                                                  
+												+'<td>'+EducationDetails+'</td>'
+												+'<td>'+EducationDegree +', '+OtherEducationDegree+'</td>'
+											+'</tr>'
+										+'</tbody>'
+									+'</table>'
+								+'</div>' 
+								+'<div class="modal-footer">'  
+									+'<button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteAttach(\''+AttachmentID+'\')" style="font-family:roboto">Yes, send request</button>&nbsp;&nbsp;&nbsp;'
+									+'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
+								+'</div>'
+							+'</form>'                                                                                                          
+						+'</div>';
+				$('#DeleteNow_body').html(content);
         },
         showAttachmentEducationInformation:function(AttachmentID,ProfileID,FileName){
              $('#DeleteNow').modal('show'); 
-      var content = '<div class="Publish_body" style="padding:20px">'
-                        +'<div  style="height: 315px;">'
-                            + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
-                                + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
-                                + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                                    + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                                    + '<h4 class="modal-title">Comfirmation For Remove</h4>'
-                                    + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
-                                        + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
-                                        +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;'
-                                        +  '<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
-                                    + '</div>'
-                        + '</div>'
-                    +  '</div>';                                                                                                
+      var content = '<div>'
+                        +'<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
+							+ '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
+							+ '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+							+'<div class="modal-header">'
+								+'<h4 class="modal-title">Confirmation For Remove</h4>'
+								+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+							+'</div>'
+							+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+								+'<div class="card-title" style="text-align:right;color:green;margin-bottom:0px">For Administrative Purpose Only</div>'
+								 +'<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+							+'</div>'
+							+'<div class="modal-footer">'  
+								+'<button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;&nbsp;'
+								+'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
+							+'</div>'
+						+'</form>'
+                    +'</div>';                                                                                                
             $('#DeleteNow_body').html(content);
         },
            showAttachmentEducationInformationForView:function(AttachmentID,ProfileID,FileName,Status){
@@ -337,23 +354,26 @@
             $('#DeleteNow_body').html(content);
         },
         showAttachmentOccupation:function(ProfileCode,MemberID,ProfileID,FileName){
-             $('#DeleteNow').modal('show'); 
-      var content = '<div class="Publish_body" style="padding:20px">'
-                        +'<div  style="height: 315px;">'
-                         + '<form method="post" id="Occupationform_'+ProfileCode+'" name="Occupationform_'+ProfileCode+'" > '
-                         + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
-                         + '<input type="hidden" value="'+MemberID+'" name="MemberID">'
-                         + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                            + '<h4 class="modal-title">Confirmation For Remove</h4>'
-                              + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
-                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
-                               +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteOccupationAttachmentOnly(\''+ProfileCode+'\')">Yes, remove</button>&nbsp;&nbsp;'
-                        +  '<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
-                        + '</div>'
-                        + '</div>'
-                    +  '</div>';                                                                                                
-            $('#DeleteNow_body').html(content);
+             $('#PubplishNow').modal('show'); 
+      var content = '<div>'
+						+'<form method="post" id="Occupationform_'+ProfileCode+'" name="Occupationform_'+ProfileCode+'" > '
+							+ '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
+							+ '<input type="hidden" value="'+MemberID+'" name="MemberID">'
+							+ '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+							+'<div class="modal-header">'
+								+'<h4 class="modal-title">Confirmation For Remove</h4>'
+								+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+							+'</div>'
+							+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+								+'<div class="card-title" style="text-align:right;color:green;margin-bottom:0px">For Administrative Purpose Only</div>'
+								 +'<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+							+'</div>'
+							+'<div class="modal-footer">'  
+								+'<button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteOccupationAttachmentOnly(\''+ProfileCode+'\')">Yes, remove</button>&nbsp;&nbsp;&nbsp;'
+								+'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
+							+'</div>'
+                    +'</div>';                                                                                                
+            $('#Publish_body').html(content);
         },
         showAttachmentOccupationForView:function(ProfileCode,MemberID,ProfileID,FileName){
              $('#DeleteNow').modal('show'); 

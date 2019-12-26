@@ -1,12 +1,13 @@
 <?php
-  $Staffs = $mysql->select("select * from _tbl_admin_staffs where StaffID='".$_REQUEST['Code']."'");
+  $response = $webservice->getData("Admin","GetAdminStaffInfo");
+    $Staffs          = $response['data']['Staffs'];
          if (sizeof($Staffs)==0) {
             echo "Error: Access denied. Please contact administrator";
             } else {
 ?>
 <script>
 function ShowPwd() {
-    var pwd ='<?php echo $Staffs[0]['LoginPassword'];?>';
+    var pwd ='<?php echo $Staffs['AdminPassword'];?>';
     $('#pwd').html(pwd);
     /*
   var x = document.getElementById("LoginPassword");
@@ -28,9 +29,9 @@ function ShowPwd() {
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Staff Code</label>
-                            <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs[0]['StaffCode'];?></small></div>
+                            <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs['AdminCode'];?></small></div>
                           <label class="col-sm-3 col-form-label">Staff Name</label>
-                            <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs[0]['StaffName'];?></small></div>
+                            <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs['AdminName'];?></small></div>
                         </div>
                       </div>
                       </div>
@@ -38,9 +39,9 @@ function ShowPwd() {
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Date of Birth</label>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo putDate($Staffs[0]['DateofBirth']);?></small></div>
-                          <label class="col-sm-3 col-form-label">Sex</label>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs[0]['sex'];?></small></div>
+                          <div class="col-sm-3"><small style="color:#737373;"><?php echo putDate($Staffs['DateofBirth']);?></small></div>
+                          <label class="col-sm-3 col-form-label">Gender</label>
+                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs['Sex'];?></small></div>
                         </div>
                       </div>
                       </div>
@@ -48,9 +49,9 @@ function ShowPwd() {
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Mobile Number</label>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs[0]['MobileNumber'];?></small></div>
+                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs['MobileNumberCountryCode'];?>-<?php echo $Staffs['MobileNumber'];?></small></div>
                           <label class="col-sm-3 col-form-label">Email ID</label>
-                           <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs[0]['EmailID'];?></small></div> 
+                           <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs['EmailID'];?></small></div> 
                         </div>
                       </div>
                       </div>
@@ -58,7 +59,7 @@ function ShowPwd() {
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Login Name</label>
-                           <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs[0]['LoginName'];?></small></div> 
+                           <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs['AdminLogin'];?></small></div> 
                            <label class="col-sm-3 col-form-label">Login Password</label>
                             <div class="col-sm-3">
                                 <small style="color:#737373;">
@@ -72,11 +73,11 @@ function ShowPwd() {
                       <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Staff Role</label>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs[0]['StaffRole'];?></small></div>
+                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs['StaffRole'];?></small></div>
                           <label class="col-sm-3 col-form-label">Status</label>
-                          <div class="col-sm-3"><span class="<?php echo ($Staffs[0]['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;
+                          <div class="col-sm-3"><span class="<?php echo ($Staffs['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;
                           <label style="color:#737373;">
-                            <?php if($Staffs[0]['IsActive']==1){
+                            <?php if($Staffs['IsActive']==1){
                                 echo "Active";
                                 }
                                 else{
@@ -96,8 +97,8 @@ function ShowPwd() {
 <div class="col-sm-12 grid-margin" style="text-align: center; padding-top:5px;color:skyblue;">
                         <a href="../ManageStaffs"><small style="font-weight:bold;text-decoration:underline">List of Staffs</small></a>&nbsp;|&nbsp;
                         <a href="<?php echo GetUrl("Staffs/Edit/".$_REQUEST['Code'].".html");?>"><small style="font-weight:bold;text-decoration:underline">Edit Staff</small></a>&nbsp;
-                        <!--<a href="<?php //echo GetUrl("Staffs/BlockStaffs/".$_REQUEST['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Block Staff</small></a>&nbsp;|&nbsp;
-                        <a href="<?php //echo GetUrl("Staffs/ResetPassword/".$_REQUEST['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a>&nbsp;|&nbsp;-->
+                        <a href="<?php //echo /*GetUrl("Staffs/BlockStaffs/".$_REQUEST['Code'].".html"); */ ?>"><small style="font-weight:bold;text-decoration:underline">Login Logs</small></a>&nbsp;|&nbsp;
+                        <a href="<?php // echo //GetUrl("Staffs/ResetPassword/".$_REQUEST['Code'].".html"); ?>"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a>
 </div> 
 </form>   
 <?php }?>

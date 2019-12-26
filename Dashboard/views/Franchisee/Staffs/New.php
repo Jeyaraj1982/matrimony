@@ -56,7 +56,7 @@
 ?>
 <?php                   
   if (isset($_POST['BtnSaveStaff'])) {         
-    $response = $webservice->CreateFranchiseeStaff($_POST);
+    $response = $webservice->getData("Franchisee","CreateFranchiseeStaff",$_POST);
     if ($response['status']=="success") {
         ?>
         <script>location.href='<?php echo AppUrl;?>Staffs/Created';</script>
@@ -165,7 +165,7 @@ function SubmitNewStaff() {
 }
 </script>
 <?php 
-     $fInfo = $webservice->GetFranchiseeStaffCodeCode(); 
+     $fInfo = $webservice->getData("Franchisee","GetFranchiseeStaffCodeCode"); 
 
      $StaffCode="";
         if ($fInfo['status']=="success") {
@@ -178,36 +178,27 @@ function SubmitNewStaff() {
 <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
+                <div style="padding:15px !important;max-width:770px !important;">
                   <h4 class="card-title">Manage Staffs</h4>                    
                   <h5 class="card-title">Create Staffs</h5>
                   <form class="form-sample">
-                  <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
+                       <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Staff Code<span id="star">*</span></label>
                           <div class="col-sm-2">
                             <input type="text" value="<?php echo isset($_POST['staffCode']) ? $_POST['staffCode'] : $StaffCode;?>" class="form-control" id="staffCode" name="staffCode" maxlength="6">
                             <span class="errorstring" id="ErrstaffCode"><?php echo isset($ErrstaffCode)? $ErrstaffCode : "";?></span>
                           </div>
                         </div>
-                      </div>                                  
-                      </div>
-                    <div class="row">
-                      <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Staff Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
+                          <div class="col-sm-10">
                             <input type="text" class="form-control" id="staffName" name="staffName" value="<?php echo isset($_POST['staffName']) ? $_POST['staffName'] : $staffName;?>">
                             <span class="errorstring" id="ErrstaffName"><?php echo isset($ErrstaffName)? $ErrstaffName : "";?></span>
                           </div>
                         </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
                         <div class="form-group row">
-                          <label class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
-                          <div class="col-sm-3">
+                          <label class="col-sm-2 col-form-label">Gender<span id="star">*</span></label>
+                          <div class="col-sm-4">
                           <select class="form-control" id="Sex"  name="Sex" >
                             <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>    
                             <option value="<?php echo $Sex['SoftCode'];?>" <?php echo ($_POST['Sex']==$Sex['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
@@ -215,14 +206,9 @@ function SubmitNewStaff() {
                           </select>
                           <span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>
                           </div>
-                        </div>
-                        </div>
-                        </div>
-                        <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
-                          <label class="col-sm-2 col-form-label">Date of Birth<span id="star">*</span></label>
-                            <div class="col-sm-1" style="max-width:160px !important;">
+                         <label class="col-sm-2 col-form-label">Date of Birth<span id="star">*</span></label>
+                         <div class="col-sm-4">
+                            <div class="col-sm-4" style="max-width:60px !important;padding:0px !important;">
                                 <?php $dob=strtotime($ProfileInfo['DateofBirth'])  ; ?>
                                     <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
                                         <?php for($i=1;$i<=31;$i++) {?>
@@ -232,7 +218,7 @@ function SubmitNewStaff() {
                                         <?php } ?>
                                     </select>
                             </div>
-                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">        
+                            <div class="col-sm-4" style="max-width:90px !important;padding:0px !important;margin-right:6px;margin-left:4px;">        
                                     <select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px">
                                         <?php foreach($_Month as $key=>$value) {?>
                                             <option value="<?php echo $key+1; ?>" <?php echo ($_POST[ 'month']==$key+1) ? " selected='selected' " : "";?>>
@@ -241,7 +227,7 @@ function SubmitNewStaff() {
                                         <?php } ?>
                                     </select>                                    
                             </div>
-                            <div class="col-sm-2" style="max-width: 148px;">
+                            <div class="col-sm-4" style="max-width:110px !important;padding:0px !important;">
                                     <select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
                                         <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
                                             <option value="<?php echo $i; ?>" <?php echo ($_POST['year']==$i) ? " selected='selected' " : "";?>><?php echo $i;?>
@@ -249,27 +235,24 @@ function SubmitNewStaff() {
                                         <?php } ?>                                  
                                     </select>
                      </div>
-                          
+                      </div>    
                         </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
+                      <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
-                          <div class="col-sm-1">
-                            <select name="CountryCode" id="CountryCode" style="padding-top: 9px;padding-bottom: 6px;">
-                                <option value="+91">+91</option>
-                                <option value="+44">+44</option>
+                          <div class="col-sm-2" style="padding-right:0px">
+                            <select class="selectpicker form-control" data-live-search="true" name="MobileNumberCountryCode" id="MobileNumberCountryCode">
+                               <?php foreach($fInfo['data']['Country'] as $CountryCode) { ?>
+                              <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'MobileNumberCountryCode'])) ? (($_POST[ 'MobileNumberCountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "") : (($Staffs[ 'MobileNumberCountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                        <?php echo $CountryCode['str'];?>
+                               <?php } ?>
                             </select>
-                            <span class="errorstring" id="ErrCountryCode"><?php echo isset($ErrCountryCode)? $ErrCountryCode: "";?></span>
                           </div>
-                          <div class="col-sm-3">
-                            <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>" style="margin-left: -20px;">
+                          <div class="col-sm-2">
+                            <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>" >
                             <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber: "";?></span>
                           </div>
                           <label class="col-sm-2 col-form-label">Staff Role<span id="star">*</span></label>
-                          <div class="col-sm-3">
+                          <div class="col-sm-4">
                           <select class="form-control" id="UserRole"  name="UserRole">
                             <option value="Admin">Admin</option>
                             <option value="View">View</option>
@@ -277,22 +260,14 @@ function SubmitNewStaff() {
                           <span class="errorstring" id="ErrUserRole"><?php echo isset($ErrUserRole)? $ErrUserRole: "";?></span>
                           </div>
                         </div>
-                      </div>
-                      </div>
-                      <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
+                      <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Email ID<span id="star">*</span></label>
-                          <div class="col-sm-9">
+                          <div class="col-sm-10">
                             <input type="type" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : "");?>">
                             <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID: "";?></span>
                           </div>
                         </div>
-                      </div>
-                      </div>
-                  <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
+                      <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Login Name<span id="star">*</span></label>
                           <div class="col-sm-3">
                             <input type="text" class="form-control" id="LoginName" name="LoginName" value="<?php echo (isset($_POST['LoginName']) ? $_POST['LoginName'] : "");?>">
@@ -306,8 +281,7 @@ function SubmitNewStaff() {
                             <!--<span toggle="#Password" class="fa fa-fw fa-eye field-icon toggle-password"></span> -->
                             
                           </div>
-                        </div>
-                      </div>
+                       
                    <br>
                      
                    <div class="form-group row">
