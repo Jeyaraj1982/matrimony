@@ -132,7 +132,9 @@ $(document).ready(function() {
     });
 });
 </script>
- <form method="post" action="" onsubmit="return submitprofile();">
+<form method="post" action="" id="frmPI">
+            <input type="hidden" value="" name="txnPassword" id="txnPassword">
+            <input type="hidden" value="<?php echo $_GET['Code'];?>" name="ProfileCode" id="ProfileCode">
     <h4 class="card-title">Physical Information</h4>
                     
    <div class="form-group row">
@@ -301,7 +303,7 @@ $(document).ready(function() {
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-6">
-            <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
+            <a href="javascript:void(0)" onclick="ConfirmUpdatePInfo()" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</a>
             <br>
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
@@ -316,6 +318,104 @@ $(document).ready(function() {
     </form>                                                   
 </div>
       <script>
+      
+      function ConfirmUpdatePInfo() {
+    if(submitprofile()) {
+      $('#PubplishNow').modal('show'); 
+      var content = ''
+                    +''
+                    +'<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for edit physical information</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8"><br>'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want edit physical information</div>'
+                                + '</div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="GetTxnPswd()" style="font-family:roboto">Update</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     } else {
+            return false;
+     }
+}
+function GetTxnPswd() {
+        var content ='<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for edit physical information</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group">'
+                                + '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
+                         + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" onclick="EditDraftPhysicalInformation()" class="btn btn-primary">Update</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);            
+}
+function EditDraftPhysicalInformation() {
+    $("#txnPassword").val($("#TransactionPassword").val());
+    var param = $("#frmPI").serialize();
+    $('#Publish_body').html(preloading_withText("Submitting Profile ...","95"));
+        $.post(API_URL + "m=Franchisee&a=EditDraftPhysicalInformation",param,function(result) {
+            
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            
+            if (obj.status == "success") {
+               
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Updated</h3>'             
+                                    + '<p style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                alert(obj);
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Edit physical information</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+}
+      
         function getAdditionalPhysicalInfo() {
             
             if ($('#PhysicallyImpaired').val()=="PI001" || $('#PhysicallyImpaired').val()=="0")  {                                                          

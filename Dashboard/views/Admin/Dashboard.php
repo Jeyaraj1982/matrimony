@@ -164,6 +164,27 @@
                   </p>
                 </div>
               </div>
+              <br>
+              <div class="card card-statistics" style="margin-top: 42px;">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-poll-box text-success icon-lg"></i>
+                    </div>
+                    <?php //foreach($response['data']['FranchiseeWalletRequestCount'] as $FranchiseeReqCount) { ?>     
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Profile Verification</p>
+                      <div class="fluid-container">
+                        <h3 class="font-weight-medium text-right mb-0">0<?php //echo $FranchiseeReqCount['cnt'];?></h3>
+                      </div>
+                    </div>
+                    <?php// }?>
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a>View</a>
+                  </p>
+                </div>
+              </div>
        </div> 
        </div>
        </div>

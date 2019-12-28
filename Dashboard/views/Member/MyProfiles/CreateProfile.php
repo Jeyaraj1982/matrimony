@@ -270,7 +270,7 @@
                     var content = '<div class="modal-body" style="text-align:center">'
                                     + '<br><img src="<?php echo ImageUrl;?>icons/new_profile_created.png" width="100px">' 
                                     + '<br><br>'
-                                    + '<span style="font=size:18px;">Profile Created.</span><br>Your Draft Profile ID: ' + data.Code
+                                    + '<span style="font=size:18px;">'+obj.message+'.</span><br>Your Draft Profile ID: ' + data.Code
                                     + '<br><br>'
                                     + '<a href="'+AppUrl+'MyProfiles/Draft/Edit/GeneralInformation/'+data.Code+'.htm?msg=1" class="btn btn-primary" style="font-family:roboto">Continue</a>'
                                   + '</div>' 

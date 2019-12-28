@@ -32,7 +32,7 @@
                     </thead>
                      <tbody>  
                         <?php 
-                         $response = $webservice->getData("Franchisee","GetMyDeactiveMembers"); 
+                          $response = $webservice->getData("Franchisee","GetMyMembers",array("Request"=>"Deactive")); 
                          if (sizeof($response['data'])>0) {
                     ?>
                         <?php foreach($response['data'] as $Member) { ?>
@@ -40,7 +40,8 @@
                                 <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberName'];?></td>
                                 <td><?php echo putDateTime($Member['CreatedOn']);?></td>
                                 <td></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Members/EditMember/". $Member['MemberID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
+                                <td style="text-align:right">
+                                <a href="javascript:void(0)" onclick="ConfirmationfrEdit('<?php echo $Member['MemberID'];?>')"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Members/ViewMember/". $Member['MemberID'].".html"); ?>"><span>View</span></a></td>
                                 </tr>
                          <?php } } else {?>            
@@ -53,8 +54,30 @@
               </div>
             </div>
         </form>   
-        
+  <div class="modal" id="PubplishNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >
+            
+                </div>
+            </div>
+        </div>
  <script>
+ function ConfirmationfrEdit(MemberID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for Edit</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        +'<div class="col-sm-12">Are you sure want to Edit</div>'
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<a href="'+AppUrl+'Members/EditMember/'+MemberID+'.html" class="btn btn-primary" name="Create" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     
+     }
 $(document).ready(function(){
     $('#myTable').dataTable();
     setTimeout("DataTableStyleUpdate()",500);

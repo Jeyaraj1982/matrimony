@@ -6,7 +6,7 @@
             global $mysql,$j2japplication;  
 
             if (!(strlen(trim($_POST['UserName']))>0)) {
-                return Response::returnError("Please enter username ");
+                return Response::returnError("Please enter login name ");
             }
 
             if (!(strlen(trim($_POST['Password']))>0)) {
@@ -15,7 +15,7 @@
 
             $data=$mysql->select("select * from _tbl_admin where AdminLogin='".$_POST['UserName']."' and AdminPassword='".$_POST['Password']."'") ;
             if (sizeof($data)==0) {
-                return Response::returnError("Invalid username and password");
+                return Response::returnError("Invalid login name and password");
             }
                 
             $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
@@ -186,6 +186,9 @@
 			if (sizeof($data)>0) {
 				return Response::returnError("Business LandlineNumber Already Exists");
 			}
+            if (!(strlen(trim($_POST['LandlineStdCode']))>0)) {
+                return Response::returnError("Please enter Std code");
+            }
 			}
 			$data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".trim($_POST['EmailID'])."'");
 			if (sizeof($data)>0) {
@@ -218,7 +221,8 @@
 															"ContactNumber"        => $_POST['BusinessMobileNumber'],
 															"ContactWhatsappCountryCode"      => $_POST['ContactWhatsappCountryCode'],
 															"ContactWhatsapp"      => $_POST['BusinessWhatsappNumber'],
-															"LandlineCountryCode"     => $_POST['LandlineCountryCode'],
+                                                            "LandlineCountryCode"     => $_POST['LandlineCountryCode'],
+															"LandlineStdCode"     => $_POST['LandlineStdCode'],
 															"ContactLandline"      => $_POST['BusinessLandlineNumber'],
 															"BusinessAddressLine1" => $_POST['BusinessAddress1'],
 															"BusinessAddressLine2" => $_POST['BusinessAddress2'],
@@ -398,6 +402,9 @@
         $data = $mysql->select("select * from  _tbl_franchisees_staffs where LandlineNumber='".trim($_POST['LandlineNumber'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Landline Number Already Exists");
+            if (!(strlen(trim($_POST['LandlineStdCode']))>0)) {
+                return Response::returnError("Please enter Std code");
+            }
         }
         $data = $mysql->select("select * from  _tbl_franchisees_staffs where AadhaarNumber='".trim($_POST['AadhaarCard'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
@@ -419,6 +426,7 @@
                                                  ContactWhatsapp='".$_POST['BusinessWhatsappNumber']."',
                                                  ContactWhatsappCountryCode='".$_POST['ContactWhatsappCountryCode']."',
                                                  LandlineCountryCode='".$_POST['LandlineCountryCode']."',
+                                                 LandlineStdCode='".$_POST['LandlineStdCode']."',
                                                  ContactLandline='".$_POST['BusinessLandlineNumber']."',
                                                  BusinessAddressLine1='".$_POST['BusinessAddress1']."',
                                                  BusinessAddressLine2='".$_POST['BusinessAddress2']."',

@@ -127,55 +127,59 @@ function SubmitNewMember() {
         
         {
 ?>
-<form method="post" action="<?php $_SERVER['PHP_SELF']?>" name="form1" id="form1" onsubmit="return SubmitNewMember();">
+<form method="post" id="frmfrn" action="<?php $_SERVER['PHP_SELF']?>">
+    <input type="hidden" value="" name="txnPassword" id="txnPassword">
         <div class="col-12 stretch-card">
                   <div class="card">
                     <div class="card-body">
+                    <div style="padding:15px !important;max-width:770px !important;">
                       <h4 class="card-title">Create Member</h4>
                       <form class="forms-sample">
                       <div class="form-group row">
-                          <label for="Member Name" class="col-sm-2 col-form-label">Member Code<span id="star">*</span></label>
+                          <label for="Member Name" class="col-sm-3 col-form-label">Member Code<span id="star">*</span></label>
                           <div class="col-sm-2">
                             <input type="text" class="form-control" maxlength="8" disabled="disabled" id="MemberCode" name="MemberCode" value="<?php echo isset($_POST['MemberCode']) ? $_POST['MemberCode'] : $MemCode;?>">
                             <span class="errorstring" id="ErrMemberCode"><?php echo isset($ErrMemberCode)? $ErrMemberCode : "";?></span>
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label for="Member Name" class="col-sm-2 col-form-label">Member Name<span id="star">*</span></label>
-                          <div class="col-sm-8">
+                          <label for="Member Name" class="col-sm-3 col-form-label">Member Name<span id="star">*</span></label>
+                          <div class="col-sm-9">
                             <input type="text" class="form-control" id="MemberName" name="MemberName" value="<?php echo (isset($_POST['MemberName']) ? $_POST['MemberName'] : "");?>" placeholder="Member Name">
                             <span class="errorstring" id="ErrMemberName"><?php echo isset($ErrMemberName)? $ErrMemberName : "";?></span>
                           </div>
                         </div>
                         <div class="form-group row">
-                            <label for="Name" class="col-sm-2 col-form-label">Date of Birth<span id="star">*</span></label>
-                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">
-                                    <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
-                                        <?php for($i=1;$i<=31;$i++) {?>
-                                            <option value="<?php echo $i; ?>" <?php echo ($_POST[ 'date']==$i) ? " selected='selected' " : "";?>><?php echo $i;?>
-                                            </option>
-                                        <?php } ?>
-                                    </select>
+                            <label for="Name" class="col-sm-3 col-form-label">Date of Birth<span id="star">*</span></label>
+                            <div class="col-sm-4">
+                            <div class="col-sm-4" style="max-width:60px !important;padding:0px !important;">
+                                <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
+                                    <?php for($i=1;$i<=31;$i++) {?>
+                                        <option value="<?php echo $i; ?>" <?php echo ($_POST[ 'date']==$i) ? " selected='selected' " : "";?>>
+                                        <?php echo $i;?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
                             </div>
-                            <div class="col-sm-1" style="max-width:100px !important;margin-right: -25px;">        
-                                    <select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px">
-                                        <?php foreach($_Month as $key=>$value) {?>
-                                            <option value="<?php echo $key+1; ?>" <?php echo ($_POST[ 'month']==$key+1) ? " selected='selected' " : "";?>><?php echo $value;?>
-                                            </option>
-                                        <?php } ?>
-                                    </select>
+                            <div class="col-sm-4" style="max-width:90px !important;padding:0px !important;margin-right:6px;margin-left:4px;">        
+                                <select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px">
+                                    <?php foreach($_Month as $key=>$value) {?>
+                                        <option value="<?php echo $key+1; ?>" <?php echo ($_POST[ 'month']==$key+1) ? " selected='selected' " : "";?>>
+                                        <?php echo $value;?>
+                                        </option>
+                                    <?php } ?>
+                                </select>                                    
                             </div>
-                            <div class="col-sm-2">
-                                    <select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
-                                        <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
-                                            <option value="<?php echo $i; ?>" <?php echo ($_POST['year']==$i) ? " selected='selected' " : "";?>><?php echo $i;?>
-                                            </option>
-                                        <?php } ?>                                 
-                                    </select>
+                            <div class="col-sm-4" style="max-width:110px !important;padding:0px !important;">
+                                <select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
+                                    <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
+                                        <option value="<?php echo $i; ?>" <?php echo ($_POST['year']==$i) ? " selected='selected' " : "";?>><?php echo $i;?>
+                                        </option>                             
+                                    <?php } ?>                                  
+                                </select>
                             </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="Sex" class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
+                      </div>
+                            <label for="Sex" class="col-sm-2 col-form-label">Gender<span id="star">*</span></label>
                                 <div class="col-sm-3">
                                     <select class="selectpicker form-control" data-live-search="true" id="Sex"  name="Sex">
                                             <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
@@ -185,40 +189,39 @@ function SubmitNewMember() {
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="MobileNumber" class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
-                                <div class="col-sm-2" style="margin-right:-25px">
+                          <label for="EmailID" class="col-sm-3 col-form-label">Email ID<span id="star">*</span></label>
+                          <div class="col-sm-9">
+                            <input type="type" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : "");?>" placeholder="Email ID">
+                            <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span>
+                          </div>
+                        </div>
+                            <div class="form-group row">
+                                <label for="MobileNumber" class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
+                                <div class="col-sm-3">
                                     <select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="width:84%">
                                         <?php foreach($CountryCodes as $CountryCode) { ?>
-                                        <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo ($_POST[ 'CountryCode']) ?  " selected='selected' " : "" ;?>>
-                                            <?php echo $CountryCode['str'];?>
+                                        <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo ($_POST[ 'CountryCode']) ?  " selected='selected' " : "" ;?>> <?php echo $CountryCode['str'];?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6">
                                     <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>" placeholder="Mobile Number">
                                     <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
                                 </div>
                         </div>
                         <div class="form-group row">
-                                <label for="WhatsappNumber" class="col-sm-2 col-form-label">Whatsapp Number</label>
-                                <div class="col-sm-2" style="margin-right:-25px">
+                                <label for="WhatsappNumber" class="col-sm-3 col-form-label">Whatsapp Number</label>
+                                <div class="col-sm-3">
                                     <select name="WhatsappCountryCode" class="selectpicker form-control" data-live-search="true" id="WhatsappCountryCode"> 
                                         <?php foreach($CountryCodes as $CountryCode) { ?>
                                             <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo ($_POST[ 'WhatsappCountryCode']) ? " selected='selected' " : "";?>>
-                                            <?php echo $CountryCode['str'];?>
+                                            <?php echo $CountryCode['str'];?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6">
                             <input type="text" maxlength="10" class="form-control" id="WhatsappNumber" name="WhatsappNumber" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : "");?>" placeholder="Whatsapp Number">
                             <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
-                          </div>
-                        </div>
-                       <div class="form-group row">
-                          <label for="EmailID" class="col-sm-2 col-form-label">Email ID<span id="star">*</span></label>
-                          <div class="col-sm-8">
-                            <input type="type" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : "");?>" placeholder="Email ID">
-                            <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span>
                           </div>
                         </div>
                        <div class="form-group row">
@@ -227,8 +230,8 @@ function SubmitNewMember() {
                             <input type="text" class="form-control" id="LoginName" name="LoginName" value="<?php //echo (isset($_POST['LoginName']) ? $_POST['LoginName'] : "");?>" placeholder="Login Name">
                             <span class="errorstring" id="ErrLoginName"><?php //echo isset($ErrLoginName)? $ErrLoginName : "";?></span>
                           </div> -->
-                          <label for="LoginPassword" class="col-sm-2 col-form-label">Login Password<span id="star">*</span></label>
-                          <div class="col-sm-3">
+                          <label for="LoginPassword" class="col-sm-3 col-form-label">Login Password<span id="star">*</span></label>
+                          <div class="col-sm-4">
                             <input type="password" class="form-control" id="LoginPassword" name="LoginPassword" value="<?php echo (isset($_POST['LoginPassword']) ? $_POST['LoginPassword'] : "");?>" placeholder="Login Password">
                             <span class="errorstring" id="ErrLoginPassword"><?php echo isset($ErrLoginPassword)? $ErrLoginPassword : "";?></span></div>
                             <div class="col-sm-2" style="padding-top:5px;"><input type="checkbox" onclick="myFunction()">&nbsp;show</div>
@@ -243,12 +246,13 @@ function SubmitNewMember() {
                         </form> 
                         <div class="col-sm-12" style="text-align: center;color:red"><?php echo $errormessage ;?></div>                  
                     </div>
-                  </div>                              
+                  </div>  
+                  </div>                            
                 </div>
 </form>  <?php }?>
 <div class="modal" id="CreateNow" data-backdrop="static" >
     <div class="modal-dialog">
-        <div class="modal-content" id="Create_body" style="max-width:500px;min-height:460px;max-height:460p;overflow:hidden"></div>
+        <div class="modal-content" id="Create_body" style="max-width:500px;min-height:460px;max-height:460px;overflow:hidden"></div>
     </div>
 </div>
 
@@ -288,41 +292,87 @@ function SubmitNewMember() {
                             + '</div>' 
                             + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="BtnSaveProfile" class="btn btn-primary" onclick="CreateMember()" style="font-family:roboto">Create Member</button>'
+                                + '<button type="button" class="btn btn-primary" name="BtnSaveProfile" class="btn btn-primary" onclick="GetTxnPassword()" style="font-family:roboto">Create Member</button>'
                             + '</div>';                                                                                                  
             $('#Create_body').html(content);
         } else {
             return false;
         }                                                                                                                                                             
     }
+    function GetTxnPassword() {
+        var content =     '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for create member</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                         +'<p style="text-align:center;padding: 20px;Padding-bottom:0px"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'                                 
+                                   +' <h4 style="text-align:center;color:#ada9a9">Please enter transaction Password</h4>'
+                        + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" onclick="CreateMember()" class="btn btn-primary" >Create Franchisee</button>'
+                    + '</div>';
+            $('#Create_body').html(content);            
+}
     function CreateMember() {
-        
-        var param = $( "#form1").serialize();   
-        $('#Create_body').html(preloading_withText("Creating member ...","170"));
-		$.post(API_URL + "m=Franchisee&a=CreateMember",param,function(result2) {
-            var obj = JSON.parse(result2);
+        $("#txnPassword").val($("#TransactionPassword").val());
+    var param = $("#frmfrn").serialize();
+    $('#Create_body').html(preloading_withText("Creating Member ...","110"));
+        $.post(API_URL + "m=Franchisee&a=CreateMember",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Create_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result.trim());
             if (obj.status=="success") {
-                    var data = obj.data;                                             
-                    var content = '<div class="modal-body" style="text-align:center;padding-top:70px">'
+                var data = obj.data; 
+                var content = '<div class="modal-body" style="text-align:center;padding-top:70px">'
                                     + '<br><img src="<?php echo ImageUrl;?>icons/new_profile_created.png" width="100px">' 
                                     + '<br><br>'
-                                    + '<span style="font=size:18px;">Member Created.</span><br>Your Member ID: ' + data.Code
+                                    + '<span style="font=size:18px;">Member Created.</span><br>Your Member ID: ' + data.MemberCode
                                     + '<br><br>'
-									+ '<div class="form-group row"  style="margin-bottom:10px;">'
-										+ '<div class="col-sm-12" style="text-align:center">'
-												+ '<a href="'+AppUrl+'CreateProfile/'+data.Code+'.htm?msg=1" class="btn btn-primary" style="font-family:roboto">Create Profile</a><br>'
-										+ '</div>'
-									+ '</div>'
-									+ '<div class="form-group row">'
-										+ '<div class="col-sm-12" style="text-align:center">'
-												+ '<a href="'+AppUrl+'" >Go to dashboard</a>'
-										+ '</div>'
-									+ '</div>'
+                                    + '<div class="form-group row"  style="margin-bottom:10px;">'
+                                        + '<div class="col-sm-12" style="text-align:center">'
+                                                + '<a href="'+AppUrl+'CreateProfile/'+data.MemberCode+'.htm?msg=1" class="btn btn-primary" style="font-family:roboto">Create Profile</a><br>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<div class="form-group row">'
+                                        + '<div class="col-sm-12" style="text-align:center">'
+                                                + '<a href="'+AppUrl+'/Members/ManageMembers" >Go to dashboard</a>'
+                                        + '</div>'
+                                    + '</div>'
                                   + '</div>' 
-                    $('#Create_body').html(content);  
+                $('#Create_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create Member</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Create_body').html(content);
             }
         });
-    }    
+}
+        
+        
+        
+     
  /*   function CreateMember() {
         
         var param = $( "#form1").serialize();

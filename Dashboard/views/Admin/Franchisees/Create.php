@@ -47,6 +47,12 @@ $(document).ready(function () {
                return false;
     }
    });
+   $("#LandlineStdCode").keypress(function (e) {
+     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        $("#ErrLandlineStdCode").html("Digits Only").show().fadeIn("slow");
+               return false;
+    }
+   });
      
   
    $("#FranchiseeName").blur(function () {
@@ -171,6 +177,7 @@ function myFunction() {
                          $('#ErrBusinessMobileNumber').html("");
                          $('#ErrBusinessWhatsappNumber').html("");
                          $('#ErrBusinessLandlineNumber').html("");
+                         $('#ErrLandlineStdCode').html("");
                          $('#ErrBusinessAddress1').html("");
                          $('#ErrBusinessAddress2').html("");
                          $('#ErrBusinessAddress3').html("");
@@ -217,6 +224,9 @@ function myFunction() {
                         
                         if ($('#BusinessLandlineNumber').val().trim().length>0) {
                             IsNumeric("BusinessLandlineNumber","ErrBusinessLandlineNumber","Please Enter Valid Landline Number");
+                            if (IsNonEmpty("LandlineStdCode","ErrLandlineStdCode","Please Enter Std code")) {
+                            IsNumeric("LandlineStdCode","ErrLandlineStdCode","Please Enter Valid Std code");
+                            }
                         }
                         
                         IsNonEmpty("BusinessAddress1","ErrBusinessAddress1","Please Enter Valid Address Line1");
@@ -376,7 +386,11 @@ function myFunction() {
 								<?php } ?>                       
 						</select>
 					</div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="LandlineStdCode" name="LandlineStdCode" Placeholder="STD" value="<?php echo (isset($_POST['LandlineStdCode']) ? $_POST['LandlineStdCode'] : "");?>">
+                        <span class="errorstring" id="ErrLandlineStdCode"><?php echo isset($ErrLandlineStdCode)? $ErrLandlineStdCode : "";?></span>
+                    </div>
+                    <div class="col-sm-4">
                         <input type="text" class="form-control" id="BusinessLandlineNumber" name="BusinessLandlineNumber" Placeholder="Landline Number" value="<?php echo (isset($_POST['BusinessLandlineNumber']) ? $_POST['BusinessLandlineNumber'] : "");?>">
                         <span class="errorstring" id="ErrBusinessLandlineNumber"><?php echo isset($ErrBusinessLandlineNumber)? $ErrBusinessLandlineNumber : "";?></span>
                     </div>
@@ -458,7 +472,7 @@ function myFunction() {
                     <label class="col-sm-2 col-form-label">Plan<span id="star">*</span></label>
                     <div class="col-sm-4">
                         <select class="selectpicker form-control" data-live-search="true" id="Plan" name="Plan">
-                            <option value="0">--Choose Your Plan--</option>
+                            <option value="0">--Choose Plan--</option>
                             <?php foreach($fInfo['data']['Plans'] as $Plan) { ?>
                                 <option value="<?php echo $Plan['PlanID'];?>" <?php echo ($Plan[ 'PlanName']==$_POST[ 'Plan']) ? ' selected="selected" ' : '';?>>
                                     <?php echo $Plan['PlanName'];?>
@@ -1296,7 +1310,7 @@ GetTxnPassword:function() {
 							+ '<div class="input-group">'
 								+ '<div class="col-sm-2"></div>'
 								+ '<div class="col-sm-8">'
-									+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="width: 67%;font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
 								+ '</div>'
 								+ '<div class="col-sm-2"></div>'
 							+ '</div>'
@@ -1304,31 +1318,28 @@ GetTxnPassword:function() {
 					+ '</div>'
 					+ '<div class="modal-footer">'
 						+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-						+ '<button type="button" onclick="Franchisee.CreateFranchisee()" class="btn btn-primary" name="btnVerify" id="verifybtn">Create Franchisee</button>'
+						+ '<button type="button" onclick="Franchisee.CreateFranchisee()" class="btn btn-primary" >Create Franchisee</button>'
 					+ '</div>';
             $('#Publish_body').html(content);			
 },
 CreateFranchisee:function() {
 	$("#txnPassword").val($("#TransactionPassword").val());
     var param = $("#frmfrn").serialize();
-	$('#Publish_body').html(preloading_withText("Submitting Franchisee ...","95"));
+	$('#Publish_body').html(preloading_withText("Creating Franchisee ...","95"));
 		$.post(API_URL + "m=Admin&a=CreateFranchisee",param,function(result) {
-			alert(result);
 			if (!(isJson(result.trim()))) {
-				alert(result+"66666");
 				$('#Publish_body').html(result);
 				return ;
 			}
 			var obj = JSON.parse(result.trim());
 			if (obj.status=="success") {
-				alert(result+"77777");
 				var data = obj.data; 
 				var content = '<div  style="height: 300px;">'                                                                              
 								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
 									+ '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
 									+ '<h3 style="text-align:center;">Franchisee Created</h3>'
-                                    + '<h5 style="text-align:center;color:#ada9a9">FranchiseeCode:' + obj.FranchiseeCode+'</h5>'
-									+ '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">FranchiseeCode:' + data.FranchiseeCode+'</h5>'
+									+ '<p style="text-align:center;"><a href="'+AppUrl+'Franchisees/MangeFranchisees" style="cursor:pointer">Continue</a></p>'
 								+'</div>' 
 							+'</div>';
 				$('#Publish_body').html(content);

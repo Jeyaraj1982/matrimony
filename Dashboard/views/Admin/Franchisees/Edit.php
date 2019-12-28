@@ -35,6 +35,13 @@ $(document).ready(function () {
     }
    });
    
+   $("#LandlineStdCode").keypress(function (e) {
+     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        $("#ErrLandlineStdCode").html("Digits Only").show().fadeIn("slow");
+               return false;
+    }
+   });
+   
     $("#BusinessLandlineNumber").keypress(function (e) {
      if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
         $("#ErrBusinessLandlineNumber").html("Digits Only").fadeIn().fadeOut("fast");
@@ -167,6 +174,7 @@ function myFunction() {
                          $('#ErrFranchiseeEmailID').html("");
                          $('#ErrBusinessMobileNumber').html("");
                          $('#ErrBusinessWhatsappNumber').html("");
+                         $('#ErrLandlineStdCode').html("");
                          $('#ErrBusinessLandlineNumber').html("");
                          $('#ErrBusinessAddress1').html("");
                          $('#ErrBusinessAddress2').html("");
@@ -197,10 +205,20 @@ function myFunction() {
                         }
                         if (IsNonEmpty("FranchiseeEmailID","ErrFranchiseeEmailID","Please Enter EmailID")) {
                             IsEmail("FranchiseeEmailID","ErrFranchiseeEmailID","Please Enter Valid EmailID");    
-                        }
+                        } 
                         
                         if (IsNonEmpty("BusinessMobileNumber","ErrBusinessMobileNumber","Please Enter MobileNumber")) {
                         IsMobileNumber("BusinessMobileNumber","ErrBusinessMobileNumber","Please Enter Valid MobileNumber");
+                        }
+                        if ($('#BusinessWhatsappNumber').val().trim().length>0) {
+                            IsWhatsappNumber("BusinessWhatsappNumber","ErrBusinessWhatsappNumber","Please Enter Valid Whatsapp Number");
+                        }
+                        
+                        if ($('#BusinessLandlineNumber').val().trim().length>0) {
+                            IsNumeric("BusinessLandlineNumber","ErrBusinessLandlineNumber","Please Enter Valid Landline Number");
+                            if (IsNonEmpty("LandlineStdCode","ErrLandlineStdCode","Please Enter Std code")) {
+                            IsNumeric("LandlineStdCode","ErrLandlineStdCode","Please Enter Valid Std code");
+                            }
                         }
                         IsNonEmpty("BusinessAddress1","ErrBusinessAddress1","Please Enter Valid Address");
                         if (IsNonEmpty("CityName","ErrCityName","Please Enter Valid City Name")) {
@@ -337,7 +355,11 @@ function myFunction() {
 								<?php } ?> 
 							</select>
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-2">
+                            <input type="text" class="form-control" id="LandlineStdCode" name="LandlineStdCode" Placeholder="Std" value="<?php echo (isset($_POST['LandlineStdCode']) ? $_POST['LandlineStdCode'] : $Franchisee['LandlineStdCode']);?>">
+                            <span class="errorstring" id="ErrLandlineStdCode"><?php echo isset($ErrLandlineStdCode)? $ErrLandlineStdCode : "";?></span>
+                        </div>
+                        <div class="col-sm-4">
 							<input type="text" class="form-control" id="BusinessLandlineNumber" name="BusinessLandlineNumber" Placeholder="Landline Number" value="<?php echo (isset($_POST['BusinessLandlineNumber']) ? $_POST['BusinessLandlineNumber'] : $Franchisee['ContactLandline']);?>">
 							<span class="errorstring" id="ErrBusinessLandlineNumber"><?php echo isset($ErrBusinessLandlineNumber)? $ErrBusinessLandlineNumber : "";?></span>
 						</div>
@@ -685,7 +707,6 @@ var Franchisee = {
      }
 }, 
 GetTxnPassword:function() {
-    
     var content =     '<div class="modal-header">'
                         + '<h4 class="modal-title">Confirmation for edit franchisee</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -713,7 +734,7 @@ GetTxnPassword:function() {
 EditFranchisee:function() {
     $("#txnPassword").val($("#TransactionPassword").val());
     var param = $("#frmfrn").serialize();
-    $('#Publish_body').html(preloading_withText("Submitting Franchisee ...","95"));
+    $('#Publish_body').html(preloading_withText("Creating Franchisee ...","95"));
         $.post(API_URL + "m=Admin&a=EditFranchisee",param,function(result) {
             
             if (!(isJson(result.trim()))) {

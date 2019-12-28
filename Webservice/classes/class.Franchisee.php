@@ -1,8 +1,7 @@
 <?php
-<?php
     class Franchisee {
         
-        function GetMyProfile() {
+        function GetMyProfile() {                                                          
             
             global $mysql,$loginInfo;  
             $franchiseedata = $mysql->select("select * from `_tbl_franchisees_staffs` where `PersonID`='".$loginInfo[0]['FranchiseeStaffID']."'");
@@ -19,7 +18,7 @@
             global $mysql,$j2japplication;  
         
             if (!(strlen(trim($_POST['UserName']))>0)) {
-                return Response::returnError("Please enter username ");
+                return Response::returnError("Please enter login name ");
             }
             
             if (!(strlen(trim($_POST['Password']))>0)) {
@@ -51,7 +50,7 @@
                 }
                 
             } else {
-                return Response::returnError("Invalid username and password");
+                return Response::returnError("Invalid login name and password");
             }
         }
         
@@ -62,7 +61,12 @@
         
         function CreateMember() {
                                                                             
-        global $mysql,$loginid;  
+        global $mysql,$loginInfo;  
+        
+        $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
        
         $data = $mysql->select("select * from _tbl_members where  MemberCode='".$_POST['MemberCode']."'");
         if (sizeof($data)>0) {
@@ -124,11 +128,11 @@
                                                   "EmailID"                  => $_POST['EmailID'],
                                                   "AadhaarNumber"            => $_POST['AadhaarNumber'],
                                                   "CreatedOn"                => date("Y-m-d H:i:s"),
-                                                  "ReferedBy"                => $login[0]['FranchiseeID'],
+                                                  "ReferedBy"                => $loginInfo[0]['FranchiseeID'],
                                                   "MemberPassword"           => $_POST['LoginPassword']));
         if (sizeof($id)>0) {
             $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Member'");
-            //    return Response::returnSuccess("success",array("MemberCode"=>$MemberCode));
+              return Response::returnSuccess("success",array("MemberCode"=>$MemberCode));
            return Response::returnSuccess('<div style="background:white;width:100%;padding:20px;height:100%;">
                             <p style="text-align:center"><br><br><img src="'.AppUrl.'CreateProfile/'.$MemberCode.'.htm" width="10%"><p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your Profile Created Successfully. </h5>
@@ -138,42 +142,104 @@
                 return Response::returnError("Access denied. Please contact support");   
             }
     }
-       
+        /* Verified Subbu Dec 26, 2019 */
         function CheckVerification() {
             
             global $mysql,$loginInfo;
-            
-            $sql="select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'";
-           
-            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['StaffID']."'");
-            
-            if ($franchiseedata[0]['IsMobileVerified']==0) {
-               return $this->ChangeMobileNumberFromVerificationScreen("",$loginid,"","");
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+			
+			if ($franchiseedata[0]['IsMobileVerified']==0) {
+               return $this->ChangeMobileNumberFromVerificationScreen("",$loginInfo[0]['FranchiseeID'],"","");
             }
             
             if ($franchiseedata[0]['IsEmailVerified']==0) {
-               return $this->ChangeEmailFromVerificationScreen("",$loginid,"","");
+               return $this->ChangeEmailFromVerificationScreen("",$loginInfo[0]['FranchiseeID'],"","");
             }
+			
+			if (strlen(trim($franchiseedata[0]['TransactionPassword']))<8) {
+               return $this->TransactionPasswordScreen("",$loginInfo[0]['FranchiseeID'],"","");
+            }
+        }
+		function TransactionPasswordScreen($error="",$loginid="",$scode="",$Rcode="",$reqID="") {
+           
+		   global $mysql,$loginInfo;
             
-           // return "<script>location.href='';</script>";
+            if (sizeof($loginInfo)==0) {
+                return "Invalid request. Please login again.";
+            }   
+            
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+            if (strlen(trim($franchiseedata[0]['TransactionPassword']))>8) {
+				return '<div class="modal-body" style="text-align:center"><br><br>
+							<p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your transaction password has been<br> successfully added.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
+            } else {
+                $formid = "frmTxnPass_".rand(30,3000);
+                return '<div id="otpfrm">
+                            <form method="POST" id="'.$formid.'">
+                               <div class="modal-header">
+                                    <h4 class="modal-title">Transaction Password</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
+                                </div>
+								<div class="modal-body">
+									<p style="text-align:center;padding: 20px;Padding-bottom:0px"><img src="'.AppPath.'assets/images/email_verification.png"></p>                                 
+									<h4 style="text-align:center;color:#ada9a9">Please enter transaction Password</h4>
+									<div class="form-group row">
+										<div class="col-sm-3"></div>
+                                        <div class="col-sm-6">                                                                                                                                                                                          
+                                            <input type="password" class="form-control" value="'.$scode.'" id="TransactionPassword"  name="TransactionPassword"  maxlength="10" style="font-family:Roboto;" placeholder="New transaction password"><br>
+											<input type="password" class="form-control" value="'.$Rcode.'" id="ConfirmTransactionPassword"  name="ConfirmTransactionPassword"  maxlength="10" style="font-family:Roboto;" placeholder="Confirm new transaction password">
+                                        </div>
+										<div class="col-sm-3"></div>
+                                        <div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center">'.$error.'</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<a href="javascript:void(0)" onclick="AddTransactionPassword(\''.$formid.'\')" class="btn btn-primary" >Continue</a>&nbsp;&nbsp;
+								</div>
+                             </div>
+                            </form>                                                                                                       
+                        </div>'; 
+            }   
+        }
+		function AddTransactionPassword($error="",$loginid="",$scode="",$Rcode="",$reqID="") {
+           global $mysql,$loginInfo;
+			
+			if (sizeof($loginInfo)==0) {
+                return "Invalid request. Please login again.";
+            } 
+            
+            if (isset($_POST['TransactionPassword'])) {
+                
+                if (strlen(trim($_POST['TransactionPassword']))<8) {
+                   return $this->TransactionPasswordScreen("Invalid Transaction password.",$_POST['loginId'],$_POST['TransactionPassword'],$_POST['reqId']);
+                }
+				if (strlen(trim($_POST['TransactionPassword']))!= strlen(trim($_POST['ConfirmTransactionPassword']))) {
+                   return $this->TransactionPasswordScreen("Do not match password.",$_POST['loginId'],$_POST['TransactionPassword'],$_POST['ConfirmTransactionPassword'],$_POST['reqId']);
+                }
+               
+                $update = "update _tbl_franchisees_staffs set TransactionPassword='".$_POST['TransactionPassword']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'";
+                $mysql->execute($update);
+                
+                return '<div class="modal-body" style="text-align:center"><br><br>
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your transaction password has been<br> successfully updated.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';   
+            }
+                                                                                                                                    
+           
         }
         
         function VisitedWelcomeMsg(){
-            global $mysql;
-            $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$_GET['LoginID']."'");     
-            $welcome=$mysql->execute("update _tbl_franchisees_staffs set WelcomeMsg='1' where  FranchiseeID='".$login[0]['FranchiseeID']."' and PersonID='".$login[0]['StaffID']."'");
-            return true;
+			global $mysql,$loginInfo;
+            return $mysql->execute("update _tbl_franchisees_staffs set WelcomeMsg='1' where  FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
         }
         
         function ChangeMobileNumberFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
-            
-            //if ($loginid=="") {
-              //  $loginid = $_GET['LoginID'];
-            //}
-            
             global $mysql,$loginInfo;
-                                                                                                                               
-           // $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
             
             if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
@@ -182,14 +248,10 @@
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==1) {
-                return '<div class="modal-header">
-                            <h4 class="modal-title">Mobile Number Verification</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
+                return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
-                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                            <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';    
             } else {
                 
@@ -200,16 +262,15 @@
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="modal-header">
                                 <h4 class="modal-title">Please verify mobile number</h4>
-                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+								<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                             </div>
                             <div class="modal-body" style="max-height:400px;min-height:400px;">
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
                                 <h4 style="text-align:center;color:#ada9a9">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen.</h4>
-                                <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">+'.$franchiseedata[0]['CountryCode'].'&nbsp;'.$franchiseedata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumberF()">Change</h4>
+                                <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">+'.$franchiseedata[0]['CountryCode'].'-'.J2JApplication::hideMobileNumberWithCharacters($franchiseedata[0]['MobileNumber']).'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumberF()">Change</h4>
                             </div>
                             <div class="modal-footer">
-                                <a href="javascript:void(0)" onclick="MobileNumberVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a>&nbsp;&nbsp;
-                                <a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>
+                                <a href="javascript:void(0)" onclick="MobileNumberVerificationForm()" class="btn btn-primary">Continue to verify</a>&nbsp;&nbsp;
                             </div>
                         </div>'; 
                 }
@@ -232,14 +293,10 @@
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==1) {
-                return '<div class="modal-header">
-                            <h4 class="modal-title">Mobile Number Verification</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
+                return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
-                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                            <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';    
             } else {
                 $formid = "frmChangeMobileNo_".rand(30,3000);
@@ -250,24 +307,30 @@
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                                 <div class="modal-header">
                                     <h4 class="modal-title">Change Mobile Number</h4>
-                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                                 </div>
-                                <div class="modal-body">
-                                    <br><br><br>
-                                    <div class="form-group row">
-                                        <div class="col-sm-5" style="margin-right:-15px">
-                                            <select name="CountryCode" Class="form-control" id="CountryCode" style="padding-top: 12px;padding-bottom: 7px;padding-top: 4px;padding-bottom: 4px;text-align: center;font-family: Roboto;"> 
-                                               <option value="+91">+91</option>
+								<div class="modal-body">
+									<p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>                                 
+									<h4 style="text-align:center;color:#ada9a9">Please enter the new mobile number</h4>
+									<div class="form-group row">
+										<div class="col-sm-2"></div>
+                                        <div class="col-sm-4" style="margin-right:-15px">
+                                            <select name="CountryCode" Class="form-control" id="CountryCode" style="height:34px;text-align: center;font-family: Roboto;"> 
+                                               <option value="+91">( +91 India )</option>
                                             </select>
                                         </div>
-                                        <div class="col-sm-7">                                                                                                                                                                                          
-                                            <input type="text" class="form-control" value="'.$scode.'" id="new_mobile_number"  name="new_mobile_number"  maxlength="10" style="font-family:Roboto;"></div>
+                                        <div class="col-sm-4">                                                                                                                                                                                          
+                                            <input type="text" class="form-control" value="'.$scode.'" id="new_mobile_number"  name="new_mobile_number"  maxlength="10" style="font-family:Roboto;">
                                         </div>
-                                        <div class="col-sm-12" id="errormsg">'.$error.'</div>
-                                </div>
+										<div class="col-sm-2"></div>
+									</div>
+									<div class="form-group row">	
+                                        <div class="col-sm-12" id="frmMobileNoVerification_error"  style="color:red;text-align:center">'.$error.'</div>
+									</div>                         
+								</div>
                                  <div style="text-align:center">
+										<a href="javascript:void(0)" onclick="FCheckVerification()">back</a>
                                         <a href="javascript:void(0)" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify" style="font-family:roboto">Save and verify</a>
-                                        <a href="javascript:void(0)" onclick="FCheckVerification()">back</a>
                                  </div>
                              </div>
                             </form>                                                                                                       
@@ -276,15 +339,10 @@
         }
         
         function MobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
-            
-          //  if ($loginid=="") {
-           //     $loginid = $_GET['LoginID'];
-           // }
-            
+           
             global $mysql,$loginInfo;
-            
-           // $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
-            $updatemsg = "";
+             
+			$updatemsg = "";
             if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
             } 
@@ -295,10 +353,16 @@
                    return $this->ChangeMobileNumber("Invalid Mobile Number.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
                 }
                 
-                $duplicate = $mysql->select("select * from _tbl_franchisees_staffs where MobileNumber='".$_POST['new_mobile_number']."'");
+                $duplicate = $mysql->select("select * from _tbl_franchisees_staffs where MobileNumber='".$_POST['new_mobile_number']."' and FranchiseeID <>'".$loginInfo[0]['FranchiseeID']."'");
                 
-                if (sizeof($duplicate)>0) {
+				if (sizeof($duplicate)>0) {
                    return $this->ChangeMobileNumber("Mobile Number already in use.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
+                }
+				
+				$duplicates = $mysql->select("select * from _tbl_franchisees_staffs where MobileNumber='".$_POST['new_mobile_number']."' and FranchiseeID ='".$loginInfo[0]['FranchiseeID']."'");
+                
+				if (sizeof($duplicates)>0) {
+                   return $this->ChangeMobileNumber("you enter your old mobile number.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
                 }
                 
                 $update = "update _tbl_franchisees_staffs set MobileNumber='".$_POST['new_mobile_number']."' , CountryCode='".$_POST['CountryCode']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'";
@@ -316,14 +380,10 @@
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsMobileVerified']==1) {
-                return '<div class="modal-header">
-                            <h4 class="modal-title">Mobile Number Verification</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
+                return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
-                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                            <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';    
             } else {
                           
@@ -348,12 +408,12 @@
                             <input type="hidden" value="'.$securitycode.'" name="reqId">   
                             <div class="modal-header">                                                             
                                 <h4 class="modal-title">Please verify your mobile number</h4>
-                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                             </div>
                             <div class="modal-body">
                                  '.(($updatemsg!="") ? $updatemsg : "").'
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>                                 
-                                <h4 style="text-align:center;color:#ada9a9">Please enter the verification code which you have received on your mobile number ending with  '.$franchiseedata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($franchiseedata[0]['MobileNumber']).'</h4>
+                                <h4 style="text-align:center;color:#ada9a9">Please enter the verification code which you have received on your mobile number ending with  <br>+ '.$franchiseedata[0]['CountryCode'].'-'.J2JApplication::hideMobileNumberWithCharacters($franchiseedata[0]['MobileNumber']).'</h4>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="col-sm-12"> 
@@ -361,7 +421,7 @@
                                         <div class="col-sm-4"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
                                         <div class="col-sm-2"><button type="button" onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                         <div class="col-sm-3"></div>
-                                        <div class="col-sm-12" style="text-align:center;color:red">'.$error.'</div>
+                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error">'.$error.'</div>
                                     </div>
                                 </div>
                             </div>
@@ -371,11 +431,12 @@
             }
         }
         function ResendMobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
-                                                                                                                                             
+             
+			 
              if ($loginid=="") {
                  $loginid = $_GET['LoginID'];
              }
-             global $mysql;
+             global $mysql,$loginInfo;
              $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
              if (sizeof($login)==0) {
                  return "Invalid request. Please login again.";
@@ -384,13 +445,11 @@
              $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
              
              if ($franchiseedata[0]['IsMobileVerified']==1) {
-                 return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Mobile Number Verification</h4>
-                            <p style="text-align:center"><br><br><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified. </h5>
-                            <h5 style="text-align:center;"><a  href="javascript:void(0)" onclick="EmailVerificationForm()">Continue</a>
-                       </div>';    
+                 return '<div class="modal-body" style="text-align:center"><br><br>
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
              } else {
                  if ($error=="") {                                          
                     $otp=rand(1111,9999);
@@ -412,12 +471,12 @@
                             <input type="hidden" value="'.$securitycode.'" name="reqId">   
                             <div class="modal-header">                                                             
                                 <h4 class="modal-title">Please verify your mobile number</h4>
-                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                             </div>
                             <div class="modal-body">
                                  '.(($updatemsg!="") ? $updatemsg : "").'
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>                                 
-                                <h4 style="text-align:center;color:#ada9a9">Please enter the verification code which you have received on your mobile number ending with  '.$franchiseedata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($franchiseedata[0]['MobileNumber']).'</h4>
+                                <h4 style="text-align:center;color:#ada9a9">Please enter the verification code which you have received on your mobile number ending with  +'.$franchiseedata[0]['CountryCode'].'-'.J2JApplication::hideMobileNumberWithCharacters($franchiseedata[0]['MobileNumber']).'</h4>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="col-sm-12"> 
@@ -425,7 +484,7 @@
                                         <div class="col-sm-4"><input type="text" value="'.$scode.'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
                                         <div class="col-sm-2"><a onclick="MobileNumberOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn" style="color:white">Verify</a></div>
                                         <div class="col-sm-3"></div>                         
-                                        <div class="col-sm-12" style="text-align:center;color:red" id="errormsg">'.$error.'</div>
+                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error">'.$error.'</div>
                                     </div>
                                 </div>
                             </div>
@@ -451,79 +510,57 @@
                                                              "SqlQuery"       => base64_encode($sql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                return '<div class="modal-header">
-                            <h4 class="modal-title">Please verify your mobile number</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
+                return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
                             <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';
             } else {
-                return $this->MobileNumberVerificationForm("You entered, invalid pin.",$_POST['loginId'],$_POST['mobile_otp_2'],$_POST['reqId']);
+                return $this->MobileNumberVerificationForm("You entered, invalid verification code.",$_POST['loginId'],$_POST['mobile_otp_2'],$_POST['reqId']);
             }
         }
         
         
         function ChangeEmailFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
-            
-           // if ($loginid=="") {
-           //     $loginid = $_GET['LoginID'];
-           // }
-            
             global $mysql,$loginInfo;                                
             
-           // $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
-            
-            if (sizeof($loginInfo)==0) {
+			if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
             }   
             
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
              if ($franchiseedata[0]['IsEmailVerified']==1) {
-                return '<div class="modal-header">
-                            <h4 class="modal-title">Email Verification</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
+                return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
-                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                            <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';    
             } else {
                 
                 $formid = "frmChangeEmail_".rand(30,3000);
              
-                return '<div id="otpfrm" style="width:100%;padding:20px;">
+                return '<div id="otpfrm">
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="modal-header">
                                 <h4 class="modal-title">Please verify your email</h4>
-                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                             </div>
                             <div class="modal-body" style="max-height:400px;min-height:400px;">
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>
                             </div>
                             <div class="modal-footer">
-                                <a href="javascript:void(0)" onclick="EmailVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a>&nbsp;&nbsp;
-                                <a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>
+                                <a href="javascript:void(0)" onclick="EmailVerificationForm()" class="btn btn-primary">Continue to verify</a>&nbsp;&nbsp;
                             </div>
                         </div>'; 
                 }
         }
         
         function ChangeEmailID($error="",$loginid="",$scode="",$reqID="") {
-            
-            //if ($loginid=="") {
-           ///     $loginid = $_GET['LoginID'];
-           // }
-            
+             
             global $mysql,$loginInfo;
-            
-            //$login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
             
             if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
@@ -532,49 +569,49 @@
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
             
             if ($franchiseedata[0]['IsEmailVerified']==1) {
-                return '<div class="modal-header">
-                            <h4 class="modal-title">Email Verification</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
+                return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
-                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                            <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';    
             } else {
             $formid = "frmChangeEmail_".rand(30,3000);
                 
-                return ' <div id="otpfrm">
+                return '<div id="otpfrm">
                             <form method="POST" id="'.$formid.'">
                             <input type="hidden" value="'.$loginid.'" name="loginId">
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                                 <div class="modal-header">
                                     <h4 class="modal-title">Change Email ID</h4>
-                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                                 </div>
-                                <div class="modal-body">
-                                    <br><br><br><input type="text" value="'.$scode.'" id="new_email" name="new_email" class="form-control" style="font-family:Roboto;">
-                                    <div class="col-sm-12" id="errormsg">'.$error.'</div>
-                                    <div style="text-align:center">
-                                        <a href="javascript:void(0)" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Save to verify</a>&nbsp;&nbsp;
-                                        <a href="javascript:void(0)" onclick="FCheckVerification()">back</a>
-                                    </div>
-                                </div>
+								<div class="modal-body">
+									<p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>                                 
+									<h4 style="text-align:center;color:#ada9a9">Please enter the new emai id</h4>
+									<div class="form-group row">
+										<div class="col-sm-2"></div>
+                                        <div class="col-sm-8">
+											<input type="text" value="'.$scode.'" id="new_email" name="new_email" class="form-control" style="font-family:Roboto;">
+                                        </div>
+										<div class="col-sm-2"></div>
+									</div>
+									<div class="form-group row">   
+                                        <div class="col-sm-12" id="frmEmailIDVerification_error"  style="color:red;text-align:center">'.$error.'</div>
+									</div>                         
+								</div>
+                                 <div style="text-align:center">
+										<a href="javascript:void(0)" onclick="FCheckVerification()">back</a>
+                                        <a href="javascript:void(0)" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" style="font-family:roboto" id="verifybtn" name="btnVerify">Save and verify</a>
+                                 </div>
+                             </div>
                             </form>                                                                                                       
                         </div>'; 
             }
         }
         
         function EmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
-            
-          //  if ($loginid=="") {
-          //      $loginid = $_GET['LoginID'];
-          //  }
-            
-            global $mysql,$mail,$loginInfo;
+			global $mysql,$mail,$loginInfo;
            
-           // $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
-              
             if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
             }   
@@ -582,14 +619,20 @@
                 if (strlen(trim($_POST['new_email']))==0) {
                     return $this->ChangeEmailID("Invalid EmailID",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']);
                 }
-                $duplicate = $mysql->select("select * from _tbl_franchisees_staffs where EmailID='".$_POST['new_email']."'");
+                $duplicate = $mysql->select("select * from _tbl_franchisees_staffs where EmailID='".$_POST['new_email']."' and FranchiseeID <>'".$loginInfo[0]['FranchiseeID']."'");
                 
                 if (sizeof($duplicate)>0) {
                    return $this->ChangeEmailID("Email already in use.",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']); 
                 }
+				
+				$duplicates = $mysql->select("select * from _tbl_franchisees_staffs where EmailID='".$_POST['new_email']."' and FranchiseeID ='".$loginInfo[0]['FranchiseeID']."'");
+                
+				if (sizeof($duplicates)>0) {
+                   return $this->ChangeEmailID("you entered your old email id.",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']);
+                }
                 
                 $sql ="update _tbl_franchisees_staffs set EmailID='".$_POST['new_email']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'";
-                $mysql->execute();
+                $mysql->execute($sql);
                 $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
                                                              "ActivityType"   => 'EmailIDChanged.',
                                                              "ActivityString" => 'Email ID Changed.',
@@ -600,14 +643,10 @@
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
            
             if ($franchiseedata[0]['IsEmailVerified']==1) {
-                return '<div class="modal-header">
-                            <h4 class="modal-title">Email Verification</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
+                return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
-                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                            <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';    
             } else {
                 if ($error=="") {
@@ -643,12 +682,12 @@
                                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                                             <div class="modal-header">
                                                 <h4 class="modal-title">Please verify your email</h4>
-                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                                             </div>
                                             <div class="modal-body">
                                                  '.(($updatemsg!="") ? $updatemsg : "").'
                                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
-                                                <h4 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
+                                                <h4 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="col-sm-12"> 
@@ -656,7 +695,7 @@
                                                         <div class="col-sm-4"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
                                                         <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                                         <div class="col-sm-3"></div>
-                                                        <div class="col-sm-12" style="text-align:center;">'.$error.'</div>
+                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmEmailIDVerification_error">'.$error.'</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -678,12 +717,12 @@
                                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                                             <div class="modal-header">
                                                 <h4 class="modal-title">Please verify your email</h4>
-                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                                             </div>
                                             <div class="modal-body">
                                                  '.(($updatemsg!="") ? $updatemsg : "").'
                                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
-                                                <h4 style="text-align:center;color:#ada9a9">We have sent a 4 digit PIN to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
+                                                <h4 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="col-sm-12"> 
@@ -691,7 +730,7 @@
                                                         <div class="col-sm-4"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
                                                         <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                                         <div class="col-sm-3"></div>
-                                                        <div class="col-sm-12" style="text-align:center;" id="errormsg">'.$error.'</div>
+                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmEmailIDVerification_error">'.$error.'</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -704,26 +743,17 @@
         
         function ResendEmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
 
-             if ($loginid=="") {                     
-                $loginid = $_GET['LoginID'];
-             }
-
-             global $mysql;
-             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
-
-             if (sizeof($login)==0) {
+            global $mysql,$mail,$loginInfo;
+            
+             if (sizeof($loginInfo)==0) {
                  return "Invalid request. Please login again.";
              }
              $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
              if ($franchiseedata[0]['IsEmailVerified']==1) {
-                 return '<div class="modal-header">
-                            <h4 class="modal-title">Email Verification</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
+                 return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
-                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                            <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';    
              } else {
 
@@ -752,34 +782,33 @@
                                                                                       "Messagedon"   => date("Y-m-d h:i:s"))) ;
                         $formid = "frmMobileNoVerification_".rand(30,3000); 
                 
-                        $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");                                                          
                         $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
                                 return '<div id="otpfrm">
                                             <form method="POST" id="'.$formid.'">
                                             <input type="hidden" value="'.$loginid.'" name="loginId">
                                             <input type="hidden" value="'.$securitycode.'" name="reqId">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Please verify your email</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                                                </div>
-                                                 <div class="modal-body">
-                                                    <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
-                                                    <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
-                                                    <div class="form-group">
-                                                        <div class="input-group">
-                                                            <div class="col-sm-12">
-                                                                <div class="col-sm-3"></div>
-                                                                <div class="col-sm-4"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                                                <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
-                                                                <div class="col-sm-3"></div>
-                                                            </div>
-                                                            <div class="col-sm-12"  style="text-align:center;">'.$error.'</div>
-                                                        </div>
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Please verify your email</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                 '.(($updatemsg!="") ? $updatemsg : "").'
+                                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                                <h4 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$franchiseedata[0]['EmailID'].'</h4>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-12"> 
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                        <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmEmailIDVerification_error">'.$error.'</div>
                                                     </div>
-                                                 </div>
-                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
-                                        </form>                                                                                                       
-                                    </div>'; 
+                                                </div>
+                                            </div>
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
+                                            </form>                                                                                                       
+                                </div>'; 
                           }
 
                  }  else {
@@ -807,7 +836,7 @@
                                                         <div class="col-sm-4"><input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
                                                         <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
                                                         <div class="col-sm-3"></div>
-                                                        <div class="col-sm-12" style="text-align:center;" id="errormsg">'.$error.'</div>
+                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmEmailIDVerification_error">'.$error.'</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -832,31 +861,36 @@
                                                              "SqlQuery"       => base64_encode($sql),                               
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                return '<div class="modal-body" style="text-align:center">
+                return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
-                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                            <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';
                                     } else {
-                                        return $this->EmailVerificationForm("<span style='color:red'>You entered, invalid Pin.</span>",$_POST['loginId'],$_POST['email_otp'],$_POST['reqId']);
+                                        return $this->EmailVerificationForm("<span style='color:red'>You entered, invalid verification code.</span>",$_POST['loginId'],$_POST['email_otp'],$_POST['reqId']);
                                     }  
         }  
         
+		
         function GetMyMembers() {
-            global $loginInfo;     
-            return ($loginInfo[0]['FranchiseeID']>0) ? Response::returnSuccess("success",$this->execute("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."'"))
-                                                     : Response::returnError("Access denied. Please contact support"); 
-        }
-        function GetMyActiveMembers() {
-            global $loginInfo;     
-            return ($loginInfo[0]['FranchiseeID']>0) ? Response::returnSuccess("success",$this->execute("select * from _tbl_members where IsActive='1' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"))
-                                                     : Response::returnError("Access denied. Please contact support");   
-        }
-        function GetMyDeactiveMembers() {
-             global $loginInfo;     
-            return ($loginInfo[0]['FranchiseeID']>0) ? Response::returnSuccess("success",$this->execute("select * from _tbl_members where IsActive='0' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"))
-                                                     : Response::returnError("Access denied. Please contact support"); 
-        }
+           
+             global $mysql,$loginInfo;
+             
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+                return Response::returnSuccess("success",$mysql->select("select * from _tbl_members where IsActive='1' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
+                return Response::returnSuccess("success",$mysql->select("select * from _tbl_members where IsActive='0' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Delete") {
+                return Response::returnSuccess("success",$mysql->select("select * from _tbl_members where IsDeleted='1' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"));    
+             }
+         }
+            
+        
         function GetMyDeletedMembers() {
              global $loginInfo;     
             return ($loginInfo[0]['FranchiseeID']>0) ? Response::returnSuccess("success"."select * from _tbl_members where IsDeleted='1' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'",$this->execute("select * from _tbl_members where IsDeleted='1' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"))
@@ -881,6 +915,7 @@
                                     INNER JOIN _tbl_franchisees
                                     ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.ReferedBy='".$loginInfo[0]['FranchiseeID']."' and _tbl_members.MemberID='".$_POST['Code']."'");
              $Member[0]['Country'] = CodeMaster::getData('RegisterAllowedCountries');
+             $Member[0]['Gender'] = CodeMaster::getData('SEX');
             return Response::returnSuccess("success",$Member[0]);
         }
         function SearchMemberDetails() {
@@ -951,31 +986,48 @@
         function EditMember(){
               global $mysql,$loginInfo;    
               
-              $Member = $mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and  MemberID='".$_POST['Code']."'");
+               $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+              
+              $Member = $mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and  MemberCode='".$_POST['MemberCode']."'");
 
               $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
                     if ($allowDuplicateMobile[0]['ParamA']==0) {
-                        $data = $mysql->select("select * from  _tbl_members where EmailID='".trim($_POST['EmailID'])."' and MemberID <>'".$_POST['Code']."' ");
+                        $data = $mysql->select("select * from  _tbl_members where EmailID='".trim($_POST['EmailID'])."' and MemberCode <>'".$_POST['MemberCode']."' ");
                             if (sizeof($data)>0) {
                             return Response::returnError("EmailID Already Exists");    
                         }
                     }
               $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'");
                     if ($allowDuplicateEmail[0]['ParamA']==0) {
-                        $data = $mysql->select("select * from  _tbl_members where MobileNumber='".trim($_POST['MobileNumber'])."' and MemberID <>'".$_POST['Code']."' ");
+                        $data = $mysql->select("select * from  _tbl_members where MobileNumber='".trim($_POST['MobileNumber'])."' and MemberCode <>'".$_POST['MemberCode']."' ");
                             if (sizeof($data)>0) {
                             return Response::returnError("Mobile Number Already Exists");    
                         }
                     }
-                                                       
+              if (strlen(trim($_POST['WhatsappNumber']))>0) {
+         $allowDuplicateWhatsapp = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateWhatsapp'");
+             if ($allowDuplicateWhatsapp[0]['ParamA']==0) {
+                $data = $mysql->select("select * from  _tbl_members where WhatsappNumber='".trim($_POST['WhatsappNumber'])."' and MemberCode <>'".$_POST['MemberCode']."' ");
+                    if (sizeof($data)>0) {
+                        return Response::returnError("WhatsappNumber Already Exists");
+                    }
+             }
+        }
+                 $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];                                       
                 $mysql->execute("update _tbl_members set MemberName='".$_POST['MemberName']."',
-                                                    EmailID='".$_POST['EmailID']."',
-                                                    MobileNumber='".$_POST['MobileNumber']."',
-                                                    CountryCode='".$_POST['CountryCode']."',
+                                                         DateofBirth='".$dob."',
+                                                         Sex='".$_POST['Sex']."',
+                                                         EmailID='".$_POST['EmailID']."',
+                                                         CountryCode='".$_POST['CountryCode']."',
+                                                         MobileNumber='".$_POST['MobileNumber']."',
+                                                         WhatsappCountryCode='".$_POST['WhatsappCountryCode']."',
+                                                         WhatsappNumber='".$_POST['WhatsappNumber']."',
                                                     IsActive='".$_POST['Status']."' where  MemberID='".$Member[0]['MemberID']."'");
       
-     
-             $Member = $mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and  MemberID='".$_POST['Code']."'");
+      $Member = $mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and  MemberCode='".$_POST['MemberCode']."'");
             
     
                 return Response::returnSuccess("success",array());
@@ -1238,6 +1290,11 @@
     function EditDraftGeneralInformation() {
              
              global $mysql, $loginInfo;
+			 
+			 $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
              
             $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",$_POST['MaritalStatus']);
              $MotherTongue   = CodeMaster::getData("LANGUAGENAMES",$_POST['Language']); 
@@ -1297,7 +1354,7 @@
              }
             $updateSql .= " ,ChildrenCode ='".$_POST['HowManyChildren']."', Children='".$Childrens[0]['CodeValue']."',IsChildrenWithyou='".$_POST['ChildrenWithYou']."'";
         }
-              $updateSql .= "where ProfileCode='".$_POST['Code']."'";                                                  
+              $updateSql .= "where ProfileCode='".$_POST['ProfileCode']."'";                                                  
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
                                                              "ActivityType"   => 'MemberGeneralinformationupdated.',
@@ -1305,7 +1362,25 @@
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` and `ProfileCode`='".$_POST['Code']."'");      
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");      
+             $Member = $mysql->select("select * from `_tbl_members` where `MemberCode`='".$Profiles[0]['MemberCode']."'");      
+			 
+			 $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeDraftGInfoUpdate'");
+             $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+			 
+			 $content .= "<table>
+								<tr>
+									<td>Marital Status</td>
+									<td>: Married</td>
+								</tr>
+							</table>";
+
+             MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                        "Category"       => "FranchiseeDraftGInfoUpdate",
+                                        "MemberCode" 	 => $Member[0]['FranchiseeCode'],
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
              
              return Response::returnSuccess("success",array("ProfileInfo"      => $Profiles[0],
                                                             "ProfileSignInFor" => CodeMaster::getData('PROFILESIGNIN'),
@@ -1524,6 +1599,11 @@
              
              global $mysql, $loginInfo;
              
+             $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+             
              $FathersOccupation = CodeMaster::getData("Occupation",$_POST['FathersOccupation']);  
              $FamilyType        = CodeMaster::getData("FAMILYTYPE",$_POST['FamilyType']); 
              $FamilyValue       = CodeMaster::getData("FAMILYVALUE",$_POST['FamilyValue']);
@@ -1618,8 +1698,117 @@
                 $updateSql .= " ,`MotherOtherOccupation`     = '".$_POST['MotherOtherOccupation']."'";
                 }
              
-              $updateSql .= " where ProfileCode='".$_POST['Code']."'";
+              $updateSql .= " where ProfileCode='".$_POST['ProfileCode']."'";
              $mysql->execute($updateSql);
+             
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");  
+              $Member = $mysql->select("select * from `_tbl_members` where `MemberCode`='".$Profiles[0]['MemberCode']."'");    
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeDraftFInfoUpdate'");
+             $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             
+             $content .= "<table>
+                                <tr>
+                                       <td>Fathers Name</td>                    
+                                       <td>Fathers Occupation Code</td>         
+                                       <td>FathersOccupation</td>         
+                                       <td>FathersOccupation</td>     
+                                       <td>FathersContactCountryCode</td> 
+                                       <td>FathersContact</td>        
+                                       <td>FathersIncomeCode</td>     
+                                       <td>FathersIncome</td>         
+                                       <td>FathersAlive</td>          
+                                       <td>MothersName</td>           
+                                       <td>MothersContactCountryCode</td>
+                                       <td>MothersContact</td>        
+                                       <td>MothersIncomeCode</td>     
+                                       <td>MothersIncome</td>         
+                                       <td>MothersAlive</td>          
+                                       <td>FamilyLocation1</td>       
+                                       <td>FamilyLocation2</td>       
+                                       <td>Ancestral</td>             
+                                       <td>FamilyTypeCode</td>        
+                                       <td>FamilyType</td>                         
+                                       <td>FamilyValueCode</td>       
+                                       <td>FamilyValue</td>           
+                                       <td>FamilyAffluenceCode</td>   
+                                       <td>FamilyAffluence</td>       
+                                       <td>AboutMyFamily</td>         
+                                       <td>MothersOccupationCode</td> 
+                                       <td>MothersOccupation</td>     
+                                       <td>MotherOtherOccupation</td> 
+                                       <td>NumberofBrothersCode</td>  
+                                       <td>NumberofBrothers</td>      
+                                       <td>YoungerCode</td>                            
+                                       <td>Younger</td>               
+                                       <td>ElderCode</td>             
+                                       <td>Elder</td>                 
+                                       <td>MarriedCode</td>           
+                                       <td>Married</td>               
+                                       <td>NumberofSistersCode</td>   
+                                       <td>NumberofSisters</td>      
+                                       <td>ElderSisterCode</td>       
+                                       <td>ElderSister</td>           
+                                       <td>YoungerSisterCode</td>     
+                                       <td>YoungerSister</td>         
+                                       <td>MarriedSisterCode</td>     
+                                       <td>MarriedSister</td>         
+                                </tr>
+                                <tr>
+                                                   
+                                       <td>".$_POST['FatherName']."</td>
+                                       <td>".$_POST['FathersOccupation']."</td>
+                                       <td>".$FathersOccupation[0]['CodeValue']."</td>
+                                       <td>".$FathersOccupation[0]['CodeValue']."</td>
+                                       <td>".$_POST['FathersContactCountryCode']."</td>
+                                       <td>".$_POST['FathersContact']."</td>
+                                       <td>".$_POST['FathersIncome']."</td>
+                                       <td>".$FathersIncome[0]['CodeValue']."</td>
+                                       <td>".$Fathersstatus."</td>
+                                       <td>".$_POST['MotherName']."</td>
+                                       <td>".$_POST['MotherContactCountryCode']."</td>
+                                       <td>".$_POST['MotherContact']."</td>
+                                       <td>".$_POST['MothersIncome']."</td>
+                                       <td>".$MothersIncome[0]['CodeValue']."</td>
+                                       <td>".$Mothersstatus."</td>
+                                       <td>".$_POST['FamilyLocation1']."</td>
+                                       <td>".$_POST['FamilyLocation2']."</td>
+                                       <td>".$_POST['Ancestral']."</td>
+                                       <td>".$_POST['FamilyType']."</td>
+                                       <td>".$FamilyType[0]['CodeValue']."</td>              
+                                       <td>".$_POST['FamilyValue']."</td>
+                                       <td>".$FamilyValue[0]['CodeValue']."</td>
+                                       <td>".$_POST['FamilyAffluence']."</td>
+                                       <td>".$FamilyAffluence[0]['CodeValue']."</td>
+                                       <td>".$_POST['AboutMyFamily']."</td>
+                                       <td>".$_POST['MothersOccupation']."</td>
+                                       <td>".$MothersOccupation[0]['CodeValue']."</td>
+                                       <td>'' </td>
+                                       <td>".$_POST['NumberofBrother']."</td>
+                                       <td>".$NumberofBrothers[0]['CodeValue']."</td>
+                                       <td>".$_POST['younger']."</td>                    
+                                       <td>".$younger[0]['CodeValue']."</td>
+                                       <td>".$_POST['elder']."</td>
+                                       <td>".$elder[0]['CodeValue']."</td>
+                                       <td>".$_POST['married']."</td>
+                                       <td>".$married[0]['CodeValue']."</td>
+                                       <td>".$_POST['NumberofSisters']."</td>
+                                       <td>".$NumberofSisters[0]['CodeValue']."</td>
+                                       <td>".$_POST['elderSister']."</td>
+                                       <td>".$elderSister[0]['CodeValue']."</td>
+                                       <td>".$_POST['youngerSister']."'
+                                       <td>".$youngerSister[0]['CodeValue']."</td>
+                                       <td>".$_POST['marriedSister']."</td>
+                                       <td>".$ms[0]['CodeValue']."</td>
+                                </tr>
+                            </table>";
+
+             MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                        "Category"       => "FranchiseeDraftFInfoUpdate",
+                                        "MemberCode"      => $Member[0]['MemberCode'],
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
              
              
              $id = $mysql->insert("_tbl_logs_activity",array("Franchisee"       => $loginInfo[0]['FranchiseeID'],
@@ -1628,7 +1817,7 @@
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'");      
+                 
       
              return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
                                                             "Occupation"             => CodeMaster::getData('Occupation'),
@@ -1647,6 +1836,11 @@
          function EditDraftPhysicalInformation() {
              
              global $mysql,$loginInfo;
+             
+              $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
              
              $PhysicallyImpaired = CodeMaster::getData("PHYSICALLYIMPAIRED",$_POST['PhysicallyImpaired']); 
              $VisuallyImpaired   = CodeMaster::getData("VISUALLYIMPAIRED",$_POST['VisuallyImpaired']); 
@@ -1690,7 +1884,7 @@
                                                            `DrinkingHabitCode`      = '".$_POST['DrinkingHabit']."',
                                                            `PhysicalDescription`       = '".$_POST['PhysicalDescription']."',
                                                            `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
-                                                           `DrinkingHabit`          = '".$DrinkingHabit[0]['CodeValue']."' where ProfileCode='".$_POST['Code']."'";
+                                                           `DrinkingHabit`          = '".$DrinkingHabit[0]['CodeValue']."' where ProfileCode='".$_POST['ProfileCode']."'";
              $mysql->execute($updateSql);  
              $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
                                                              "ActivityType"   => 'MemberPhysicalinformationupdated.',
@@ -1698,7 +1892,64 @@
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'");      
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");    
+             
+             $Member = $mysql->select("select * from `_tbl_members` where `MemberCode`='".$Profiles[0]['MemberCode']."'");    
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeDraftPInfoUpdate'");
+             $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             
+             $content .= "<table>
+                                <tr>
+                                       <td>Physically Impaired</td>         
+                                       <td>PhysicallyImpaireddescription</td>         
+                                       <td>VisuallyImpaired</td>         
+                                       <td>VisuallyImpairedDescription</td>         
+                                       <td>VissionImpaired</td>         
+                                       <td>VissionImpairedDescription</td>         
+                                       <td>SpeechImpaired</td>
+                                       <td>SpeechImpairedDescription</td> 
+                                      <td>Height</td>               
+                                       <td>Weight</td>               
+                                       <td>BloodGroup</td>           
+                                       <td>Complexation</td>          
+                                       <td>BodyType</td>           
+                                       <td>Diet</td>               
+                                       <td>SmokingHabit</td>         
+                                       <td>DrinkingHabit</td>         
+                                       <td>PhysicalDescription</td>           
+                                                
+                                </tr>
+                                <tr>
+                                                   
+                                       <td>".$PhysicallyImpaired[0]['CodeValue']."</td>
+                                       <td>".$_POST['PhysicallyImpaireddescription']."</td>
+                                       <td>".$VisuallyImpaired[0]['CodeValue']."</td>
+                                       <td>".$_POST['VisuallyImpairedDescription']."</td>
+                                       <td>".$VissionImpaired[0]['CodeValue']."</td>
+                                       <td>".$_POST['VissionImpairedDescription']."</td>
+                                       <td>".$SpeechImpaired[0]['CodeValue']."</td>
+                                       <td>".$_POST['SpeechImpairedDescription']."</td>
+                                       <td>".$Height[0]['CodeValue']."</td>
+                                       <td>".$Weight[0]['CodeValue']."</td>
+                                       <td>".$BloodGroup[0]['CodeValue']."</td>
+                                       <td>".$Complexation[0]['CodeValue']."</td>
+                                       <td>".$BodyType[0]['CodeValue']."</td>
+                                       <td>".$Diet[0]['CodeValue']."</td>
+                                       <td>".$SmookingHabit[0]['CodeValue']."</td>
+                                       <td>".$DrinkingHabit[0]['CodeValue']."</td>
+                                       <td>".$_POST['PhysicalDescription']."</td>
+                                     
+                                </tr>
+                            </table>";
+
+             MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                        "Category"       => "FranchiseeDraftPInfoUpdate",
+                                        "MemberCode"      => $Member[0]['MemberCode'],
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
+               
              
              return Response::returnSuccess("success",array("ProfileInfo"        => $Profiles[0],
                                                             "PhysicallyImpaired" => CodeMaster::getData('PHYSICALLYIMPAIRED'),
@@ -1758,6 +2009,11 @@
              
              global $mysql,$loginInfo;
              
+               $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+             
              $Country = CodeMaster::getData("CONTNAMES",$_POST['Country']);
              $State   = CodeMaster::getData("STATNAMES",$_POST['StateName']);
              
@@ -1780,8 +2036,60 @@
                                                             `Pincode`        = '".$_POST['Pincode']."',
                                                             `CommunicationDescription`        = '".$_POST['CommunicationDescription']."',
                                                             `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
-                                                            `OtherLocation`  = '".$_POST['OtherLocation']."' where `ProfileCode`='".$_POST['Code']."'";
+                                                            `OtherLocation`  = '".$_POST['OtherLocation']."' where `ProfileCode`='".$_POST['ProfileCodeCode']."'";
              $mysql->execute($updateSql);  
+             
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");
+             $Member = $mysql->select("select * from `_tbl_members` where `MemberCode`='".$Profiles[0]['MemberCode']."'");    
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeDraftCDInfoUpdate'");
+             $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             
+             $content .= "<table>
+                                <tr>
+                                       <td>ContactPersonName</td>         
+                                       <td>Relation</td>         
+                                       <td>PrimaryPriority</td>         
+                                       <td>EmailID</td>         
+                                       <td>MobileNumber</td>         
+                                       <td>WhatsappNumber</td>         
+                                       <td>AddressLine1</td>
+                                       <td>AddressLine2</td> 
+                                      <td>AddressLine3</td>               
+                                       <td>Country</td>               
+                                       <td>State</td>           
+                                       <td>City</td>          
+                                       <td>OtherLocation</td>           
+                                       <td>PinCode</td>           
+                                       <td>CommunicationDescription</td>           
+                                </tr>
+                                <tr>
+                                                   
+                                       <td>".$_POST['ContactPersonName']."</td>
+                                       <td>".$_POST['Relation']."</td>
+                                       <td>".$_POST['PrimaryPriority']."</td>
+                                       <td>".$_POST['EmailID']."</td>
+                                       <td>".$_POST['MobileNumber']."</td>
+                                       <td>".$_POST['WhatsappNumber']."</td>
+                                       <td>".$_POST['AddressLine1']."</td>
+                                       <td>".$_POST['AddressLine2']."</td>
+                                       <td>".$_POST['AddressLine3']."</td>
+                                       <td>".$Country[0]['CodeValue']."</td>
+                                       <td>".$State[0]['CodeValue']."</td>
+                                       <td>".$_POST['OtherLocation']."</td>
+                                       <td>".$_POST['PinCode']."</td>
+                                       <td>".$_POST['CommunicationDescription']."</td>
+                                     
+                                </tr>
+                            </table>";
+
+             MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                        "Category"       => "FranchiseeDraftCDInfoUpdate",
+                                        "MemberCode"      => $Member[0]['MemberCode'],
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
+             
              $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"      => $loginInfo[0]['FranchiseeID'],
                                                              "ActivityType"   => 'MemberCommunicationdetailsupdated.',
                                                              "ActivityString" => 'Member Communication Details Updated.',
@@ -1834,6 +2142,12 @@
          }
          function EditDraftHoroscopeDetails() {
              global $mysql,$loginInfo;
+             
+             $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+             
              $StarName  = CodeMaster::getData("STARNAMES",$_POST['StarName']);
              $RasiName  = CodeMaster::getData("MONSIGNS",$_POST['RasiName']);
              $Lakanam   = CodeMaster::getData("LAKANAM",$_POST['Lakanam']);
@@ -1873,15 +2187,52 @@
                                                             `A13`            = '".$_POST['A13']."',
                                                             `A14`            = '".$_POST['A14']."',
                                                             `A15`            = '".$_POST['A15']."',
-                                                            `A16`            = '".$_POST['A16']."' where `ProfileCode`='".$_POST['Code']."'";
+                                                            `A16`            = '".$_POST['A16']."' where `ProfileCode`='".$_POST['ProfileCode']."'";
              $mysql->execute($updateSql);  
+              $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");
+             $Member = $mysql->select("select * from `_tbl_members` where `MemberCode`='".$Profiles[0]['MemberCode']."'");    
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeDraftHDInfoUpdate'");
+             $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             
+             $content .= "<table>
+                                <tr>
+                                       <td>StarName</td>         
+                                       <td>Lakanm</td>         
+                                       <td>RasiName</td>         
+                                       <td>TimeOfBirth</td>         
+                                       <td>PlaceOfBirth</td>         
+                                       <td>ChevvaiDhosham</td>         
+                                       <td>HoroscopeDetails</td>         
+                                             
+                                </tr>
+                                <tr>
+                                                   
+                                       <td>".$StarName[0]['CodeValue']."</td>
+                                       <td>".$Lakanam[0]['CodeValue']."</td>
+                                       <td>".$RasiName[0]['CodeValue']."</td>
+                                       <td>".$tob."</td>
+                                       <td>".$_POST['PlaceOfBirth']."</td>
+                                       <td>".$ChevvaiDhosham[0]['CodeValue']."</td>
+                                       <td>".$_POST['HoroscopeDetails']."</td>
+                                     
+                                </tr>
+                            </table>";
+
+             MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                        "Category"       => "FranchiseeDraftHDInfoUpdate",
+                                        "MemberCode"      => $Member[0]['MemberCode'],
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
+             
              $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $loginInfo[0]['FranchiseeID'],
                                                              "ActivityType"   => 'MemberHoroscopeDetailsUpdated.',
                                                              "ActivityString" => 'Member Horoscope Details Updated.',
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['Code']."'");      
+             $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");      
              return Response::returnSuccess("success",array("ProfileInfo" => $Profiles[0],
                                                             "StarName"    => CodeMaster::getData('STARNAMES'),
                                                             "RasiName"    => CodeMaster::getData('MONSIGNS'),
@@ -3799,7 +4150,9 @@
         }
 
     }
-   /*end edit submit profile */      
+   /*end edit submit profile */  
+   
+   
 			 
     }
 //2747    

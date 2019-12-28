@@ -1,7 +1,7 @@
  <nav class="sidebar sidebar-offcanvas" id="sidebar"  style="overflow: auto;height: 300px;" >
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo GetUrl(Dashboard);?>">
+                <a class="nav-link" href="<?php echo SiteUrl;?>">
                     <i class="menu-icon mdi mdi-television"></i>
                     <span class="menu-title">Dashboard</span>
                 </a>

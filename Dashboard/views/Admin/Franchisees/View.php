@@ -46,7 +46,7 @@
 							</div>
 							<div class="form-group row">   
 							   <label class="col-sm-3 col-form-label">Landline Number </label>
-								<label class="col-sm-3  col-form-label" style="color:#737373;">+<?php echo $Franchisee['LandlineCountryCode'];?>-<?php echo $Franchisee['ContactLandline'];?></Label>
+								<label class="col-sm-3  col-form-label" style="color:#737373;">+<?php echo $Franchisee['LandlineCountryCode'];?>-<?php echo $Franchisee['LandlineStdCode'];?>-<?php echo $Franchisee['ContactLandline'];?></Label>
 							</div>
 							<div class="form-group row">
 								<label class="col-sm-3 col-form-label">Address<span id="star">*</span></label>

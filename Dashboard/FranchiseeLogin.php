@@ -30,7 +30,14 @@ session_start();
         <script src="assets/js/misc.js"></script>
         <script src="assets/js/app.js?rnd=<?php echo rand(10,1000);?>" type='text/javascript'></script>
         <script>
-        
+            $(document).ready(function () {
+               $("#UserName").blur(function () {
+                    IsNonEmpty("UserName","ErrUserName","Please Enter Login Name");
+               });
+            $("#Password").blur(function () {
+                    IsNonEmpty("Password","ErrPassword","Please Enter Password");
+               });
+            });
             function SubmitLogin() {     
                 
                 ErrorCount=0;
@@ -62,12 +69,12 @@ session_start();
                <input type="hidden" name="login">
                 <div class="form-group">
                 <div align="center"><h5>Franchisee Login</h5></div>
-                  <label class="label">Login Name</label>
+                  <label class="label">Login Name<span style="color:red">*</span></label>
                     <input type="text" class="form-control" placeholder="Login Name" name="UserName" id="UserName" value="<?php echo isset($_POST['UserName']) ? $_POST['UserName'] : '';?>">
                      <span class="errorstring" id="ErrUserName"><?php echo isset($ErrUserName)? $ErrUserName : "";?></span>
                   </div>
                 <div class="form-group">
-                  <label class="label">Password</label>
+                  <label class="label">Password<span style="color:red">*</span></label>
                     <input type="password" class="form-control" placeholder="Password" name="Password" id="Password"  value="<?php echo isset($_POST['Password']) ? $_POST['Password'] : '';?>">
                     <span class="errorstring" id="ErrPassword"><?php echo isset($ErrPassword)? $ErrPassword : "";?></span>
                   </div>
@@ -81,9 +88,7 @@ session_start();
                 </div>
                 <div class="form-group d-flex justify-content-between">
                   <div class="form-check form-check-flat mt-0">
-                    <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input" > Keep me signedin
-                    </label>
+                    
                   </div>
                  <!-- <a href="views/Franchisee/ForgetPassword.php" class="text-small forgot-password text-black">Forgot Password</a>-->
                 </div>

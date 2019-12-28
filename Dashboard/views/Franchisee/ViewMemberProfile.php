@@ -55,7 +55,7 @@ legend {
 <form method="post" action="" onsubmit="">
  <?php if($ProfileInfo['RequestToVerify']=="0"){?>
 <div style="text-align: right" id="">
-        <a href="<?php echo GetUrl("MemberProfileEdit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
+        <a href="<?php echo GetUrl("Member/".$ProfileInfo['MemberCode']."/ProfileEdit/GeneralInformation/".$_GET['Code'].".htm ");?>">Edit</a>&nbsp;
         <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Publish Now</a>
 </div>
 <?php }?>

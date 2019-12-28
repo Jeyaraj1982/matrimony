@@ -86,7 +86,7 @@
             for ($i=0; $i <6 ; $i++) { 
             $star.=$char;
             }
-            $result=str_replace(substr($mobileNumber, 0,6), $star, $mobileNumber);
+            $result=str_replace(substr($mobileNumber,2,6), $star, $mobileNumber);
             return $result;  
         }
     }

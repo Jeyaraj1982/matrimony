@@ -65,6 +65,8 @@ RewriteRule ^Matches/AdvancedSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Match
 RewriteRule ^Matches/ProfileIDSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/ProfileIDSearchResult [QSA]
 
 
+
+
 RewriteRule ^Matches/Search/BasicSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/BasicSearchResult [QSA]
 RewriteRule ^Matches/Search/AdvancedSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/AdvancedSearchResult [QSA]
 RewriteRule ^Matches/Search/ProfileIDSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ProfileIDSearchResult [QSA]

@@ -149,37 +149,7 @@ $PostedProfilesCount = $response['data']['PostedProfiles'];
         
         
       
-<script>
-window.onload = function () {
 
-var chart = new CanvasJS.Chart("My Earnings", {
-    animationEnabled: true,
-    theme: "light2",
-    title:{
-        text: "Profile"
-    },
-    axisY:{
-        includeZero: false
-    },
-    data: [{        
-        type: "line",       
-        dataPoints: [
-            { x: 20/3, y:1,},
-            { x: 21/3, y:2,}, 
-            { x: 22/3, y:1,}, 
-            { x: 23/3, y:15,},
-            { x: 24/3, y:3,},
-            { x:25/3,  y:5,}, 
-            { x:26/3, y: 5,}
-            ]
-    }]
-});
-chart.render();
-
-}
-
-
-  </script> 
 
    
     
@@ -206,12 +176,14 @@ chart.render();
                 </div>
             </div>
         </div>
-  <?php //   $fInfo = $webservice->getData("Franchisee","GetMyProfile");  ?>   
+  <?php  $fInfo = $webservice->getData("Franchisee","GetMyProfile");  
+  
+  ?>   
 <script>
    <?php  
-  /*  if ($fInfo['status']=="success") {
+  if ($fInfo['status']=="success") {
         if($fInfo['data']['WelcomeMsg']==1) {
-            if($fInfo['data']['IsMobileVerified']==0 || $fInfo['data']['IsEmailVerified']==0){
+            if($fInfo['data']['IsMobileVerified']==0 || $fInfo['data']['IsEmailVerified']==0 || (strlen(trim($fInfo['data']['TransactionPassword'])))<8){
             ?>
                 $( document ).ready(function() {FCheckVerification();});
             <?php 
@@ -224,8 +196,8 @@ chart.render();
         
     } else {
             //logout invalid session
-    } */
+    } 
    ?>
 </script>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
 

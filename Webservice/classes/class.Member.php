@@ -5,12 +5,12 @@
              
          }
          
-         function Login() {
+         public function Login() {
 
              global $mysql,$loginInfo,$j2japplication;
 
              if (!(strlen(trim($_POST['UserName']))>0)) {
-                 return Response::returnError("Please enter member id / registered email ");
+                 return Response::returnError("Please enter member id / registered email");
              }
 
              if (!(strlen(trim($_POST['Password']))>0)) {
@@ -23,6 +23,7 @@
                                                                 "LoginFrom"     => "Web",
                                                                 "Device"        => $clientinfo['Device'],
                                                                 "MemberID"      => $data[0]['MemberID'],
+                                                                "MemberCode"    => $data[0]['MemberCode'],
                                                                 "LoginName"     => $_POST['UserName'],
                                                                 "BrowserIP"     => $clientinfo['query'],
                                                                 "CountryName"   => $clientinfo['country'],
@@ -31,17 +32,17 @@
                                                                 "LoginPassword" => $_POST['Password']));
              if (sizeof($data)==1) { /* Single Information */
              
-             $settings = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='APPSETTINGS' and `CodeValue`='AllowToPasswordCaseSensitive'");
-             if($settings[0]['ParamA']=="1"){
-                 if(md5($data[0]['MemberPassword'])!=md5($_POST['Password'])) {              
-                    return Response::returnError("Invalid login details ");
+                 $settings = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='APPSETTINGS' and `CodeValue`='AllowToPasswordCaseSensitive'");
+                 if($settings[0]['ParamA']=="1"){
+                     if(md5($data[0]['MemberPassword'])!=md5($_POST['Password'])) {              
+                        return Response::returnError("Invalid login details ");
+                     }
+                 } else {
+                     if ($data[0]['MemberPassword']!=$_POST['Password']) {              
+                        return Response::returnError("Invalid login details");
+                     }
                  }
-             } else {
-                 if ($data[0]['MemberPassword']!=$_POST['Password']) {              
-                    return Response::returnError("Invalid login details");
-                 }
-             }
-                 
+                     
                  $mysql->execute("update `_tbl_logs_logins` set `LoginStatus`='1' where `LoginID`='".$loginid."'");
                  
                  if ($data[0]['IsActive']==0) {
@@ -100,13 +101,13 @@
              $temp = $mysql->select("select * from `_tbl_logs_logins` where `LoginID`='".$loginInfo[0]['LoginID']."'");
              if (sizeof($temp)>0) {
                 $mysql->execute("update `_tbl_logs_logins` set `UserLogout`='".date("Y-m-d H:i:s")."' where `LoginID`='".$loginInfo[0]['LoginID']."'") ;
-                return Response::returnSuccess("Logged out successfully",array()); //SS0001     
+                return Response::returnSuccess("Logged out successfully",array());     
              } else {
-                return Response::returnError("Invalid logout request"); //ER0001
+                return Response::returnError("Invalid logout request");  
              }
          }
 
-         function GetLoginHistory() {
+         public function GetLoginHistory() {
              
              global $mysql,$loginInfo;
              
@@ -116,13 +117,13 @@
              return Response::returnSuccess("success",array("LoginHistory" => $LoginHistory,"WalletBalance" => $Member,"IsDisplayLastLogin" => $IsDisplayLoginHistory[0]));
          }
 
-         function GetNotificationHistory() {
+         public function GetNotificationHistory() {
              global $mysql,$loginInfo;
              $NotificationHistory = $mysql->select("select * from `_tbl_logs_activity` where `MemberID`='".$loginInfo[0]['MemberID']."' ORDER BY `ActivityID` DESC LIMIT 0,5");
              return Response::returnSuccess("success",$NotificationHistory);
          }
 
-         function Register() {
+         public function Register() {
 
              global $mysql;
 				
@@ -173,9 +174,6 @@
 			
 													  
              $data = $mysql->select("select * from `_tbl_members` where `MemberID`='".$id."'");
-
-            
-
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='NewMemberCreated'");
              $content  = str_replace("#MemberName#",$_POST['Name'],$mContent[0]['Content']);
              $content  = str_replace("#MemberID#",$MemberCode,$content);
@@ -192,7 +190,7 @@
              return Response::returnSuccess("Registered successfully",$data[0]);
          }
 
-         function forgotPassword() {
+         public function forgotPassword() {
 
              global $mysql,$mail;            
 
@@ -233,7 +231,7 @@
              }
          }
 
-         function forgotPasswordOTPvalidation() {
+         public function forgotPasswordOTPvalidation() {
 
              global $mysql;                  
              $data = $mysql->select("Select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqID']."' ");
@@ -248,7 +246,7 @@
              }
          }
 
-         function forgotPasswordchangePassword() {
+         public function forgotPasswordchangePassword() {
 
              global $mysql;
              $data = $mysql->select("Select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqID']."' ");
@@ -269,23 +267,18 @@
                                                              "ActivityType"   => 'forgetpasswordchangepassword.',
                                                              "ActivityString" => 'forget password changed password.',
                                                              "SqlQuery"       => base64_encode($sqlQry),
-                                                             //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
 
              return Response::returnSuccess("New Password saved successfully",$data[0]);  
          }
 
-        /* function IsMobileVerified() {
-             return false;
-         }*/
-         
-         function getAvailableBalance($memberID) {
+         public function getAvailableBalance($memberID) {
              global $mysql;
              $d = $mysql->select("select (sum(Credits)-sum(Debits)) as bal from  _tbl_wallet_transactions where MemberID='".$memberID."'");
              return isset($d[0]['bal']) ? $d[0]['bal'] : 0;      
          }
 
-         function GetMemberInfo() {
+         public function GetMemberInfo() {
              global $mysql,$loginInfo;
              $Member=$mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
              $Profile=$mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."'");
@@ -294,7 +287,7 @@
              return Response::returnSuccess("success",$Member[0],array("Profile"=>$Profile[0]));
          }    
 
-         function EditMemberInfo() {
+         public function EditMemberInfo() {
 
              global $mysql,$loginInfo;
 
@@ -313,17 +306,14 @@
                  }
              } 
              if($Member[0]['IsEmailVerified']==0) {
-                $sqlQry .= ", `EmailID`='".$_POST['EmailID']."', `CountryCode`='".$_POST['CountryCode']."' " ;
-                //email format
-
-                //duplicate,
-             $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
-                if ($allowDuplicateEmail[0]['ParamA']==0) {
+                 $sqlQry .= ", `EmailID`='".$_POST['EmailID']."', `CountryCode`='".$_POST['CountryCode']."' " ;
+                 $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
+                 if ($allowDuplicateEmail[0]['ParamA']==0) {
                     $data = $mysql->select("select * from  `_tbl_members` where `EmailID`='".trim($_POST['EmailID'])."' and `MemberID` <>'".$loginInfo[0]['MemberID']."'");
-                        if (sizeof($data)>0) {
-                            return Response::returnError("EmailID Already Exists");    
-                        }
-                }
+                    if (sizeof($data)>0) {
+                        return Response::returnError("EmailID Already Exists");    
+                    }
+                 }
              }
 
              $sqlQry .= " where  `MemberID`='".$Member[0]['MemberID']."'" ;  
@@ -332,18 +322,17 @@
                                                              "ActivityType"   => 'Yourmemberinformationupdated.',
                                                              "ActivityString" => 'Your member information updated.',
                                                              "SqlQuery"       => base64_encode($sqlQry),
-                                                             //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s"))); 
              return Response::returnSuccess("success",array());
          }
 
-         function WelcomeMessage() {
+         public function WelcomeMessage() {
              global $mysql,$loginInfo;
              $welcome=$mysql->execute("update `_tbl_members` set `WelcomeMsg`='1' where  `MemberID`='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("New Password saved successfully",array());
          }
 
-         function GetCodeMasterDatas() {
+         public function GetCodeMasterDatas() {
              return Response::returnSuccess("success",array("Gender"        => CodeMaster::getData("SEX"),
                                                             "MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
                                                             "Language"      => CodeMaster::getData('LANGUAGENAMES'),
@@ -361,66 +350,57 @@
                                                             "EmployedAs"    => CodeMaster::getData('OCCUPATIONS')));
          }
 
-         function CreateProfile() {
-
+         public function CreateProfile() {
+             
              global $mysql,$loginInfo;
 
              if ((strlen(trim($_POST['ProfileFor']))==0 || $_POST['ProfileFor']=="0" )) {
                 return Response::returnError("Please select ProfileFor",array("param"=>"ProfileFor"));
              }
+             
              if (!(strlen(trim($_POST['ProfileName']))>0)) {
                 return Response::returnError("Please enter your name",array("param"=>"ProfileName"));
              }
-            
-
+             
              $member= $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              
-			 if($_POST['ProfileFor']=="PSF001" || $_POST['ProfileFor']=="PSF003" || $_POST['ProfileFor']=="PSF005" || $_POST['ProfileFor']=="PSF006"){
-				  $SexCode = "SX001";
+             if($_POST['ProfileFor']=="PSF001" || $_POST['ProfileFor']=="PSF003" || $_POST['ProfileFor']=="PSF005" || $_POST['ProfileFor']=="PSF006") {
+                 $SexCode = "SX001";
 			 }
-			 if($_POST['ProfileFor']=="PSF002" || $_POST['ProfileFor']=="PSF007" || $_POST['ProfileFor']=="PSF008" || $_POST['ProfileFor']=="PSF009"){
-				$SexCode = "SX002";
-			}
-			if($_POST['ProfileFor']=="PSF004"){
-				if($member[0]['Sex']=="Male"){
-					$SexCode = "SX001";
-				} else {
-					$SexCode = "SX002";
-				}
-			}
+			 
+             if($_POST['ProfileFor']=="PSF002" || $_POST['ProfileFor']=="PSF007" || $_POST['ProfileFor']=="PSF008" || $_POST['ProfileFor']=="PSF009") {
+                 $SexCode = "SX002";
+			 }
+             
+             if($_POST['ProfileFor']=="PSF004"){
+                $SexCode = ($member[0]['Sex']=="Male") ? "SX001" : "SX002";
+			 }
 			 
              $ProfileFors   = CodeMaster::getData("PROFILESIGNIN",$_POST["ProfileFor"]);
              $Sex           = CodeMaster::getData("SEX",$SexCode); 
              $ProfileCode   = SeqMaster::GetNextDraftProfileCode();
              $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
 			 
-			 
-			 
-             $id =  $mysql->insert("_tbl_draft_profiles",array("ProfileCode"      => $ProfileCode,
-                                                              "ProfileForCode"    => $ProfileFors[0]['SoftCode'],
-                                                              "ProfileFor"        => $ProfileFors[0]['CodeValue'],
-                                                              "ProfileName"       => trim($_POST['ProfileName']),
-                                                              "DateofBirth"       => $dob,        
-                                                              "SexCode"           => $Sex[0]['SoftCode'],      
-                                                              "Sex"               => $Sex[0]['CodeValue'],      
-                                                              "CreatedOn"         => date("Y-m-d H:i:s"),        
-                                                              "MemberID"          => $loginInfo[0]['MemberID'],
-                                                              "MemberCode"        => $member[0]['MemberCode'],
-                                                              "CreatedByMemberID" => $loginInfo[0]['MemberID']));
-             $sql=$mysql->qry;
+             $id =  $mysql->insert("_tbl_draft_profiles",array("ProfileCode"       => $ProfileCode,
+                                                               "ProfileForCode"    => $ProfileFors[0]['SoftCode'],
+                                                               "ProfileFor"        => $ProfileFors[0]['CodeValue'],
+                                                               "ProfileName"       => trim($_POST['ProfileName']),
+                                                               "DateofBirth"       => $dob,        
+                                                               "SexCode"           => $Sex[0]['SoftCode'],      
+                                                               "Sex"               => $Sex[0]['CodeValue'],      
+                                                               "CreatedOn"         => date("Y-m-d H:i:s"),        
+                                                               "MemberID"          => $loginInfo[0]['MemberID'],
+                                                               "MemberCode"        => $member[0]['MemberCode'],
+                                                               "CreatedByMemberID" => $loginInfo[0]['MemberID']));
              if (sizeof($id)>0) {
                  $mysql->execute("update `_tbl_sequence` set LastNumber=LastNumber+1 where `SequenceFor`='DraftProfile'");
-                 return Response::returnSuccess('<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><br><br><img src="'.AppUrl.'assets/images/verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your Profile Created Successfully. </h5>
-                            <h5 style="text-align:center;"><a  href="Draft/Edit/GeneralInformation/'+$id+'htm?msg=1">Continue</a>
-                       </div>'.$sql,array("Code"=>$ProfileCode));
+                 return Response::returnSuccess("Profile Created",array("Code"=>$ProfileCode));
              } else{
                  return Response::returnError("Access denied. Please contact support");   
              }
          }
 
-         function MemberChangePassword(){
+         public function MemberChangePassword(){
 
              global $mysql,$loginInfo;
              $getpassword = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
@@ -441,7 +421,7 @@
              }
          }
 
-         function GetAdvancedSearchElements() {
+         public function GetAdvancedSearchElements() {
              return Response::returnSuccess("success",array("SkinType"      => CodeMaster::getData('COMPLEXIONS'),
                                                             "MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
                                                             "Religion"      => CodeMaster::getData('RELINAMES'),
@@ -457,14 +437,14 @@
                                                             "BodyType"      => CodeMaster::getData('BODYTYPES')));
          }
 
-         function GetBasicSearchElements() {
+         public function GetBasicSearchElements() {
              return Response::returnSuccess("success",array("MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
                                                             "Religion"      => CodeMaster::getData('RELINAMES'),
                                                             "Caste"      => CodeMaster::getData('CASTNAMES'),
                                                             ));
          }
 
-         function CheckVerification() {
+         public function CheckVerification() {
 
              global $mysql,$loginInfo;
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
@@ -479,10 +459,9 @@
              return "<script>location.href='".AppPath."MyProfiles/CreateProfile';</script>";
          }
 
-         function SaveBasicSearch() {
+         public function SaveBasicSearch() {
 
              global $mysql,$loginInfo; 
-             $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
              $insertArray = array("MemberID"    => $loginInfo[0]['MemberID'],
                                   "SearchType"  => 'Basic Search',
                                   "CreatedOn"   => date("Y-m-d H:i:s"),
@@ -521,21 +500,11 @@
              }
          }
 
-         function ChangeMobileNumberFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
+         public function ChangeMobileNumberFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
 
-             if ($loginid=="") {
-                 $loginid = $_GET['LoginID'];
-             }
-
-             global $mysql;
-
-             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
-
-             if (sizeof($login)==0) {
-                 return "Invalid request. Please login again.";
-             }
-
-             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
+             global $mysql,$loginInfo;
+             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+             
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div class="modal-header">
                             <h4 class="modal-title">Mobile Number Verification</h4>
@@ -568,21 +537,10 @@
              }
          } 
 
-         function ChangeMobileNumber($error="",$loginid="",$scode="",$reqID="") {
-
-             if ($loginid=="") {
-                $loginid = $_GET['LoginID'];
-             }
-
-             global $mysql;                                                                                                               
-
-             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
-
-             if (sizeof($login)==0) {
-                 return "Invalid request. Please login again.";
-             }
-
-             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
+         public function ChangeMobileNumber($error="",$loginid="",$scode="",$reqID="") {
+             
+             global $mysql,$loginInfo;                                                                                                               
+             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
 
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div class="modal-header">
@@ -630,21 +588,14 @@
                             </form>                                                                                                       
                         </div>';  
                         return $return;
-            
-         }
+                }
          } 
 
-         function MobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
+         public function MobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
 
-             if ($loginid=="") {
-                 $loginid = $_GET['LoginID'];
-             }
-             global $mysql;
-             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
+             global $mysql,$loginInfo;
              $updatemsg = "";
-             if (sizeof($login)==0) {
-                 return "Invalid request. Please login again.";                               
-             }
+             
              if (isset($_POST['new_mobile_number'])) {
                  
                  if (strlen(trim($_POST['new_mobile_number']))==0) {
@@ -658,14 +609,14 @@
                  }
                  
 
-                 $duplicate = $mysql->select("select * from `_tbl_members` where `MobileNumber`='".$_POST['new_mobile_number']."' and MemberID <>'".$login[0]['MemberID']."'");
+                 $duplicate = $mysql->select("select * from `_tbl_members` where `MobileNumber`='".$_POST['new_mobile_number']."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
                  if (sizeof($duplicate)>0) {
                      return $this->ChangeMobileNumber("<span style='color:red';>Mobile Number already in use</span>.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
                  }
-                 $sql="update `_tbl_members` set `MobileNumber`='".$_POST['new_mobile_number']."' , `CountryCode`='".$_POST['CountryCode']."' where `MemberID`='".$login[0]['MemberID']."'" ;
+                 $sql="update `_tbl_members` set `MobileNumber`='".$_POST['new_mobile_number']."' , `CountryCode`='".$_POST['CountryCode']."' where `MemberID`='".$loginInfo[0]['MemberID']."'" ;
                  $mysql->execute($sql);
                  
-                 $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
+                 $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
                  
                  $mContent = $mysql->select("select * from `mailcontent` where `Category`='MobileNumberChanged'");
                  $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
@@ -676,7 +627,7 @@
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Mobile Number has been changed.");  
-                 $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $login[0]['MemberID'],
+                 $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
                                                              "ActivityType"   => 'MonileNumberChanged.',
                                                              "ActivityString" => 'Mobile Number Changed.',
                                                              "SqlQuery"       => base64_encode($sql),            
@@ -684,7 +635,7 @@
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
                  $updatemsg = "<div class='successmessage'>Your new mobile number has been updated.</div>";
              }
-             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
+             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==1) {
                  return '<div class="modal-header">
                             <h4 class="modal-title">Mobile Number Verification</h4>
@@ -739,10 +690,8 @@
              }
          }
 
-         function MobileNumberOTPVerification() {
+         public function MobileNumberOTPVerification() {
 
-             
-             
              global $mysql;
 
              $otpInfo = $mysql->select("select * from `_tbl_verification_code` where RequestID='".$_POST['reqId']."'");
@@ -770,19 +719,10 @@
                  }
          }
 
-         function ChangeEmailFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
-
-             if ($loginid=="") {
-                 $loginid = $_GET['LoginID'];
-             }
-
-             global $mysql;
-             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
-             if (sizeof($login)==0) {
-                 return "Invalid request. Please login again.";
-             }
-
-             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
+         public function ChangeEmailFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
+             
+             global $mysql,$loginInfo;
+             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div class="modal-header">
                             <h4 class="modal-title">Email Verification</h4>
@@ -816,20 +756,11 @@
              }                  
          }
 
-         function ChangeEmailID($error="",$loginid="",$scode="",$reqID="") {
+         public function ChangeEmailID($error="",$loginid="",$scode="",$reqID="") {
 
-             if ($loginid=="") {
-                $loginid = $_GET['LoginID'];
-             }
+             global $mysql,$loginInfo;
 
-             global $mysql;
-
-             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
-             if (sizeof($login)==0) {
-                 return "Invalid request. Please login again.";
-             }
-
-             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
+             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
 
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div class="modal-header">
@@ -864,31 +795,25 @@
              }
          }
 
-         function EmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
+         public function EmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
 
-             if ($loginid=="") {                     
-                $loginid = $_GET['LoginID'];
-             }
-
-             global $mysql;
+             global $mysql,$loginInfo;
              $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
              $updatemsg = "";
-             if (sizeof($login)==0) {
-                 return "Invalid request. Please login again.";
-             }
+
              if (isset($_POST['new_email'])) {
                  if (strlen(trim($_POST['new_email']))==0) {
                      return $this->ChangeEmailID("<span style='color:red';>Please enter valid email id</span>",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']);
                  }
-                 $duplicate = $mysql->select("select * from _tbl_members where EmailID='".$_POST['new_email']."' and MemberID <>'".$login[0]['MemberID']."'");
+                 $duplicate = $mysql->select("select * from _tbl_members where EmailID='".$_POST['new_email']."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
 
                  if (sizeof($duplicate)>0) {
                      return $this->ChangeEmailID("<span style='color:red';>Email already in use</span>.",$_POST['loginId'],$_POST['new_email'],$_POST['reqId']); 
                  }
-                 $sql="update `_tbl_members` set `EmailID`='".$_POST['new_email']."' where `MemberID`='".$login[0]['MemberID']."'";
+                 $sql="update `_tbl_members` set `EmailID`='".$_POST['new_email']."' where `MemberID`='".$loginInfo[0]['MemberID']."'";
                  $mysql->execute($sql);
                  
-                 $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
+                 $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
                  
                  $mContent = $mysql->select("select * from `mailcontent` where `Category`='EmailIDChanged'");
                  $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
@@ -900,7 +825,7 @@
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Email ID has been changed.");  
              
-                 $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $login[0]['MemberID'],
+                 $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
                                                              "ActivityType"   => 'EmailIDChanged.',
                                                              "ActivityString" => 'Email ID Changed.',
                                                              "SqlQuery"       => base64_encode($sql),
@@ -909,7 +834,7 @@
                  $updatemsg = "<div class='successmessage'>Your new email address has been updated.</div>";
              }
 
-             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
+             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
 
              if ($memberdata[0]['IsEmailVerified']==1) {
                  return '<div class="modal-header">
@@ -947,7 +872,7 @@
                                                                                      "Type" =>"EmailVerification",
                                                                                      "messagedon"=>date("Y-m-d h:i:s"))) ;
                         $formid = "frmMobileNoVerification_".rand(30,3000);
-                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
+                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
                                 return '<div id="otpfrm">
                                             <form method="POST" id="'.$formid.'">
                                             <input type="hidden" value="'.$loginid.'" name="loginId">
@@ -980,7 +905,7 @@
                     $securitycode = $reqID;
 
                     $formid = "frmMobileNoVerification_".rand(30,3000);
-                 $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
+                 $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
                  return '<div id="otpfrm">
                         <form method="POST" id="'.$formid.'">
                         <input type="hidden" value="'.$loginid.'" name="loginId">
@@ -1011,7 +936,7 @@
             }                                    
          }
                                                                                      
-         function EmailOTPVerification() {
+         public function EmailOTPVerification() {
 
              global $mysql;
              $otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
@@ -1035,7 +960,7 @@
              }  
          }
 
-         function GetMyProfiles() {
+         public function GetMyProfiles() {
 
              global $mysql,$loginInfo; 
              $Profiles = array();
@@ -1134,7 +1059,7 @@
              }
          }
          
-         function DownloadedProfiles() {
+         public function DownloadedProfiles() {
                 global $mysql,$loginInfo;
 
                 $Profiles = $mysql->select("SELECT _tbl_profile_download.PartnerProfileCode as ProfileCode
@@ -1144,20 +1069,19 @@
                   $result = array();
                   foreach($Profiles as $p) {
                      $temp = Profiles::getProfileInfo($p['ProfileCode'],1,1);
-					// $temp = Profiles::getProfileInformation($p['ProfileCode']);
                       $result[]=$temp;
                   }
                 return Response::returnSuccess("success",array("Profiles" => $result));
      
          }  
 
-         function  BasicSearchViewMemberPlan() {
+         public function  BasicSearchViewMemberPlan() {
              global $mysql,$loginInfo; 
              $Plans = $mysql->select("select * from _tbl_member_plan");
              return Response::returnSuccess("success",$Plans);
          }
          
-         function OverallSendOtp($errormessage="",$otpdata="",$reqID="",$PProfileID="") {
+         public function OverallSendOtp($errormessage="",$otpdata="",$reqID="",$PProfileID="") {
              
              global $mysql,$mail,$loginInfo;            
 
@@ -1248,7 +1172,7 @@
 
          }
          
-         function ViewProfileOTPVerification() {
+         public function ViewProfileOTPVerification() {
 
              global $mysql,$loginInfo ;
              $data = $mysql->select("Select * from `_tbl_profiles` where `ProfileCode`='".$_POST['PProfileCode']."'");   
@@ -1271,7 +1195,7 @@
 
          }
 
-        function VerifyProfileforPublish() {                          
+         public function VerifyProfileforPublish() {                          
 
              global $mysql,$loginInfo;
 
@@ -1292,8 +1216,9 @@
                        </div>';
 
          }
-        /* Submit Profile */ 
-        function SendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
+        
+         /* Submit Profile */ 
+         public function SendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
 			global $mysql,$mail,$loginInfo;      
         
 			$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
@@ -1429,7 +1354,7 @@
 				}
         }
          
-        function ProfilePublishOTPVerification() {
+         public function ProfilePublishOTPVerification() {
             global $mysql,$loginInfo ;
              
             $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
@@ -1472,7 +1397,8 @@
                  return $this->SendOtpForProfileforPublish("<span style='color:red'>Invalid verification code.</span>",$_POST['PublishOtp'],$_POST['reqId'],$_POST['ProfileID']);
 				} 
         }
-		function ResendSendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
+		
+         public function ResendSendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
 			global $mysql,$mail,$loginInfo;      
 			
 			$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
@@ -1560,15 +1486,17 @@
 									</div>'; 
 				}
         }
-		function DeleteProfile() {
+		 /* end Submit profile */  
+         
+         public function DeleteProfile() {
 			return '<div class="modal-body" style="text-align:center;height: 300px;">
 						<p style="text-align:center;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
 						<h5 style="text-align:center;color:#ada9a9">Your Profile has been deleted</h4>    <br>
 						<a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
 					</div>';
 		}
-    /* end Submit profile */  
-         function DeleteAttach() {
+        
+         public function DeleteAttach() {
 
              global $mysql,$loginInfo;
 
@@ -1594,7 +1522,7 @@
 
          }
          
-         function DeleteEducationAttachmentOnly() {
+         public function DeleteEducationAttachmentOnly() {
 
              global $mysql,$loginInfo;
 
@@ -1617,7 +1545,7 @@
 
          }
          
-         function GetDraftProfileInfo() {
+         public function GetDraftProfileInfo() {
              
              global $mysql,$loginInfo;      
              $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileCode']."'");               
@@ -1626,13 +1554,13 @@
            }
          
          /*Checked*/
-         function GetPublishProfileInfo() {
+         public function GetPublishProfileInfo() {
              global $mysql,$loginInfo;      
              $result =  Profiles::getProfileInfo($_POST['ProfileCode']);
              return (is_array($result)) ? Response::returnSuccess("success",$result) : Response::returnError($result);
          }
 
-         function GetDraftProfileInformation($ProfileCode="",$rtype="") {
+         public function GetDraftProfileInformation($ProfileCode="",$rtype="") {
              
              $ProfileCode = $ProfileCode != "" ? $ProfileCode : $_POST['ProfileCode'];
              
@@ -1734,7 +1662,7 @@
              }                                                    
          }
        
-         function SelectPlanAndContinue() {
+         public function SelectPlanAndContinue() {
 
              global $mysql,$loginInfo;
              $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$_POST['Code']."'");     
@@ -1801,19 +1729,19 @@
              return Response::returnSuccess("succss",array("OrderNumber"=>$orderid));
          }
 
-         function updateProfilePhoto() {
+         public function updateProfilePhoto() {
              global $mysql,$loginInfo;
              $Profiles = $mysql->select("update  `_tbl_members` set `FileName`='".$_POST['filename']."'  where `MemberID`='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("success",array());
          }
 
-         function GetMyEmails() {
+         public function GetMyEmails() {
              global $mysql,$loginInfo;
              $MyEmails = $mysql->select("select * from `_tbl_logs_email` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              return Response::returnSuccess("success",$MyEmails);
          }
 
-         function GetKYC() {
+         public function GetKYC() {
              global $mysql,$loginInfo;    
              $KYCs = $mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."' order by `DocID` DESC ");
              $IDproof = $mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."' and DocumentType='Id Proof' order by DocID Desc");
@@ -1864,7 +1792,7 @@
                                                             "AddressProofDocument" => $Addressproof));
          }
 
-         function UpdateKYC() {
+         public function UpdateKYC() {
              global $mysql,$loginInfo;
              $returnA = 0;
              $returnB = 0;
@@ -1919,7 +1847,7 @@
              }
          }
 
-         function UpdateNotification() {
+         public function UpdateNotification() {
 
              global $mysql,$loginInfo;
              $sqlQry = "update `_tbl_members` set `SMSNotification`='".(($_POST['Sms']=="on") ? '1' : '0')."',`EmailNotification`='".(($_POST['Email']=="on")? '1':'0')."' where `MemberID`='".$loginInfo[0]['MemberID']."'";
@@ -1934,7 +1862,7 @@
              return Response::returnSuccess("Notifications are updated.",$Member[0]);
          }
 
-         function UpdatePrivacy() {
+         public function UpdatePrivacy() {
 
              global $mysql,$loginInfo;
              $sqlQry="update `_tbl_members` set `PrivacyVerifiedMember`='".(($_POST['VerfiedMembers']=="on") ? '1' : '0')."',`PrivacyNonVerifiedMember`='".(($_POST['nonVerfiedMembers']=="on")? '1':'0')."' where `MemberID`='".$loginInfo[0]['MemberID']."'";
@@ -2034,7 +1962,7 @@
                                                             "Nationality"      => CodeMaster::getData('NATIONALNAMES')));
          }
 
-         function EditDraftFamilyInformation() {
+         public function EditDraftFamilyInformation() {
 
              global $mysql, $loginInfo;
 
@@ -2159,7 +2087,7 @@
                                                             "NumberofMarriedSisters" => CodeMaster::getData('MARRIEDSIS')));
          }
 
-         function EditDraftPhysicalInformation() {
+         public function EditDraftPhysicalInformation() {
 
              global $mysql,$loginInfo;
 
@@ -2230,7 +2158,7 @@
                                                                        "DrinkingHabit"      => CodeMaster::getData('DRINKINGHABITS')));
          }
 
-         function EditDraftCommunicationDetails() {
+         public function EditDraftCommunicationDetails() {
 
              global $mysql,$loginInfo;
 
@@ -2271,7 +2199,7 @@
                                                             "StateName"   => CodeMaster::getData('STATNAMES')));
          }
 
-         function GetPartnersExpectaionInformation() {
+         public function GetPartnersExpectaionInformation() {
              global $mysql,$loginInfo;
              $PartnersExpectation = $mysql->select("select * from `_tbl_draft_profiles_partnerexpectation` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileCode']."'");               
              
@@ -2288,7 +2216,7 @@
                                                             "EmployedAs"             => CodeMaster::getData('Occupation')));
          }
          
-         function AddPartnersExpectaion() {
+         public function AddPartnersExpectaion() {
 
              global $mysql,$loginInfo;    
 
@@ -2390,7 +2318,7 @@
             return Response::returnSuccess("Success",array());
          }
 
-         function EditDraftOccupationDetails() {
+         public function EditDraftOccupationDetails() {
 
              global $mysql,$loginInfo;
 
@@ -2466,7 +2394,7 @@
                                                             "IncomeRange"      => CodeMaster::getData('INCOMERANGE')));
          }
 
-         function AddEducationalDetails() {
+         public function AddEducationalDetails() {
              global $mysql,$loginInfo;
              
               if (!(trim($_POST['Educationdetails']))>0) {                                                                               
@@ -2510,7 +2438,7 @@
                                     : Response::returnError("Access denied. Please contact support");   
          }
          
-         function AddEducationalAttachment() {
+         public function AddEducationalAttachment() {
 
              global $mysql,$loginInfo;
              
@@ -2537,7 +2465,7 @@
              return Response::returnSuccess("success");
          }
 
-         function AttachDocuments() {
+         public function AttachDocuments() {
 
              global $mysql,$loginInfo;       
 
@@ -2577,7 +2505,7 @@
              return Response::returnSuccess("Your Document Information has successfully updated and waiting for verification",$photos);
          }    
 
-         function DeletDocumentAttachments() {
+         public function DeletDocumentAttachments() {
 
              global $mysql,$loginInfo;
 
@@ -2593,7 +2521,7 @@
 
          }
          
-         function DeletProfilePhoto() {
+         public function DeletProfilePhoto() {
 
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_draft_profiles_photos` set `IsDelete`='1',`IsDeletedOn`='".date("Y-m-d H:i:s")."' where `ProfilePhotoID`='".$_POST['ProfilePhotoID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'");
@@ -2607,7 +2535,7 @@
 
          }
          
-         function EditDraftHoroscopeDetails() {
+         public function EditDraftHoroscopeDetails() {
              global $mysql,$loginInfo;
              $StarName  = CodeMaster::getData("STARNAMES",$_POST['StarName']);
              $RasiName  = CodeMaster::getData("MONSIGNS",$_POST['RasiName']);
@@ -2664,7 +2592,7 @@
                                                             "Lakanam"     => CodeMaster::getData('LAKANAM')));
          }
 
-         function AddProfilePhoto() {
+         public function AddProfilePhoto() {
 
              global $mysql,$loginInfo;   
              $photos = $mysql->select("select * from `_tbl_draft_profiles_photos` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
@@ -2685,7 +2613,7 @@
              return Response::returnSuccess("Your profile photo has successfully updated and waiting for verification",$photos);
          }
 
-         function GetViewAttachments() {
+         public function GetViewAttachments() {
              global $mysql,$loginInfo;    
              
              $SAttachments = $mysql->select("select * from `_tbl_draft_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and  `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
@@ -2697,14 +2625,14 @@
                                                             "EducationDegree"   =>  CodeMaster::getData('EDUCATIONDEGREES')));
          }
 
-         function GetBankNames() {
+         public function GetBankNames() {
              global $mysql,$loginInfo;
              $BankNames = $mysql->select("select * from  `_tbl_settings_bankdetails` where `IsActive`='1'");                    
              return Response::returnSuccess("success",array("BankName" => $BankNames,
                                                             "ModeOfTransfer"     => CodeMaster::getData('MODE')));
          }
 
-         function DeleteMember() {
+         public function DeleteMember() {
              global $mysql,$loginInfo;
              $member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              $deletereason= CodeMaster::getData("DELETEREASON",$_POST['DeleteReason']); 
@@ -2736,7 +2664,7 @@
                        </div>';
          }
        
-         function SaveBankRequest() {
+         public function SaveBankRequest() {
 
              global $mysql,$loginInfo;
              $BankNames = $mysql->select("select * from  `_tbl_settings_bankdetails` where BankID='".$_POST['BankName']."'"); 
@@ -2761,7 +2689,7 @@
              }
          }
       
-         function SavePayPalRequest() {
+         public function SavePayPalRequest() {
 
              global $mysql,$loginInfo;
              $PayPal = $mysql->select("select * from  `_tbl_settings_paypal` where `IsActive`='1'"); 
@@ -2778,7 +2706,7 @@
              }
          }
 
-         function GetListOfPreviousBankRequests() {
+         public function GetListOfPreviousBankRequests() {
 
              global $mysql,$loginInfo;
 
@@ -2800,38 +2728,38 @@
              }
          }
          
-         function GetListOfPreviousPaypalRequests() {
+         public function GetListOfPreviousPaypalRequests() {
              global $mysql,$loginInfo;
              $Paypal = $mysql->select("select * from  `_tbl_wallet_paypalrequests` where `MemberID`='". $loginInfo[0]['MemberID']."' order by `PaypalID` DESC ");                    
              return Response::returnSuccess("success",$Paypal);
          }
          
-         function GetViewPaypalRequests() {
+         public function GetViewPaypalRequests() {
              global $mysql,$loginInfo;
              $Paypal = $mysql->select("select * from  `_tbl_wallet_paypalrequests` where `MemberID`='". $loginInfo[0]['MemberID']."' and `PaypalID`='".$_POST['Code']."'");                    
              return Response::returnSuccess("success",$Paypal[0]);
          }
          
-         function GetViewBankRequests() {
+         public function GetViewBankRequests() {
              global $mysql,$loginInfo;
              $Paypal = $mysql->select("select * from  `_tbl_wallet_bankrequests` where `MemberID`='". $loginInfo[0]['MemberID']."' and `ReqID`='".$_POST['Code']."'");                    
              return Response::returnSuccess("success",$Paypal[0]);
          }
 
-         function IsPaypalTransferAllowed() {
+         public function IsPaypalTransferAllowed() {
              global $mysql,$loginInfo;
               $paypal = $mysql->select("select * from  `_tbl_settings_paypal` where `IsActive`='1'");   
 
              return Response::returnSuccess("success",array("IsAllowed"=>sizeof($paypal))); 
          }
          
-         function GetMyActiveProfile() {
+         public function GetMyActiveProfile() {
               global $mysql,$loginInfo;
               $profile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'") ;
               return $profile;
           }
          
-         function RequestToDownload() { /* verified */
+         public function RequestToDownload() { /* verified */
               global $mysql,$loginInfo;
               $myprofile = $this->GetMyActiveProfile();
               $PartnerProfile =  $mysql->select("select * from _tbl_profiles where ProfileCode='".$_GET['PProfileID']."'") ;
@@ -2853,7 +2781,7 @@
               }
           }
              
-         function RequestToshowUpgrades() {
+         public function RequestToshowUpgrades() {
 
              global $mysql,$loginInfo;
              
@@ -2906,7 +2834,7 @@
              }
              }
          
-         function ProfilePhotoBringToFront() {
+         public function ProfilePhotoBringToFront() {
 
              global $mysql,$loginInfo;
              
@@ -2920,7 +2848,7 @@
              $mysql->execute($updateSql);  
           }
           
-         function GetDownloadProfileInformation() {
+         public function GetDownloadProfileInformation() {
                
                 global $mysql,$loginInfo;      
              $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$_POST['ProfileCode']."'"); 
@@ -2960,7 +2888,7 @@
            }
            
          /*fixed*/ 
-         function GetFullProfileInformation() {
+         public function GetFullProfileInformation() {
                
                global $mysql,$loginInfo;      
                $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$_POST['ProfileCode']."'"); 
@@ -3061,7 +2989,7 @@
           }
           
          /*fixed*/
-         function GetRecentlyViewedProfiles() {
+         public function GetRecentlyViewedProfiles() {
           global $mysql,$loginInfo; 
              $Profiles = array();
              $sql = "";
@@ -3093,7 +3021,7 @@
          }
          
          /*fixed*/
-         function GetRecentlyWhoViewedProfiles() {
+         public function GetRecentlyWhoViewedProfiles() {
 
              global $mysql,$loginInfo; 
              $Profiles = array();
@@ -3128,8 +3056,12 @@
              return Response::returnSuccess("success",$Profiles);
          }
 
+         
+         
+         
+         
          /* Favourited Section */
-         function AddToFavourite() {
+         public function AddToFavourite() {
              
              global $mysql,$loginInfo;
              
@@ -3223,7 +3155,7 @@
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has favorited.");                                               
          }
          
-         function RemoveFromFavourite() {
+         public function RemoveFromFavourite() {
              
              global $mysql,$loginInfo;
              
@@ -3311,9 +3243,7 @@
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has unfavorited.");      
           }
 		  
-		  
-          
-         function GetFavouritedProfiles() {
+         public function GetFavouritedProfiles() {
               global $mysql,$loginInfo; 
               $Profiles = array();
               $sql = (isset($_POST['requestfrom']) && isset($_POST['requestto'])) ?  " limit ".$_POST['requestfrom'].",". $_POST['requestto'] : " limit 0,5 ";
@@ -3332,7 +3262,7 @@
               return Response::returnSuccess("success",$Profiles);
          }
       
-         function GetWhoFavouriteMyProfiles() {
+         public function GetWhoFavouriteMyProfiles() {
              
              global $mysql,$loginInfo; 
              $Profiles = array();
@@ -3363,7 +3293,8 @@
                   
              return Response::returnSuccess("success",$Profiles);
          }
-		 function GetWhoShortListedMyProfiles() {
+	
+    	 public function GetWhoShortListedMyProfiles() {
              
              global $mysql,$loginInfo; 
              $Profiles = array();
@@ -3395,7 +3326,7 @@
              return Response::returnSuccess("success",$Profiles);
          }
          
-         function GetMutualProfiles() {
+         public function GetMutualProfiles() {
              global $mysql,$loginInfo; 
              $Profiles = array();
              $sql = "";
@@ -3426,7 +3357,8 @@
                   
              return Response::returnSuccess("success",$Profiles);
          }
-		 function GetShortListProfiles() {
+
+		 public function GetShortListProfiles() {
               global $mysql,$loginInfo; 
               $Profiles = array();
               $sql = (isset($_POST['requestfrom']) && isset($_POST['requestto'])) ?  " limit ".$_POST['requestfrom'].",". $_POST['requestto'] : " limit 0,5 ";
@@ -3446,7 +3378,8 @@
          }
          /* End Favourited Section */
         
-         function ResendMobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
+        
+         public function ResendMobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
 
              if ($loginid=="") {
                  $loginid = $_GET['LoginID'];
@@ -3515,7 +3448,7 @@
              }
          }
   
-         function ResendEmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
+         public function ResendEmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
 
              if ($loginid=="") {                     
                 $loginid = $_GET['LoginID'];
@@ -3632,7 +3565,7 @@
             }                                                                                     
          }
   
-         public function GetLandingPageProfiles() {
+         public public function GetLandingPageProfiles() {
              
              global $mysql;
              $Profiles = array();
@@ -3650,7 +3583,8 @@
              
                  return Response::returnSuccess("success",$Profiles);                                               
          }
-		function GetFeatureGroom () {
+		
+         public function GetFeatureGroom () {
 			global $mysql;
 				$landingpageProfiles = $mysql->select("select ProfileCode from _tbl_profiles where SexCode='SX001' and  ProfileCode in (select ProfileCode from `_tbl_landingpage_profiles` where `IsShow`='1')"); 
                 foreach($landingpageProfiles as $profile) {
@@ -3658,7 +3592,8 @@
 				} 
             return Response::returnSuccess("success",$Profiles);                                               
         }
-		function GetFeatureBride (){
+		 
+         public function GetFeatureBride (){
 			global $mysql;
 				$landingpageProfiles = $mysql->select("select ProfileCode from _tbl_profiles where SexCode='SX002' and  ProfileCode in (select ProfileCode from `_tbl_landingpage_profiles` where `IsShow`='1')"); 
                 foreach($landingpageProfiles as $profile) {
@@ -3666,7 +3601,8 @@
 				} 
             return Response::returnSuccess("success",$Profiles);                                               
         }
-         function GetLandingpageProfileInfo() {
+         
+         public function GetLandingpageProfileInfo() {
                
                global $mysql,$loginInfo;      
                $Profiles = $mysql->select("select * from `_tbl_landingpage_profiles` where Date(DateTo)>=Date('".date("Y-m-d")."') and `IsShow`='1' and ProfileCode='".$_POST['ProfileCode']."'"); 
@@ -3683,16 +3619,14 @@
                     
           }
          
-         function GetLatestUpdates() {
+         public function GetLatestUpdates() {
              
              global $mysql,$loginInfo;
              $Latestupdates = $mysql->select("select * from `_tbl_latest_updates` where MemberID='".$loginInfo[0]['MemberID']."' and IsHide='0' ORDER BY LatestID DESC LIMIT 0,5"); 
                  return Response::returnSuccess("success",$Latestupdates);                                               
      } 
          
-         
-         
-         function HideLatestUpdates() {
+         public function HideLatestUpdates() {
 
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_latest_updates` set `IsHide`='1' where `LatestID`='".$_POST['LatestID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");
@@ -3706,14 +3640,14 @@
 
          }
          
-         function GetAllLatestUpdates() {
+         public function GetAllLatestUpdates() {
              
              global $mysql,$loginInfo;
              $Latestupdates = $mysql->select("select * from `_tbl_latest_updates` where MemberID='".$loginInfo[0]['MemberID']."' ORDER BY LatestID DESC"); 
                  return Response::returnSuccess("success",$Latestupdates);                                               
      }
          
-         function GetSearchResultProfiles() {
+         public function GetSearchResultProfiles() {
                 global $mysql,$loginInfo;
              
              $result = array();
@@ -3745,9 +3679,8 @@
              
              return Response::returnSuccess("success",$result);
          }
-		 function GetAllRecentlyAdded() {
-		//	 $result=Matches::MatchesRecentlyAdded();
-		//	 return Response::returnSuccess("success",$result);
+		 
+         public function GetAllRecentlyAdded() {
 		  global $mysql,$loginInfo;
                                                                                  
              $result = array();
@@ -3765,7 +3698,8 @@
              return Response::returnSuccess("success",$result);
          
 		 }
-		function SearchByProfileIDResult() {
+		 
+         public function SearchByProfileIDResult() {
             global $mysql,$loginInfo;
              $result = array();
             $Profiles = $mysql->select("select * from _tbl_profiles where `ProfileCode`='".$_POST['profileid']."'");
@@ -3775,7 +3709,7 @@
              return Response::returnSuccess("success",$result);
          }
 		 
-		 function GetAdvanceSearchResultProfiles() {
+		 public function GetAdvanceSearchResultProfiles() {
                 global $mysql,$loginInfo;
              $result = array(); 
              $MatrialStatusCode=array();
@@ -3886,17 +3820,17 @@
              return Response::returnSuccess("success"."select * from _tbl_profiles where ( (YEAR(DateofBirth)>='".(DATE("Y")-$_POST['toage'])."') and (YEAR(DateofBirth)<='".(DATE("Y")-$_POST['age'])."') ) and `SexCode`='".$_POST['LookingFor']."' ".$sql,$result);
          }
          
-         function GetMemberDeleteReason() {
+         public function GetMemberDeleteReason() {
              return Response::returnSuccess("success",array("DeleteReason"        => CodeMaster::getData("DELETEREASON")));
          }
          
-         function GetMyNotifications(){
+         public function GetMyNotifications(){
              global $mysql,$loginInfo;
              $Member=$mysql->select("select * from `_tbl_member_profile_modify_notification` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
              return Response::returnSuccess("success",isset($Member[0]) ? $Member[0] : array());
          }
          
-         function GetPublishedProfileInformation($ProfileCode="",$rtype="") {
+         public function GetPublishedProfileInformation($ProfileCode="",$rtype="") {
              
              $ProfileCode = $ProfileCode != "" ? $ProfileCode : $_POST['ProfileCode'];
              
@@ -3995,7 +3929,7 @@
              }                                                    
          }
          
-         function GetViewPublishAttachments() {
+         public function GetViewPublishAttachments() {
              global $mysql,$loginInfo;    
              $SAttachments = $mysql->select("select * from `_tbl_profiles_education_details` where `MemberID`='".$loginInfo[0]['MemberID']."' and  `ProfileCode`='".$_POST['Code']."' and `IsDeleted`='0'");
              
@@ -4004,7 +3938,7 @@
                                                             "EducationDegree"  => CodeMaster::getData('EDUCATIONDEGREES')));
          }
          
-         function PublishedAttachDocuments() {
+         public function PublishedAttachDocuments() {
 
              global $mysql,$loginInfo;       
 
@@ -4044,7 +3978,7 @@
              return Response::returnSuccess("Your Document Information has successfully updated and waiting for verification",$photos);
          }
          
-         function AddPublishProfilePhoto() {
+         public function AddPublishProfilePhoto() {
 
              global $mysql,$loginInfo;   
 
@@ -4067,7 +4001,9 @@
              return Response::returnSuccess("Your profile photo has successfully updated and waiting for verification",$photos);
          }
          
-         function GetPublishPartnersExpectaionInformation() {
+         
+         
+         public function GetPublishPartnersExpectaionInformation() {
              global $mysql,$loginInfo;
              $PartnersExpectation = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$_POST['ProfileCode']."'");               
              return Response::returnSuccess("success",array("ProfileInfo"            =>$PartnersExpectation[0],
@@ -4080,7 +4016,7 @@
                                                             "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
          }
          
-         function EditGeneralInformation() {
+         public function EditGeneralInformation() {
 
              global $mysql, $loginInfo;
 
@@ -4181,7 +4117,7 @@
                                                             "Nationality"      => CodeMaster::getData('NATIONALNAMES')));
          } 
          
-         function AddPublishEducationalDetails() {
+         public function AddPublishEducationalDetails() {
              global $mysql,$loginInfo;
              
               if (!(trim($_POST['Educationdetails']))>0) {                                                                               
@@ -4203,7 +4139,7 @@
                                     : Response::returnError("Access denied. Please contact support");   
          }
          
-         function EditPublishOccupationDetails() {
+         public function EditPublishOccupationDetails() {
 
              global $mysql,$loginInfo;
 
@@ -4240,54 +4176,54 @@
                                                             "TypeofOccupation" => CodeMaster::getData('TYPEOFOCCUPATIONS'),
                                                             "IncomeRange"      => CodeMaster::getData('INCOMERANGE')));
          }
+         
+         
 		 
-		 function GetMyRecentlyViewed($ProfileCode) {
+		 public function GetMyRecentlyViewed($ProfileCode) {
 			 
 			global $mysql;           
 			$result = $mysql->select("select `ProfileCode` from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$ProfileCode."' AND `MemberID`>0 AND `ProfileID`>0  group by `ProfileCode`"); 
 			return $result;
 		 }
-		 function GetWhoRecentlyViewedMyProfile($ProfileCode) {
+		
+         public function GetWhoRecentlyViewedMyProfile($ProfileCode) {
 			 
 			global $mysql;
-                                    
 			$result = $mysql->select("select `VisterProfileCode` from `_tbl_profiles_lastseen` where `ProfileCode` = '".$ProfileCode."' AND `VisterMemberID`>0 AND `VisterProfileID`>0  group by `VisterProfileCode`"); 
 			return $result;
 		 }
-		 function GetMyFavorited($ProfileCode) {
+		
+         public function GetMyFavorited($ProfileCode) {
 			 
 			global $mysql;
 			$result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `VisterProfileCode`='".$ProfileCode."'");       
 			return $result;
 		 }
-		 function GetWhoFavoritedMyProfile($ProfileCode) {
+		
+         public function GetWhoFavoritedMyProfile($ProfileCode) {
 			 
 			global $mysql;
 			$result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode`='".$ProfileCode."'");       
 			return $result;
 		 }
-		 function GetMutualProfilesCount($ProfileCode) {
+		
+         public function GetMutualProfilesCount($ProfileCode) {
 			 
 			global $mysql;
 			$result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1' and `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$ProfileCode."')");       
 			return $result;
 		 }
 		 
-		 function GetMyShortListed($ProfileCode) {
+		 public function GetMyShortListed($ProfileCode) {
 			 
 			global $mysql;
 			$result = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and  `VisterProfileCode`='".$ProfileCode."'");       
 			return $result;
 		 }
-		
-        /* function GetWhoShortListedMyProfile($ProfileCode) {
-			 
-			global $mysql;
-			$result = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and  `ProfileCode`='".$ProfileCode."'");       
-			return $result;
-		 } */
          
-         function DashboardCounts() {
+         
+		
+         public function DashboardCounts() {
               
              global $mysql,$loginInfo; 
              $myProfile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");                         
@@ -4320,7 +4256,7 @@
              }
          }
          
-         function GetMemberVerfiedDetails(){
+         public function GetMemberVerfiedDetails(){
              global $mysql,$loginInfo;
              $Member=$mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
              $Documents=$mysql->select("select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
@@ -4328,7 +4264,7 @@
              return Response::returnSuccess("success"."select * from `_tbl_member_documents` where `MemberID`='".$loginInfo[0]['MemberID']."'",array("Member"=>$Member[0],"Documents"=>$Documents[0]));
          }
          
-         function SendToInterest() {
+         public function SendToInterest() {
              
              global $mysql,$loginInfo;
              
@@ -4372,7 +4308,7 @@
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has send interest request.");                                               
          }
          
-         function DeleteOccupationAttachmentOnly() {
+         public function DeleteOccupationAttachmentOnly() {
              
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_draft_profiles` set `OccupationAttachFileName` = '' ,`OccupationAttachmentType` = '0' where `ProfileID`='".$_POST['ProfileID']."' and`ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");
@@ -4386,9 +4322,7 @@
 
          }  
          
-         
-         
-         function ViewOrders() {
+         public function ViewOrders() {
              global $mysql,$loginInfo;
              $Orders = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$loginInfo[0]['MemberID']."' and `OrderNumber`='".$_POST['Code']."'");
              $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Orders[0]['OrderByMemberID']."'");
@@ -4397,10 +4331,8 @@
                                                             "Member" => $Member[0],
                                                             "Plan"   => $plan));
          }
-         function ViewOrdersAmountForTransaction() {
-             
-             
-             
+         
+         public function ViewOrdersAmountForTransaction() {
              global $mysql,$loginInfo;
              $Orders = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$loginInfo[0]['MemberID']."' and OrderNumber='".$_POST['Code']."'");
              $MemberWallet = number_format($this->getAvailableBalance($loginInfo[0]['MemberID']),2);
@@ -4408,7 +4340,7 @@
                                                             "Wallet" => $MemberWallet));
          }
          
-         function GetWalletBankRequests() {
+         public function GetWalletBankRequests() {
              
              global $mysql,$loginInfo;
              $sql = "SELECT * From `_tbl_wallet_transactions` ";
@@ -4417,7 +4349,7 @@
              }
          }
          
-         function AddMemberBasicSearchDetails() {
+         public function AddMemberBasicSearchDetails() {
 
              global $mysql,$loginInfo;    
 
@@ -4465,7 +4397,8 @@
              }
                                                                          
          }
-         function AddMemberProfileSearchByProfileID() {
+         
+         public function AddMemberProfileSearchByProfileID() {
 
              global $mysql,$loginInfo;    
            
@@ -4484,7 +4417,8 @@
              }
                                                                          
          }
-         function AddMemberAdvanceSearchDetails() {
+         
+         public function AddMemberAdvanceSearchDetails() {
 
              global $mysql,$loginInfo;  
              
@@ -4605,7 +4539,7 @@
                                                                          
          }
          
-         function CollectPaymentFromWallet() {
+         public function CollectPaymentFromWallet() {
              
              
              global $mysql,$loginInfo;
@@ -4774,7 +4708,11 @@
                  return Response::returnError("Order process failed. Invalid wallet request.");   
              }
          }
-         function GetOrderInvoiceReceiptDetails() {
+         
+         
+         
+         
+         public function GetOrderInvoiceReceiptDetails() {
              
              global $mysql,$loginInfo;
              
@@ -4788,7 +4726,8 @@
                 return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_receipts` Where `MemberID`='". $loginInfo[0]['MemberID']."' order by `ReceiptID` DESC"));    
              }
          }
-         function ViewOrderInvoiceReceiptDetails() {
+
+         public function ViewOrderInvoiceReceiptDetails() {
              
              global $mysql,$loginInfo;
              
@@ -4803,7 +4742,8 @@
                                                              "Invoice" =>$Invoice[0],
                                                              "Receipt" =>$Receipt[0]));
          }
-         function CancelOrder() {
+
+         public function CancelOrder() {
 
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_orders` set `IsCancelled`='1' where `OrderNumber`='".$_POST['OrderNumber']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");
@@ -4817,7 +4757,9 @@
 
          }
          
-		 function AddToShortList() {
+		 
+         
+         public function AddToShortList() {
              
              global $mysql,$loginInfo;    
              
@@ -4838,7 +4780,7 @@
              }
          }
 		 
-		 function RemoveFromShortList() {
+		 public function RemoveFromShortList() {
              
              global $mysql,$loginInfo;
              
@@ -4925,8 +4867,11 @@
                                                         "ViewedOn"          => date("Y-m-d H:i:s")));
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has remove shorlist.");      
           }
-/*Edit submitted Profile */
-	function SendOtpForEditSubmittedProfile($errormessage="",$otpdata="",$reqID="",$ProfileCode="") {
+          
+          
+          
+ 
+	    public function SendOtpForEditSubmittedProfile($errormessage="",$otpdata="",$reqID="",$ProfileCode="") {
         global $mysql,$mail,$loginInfo;      
         
         $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'"); 
@@ -5014,7 +4959,7 @@
         }
     }
 	
-	function SubmittedProfileforEditOTPVerification() {
+	    public function SubmittedProfileforEditOTPVerification() {
         
 		global $mysql,$loginInfo ;
              
@@ -5044,7 +4989,7 @@
             } 
 	}
 	
-	function ResendSendOtpForSubmittedProfileProfileForEdit($errormessage="",$otpdata="",$reqID="",$ProfileCode="") {
+	    public function ResendSendOtpForSubmittedProfileProfileForEdit($errormessage="",$otpdata="",$reqID="",$ProfileCode="") {
         
 		global $mysql,$mail,$loginInfo;   
 			
@@ -5136,7 +5081,7 @@
         }
 
     }
-   /*end edit submit profile */      
+    
  }  
 //4084   5500
 ?>                                                            
