@@ -6,7 +6,7 @@
     
     include_once(web_path."classes/class.pdo.mysql.php");
       
-    $app     = new MySql(DBHOST,DBUSER,DBPASS,"j2jsoftw_matri_web");
+    $app     = new MySql(DBHOST,DBUSER,DBPASS,DBNAME);
     include_once(application_config_path);
       
     $appData = $app->select("select * from _japp where concat('www.',Lower(hostname))='".strtolower($_SERVER['HTTP_HOST'])."' or  Lower(hostname)='".strtolower($_SERVER['HTTP_HOST'])."' or  concat('www.',Lower(hosturl))='".strtolower($_SERVER['HTTP_HOST'])."' or  Lower(hosturl)='".strtolower($_SERVER['HTTP_HOST'])."' ");
@@ -77,8 +77,7 @@
                     "downloadMaxSize" => 20000000); 
                                
     
-    $mysql = new MySql(DBHOST,DBUSER,DBPASS,"j2jsoftw_matri_website");  
-    //$mysql = new MySql(DBHOST,DBUSER,DBPASS,$appData[0]['dbname']);    
+    $mysql = new MySql(DBHOST,DBUSER,DBPASS,DBNAME);  
     
     $settings = $mysql->select("select * from _jsitesettings"); 
           
