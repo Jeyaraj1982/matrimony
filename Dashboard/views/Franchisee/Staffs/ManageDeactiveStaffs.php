@@ -1,3 +1,4 @@
+<?php if($fInfo['data']['IsAdmin']==1) {?>
 <form method="post" action="<?php echo GetUrl("Staffs/New");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
@@ -44,7 +45,7 @@
                                 <td><?php echo $Staff['UserRole'];?></td>
                                 <td><?php echo $Staff['LoginName'];?></td>
                                 <td></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Staffs/Edit/". $Staff['PersonID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
+                                <td style="text-align:right"><a href="javascript:void(0)" onclick="FranchiseeStaff.ConfirmationfrEditFrStf('<?php echo $Staff['StaffCode'];?>')"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Staffs/View/".$Staff['PersonID'].".html"); ?>"><span>View</span></a>&nbsp;&nbsp;&nbsp;
                                 </tr>
                         <?php }} ?>            
@@ -60,4 +61,20 @@ $(document).ready(function(){
     $('#myTable').dataTable();
     setTimeout("DataTableStyleUpdate()",500);
 });
-</script>           
+</script>      
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >
+            
+                </div>
+            </div>
+        </div>
+<?php } else { ?>         
+	<div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+				you don't have permission to access this page
+			</div>
+		</div>
+	</div>
+<?php } ?>     

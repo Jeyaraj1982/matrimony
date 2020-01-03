@@ -176,28 +176,12 @@ $PostedProfilesCount = $response['data']['PostedProfiles'];
                 </div>
             </div>
         </div>
-  <?php  $fInfo = $webservice->getData("Franchisee","GetMyProfile");  
-  
-  ?>   
+   
 <script>
    <?php  
-  if ($fInfo['status']=="success") {
-        if($fInfo['data']['WelcomeMsg']==1) {
-            if($fInfo['data']['IsMobileVerified']==0 || $fInfo['data']['IsEmailVerified']==0 || (strlen(trim($fInfo['data']['TransactionPassword'])))<8){
-            ?>
-                $( document ).ready(function() {FCheckVerification();});
-            <?php 
-            }
-        } else {
-   ?>
+   if($fInfo['data']['WelcomeMsg']!=1) {?>
             $( document ).ready(function() {$("#FranchiseeWelcome").modal('show');});
-   <?php 
-        } 
-        
-    } else {
-            //logout invalid session
-    } 
-   ?>
+   <?php } ?>
 </script>
 
 

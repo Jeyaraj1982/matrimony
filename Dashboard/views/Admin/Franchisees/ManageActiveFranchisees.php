@@ -44,10 +44,10 @@
                                 <td><?php echo $Franchisee['DistrictName'];?></td>
                                 <td><?php echo $Franchisee['Plan'];?></td>
                                 <td><?php echo putDateTime($Franchisee['CreatedOn']);?></td>
-                                <td><a href="javascript:void(0)" onclick="ConfirmationfrEdit('<?php echo $Franchisee['FranchiseeID'];?>')"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Franchisees/View/". $Franchisee['FranchiseeID'].".html");?>"><span>View</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Franchisees/Wallet/RefillTransfer/". $Franchisee['FranchiseeID'].".html");?>"><span>Refill</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Franchisees/Report/". $Franchisee['FranchiseeID'].".html");?>"><span>Report</span></a>
+                                <td><a href="javascript:void(0)" onclick="ConfirmationfrEdit('<?php echo $Franchisee['FranchiseeCode'];?>')"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Franchisees/View/". $Franchisee['FranchiseeCode'].".html");?>"><span>View</span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Franchisees/Wallet/RefillTransfer/". $Franchisee['FranchiseeCode'].".html");?>"><span>Refill</span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Franchisees/Report/". $Franchisee['FranchiseeCode'].".html");?>"><span>Report</span></a>
                                 </td>
                                 </tr>
                         <?php }} ?>            

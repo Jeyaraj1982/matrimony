@@ -1,3 +1,4 @@
+<?php if($fInfo['data']['IsAdmin']==1) {?>
 <form method="post" action="<?php echo GetUrl("Staffs/New");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
@@ -15,8 +16,8 @@
                 </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                     <a href="ManageStaffs" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                    <a href="ManageActiveStaffs"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
-                    <a href="ManageDeactiveStaffs"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>
+                    <a href="ManageActiveStaffs"><small>Active</small></a>&nbsp;|&nbsp;
+                    <a href="ManageDeactiveStaffs"><small>Deactive</small></a>
                 </div>
                 </div>
                 <div class="table-responsive">
@@ -33,9 +34,6 @@
                       </thead>
                       <tbody>                      
                         <?php 
-                       // $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where ReferedBy<>'1' and FranchiseeID='".$_Franchisee['FranchiseeID']."' "); ?>
-                        <?php// foreach($Staffs as $Staff) { ?>   
-                        <?php 
                          $response = $webservice->getData("Franchisee","ManageFranchiseeStaffs",array("Request"=>"All"));
                          if (sizeof($response['data'])>0) {
                     ?>
@@ -47,7 +45,7 @@
                                 <td><?php echo $Staff['UserRole'];?></td>
                                 <td><?php echo $Staff['LoginName'];?></td>
                                 <td></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Staffs/Edit/". $Staff['PersonID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
+								<td style="text-align:right"><a href="javascript:void(0)" onclick="FranchiseeStaff.ConfirmationfrEditFrStf('<?php echo $Staff['StaffCode'];?>')"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Staffs/View/".$Staff['PersonID'].".html"); ?>"><span>View</span></a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Staffs/LoginHistory/".$Staff['PersonID'].".html"); ?>"><span>Login History</span></a>&nbsp;&nbsp;&nbsp;
                                 </tr>
@@ -64,4 +62,20 @@ $(document).ready(function(){
     $('#myTable').dataTable();
     setTimeout("DataTableStyleUpdate()",500);
 });
-</script>           
+</script>  
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >
+            
+                </div>
+            </div>
+        </div>
+<?php } else { ?>         
+	<div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+				you don't have permission to access this page
+			</div>
+		</div>
+	</div>
+<?php } ?>

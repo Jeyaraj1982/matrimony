@@ -4,11 +4,11 @@
                <a href="http://www.bootstrapdash.com/" target="_blank">XXXXXXXX</a>. All rights reserved.</span>-->
             </div>
         </footer>
-        <script src="<?php echo SiteUrl?>assets/vendors/js/vendor.bundle.base.js"></script> 
+        <!--<script src="<?php echo SiteUrl?>assets/vendors/js/vendor.bundle.base.js"></script> 
         <script src="<?php echo SiteUrl?>assets/vendors/js/vendor.bundle.addons.js"></script>
         <script src="<?php echo SiteUrl?>assets/js/off-canvas.js"></script>    
-        <script src="<?php echo SiteUrl?>assets/js/misc.js"></script>
-        <script src="<?php echo SiteUrl?>assets/simpletoast/simply-toast.js"></script>                                       
+        <script src="<?php echo SiteUrl?>assets/js/misc.js"></script>     -->
+        <script src="<?php echo SiteUrl?>assets/simpletoast/simply-toast.js"></script>                                      
         
         <!-- Member --->
         <?php if (isset($_Member['LoginID']) && $_Member['LoginID']>0) { ?>
@@ -53,7 +53,7 @@
             var API_URL = "<?php echo WebServiceUrl;?>webservice.php?LoginID=<?php echo $_Admin['LoginID'];?>&";
             var preloader = "<div style='text-align:center;padding-top: 35%;'><img src='<?php echo ImageUrl;?>loader.gif'></div>";
         </script>
-        <script src="<?php echo SiteUrl?>assets/js/Admincontroller.js?rand=<?php echo rand(3000,3300000);?>"></script>
+     <script src="<?php echo SiteUrl?>assets/js/AdminController.js?rand=<?php echo rand(3000,3300000);?>"></script> 
         
         
         <?php } ?>

@@ -201,6 +201,9 @@ RewriteRule ^Member/Edit/(.*)\.html$ ./index.php?Code=$1&p=Member/View
 RewriteRule ^MySettings/EditMemberInfo/(.*)\.html$ ./index.php?Code=$1&p=MySettings/EditMemberInfo
 RewriteRule ^MySettings/EditFranchiseeInfo/(.*)\.html$ ./index.php?Code=$1&p=MySettings/EditFranchiseeInfo
 
+RewriteRule ^Franchisees/FranchiseeStaffs/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FranchiseeStaffs
+RewriteRule ^Franchisees/ActiveFranchiseeStaffs/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/ActiveFranchiseeStaffs
+RewriteRule ^Franchisees/DeactiveFranchiseeStaffs/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/DeactiveFranchiseeStaffs
 
 
 

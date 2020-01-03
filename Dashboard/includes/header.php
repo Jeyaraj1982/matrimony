@@ -11,16 +11,31 @@
         <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/selectboxstyle.css">
         <link rel="shortcut icon" href="<?php echo SiteUrl?>assets/images/favicon.png" /> 
         <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/puse-icons-feather/feather.css">
-        <script src="<?php echo SiteUrl?>assets/vendors/jquery-3.1.1.min.js" type='text/javascript'></script>
-        <link href='<?php echo SiteUrl?>assets/vendors/bootstrap/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+         
+        <script src="<?php echo SiteUrl?>assets/vendors/jquery-3.1.1.min.js" type='text/javascript'></script> 
+        
+        <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>-->
+
         <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
         <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>     -->
+        <script src="<?php echo SiteUrl?>assets/bootstrap/3.3.2/js/bootstrap.min.js" type="text/javascript"></script> 
+        <link href='<?php echo SiteUrl?>assets/vendors/bootstrap/css/bootstrap.min.css' rel='stylesheet' type='text/css'>   
+        
+        <!--<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>-->
+                
         <script src="<?php echo SiteUrl?>assets/js/app.js" type='text/javascript'></script>
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'> 
         <link href='<?php echo SiteUrl?>assets/simpletoast/simply-toast.css' rel='stylesheet' type='text/css'>
+        
+    <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.js"></script>    
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
         <style>                                                                                                           
            .Activedot {height:10px;width:10px;background-color:#20e512;border-radius:50%;display:inline-block;}
            .Deactivedot {height:10px;width:10px;background-color:#888;border-radius:50%;display:inline-block;}
@@ -84,6 +99,17 @@
            .bgwhite {background:#fff !important}
            #server_message_error {color:red}
            #server_message_success {color:green}
+           
+           
+           .bootstrap-select.form-control {
+ 
+ height: 36px !important;
+}
+
+.modal-dialog {       
+    z-index: 10400000 !important;     
+}
+.mb0 {margin-bottom:0px !important}
         </style>
                                   
       <!--<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>-->
@@ -94,6 +120,7 @@
 
         <script>
             var AppUrl = "<?php echo AppUrl;?>";
+            var ImgUrl = "<?php echo ImageUrl;?>";
             var API_URL  = AppUrl;
             
             function preloading_withText(txt,paddingTop) {
@@ -122,9 +149,63 @@
                                         + '<p style="text-align:center"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
                                         + '<h5 style="text-align:center;color:#ada9a9">An error occured in the application and your request could not be processed.</h5>'
                                        '</div>';
+                 function showHidePwd(pwd,btn) {
+    
+  var x = document.getElementById(pwd);
+  if (x.type === "password") {
+    x.type = "text";
+    
+    btn.html('<i class="glyphicon glyphicon-eye-close"></i>');
+  } else {
+    x.type = "password";
+    btn.html('<i class="glyphicon glyphicon-eye-open"></i>');
+  }
+}
         </script>
         </head>
     <body>
+	
+	  <?php if (UserRole=="Franchisee") { ?>
+	  
+	  <?php  $fInfo = $webservice->getData("Franchisee","GetMyProfile");?>
+<div class="modal" id="myModal" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Mobile_VerificationBody"  style="max-height: 529px;min-height: 529px;" >
+                    <img src='../../../images/loader.gif'> Loading ....
+                </div>
+            </div>
+        </div>
+     
+ 
+ 
+   
+   
+      <?php if (isset($_Franchisee['LoginID']) && $_Franchisee['LoginID']>0) { ?>
+         <script>
+            var API_URL = "<?php echo WebServiceUrl;?>webservice.php?LoginID=<?php echo $_Franchisee['LoginID'];?>&";
+            var preloader = "<div style='text-align:center;padding-top: 35%;'><img src='<?php echo ImageUrl;?>loader.gif'></div>";
+        </script>
+        <script src="<?php echo SiteUrl?>assets/js/fcontroller.js?rand=<?php echo rand(3000,3300000);?>"></script>
+        
+       
+        <?php }  
+      
+            if($fInfo['data']['ChangePasswordFstLogin']==1 || $fInfo['data']['IsMobileVerified']==0 || $fInfo['data']['IsEmailVerified']==0 || (strlen(trim($fInfo['data']['TransactionPassword'])))<8){
+            ?>
+			<script>
+                $( document ).ready(function() {FCheckVerification();});
+				</script>
+            <?php 
+			  exit;
+            }
+        
+        
+   
+ 
+   ?>
+ 
+
+	  <?php  } ?>
         <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="margin-bottom:0px !important;border-radius:0px !important">
             <?php if (UserRole=="Member") { ?> 
                      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center " style="overflow:hidden">

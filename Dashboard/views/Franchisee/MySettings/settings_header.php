@@ -33,6 +33,9 @@
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon1 <?php echo ($page=="ChangePassword") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">   
                                             <a id="myaccount_leftnav_a" href="<?php echo GetUrl("MySettings/ChangePassword");?>" class="" style="text-decoration:none"><span>Change Password</span></a>
                                         </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon1 <?php echo ($page=="ChangeTxnPassword") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">   
+                                            <a id="myaccount_leftnav_a" href="<?php echo GetUrl("MySettings/ChangeTxnPassword");?>" class="" style="text-decoration:none"><span>Change Transaction Password</span></a>
+                                        </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="Notification") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/Notification");?>" class="Notification" style="text-decoration:none"><span>Notifications & actions</span></a>
                                         </li>
