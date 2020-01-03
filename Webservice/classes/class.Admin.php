@@ -48,17 +48,105 @@
         }
 
         function GetFranchiseeCode() {
+            /*
+               "StateName"      => CodeMaster::getData('STATNAMES'),
+                                                           "DistrictName"   => CodeMaster::getData('DistrictName'),
+                                                           */
             return Response::returnSuccess("success",array("FranchiseeCode" => SeqMaster::GetNextFranchiseeNumber(),
                                                            "Plans"          => Plans::GetFranchiseePlans(),
                                                            "CountryCode"    => CodeMaster::getData('RegisterAllowedCountries'),
                                                            "CountryName"    => CodeMaster::getData('CONTNAMES'),
-                                                           "StateName"      => CodeMaster::getData('STATNAMES'),
-                                                           "DistrictName"   => CodeMaster::getData('DistrictName'),
-                                                           "BankName"       => CodeMaster::getData('BANKNAMES'),
+                                                           "IDProof"    	=> CodeMaster::getData('DOCTYPES'),
+														   "BankName"       => CodeMaster::getData('BANKNAMES'),
                                                            "AccountType"    => CodeMaster::getData('AccountType'),
                                                            "Gender"         => CodeMaster::getData('SEX')));
         }
+		
+		function AddFranchiseeBankDetails() {
+			global $mysql,$loginInfo;
+			
+			if ((strlen(trim($_POST['BankName']))==0 || $_POST['BankName']=="0")) {
+                return Response::returnError("Please select Bank Name");
+            }
+            
+            if (!(strlen(trim($_POST['AccountName']))>0)) {
+                return Response::returnError("Please enter Account Name");
+            }
+            
+            if (!(strlen(trim($_POST['AccountNumber']))>0)) {
+                return Response::returnError("Please enter Account Number");
+            }
+            
+            if (!(strlen(trim($_POST['IFSCode']))>0)) {
+                return Response::returnError("Please enter IFS Code");
+            }
+            
+            if ((strlen(trim($_POST['AccountType']))==0 || $_POST['AccountType']=="0")) {
+                return Response::returnError("Please select Account Type");
+            }
+            
+            if (!(strlen(trim($_POST['AccountType']))>0)) {
+                return Response::returnError("Please enter Account Type");
+            }
+			
+			if ((strlen(trim($_POST['BankName']))==0 || $_POST['BankName']=="0")) {
+                return Response::returnError("Please select Bank Name");
+            }
+            
+            if (!(strlen(trim($_POST['AccountName']))>0)) {
+                return Response::returnError("Please enter Account Name");
+            }
+            
+            if (!(strlen(trim($_POST['AccountNumber']))>0)) {
+                return Response::returnError("Please enter Account Number");
+            }
+            
+            if (!(strlen(trim($_POST['IFSCode']))>0)) {
+                return Response::returnError("Please enter IFS Code");
+            }
+            
+            if ((strlen(trim($_POST['AccountType']))==0 || $_POST['AccountType']=="0")) {
+                return Response::returnError("Please select Account Type");
+            }
+			
+			$data = $mysql->select("select * from  _tbl_bank_details where AccountNumber='".trim($_POST['AccountNumber'])."' and IsDelete='0'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Account Number Already Exists");
+			}
+			
+			$bank = CodeMaster::getData("BANKNAMES",$_POST['BankName']);
+			$AccountType = CodeMaster::getData("AccountType",$_POST['AccountType']);
+			$mysql->insert("_tbl_bank_details",array("BankCode"        => $_POST['BankName'],
+													 "BankName"        => $bank[0]['CodeValue'],
+													 "FranchiseeID"    => $_POST['FranchiseeID'],
+													 "AccountName"     => $_POST['AccountName'],
+													 "AccountNumber"   => $_POST['AccountNumber'],  
+													 "IFSCode"         => $_POST['IFSCode'],
+													 "AccountTypeCode" => $AccountType[0]['SoftCode'],
+													 "AccountType"     => $AccountType[0]['CodeValue']));
+			$data = $mysql->select("select * from  _tbl_bank_details where FranchiseeID='".trim($_POST['FranchiseeID'])."' and IsDelete='0'");
+													 
+			return Response::returnSuccess("success",$data);
+		}
+		function DeleteFrBankDetails() {
 
+             global $mysql,$loginInfo;
+			 
+			 $Franchisees = $mysql->select("select * from _tbl_franchisees where FranchiseeCode='".$_POST['FranchiseeID']."'");
+
+             $updateSql = $mysql->execute("update `_tbl_bank_details` set `IsDelete` = '1' where `BankID`='".$_POST['BankID']."' and `FranchiseeID`='".$Franchisees[0]['FranchiseeID']."'");
+            
+				$data = $mysql->select("select * from  _tbl_bank_details where FranchiseeID='".trim($Franchisees[0]['FranchiseeID'])."' and IsDelete='0'");
+				return Response::returnSuccess("success",$data);
+				
+				//if (sizeof($updateSql)>0) {
+					//return Response::returnSuccess("success",$data);
+				//} else{
+					//return Response::returnError("Access denied. Please contact support",$data);      
+				//}
+			}
+               
+       
         function CreateFranchisee() {
             
             global $mysql,$loginInfo;
@@ -137,6 +225,9 @@
             if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0")) {
                 return Response::returnError("Please select Sex");
             }
+			if ((strlen(trim($_POST['IDProof']))==0 || $_POST['IDProof']=="0")) {
+                return Response::returnError("Please select ID Proof");
+            }
             
             if (!(strlen(trim($_POST['EmailID']))>0)) {
                 return Response::returnError("Please enter EmailID");
@@ -150,8 +241,8 @@
                 return Response::returnError("Please enter Address1");
             }
             
-            if (!(strlen(trim($_POST['AadhaarCard']))>0)) {
-                return Response::returnError("Please enter AadhaarCard");
+            if (!(strlen(trim($_POST['IDProofNumber']))>0)) {
+                return Response::returnError("Please enter ID Proof Number");
             }
             
             if (!(strlen(trim($_POST['UserName']))>0)) {
@@ -203,9 +294,9 @@
 				return Response::returnError("Whatsapp Number Already Exists");
 			}
 			
-			$data = $mysql->select("select * from  _tbl_franchisees_staffs where AadhaarNumber='".trim($_POST['AadhaarCard'])."'");
+			$data = $mysql->select("select * from  _tbl_franchisees_staffs where IDProofNumber='".trim($_POST['IDProofNumber'])."'");
 			if (sizeof($data)>0) {
-				return Response::returnError("Aadhaar Number Already Exists");
+				return Response::returnError("ID Proof Number Already Exists");
 			}
 			$data = $mysql->select("select * from  _tbl_franchisees_staffs where LoginName='".trim($_POST['UserName'])."'");
 			if (sizeof($data)>0) {
@@ -213,73 +304,85 @@
 			}
 			$plan = $mysql->select("select * from _tbl_franchisees_plans where PlanID='".$_POST['Plan']."'");
 			$dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
-			
-			 $id =  $mysql->insert("_tbl_franchisees",array("FranchiseeCode"       => $_POST['FranchiseeCode'],
-															"FranchiseName"        => $_POST['FranchiseeName'],
-															"ContactEmail"         => $_POST['FranchiseeEmailID'],
-															"ContactNumberCountryCode"        => $_POST['ContactNumberCountryCode'],
-															"ContactNumber"        => $_POST['BusinessMobileNumber'],
-															"ContactWhatsappCountryCode"      => $_POST['ContactWhatsappCountryCode'],
-															"ContactWhatsapp"      => $_POST['BusinessWhatsappNumber'],
-                                                            "LandlineCountryCode"     => $_POST['LandlineCountryCode'],
-															"LandlineStdCode"     => $_POST['LandlineStdCode'],
-															"ContactLandline"      => $_POST['BusinessLandlineNumber'],
-															"BusinessAddressLine1" => $_POST['BusinessAddress1'],
-															"BusinessAddressLine2" => $_POST['BusinessAddress2'],
-															"BusinessAddressLine3" => $_POST['BusinessAddress3'],
-															"Landmark"             => $_POST['Landmark'],
-															"DistrictName"         => $_POST['DistrictName'],
-															"StateName"            => $_POST['StateName'],
-															"CountryName"          => $_POST['CountryName'],
-															"CityName"             => $_POST['CityName'],
-															"PinCode"              => $_POST['PinCode'],
-															"ValidUpto"            => date("Y-m-d H:i:s"),
-														/*	"MondayF"              => $_POST['MonFH']." ". $_POST['MonFM']." ". $_POST['MonFN'],
-															"TuesdayF"             => $_POST['TueFH']." ". $_POST['TueFM']." ". $_POST['TueFN'],
-															"WednessdayF"          => $_POST['WedFH']." ". $_POST['WedFM']." ". $_POST['WedFN'],
-															"ThursdayF"            => $_POST['ThuFH']." ". $_POST['ThuFM']." ". $_POST['ThuFN'],
-															"FridayF"              => $_POST['FriFH']." ". $_POST['FriFM']." ". $_POST['FriFN'],
-															"SaturdayF"            => $_POST['SatFH']." ". $_POST['SatFM']." ". $_POST['SatFN'],
-															"SundayF"              => $_POST['SunFH']." ". $_POST['SunFM']." ". $_POST['SunFN'],
-															"MondayT"              => $_POST['MonTH']." ".$_POST['MonTM']." ".$_POST['MonTN'],
-															"TuesdayT"             => $_POST['TueTH']." ".$_POST['TueTM']." ".$_POST['TueTN'],
-															"WednessdayT"          => $_POST['WedTH']." ".$_POST['WedTM']." ".$_POST['WedTN'],
-															"ThursdayT"            => $_POST['ThuTH']." ".$_POST['ThuTM']." ".$_POST['ThuTN'],
-															"FridayT"              => $_POST['FriTH']." ".$_POST['FriTM']." ".$_POST['FriTN'],
-															"SaturdayT"            => $_POST['SatTH']." ".$_POST['SatTM']." ".$_POST['SatTN'],
-															"SundayT"              => $_POST['SunTH']." ".$_POST['SunTM']." ".$_POST['SunTN'],*/
-															"CreatedOn"            => date("Y-m-d H:i:s"),
-															"PlanID"               => $plan[0]['PlanID'],
-															"Plan"                 => $plan[0]['PlanName'] )); 
+           
+            $country = CodeMaster::getData("CONTNAMES",$_POST['CountryName']);
+            $state = CodeMaster::getData("STATNAMES",$_POST['StateName']);
+			$dist = CodeMaster::getData("DistrictName",$_POST['DistrictName']);
+			$bank = CodeMaster::getData("BANKNAMES",$_POST['BankName']);
+			$AccountType = CodeMaster::getData("AccountType",$_POST['AccountType']);
+			$sex = CodeMaster::getData("SEX",$_POST['Sex']);
+			$ID = CodeMaster::getData("DOCTYPES",$_POST['IDProof']);
+            
+			 $id =  $mysql->insert("_tbl_franchisees",array("FranchiseeCode"       		 => $_POST['FranchiseeCode'],
+															"FranchiseName"        		 => $_POST['FranchiseeName'],
+															"ContactEmail"         	 	 => $_POST['FranchiseeEmailID'],
+															"ContactNumberCode"        	 => $country[0]['SoftCode'],
+															"ContactNumberCountryCode"   => $_POST['ContactNumberCountryCode'],
+															"ContactNumber"        		 => $_POST['BusinessMobileNumber'],
+															"ContactWhatsappCode"      	 => $country[0]['SoftCode'],
+															"ContactWhatsappCountryCode" => $_POST['ContactWhatsappCountryCode'],
+															"ContactWhatsapp"      		 => $_POST['BusinessWhatsappNumber'],
+                                                            "LandlineCode"     		     => $country[0]['SoftCode'],
+                                                            "LandlineCountryCode"     	 => $_POST['LandlineCountryCode'],
+															"LandlineStdCode"     		 => $_POST['LandlineStdCode'],
+															"ContactLandline"      	  	 => $_POST['BusinessLandlineNumber'],
+															"BusinessAddressLine1" 		 => $_POST['BusinessAddress1'],
+															"BusinessAddressLine2" 		 => $_POST['BusinessAddress2'],
+															"BusinessAddressLine3" 		 => $_POST['BusinessAddress3'],
+															"Landmark"             		 => $_POST['Landmark'],
+                                                            "DistrictName"         		 => $dist[0]['CodeValue'],
+															"DistrictNameCode"     		 => $_POST['DistrictName'],
+                                                            "StateName"            		 => $state[0]['CodeValue'],
+															"StateNameCode"        		 => $_POST['StateName'],
+                                                            "CountryName"          		 => $country[0]['CodeValue'],
+															"CountryNameCode"      		 => $_POST['CountryName'],
+															"CityName"             	  	 => $_POST['CityName'],
+															"PinCode"              		 => $_POST['PinCode'],
+															"ValidUpto"            		 => date("Y-m-d H:i:s"),
+															"CreatedOn"            	   	 => date("Y-m-d H:i:s"),
+															"PlanCode"               		 => $plan[0]['PlanCode'],
+															"Plan"                 		 => $plan[0]['PlanName'] )); 
 				 $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Franchisees'");  
-				$mysql->insert("_tbl_bank_details",array("BankName"      => $_POST['BankName'],
-														 "FranchiseeID"  => $id,
-														 "AccountName"   => $_POST['AccountName'],
-														 "AccountNumber" => $_POST['AccountNumber'],  
-														 "IFSCode"       => $_POST['IFSCode'],
-														 "AccountType"   => $_POST['AccountType']));
-
-				$mysql->insert("_tbl_franchisees_staffs",array("PersonName"     => $_POST['PersonName'],
-															   "FatherName"     => $_POST['FatherName'],
-															   "FranchiseeID"   => $id,
-															   "DateofBirth"    => $dob,
-															   "Sex"            => $_POST['Sex'],
-															   "FrCode"         => $_POST['FranchiseeCode'],
-															   "EmailID"        => $_POST['EmailID'],
-															   "CountryCode"   => $_POST['MobileNumberCountryCode'],
-															   "MobileNumber"   => $_POST['MobileNumber'],
+				$mysql->insert("_tbl_bank_details",array("BankCode"        => $_POST['BankName'],
+														 "BankName"        => $bank[0]['CodeValue'],
+														 "FranchiseeID"    => $id,
+														 "AccountName"     => $_POST['AccountName'],
+														 "AccountNumber"   => $_POST['AccountNumber'],  
+														 "IFSCode"         => $_POST['IFSCode'],
+														 "IsPrimary"         => "1",
+														 "AccountTypeCode" => $AccountType[0]['SoftCode'],
+														 "AccountType"     => $AccountType[0]['CodeValue']));
+														
+                 
+				$mysql->insert("_tbl_franchisees_staffs",array("StaffCode"     		   	   => SeqMaster::GetNextFranchiseeStaffNumber(),
+															   "PersonName"     		   => $_POST['PersonName'],
+															   "FatherName"     		   => $_POST['FatherName'],
+															   "FranchiseeID"   		   => $id,
+															   "DateofBirth"    		   => $dob,
+															   "SexCode"            	   => $_POST['Sex'],
+															   "Sex"            		   => $sex[0]['CodeValue'],
+															   "FrCode"         		   => $_POST['FranchiseeCode'],
+															   "EmailID"        		   => $_POST['EmailID'],
+															   "MobileNumberCode" 		   => $country[0]['SoftCode'],
+															   "CountryCode"   			   => $_POST['MobileNumberCountryCode'],
+															   "MobileNumber"   		   => $_POST['MobileNumber'],
+															   "WhatsappNumberCode" 	   => $country[0]['SoftCode'],
 															   "WhatsappNumberCountryCode" => $_POST['WhatsappNumberCountryCode'],
-															   "WhatsappNumber" => $_POST['WhatsappNumber'],
-															   "AddressLine1"   => $_POST['Address1'],
-															   "AddressLine2"   => $_POST['Address2'],
-															   "CreatedOn"      => date("Y-m-d H:i:s"),
-															   "AddressLine3"   => $_POST['Address3'],
-															   "AadhaarNumber"  => $_POST['AadhaarCard'],
-															   "IsActive"       => "1",
-															   "LoginName"      => $_POST['UserName'],
-															   "ReferedBy"      => $loginInfo[0]['AdminID'],
-															   "LoginPassword"  => $_POST['Password']));
-                                                               
+															   "WhatsappNumber" 		   => $_POST['WhatsappNumber'],
+															   "AddressLine1"   		   => $_POST['Address1'],
+															   "AddressLine2"   		   => $_POST['Address2'],
+															   "CreatedOn"      		   => date("Y-m-d H:i:s"),
+															   "AddressLine3"   		   => $_POST['Address3'],
+															   "IDProofCode"  		   	   => $ID[0]['SoftCode'],
+															   "IDProof"  		   	       => $ID[0]['CodeValue'],
+															   "IDProofNumber"  		   => $_POST['IDProofNumber'],
+															   "IsActive"       		   => "1",
+															   "IsAdmin"       		   	   => "1",
+															   "LoginName"      		   => $_POST['UserName'],
+															   "ReferedBy"      		   => $loginInfo[0]['AdminID'],
+															   "LoginPassword"  		   => $_POST['Password'],
+															   "ChangePasswordFstLogin"    => ($_POST['PasswordFstLogin']=="on") ? '1' : '0'));
+                               $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='FranchiseeStaff'");                                  
 			 $mContent = $mysql->select("select * from `mailcontent` where `Category`='CreateFranchisee'");
              $content  = str_replace("#FranchiseeName#",$_POST['FranchiseeName'],$mContent[0]['Content']);
              $content  = str_replace("#FranchiseeCode#",$_POST['FranchiseeCode'],$content);
@@ -335,18 +438,7 @@
         if (!(strlen(trim($_POST['PinCode']))>0)) {
             return Response::returnError("Please enter PinCode");
         }
-        if (!(strlen(trim($_POST['AccountName']))>0)) {
-            return Response::returnError("Please enter Account Name");
-        }
-        if (!(strlen(trim($_POST['AccountNumber']))>0)) {
-            return Response::returnError("Please enter Account Number");
-        }
-        if (!(strlen(trim($_POST['IFSCode']))>0)) {
-            return Response::returnError("Please enter IFS Code");
-        }
-        if (!(strlen(trim($_POST['AccountType']))>0)) {
-            return Response::returnError("Please enter Account Type");
-        }
+        
         if (!(strlen(trim($_POST['PersonName']))>0)) {
             return Response::returnError("Please enter Person Name");
         }
@@ -362,13 +454,13 @@
         if (!(strlen(trim($_POST['Address1']))>0)) {
             return Response::returnError("Please enter Address1");
         }
-        if (!(strlen(trim($_POST['AadhaarCard']))>0)) {
-            return Response::returnError("Please enter AadhaarCard");
-        }
-        $data = $mysql->select("select * from  _tbl_franchisees where FranchiseeCode='".trim($_POST['FranchiseeCode'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Franchisee Code Already Exists");
-        }
+        if ((strlen(trim($_POST['IDProof']))==0 || $_POST['IDProof']=="0")) {
+                return Response::returnError("Please select ID Proof");
+            }
+		if (!(strlen(trim($_POST['IDProofNumber']))>0)) {
+			return Response::returnError("Please enter ID Proof Number");
+		}
+ 
         $data = $mysql->select("select * from  _tbl_franchisees where ContactEmail='".trim($_POST['FranchiseeEmailID'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("EmailID Already Exists");
@@ -383,10 +475,7 @@
             return Response::returnError("Business WhatsappNumber Already Exists");
         }
         }
-        $data = $mysql->select("select * from  _tbl_bank_details where AccountNumber='".trim($_POST['AccountNumber'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Account Number Already Exists");
-        }
+        
         $data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".trim($_POST['EmailID'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Email ID Already Exists");
@@ -406,9 +495,9 @@
                 return Response::returnError("Please enter Std code");
             }
         }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where AadhaarNumber='".trim($_POST['AadhaarCard'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
+        $data = $mysql->select("select * from  _tbl_franchisees_staffs where IDProofNumber='".trim($_POST['IDProofNumber'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
-            return Response::returnError("Aadhaar Number Already Exists");
+            return Response::returnError("ID Proof Number Already Exists");
         }
         $data = $mysql->select("select * from  _tbl_franchisees_staffs where LoginName='".trim($_POST['UserName'])."' and FranchiseeCode <>'".$_POST['FranCode']."'");
         if (sizeof($data)>0) {
@@ -419,61 +508,58 @@
 			   
 		$Franchisee = $mysql->select("select * from  _tbl_franchisees where FranchiseeCode='".$_POST['FranCode']."'");
 
-     $Fid = $mysql->execute("update _tbl_franchisees set FranchiseName='".$_POST['FranchiseeName']."',
-                                                 ContactEmail='".$_POST['FranchiseeEmailID']."',
-                                                 ContactNumberCountryCode='".$_POST['ContactNumberCountryCode']."',
-                                                 ContactNumber='".$_POST['BusinessMobileNumber']."',
-                                                 ContactWhatsapp='".$_POST['BusinessWhatsappNumber']."',
-                                                 ContactWhatsappCountryCode='".$_POST['ContactWhatsappCountryCode']."',
-                                                 LandlineCountryCode='".$_POST['LandlineCountryCode']."',
-                                                 LandlineStdCode='".$_POST['LandlineStdCode']."',
-                                                 ContactLandline='".$_POST['BusinessLandlineNumber']."',
-                                                 BusinessAddressLine1='".$_POST['BusinessAddress1']."',
-                                                 BusinessAddressLine2='".$_POST['BusinessAddress2']."',
-                                                 BusinessAddressLine3='".$_POST['BusinessAddress3']."',
-                                                 DistrictName='".$_POST['DistrictName']."',
-                                                 StateName='".$_POST['StateName']."',
-                                                 CountryName='".$_POST['CountryName']."',
-                                                 CityName='".$_POST['CityName']."',
-                                                 Landmark='".$_POST['LandMark']."',
-                                                 PinCode='".$_POST['PinCode']."',
-                                                 MondayF='".$_POST['MonFH']." ".$_POST['MonFM']." ".$_POST['MonFN']."',
-                                                 TuesdayF='".$_POST['TueFH']." ".$_POST['TueFM']." ".$_POST['TueFN']."',
-                                                 WednessdayF='".$_POST['WedFH']." ".$_POST['WedFM']." ".$_POST['WedFN']."',
-                                                 ThursdayF='".$_POST['ThuFH']." ".$_POST['ThuFM']." ".$_POST['ThuFN']."',
-                                                 FridayF='".$_POST['FriFH']." ".$_POST['FriFM']." ".$_POST['FriFN']."',
-                                                 SaturdayF='".$_POST['SatFH']." ".$_POST['SatFM']." ".$_POST['SatFN']."',
-                                                 SundayF='".$_POST['SunFH']." ".$_POST['SunFM']." ".$_POST['SunFN']."',
-                                                 MondayT='".$_POST['MonTH']." ".$_POST['MonTM']." ".$_POST['MonTN']."',
-                                                 TuesdayT='".$_POST['TueTH']." ".$_POST['TueTM']." ".$_POST['TueTN']."',
-                                                 WednessdayT='".$_POST['WedTH']." ".$_POST['WedTM']." ".$_POST['WedTN']."',
-                                                 ThursdayT='".$_POST['ThuTH']." ".$_POST['ThuTM']." ".$_POST['ThuTN']."',
-                                                 FridayT='".$_POST['FriTH']." ".$_POST['FriTM']." ".$_POST['FriTN']."',
-                                                 SaturdayT='".$_POST['SatTH']." ".$_POST['SatTM']." ".$_POST['SatTN']."',
-                                                 SundayT='".$_POST['SunTH']." ".$_POST['SunTM']." ".$_POST['SunTN']."'
-                                                 where FranchiseeCode='".$_POST['FranCode']."'");
+			$country = CodeMaster::getData("CONTNAMES",$_POST['CountryName']);
+            $state = CodeMaster::getData("STATNAMES",$_POST['StateName']);
+			$dist = CodeMaster::getData("DistrictName",$_POST['DistrictName']);
+			$sex = CodeMaster::getData("SEX",$_POST['Sex']);
+			$ID = CodeMaster::getData("DOCTYPES",$_POST['IDProof']);
+            
+	 $Fid = $mysql->execute("update _tbl_franchisees set FranchiseName			     ='".$_POST['FranchiseeName']."',
+														 ContactEmail				 ='".$_POST['FranchiseeEmailID']."',
+														 ContactNumberCode        	 ='".$country[0]['SoftCode']."',
+														 ContactNumberCountryCode    ='".$_POST['ContactNumberCountryCode']."',
+														 ContactNumber				 ='".$_POST['BusinessMobileNumber']."',
+														 ContactWhatsappCode	     ='".$country[0]['SoftCode']."',
+														 ContactWhatsapp			 ='".$_POST['BusinessWhatsappNumber']."',
+														 ContactWhatsappCountryCode  ='".$_POST['ContactWhatsappCountryCode']."',
+														 LandlineCode		 		 ='".$country[0]['SoftCode']."',
+														 LandlineCountryCode		 ='".$_POST['LandlineCountryCode']."',
+														 LandlineStdCode			 ='".$_POST['LandlineStdCode']."',
+														 ContactLandline			 ='".$_POST['BusinessLandlineNumber']."',
+														 BusinessAddressLine1		 ='".$_POST['BusinessAddress1']."',
+														 BusinessAddressLine2		 ='".$_POST['BusinessAddress2']."',
+														 BusinessAddressLine3		 ='".$_POST['BusinessAddress3']."',
+														 DistrictName				 ='".$dist[0]['CodeValue']."',
+														 DistrictNameCode			 ='".$_POST['DistrictName']."',
+														 StateName					 ='".$state[0]['CodeValue']."',
+														 StateNameCode				 ='".$_POST['StateName']."',
+														 CountryName				 ='".$country[0]['CodeValue']."',
+														 CountryNameCode			 ='".$_POST['CountryName']."',
+														 CityName					 ='".$_POST['CityName']."',
+														 Landmark					 ='".$_POST['Landmark']."',
+														 PinCode					 ='".$_POST['PinCode']."'
+																 where FranchiseeCode='".$_POST['FranCode']."'");
 
-        $FidB   =   $mysql->execute("update _tbl_bank_details set BankName='".$_POST['BankName']."',
-                                                 AccountName='".$_POST['AccountName']."',
-                                                 AccountNumber='".$_POST['AccountNumber']."',
-                                                 IFSCode='".$_POST['IFSCode']."',
-                                                 AccountType='".$_POST['AccountType']."'
-                                                 where FranchiseeID='".$Franchisee[0]['FranchiseeID']."'");
-
-          $FSid = $mysql->execute("update _tbl_franchisees_staffs set PersonName='".$_POST['PersonName']."',
-                                                 FatherName='".$_POST['FatherName']."',
-                                                 DateofBirth='".$_POST['year']."-".$_POST['month']."-".$_POST['date']."',
-                                                 Sex='".$_POST['Sex']."',
-                                                 EmailID='".$_POST['EmailID']."',
-                                                 CountryCode='".$_POST['CountryCode']."',
-                                                 MobileNumber='".$_POST['MobileNumber']."',
-                                                 WhatsappNumberCountryCode='".$_POST['WhatsappNumberCountryCode']."',
-                                                 WhatsappNumber='".$_POST['WhatsappNumber']."',
-                                                 AddressLine1='".$_POST['Address1']."',
-                                                 AddressLine2='".$_POST['Address2']."',
-                                                 AddressLine3='".$_POST['Address3']."',
-                                                 AadhaarNumber='".$_POST['AadhaarCard']."'
-                                                  where  ReferedBy='1' and FrCode='".$_POST['FranCode']."'");
+				
+	$FSid = $mysql->execute("update _tbl_franchisees_staffs set PersonName	 	 		 ='".$_POST['PersonName']."',
+																FatherName	 			 ='".$_POST['FatherName']."',
+																DateofBirth	 			 ='".$_POST['year']."-".$_POST['month']."-".$_POST['date']."',
+																SexCode		 			 ='".$sex[0]['SoftCode']."',
+																Sex			 			 ='".$sex[0]['CodeValue']."',
+																EmailID		 			 ='".$_POST['EmailID']."',
+																MobileNumberCode		 ='".$country[0]['SoftCode']."',
+																CountryCode				 ='".$_POST['CountryCode']."',
+																MobileNumber			 ='".$_POST['MobileNumber']."',
+																WhatsappNumberCode		 ='".$country[0]['SoftCode']."',
+																WhatsappNumberCountryCode='".$_POST['WhatsappNumberCountryCode']."',
+																WhatsappNumber			 ='".$_POST['WhatsappNumber']."',
+																AddressLine1		     ='".$_POST['Address1']."',
+																AddressLine2		     ='".$_POST['Address2']."',
+																AddressLine3			 ='".$_POST['Address3']."',
+																IDProofCode				 ='".$ID[0]['SoftCode']."',
+																IDProof					 ='".$ID[0]['CodeValue']."',
+																IDProofNumber			 ='".$_POST['IDProofNumber']."'
+																where  ReferedBy='1' and FrCode='".$_POST['FranCode']."'");
 				//$FidB
 			if($Fid>0 ) {
 			
@@ -1029,11 +1115,11 @@
     function GetFranchiseeInfo(){
 
         global $mysql;
-        $Franchisees = $mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_POST['Code']."'");
-        $FranchiseeStaff = $mysql->select("select * from _tbl_franchisees_staffs where ReferedBy='1' and FranchiseeID='".$_POST['Code']."'");
-        $PrimaryBankAccount = $mysql->select("select * from _tbl_bank_details where FranchiseeID='".$_POST['Code']."'");
+        $Franchisees = $mysql->select("select * from _tbl_franchisees where FranchiseeCode='".$_POST['Code']."'");
+        $FranchiseeStaff = $mysql->select("select * from _tbl_franchisees_staffs where ReferedBy='1' and FrCode='".$_POST['Code']."'");
+        $PrimaryBankAccount = $mysql->select("select * from _tbl_bank_details where FranchiseeID='".$Franchisees[0]['FranchiseeID']."' and IsDelete='0'");
 
-        return Response::returnSuccess("success"."select * from _tbl_franchisees where FranchiseeID='".$_POST['Code']."'",array("Franchisee"         => $Franchisees[0],
+        return Response::returnSuccess("success",array("Franchisee"         => $Franchisees[0],
                                                        "FranchiseeStaff"    => $FranchiseeStaff[0],
                                                        "CountryNames"        => CodeMaster::getData('CONTNAMES'),
                                                        "CountryCode"    	=> CodeMaster::getData('RegisterAllowedCountries'),
@@ -1041,7 +1127,8 @@
                                                        "DistrictName"       => CodeMaster::getData('DistrictName'),
                                                        "BankNames"          => CodeMaster::getData('BANKNAMES'),
                                                        "AccountType"        => CodeMaster::getData('AccountType'),
-                                                       "PrimaryBankAccount" => $PrimaryBankAccount[0],
+                                                       "IDProof"        	=> CodeMaster::getData('DOCTYPES'),
+                                                       "PrimaryBankAccount" => $PrimaryBankAccount,
                                                        "Gender"             => CodeMaster::getData('SEX')));
 
     }                                                                                  
@@ -3932,6 +4019,24 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 				</div>';
 		return $res;
 	}
+    function ManageFranchiseeStaffs() {
+
+             global $mysql,$loginInfo;
+
+             $sql = "SELECT * From `_tbl_franchisees_staffs` where `FrCode`='".$_POST['Code']."' and `IsDeleted`='0'";
+
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }
+
+             if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and `IsActive`='1'"));    
+             }
+
+             if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and `IsActive`='0'"));    
+             }
+         }
 
 	 
 }

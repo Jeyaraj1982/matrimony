@@ -148,6 +148,12 @@
             global $mysql,$loginInfo;
             $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
 			
+			if ($franchiseedata[0]['ChangePasswordFstLogin']==1) {
+               return $this->ChangePasswordScreen("",$loginInfo[0]['FranchiseeID'],"","");
+            }
+			if (strlen(trim($franchiseedata[0]['TransactionPassword']))<8) {
+               return $this->TransactionPasswordScreen("",$loginInfo[0]['FranchiseeID'],"","");
+            }
 			if ($franchiseedata[0]['IsMobileVerified']==0) {
                return $this->ChangeMobileNumberFromVerificationScreen("",$loginInfo[0]['FranchiseeID'],"","");
             }
@@ -156,10 +162,77 @@
                return $this->ChangeEmailFromVerificationScreen("",$loginInfo[0]['FranchiseeID'],"","");
             }
 			
-			if (strlen(trim($franchiseedata[0]['TransactionPassword']))<8) {
-               return $this->TransactionPasswordScreen("",$loginInfo[0]['FranchiseeID'],"","");
-            }
+			
         }
+		function ChangePasswordScreen($error="",$loginid="",$npswd="",$cnpswd="",$reqID="") {
+           
+		   global $mysql,$loginInfo;
+            
+            if (sizeof($loginInfo)==0) {
+                return "Invalid request. Please login again.";
+            }   
+            
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+            if ($franchiseedata[0]['ChangePasswordFstLogin']==0) {
+				return '<div class="modal-body" style="text-align:center"><br><br>
+							<p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your password has been<br>saved successfully.</h4>    <br>
+                            <a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
+            } else {
+                $formid = "frmChnPass_".rand(30,3000);
+                return '<div id="otpfrm">
+                            <form method="POST" id="'.$formid.'">
+                               <div class="modal-header">
+                                    <h4 class="modal-title">Change Password</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
+                                </div>
+								<div class="modal-body">
+									<p style="text-align:center;padding: 20px;Padding-bottom:0px"><img src="'.AppPath.'assets/images/email_verification.png"></p>                                 
+									<div class="form-group row">
+										<div class="col-sm-3"></div>
+                                        <div class="col-sm-6">                                                                                                                                                                                          
+                                            <input type="password" class="form-control" value="'.$npswd.'" id="NewPassword"  name="NewPassword"  maxlength="10" style="font-family:Roboto;" placeholder="New Password"><br>
+											<input type="password" class="form-control" value="'.$cnpswd.'" id="ConfirmNewPassword"  name="ConfirmNewPassword"  maxlength="10" style="font-family:Roboto;" placeholder="Confirm New Password">
+                                        </div>
+										<div class="col-sm-3"></div>
+                                        <div class="col-sm-12" id="frmChnPass_error" style="color:red;text-align:center">'.$error.'</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<a href="javascript:void(0)" onclick="ChangeNewPassword(\''.$formid.'\')" class="btn btn-primary" >Continue</a>&nbsp;&nbsp;
+								</div>
+                             </div>
+                            </form>                                                                                                       
+                        </div>'; 
+            }   
+        }
+		function ChangeNewPassword($error="",$loginid="",$npswd="",$cnpswd="",$reqID="") {
+           global $mysql,$loginInfo;
+			if (sizeof($loginInfo)==0) {
+                return "Invalid request. Please login again.";
+            } 
+            $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+			if (isset($_POST['NewPassword'])) {
+				if (strlen(trim($_POST['NewPassword']))<6) {
+                   return $this->ChangePasswordScreen("Invalid new password.",$_POST['loginId'],$_POST['NewPassword'],$_POST['reqId']);
+                }
+				if (strlen(trim($_POST['NewPassword']))!= strlen(trim($_POST['ConfirmNewPassword']))) {
+                   return $this->ChangePasswordScreen("Do not match password.",$_POST['loginId'],$_POST['NewPassword'],$_POST['ConfirmNewPassword'],$_POST['reqId']);
+                }
+               
+                $update = "update _tbl_franchisees_staffs set LoginPassword='".$_POST['NewPassword']."' ,ChangePasswordFstLogin='0' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'";
+                $mysql->execute($update);
+                
+                return '<div class="modal-body" style="text-align:center"><br><br>
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your new password has been<br> saved successfully.</h4>    <br>
+                            <a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';   
+            }
+                                                                                                                                    
+			}  
+       
 		function TransactionPasswordScreen($error="",$loginid="",$scode="",$Rcode="",$reqID="") {
            
 		   global $mysql,$loginInfo;
@@ -864,7 +937,7 @@
                 return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
-                            <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                            <a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';
                                     } else {
                                         return $this->EmailVerificationForm("<span style='color:red'>You entered, invalid verification code.</span>",$_POST['loginId'],$_POST['email_otp'],$_POST['reqId']);
@@ -1060,12 +1133,12 @@
     function CreateFranchiseeStaff() {
                                                                             
         global $mysql,$loginInfo;  
-       
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where staffCode='".$_POST['staffCode']."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Staff Code Already Exists");
-        }
-        $data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".$_POST['EmailID']."'");
+		
+		$txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+            }
+		$data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".$_POST['EmailID']."'");
         if (sizeof($data)>0) {
             return Response::returnError("EmailID Already Exists");
         }
@@ -1077,14 +1150,19 @@
         if (sizeof($data)>0) {
             return Response::returnError("LoginName Already Exists");
         }
-        $Franchisee = $mysql->select("select * from _tbl_franchisees where FranchiseeCode='".$loginInfo[0]['FranchiseeID']."'"); 
+        $Franchisee = $mysql->select("select * from _tbl_franchisees where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'"); 
         $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
+		$StaffCode =SeqMaster::GetNextFranchiseeStaffNumber();
+		$country = CodeMaster::getData("CONTNAMES",$_POST['CountryName']);
+		$Sex = CodeMaster::getData("SEX",$_POST['Sex']);
           $id =  $mysql->insert("_tbl_franchisees_staffs",array("FrCode"          => $Franchisee[0]['FranchiseeCode'],
-                                                                 "StaffCode"       => $_POST['staffCode'],   
+                                                                 "StaffCode"       => $StaffCode,   
                                                                  "PersonName"      => $_POST['staffName'], 
-                                                                 "Sex"             => $_POST['Sex'],                                 
+                                                                 "SexCode"             => $_POST['Sex'],                                 
+                                                                 "Sex"             => $Sex[0]['CodeValue'],                                 
                                                                  "DateofBirth"     => $dob,
-                                                                 "CountryCode"    => $_POST['CountryCode'],
+                                                                 "MobileNumberCode"    => $country[0]['SoftCode'],
+                                                                 "CountryCode"    => $_POST['MobileNumberCountryCode'],
                                                                  "MobileNumber"    => $_POST['MobileNumber'],
                                                                  "EmailID"         => $_POST['EmailID'],
                                                                  "IsActive"        => "1",
@@ -1093,58 +1171,271 @@
                                                                  "FranchiseeID"    => $loginInfo[0]['FranchiseeID'],
                                                                  "ReferedBy"       => "0",
                                                                  "CreatedOn"       => date("Y-m-d H:i:s"), 
-                                                                 "LoginPassword"   => $_POST['LoginPassword']));
+                                                                 "LoginPassword"   => $_POST['LoginPassword'],
+                                                                 "ChangePasswordFstLogin"   => (($_POST['PasswordFstLogin']=="on") ? '1' : '0')));
+																 
+										$mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='FranchiseeStaff'");                                  
                                                                        
-           $mail2 = new MailController();
+           /*$mail2 = new MailController();
            $mail2->NewFranchiseeStaff(array("mailTo"         => $_POST['EmailID'] ,
                                              "StaffName"      => $_POST['staffName'],
                                              "StaffCode"      => $_POST['staffCode'],
-                                             "FranchiseeName" => $login['FranchiseeName'],
+                                             "FranchiseeName" => $loginInfo[0]['FranchiseeName'],
                                              "LoginName"      => $_POST['LoginName'],
-                                             "LoginPassword"  => $_POST['LoginPassword']));   
-        if (sizeof($id)>0) {
-                return Response::returnSuccess("success",array());
+                                             "LoginPassword"  => $_POST['LoginPassword']));   */
+        if ($id>0) {
+                return Response::returnSuccess("success",array("StaffCode" => $StaffCode));
             } else{
                 return Response::returnError("Access denied. Please contact support");   
             }
     }
-    function GetFranchiseeStaffCodeCode(){
+    function GetFranchiseeStaffCodeCode(){                                
             return Response::returnSuccess("success",array("staffCode" => SeqMaster::GetNextFranchiseeStaffNumber(),
                                                            "Gender"     => CodeMaster::getData('SEX'),
                                                            "Country"     => CodeMaster::getData('RegisterAllowedCountries')));
         }
     function EditFranchiseeStaff(){
               global $mysql,$loginInfo;    
-                $data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".trim($_POST['EmailID'])."' and PersonID <>'".$_POST['Code']."'");
+			  
+			  $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+				if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+					return Response::returnError("Invalid transaction password");   
+				}
+                $data = $mysql->select("select * from  _tbl_franchisees_staffs where EmailID='".trim($_POST['EmailID'])."' and StaffCode <>'".$_POST['StaffCode']."'");
               if (sizeof($data)>0) {
                     return Response::returnError("EmailID Already Exists");    
               }
                 
-                $data = $mysql->select("select * from  _tbl_franchisees_staffs where MobileNumber='".$_POST['MobileNumber']."' and PersonID <>'".$_POST['Code']."'");
+                $data = $mysql->select("select * from  _tbl_franchisees_staffs where MobileNumber='".$_POST['MobileNumber']."' and StaffCode <>'".$_POST['StaffCode']."'");
                 if (sizeof($data)>0) {
                     return Response::returnError("Mobile Number Already Exists");
                 }   
-                 $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_POST['Code']."'");
-                  $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
+                 $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where StaffCode='".$_POST['StaffCode']."'");
+                 
+				 if($Staffs[0]['MobileNumber'] != $_POST['MobileNumber']){
+					 
+					 $mysql->execute("update _tbl_franchisees_staffs set IsMobileVerified='0' where  StaffCode='".$_POST['StaffCode']."' and FranchiseeID='".$loginInfo[0]['FranchiseeID']."'");
+					
+					 $mysql->insert("_tbl_change_mobile_email",array("FranchiseeCode"   => $Staffs[0]['FrCode'],
+																	"FranchiseeID"     => $Staffs[0]['FranchiseeID'],   
+																	"FranchiseeStaffID"=> $Staffs[0]['PersonID'],   
+																	"CountryCode"      => $Staffs[0]['CountryCode'],
+																	"MobileNumber"     => $Staffs[0]['MobileNumber'],
+																	"ChangedOn"        => date("Y-m-d H:i:s")));
+					 
+					$mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeStaffChangeMobileNumber'");
+					$content  = str_replace("#FranchiseeName#",$Staffs[0]['PersonName'],$mContent[0]['Content']);
+					$content  = str_replace("#CountryCode#",$_POST['CountryCode'],$content);
+					$content  = str_replace("#MobileNumber#",$_POST['MobileNumber'],$content);
+
+					 MailController::Send(array("MailTo"         => $Staffs[0]['EmailID'],
+												"Category"       => "FranchiseeStaffChangeMobileNumber",
+												"FranchiseeCode" => $Staffs[0]['FrCode'],
+												"Subject"        => $mContent[0]['Title'],
+												"Message"        => $content),$mailError);
+					 MobileSMSController::sendSMS($Staffs[0]['MobileNumber']," Dear ".$Staffs[0]['PersonName'].",Your Mobile Number has been changed successfully. Your New Mobile Number is ".$_POST['MobileNumber']."");  
+					 MobileSMSController::sendSMS($_POST['MobileNumber']," Dear ".$Staffs[0]['PersonName'].",Your Mobile Number has been changed successfully.");  
+				 
+				 }
+				 if($Staffs[0]['EmailID'] != $_POST['EmailID']){
+					 
+					 $mysql->execute("update _tbl_franchisees_staffs set IsEmailVerified='0' where  StaffCode='".$_POST['StaffCode']."' and FranchiseeID='".$loginInfo[0]['FranchiseeID']."'");
+					
+					$mysql->insert("_tbl_change_mobile_email",array("FranchiseeCode"   => $Staffs[0]['FrCode'],
+																	"FranchiseeID"     => $Staffs[0]['FranchiseeID'],   
+																	"FranchiseeStaffID"=> $Staffs[0]['PersonID'],   
+																	"EmailID"      	   => $Staffs[0]['EmailID'],
+																	"ChangedOn"        => date("Y-m-d H:i:s")));
+																	
+					$mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeStaffChangeEmail'");
+					$content  = str_replace("#FranchiseeName#",$Staffs[0]['PersonName'],$mContent[0]['Content']);
+					$content  = str_replace("#EmailID#",$_POST['EmailID'],$content);
+					
+					 MailController::Send(array("MailTo"         => $Staffs[0]['EmailID'],
+												"Category"       => "FranchiseeStaffChangeEmail",
+												"FranchiseeCode" => $Staffs[0]['FrCode'],
+												"Subject"        => $mContent[0]['Title'],
+												"Message"        => $content),$mailError);
+												
+					$mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeStaffChangedEmail'");
+					$content  = str_replace("#FranchiseeName#",$Staffs[0]['PersonName'],$mContent[0]['Content']);
+					$content  = str_replace("#EmailID#",$_POST['EmailID'],$content);
+					
+					 MailController::Send(array("MailTo"         => $_POST['EmailID'],
+												"Category"       => "FranchiseeStaffChangedEmail",
+												"FranchiseeCode" => $Staffs[0]['FrCode'],
+												"Subject"        => $mContent[0]['Title'],
+												"Message"        => $content),$mailError);
+					 MobileSMSController::sendSMS($Staffs[0]['MobileNumber']," Dear ".$Staffs[0]['PersonName'].",Your Email ID has been changed successfully. Your New Email ID is ".$_POST['EmailID']."");  
+					 
+				 }
+				
+				
+				 $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
+				 $Sex = CodeMaster::getData("SEX",$_POST['Sex']);
                     $mysql->execute("update _tbl_franchisees_staffs set PersonName='".$_POST['staffName']."', 
-                                                           Sex='".$_POST['Sex']."', 
+                                                           SexCode='".$_POST['Sex']."', 
+                                                           Sex='".$Sex[0]['CodeValue']."', 
                                                            DateofBirth='".$dob."',
                                                            CountryCode='".$_POST['CountryCode']."',
                                                            MobileNumber='".$_POST['MobileNumber']."',
                                                            EmailID='".$_POST['EmailID']."',                                 
-                                                           UserRole='".$_POST['UserRole']."',
-                                                           LoginPassword='".$_POST['LoginPassword']."'
-                                                           where  PersonID='".$Staffs[0]['PersonID']."'");
+                                                           UserRole='".$_POST['UserRole']."'
+                                                           where  StaffCode='".$Staffs[0]['StaffCode']."'");
                 return Response::returnSuccess("success",array());
                                                                                                
     } 
+	
+	function DeactiveFranchiseeStaff(){
+		global $mysql,$loginInfo;
+		 $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+		$staff = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+			if(!(sizeof($staff)==1)){
+				return Response::returnError("Invalid staff information"); 
+			}
+		if($staff[0]['IsActive']==0){
+			return Response::returnError("Staff already deactivated"); 
+		}
+		$mysql->execute("update _tbl_franchisees_staffs set IsActive='0' where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+		return Response::returnSuccess("Deactivated Successfully",array());
+	}
+	function ActiveFranchiseeStaff(){
+		global $mysql,$loginInfo;
+		 $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+		$staff = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+			if(!(sizeof($staff)==1)){
+				return Response::returnError("Invalid staff information"); 
+			}
+		if($staff[0]['IsActive']==1){
+			return Response::returnError("Staff already Activated"); 
+		}
+		$mysql->execute("update _tbl_franchisees_staffs set IsActive='1' where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+		return Response::returnSuccess("Activated Successfully",array());
+	}
+	function ResetTxnPswdFranchiseeStaff(){
+		global $mysql,$loginInfo;
+		 $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+		$staff = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+			if(!(sizeof($staff)==1)){
+				return Response::returnError("Invalid staff information"); 
+			}
+		/*if(strlen($staff[0]['TransactionPassword']==0)){
+			return Response::returnError("Transaction password already reseted"); 
+		}*/
+		if($staff[0]['IsActive']==0){
+			return Response::returnError("Account is deactivated so Could not process"); 
+		}
+		$mysql->execute("update _tbl_franchisees_staffs set TransactionPassword='' where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+		return Response::returnSuccess("success",array());
+	}
+	function DeleteFranchiseeStaff(){
+		global $mysql,$loginInfo;
+		 $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+		$staff = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+			if(!(sizeof($staff)==1)){
+				return Response::returnError("Invalid staff information"); 
+			}
+			if($staff[0]['Deleted']==1){
+			return Response::returnError("Account is already deleted"); 
+		}
+		$mysql->execute("update _tbl_franchisees_staffs set IsDeleted='1' where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+		return Response::returnSuccess("success",array());
+	}
+	function FranchiseeStaffMobverification(){
+		global $mysql,$loginInfo;
+		 $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+		$staff = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+			if(!(sizeof($staff)==1)){
+				return Response::returnError("Invalid staff information"); 
+			}
+		if($staff[0]['IsActive']==0){
+				return Response::returnError("Account is deactivated so Could not process"); 
+			}
+		$mysql->execute("update _tbl_franchisees_staffs set IsMobileVerified='1',MobileVerifiedOn='".date("Y-m-d H:i:s")."' where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+		return Response::returnSuccess("Success",array());
+	}
+	function FranchiseeStaffEmailverification(){
+		global $mysql,$loginInfo;
+		 $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+		$staff = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+			if(!(sizeof($staff)==1)){
+				return Response::returnError("Invalid staff information"); 
+			}
+		if($staff[0]['IsActive']==0){
+				return Response::returnError("Account is deactivated so Could not process"); 
+			}
+		$mysql->execute("update _tbl_franchisees_staffs set IsEmailVerified='1',EmailVerifiedOn='".date("Y-m-d H:i:s")."' where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+		return Response::returnSuccess("Success",array());
+	}
+	function FranchiseeStaffChnPswdFstLogin() {
+		global $mysql,$loginInfo;
+		 $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+		$staff = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+			if(!(sizeof($staff)==1)){
+				return Response::returnError("Invalid staff information"); 
+			}
+		if($staff[0]['IsActive']==0){
+				return Response::returnError("Account is deactivated so Could not process"); 
+			}
+		$mysql->execute("update _tbl_franchisees_staffs set ChangePasswordFstLogin='0' where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+		return Response::returnSuccess("Success",array());
+	}
+	function FranchiseeStaffChnPswd() {
+		global $mysql,$loginInfo;
+		 $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+		$staff = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+			if(!(sizeof($staff)==1)){
+				return Response::returnError("Invalid staff information"); 
+			}
+		if($staff[0]['IsActive']==0){
+				return Response::returnError("Account is deactivated so Could not process"); 
+			}
+		if (isset($_POST['NewPswd'])) {
+				if (strlen(trim($_POST['NewPswd']))<6) {
+                   return Response::returnError("Please enter new password"); 
+                }
+				if (strlen(trim($_POST['NewPswd']))!= strlen(trim($_POST['ConfirmNewPswd']))) {
+                   return Response::returnError("Password do not match"); 
+                }
+               
+               $mysql->execute("update _tbl_franchisees_staffs set LoginPassword='".$_POST['NewPswd']."' ,ChangePasswordFstLogin='".(($_POST['ChnPswdFstLogin']=="on") ? '1' : '0')."' where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
+                 return Response::returnSuccess("Success",array());  
+            }
+		
+	}
     function GetStaffs(){
            global $mysql,$loginInfo;    
               
-              $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where PersonID='".$_POST['Code']."'");
+              $Staffs = $mysql->select("select * from _tbl_franchisees_staffs where StaffCode='".$_POST['Code']."' and FranchiseeID='".$loginInfo[0]['FranchiseeID']."'");
               $Sex =   $mysql->select("select * from _tbl_master_codemaster where SoftCode='".$Staffs[0]['Sex']."'");
+              $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `FranchiseeStaffID`='".$Staffs[0]['PersonID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
                 return Response::returnSuccess("success",array("Staffs" => $Staffs,
-                                                                "Gender"     =>$Sex));
+                                                                "Gender"     =>$Sex,
+                                                                "LastLogin"     =>$LoginHistory));
     }
     function GetFranchiseeInfo(){
              global $mysql,$loginInfo;
@@ -1194,6 +1485,36 @@
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
+              return Response::returnSuccess("Password Changed Successfully",array());
+              }
+                                                            
+    }
+	function ChangeTransactionPassword(){
+         global $mysql,$loginInfo;
+              $getpassword = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+              if ($getpassword[0]['TransactionPassword']!=$_POST['CurrentTransactionPassword']) {
+                return Response::returnError("Incorrect Current Transaction Password"); } 
+               
+              if ($getpassword[0]['TransactionPassword']==$_POST['CurrentTransactionPassword']) {                                         
+                    $mysql->execute("update _tbl_franchisees_staffs set TransactionPassword='".$_POST['ConfirmNewTransactionPassword']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
+                    $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"   => $loginInfo[0]['FranchiseeID'],
+																	"ActivityType"   => 'TransactionPasswordChanged.',
+																	"ActivityString" => 'Transaction Password Changed.',
+																	"SqlQuery"       => base64_encode($updateSql),
+																	//"oldData"      => base64_encode(json_encode($oldData)),
+																	"ActivityOn"     => date("Y-m-d H:i:s")));
+																	
+					$mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeChangeTxnPassword'");
+					$content  = str_replace("#FranchiseeName#",$getpassword[0]['PersonName'],$mContent[0]['Content']);
+					$content  = str_replace("#TransactionPassword#",$_POST['ConfirmNewTransactionPassword'],$content);
+
+					 MailController::Send(array("MailTo"         => $getpassword[0]['EmailID'],
+												"Category"       => "FranchiseeChangeTxnPassword",
+												"FranchiseeCode" => $getpassword[0]['FrCode'],
+												"Subject"        => $mContent[0]['Title'],
+												"Message"        => $content),$mailError);
+					 MobileSMSController::sendSMS($getpassword[0]['MobileNumber']," Dear ".$getpassword[0]['PersonName'].",Your Transaction Password has been changed successfully. Your new transaction password is ".$_POST['ConfirmNewTransactionPassword']."");  
+					
               return Response::returnSuccess("Password Changed Successfully",array());
               }
                                                             
@@ -2947,18 +3268,18 @@
 
              global $mysql,$loginInfo;
 
-             $sql = "SELECT * From `_tbl_franchisees_staffs` ";
+             $sql = "SELECT * From `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `PersonID`!='".$loginInfo[0]['FranchiseeStaffID']."' and `IsDeleted`='0'";
 
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql));    
              }
 
              if (isset($_POST['Request']) && $_POST['Request']=="Active") {
-                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive`='1'"));    
+                 return Response::returnSuccess("success",$mysql->select($sql." and `IsActive`='1'"));    
              }
 
              if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
-                 return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive`='0'"));    
+                 return Response::returnSuccess("success",$mysql->select($sql." and `IsActive`='0'"));    
              }
          }
          function GetCountryCode(){

@@ -147,7 +147,7 @@
     }
     
     if (isset($_GET['action'])) {
-        $action = $_GET['action']();
+        $action = $_GET['action'];
         echo json_encode($action()); 
     } else {
         if(isset($_GET['m'])){
@@ -162,7 +162,19 @@
         }else{   
             echo "Please Contact Administrator.";
         }
-    }     
+    }    
+    
+   function getStateNames() {
+         global $mysql;     
+         $StateNames =  $mysql->select("select SoftCode as stcode,CodeValue as stname from `_tbl_master_codemaster` Where `HardCode`='STATNAMES' and `ParamA`='".$_GET['CountryCode']."' and `IsActive`='1' order by CodeValue");
+         return $StateNames;
+    }  
+    
+     function getDistrictNames() {
+         global $mysql;     
+         $StateNames =  $mysql->select("select SoftCode as dtcode,CodeValue as dtname from `_tbl_master_codemaster` Where `HardCode`='DISTNAMES' and `ParamA`='".$_GET['StateCode']."' and `IsActive`='1' order by CodeValue");
+         return $StateNames;
+    }  
  
     class Plans{
         function GetFranchiseePlans(){
