@@ -161,22 +161,39 @@
     btn.html('<i class="glyphicon glyphicon-eye-open"></i>');
   }
 }
+function Signout(){
+	location.href="?action=logout";
+}
+function getAppUrl() {
+	   return API_URL + "rndval="+Math.floor(Math.random() * 10001) +"&";
+   }
         </script>
         </head>
     <body>
 	
 	  <?php if (UserRole=="Franchisee") { ?>
 	  
-	  <?php  $fInfo = $webservice->getData("Franchisee","GetMyProfile");?>
-<div class="modal" id="myModal" data-backdrop="static" >
+	  <?php  $fInfo = $webservice->getData("Franchisee","GetMyProfile"); ?>
+	  
+	  <?php if (!($fInfo['data']['ChangePasswordFstLogin']==1 ||  strlen($fInfo['data']['TransactionPassword'])==0)){ ?>
+	<div class="modal" id="myModal" data-backdrop="static" >
             <div class="modal-dialog" >
                 <div class="modal-content" id="Mobile_VerificationBody"  style="max-height: 529px;min-height: 529px;" >
                     <img src='../../../images/loader.gif'> Loading ....
                 </div>
             </div>
+        </div>  
+	  <?php } else { ?>
+	 
+	<div class="modal" id="myModal" data-backdrop="static" >
+            <div class="modal-dialog" style="max-width:600px;width:600px">
+                <div class="modal-content" id="Mobile_VerificationBody"  style="height: 382px;width:600px;" >
+                    <img src='../../../images/loader.gif'> Loading ....
+                </div>
+            </div>
         </div>
-     
- 
+		
+	  <?php } ?>
  
    
    
@@ -206,6 +223,53 @@
  
 
 	  <?php  } ?>
+	  
+	  <?php if (UserRole=="Admin") { ?>
+	  
+	    <?php  $AInfo = $webservice->getData("Admin","GetMyStaffInfo"); ?>
+	  
+	<?php if (!($AInfo['data'][0]['ChangePasswordFstLogin']==1 ||  strlen($AInfo['data'][0]['TransactionPassword'])==0)){ ?>
+	<div class="modal" id="myModal" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Mobile_VerificationBody"  style="max-height: 529px;min-height: 529px;" >
+                    <img src='../../../images/loader.gif'> Loading ....
+                </div>
+            </div>
+        </div>  
+	  <?php } else { ?>
+	 
+	<div class="modal" id="myModal" data-backdrop="static" >
+            <div class="modal-dialog" style="max-width:600px;width:600px">
+                <div class="modal-content" id="Mobile_VerificationBody"  style="height: 382px;width:600px;" >
+                    <img src='../../../images/loader.gif'> Loading ....
+                </div>
+            </div>
+        </div>
+		
+	  <?php } ?>
+		
+	  
+   
+     <?php if (isset($_Admin['LoginID']) && $_Admin['LoginID']>0) { ?>
+         <script>
+            var API_URL = "<?php echo WebServiceUrl;?>webservice.php?LoginID=<?php echo $_Admin['LoginID'];?>&";
+            var preloader = "<div style='text-align:center;padding-top: 35%;'><img src='<?php echo ImageUrl;?>loader.gif'></div>";
+        </script>
+     <script src="<?php echo SiteUrl?>assets/js/AdminController.js?rand=<?php echo rand(3000,3300000);?>"></script> 
+        
+        
+        <?php } 
+      
+            if($AInfo['data']['ChangePasswordFstLogin']==1 || (strlen(trim($AInfo['data'][0]['TransactionPassword'])))<6 || $AInfo['data'][0]['IsMobileVerified']==0 || $AInfo['data'][0]['IsEmailVerified']==0){
+            ?>
+			<script>
+                $( document ).ready(function() {CheckVerification();});
+				</script>
+            <?php 
+			  exit;
+            }
+   ?>
+	  <?php } ?>
         <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="margin-bottom:0px !important;border-radius:0px !important">
             <?php if (UserRole=="Member") { ?> 
                      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center " style="overflow:hidden">

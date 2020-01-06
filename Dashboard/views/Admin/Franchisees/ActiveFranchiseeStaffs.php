@@ -54,8 +54,8 @@ include_once("topmenu.php");
                                 <td><?php echo $Staff['LoginName'];?></td>
                                 <td></td>
                                 <td style="text-align:right"><a href="javascript:void(0)" onclick="FranchiseeStaff.ConfirmationfrEditFrStf('<?php echo $Staff['StaffCode'];?>')"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Staffs/View/".$Staff['PersonID'].".html"); ?>"><span>View</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Staffs/LoginHistory/".$Staff['PersonID'].".html"); ?>"><span>Login History</span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Franchisees/FrStaffView/".$Staff['StaffCode'].".html"); ?>"><span>View</span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Staffs/LoginHistory/".$Staff['STaffCode'].".html"); ?>"><span>Login History</span></a>&nbsp;&nbsp;&nbsp;
                                 </tr>
                         <?php }} ?>            
                       </tbody>

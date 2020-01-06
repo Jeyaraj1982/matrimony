@@ -26,8 +26,8 @@
                                 <td><span class="<?php echo ($Staff['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Staff['AdminCode'];?></td>
                                 <td><?php echo $Staff['AdminName'];?></td>
                                 <td><?php echo $Staff['MobileNumber'];?></td>
-                                <td><a href="<?php echo GetUrl("Staffs/Edit/". $Staff['AdminID'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Staffs/View/". $Staff['AdminID'].".html");?>"><span>View</span></a>
+                                <td><a href="javascript:void(0)" onclick="AdminStaff.ConfirmationfrEditAdminStf('<?php echo $Staff['AdminCode'];?>')"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Staffs/View/". $Staff['AdminCode'].".html");?>"><span>View</span></a>
                                 </td>
                                 </tr>
                         <?php } ?>            
@@ -43,4 +43,11 @@ $(document).ready(function(){
     $('#myTable').dataTable();
     setTimeout("DataTableStyleUpdate()",500);
 });
-</script>           
+</script>   
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >
+            
+                </div>
+            </div>
+        </div>         

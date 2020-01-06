@@ -52,14 +52,7 @@ $(document).ready(function () {
                         
    });
 });       
-function myFunction() {
-  var x = document.getElementById("LoginPassword");
-  if (x.type === "password") {
-    x.type = "text";
-  } else {
-    x.type = "password";
-  }
-}
+
 
 function SubmitNewStaff() {
                          $('#ErrStaffCode').html("");
@@ -135,113 +128,129 @@ function DateofBirthValidation() {
 ?>
 <form method="post" action="" onsubmit="return SubmitNewStaff();">            
 <div class="col-12 grid-margin">                                    
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Create Staff</h4>
-                  <form class="form-sample">
-                    <div class="form-group row">
-                      <label class="col-sm-2 col-form-label">Staff Code<span id="star">*</span></label>
-                      <div class="col-sm-2">
-                        <input type="text" value="<?php echo isset($_POST['StaffCode']) ? $_POST['StaffCode'] : $AdminCode;?>" class="form-control" id="StaffCode" name="StaffCode" maxlength="6">
-                        <span class="errorstring" id="ErrStaffCode"><?php echo isset($ErrStaffCode)? $ErrStaffCode : "";?></span>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                          <label class="col-sm-2 col-form-label">Staff Name<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="StaffName" name="StaffName" value="<?php echo (isset($_POST['StaffName']) ? $_POST['StaffName'] : "");?>">
-                            <span class="errorstring" id="ErrStaffName"><?php echo isset($ErrStaffName)? $ErrStaffName : "";?></span>
-                          </div>
-                       </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Date of Birth<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                           <div class="col-sm-4" style="max-width:63px !important;padding:0px !important;">
-                                <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px" onchange="DateofBirthValidation()">
-                                    <option value="0">Day</option>
-                                    <?php for($i=1;$i<=31;$i++) {?>
-                                    <option value="<?php echo $i; ?>" <?php echo ($_POST[ 'date']==$i) ? " selected='selected' " : "";?>><?php echo $i;?></option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                            <div class="col-sm-4" style="max-width:90px !important;padding:0px !important;margin-right:4px;margin-left:6px;">        
-                                <select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px" onchange="DateofBirthValidation()">
-                                    <option value="0">Month</option>
-                                    <?php foreach($_Month as $key=>$value) {?>
-                                    <option value="<?php echo $key+1; ?>" <?php echo ($_POST[ 'month']==$key+1) ? " selected='selected' " : "";?>><?php echo $value;?></option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                            <div class="col-sm-4" style="max-width:110px !important;padding:0px !important;">
-                                <select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px" onchange="DateofBirthValidation()">
-                                    <option value="0">Year</option>
-                                    <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
-                                    <option value="<?php echo $i; ?>" <?php echo ($_POST['year']==$i) ? " selected='selected' " : "";?>><?php echo $i;?></option>                             
-                                    <?php } ?>
-                                </select>
-                            </div>
-                             <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth: "";?></span>
-                          </div>
-                          <label class="col-sm-2 col-form-label">Sex<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <select class="selectpicker form-control" data-live-search="true" id="Sex" name="Sex">
-                                <option value="0">--Choose Gender--</option>
-                                <?php foreach($AInfo['data']['Gender'] as $Sex) { ?>
-                                    <option value="<?php echo $Sex['CodeValue'];?>" <?php echo ($Sex[ 'CodeValue']==$_POST[ 'Sex']) ? ' selected="selected" ' : '';?>>
-                                        <?php echo $Sex['CodeValue'];?>
-                                    </option>
-                                    <?php } ?>
-                            </select>
-                          <span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>
-                          </div>
-                        </div>
-                       <div class="form-group row">
-                          <label class="col-sm-2 col-form-label">Mobile Number<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>">
-                            <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber: "";?></span>
-                          </div>
-                          <label class="col-sm-2 col-form-label">Email ID<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="type" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : "");?>">
-                            <span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID: "";?></span>
-                          </div>
-                        </div>
-                      <div class="form-group row">
-                          <label class="col-sm-2 col-form-label">Login Name<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" class="form-control" id="LoginName" name="LoginName" value="<?php echo (isset($_POST['LoginName']) ? $_POST['LoginName'] : "");?>">
-                            <span class="errorstring" id="ErrLoginName"><?php echo isset($ErrLoginName)? $ErrLoginName: "";?></span>
-                          </div>
-                          <label class="col-sm-2 col-form-label">Login Password<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="Password" class="form-control" id="LoginPassword" name="LoginPassword" value="<?php echo (isset($_POST['LoginPassword']) ? $_POST['LoginPassword'] : "");?>"> 
-                            <span class="errorstring" id="ErrLoginPassword"><?php echo isset($ErrLoginPassword)? $ErrLoginPassword: "";?></span> </div>
-                            <div class="col-sm-2"><input type="checkbox" onclick="myFunction()">&nbsp;show</div>
-                            <!--<span toggle="#Password" class="fa fa-fw fa-eye field-icon toggle-password"></span> -->
-                          </div>
-                        <div class="form-group row">
-                          <label class="col-sm-2 col-form-label">Staff Role<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                          <select class="form-control" id="UserRole"  name="UserRole" value="<?php echo (isset($_POST['UserRole']) ? $_POST['UserRole'] : "");?>">
-                            <option value="Admin">Admin</option>
-                            <option value="View">View</option>
-                          </select>
-                          <span class="errorstring" id="ErrUserRole"><?php echo isset($ErrUserRole)? $ErrUserRole: "";?></span>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-12" style="text-align:center;color:red">
-                                <?php echo $errormessage;?>
-                            </div>
-                        </div>
-                   <div class="form-group row">
-                        <div class="col-sm-2"><button type="submit" name="BtnSaveStaff" class="btn btn-success mr-2">Create staff</button></div>
-                        <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageStaffs "><small>List of Staffs</small> </a></div>
-                   </div>
-                </form>
-             </div>
-          </div>
+	<div class="card">
+		<div class="card-body">
+			<div style="padding:15px !important;max-width:770px !important;">
+				<h4 class="card-title">Create Staff</h4>
+					<div class="form-group row">
+						<label class="col-sm-3 col-form-label">Staff Code<span id="star">*</span></label>
+						<div class="col-sm-2">
+							<input type="text" value="<?php echo isset($_POST['StaffCode']) ? $_POST['StaffCode'] : $AdminCode;?>" class="form-control" id="StaffCode" name="StaffCode" maxlength="6">
+							<span class="errorstring" id="ErrStaffCode"><?php echo isset($ErrStaffCode)? $ErrStaffCode : "";?></span>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-3 col-form-label">Staff Name<span id="star">*</span></label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="StaffName" name="StaffName" value="<?php echo (isset($_POST['StaffName']) ? $_POST['StaffName'] : "");?>">
+							<span class="errorstring" id="ErrStaffName"><?php echo isset($ErrStaffName)? $ErrStaffName : "";?></span>
+						</div>
+					</div>
+			  <div class="form-group row">
+				<label class="col-sm-3 col-form-label">Date of Birth<span id="star">*</span></label>
+				  <div class="col-sm-4">
+				   <div class="col-sm-4" style="max-width:63px !important;padding:0px !important;">
+						<select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px" onchange="DateofBirthValidation()">
+							<option value="0">Day</option>
+							<?php for($i=1;$i<=31;$i++) {?>
+							<option value="<?php echo $i; ?>" <?php echo ($_POST[ 'date']==$i) ? " selected='selected' " : "";?>><?php echo $i;?></option>
+							<?php } ?>
+						</select>
+					</div>
+					<div class="col-sm-4" style="max-width:90px !important;padding:0px !important;margin-right:4px;margin-left:6px;">        
+						<select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px" onchange="DateofBirthValidation()">
+							<option value="0">Month</option>
+							<?php foreach($_Month as $key=>$value) {?>
+							<option value="<?php echo $key+1; ?>" <?php echo ($_POST[ 'month']==$key+1) ? " selected='selected' " : "";?>><?php echo $value;?></option>
+							<?php } ?>
+						</select>
+					</div>
+					<div class="col-sm-4" style="max-width:110px !important;padding:0px !important;">
+						<select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px" onchange="DateofBirthValidation()">
+							<option value="0">Year</option>
+							<?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
+							<option value="<?php echo $i; ?>" <?php echo ($_POST['year']==$i) ? " selected='selected' " : "";?>><?php echo $i;?></option>                             
+							<?php } ?>
+						</select>
+					</div>
+					 <span class="errorstring" id="ErrDateofBirth"><?php echo isset($ErrDateofBirth)? $ErrDateofBirth: "";?></span>
+				  </div>
+				</div>
+				<div class="form-group row">
+				  <label class="col-sm-3 col-form-label">Gender<span id="star">*</span></label>
+				  <div class="col-sm-4">
+				  <select class="selectpicker form-control" data-live-search="true" id="Sex" name="Sex">
+						<option value="0">--Choose Gender--</option>
+						<?php foreach($AInfo['data']['Gender'] as $Sex) { ?>
+							<option value="<?php echo $Sex['CodeValue'];?>" <?php echo ($Sex[ 'CodeValue']==$_POST[ 'Sex']) ? ' selected="selected" ' : '';?>>
+								<?php echo $Sex['CodeValue'];?>
+							</option>
+							<?php } ?>
+					</select>
+				  <span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>
+				  </div>
+				  <label class="col-sm-2 col-form-label">Staff Role<span id="star">*</span></label>
+				  <div class="col-sm-3">
+				  <select class="form-control" id="UserRole"  name="UserRole" value="<?php echo (isset($_POST['UserRole']) ? $_POST['UserRole'] : "");?>">
+					<option value="Admin">Admin</option>
+					<option value="View">View</option>
+				  </select>
+				  <span class="errorstring" id="ErrUserRole"><?php echo isset($ErrUserRole)? $ErrUserRole: "";?></span>
+				  </div>
+				</div>
+			   <div class="form-group row">
+				  <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
+				  <div class="col-sm-3" style="padding-right:0px">
+						<select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode">
+							<?php foreach($AInfo['data']['CountryName'] as $CountryCode) { ?>
+							<option value="<?php echo $CountryCode['ParamA'];?>" <?php echo ($_POST['CountryCode']==$CountryCode['ParamA']) ? " selected='selected' " : "";?>> <?php echo $CountryCode['str'];?></option>
+							<?php } ?>
+						</select>
+					</div>
+				  <div class="col-sm-6">
+					<input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>">
+					<span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber: "";?></span>
+				  </div>
+				</div>
+				<div class="form-group row">
+				  <label class="col-sm-3 col-form-label">Email ID<span id="star">*</span></label>
+				  <div class="col-sm-9">
+					<input type="type" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : "");?>">
+					<span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID: "";?></span>
+				  </div>
+				</div>
+			  <div class="form-group row">
+				  <label class="col-sm-3 col-form-label">Login Name<span id="star">*</span></label>
+				  <div class="col-sm-5">
+					<input type="text" class="form-control" id="LoginName" name="LoginName" value="<?php echo (isset($_POST['LoginName']) ? $_POST['LoginName'] : "");?>">
+					<span class="errorstring" id="ErrLoginName"><?php echo isset($ErrLoginName)? $ErrLoginName: "";?></span>
+				  </div>
+			</div>
+			<div class="form-group row">
+				  <label class="col-sm-3 col-form-label">Login Password<span id="star">*</span></label>
+				  <div class="col-sm-5">
+						<div class="input-group">
+							<input type="password" class="form-control pwd"  maxlength="8" id="LoginPassword" name="LoginPassword" Placeholder="Login Password" value="<?php echo (isset($_POST['LoginPassword']) ? $_POST['LoginPassword'] : "");?>">
+							<span class="input-group-btn">
+								<button  onclick="showHidePwd('LoginPassword',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
+							</span>          
+						</div>
+						<span class="errorstring" id="ErrLoginPassword"><?php echo isset($ErrLoginPassword)? $ErrLoginPassword: "";?></span>
+				 </div>
+				 <div class="col-sm-4" style="padding-top: 5px;">
+					<div class="custom-control custom-checkbox mb-3">
+						<input type="checkbox" class="custom-control-input" id="PasswordFstLogin" name="PasswordFstLogin">
+						<label class="custom-control-label" for="PasswordFstLogin" style="margin-top: 7px;">&nbsp;Change password on first login</label>
+					</div>
+				</div>
+			 </div> 
+		   <div class="form-group row">
+				<div class="col-sm-2"><button type="submit" name="BtnSaveStaff" class="btn btn-primary">Create staff</button></div>
+				<div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageStaffs "><small>List of Staffs</small> </a></div>
+		   </div>
+		</form>
+	 </div>
+  </div>
 </div>
 </form>                                                  
 <?php } ?>

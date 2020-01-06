@@ -536,7 +536,7 @@
                         </div>';
              }
          } 
-
+                        
          public function ChangeMobileNumber($error="",$loginid="",$scode="",$reqID="") {
              
              global $mysql,$loginInfo;                                                                                                               
@@ -590,7 +590,7 @@
                         return $return;
                 }
          } 
-
+             
          public function MobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
 
              global $mysql,$loginInfo;
@@ -689,7 +689,7 @@
                            </div>'; 
              }
          }
-
+            
          public function MobileNumberOTPVerification() {
 
              global $mysql;
@@ -794,7 +794,7 @@
                         </div>'; 
              }
          }
-
+                   
          public function EmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
 
              global $mysql,$loginInfo;
@@ -1216,7 +1216,7 @@
                        </div>';
 
          }
-        
+          
          /* Submit Profile */ 
          public function SendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
 			global $mysql,$mail,$loginInfo;      
@@ -1487,7 +1487,7 @@
 				}
         }
 		 /* end Submit profile */  
-         
+                       
          public function DeleteProfile() {
 			return '<div class="modal-body" style="text-align:center;height: 300px;">
 						<p style="text-align:center;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
@@ -1495,7 +1495,7 @@
 						<a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
 					</div>';
 		}
-        
+                                                              
          public function DeleteAttach() {
 
              global $mysql,$loginInfo;
@@ -2504,7 +2504,7 @@
              $photos = $mysql->select("select * from `_tbl_draft_profiles_verificationdocs` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['Code']."' and `IsDelete`='0'");
              return Response::returnSuccess("Your Document Information has successfully updated and waiting for verification",$photos);
          }    
-
+                   
          public function DeletDocumentAttachments() {
 
              global $mysql,$loginInfo;
@@ -2780,7 +2780,7 @@
                   return Response::returnError("You must be submit your profile"); 
               }
           }
-             
+                  
          public function RequestToshowUpgrades() {
 
              global $mysql,$loginInfo;
@@ -3377,7 +3377,7 @@
               return Response::returnSuccess("success",$Profiles);
          }
          /* End Favourited Section */
-        
+                        
         
          public function ResendMobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
 
@@ -3625,7 +3625,7 @@
              $Latestupdates = $mysql->select("select * from `_tbl_latest_updates` where MemberID='".$loginInfo[0]['MemberID']."' and IsHide='0' ORDER BY LatestID DESC LIMIT 0,5"); 
                  return Response::returnSuccess("success",$Latestupdates);                                               
      } 
-         
+                  
          public function HideLatestUpdates() {
 
              global $mysql,$loginInfo;
@@ -4220,8 +4220,6 @@
 			$result = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and  `VisterProfileCode`='".$ProfileCode."'");       
 			return $result;
 		 }
-         
-         
 		
          public function DashboardCounts() {
               
@@ -4231,12 +4229,6 @@
 			  
              if (isset($myProfile[0]['ProfileCode'])) {   
 			
-                // $RecentlyWhoViewed = $mysql->select("select VisterProfileCode from `_tbl_profiles_lastseen` where `ProfileCode`='".$myProfile[0]['ProfileCode']."'");      
-				//	$Whofavorited = $mysql->select("select VisterProfileCode from `_tbl_profiles_favourites` where `IsFavorite` ='1' and`MemberID` = '".$loginInfo[0]['MemberID']."'");      
-                // $WhoShortListedCount = $mysql->select("select VisterProfileCode from `_tbl_profiles_shortlists` where `IsShortList` ='1' and`MemberID` = '".$loginInfo[0]['MemberID']."'");      
-                // $Mutual = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `MemberID` = '".$loginInfo[0]['MemberID']."'");    */  
-
-					 
 				return Response::returnSuccess("success",array(/*"MyRecentlyViewedCount"=> isset($RecentlyViewed[0]) ? $RecentlyViewed[0] : array(),
                                                                 "RecentlyWhoViewed"     => isset($RecentlyWhoViewed) ? $RecentlyWhoViewed : array(),*/
                                                                 "MyRecentlyViewed"      => sizeof($this->GetMyRecentlyViewed($myProfile[0]['ProfileCode'])), 
@@ -4411,7 +4403,6 @@
               
                if (sizeof($id)>0) {
                    return Response::returnSuccess("success",array("ReqID"=>$id));
-               // echo "<script>location.href='../BasicSearchResult/".$id.".htm?Req=BasicSearchResult'</script>";
              } else{
                  return Response::returnError("Access denied. Please contact support");   
              }
@@ -4709,9 +4700,6 @@
              }
          }
          
-         
-         
-         
          public function GetOrderInvoiceReceiptDetails() {
              
              global $mysql,$loginInfo;
@@ -4756,8 +4744,6 @@
                        </div>';                            
 
          }
-         
-		 
          
          public function AddToShortList() {
              
@@ -4867,9 +4853,6 @@
                                                         "ViewedOn"          => date("Y-m-d H:i:s")));
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has remove shorlist.");      
           }
-          
-          
-          
  
 	    public function SendOtpForEditSubmittedProfile($errormessage="",$otpdata="",$reqID="",$ProfileCode="") {
         global $mysql,$mail,$loginInfo;      
@@ -5084,5 +5067,31 @@
     
  }  
 //4084   5500
+
+// html 
+//ResendSendOtpForSubmittedProfileProfileForEdit
+//SendOtpForEditSubmittedProfile
+//ResendEmailVerificationForm
+//ChangeMobileNumberFromVerificationScreen  
+//ChangeMobileNumber 
+//MobileNumberVerificationForm 
+//MobileNumberOTPVerification  
+//ChangeEmailFromVerificationScreen
+//ChangeEmailID    EmailVerificationForm    
+//EmailOTPVerification 
+ //OverallSendOtp 
+ //ViewProfileOTPVerification  
+ //VerifyProfileforPublish  
+ //SendOtpForProfileforPublish
+//ResendSendOtpForProfileforPublish 
+//DeleteProfile 
+//DeleteAttach
+//DeleteAttach  
+//DeleteEducationAttachmentOnly   
+//DeletDocumentAttachments  
+//DeletProfilePhoto   
+//RequestToshowUpgrades   
+//ResendMobileNumberVerificationForm  
+//HideLatestUpdates
 ?>                                                            
   

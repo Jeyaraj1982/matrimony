@@ -151,7 +151,7 @@
 			if ($franchiseedata[0]['ChangePasswordFstLogin']==1) {
                return $this->ChangePasswordScreen("",$loginInfo[0]['FranchiseeID'],"","");
             }
-			if (strlen(trim($franchiseedata[0]['TransactionPassword']))<8) {
+			if (strlen(trim($franchiseedata[0]['TransactionPassword']))<6) {
                return $this->TransactionPasswordScreen("",$loginInfo[0]['FranchiseeID'],"","");
             }
 			if ($franchiseedata[0]['IsMobileVerified']==0) {
@@ -184,27 +184,92 @@
                 return '<div id="otpfrm">
                             <form method="POST" id="'.$formid.'">
                                <div class="modal-header">
-                                    <h4 class="modal-title">Change Password</h4>
+                                    <h4 class="modal-title">Change Login Password</h4>
                                     <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                                 </div>
-								<div class="modal-body">
-									<p style="text-align:center;padding: 20px;Padding-bottom:0px"><img src="'.AppPath.'assets/images/email_verification.png"></p>                                 
+								<div class="modal-body" style="min-height: 261px;max-height: 261px;">
 									<div class="form-group row">
-										<div class="col-sm-3"></div>
-                                        <div class="col-sm-6">                                                                                                                                                                                          
-                                            <input type="password" class="form-control" value="'.$npswd.'" id="NewPassword"  name="NewPassword"  maxlength="10" style="font-family:Roboto;" placeholder="New Password"><br>
-											<input type="password" class="form-control" value="'.$cnpswd.'" id="ConfirmNewPassword"  name="ConfirmNewPassword"  maxlength="10" style="font-family:Roboto;" placeholder="Confirm New Password">
-                                        </div>
-										<div class="col-sm-3"></div>
-                                        <div class="col-sm-12" id="frmChnPass_error" style="color:red;text-align:center">'.$error.'</div>
+										<div class="col-sm-4" style="text-align:center;padding-top: 15px;">
+											<img src="'.AppPath.'assets/images/icon_change_password.png">
+										</div>
+										<div class="col-sm-8">
+											<span style="text-left:center;color:#ada9a9">The administartor requests to change your login password on your first signin.</span><br><br>
+											<div class="row">
+												<div class="col-sm-8"><h6 style="color:#ada9a9">New Password<span style="color:red">*</span></h6></div>
+											</div>                             
+											<div class="row">
+												<div class="col-sm-11">  
+													<div class="input-group">
+														<input type="password" class="form-control" value="'.$npswd.'" id="NewPassword"  name="NewPassword" maxlength="20" style="font-family:Roboto;" placeholder="New Password">
+														<span class="input-group-btn">
+															<button  onclick="showHidePwd(\''.NewPassword.'\',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
+														</span>          
+													</div>
+													<div id="frmNewPass_error" style="color:red;font-size:12px;">'.$error.'</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-8"><h6 style="color:#ada9a9">Confirm New Password<span style="color:red">*</span></h6></div>
+											</div>
+											<div class="row">
+												<div class="col-sm-11">
+													<div class="input-group">
+														<input type="password" class="form-control" value="'.$cnpswd.'" id="ConfirmNewPassword"  name="ConfirmNewPassword"  maxlength="20" style="font-family:Roboto;" placeholder="Confirm New Password">
+														<span class="input-group-btn">
+															<button  onclick="showHidePwd(\''.ConfirmNewPassword.'\',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
+														</span>          
+													</div>
+													<div id="frmCfmNewPass_error" style="color:red;font-size:12px">'.$error.'</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="modal-footer">
-									<a href="javascript:void(0)" onclick="ChangeNewPassword(\''.$formid.'\')" class="btn btn-primary" >Continue</a>&nbsp;&nbsp;
+                                   <a href="javascript:void(0)" onclick="Signout()">Sign out</a>&nbsp;&nbsp;
+									<a href="javascript:void(0)" onclick="ChangeNewPassword(\''.$formid.'\')" class="btn btn-primary" >Change Password</a>&nbsp;&nbsp;
 								</div>
                              </div>
                             </form>                                                                                                       
-                        </div>'; 
+                        </div>
+						<script>
+							$(document).ready(function () {
+								$("#NewPassword").blur(function () {
+									if(IsNonEmpty("NewPassword","frmNewPass_error","Please enter new password")){
+										IsAlphaNumeric("NewPassword","frmNewPass_error","Please enter alpha numerics characters only");
+									}
+								});
+								$("#ConfirmNewPassword").blur(function () {
+									if(IsNonEmpty("ConfirmNewPassword","frmCfmNewPass_error","Please enter confirm new password")){
+										IsAlphaNumeric("ConfirmNewPassword","frmCfmNewPass_error","Please enter alpha numerics characters only");
+									}
+								});
+							});
+							document.getElementById(\'NewPassword\').onkeydown = function(event) {
+							   var k;
+							   if(event.keyCode)
+							   {
+								   k = event.keyCode;
+								   if(k == 13)
+								   {                            
+									  
+										 document.getElementById(\'ConfirmNewPassword\').focus();
+								   }
+								}
+							}
+							document.getElementById(\'ConfirmNewPassword\').onkeydown = function(event) {
+							   var k;
+							   if(event.keyCode)
+							   {
+								   k = event.keyCode;
+								   if(k == 13)
+								   {                            
+									  
+										 ChangeNewPassword(\''.$formid.'\');
+								   }
+								}
+							}
+						</script>'; 
             }   
         }
 		function ChangeNewPassword($error="",$loginid="",$npswd="",$cnpswd="",$reqID="") {
@@ -223,9 +288,20 @@
                
                 $update = "update _tbl_franchisees_staffs set LoginPassword='".$_POST['NewPassword']."' ,ChangePasswordFstLogin='0' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'";
                 $mysql->execute($update);
+				
+					$mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeStaffChangePassword'");
+					$content  = str_replace("#FranchiseeName#",$franchiseedata[0]['PersonName'],$mContent[0]['Content']);
+					$content  = str_replace("#LoginPassword#",$_POST['NewPassword'],$content);
+
+					 MailController::Send(array("MailTo"         => $franchiseedata[0]['EmailID'],
+												"Category"       => "FranchiseeStaffChangePassword",
+												"FranchiseeCode" => $franchiseedata[0]['FrCode'],
+												"Subject"        => $mContent[0]['Title'],
+												"Message"        => $content),$mailError);
+					 MobileSMSController::sendSMS($franchiseedata[0]['MobileNumber']," Dear ".$franchiseedata[0]['PersonName'].",Your Login Password has been changed successfully. Your New Login Password is ".$_POST['NewPassword']."");  
                 
                 return '<div class="modal-body" style="text-align:center"><br><br>
-                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <p style="text-align:center;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your new password has been<br> saved successfully.</h4>    <br>
                             <a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';   
@@ -250,31 +326,103 @@
                          </div>';    
             } else {
                 $formid = "frmTxnPass_".rand(30,3000);
+				/*if ($scode=="") {
+					$serror = "Please enter transaction password";
+				} else {
+				if (strlen($scode)<6 || strlen($scode)>20) {
+					$serror = "Transaction password length 6-20 characters";
+				}
+				}*/
+				
                 return '<div id="otpfrm">
                             <form method="POST" id="'.$formid.'">
                                <div class="modal-header">
                                     <h4 class="modal-title">Transaction Password</h4>
                                     <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                                 </div>
-								<div class="modal-body">
-									<p style="text-align:center;padding: 20px;Padding-bottom:0px"><img src="'.AppPath.'assets/images/email_verification.png"></p>                                 
-									<h4 style="text-align:center;color:#ada9a9">Please enter transaction Password</h4>
+								<div class="modal-body" style="min-height: 261px;max-height: 261px;">
 									<div class="form-group row">
-										<div class="col-sm-3"></div>
-                                        <div class="col-sm-6">                                                                                                                                                                                          
-                                            <input type="password" class="form-control" value="'.$scode.'" id="TransactionPassword"  name="TransactionPassword"  maxlength="10" style="font-family:Roboto;" placeholder="New transaction password"><br>
-											<input type="password" class="form-control" value="'.$Rcode.'" id="ConfirmTransactionPassword"  name="ConfirmTransactionPassword"  maxlength="10" style="font-family:Roboto;" placeholder="Confirm new transaction password">
-                                        </div>
-										<div class="col-sm-3"></div>
-                                        <div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center">'.$error.'</div>
+										<div class="col-sm-4" style="text-align:center;padding-top: 15px;">
+											<img src="'.AppPath.'assets/images/icon_transaction_password.png">
+										</div>
+										<div class="col-sm-8">
+											<span style="text-left:center;color:#ada9a9">For security reasons, you must to maintain different passwords for Login and Transaction!</span><br><br>
+											<div class="row">
+												<div class="col-sm-8"><h6 style="color:#ada9a9">Transaction Password<span style="color:red">*</span></h6></div>
+											</div>                             
+											<div class="row">
+												<div class="col-sm-11">  
+													<div class="input-group">
+														<input type="password" class="form-control" value="'.$scode.'" id="TransactionPassword"  name="TransactionPassword" maxlength="20" style="font-family:Roboto;" placeholder="Transaction password">
+														<span class="input-group-btn">
+															<button  onclick="showHidePwd(\''.TransactionPassword.'\',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
+														</span>          
+													</div>
+													<div id="frmTxnPass_error" style="color:red;font-size:12px;">'.$error.'</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-8"><h6 style="color:#ada9a9">Confirm Transaction Password<span style="color:red">*</span></h6></div>
+											</div>
+											<div class="row">
+												<div class="col-sm-11">
+													<div class="input-group">
+														<input type="password" class="form-control" value="'.$Rcode.'" id="ConfirmTransactionPassword"  name="ConfirmTransactionPassword"  maxlength="20" style="font-family:Roboto;" placeholder="Confirm transaction password">
+														<span class="input-group-btn">
+															<button  onclick="showHidePwd(\''.ConfirmTransactionPassword.'\',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
+														</span>          
+													</div>
+													<div id="frmCTxnPass_error" style="color:red;font-size:12px">'.$error.'</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="modal-footer">
-									<a href="javascript:void(0)" onclick="AddTransactionPassword(\''.$formid.'\')" class="btn btn-primary" >Continue</a>&nbsp;&nbsp;
+									<a href="javascript:void(0)" onclick="Signout()">Sign out</a>&nbsp;&nbsp;
+									<a href="javascript:void(0)" onclick="AddTransactionPassword(\''.$formid.'\')" class="btn btn-primary" >Save Password</a>&nbsp;&nbsp;
 								</div>
                              </div>
                             </form>                                                                                                       
-                        </div>'; 
+                        </div>
+						<script>
+							$(document).ready(function () {
+								$("#TransactionPassword").blur(function () {
+									if(IsNonEmpty("TransactionPassword","frmTxnPass_error","Please enter transaction password")){
+										IsAlphaNumeric("TransactionPassword","frmTxnPass_error","Please enter alpha numerics characters only");
+									}
+								});
+								$("#ConfirmTransactionPassword").blur(function () {
+									if(IsNonEmpty("ConfirmTransactionPassword","frmCTxnPass_error","Please enter confirm transaction password")){
+										IsAlphaNumeric("ConfirmTransactionPassword","frmCTxnPass_error","Please enter alpha numerics characters only");
+									}
+								});
+							});
+							document.getElementById(\'TransactionPassword\').onkeydown = function(event) {
+							   var k;
+							   if(event.keyCode)
+							   {
+								   k = event.keyCode;
+								   if(k == 13)
+								   {                            
+									  
+										 document.getElementById(\'ConfirmTransactionPassword\').focus();
+								   }
+								}
+							}
+							document.getElementById(\'ConfirmTransactionPassword\').onkeydown = function(event) {
+							   var k;
+							   if(event.keyCode)
+							   {
+								   k = event.keyCode;
+								   if(k == 13)
+								   {                            
+									  
+										 AddTransactionPassword(\''.$formid.'\');
+								   }
+								}
+							}
+						</script>'; 
             }   
         }
 		function AddTransactionPassword($error="",$loginid="",$scode="",$Rcode="",$reqID="") {
@@ -286,18 +434,32 @@
             
             if (isset($_POST['TransactionPassword'])) {
                 
-                if (strlen(trim($_POST['TransactionPassword']))<8) {
-                   return $this->TransactionPasswordScreen("Invalid Transaction password.",$_POST['loginId'],$_POST['TransactionPassword'],$_POST['reqId']);
+                if (strlen(trim($_POST['TransactionPassword']))<6) {
+                   return $this->TransactionPasswordScreen("Invalid transaction passwords.",$_POST['loginId'],$_POST['TransactionPassword'],$_POST['ConfirmTransactionPassword'],$_POST['reqId']);
+                }
+				if (strlen(trim($_POST['ConfirmTransactionPassword']))<6) {
+                   return $this->TransactionPasswordScreen("Invalid confirm transaction password.",$_POST['loginId'],$_POST['TransactionPassword'],$_POST['ConfirmTransactionPassword'],$_POST['reqId']);
                 }
 				if (strlen(trim($_POST['TransactionPassword']))!= strlen(trim($_POST['ConfirmTransactionPassword']))) {
-                   return $this->TransactionPasswordScreen("Do not match password.",$_POST['loginId'],$_POST['TransactionPassword'],$_POST['ConfirmTransactionPassword'],$_POST['reqId']);
+                   return $this->TransactionPasswordScreen("Do not match password.",$_POST['loginId'],$_POST['ConfirmTransactionPassword'],$_POST['reqId']);
                 }
-               
+               $franchiseedata = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'");
                 $update = "update _tbl_franchisees_staffs set TransactionPassword='".$_POST['TransactionPassword']."' where FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and PersonID='".$loginInfo[0]['FranchiseeStaffID']."'";
                 $mysql->execute($update);
+				
+				$mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeStaffChangeTxnPassword'");
+					$content  = str_replace("#FranchiseeName#",$franchiseedata[0]['PersonName'],$mContent[0]['Content']);
+					$content  = str_replace("#TransactionPassword#",$_POST['TransactionPassword'],$content);
+
+					 MailController::Send(array("MailTo"         => $franchiseedata[0]['EmailID'],
+												"Category"       => "FranchiseeStaffChangeTxnPassword",
+												"FranchiseeCode" => $franchiseedata[0]['FrCode'],
+												"Subject"        => $mContent[0]['Title'],
+												"Message"        => $content),$mailError);
+					 MobileSMSController::sendSMS($franchiseedata[0]['MobileNumber']," Dear ".$franchiseedata[0]['PersonName'].",Your Transaction Password has been changed successfully. Your New Transaction Password is ".$_POST['TransactionPassword']."");  
                 
                 return '<div class="modal-body" style="text-align:center"><br><br>
-                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <p style="text-align:center;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your transaction password has been<br> successfully updated.</h4>    <br>
                             <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';   
@@ -504,8 +666,6 @@
             }
         }
         function ResendMobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
-             
-			 
              if ($loginid=="") {
                  $loginid = $_GET['LoginID'];
              }

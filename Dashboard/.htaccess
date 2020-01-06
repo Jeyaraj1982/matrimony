@@ -205,6 +205,8 @@ RewriteRule ^Franchisees/FranchiseeStaffs/(.*)\.html$ ./index.php?Code=$1&p=Fran
 RewriteRule ^Franchisees/ActiveFranchiseeStaffs/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/ActiveFranchiseeStaffs
 RewriteRule ^Franchisees/DeactiveFranchiseeStaffs/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/DeactiveFranchiseeStaffs
 
+RewriteRule ^Franchisees/FrStaffEdit/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FrStaffEdit           
+RewriteRule ^Franchisees/FrStaffView/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FrStaffView
 
 
 RewriteRule ^([a-zA-Z0-9-/+]+)([0-9]+)$ index.php?p=$1&pn=$2 [L]
