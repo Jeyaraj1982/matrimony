@@ -6,7 +6,7 @@
     
     include_once(web_path."classes/class.pdo.mysql.php");
       
-    $app     = new MySql(DBHOST,DBUSER,DBPASS,DBNAME);
+    $app     = new MySql(DBHOST,DBUSER,DBPASS,"allsaliy_matri_website");   
     include_once(application_config_path);
       
     $appData = $app->select("select * from _japp where concat('www.',Lower(hostname))='".strtolower($_SERVER['HTTP_HOST'])."' or  Lower(hostname)='".strtolower($_SERVER['HTTP_HOST'])."' or  concat('www.',Lower(hosturl))='".strtolower($_SERVER['HTTP_HOST'])."' or  Lower(hosturl)='".strtolower($_SERVER['HTTP_HOST'])."' ");
@@ -58,17 +58,17 @@
     }
 
     $dataDir = $appData[0]['datadir']; 
-    $dataDir = "demo_usedvechiles"; 
+    define("SERVER_PATH","/home/allsaliyarmatri/public_html/website/");
 
     $config = array("dataDir"         => $dataDir,
-                    "thumb"           => "cms/".$dataDir."/thumb/",
-                    "musics"          => "cms/".$dataDir."/musics/",
-                    "photos"          => "cms/".$dataDir."/photos/",
-                    "downloads"       => "cms/".$dataDir."/download/",
-                    "trash"           => "cms/".$dataDir."/trash/",
-                    "backup"          => "cms/".$dataDir."/backup/",
-                    "files"           => "cms/".$dataDir."/files/",
-                    "slider"          => "cms/".$dataDir."/slider/",
+                    "thumb"           => $dataDir."/thumb/",
+                    "musics"          => $dataDir."/musics/",
+                    "photos"          => $dataDir."/photos/",
+                    "downloads"       => $dataDir."/download/",
+                    "trash"           => $dataDir."/trash/",
+                    "backup"          => $dataDir."/backup/",
+                    "files"           => $dataDir."/files/",
+                    "slider"          => $dataDir."/slider/",
                     "imageArray"      => array("image/jpeg","image/jpg","image/gif","image/png","image/bmp"),
                     "imgMaxSize"      => 20000000,
                     "musicArray"      => array("audio/mp3","audio/mpeg","audio/wav"),
@@ -77,7 +77,8 @@
                     "downloadMaxSize" => 20000000); 
                                
     
-    $mysql = new MySql(DBHOST,DBUSER,DBPASS,DBNAME);  
+    //$mysql = new MySql(DBHOST,DBUSER,DBPASS,"j2jsoftw_matri_website");  
+    $mysql = new MySql(DBHOST,DBUSER,DBPASS,$appData[0]['dbname']);    
     
     $settings = $mysql->select("select * from _jsitesettings"); 
           
