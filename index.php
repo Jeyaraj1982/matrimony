@@ -57,17 +57,17 @@
     }
 
     $dataDir = $appData[0]['datadir']; 
-    $dataDir = "demo_usedvechiles"; 
+    $dataDir = "data"; 
 
     $config = array("dataDir"         => $dataDir,
-                    "thumb"           => "cms/".$dataDir."/thumb/",
-                    "musics"          => "cms/".$dataDir."/musics/",
-                    "photos"          => "cms/".$dataDir."/photos/",
-                    "downloads"       => "cms/".$dataDir."/download/",
-                    "trash"           => "cms/".$dataDir."/trash/",
-                    "backup"          => "cms/".$dataDir."/backup/",
-                    "files"           => "cms/".$dataDir."/files/",
-                    "slider"          => "cms/".$dataDir."/slider/",
+                    "thumb"           => $dataDir."/thumb/",
+                    "musics"          => $dataDir."/musics/",
+                    "photos"          => $dataDir."/photos/",
+                    "downloads"       => $dataDir."/download/",
+                    "trash"           => $dataDir."/trash/",
+                    "backup"          => $dataDir."/backup/",
+                    "files"           => $dataDir."/files/",
+                    "slider"          => $dataDir."/slider/",
                     "imageArray"      => array("image/jpeg","image/jpg","image/gif","image/png","image/bmp"),
                     "imgMaxSize"      => 20000000,
                     "musicArray"      => array("audio/mp3","audio/mpeg","audio/wav"),
