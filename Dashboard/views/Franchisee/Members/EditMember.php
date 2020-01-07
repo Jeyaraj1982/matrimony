@@ -1,7 +1,8 @@
 <?php
          
     if (isset($_POST['Btnupdate'])) {
-        $_POST['Code'] =$_GET['Code'] ;     
+        $_POST['Code'] =$_GET['Code'] ; 
+	
         $response = $webservice->EditMember($_POST);
         
         if ($response['status']=="success") {
@@ -10,7 +11,7 @@
             $errormessage = $response['message']; 
         }
     }
-    $response = $webservice->getData("Franchisee","GetMemberDetails",array("Code"=>$_GET['Code']));
+    $response = $webservice->getData("Franchisee","GetMemberDetails");
     $Member=$response['data'];
      $CountryCodes=$Member['Country'];
 ?>
@@ -63,6 +64,7 @@
 </script>
 <form method="post" id="frmfrn">
     <input type="hidden" value="" name="txnPassword" id="txnPassword">
+    <input type="hidden" value="<?php echo $_GET['Code'];?>" name="SCode" id="SCode">
     <input type="hidden" value="<?php echo $Member['MemberCode'];?>" name="MemberCode" id="MemberCode">
 
     <div class="col-12 grid-margin">
@@ -173,7 +175,7 @@
                           <div class="col-sm-3"><small>Franchisee Name</small></div>
                           <div class="col-sm-9"><span class="<?php echo ($Member['FIsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<small style="color:#737373;"><?php echo  $Member['FranchiseName'];?> (<?php echo  $Member['FranchiseeCode'];?>)</small></div>
                       </div>
-                      <a href="javascript:void(0)" onclick="ConfirmEditMember()" name="Btnupdate" id="Btnupdate" class="btn btn-primary mr-2">Update Information</a>
+                      <a href="javascript:void(0)" onclick="Member.ConfirmEditMember()" name="Btnupdate" id="Btnupdate" class="btn btn-primary mr-2">Update Information</a>
                 </div>  
                     </div>                                                                                                      
               </div>
@@ -193,22 +195,7 @@
     
 });
 </script>                                                                                                 
-<div class="col-12 grid-margin">
-                  <div class="card">                                                            
-                    <div class="card-body">                                                                            
-                      <h4 class="card-title">Profiles</h4>  
-                      <form class="forms-sample">
-                      <div class="form-group row">
-                          <div class="col-sm-2"><small>Draft</small><br><small style="color:#737373;"><?php echo  "0";?></small></div>
-                          <div class="col-sm-2"><small>Posted</small><br><small style="color:#737373;"><?php echo  "0";?></small></div>
-                          <div class="col-sm-2"><small>Published</small><br><small style="color:#737373;"><?php echo  "0";?></small></div>
-                          <div class="col-sm-2"><small>Unpublished</small><br><small style="color:#737373;"><?php echo  "0";?></small></div>
-                          <div class="col-sm-2"><small>Expired</small><br><small style="color:#737373;"><?php echo  "0";?></small></div>
-                          <div class="col-sm-2"><small>Rejected</small><br><small style="color:#737373;"><?php echo  "0";?></small></div>
-                      </div>
-                </div>
-              </div>
-</div>
+
 <div class="col-12 grid-margin">
 <div class="col-sm-12" style="text-align: center; padding-top:5px;color:skyblue;">
                         <a href="../ManageMembers"><small style="font-weight:bold;text-decoration:underline">List of Members</small></a>&nbsp;|&nbsp;

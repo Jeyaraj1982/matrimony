@@ -59,19 +59,43 @@
     <div class="col-sm-9" style="margin-top: -8px;">
         <h4 class="card-title">Change Transaction Password</h4>
         <form class="forms-sample" method="post" action="" onsubmit="return SubmitChangePassword();">
-            <div class="form-group">
-                <input type="password" class="form-control" id="CurrentTransactionPassword" name="CurrentTransactionPassword" value="<?php echo (isset($_POST['CurrentTransactionPassword']) ? $_POST['CurrentTransactionPassword'] : "");?>" placeholder="Current Transaction Password">
-                <span class="errorstring" id="ErrCurrentTransactionPassword"><?php echo isset($ErrCurrentTransactionPassword)? $ErrCurrentTransactionPassword : "";?></span>
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control" id="NewTransactionPassword"  name="NewTransactionPassword" value="<?php echo (isset($_POST['NewTransactionPassword']) ? $_POST['NewTransactionPassword'] : "");?>" placeholder="New Transaction Password">
-                <span class="errorstring" id="ErrNewTransactionPassword"><?php echo isset($ErrNewTransactionPassword)? $ErrNewTransactionPassword : "";?></span>
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control" id="ConfirmNewTransactionPassword"  name="ConfirmNewTransactionPassword" value="<?php echo (isset($_POST['ConfirmNewTransactionPassword']) ? $_POST['ConfirmNewTransactionPassword'] : "");?>" placeholder="Confirm New Transaction Password">
-                <span class="errorstring" id="ErrConfirmNewTransactionPassword"><?php echo isset($ErrConfirmNewTransactionPassword)? $ErrConfirmNewTransactionPassword : "";?></span>
-            </div>
-            <button type="submit" name="BtnUpdatePassword" class="btn btn-primary mr-2" style="font-family: roboto;">Change Transaction Password</button>
+            <div class="form-group row">
+				<div class="col-sm-12"><small>Current Transaction Password<span id="star">*</span></small></div>
+				<div class="col-sm-12">
+					<div class="input-group">
+						<input type="password" class="form-control pwd" id="CurrentTransactionPassword" name="CurrentTransactionPassword" value="<?php echo (isset($_POST['CurrentTransactionPassword']) ? $_POST['CurrentTransactionPassword'] : "");?>" placeholder="Current Transaction Password">
+						<span class="input-group-btn">
+							<button onclick="showHidePwd('CurrentTransactionPassword',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
+						</span>          
+					</div>
+					<span class="errorstring" id="ErrCurrentTransactionPassword"><?php echo isset($ErrCurrentTransactionPassword)? $ErrCurrentTransactionPassword : "";?></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-12"><small>New Transaction Password<span id="star">*</span></small></div>
+				<div class="col-sm-12">
+					<div class="input-group">
+						<input type="password" class="form-control pwd" id="NewTransactionPassword"  name="NewTransactionPassword" value="<?php echo (isset($_POST['NewTransactionPassword']) ? $_POST['NewTransactionPassword'] : "");?>" placeholder="New Transaction Password">
+						<span class="input-group-btn">
+							<button onclick="showHidePwd('NewTransactionPassword',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
+						</span>          
+					</div>
+					<span class="errorstring" id="ErrNewTransactionPassword"><?php echo isset($ErrNewTransactionPassword)? $ErrNewTransactionPassword : "";?></span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-12"><small>Confirm New Transaction Password<span id="star">*</span></small></div>
+				<div class="col-sm-12">
+					<div class="input-group">
+						<input type="password" class="form-control pwd" id="ConfirmNewTransactionPassword"  name="ConfirmNewTransactionPassword" value="<?php echo (isset($_POST['ConfirmNewTransactionPassword']) ? $_POST['ConfirmNewTransactionPassword'] : "");?>" placeholder="Confirm New Transaction Password">
+						<span class="input-group-btn">
+							<button onclick="showHidePwd('ConfirmNewTransactionPassword',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
+						</span>          
+					</div>
+					<span class="errorstring" id="ErrConfirmNewTransactionPassword"><?php echo isset($ErrConfirmNewTransactionPassword)? $ErrConfirmNewTransactionPassword : "";?></span>
+				</div>
+			</div>
+			<button type="submit" name="BtnUpdatePassword" class="btn btn-primary mr-2" style="font-family: roboto;">Change Transaction Password</button>
             <div class="col-sm-12" style="text-align: center;color:red"><?php echo $sucessmessage ;?></div>  
             <div class="col-sm-12" style="text-align: center;color:red"><?php echo $errormessage ;?></div>
         </form>

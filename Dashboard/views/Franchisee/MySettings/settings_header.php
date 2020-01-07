@@ -30,6 +30,9 @@
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="FranchiseeInfo") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/FranchiseeInfo");?>" class="Notification" style="text-decoration:none"><span>Franchisee Info</span></a>
                                         </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="FrStaffInfo") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/FrStaffInfo");?>" class="Notification" style="text-decoration:none"><span>My Information</span></a>
+                                        </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon1 <?php echo ($page=="ChangePassword") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">   
                                             <a id="myaccount_leftnav_a" href="<?php echo GetUrl("MySettings/ChangePassword");?>" class="" style="text-decoration:none"><span>Change Password</span></a>
                                         </li>

@@ -1,4 +1,4 @@
-  <form method="post" action="<?php echo GetUrl("Members/CreateMember");?>" onsubmit="">      
+  
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
@@ -37,23 +37,31 @@
                          if (sizeof($response['data'])>0) {
                     ?>
                         <?php foreach($response['data'] as $Member) { ?>
+						
                                 <tr>
-                                <td><?php echo $Member['MemberCode'];?></td>
-                                <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberName'];?></td>
-                                <td><?php echo putDateTime($Member['CreatedOn']);?></td>
-                                <td></td>
-                                <td style="text-align:right">
-                                     <?php if($Member['NoOfProfile']>0) {?>
-                                    <a href="<?php echo GetUrl("ViewMemberProfile/".$Member['ProfilesCode'].".htm"); ?>"><span>View</span></a>
-                                    <?php if ($Member['IsEditable']==1) { ?>        
-                                        &nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Member/".$Member['MemberCode']."/ProfileEdit/GeneralInformation/".$Member['ProfilesCode'].".htm"); ?>"><span>Edit Profile</span></a>
-                                    <?php } ?>
-                                <?php } else {?>
-                                    <a href="<?php echo GetUrl("CreateProfile/".$Member['MemberCode'].".htm");?>"><span>Create</span></a>  
-                                <?php }  ?>
-                                <a href="javascript:void(0)" onclick="ConfirmationfrEdit('<?php echo $Member['MemberID'];?>')"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Members/ViewMember/".$Member['MemberID'].".html"); ?>"><span>View</span></a></td>
-                                </tr>
+									<form method="post" id="frmfrn_<?php echo $Member['MemberCode'];?>">      
+										<input type="hidden" value="" name="txnPassword" id="txnPassword_<?php echo $Member['MemberCode'];?>">
+										<input type="hidden" value="<?php echo $Member['MemberCode'];?>" name="MemberCode" id="MemberCode"> 
+										<input type="hidden" value="<?php echo session_id() ;?>" name="Session" id="Session"> 
+										<td><?php echo $Member['MemberCode'];?></td>
+										<td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberName'];?></td>
+										<td><?php echo putDateTime($Member['CreatedOn']);?></td>
+										<td></td>
+										<td style="text-align:right">
+											 <?php if($Member['NoOfProfile']>0) {?>
+											<a href="<?php echo GetUrl("ViewMemberProfile/".$Member['ProfilesCode'].".htm"); ?>"><span>View</span></a>
+											<?php if ($Member['IsEditable']==1) { ?>        
+												&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Member/".$Member['MemberCode']."/ProfileEdit/GeneralInformation/".$Member['ProfilesCode'].".htm"); ?>"><span>Edit Profile</span></a>
+											<?php } ?>
+										<?php } else {?>
+											<a href="<?php echo GetUrl("CreateProfile/".$Member['MemberCode'].".htm");?>"><span>Create Profile</span></a>&nbsp;&nbsp;  
+										<?php }  ?>
+										<a href="javascript:void(0)" onclick="Member.GetTxnPasswordViewMemberEditScreen('<?php echo $Member['MemberCode'];?>')"><span>Edit</span></a>&nbsp;&nbsp;
+										<a href="javascript:void(0)" onclick="Member.GetTxnPasswordViewMember('<?php echo $Member['MemberCode'];?>')"><span>View</span></a>
+										
+									</form>
+								</tr>
+							
                         <?php } } else {?>            
                         
                         <?php } ?>
@@ -63,7 +71,7 @@
                 </div>
               </div>
             </div>
-        </form>   
+           
  <div class="modal" id="PubplishNow" data-backdrop="static" >
             <div class="modal-dialog" >
                 <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >

@@ -141,7 +141,7 @@
                 <div class="collapse" id="FranchiseeInfo">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("MyBussiness/FranchiseeInfo");?>">Franchisee Info </a>
+                            <a class="nav-link" href="<?php echo GetUrl("MySettings/FranchiseeInfo");?>">Franchisee Info </a>
                         </li>
                       <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("Staffs/ManageStaffs");?>">Manage Staffs</a>

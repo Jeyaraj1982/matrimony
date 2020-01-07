@@ -1,6 +1,33 @@
 <?php
  $response = $webservice->GetMemberDetails(array("Code"=>$_GET['Code']));
-    $Member=$response['data'];    
+    $Member=$response['data'];
+	 
+if ($response['status']=="failed") {
+	?>
+	<div class="col-12 grid-margin">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Manage Members</h4>  
+                      <h4 class="card-title">View Member Information</h4>
+					   
+					   <?php 
+					   if ($response['data']['errorcode']=="access_denied") {
+						  ?> 
+						  
+						  Session may be expired. <a href="<?php echo GetUrl("Members/ManageMembers");?>">click to continue</a>
+						  <?php 
+					   } else { ?>
+						    <a href="<?php echo GetUrl("Members/ManageMembers");?>"><?php echo $response['message'];?></a>
+					 <?php   }
+					   ?>
+					 </div>
+					</div>
+					</div>
+				
+	<?php
+	
+	
+} else {    
 ?>   
 <style>
     .ft-left-nav li a{color:#333}
@@ -23,13 +50,23 @@
                       </div>
                       <div class="form-group row">
                           <div class="col-sm-3"><small>Member Name:</small> </div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberName'];?></small></div>
+                          <div class="col-sm-9"><small style="color:#737373;"><?php echo $Member['MemberName'];?></small></div>
+                      </div>
+                     <div class="form-group row">
+                          <div class="col-sm-3"><small>Date of birth:</small> </div>
+                          <div class="col-sm-3"><small style="color:#737373;"><?php echo PutDate($Member['DateofBirth']);?></small></div>
+						  <div class="col-sm-2"><small>Gender:</small> </div>
+                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['Sex'];?></small></div>
                       </div>
                       <div class="form-group row">
                           <div class="col-sm-3"><small>Mobile Number:</small></div>
                           <div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['CountryCode'];?>-<?php echo $Member['MobileNumber'];?></small></div>
-                          <div class="col-sm-2"><small>Email ID:</small></div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo  $Member['EmailID'];?></small></div>
+                          <div class="col-sm-2"><small>Whatsapp Number:</small></div>
+                          <div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['WhatsappCountryCode'];?>-<?php echo $Member['WhatsappNumber'];?></small></div>
+                       </div>
+					   <div class="form-group row">
+						  <div class="col-sm-3"><small>Email ID:</small></div>
+                          <div class="col-sm-9"><small style="color:#737373;"><?php echo  $Member['EmailID'];?></small></div>
                           </div>
                       <div class="form-group row">
                           <div class="col-sm-3"><small>Created on:</small></div>
@@ -754,3 +791,4 @@
  }
 </script>
   
+<?php } ?>
