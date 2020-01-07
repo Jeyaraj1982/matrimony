@@ -6,8 +6,9 @@
     
     include_once(web_path."classes/class.pdo.mysql.php");
       
-    $app     = new MySql(DBHOST,DBUSER,DBPASS,"allsaliy_matri_website");   
+    $app     = new MySql(DBHOST,DBUSER,DBPASS,DBNAME);
     include_once(application_config_path);
+    
       
     $appData = $app->select("select * from _japp where concat('www.',Lower(hostname))='".strtolower($_SERVER['HTTP_HOST'])."' or  Lower(hostname)='".strtolower($_SERVER['HTTP_HOST'])."' or  concat('www.',Lower(hosturl))='".strtolower($_SERVER['HTTP_HOST'])."' or  Lower(hosturl)='".strtolower($_SERVER['HTTP_HOST'])."' ");
         
@@ -17,7 +18,6 @@
     }
           
     function String2FileName($string) {
-        
         $filename = str_replace("'","",trim($string));
         $filename = str_replace('"',"",trim($filename));
         $filename = str_replace("&","",trim($filename));
@@ -52,34 +52,30 @@
         $filename = str_replace("/","",trim($filename));
         $filename = str_replace("   "," ",trim($filename));
         $filename = str_replace("  "," ",trim($filename));
-        
         $filename = str_replace(" ","-",trim($filename));
         return strtolower($filename);
     }
 
     $dataDir = $appData[0]['datadir']; 
-    define("SERVER_PATH","/home/allsaliyarmatri/public_html/website/");
+    $dataDir = "demo_usedvechiles"; 
 
     $config = array("dataDir"         => $dataDir,
-                    "thumb"           => $dataDir."/thumb/",
-                    "musics"          => $dataDir."/musics/",
-                    "photos"          => $dataDir."/photos/",
-                    "downloads"       => $dataDir."/download/",
-                    "trash"           => $dataDir."/trash/",
-                    "backup"          => $dataDir."/backup/",
-                    "files"           => $dataDir."/files/",
-                    "slider"          => $dataDir."/slider/",
+                    "thumb"           => "cms/".$dataDir."/thumb/",
+                    "musics"          => "cms/".$dataDir."/musics/",
+                    "photos"          => "cms/".$dataDir."/photos/",
+                    "downloads"       => "cms/".$dataDir."/download/",
+                    "trash"           => "cms/".$dataDir."/trash/",
+                    "backup"          => "cms/".$dataDir."/backup/",
+                    "files"           => "cms/".$dataDir."/files/",
+                    "slider"          => "cms/".$dataDir."/slider/",
                     "imageArray"      => array("image/jpeg","image/jpg","image/gif","image/png","image/bmp"),
                     "imgMaxSize"      => 20000000,
                     "musicArray"      => array("audio/mp3","audio/mpeg","audio/wav"),
                     "musicMaxSize"    => 20000000,
                     "downloadArray"   => array("image/jpeg","image/jpg","image/gif","image/png","application/pdf","application/doc","application/zip","application/oda","application/odt","application/x-zip-compressed"),
                     "downloadMaxSize" => 20000000); 
-                               
     
-    //$mysql = new MySql(DBHOST,DBUSER,DBPASS,"j2jsoftw_matri_website");  
-    $mysql = new MySql(DBHOST,DBUSER,DBPASS,$appData[0]['dbname']);    
-    
+    $mysql = new MySql(DBHOST,DBUSER,DBPASS,DBNAME);  
     $settings = $mysql->select("select * from _jsitesettings"); 
           
     include_once(web_path."classes/class.jframe.php");
