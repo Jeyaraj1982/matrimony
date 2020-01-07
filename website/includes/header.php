@@ -49,6 +49,7 @@
         <script src="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-buttons.js?v=1.0.5" type="text/javascript"></script>
         <script src="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-media.js?v=1.0.6" type="text/javascript"></script>
         <script src="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7" type="text/javascript"></script>   
+        <script src="<?php echo BaseUrl;?>assets/js/app.js" type="text/javascript"></script>   
         
         <link href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
         <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>

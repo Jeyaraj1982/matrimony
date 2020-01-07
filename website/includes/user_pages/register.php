@@ -1,9 +1,9 @@
 <?php 
 include_once("includes/header.php");
     if (isset($_POST['BtnRegister'])) {
-
+	
         include_once(application_config_path);
-        $response = $webservice->getData("Member","Register",$_POST);
+		$response = $webservice->getData("Member","Register",$_POST);
 		if ($response['status']=="success") {
 			$response = $webservice->getData("Member","Login",array("UserName"=>$_POST['Email'],"Password"=>$_POST[LoginPassword],"login"=>"")); 
             $_SESSION['MemberDetails']=$response['data'];
@@ -71,7 +71,7 @@ include_once("includes/header.php");
             document.getElementById("ErrCaptchatext").innerHTML="Captcha Not Matched!";
             return false;
         }
-        älert(ErrorCount);
+
         return  (ErrorCount==0) ? true : false;
     }                                                
 </script>
