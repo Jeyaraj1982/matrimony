@@ -213,9 +213,9 @@ input:checked + .slider {
 </form> 
 <div class="modal" id="PubplishNow" data-backdrop="static" >
 		<div class="modal-dialog" >
-			<div class="modal-content" id="Publish_body"  style="max-height: 313px;min-height: 313px;" >
+			<div class="modal-content" id="Publish_body"  style="max-height: 350px;min-height: 350px;" >
 		
-			</div>
+			</div> 
 		</div>
 	</div>
 	<div class="modal" id="ChnPswdNow" data-backdrop="static" >

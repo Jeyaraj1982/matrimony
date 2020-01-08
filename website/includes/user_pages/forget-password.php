@@ -22,23 +22,31 @@
             include_once("includes/header.php");
             ?>
   <br><br><br> 
-  <section id="contact-page">
-    <div class="container">
-      <div class="row contact-wrap">
-        <div class="status alert alert-success" style="display: none"></div>
-        <div class="col-sm-3"></div>
+  <script>
+function submitMemberForgetPswd() {
+        $('#ErrFpUserName').html("");
+        ErrorCount=0;
+        
+        IsNonEmpty("FpUserName","ErrFpUserName","Please Enter Member ID / Registered Email");
+         return  (ErrorCount==0) ? true : false;
+    }    
+</script>
+  <div class="row">
+	<div class="col-sm-3"></div>
         <div class="col-sm-6">
+			<div style="min-width: 400px;max-width:400px;margin:0px auto;">
             <div style="text-align:center">
                 <h2>Forget password</h2>
             </div>
           <div id="errormessage"></div>
-          <form action="" method="post" role="form" class="contactForm">
+          <form action="" method="post" role="form" class="contactForm" onsubmit="return submitMemberForgetPswd();">
             <div class="form-group" style="text-align:center">
               Please provide your Member ID or Registered Email, we'll send a verification code to your email to reset your password
             </div>
             <div class="form-group">
-              <input type="text" class="form-control"  name="FpUserName" id="FpUserName" placeholder="Member ID / Registered Email" value="<?php echo isset($_POST['FpUserName']) ? $_POST['FpUserName'] : '';?>" required="Please enter a valid email" data-rule="email" data-error="Please enter a valid email" />
-              <div class="validation"></div>
+              <input type="text" class="form-control"  name="FpUserName" id="FpUserName" placeholder="Member ID / Registered Email" value="<?php echo isset($_POST['FpUserName']) ? $_POST['FpUserName'] : '';?>" />
+			  <span class="errorstring" id="ErrFpUserName"><?php echo isset($ErrFpUserName)? $ErrFpUserName : "";?>&nbsp;</span>
+			 <div class="validation"></div>
             </div>
             <div class="form-group" style="color:red">
                 <?php echo $errormessage;?>
@@ -51,9 +59,8 @@
                 </div>
             </form>
         </div>
+		</div>
         <div class="col-sm-3"></div>
-      </div>
-    </div>                                                                               
-  </section>
+    </div>                                                                                
   <br><br><br>
  <?php include_once("includes/footer.php");?>

@@ -11,12 +11,15 @@
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
-    require 'lib/mail/src/Exception.php';
-    require 'lib/mail/src/PHPMailer.php';
-    require 'lib/mail/src/SMTP.php';
+    require __DIR__.'/lib/mail/src/Exception.php';
+    require __DIR__.'/lib/mail/src/PHPMailer.php';
+    require __DIR__.'/lib/mail/src/SMTP.php';
      
     $mail    = new PHPMailer;
-    
+  function reInitMail() {
+global $mail;
+ $mail    = new PHPMailer;
+  }	  
     include_once($cdata->Language.".php");
     
     class J2JApplication {

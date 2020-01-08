@@ -1,9 +1,6 @@
 <?php
      class Member {
 
-         public function __construct() {
-             
-         }
          
          public function Login() {
 
@@ -17,7 +14,7 @@
                  return Response::returnError("Please enter password ");
              }
 
-             $data=$mysql->select("select * from `_tbl_members` where (`MemberLogin`='".$_POST['UserName']."' or `EmailID`='".$_POST['UserName']."' or `MobileNumber`='".$_POST['UserName']."' or `MemberCode`='".$_POST['UserName']."') and `IsDeleted`='0'");
+             $data=$mysql->select("select * from `_tbl_members` where (`EmailID`='".$_POST['UserName']."' or `MobileNumber`='".$_POST['UserName']."' or `MemberCode`='".$_POST['UserName']."') and `IsDeleted`='0'");
              $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
              $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"       => date("Y-m-d H:i:s"),
                                                                 "LoginFrom"     => "Web",
@@ -162,9 +159,11 @@
              }
              
              $MemberCode=SeqMaster::GetNextMemberNumber();
+			 $Sex = CodeMaster::getData("SEX",$_POST['Gender']);
              $id = $mysql->insert("_tbl_members",array("MemberName"     => $_POST['Name'],
                                                        "MemberCode"     => $MemberCode,
-                                                       "Sex"            => $_POST['Gender'],
+                                                       "SexCode"        => $_POST['Gender'],
+													   "Sex"            => $Sex[0]['CodeValue'],
                                                        "MobileNumber"   => $_POST['MobileNumber'],
                                                        "EmailID"        => $_POST['Email'],
                                                        "MemberPassword" => $_POST['LoginPassword'],
@@ -184,6 +183,7 @@
                                         "MemberID" => $id,
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
+			MobileSMSController::sendSMS($_POST['MobileNumber']," Dear ".$_POST['Name'].",Member Created.Your Member ID is ".$MemberCode." and Member Password is ".$_POST['LoginPassword']." " );  
 
              $data[0]['LoginID']=$loginid; 
              $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Member'");      
@@ -448,57 +448,165 @@
 
              global $mysql,$loginInfo;
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
-             if ($memberdata[0]['IsMobileVerified']==0) {
+           
+		   if ($memberdata[0]['ChangePasswordFstLogin']==1) {
+				return $this->ChangePasswordScreen("",$loginInfo[0]["MemberID"],"","");
+             }
+			 
+			 if ($memberdata[0]['IsMobileVerified']==0) {
+				return $this->ChangeMobileNumberFromVerificationScreen("",$loginInfo[0]["MemberID"],"","");
+             }
+             
+			 if ($memberdata[0]['IsEmailVerified']==0) {
+				return $this->ChangeEmailFromVerificationScreen("",$loginInfo[0]["MemberID"],"","");
+             }
+            // return "<script>location.href='".AppPath."MyProfiles/CreateProfile';</script>";
+         }
+
+		 function ChangePasswordScreen($error="",$loginid="",$npswd="",$cnpswd="",$reqID="") {
+           
+		   global $mysql,$loginInfo;
+            
+            if (sizeof($loginInfo)==0) {
+                return "Invalid request. Please login again.";
+            }   
+            
+            $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+            if ($memberdata[0]['ChangePasswordFstLogin']==0) {
+				return '<div class="modal-body" style="text-align:center"><br><br>
+							<p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your password has been<br>saved successfully.</h4>    <br>
+                            <a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
+            } else {
+                $formid = "frmChnPass_".rand(30,3000);
+                return '<div id="otpfrm">
+                            <form method="POST" id="'.$formid.'">
+                               <div class="modal-header">
+                                    <h4 class="modal-title">Change Login Password</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
+                                </div>
+								<div class="modal-body" style="min-height: 261px;max-height: 261px;">
+									<div class="form-group row">
+										<div class="col-sm-4" style="text-align:center;padding-top: 15px;">
+											<img src="'.AppPath.'assets/images/icon_change_password.png">
+										</div>
+										<div class="col-sm-8">
+											<span style="text-left:center;color:#ada9a9">The administartor requests to change your login password on your first signin.</span><br><br>
+											<div class="row">
+												<div class="col-sm-8"><h6 style="color:#ada9a9">New Password<span style="color:red">*</span></h6></div>
+											</div>                             
+											<div class="row">
+												<div class="col-sm-11">  
+													<div class="input-group">
+														<input type="password" class="form-control" value="'.$npswd.'" id="NewPassword"  name="NewPassword" maxlength="20" style="font-family:Roboto;" placeholder="New Password">
+														<span class="input-group-btn">
+															<button  onclick="showHidePwd(\''.NewPassword.'\',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
+														</span>          
+													</div>
+													<div id="frmNewPass_error" style="color:red;font-size:12px;">'.$error.'</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-8"><h6 style="color:#ada9a9">Confirm New Password<span style="color:red">*</span></h6></div>
+											</div>
+											<div class="row">
+												<div class="col-sm-11">
+													<div class="input-group">
+														<input type="password" class="form-control" value="'.$cnpswd.'" id="ConfirmNewPassword"  name="ConfirmNewPassword"  maxlength="20" style="font-family:Roboto;" placeholder="Confirm New Password">
+														<span class="input-group-btn">
+															<button  onclick="showHidePwd(\''.ConfirmNewPassword.'\',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
+														</span>          
+													</div>
+													<div id="frmCfmNewPass_error" style="color:red;font-size:12px">'.$error.'</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+                                   <a href="javascript:void(0)" onclick="Signout()">Sign out</a>&nbsp;&nbsp;
+									<a href="javascript:void(0)" onclick="ChangeNewPassword(\''.$formid.'\')" class="btn btn-primary" >Change Password</a>&nbsp;&nbsp;
+								</div>
+                             </div>
+                            </form>                                                                                                       
+                        </div>
+						<script>
+							$(document).ready(function () {
+								$("#NewPassword").blur(function () {
+									if(IsNonEmpty("NewPassword","frmNewPass_error","Please enter new password")){
+										IsAlphaNumeric("NewPassword","frmNewPass_error","Please enter alpha numerics characters only");
+									}
+								});
+								$("#ConfirmNewPassword").blur(function () {
+									if(IsNonEmpty("ConfirmNewPassword","frmCfmNewPass_error","Please enter confirm new password")){
+										IsAlphaNumeric("ConfirmNewPassword","frmCfmNewPass_error","Please enter alpha numerics characters only");
+									}
+								});
+							});
+							document.getElementById(\'NewPassword\').onkeydown = function(event) {
+							   var k;
+							   if(event.keyCode)
+							   {
+								   k = event.keyCode;
+								   if(k == 13)
+								   {                            
+									  
+										 document.getElementById(\'ConfirmNewPassword\').focus();
+								   }
+								}
+							}
+							document.getElementById(\'ConfirmNewPassword\').onkeydown = function(event) {
+							   var k;
+							   if(event.keyCode)
+							   {
+								   k = event.keyCode;
+								   if(k == 13)
+								   {                            
+									  
+										 ChangeNewPassword(\''.$formid.'\');
+								   }
+								}
+							}
+						</script>'; 
+            }   
+        }
+		function ChangeNewPassword($error="",$loginid="",$npswd="",$cnpswd="",$reqID="") {
+           global $mysql,$loginInfo;
+			if (sizeof($loginInfo)==0) {
+                return "Invalid request. Please login again.";
+            } 
+            $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+			if (isset($_POST['NewPassword'])) {
+				if (strlen(trim($_POST['NewPassword']))<6) {
+                   return $this->ChangePasswordScreen("Invalid new password.",$_POST['loginId'],$_POST['NewPassword'],$_POST['reqId']);
+                }
+				if (strlen(trim($_POST['NewPassword']))!= strlen(trim($_POST['ConfirmNewPassword']))) {
+                   return $this->ChangePasswordScreen("Do not match password.",$_POST['loginId'],$_POST['NewPassword'],$_POST['ConfirmNewPassword'],$_POST['reqId']);
+                }
+               
+                $update = "update _tbl_members set MemberPassword='".$_POST['NewPassword']."' ,ChangePasswordFstLogin='0' where MemberID='".$loginInfo[0]['MemberID']."'";
+                $mysql->execute($update);
 				
-               return $this->ChangeMobileNumberFromVerificationScreen("",$loginInfo[0]["LoginID"],"","");
-             }
-             if ($memberdata[0]['IsEmailVerified']==0) {
-				 
-               return $this->ChangeEmailFromVerificationScreen("",$loginInfo[0]["LoginID"],"","");
-             }
-             return "<script>location.href='".AppPath."MyProfiles/CreateProfile';</script>";
-         }
+					$mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberChangePassword'");
+					$content  = str_replace("#MemberName#",$memberdata[0]['MemberName'],$mContent[0]['Content']);
+					$content  = str_replace("#MemberPassword#",$_POST['NewPassword'],$content);
 
-         public function SaveBasicSearch() {
-
-             global $mysql,$loginInfo; 
-             $insertArray = array("MemberID"    => $loginInfo[0]['MemberID'],
-                                  "SearchType"  => 'Basic Search',
-                                  "CreatedOn"   => date("Y-m-d H:i:s"),
-                                  "SearchParam" => json_encode(array("AgeFrom"           => $_POST['age'],
-                                                                     "AgeTo"             => $_POST['toage'],
-                                                                     "ReligionCode"      => $_POST['Religion'],
-                                                                     "CommunityCode"     => $_POST['Community'],
-                                                                     "MaritalStatusCode" => $_POST['MaritalStatus'])));
-             if ($_POST['check']=="on") {
-                if (strlen(trim($_POST['SaveSearchas']))==0) {
-                    return Response::returnError("Please enter Save Searchas");
-                }
-                $data = $mysql->select("select * from `_tbl_profile_search_history` were `SearchName`='".$_POST['SaveSearchas']."'");
-                if (sizeof($data)>0) {
-                    return Response::returnError("Search Name Already Exists");
-                }
-                $countofsearch= $mysql->select("select * from `_tbl_profile_search_history` where `MemberID`='".$loginInfo[0]['MemberID']."' and SearchType='Basic Search' and IsVisible='1' and IsSaved='1'");   
-                if (sizeof($countofsearch)<5) {    
-                    $insertArray["SearchName"] = $_POST['SaveSearchas'];
-                    $insertArray["NotifyMe"]   = $_POST['EmailMe'];
-                    $insertArray['IsVisible']  = "1";
-                    $insertArray['IsSaved']    = "1";
-                } else {
-                    $insertArray["SearchName"] = ""; 
-                    $insertArray["NotifyMe"]   = "";
-                    $insertArray['IsVisible']  = "0";
-                    $insertArray['IsSaved']    = "0";
-                    return Response::returnError("saved only 5 searches");
-                }
-                $id =  $mysql->insert("_tbl_profile_search_history",$insertArray);
-                if (sizeof($id)>0) {
-                    return Response::returnSuccess("success",array());
-                } else{
-                    return Response::returnError("Access denied. Please contact support");   
-                }
-             }
-         }
+					 MailController::Send(array("MailTo"         => $memberdata[0]['EmailID'],
+												"Category"       => "MemberChangePassword",
+												"MemberCode" 	 => $memberdata[0]['MemberCode'],
+												"Subject"        => $mContent[0]['Title'],
+												"Message"        => $content),$mailError);
+					 MobileSMSController::sendSMS($memberdata[0]['MobileNumber']," Dear ".$memberdata[0]['MemberName'].",Your Login Password has been changed successfully. Your New Login Password is ".$_POST['NewPassword']."");  
+                
+                return '<div class="modal-body" style="text-align:center"><br><br>
+                            <p style="text-align:center;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your new password has been<br> saved successfully.</h4>    <br>
+                            <a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';   
+            }
+                                                                                                                                    
+			}
 
          public function ChangeMobileNumberFromVerificationScreen($error="",$loginid="",$scode="",$reqID="") {
 
@@ -530,8 +638,8 @@
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">+'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumber()">Change</h4>
                             </div>
                             <div class="modal-footer">
-                                <a href="javascript:void(0)" onclick="MobileNumberVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a>&nbsp;&nbsp;
-                                <a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>
+								<a href="javascript:void(0)" onclick="Signout()">Sign out</a>&nbsp;&nbsp;
+                                <a href="javascript:void(0)" onclick="MobileNumberVerificationForm()" class="btn btn-primary">Continue to verify</a>&nbsp;&nbsp;
                             </div>
                         </div>';
              }
@@ -704,11 +812,7 @@
                                                              "SqlQuery"       => base64_encode($sql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                  return '<div class="modal-header">
-                            <h4 class="modal-title">Please verify your mobile number</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
+                  return '<div class="modal-body" style="text-align:center">
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
                             <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
@@ -748,8 +852,7 @@
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'&nbsp;&#65372&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>
                             </div>
                             <div class="modal-footer">
-                                <a href="javascript:void(0)" onclick="EmailVerificationForm()" class="btn btn-primary" name="verifybtn" id="verifybtn">Continue to verify</a>&nbsp;&nbsp;
-                                <a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>
+                                <a href="javascript:void(0)" onclick="EmailVerificationForm()" class="btn btn-primary" >Continue to verify</a>&nbsp;&nbsp;
                             </div>
                         </div>'; 
                  
@@ -952,7 +1055,7 @@
                  return '<div class="modal-body" style="text-align:center">
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
-                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                            <a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';
                        
              } else {
@@ -1080,7 +1183,46 @@
              $Plans = $mysql->select("select * from _tbl_member_plan");
              return Response::returnSuccess("success",$Plans);
          }
-         
+         public function SaveBasicSearch() {
+
+             global $mysql,$loginInfo; 
+             $insertArray = array("MemberID"    => $loginInfo[0]['MemberID'],
+                                  "SearchType"  => 'Basic Search',
+                                  "CreatedOn"   => date("Y-m-d H:i:s"),
+                                  "SearchParam" => json_encode(array("AgeFrom"           => $_POST['age'],
+                                                                     "AgeTo"             => $_POST['toage'],
+                                                                     "ReligionCode"      => $_POST['Religion'],
+                                                                     "CommunityCode"     => $_POST['Community'],
+                                                                     "MaritalStatusCode" => $_POST['MaritalStatus'])));
+             if ($_POST['check']=="on") {
+                if (strlen(trim($_POST['SaveSearchas']))==0) {
+                    return Response::returnError("Please enter Save Searchas");
+                }
+                $data = $mysql->select("select * from `_tbl_profile_search_history` were `SearchName`='".$_POST['SaveSearchas']."'");
+                if (sizeof($data)>0) {
+                    return Response::returnError("Search Name Already Exists");
+                }
+                $countofsearch= $mysql->select("select * from `_tbl_profile_search_history` where `MemberID`='".$loginInfo[0]['MemberID']."' and SearchType='Basic Search' and IsVisible='1' and IsSaved='1'");   
+                if (sizeof($countofsearch)<5) {    
+                    $insertArray["SearchName"] = $_POST['SaveSearchas'];
+                    $insertArray["NotifyMe"]   = $_POST['EmailMe'];
+                    $insertArray['IsVisible']  = "1";
+                    $insertArray['IsSaved']    = "1";
+                } else {
+                    $insertArray["SearchName"] = ""; 
+                    $insertArray["NotifyMe"]   = "";
+                    $insertArray['IsVisible']  = "0";
+                    $insertArray['IsSaved']    = "0";
+                    return Response::returnError("saved only 5 searches");
+                }
+                $id =  $mysql->insert("_tbl_profile_search_history",$insertArray);
+                if (sizeof($id)>0) {
+                    return Response::returnSuccess("success",array());
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+             }
+         }
          public function OverallSendOtp($errormessage="",$otpdata="",$reqID="",$PProfileID="") {
              
              global $mysql,$mail,$loginInfo;            
@@ -3565,7 +3707,7 @@
             }                                                                                     
          }
   
-         public public function GetLandingPageProfiles() {
+         public function GetLandingPageProfiles() {
              
              global $mysql;
              $Profiles = array();

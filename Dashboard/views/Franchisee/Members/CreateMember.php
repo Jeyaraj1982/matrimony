@@ -183,7 +183,7 @@ function SubmitNewMember() {
                                 <div class="col-sm-3">
                                     <select class="selectpicker form-control" data-live-search="true" id="Sex"  name="Sex">
                                             <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
-                                            <option value="<?php echo $Sex['CodeValue'];?>" <?php echo ($_POST['Sex']==$Sex['CodeValue']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
+                                            <option value="<?php echo $Sex['SofCode'];?>" <?php echo ($_POST['Sex']==$Sex['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
                                             <?php } ?>
                                     </select>
                                 </div>
@@ -225,17 +225,18 @@ function SubmitNewMember() {
                           </div>
                         </div>
                        <div class="form-group row">
-                          <!--<label for="LoginName" class="col-sm-2 col-form-label">Login Name<span id="star">*</span></label>
-                          <div class="col-sm-3">
-                            <input type="text" class="form-control" id="LoginName" name="LoginName" value="<?php //echo (isset($_POST['LoginName']) ? $_POST['LoginName'] : "");?>" placeholder="Login Name">
-                            <span class="errorstring" id="ErrLoginName"><?php //echo isset($ErrLoginName)? $ErrLoginName : "";?></span>
-                          </div> -->
                           <label for="LoginPassword" class="col-sm-3 col-form-label">Login Password<span id="star">*</span></label>
                           <div class="col-sm-4">
                             <input type="password" class="form-control" id="LoginPassword" name="LoginPassword" value="<?php echo (isset($_POST['LoginPassword']) ? $_POST['LoginPassword'] : "");?>" placeholder="Login Password">
                             <span class="errorstring" id="ErrLoginPassword"><?php echo isset($ErrLoginPassword)? $ErrLoginPassword : "";?></span></div>
                             <div class="col-sm-2" style="padding-top:5px;"><input type="checkbox" onclick="myFunction()">&nbsp;show</div>
-                          </div>
+							<div class="col-sm-4" style="padding-top: 5px;">
+									<div class="custom-control custom-checkbox mb-3">
+										<input type="checkbox" class="custom-control-input" id="PasswordFstLogin" name="PasswordFstLogin">
+										<label class="custom-control-label" for="PasswordFstLogin" style="margin-top: 7px;">&nbsp;Change password on first login</label>
+									</div>
+								</div>
+						</div>
                           
                        <div class="form-group row">
                         <div class="col-sm-2">

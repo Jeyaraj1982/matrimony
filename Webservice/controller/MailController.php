@@ -2,9 +2,9 @@
     class MailController {
         
         static public function Send($param,&$mailError) {
-            
+            reInitMail();
             global $mail,$mysql;
-            
+            reInitMail();
             $reqID = $mysql->insert("_tbl_logs_email",array("EmailTo"          => $param['MailTo'],
                                                             "EmaildFor"        => $param['Category'],
                                                             "MemberID"         => isset($param['MemberID']) ? $param['MemberID'] : 0,
@@ -21,7 +21,7 @@
             }
 
             $mysql->execute("update _tbl_logs_email set EmailAPIID='".$emailSettings[0]['ApiID']."', APIRequestedOn='".date("Y-m-d H:i:s")."' where EmailLogID='".$reqID."'");
-             
+
             $mail->isSMTP(); 
             $mail->SMTPDebug = 0;
             $mail->Host = $emailSettings[0]["HostName"];

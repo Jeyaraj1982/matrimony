@@ -14,14 +14,15 @@
     $layout=0;
     include_once("includes/header.php");
 ?>  <br><br><br>
+
 <script>
 function submitMemberRegistrationform() {
         $('#ErrUserName').html("");
         $('#ErrPassword').html("");
 		ErrorCount=0;
         
-        IsNonEmpty("UserName","ErrUserName","Please Enter Your Member ID / Registered Email");
-        IsNonEmpty("Password","ErrPassword","Please Enter Your Password");
+        IsNonEmpty("UserName","ErrUserName","Please Enter Member ID / Registered Email");
+        IsNonEmpty("Password","ErrPassword","Please Enter Password");
 		 return  (ErrorCount==0) ? true : false;
     }    
 </script>

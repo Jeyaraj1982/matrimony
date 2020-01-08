@@ -54,16 +54,8 @@ $(document).ready(function () {
     
         IsNonEmpty("LoginPassword","ErrLoginPassword","Please Enter Login Password");
                         
-   });
+   }); 
 });       
-function myFunction() {
-  var x = document.getElementById("LoginPassword");
-  if (x.type === "password") {
-    x.type = "text";
-  } else {
-    x.type = "password";
-  }
-}
 
 function SubmitNewStaff() {
                          $('#ErrstaffName').html("");
@@ -172,21 +164,19 @@ function SubmitNewStaff() {
 									<span class="errorstring" id="ErrUserRole"><?php echo isset($ErrUserRole)? $ErrUserRole: "";?></span>
 								</div>
 							</div>
-                      <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
-                          <div class="col-sm-3" style="padding-right:0px">
-                            <select class="selectpicker form-control" data-live-search="true" name="MobileNumberCountryCode" id="MobileNumberCountryCode">
-                               <?php foreach($fInfo['data']['Country'] as $CountryCode) { ?>
-                              <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'MobileNumberCountryCode'])) ? (($_POST[ 'MobileNumberCountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "") : (($Staffs[ 'MobileNumberCountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
-                                        <?php echo $CountryCode['str'];?>
-                               <?php } ?>
-                            </select>
-                          </div>
-                          <div class="col-sm-6">
-                            <input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>" >
-                            <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber: "";?></span>
-                          </div>
-                         
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
+							<div class="col-sm-3" style="padding-right:0px">
+								<select class="selectpicker form-control" data-live-search="true" name="MobileNumberCountryCode" id="MobileNumberCountryCode">
+									<?php foreach($fInfo['data']['Country'] as $CountryCode) { ?>
+									<option value="<?php echo $CountryCode['ParamA'];?>" <?php echo ($_POST['MobileNumberCountryCode']==$CountryCode['ParamA']) ? " selected='selected' " : "";?>> <?php echo $CountryCode['str'];?></option>
+									<?php } ?>
+								</select>
+							</div>
+							<div class="col-sm-6">
+								<input type="text" maxlength="10" class="form-control" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : "");?>" >
+								<span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber: "";?></span>
+							</div>
                         </div>
                       <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Email ID<span id="star">*</span></label>

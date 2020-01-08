@@ -57,7 +57,25 @@
         <link href="<?php echo BaseUrl;?>assets/source/jquery.fancybox.css?v=2.1.5" type="text/css"   media="screen" rel="stylesheet"/>
         <link href="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-buttons.css?v=1.0.5"   media="screen" rel="stylesheet"/>
         <link href="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7"  media="screen" rel="stylesheet"/>
-        <script>
+        <style>
+	.errorstring {
+		color:red;
+		font-size:12px;
+	}
+</style>
+		<script>
+		function showHidePwd(pwd,btn) {
+    
+  var x = document.getElementById(pwd);
+  if (x.type === "password") {
+    x.type = "text";
+    
+    btn.html('<i class="glyphicon glyphicon-eye-close"></i>');
+  } else {
+    x.type = "password";
+    btn.html('<i class="glyphicon glyphicon-eye-open"></i>');
+  }
+}
         /*Facebook Start*/
         //Whatsspp
     function postToWhatsApp(sharemessage) {

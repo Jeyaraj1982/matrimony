@@ -171,6 +171,51 @@ function getAppUrl() {
         </head>
     <body>
 	
+	  <?php if (UserRole=="Member") { ?>
+	  
+	  <?php  $MInfo = $webservice->getData("Member","GetMemberInfo"); ?>
+	  
+	  <?php if (!($MInfo['data']['ChangePasswordFstLogin']==1 )){ ?>
+	<div class="modal" id="myModal" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Mobile_VerificationBody"  style="max-height: 529px;min-height: 529px;" >
+                    <img src='../../../images/loader.gif'> Loading ....
+                </div>
+            </div>
+        </div>  
+	  <?php } else { ?>
+	 
+	<div class="modal" id="myModal" data-backdrop="static" >
+            <div class="modal-dialog" style="max-width:600px;width:600px">
+                <div class="modal-content" id="Mobile_VerificationBody"  style="height: 382px;width:600px;" >
+                    <img src='../../../images/loader.gif'> Loading ....
+                </div>
+            </div>
+        </div>
+		
+	  <?php } ?>
+   
+      <?php if (isset($_Member['LoginID']) && $_Member['LoginID']>0) { ?>
+        <script>
+            var API_URL = "<?php echo WebServiceUrl;?>webservice.php?LoginID=<?php echo $_Member['LoginID'];?>&";
+            var preloader = "<div style='text-align:center;padding-top: 35%;'><img src='<?php echo ImageUrl;?>loader.gif'></div>";
+        </script>     
+        <script src="<?php echo SiteUrl?>assets/js/mcontroller.js?rand=<?php echo rand(3000,3300000);?>"></script>
+      <?php }
+            if($MInfo['data']['ChangePasswordFstLogin']==1 || $MInfo['data']['IsMobileVerified']==0 || $MInfo['data']['IsEmailVerified']==0){
+            ?>
+			<script>
+                $( document ).ready(function() {CheckVerification();});
+				</script>
+            <?php 
+			  exit;
+            }
+   ?>
+ 
+
+	  <?php  } ?>
+	  
+	  
 	  <?php if (UserRole=="Franchisee") { ?>
 	  
 	  <?php  $fInfo = $webservice->getData("Franchisee","GetMyProfile"); ?>
@@ -194,8 +239,6 @@ function getAppUrl() {
         </div>
 		
 	  <?php } ?>
- 
-   
    
       <?php if (isset($_Franchisee['LoginID']) && $_Franchisee['LoginID']>0) { ?>
          <script>
@@ -215,10 +258,6 @@ function getAppUrl() {
             <?php 
 			  exit;
             }
-        
-        
-   
- 
    ?>
  
 
@@ -348,6 +387,7 @@ function getAppUrl() {
       
       <?php } ?>
       <?php if (UserRole=="Admin") { ?>
+	 
     <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
       <a class="navbar-brand brand-logo" href="<?php echo SiteUrl;?>" style="width:100%;height:100%;"><img src="<?php echo $config->logoPath?>" alt="logo" style="width:100%;height:100%;margin-top: 2px;"/></a>
     </div>

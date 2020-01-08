@@ -1,4 +1,47 @@
-    function MobileNumberVerification() {
+    function ChangePasswordScreen(frmid1) {
+        
+        var param = $( "#"+frmid1).serialize();
+        
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","135px"));
+		
+		$('#myModal').modal('show'); 
+        
+        $.post(getAppUrl() + "m=Member&a=ChangePasswordScreen", 
+                            param,
+                            function(result2) {
+                                 $('#Mobile_VerificationBody').html(result2);  
+                            });  
+    }
+	function ChangeNewPassword(frmid1) {
+        $("#frmNewPass_error").html("&nbsp;");
+        $("#frmCfmNewPass_error").html("&nbsp;");
+		
+         ErrorCount =0;
+		 
+		 IsNonEmpty("NewPassword","frmNewPass_error","Please enter new password");
+		 IsNonEmpty("NewPassword","frmCfmNewPass_error","Please enter confirm new password");
+         
+		 if ($("#ConfirmNewPassword").val().trim() != $("#NewPassword").val().trim()) {
+			 $("#frmCfmNewPass_error").html("Passwords do not match");
+			 ErrorCount++;
+		 }
+          if(ErrorCount>0){ 
+            return false;
+         }
+        
+        var param = $( "#"+frmid1).serialize();
+        
+        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+        $('#myModal').modal('show'); 
+        
+        $.post(getAppUrl() + "m=Member&a=ChangeNewPassword", 
+                            param,
+                            function(result2) {
+                                 $('#Mobile_VerificationBody').html(result2);  
+                            }
+                    );
+    }
+	function MobileNumberVerification() {
         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show');
         $.ajax({

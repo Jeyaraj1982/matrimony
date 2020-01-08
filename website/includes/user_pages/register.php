@@ -18,6 +18,7 @@ include_once("includes/header.php");
     $layout=0;
     
 ?>
+
 <script>
     $(document).ready(function () {
         $("#MobileNumber").keypress(function (e) {
@@ -32,7 +33,7 @@ include_once("includes/header.php");
         $("#Captchatext").blur(function () {IsNonEmpty("Captchatext","ErrCaptchatext","Please enter what you see in image");}); 
         $("#LoginPassword").blur(function () {
             if (IsNonEmpty("LoginPassword","ErrLoginPassword","Please Enter Login Password")) {
-                IsPassword("LoginPassword","ErrLoginPassword","Please Enter Alpha Numeric Characters and More than 8 characters");
+                IsPassword("LoginPassword","ErrLoginPassword","Please Enter More than 8 characters");
             } 
         });
     });
@@ -59,7 +60,7 @@ include_once("includes/header.php");
         }
         
         if (IsNonEmpty("LoginPassword","ErrLoginPassword","Please enter login password")) {
-            IsPassword("LoginPassword","ErrLoginPassword","Please Enter alpha numeric characters and more than 8 characters");  
+            IsPassword("LoginPassword","ErrLoginPassword","Please Enter More than 8 characters");  
         }
         
         if(document.form1.Captchatext.value==""){
@@ -104,10 +105,9 @@ include_once("includes/header.php");
                                 <div class="form-group">
                                     <label for="Gender">Gender</label>
                                     <select name="Gender" class="form-control" id="Gender" style="padding: 4px;">
-                                        <option>Male</option>
-                                        <option>Female</option>
+                                        <option value="SX001">Male</option>
+                                        <option value="SX002">Female</option>
                                     </select> 
-                                    <span class="errorstring" id="ErrMemberCode"><?php echo isset($ErrGender)? $ErrGender : "";?></span>
                                 </div>
                             </td>
                         </tr>
@@ -121,8 +121,8 @@ include_once("includes/header.php");
                                     </select>
                                     <input type="text" class="form-control" name="MobileNumber" id="MobileNumber" maxlength="10" placeholder="Mobile Number" value="<?php echo isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : '';?>" style="width:75%">
                                     </div>
+									<span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
                                 </div>
-                                <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
                             </td>
                         </tr>
                         <tr>                                                                     
@@ -130,18 +130,22 @@ include_once("includes/header.php");
                                 <div class="form-group">
                                     <label for="Email">Email</label>
                                     <input type="text" class="form-control" name="Email" id="Email" placeholder="Email" value="<?php echo isset($_POST['Email']) ? $_POST['Email'] : '';?>" >
-                                </div>
-                                <span class="errorstring" id="ErrEmail"><?php echo isset($ErrEmail)? $ErrEmail : "";?></span>
+									<span class="errorstring" id="ErrEmail"><?php echo isset($ErrEmail)? $ErrEmail : "";?></span>
+							 </div>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
                                 <div class="form-group">
                                 <label for="LoginPassword">Login Password</label>
-                                
-                                    <input type="password" class="form-control" name="LoginPassword" id="LoginPassword" placeholder="Login Password" value="<?php echo isset($_POST['LoginPassword']) ? $_POST['LoginPassword'] : '';?>" >
+									<div class="input-group">
+										<input type="password" class="form-control pwd"  maxlength="8" id="LoginPassword" name="LoginPassword" Placeholder="Login Password" value="<?php echo (isset($_POST['LoginPassword']) ? $_POST['LoginPassword'] : "");?>">
+											<span class="input-group-btn">
+												<button  onclick="showHidePwd('LoginPassword',$(this))" class="btn btn-default reveal" type="button" style="padding: 9px;"><i class="glyphicon glyphicon-eye-close"></i></button>
+											</span>          
+									</div>
+									<span class="errorstring" id="ErrLoginPassword"><?php echo isset($ErrLoginPassword)? $ErrLoginPassword : "";?></span>
                                 </div>
-                                <span class="errorstring" id="ErrLoginPassword"><?php echo isset($ErrLoginPassword)? $ErrLoginPassword : "";?></span>
                             </td>
                         </tr>
                         <tr>
@@ -149,8 +153,8 @@ include_once("includes/header.php");
                                 <div class="form-group" style="text-align: center;">
                                     <input type="text"  value="<?=$rand?>" id="ran" readonly="readonly" class="captcha" style="background-image: url(assets/images/captcha_background.png);margin-bottom: 6px;border: none;width: 160px;height: 60px;text-align: center;font-size: 49px;"><br>
                                     <input type="text" maxlength="4" class="form-control c-square c-theme input-lg" style=""  name="Captchatext" id="Captchatext" placeholder="Enter Code" value="<?php echo isset($_POST['Captchatext']) ? $_POST['Captchatext'] : '';?>">
-                                </div>
                                 <span class="errorstring" id="ErrCaptchatext"><?php echo isset($ErrCaptchatext)? $ErrCaptchatext : "";?></span>
+								</div>
                             </td>
                         </tr>
                         <?php if (isset($errormessage)) { ?>
