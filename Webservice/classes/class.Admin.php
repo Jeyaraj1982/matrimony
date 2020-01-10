@@ -2101,6 +2101,7 @@
                                      _tbl_members.MemberName AS MemberName,
                                      _tbl_members.DateofBirth AS DateofBirth,
                                      _tbl_members.Sex AS Sex,
+                                     _tbl_members.CountryCode AS CountryCode,
                                      _tbl_members.MobileNumber AS MobileNumber,
                                      _tbl_members.EmailID AS EmailID,
                                      _tbl_members.MemberPassword AS MemberPassword,

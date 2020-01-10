@@ -117,10 +117,13 @@
         $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
          $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
          $MemberCode   = SeqMaster::GetNextMemberNumber();
+		 $Sex = CodeMaster::getData("SEX",$_POST['Sex']);
+		 
        $id =  $mysql->insert("_tbl_members",array("MemberCode"              => $MemberCode,
                                                   "MemberName"               => $_POST['MemberName'],  
                                                   "DateofBirth"              => $dob,
-                                                  "Sex"                      => $_POST['Sex'],
+                                                  "SexCode"                  => $_POST['Sex'],
+                                                  "Sex"                      => $Sex[0]['CodeValue'],
                                                   "CountryCode"             => $_POST['CountryCode'],
                                                   "MobileNumber"             => $_POST['MobileNumber'],
                                                   "WhatsappCountryCode"           => $_POST['WhatsappCountryCode'],
@@ -129,6 +132,7 @@
                                                   "AadhaarNumber"            => $_POST['AadhaarNumber'],
                                                   "CreatedOn"                => date("Y-m-d H:i:s"),
                                                   "ReferedBy"                => $loginInfo[0]['FranchiseeID'],
+												  "ChangePasswordFstLogin"   => (($_POST['PasswordFstLogin']=="on") ? '1' : '0'),
                                                   "MemberPassword"           => $_POST['LoginPassword']));
         if (sizeof($id)>0) {
             $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Member'");
@@ -1290,18 +1294,21 @@
                         }
                     }
               if (strlen(trim($_POST['WhatsappNumber']))>0) {
-         $allowDuplicateWhatsapp = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateWhatsapp'");
+			$allowDuplicateWhatsapp = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateWhatsapp'");
              if ($allowDuplicateWhatsapp[0]['ParamA']==0) {
                 $data = $mysql->select("select * from  _tbl_members where WhatsappNumber='".trim($_POST['WhatsappNumber'])."' and MemberCode <>'".$_POST['MemberCode']."' ");
                     if (sizeof($data)>0) {
                         return Response::returnError("WhatsappNumber Already Exists");
                     }
              }
-        }
-                 $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];                                       
+			}
+                 $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];  
+				$Sex = CodeMaster::getData("SEX",$_POST['Sex']);	
+				
                 $mysql->execute("update _tbl_members set MemberName='".$_POST['MemberName']."',
                                                          DateofBirth='".$dob."',
-                                                         Sex='".$_POST['Sex']."',
+                                                         SexCode='".$_POST['Sex']."',
+                                                         Sex='".$Sex[0]['CodeValue']."',
                                                          EmailID='".$_POST['EmailID']."',
                                                          CountryCode='".$_POST['CountryCode']."',
                                                          MobileNumber='".$_POST['MobileNumber']."',
@@ -1518,7 +1525,7 @@
 		}
 		$mysql->execute("update _tbl_franchisees_staffs set IsActive='0' where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and StaffCode='".$_POST['StaffCode']."'");
 		
-		$mContent = $mysql->select("select * from `mailcontent` where `Category`='DeactivateFranchiseeStaff'");
+					$mContent = $mysql->select("select * from `mailcontent` where `Category`='DeactivateFranchiseeStaff'");
 					$content  = str_replace("#FranchiseeName#",$staff[0]['PersonName'],$mContent[0]['Content']);
 					
 					 MailController::Send(array("MailTo"         => $staff[0]['EmailID'],
@@ -1571,7 +1578,7 @@
 												"FranchiseeCode" => $staff[0]['FrCode'],
 												"Subject"        => $mContent[0]['Title'],
 												"Message"        => $content),$mailError);
-					 MobileSMSController::sendSMS($staff[0]['MobileNumber']," Dear ".$staff[0]['PersonName'].",Your Transaction Password has been rested successfully.");  
+					 MobileSMSController::sendSMS($staff[0]['MobileNumber']," Dear ".$staff[0]['PersonName'].",Your Transaction Password has been reset successfully.");  
 		
 		return Response::returnSuccess("success",array());
 	}
@@ -1826,52 +1833,52 @@
                                                             "Documents"              => $Documents,
                                                             "Members"                => $members[0],
                                                             "PartnerExpectation"     => $PartnersExpectations[0], 
-                                                            "ProfileSignInFor"       => CodeMaster::getData('PROFILESIGNIN'),
-                                                            "Gender"                 => CodeMaster::getData('SEX'),
-                                                            "MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
-                                                            "Language"               => CodeMaster::getData('LANGUAGENAMES'),
-                                                            "Religion"               => CodeMaster::getData('RELINAMES'),
-                                                            "Caste"                  => CodeMaster::getData('CASTNAMES'),
-                                                            "Community"              => CodeMaster::getData('COMMUNITY'),
-                                                            "Nationality"            => CodeMaster::getData('NATIONALNAMES'),
-                                                            "EmployedAs"             => CodeMaster::getData('OCCUPATIONS'),
-                                                            "Occupation"             => CodeMaster::getData('Occupation'),
-                                                            "TypeofOccupation"       => CodeMaster::getData('TYPEOFOCCUPATIONS'),
-                                                            "IncomeRange"            => CodeMaster::getData('INCOMERANGE'),
-                                                            "FamilyType"             => CodeMaster::getData('FAMILYTYPE'),
-                                                            "FamilyValue"            => CodeMaster::getData('FAMILYVALUE'),
-                                                            "FamilyAffluence"        => CodeMaster::getData('FAMILYAFFLUENCE'),
-                                                            "NumberofBrother"        => CodeMaster::getData('NUMBEROFBROTHER'),
-                                                            "NumberofElderBrother"   => CodeMaster::getData('ELDER'),
-                                                            "NumberofYoungerBrother" => CodeMaster::getData('YOUNGER'),
-                                                            "NumberofMarriedBrother" => CodeMaster::getData('MARRIED'),
-                                                            "NumberofSisters"        => CodeMaster::getData('NOOFSISTER'),
-                                                            "NumberofElderSisters"   => CodeMaster::getData('ELDERSIS'),
-                                                            "NumberofYoungerSisters" => CodeMaster::getData('YOUNGERSIS'),
-                                                            "NumberofMarriedSisters" => CodeMaster::getData('MARRIEDSIS'),
-                                                            "PhysicallyImpaired"     => CodeMaster::getData('PHYSICALLYIMPAIRED'),
-                                                            "VisuallyImpaired"       => CodeMaster::getData('VISUALLYIMPAIRED'),
-                                                            "VissionImpaired"        => CodeMaster::getData('VISSIONIMPAIRED'),
-                                                            "SpeechImpaired"         => CodeMaster::getData('SPEECHIMPAIRED'),
-                                                            "Height"                 => CodeMaster::getData('HEIGHTS'),
-                                                            "Weight"                 => CodeMaster::getData('WEIGHTS'),
-                                                            "BloodGroup"             => CodeMaster::getData('BLOODGROUPS'),
-                                                            "Complexation"           => CodeMaster::getData('COMPLEXIONS'),
-                                                            "BodyType"               => CodeMaster::getData('BODYTYPES'),
-                                                            "Diet"                   => CodeMaster::getData('DIETS'),
-                                                            "SmookingHabit"          => CodeMaster::getData('SMOKINGHABITS'),
-                                                            "DrinkingHabit"          => CodeMaster::getData('DRINKINGHABITS'),
-                                                            "DocumentType"           => CodeMaster::getData('DOCTYPES'),
-                                                            "CountryName"            => CodeMaster::getData('RegisterAllowedCountries'),
-                                                            "RasiName"               => CodeMaster::getData('MONSIGNS'),
-                                                            "Lakanam"                => CodeMaster::getData('LAKANAM'),
-                                                            "StarName"               => CodeMaster::getData('STARNAMES'),
-                                                            "AllCountryName"        => CodeMaster::getData('CONTNAMES'),
-                                                            "Education"              => CodeMaster::getData('EDUCATETITLES'),
-                                                            "ParentsAlive"              => CodeMaster::getData('PARENTSALIVE'),
-                                                            "ChevvaiDhosham"              => CodeMaster::getData('CHEVVAIDHOSHAM'),
-                                                            "PrimaryPriority"              => CodeMaster::getData('PRIMARYPRIORITY'),
-                                                            "StateName"              => CodeMaster::getData('STATNAMES')));
+                                                            "ProfileSignInFor"       => CodeMaster::getActiveData('PROFILESIGNIN'),
+                                                            "Gender"                 => CodeMaster::getActiveData('SEX'),
+                                                            "MaritalStatus"          => CodeMaster::getActiveData('MARTIALSTATUS'),
+                                                            "Language"               => CodeMaster::getActiveData('LANGUAGENAMES'),
+                                                            "Religion"               => CodeMaster::getActiveData('RELINAMES'),
+                                                            "Caste"                  => CodeMaster::getActiveData('CASTNAMES'),
+                                                            "Community"              => CodeMaster::getActiveData('COMMUNITY'),
+                                                            "Nationality"            => CodeMaster::getActiveData('NATIONALNAMES'),
+                                                            "EmployedAs"             => CodeMaster::getActiveData('OCCUPATIONS'),
+                                                            "Occupation"             => CodeMaster::getActiveData('Occupation'),
+                                                            "TypeofOccupation"       => CodeMaster::getActiveData('TYPEOFOCCUPATIONS'),
+                                                            "IncomeRange"            => CodeMaster::getActiveData('INCOMERANGE'),
+                                                            "FamilyType"             => CodeMaster::getActiveData('FAMILYTYPE'),
+                                                            "FamilyValue"            => CodeMaster::getActiveData('FAMILYVALUE'),
+                                                            "FamilyAffluence"        => CodeMaster::getActiveData('FAMILYAFFLUENCE'),
+                                                            "NumberofBrother"        => CodeMaster::getActiveData('NUMBEROFBROTHER'),
+                                                            "NumberofElderBrother"   => CodeMaster::getActiveData('ELDER'),
+                                                            "NumberofYoungerBrother" => CodeMaster::getActiveData('YOUNGER'),
+                                                            "NumberofMarriedBrother" => CodeMaster::getActiveData('MARRIED'),
+                                                            "NumberofSisters"        => CodeMaster::getActiveData('NOOFSISTER'),
+                                                            "NumberofElderSisters"   => CodeMaster::getActiveData('ELDERSIS'),
+                                                            "NumberofYoungerSisters" => CodeMaster::getActiveData('YOUNGERSIS'),
+                                                            "NumberofMarriedSisters" => CodeMaster::getActiveData('MARRIEDSIS'),
+                                                            "PhysicallyImpaired"     => CodeMaster::getActiveData('PHYSICALLYIMPAIRED'),
+                                                            "VisuallyImpaired"       => CodeMaster::getActiveData('VISUALLYIMPAIRED'),
+                                                            "VissionImpaired"        => CodeMaster::getActiveData('VISSIONIMPAIRED'),
+                                                            "SpeechImpaired"         => CodeMaster::getActiveData('SPEECHIMPAIRED'),
+                                                            "Height"                 => CodeMaster::getActiveData('HEIGHTS'),
+                                                            "Weight"                 => CodeMaster::getActiveData('WEIGHTS'),
+                                                            "BloodGroup"             => CodeMaster::getActiveData('BLOODGROUPS'),
+                                                            "Complexation"           => CodeMaster::getActiveData('COMPLEXIONS'),
+                                                            "BodyType"               => CodeMaster::getActiveData('BODYTYPES'),
+                                                            "Diet"                   => CodeMaster::getActiveData('DIETS'),
+                                                            "SmookingHabit"          => CodeMaster::getActiveData('SMOKINGHABITS'),
+                                                            "DrinkingHabit"          => CodeMaster::getActiveData('DRINKINGHABITS'),
+                                                            "DocumentType"           => CodeMaster::getActiveData('DOCTYPES'),
+                                                            "CountryName"            => CodeMaster::getActiveData('RegisterAllowedCountries'),
+                                                            "RasiName"               => CodeMaster::getActiveData('MONSIGNS'),
+                                                            "Lakanam"                => CodeMaster::getActiveData('LAKANAM'),
+                                                            "StarName"               => CodeMaster::getActiveData('STARNAMES'),
+                                                            "AllCountryName"        => CodeMaster::getActiveData('CONTNAMES'),
+                                                            "Education"              => CodeMaster::getActiveData('EDUCATETITLES'),
+                                                            "ParentsAlive"              => CodeMaster::getActiveData('PARENTSALIVE'),
+                                                            "ChevvaiDhosham"              => CodeMaster::getActiveData('CHEVVAIDHOSHAM'),
+                                                            "PrimaryPriority"              => CodeMaster::getActiveData('PRIMARYPRIORITY'),
+                                                            "StateName"              => CodeMaster::getActiveData('STATNAMES')));
          }   
           
     function EditDraftGeneralInformation() {
@@ -2867,8 +2874,10 @@
              global $mysql,$loginInfo;
                                                                                  
              $ProfileCode= $_POST['ProfileID'];
-             
-             $updateSql = "update `_tbl_draft_profiles_education_details` set `FileName` = '' where `AttachmentID`='".$_POST['AttachmentID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
+             $doc= $mysql->select("select * from `_tbl_draft_profiles_education_details` where `ProfileCode`='".$_POST['ProfileID']."'");
+             $mem= $mysql->select("select * from `_tbl_members` where `MemberID`='".$doc[0]['MemberID']."'");
+			
+				$updateSql = "update `_tbl_draft_profiles_education_details` set `FileName` = '' where `AttachmentID`='".$_POST['AttachmentID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
              $mysql->execute($updateSql);
              $updateSql = "update `_tbl_draft_profile_education_attachments` set `FileName` = '' where `AttachmentID`='".$_POST['AttachmentID']."' and `ProfileCode`='".$_POST['ProfileID']."'";
              $mysql->execute($updateSql);  
@@ -2878,8 +2887,8 @@
                             <h4 class="modal-title">Confirmation For Remove</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
                             <h5 style="text-align:center;color:#ada9a9">Attachment has been removed successfully.</h5>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/EducationDetails/'.$ProfileCode.'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';                             
+                            <h5 style="text-align:center;"><a href="'.AppPath.'Member/'.$mem[0]['MemberCode'].'/ProfileEdit/EducationDetails/'.$ProfileCode.'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                       </div>';                                                
 
          }
          
@@ -3567,18 +3576,20 @@
                                                             "PostedProfiles"   =>$PostedProfiles[0]));
          }
          function GetDraftedProfiles() {
-           global $mysql,$loginInfo;    
+           global $mysql,$loginInfo;  
+			
+ 	 
              $sql = "SELECT *
                                     FROM _tbl_draft_profiles
                                     LEFT  JOIN _tbl_members
-                                    ON _tbl_draft_profiles.MemberID=_tbl_members.MemberID where _tbl_draft_profiles.CreatedByFranchiseeStaffID='".$loginInfo[0]['FranchiseeStaffID']."'";
+                                    ON _tbl_draft_profiles.MemberID=_tbl_members.MemberID where _tbl_draft_profiles.ProfileID>0 ";
              
 
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql));    
              }                                                                                                                                                                            
              if (isset($_POST['Request']) && $_POST['Request']=="Draft") {
-                return Response::returnSuccess("success".$sql,$mysql->select($sql." and _tbl_draft_profiles.RequestToVerify='0'"));    
+                return Response::returnSuccess("success",$mysql->select($sql." and _tbl_draft_profiles.RequestToVerify='0'"));    
              }
              if (isset($_POST['Request']) && $_POST['Request']=="Post") {
                 return Response::returnSuccess("success".$sql,$mysql->select($sql." and _tbl_draft_profiles.RequestToVerify='1' and _tbl_draft_profiles.IsApproved='0'"));    
@@ -3673,10 +3684,10 @@
              $Profiles = array();
              $Position = "";   
 
-             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All)  `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  */
                                                                                                 
-                 $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  `RequestToVerify`='0' and IsApproved='0'");
-                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  RequestToVerify='1'");
+                 $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where  `RequestToVerify`='0' and IsApproved='0'");
+                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where    RequestToVerify='1'");
                  
                  if (sizeof($DraftProfiles)>0) {
                      
@@ -3712,7 +3723,7 @@
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Draft") {  /* Profile => Drafted */
                  
-                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and `RequestToVerify`='0'");
+                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where   `RequestToVerify`='0'");
                  
                  if (sizeof($DraftProfiles)>0) {
                      foreach($DraftProfiles as $DraftProfile) {
@@ -3824,6 +3835,8 @@
              global $mysql,$loginInfo;
 
              $ProfileCode= $_POST['ProfileCode'];
+			 
+			 $mem= $mysql->select("select * from `_tbl_members` where `MemberID`='".$_POST['MemberID']."'");
              
              $updateSql = "update `_tbl_draft_profiles` set `OccupationAttachFileName` = '' ,`OccupationAttachmentType` = '0' where `ProfileID`='".$_POST['ProfileID']."' and`ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$_POST['MemberID']."'";
              $mysql->execute($updateSql);
@@ -3833,7 +3846,7 @@
                             <h4 class="modal-title">Confirmation For Remove</h4>
                             <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
                             <h5 style="text-align:center;color:#ada9a9">Attachment has been removed successfully.</h5>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'MemberProfileEdit/OccupationDetails/'.$ProfileCode.'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
+                            <h5 style="text-align:center;"><a href="'.AppPath.'Member/'.$mem[0]['MemberCode'].'/ProfileEdit/OccupationDetails/'.$ProfileCode.'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
                        </div>';                             
 
          }
@@ -3894,17 +3907,26 @@
                 return Response::returnSuccess("success",$mysql->select($sql."Where `FranchiseeID`='". $loginInfo[0]['FranchiseeStaffID']."' and `IsMember`='0' order by `TxnID` DESC"));    
              }
          }
-        
+				  
         function GetMemberProfileforView() {
 
              global $mysql,$loginInfo; 
              $Profiles = array();
              $Position = "";   
-
+				if (isset($_POST['XMCode'])) {
+					$_POST['Code']=$_POST['XMCode'];
+				}
+					$m = $mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and MemberID='".$_POST['Code']."'");
+				if (sizeof($m)==0) {
+					$sql = " and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."'  ";
+				} else {
+					$sql = " and `CreatedByFranchiseeStaffID`='0' ";
+				}
+				
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
                                                                                                 
-                 $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and `MemberID`='".$_POST['Code']."' and  `RequestToVerify`='0' and IsApproved='0'");
-                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and `MemberID`='".$_POST['Code']."' and  RequestToVerify='1'");
+                 $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$_POST['Code']."' and  `RequestToVerify`='0' and IsApproved='0' ".$sql);
+                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$_POST['Code']."' and  RequestToVerify='1' ".$sql);
                  
                  if (sizeof($DraftProfiles)>0) {
                      
@@ -3942,7 +3964,7 @@
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Draft") {  /* Profile => Drafted */
                  
-                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='0'");
+                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where   RequestToVerify='0' ".$sql);
                  
                  if (sizeof($DraftProfiles)>0) {
                      foreach($DraftProfiles as $DraftProfile) {
@@ -3956,7 +3978,7 @@
              }
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Posted") {    /* Profile => Posted */
-                  $PostProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='1' and IsApproved='0'");
+                  $PostProfiles = $mysql->select("select * from `_tbl_draft_profiles` where   RequestToVerify='1' and IsApproved='0' ".$sql);
 
                   if (sizeof($PostProfiles)>0) {
                       foreach($PostProfiles as $PostProfile) {
@@ -3971,7 +3993,7 @@
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {    /* Profile => Posted */
              
-                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and IsApproved='1' and RequestToVerify='1'");
+                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where  IsApproved='1' and RequestToVerify='1' ".$sql);
                 if (sizeof($PublishedProfiles)>0) {
                     foreach($PublishedProfiles as $PublishedProfile) {
                         $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);

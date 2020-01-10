@@ -1,6 +1,15 @@
 <?php  
     include_once("config_client.php");
-    define ("url_encrypt",1);
+    define ("url_encrypt",0);
+	 function writeSql($text) {
+            $myFile = date("Y_m_d").".txt";
+            $fh = fopen($myFile, 'a') or die ("can't open file");
+            fwrite($fh, "[".date("Y-m-d H:i:s")."]\t".$text."\n");
+            fclose($fh);
+        }
+	writeSql("GET: ".json_encode($_GET));
+	writeSql("POST: ".json_encode($_POST));
+
     $cdata=json_decode(json_encode(array('TimeZone'        => "Asia/Kolkata",
                                          'DateFormat'      => "",
                                          'Language'        => "la-en",

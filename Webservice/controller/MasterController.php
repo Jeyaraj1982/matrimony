@@ -1,16 +1,33 @@
 <?php
     class CodeMaster {
-        
+       
+		static public function getActiveData($Request) {
+			return CodeMaster::getData($Request,array("IsActive"=>"1"));
+		}
         static public function getData($Request,$filter=null) {  
             
             global $mysql;
             if (is_array($filter)) {
                 $array_data = "";
-                foreach($filter as $f ) {
-                    $array_data .= "'".$f."',";
+				$array_index_isnumber=0;
+                
+				foreach($filter as $k=>$v ) {
+					if (intval($k)) {
+					 	$array_index_isnumber++;
+					} else {
+                    $array_data .= " and `".$k."` = '".$v."' ";
+					}
                 }
-                $array_data = substr($array_data,0,strlen($array_data)-1);
-                $filter = (sizeof($filter)>0) ?  " and SoftCode in (".$array_data.")" : "";
+				
+				if ($array_index_isnumber>0) {
+					$new_filter = array();
+					foreach($filter as $f) {
+						$new_filter[] = "'".$f."'";  
+					}
+					$array_data = " and `SoftCode` in (".implode($new_filter,",").") ";	
+				}
+				
+				$filter=$array_data;
             } else {
                 $filter = ($filter!=null) ?  " and SoftCode='".trim($filter)."'" : "";
             }   

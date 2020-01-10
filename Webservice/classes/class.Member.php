@@ -171,7 +171,14 @@
                                                        "ReferedBy"      => AdminFranchise,
                                                        "CreatedOn"      => date("Y-m-d H:i:s"))); 
 			
-													  
+					if (!is_dir('uploads/members/'.$MemberCode)) {
+                        mkdir('uploads/members/'.$MemberCode, 0777, true);
+                    }
+                    
+                    if (!is_dir('uploads/members/'.$MemberCode."/kyc")) {
+                        mkdir('uploads/members/'.$MemberCode."/kyc", 0777, true);
+                    }
+                   
              $data = $mysql->select("select * from `_tbl_members` where `MemberID`='".$id."'");
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='NewMemberCreated'");
              $content  = str_replace("#MemberName#",$_POST['Name'],$mContent[0]['Content']);
@@ -460,6 +467,7 @@
 			 if ($memberdata[0]['IsEmailVerified']==0) {
 				return $this->ChangeEmailFromVerificationScreen("",$loginInfo[0]["MemberID"],"","");
              }
+			 return true;
             // return "<script>location.href='".AppPath."MyProfiles/CreateProfile';</script>";
          }
 
@@ -630,11 +638,11 @@
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="modal-header">
                                 <h4 class="modal-title">Please verify mobile number</h4>
-                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                             </div>
                             <div class="modal-body" style="max-height:400px;min-height:400px;">
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
-                                <h4 style="text-align:center;color:#ada9a9">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen.</h4>
+                                <p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen.</p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">+'.$memberdata[0]['CountryCode'].'&nbsp;'.$memberdata[0]['MobileNumber'].'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumber()">Change</h4>
                             </div>
                             <div class="modal-footer">
@@ -671,27 +679,34 @@
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                                 <div class="modal-header">
                                     <h4 class="modal-title">Change Mobile Number</h4>
-                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                                 </div>
-                                <div class="modal-body">
-                                    <br><br><br>
-                                    <div class="form-group row">
-                                        <div class="col-sm-5" style="margin-right:-15px">
-                                        <select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="padding-top: 4px;padding-bottom: 4px;text-align: center;font-family: Roboto;"> ';
+                                <div class="modal-body" style="max-height:400px;min-height:400px;">
+                                    <p style="text-align:center;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+									<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;"><b>Caution!</b> You are going to change your primary Mobile Number. All further communication from us ill be delivered on this new Number.</p>
+									<div class="form-group row" style="margin-bottom:0px">
+										<div class="col-sm-2"></div>
+										<label class="col-sm-10" style="color:#ada9a9;font-size: 14px;">Mobile Number</label>
+									 </div>
+									<div class="form-group row">
+										<div class="col-sm-2"></div>
+										<div class="col-sm-4" style="margin-right:-15px">
+                                        <select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="padding-top: 4px;padding-bottom: 4px;text-align: center;font-family: Roboto;height: 34px;"> ';
                                              foreach($countrycode as $CountryCode) {  
                                                 $return .=' <option value="'.$CountryCode['ParamA'].'"  '.(($_POST[ 'CountryCode']==$CountryCode[ 'ParamA']) ? " selected='selected' " : "").' >'.$CountryCode['str'].'</option>';
                                              }
                                         $return .=   '</select>
                                         </div>
-                                        <div class="col-sm-7">                                                                                                                                                                                          
+                                        <div class="col-sm-4">                                                                                                                                                                                          
                                             <input type="text" class="form-control" value="'.$scode.'" id="new_mobile_number"  name="new_mobile_number"  maxlength="10" style="font-family:Roboto;"></div>
                                         </div>
                                         <div class="col-sm-12" id="errormsg">'.$error.'</div>
 									</div>
                                 </div>
 								 <div class="modal-footer">
-									<a href="javascript:void(0)" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" id="verifybtn" name="btnVerify" style="font-family:roboto">Save and verify</a>&nbsp;&nbsp;
-									<a href="javascript:void(0)" onclick="CheckVerification()">back</a>
+									<a href="javascript:void(0)" onclick="CheckVerification()">back</a>&nbsp;&nbsp;
+									<a href="javascript:void(0)" onclick="MobileNumberVerificationForm(\''.$formid.'\')" class="btn btn-primary" style="font-family:roboto">Save and verify</a>
+									
 								 </div>
                             </form>                                                                                                       
                         </div>';  
@@ -775,12 +790,12 @@
                             <input type="hidden" value="'.$securitycode.'" name="reqId">    
                             <div class="modal-header">                                                             
                                 <h4 class="modal-title">Please verify your mobile number</h4>
-                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                             </div>
                             <div class="modal-body">
                                  '.(($updatemsg!="") ? $updatemsg : "").'
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
-                                <h4 style="text-align:center;color:#ada9a9">Please enter the verification code which you have received on your mobile number ending with  +'.$memberdata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'</h4>
+                                <p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">Please enter the verification code which you have received on your mobile number ending with  +'.$memberdata[0]['CountryCode'].'&nbsp;'.J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber']).'</p>
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="col-sm-12"> 
@@ -828,11 +843,7 @@
              global $mysql,$loginInfo;
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              if ($memberdata[0]['IsEmailVerified']==1) {
-                 return '<div class="modal-header">
-                            <h4 class="modal-title">Email Verification</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
+                 return '<div class="modal-body" style="text-align:center">
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
                             <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
@@ -844,11 +855,11 @@
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="modal-header">
                                 <h4 class="modal-title">Please verify your email</h4>
-                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                             </div>
                             <div class="modal-body" style="max-height:400px;min-height:400px;">
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
-								<h4 style="text-align:center;color:#ada9a9">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen.</h4>
+								<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen.</p>
                                 <h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'&nbsp;&#65372&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>
                             </div>
                             <div class="modal-footer">
@@ -866,11 +877,7 @@
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
 
              if ($memberdata[0]['IsEmailVerified']==1) {
-                 return '<div class="modal-header">
-                            <h4 class="modal-title">Email Verification</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
+                 return '<div class="modal-body" style="text-align:center">
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
                             <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
@@ -883,15 +890,24 @@
                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                                 <div class="modal-header">
                                     <h4 class="modal-title">Change Email ID</h4>
-                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                                 </div>
-                                <div class="modal-body">
-                                    <br><br><br><input type="text" value="'.$scode.'" id="new_email" name="new_email" class="form-control" style="font-family:Roboto;">
+                                <div class="modal-body"style="max-height:400px;min-height:400px;">
+                                    <p style="text-align:center;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+									<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;"><b>Caution!</b> You are going to change your primary Email ID. All further communication from us ill be delivered on this new Email ID.</p>
+									<div class="form-group row" style="margin-bottom:0px">
+										<div class="col-sm-2"></div>
+										<label class="col-sm-10" style="color:#ada9a9;font-size: 14px;">Email ID</label>
+									 </div>
+									<div class="form-group row">
+										<div class="col-sm-2"></div>
+										<div class="col-sm-8"><input type="text" value="'.$scode.'" id="new_email" name="new_email" class="form-control" style="font-family:Roboto;"></div>
                                     <div class="col-sm-12" id="errormsg">'.$error.'</div>
+									</div>
 								</div>
 								<div class="modal-footer">
-                                    <a href="javascript:void(0)" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Save to verify</a>&nbsp;&nbsp;
-                                    <a href="javascript:void(0)" onclick="CheckVerification()">back</a>
+                                    <a href="javascript:void(0)" onclick="CheckVerification()">back</a>&nbsp;&nbsp;
+                                    <a href="javascript:void(0)" onclick="EmailVerificationForm(\''.$formid.'\')" class="btn btn-primary">Save to verify</a>
                                 </div>
                             </form>                                                                                                       
                         </div>'; 
@@ -940,11 +956,7 @@
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
 
              if ($memberdata[0]['IsEmailVerified']==1) {
-                 return '<div class="modal-header">
-                            <h4 class="modal-title">Email Verification</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
+                 return '<div class="modal-body" style="text-align:center">
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
                             <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
                             <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
@@ -982,12 +994,12 @@
                                             <input type="hidden" value="'.$securitycode.'" name="reqId">
                                             <div class="modal-header">
                                                 <h4 class="modal-title">Please verify your email</h4>
-                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                                             </div>
                                             <div class="modal-body">
                                                  '.(($updatemsg!="") ? $updatemsg : "").'
-                                                <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
-                                                <h4 style="text-align:center;color:#ada9a9">We have sent a 4 digits verification Code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
+                                                <p style="text-align:center;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+                                                <p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digits verification Code to<br>'.$memberdata[0]['EmailID'].'</p>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="col-sm-12"> 
@@ -1015,7 +1027,7 @@
                         <input type="hidden" value="'.$securitycode.'" name="reqId">
                             <div class="modal-header">
                                 <h4 class="modal-title">Please verify your email</h4>
-                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
                             </div>
                              <div class="modal-body">
                                 <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
@@ -1751,52 +1763,52 @@
                               "ProfilePhotos"           => $ProfilePhoto,
                               "ProfilePhotoFirst"      => $ProfilePhotoFirst[0],
                               
-                              "ProfileSignInFor"       => CodeMaster::getData("PROFILESIGNIN"),
-                              "Gender"                 => CodeMaster::getData('SEX'),
-                              "MaritalStatus"          => CodeMaster::getData('MARTIALSTATUS'),
-                              "Language"               => CodeMaster::getData('LANGUAGENAMES'),
-                              "Religion"               => CodeMaster::getData('RELINAMES'),
-                              "Caste"                  => CodeMaster::getData('CASTNAMES'),
-                              "Community"              => CodeMaster::getData('COMMUNITY'),
-                              "Nationality"            => CodeMaster::getData('NATIONALNAMES'),
-                              "EmployedAs"             => CodeMaster::getData('OCCUPATIONS'),
-                              "Occupation"             => CodeMaster::getData('Occupation'),
-                              "TypeofOccupation"       => CodeMaster::getData('TYPEOFOCCUPATIONS'),
-                                                            "IncomeRange"            => CodeMaster::getData('INCOMERANGE'),
-                                                            "FamilyType"             => CodeMaster::getData('FAMILYTYPE'),
-                                                            "FamilyValue"            => CodeMaster::getData('FAMILYVALUE'),
-                                                            "FamilyAffluence"        => CodeMaster::getData('FAMILYAFFLUENCE'),
-                                                            "NumberofBrother"        => CodeMaster::getData('NUMBEROFBROTHER'),
-                                                            "NumberofElderBrother"   => CodeMaster::getData('ELDER'),
-                                                            "NumberofYoungerBrother" => CodeMaster::getData('YOUNGER'),
-                                                            "NumberofMarriedBrother" => CodeMaster::getData('MARRIED'),
-                                                            "NumberofSisters"        => CodeMaster::getData('NOOFSISTER'),
-                                                            "NumberofElderSisters"   => CodeMaster::getData('ELDERSIS'),
-                                                            "NumberofYoungerSisters" => CodeMaster::getData('YOUNGERSIS'),
-                                                            "NumberofMarriedSisters" => CodeMaster::getData('MARRIEDSIS'),
-                                                            "PhysicallyImpaired"     => CodeMaster::getData('PHYSICALLYIMPAIRED'),
-                                                            "VisuallyImpaired"       => CodeMaster::getData('VISUALLYIMPAIRED'),
-                                                            "VissionImpaired"        => CodeMaster::getData('VISSIONIMPAIRED'),
-                                                            "SpeechImpaired"         => CodeMaster::getData('SPEECHIMPAIRED'),
-                                                            "Height"                 => CodeMaster::getData('HEIGHTS'),
-                                                            "Weight"                 => CodeMaster::getData('WEIGHTS'),
-                                                            "BloodGroup"             => CodeMaster::getData('BLOODGROUPS'),
-                                                            "Complexation"           => CodeMaster::getData('COMPLEXIONS'),
-                                                            "BodyType"               => CodeMaster::getData('BODYTYPES'),
-                                                            "Diet"                   => CodeMaster::getData('DIETS'),
-                                                            "SmookingHabit"          => CodeMaster::getData('SMOKINGHABITS'),
-                                                            "DrinkingHabit"          => CodeMaster::getData('DRINKINGHABITS'),
-                                                            "DocumentType"           => CodeMaster::getData('DOCTYPES'),
-                                                            "CountryName"           => CodeMaster::getData('RegisterAllowedCountries'),
-                                                            "AllCountryName"        => CodeMaster::getData('CONTNAMES'),
-                                                            "RasiName"               => CodeMaster::getData('MONSIGNS'),
-                                                            "Lakanam"                => CodeMaster::getData('LAKANAM'),
-                                                            "StarName"               => CodeMaster::getData('STARNAMES'),
-                                                            "Education"              => CodeMaster::getData('EDUCATETITLES'),
-                                                            "ParentsAlive"              => CodeMaster::getData('PARENTSALIVE'),
-                                                            "ChevvaiDhosham"              => CodeMaster::getData('CHEVVAIDHOSHAM'),
-                                                            "PrimaryPriority"              => CodeMaster::getData('PRIMARYPRIORITY'),
-                                                            "StateName"              => CodeMaster::getData('STATNAMES'));
+                              "ProfileSignInFor"       => CodeMaster::getActiveData("PROFILESIGNIN"),
+                              "Gender"                 => CodeMaster::getActiveData('SEX'),
+                              "MaritalStatus"          => CodeMaster::getActiveData('MARTIALSTATUS'),
+                              "Language"               => CodeMaster::getActiveData('LANGUAGENAMES'),
+                              "Religion"               => CodeMaster::getActiveData('RELINAMES'),
+                              "Caste"                  => CodeMaster::getActiveData('CASTNAMES'),
+                              "Community"              => CodeMaster::getActiveData('COMMUNITY'),
+                              "Nationality"            => CodeMaster::getActiveData('NATIONALNAMES'),
+                              "EmployedAs"             => CodeMaster::getActiveData('OCCUPATIONS'),
+                              "Occupation"             => CodeMaster::getActiveData('Occupation'),
+                              "TypeofOccupation"       => CodeMaster::getActiveData('TYPEOFOCCUPATIONS'),
+							"IncomeRange"            => CodeMaster::getActiveData('INCOMERANGE'),
+							"FamilyType"             => CodeMaster::getActiveData('FAMILYTYPE'),
+							"FamilyValue"            => CodeMaster::getActiveData('FAMILYVALUE'),
+							"FamilyAffluence"        => CodeMaster::getActiveData('FAMILYAFFLUENCE'),
+							"NumberofBrother"        => CodeMaster::getActiveData('NUMBEROFBROTHER'),
+							"NumberofElderBrother"   => CodeMaster::getActiveData('ELDER'),
+							"NumberofYoungerBrother" => CodeMaster::getActiveData('YOUNGER'),
+							"NumberofMarriedBrother" => CodeMaster::getActiveData('MARRIED'),
+							"NumberofSisters"        => CodeMaster::getActiveData('NOOFSISTER'),
+							"NumberofElderSisters"   => CodeMaster::getActiveData('ELDERSIS'),
+							"NumberofYoungerSisters" => CodeMaster::getActiveData('YOUNGERSIS'),
+							"NumberofMarriedSisters" => CodeMaster::getActiveData('MARRIEDSIS'),
+							"PhysicallyImpaired"     => CodeMaster::getActiveData('PHYSICALLYIMPAIRED'),
+							"VisuallyImpaired"       => CodeMaster::getActiveData('VISUALLYIMPAIRED'),
+							"VissionImpaired"        => CodeMaster::getActiveData('VISSIONIMPAIRED'),
+							"SpeechImpaired"         => CodeMaster::getActiveData('SPEECHIMPAIRED'),
+							"Height"                 => CodeMaster::getActiveData('HEIGHTS'),
+							"Weight"                 => CodeMaster::getActiveData('WEIGHTS'),
+							"BloodGroup"             => CodeMaster::getActiveData('BLOODGROUPS'),
+							"Complexation"           => CodeMaster::getActiveData('COMPLEXIONS'),
+							"BodyType"               => CodeMaster::getActiveData('BODYTYPES'),
+							"Diet"                   => CodeMaster::getActiveData('DIETS'),
+							"SmookingHabit"          => CodeMaster::getActiveData('SMOKINGHABITS'),
+							"DrinkingHabit"          => CodeMaster::getActiveData('DRINKINGHABITS'),
+							"DocumentType"           => CodeMaster::getActiveData('DOCTYPES'),
+							"CountryName"           => CodeMaster::getActiveData('RegisterAllowedCountries'),
+							"AllCountryName"        => CodeMaster::getActiveData('CONTNAMES'),
+							"RasiName"               => CodeMaster::getActiveData('MONSIGNS'),
+							"Lakanam"                => CodeMaster::getActiveData('LAKANAM'),
+							"StarName"               => CodeMaster::getActiveData('STARNAMES'),
+							"Education"              => CodeMaster::getActiveData('EDUCATETITLES'),
+							"ParentsAlive"              => CodeMaster::getActiveData('PARENTSALIVE'),
+							"ChevvaiDhosham"              => CodeMaster::getActiveData('CHEVVAIDHOSHAM'),
+							"PrimaryPriority"              => CodeMaster::getActiveData('PRIMARYPRIORITY'),
+							"StateName"              => CodeMaster::getActiveData('STATNAMES'));
              if ($rtype=="")  {
              return Response::returnSuccess("success"."select * from `_tbl_draft_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'",$result);
              } else {
