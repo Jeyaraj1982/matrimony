@@ -7,10 +7,10 @@
                 <h4 class="card-title" style="margin-bottom: 0px;margin-top: 0px;">Report</h4>
                 </div>
                         <div class="col-sm-9" style="text-align:right;padding-top:5px;color:skyblue;">
-                        <a href="ManageMember" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                        <a href="ManageActiveMembers"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
-                        <a href="ManageDeactiveMembers"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>&nbsp;|&nbsp;
-                        <a href="Franchiseewise"><small style="font-weight:bold;text-decoration:underline">Franchisee-wise</small></a>&nbsp;|&nbsp;
+                        <a href="../ManageMember" ><small>All</small></a>&nbsp;|&nbsp;
+                        <a href="../ManageActiveMembers"><small>Active</small></a>&nbsp;|&nbsp;
+                        <a href="../ManageDeactiveMembers"><small>Deactive</small></a>&nbsp;|&nbsp;
+                        <a href="../Franchiseewise"><small>Franchisee-wise</small></a>&nbsp;|&nbsp;
                         <a href="Report/Report"><small style="font-weight:bold;text-decoration:underline">Report</small></a>
                 </div>
                 </div>

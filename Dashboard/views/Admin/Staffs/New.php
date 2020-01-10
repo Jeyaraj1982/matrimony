@@ -16,36 +16,34 @@ $(document).ready(function () {
         IsNonEmpty("StaffName","ErrStaffName","Please Enter Staff Name");
                         
    });
-   $("#Sex").blur(function () {
-    
-        IsNonEmpty("Sex","ErrSex","Please Select a Sex");
-                        
-   });
-   $("#DateofBirth").blur(function () {
-    
-        IsNonEmpty("DateofBirth","ErrDateofBirth","Please Enter Date of Birth");
-                        
-   });
-   $("#MobileNumber").blur(function () {
-    
-        IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter Mobile Number");
-                        
-   });
+   $("#Sex").change(function() {
+		if ($("#Sex").val()=="0") {
+			$("#ErrSex").html("Please select a Sex");  
+		}else{
+			$("#ErrSex").html("");  
+		}
+	});
+	$("#MobileNumber").blur(function () {
+			if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter MobileNumber")) {
+				IsMobileNumber("MobileNumber","ErrMobileNumber","Please Enter Valid MobileNumber");
+			}              
+		});	
    $("#EmailID").blur(function () {
-    
-        IsNonEmpty("EmailID","ErrEmailID","Please Enter Email ID");
-                        
-   }); 
+			if (IsNonEmpty("EmailID","ErrEmailID","Please Enter EmailID")) {
+			    IsEmail("EmailID","ErrEmailID","Please Enter Valid EmailID");    
+			}
+		});
+
    $("#UserRole").blur(function () {
     
         IsNonEmpty("UserRole","ErrUserRole","Please Enter User Role");
                         
    });
-   $("#LoginName").blur(function () {
-    
-        IsNonEmpty("LoginName","ErrLoginName","Please Enter Login Name");
-                        
-   });
+	$("#LoginName").blur(function () {
+		if (IsLogin("LoginName","ErrLoginName","Please Enter the character greater than 6 character and less than 9 character")) {
+					IsAlphabet("LoginName","ErrLoginName","Please Enter Alpha Numeric Character only");
+					}
+	});
    $("#LoginPassword").blur(function () {
     
         IsNonEmpty("LoginPassword","ErrLoginPassword","Please Enter Login Password");
@@ -110,29 +108,24 @@ function DateofBirthValidation() {
         }
     }
 </script>
- <?php                   
-  if (isset($_POST['BtnSaveStaff'])) {   
-    $response = $webservice->getData("Admin","CreateAdminStaff",$_POST);
-    if ($response['status']=="success") {  echo  $successmessage = $response['message']; 
-       unset($_POST);
-    } else {
-        $errormessage = $response['message']; 
-    } 
-    }
-  $AInfo = $webservice->getData("Admin","GetAdminStaffInfo");
+<?php 
+     $AInfo = $webservice->getData("Admin","GetAdminStaffInfo");
      $AdminCode="";
         if ($AInfo['status']=="success") {
             $AdminCode  =$AInfo['data']['AdminStaffCode'];
         }
         {
 ?>
-<form method="post" action="" onsubmit="return SubmitNewStaff();">            
-<div class="col-12 grid-margin">                                    
-	<div class="card">
-		<div class="card-body">
-			<div style="padding:15px !important;max-width:770px !important;">
-				<h4 class="card-title">Create Staff</h4>
-					<div class="form-group row">
+<form method="post" id="frmfrn">
+	<input type="hidden" value="" name="txnPassword" id="txnPassword">
+	<div class="row">
+		<div class="col-sm-9">
+            <div class="card">
+				<div class="card-body">
+					<div style="max-width:770px !important;">
+						<h4 class="card-title">Manage Staffs</h4>                    
+						<h5 class="card-title">Create Staffs</h5>
+						<div class="form-group row">
 						<label class="col-sm-3 col-form-label">Staff Code<span id="star">*</span></label>
 						<div class="col-sm-2">
 							<input type="text" value="<?php echo isset($_POST['StaffCode']) ? $_POST['StaffCode'] : $AdminCode;?>" class="form-control" id="StaffCode" name="StaffCode" maxlength="6">
@@ -148,7 +141,7 @@ function DateofBirthValidation() {
 					</div>
 			  <div class="form-group row">
 				<label class="col-sm-3 col-form-label">Date of Birth<span id="star">*</span></label>
-				  <div class="col-sm-4">
+				  <div class="col-sm-5">
 				   <div class="col-sm-4" style="max-width:63px !important;padding:0px !important;">
 						<select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px" onchange="DateofBirthValidation()">
 							<option value="0">Day</option>
@@ -243,14 +236,26 @@ function DateofBirthValidation() {
 						<label class="custom-control-label" for="PasswordFstLogin" style="margin-top: 7px;">&nbsp;Change password on first login</label>
 					</div>
 				</div>
-			 </div> 
-		   <div class="form-group row">
-				<div class="col-sm-2"><button type="submit" name="BtnSaveStaff" class="btn btn-primary">Create staff</button></div>
-				<div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageStaffs "><small>List of Staffs</small> </a></div>
-		   </div>
-		</form>
-	 </div>
-  </div>
+			 </div>
+        </div>
+	</div>
+	</div>
+	<br>
+	<div class="form-group row" >
+						<div class="col-sm-12" style="text-align:right">
+							&nbsp;<a href="javascript:void(0)" class="btn btn-default" style="padding:7px 20px" onclick="AdminStaff.ConfirmGotoBackFromCreateAdminStaff()">Cancel</a>&nbsp;
+							<a href="javascript:void(0)" onclick="AdminStaff.ConfirmCreateAdminStaff()" class="btn btn-primary" name="BtnupdateStaff">Create Staff</a>
+						</div>
+					</div>
 </div>
-</form>                                                  
-<?php } ?>
+<div class="col-sm-3">
+			<div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Staffs/ManageStaffs");?>"><small style="font-weight:bold;text-decoration:underline">List of Staffs</small></a></div>
+        </div>
+</form>  <?php }?>
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+		<div class="modal-dialog" >
+			<div class="modal-content" id="Publish_body"  style="max-height: 344px;min-height: 344px;" >
+		
+			</div>
+		</div>
+	</div>

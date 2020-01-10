@@ -1,6 +1,6 @@
 <?php  
     include_once("config_client.php");
-    
+    define ("url_encrypt",1);
     $cdata=json_decode(json_encode(array('TimeZone'        => "Asia/Kolkata",
                                          'DateFormat'      => "",
                                          'Language'        => "la-en",

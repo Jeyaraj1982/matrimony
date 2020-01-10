@@ -145,6 +145,7 @@
                         <!-- <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Invoice/Invoice");?>">Invoice</a></li> -->
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Bank/ListofBanks");?>">Add Bank</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/PayPal/Paypal");?>">Paypal</a></li>
+						<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/ManageTemplates");?>">Template</a></li>
                     </ul>
                 </div>
             </li> 

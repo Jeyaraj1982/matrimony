@@ -69,37 +69,37 @@ function ShowTxnPwd() {
                         <h4 class="card-title">Manage Staffs</h4>
                         <h4 class="card-title">View Staff</h4>
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Staff Code</label>
-                                <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs[0]['AdminName'];?></small></div>
+                                <div class="col-sm-3"><small>Staff Code</small></div>
+                                <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs[0]['AdminCode'];?></small></div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Staff Name<span id="star">*</span></label>
+                                <div class="col-sm-3"><small>Name</small></div>
                                 <div class="col-sm-9"><small style="color:#737373;"><?php echo $Staffs[0]['AdminName'];?></small></div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Date of Birth<span id="star">*</span></label>
+                                <div class="col-sm-3"><small>Date of Birth</small></div>
                                 <div class="col-sm-5" ><small style="color:#737373;"><?php echo $Staffs[0]['DateofBirth'];?></small></div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Gender<span id="star">*</span></label>
+                                <div class="col-sm-3"><small>Gender</small></div>
                                 <div class="col-sm-4"><small style="color:#737373;"><?php echo $Staffs[0]['Sex'];?></small></div>
-                                <label class="col-sm-2 col-form-label">Staff Role<span id="star">*</span></label>
-                                <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs[0]['Sex'];?></small></div>
+                                <div class="col-sm-2"><small>Staff Role</small></div>
+                                <div class="col-sm-3"><small style="color:#737373;"><?php echo $Staffs[0]['StaffRoll'];?></small></div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Mobile Number<span id="star">*</span></label>
+                                <div class="col-sm-3"><small>Mobile Number</small></div>
                                 <div class="col-sm-9"><small style="color:#737373;"><?php echo $Staffs[0]['MobileNumber'];?></small></div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Email ID<span id="star">*</span></label>
+                                <div class="col-sm-3"><small>Email ID</small></div>
                                 <div class="col-sm-9"><small style="color:#737373;"><?php echo $Staffs[0]['EmailID'];?></small></div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Login Name</label>
+                                <div class="col-sm-3"><small>Login Name</small></div>
                                 <div class="col-sm-5"><small style="color:#737373;"><?php echo $Staffs[0]['AdminLogin'];?></small></div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Login Password<span id="star">*</span></label>
+                                <div class="col-sm-3"><small>Login Password</small></div>
                                 <div class="col-sm-5">
                                     <small style="color:#737373;">
                                         <span id='pwd'><a href="javascript:ShowPwd()">Show Password</a></span>
@@ -107,7 +107,7 @@ function ShowTxnPwd() {
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Transaction Password<span id="star">*</span></label>
+                                <div class="col-sm-3"><small>Transaction Password</small></div>
                                 <div class="col-sm-5">
                                     <small style="color:#737373;">
                                         <span id='Txnpwd'><a href="javascript:ShowTxnPwd()">Show Password</a></span>
@@ -157,7 +157,19 @@ function ShowTxnPwd() {
                             <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick="AdminStaff.ConfirmAdminStaffChnPswd()"><small style="font-weight:bold;text-decoration:underline">Change Password</small></a></div>
                             <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick="AdminStaff.ConfirmAdminStaffResetTxnPswd()"><small style="font-weight:bold;text-decoration:underline">Reset Transaction Password</small></a></div>
                             <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick="AdminStaff.ConfirmDeleteAdminStaff()"><small style="font-weight:bold;text-decoration:underline">Delete Staff</small></a></div>
-                           
+							<div class="col-sm-12 col-form-label">
+							<hr>
+							<?php if($Staffs[0]['ChangePasswordFstLogin']==1) { ?>
+								<br><div>
+									<a href="javascript:void(0)" onclick="AdminStaff.ConfirmAdminStaffChnPswdFstLogin()"><label class="switch" style="background: none;">
+										<input type="checkbox">
+											<span class="slider"></span>
+									</label></a>
+									Change Password for first time login
+								</div>
+							<?php } ?>
+								
+							</div>
                             <?php if(sizeof($response['data']['LastLogin'])>0){ ?>
                             <div class="col-sm-12 col-form-label">
                             <hr>
@@ -174,7 +186,7 @@ function ShowTxnPwd() {
 </form> 
 <div class="modal" id="PubplishNow" data-backdrop="static" >
         <div class="modal-dialog" >
-            <div class="modal-content" id="Publish_body"  style="max-height: 313px;min-height: 313px;" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 350px;min-height: 350px;" >
         
             </div>
         </div>

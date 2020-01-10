@@ -86,40 +86,45 @@ $(document).ready(function () {
         $("#ErrMobileNumber").html("Digits Only").fadeIn().fadeIn("fast");
                return false;
     }
-   });                                                                                                     
+   });
+	$("#StaffName").blur(function () {
+    if (IsNonEmpty("StaffName","ErrstaffName","Please Enter staff Name")) {
+		IsAlphaNumeric("StaffName","ErrstaffName","Please Enter Alpha Numeric characters only");
+		}
+   });   
    $("#staffCode").blur(function () {
     
         IsNonEmpty("staffCode","ErrstaffCode","Please Enter staff Code");
                         
    });
-   $("#Sex").blur(function () {
-    
-        IsNonEmpty("Sex","ErrSex","Please Select a Sex");
-                        
-   });
-   $("#DateofBirth").blur(function () {
-    
-        IsNonEmpty("DateofBirth","ErrDateofBirth","Please Enter Date of Birth");
-                        
-   });
-   $("#MobileNumber").blur(function () {
-        IsNonEmpty($(this).attr("id"),$(this).attr("error_div"),$(this).attr("error"));
-   });
+   $("#Sex").change(function() {
+		if ($("#Sex").val()=="0") {
+			$("#ErrSex").html("Please select a Sex");  
+		}else{
+			$("#ErrSex").html("");  
+		}
+	});
+	$("#MobileNumber").blur(function () {
+			if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter MobileNumber")) {
+				IsMobileNumber("MobileNumber","ErrMobileNumber","Please Enter Valid MobileNumber");
+			}              
+		});	
    $("#EmailID").blur(function () {
-    
-        IsNonEmpty("EmailID","ErrEmailID","Please Enter Email ID");
-                        
-   }); 
+			if (IsNonEmpty("EmailID","ErrEmailID","Please Enter EmailID")) {
+			    IsEmail("EmailID","ErrEmailID","Please Enter Valid EmailID");    
+			}
+		});
+
    $("#UserRole").blur(function () {
     
         IsNonEmpty("UserRole","ErrUserRole","Please Enter User Role");
                         
    });
-   $("#LoginName").blur(function () {
-    
-        IsNonEmpty("LoginName","ErrLoginName","Please Enter Login Name");
-                        
-   });
+	$("#LoginName").blur(function () {
+		if (IsLogin("LoginName","ErrLoginName","Please Enter the character greater than 6 character and less than 9 character")) {
+					IsAlphabet("LoginName","ErrLoginName","Please Enter Alpha Numeric Character only");
+					}
+	});
    $("#LoginPassword").blur(function () {
     
         IsNonEmpty("LoginPassword","ErrLoginPassword","Please Enter Login Password");
@@ -146,8 +151,8 @@ function SubmitNewStaff() {
                          
                          ErrorCount=0;
         
-                        if (IsNonEmpty("staffName","ErrstaffName","Please Enter staff Name")) {
-                        IsAlphabet("staffName","ErrstaffName","Please Enter Alpha Numeric characters only");
+                        if (IsNonEmpty("StaffName","ErrstaffName","Please Enter staff Name")) {
+                        IsAlphaNumeric("StaffName","ErrstaffName","Please Enter Alpha Numeric characters only");
                         }
                         if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter MobileNumber")) {
                         IsMobileNumber("MobileNumber","ErrMobileNumber","Please Enter Valid Mobile Number");
@@ -279,8 +284,8 @@ function SubmitNewStaff() {
                                 <div class="col-sm-3">
                                 <?php if($Staffs[0]['IsActive']==1){ ?>
                                     <select class="form-control" id="UserRole"  name="UserRole">
-                                        <option value="Admin" <?php echo (isset($_POST[ 'UserRole'])) ? (($_POST[ 'UserRole']== "Admin") ? " selected='selected' " : "") : (($Staffs[0]['StaffRole']==$_POST[ 'UserRole']) ? " selected='selected' " : "");?>>Admin</option>
-                                        <option value="View" <?php echo (isset($_POST[ 'UserRole'])) ? (($_POST[ 'UserRole']== "View") ? " selected='selected' " : "") : (($Staffs[0]['StaffRole']==$_POST[ 'UserRole']) ? " selected='selected' " : "");?>>View</option>
+										<option value="Admin" <?php echo ($_POST[ 'UserRole']==$Staffs[0]['StaffRoll']) ? " selected='selected'" :""; ?>>Admin</option>
+										<option value="View" <?php echo ($_POST[ 'UserRole']==$Staffs[0]['StaffRoll']) ? " selected='selected'" :""; ?>>View</option>
                                     </select>
                                     <span class="errorstring" id="ErrUserRole"><?php echo isset($ErrUserRole)? $ErrUserRole: "";?></span>
                                 <?php } else { ?>
@@ -345,7 +350,7 @@ function SubmitNewStaff() {
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Login Password<span id="star">*</span></label>
+                                <label class="col-sm-3 col-form-label">Login Password</label>
                                 <div class="col-sm-5">
                                     <div class="input-group">
                                         <input type="password" disabled="disabled" class="form-control pwd"  maxlength="8" id="AdminPassword" name="AdminPassword" Placeholder="Login Password" value="<?php echo (isset($_POST['AdminPassword']) ? $_POST['AdminPassword'] : $Staffs[0]['AdminPassword']);?>">
@@ -356,7 +361,7 @@ function SubmitNewStaff() {
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Transaction Password<span id="star">*</span></label>
+                                <label class="col-sm-3 col-form-label">Transaction Password</label>
                                 <div class="col-sm-5">
                                     <div class="input-group">
                                         <input type="password" disabled="disabled" class="form-control pwd"  maxlength="8" id="StaffTransactionPassword" name="StaffTransactionPassword" Placeholder="Transaction Password" value="<?php echo (isset($_POST['TransactionPassword']) ? $_POST['TransactionPassword'] : $Staffs[0]['TransactionPassword']);?>">
@@ -379,7 +384,7 @@ function SubmitNewStaff() {
                     <?php if($Staffs[0]['IsActive']==1){ ?>
                         <a href="javascript:void(0)" onclick="AdminStaff.ConfirmEditAdminStaff()" class="btn btn-primary" name="BtnupdateStaff">Update staff</a>
                     <?php } else { ?>
-                        <a class="btn btn-primary" disabled="disabled">Update staff</a>
+                        <a class="btn btn-primary" disabled="disabled">Update information</a>
                     <?php } ?>
                 </div>
             </div>
@@ -446,7 +451,7 @@ function SubmitNewStaff() {
 </form> 
 <div class="modal" id="PubplishNow" data-backdrop="static" >
         <div class="modal-dialog" >
-            <div class="modal-content" id="Publish_body"  style="max-height: 313px;min-height: 313px;" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 350px;min-height: 350px;" >
         
             </div>
         </div>

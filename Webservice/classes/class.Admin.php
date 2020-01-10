@@ -3865,6 +3865,11 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
         function CreateAdminStaff() {
             
             global $mysql,$loginInfo;
+			
+			$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
             
             if (!(strlen(trim($_POST['StaffCode']))>0)) {
                 return Response::returnError("Please enter admin code");                                          
@@ -3922,12 +3927,24 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                                                  "AdminPassword"   => $_POST['LoginPassword'],
                                                                  "StaffRoll"   => $_POST['UserRole'],
                                                                  "IsActive"        => "1",
+																 "CreatedOn"       => date("Y-m-d H:i:s"), 
 																 "ChangePasswordFstLogin"   => (($_POST['PasswordFstLogin']=="on") ? '1' : '0')));
                                                                  $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='AdminStaffs'");
               
             if (sizeof($id)>0) {
-                
-                return Response::returnSuccess("success",array());
+                $mContent = $mysql->select("select * from `mailcontent` where `Category`='AdminStaffCreate'");
+					 $content  = str_replace("#StaffName#",$_POST['StaffName'],$mContent[0]['Content']);
+					 $content  = str_replace("#AdminName#",$txnPwd[0]['AdminName'],$content);
+					 $content  = str_replace("#LoginName#",$_POST['LoginName'],$content);
+					 $content  = str_replace("#LoginPassword#",$_POST['LoginPassword'],$content);
+
+					 MailController::Send(array("MailTo"   => $_POST['EmailID'],
+												"Category" => "AdminStaffCreate",
+												"MemberID" => $id,
+												"Subject"  => $mContent[0]['Title'],
+												"Message"  => $content),$mailError);
+					MobileSMSController::sendSMS($_POST['MobileNumber']," Dear ".$_POST['staffName'].",You have added as a staff in ".$txnPwd[0]['AdminName']." <br> Your StaffID ID is ".$_POST['StaffCode']." ,Login Name is ".$_POST['LoginName']." and Login Password is ".$_POST['LoginPassword']." " );
+                return Response::returnSuccess("success",array("StaffCode" => $_POST['StaffCode']));
                 } else{
                     return Response::returnError("Access denied. Please contact support");   
                 }
@@ -4097,6 +4114,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                  return Response::returnSuccess("success",$mysql->select($sql." and `IsActive`='0'"));    
              }
          }
+		 
          function GetFranchiseeStaffs(){
            global $mysql,$loginInfo;    
               
@@ -4447,7 +4465,18 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             return Response::returnError("Staff already deactivated"); 
         }
         $mysql->execute("update _tbl_admin set IsActive='0' where `AdminID`='".$staff[0]['AdminID']."' and AdminCode='".$_POST['StaffCode']."'");
-        return Response::returnSuccess("Deactivated Successfully",array());
+        
+			$mContent = $mysql->select("select * from `mailcontent` where `Category`='DeactivateAdminStaff'");
+			$content  = str_replace("#AdminName#",$staff[0]['AdminName'],$mContent[0]['Content']);
+			
+			 MailController::Send(array("MailTo"         => $staff[0]['EmailID'],
+										"Category"       => "DeactivateAdminStaff",
+										"AdminCode" => $staff[0]['AdminCode'],
+										"Subject"        => $mContent[0]['Title'],
+										"Message"        => $content),$mailError);
+			 MobileSMSController::sendSMS($staff[0]['MobileNumber']," Dear ".$staff[0]['AdminName'].",Your staff account has been deactivated.");  
+		
+		return Response::returnSuccess("Deactivated Successfully",array());
     }
     function ActiveAdminStaff(){
         global $mysql,$loginInfo;
@@ -4463,7 +4492,18 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             return Response::returnError("Staff already Activated"); 
         }
         $mysql->execute("update _tbl_admin set IsActive='1' where `AdminID`='".$staff[0]['AdminID']."' and AdminCode='".$_POST['StaffCode']."'");
-        return Response::returnSuccess("Activated Successfully",array());
+        
+		$mContent = $mysql->select("select * from `mailcontent` where `Category`='ActivateAdminStaff'");
+			$content  = str_replace("#AdminName#",$staff[0]['AdminName'],$mContent[0]['Content']);
+			
+			 MailController::Send(array("MailTo"         => $staff[0]['EmailID'],
+										"Category"       => "ActivateAdminStaff",
+										"AdminCode" => $staff[0]['AdminCode'],
+										"Subject"        => $mContent[0]['Title'],
+										"Message"        => $content),$mailError);
+			 MobileSMSController::sendSMS($staff[0]['MobileNumber']," Dear ".$staff[0]['AdminName'].",Your staff account has been activated.");  
+		
+		return Response::returnSuccess("Activated Successfully",array());
     }
     function AdminStaffChnPswd() {
         global $mysql,$loginInfo;
@@ -4487,7 +4527,18 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 }
                
                $mysql->execute("update _tbl_admin set AdminPassword='".$_POST['NewPswd']."' where `AdminID`='".$staff[0]['AdminID']."' and AdminCode='".$_POST['StaffCode']."'");
-                 return Response::returnSuccess("Success",array());  
+               
+			   $mContent = $mysql->select("select * from `mailcontent` where `Category`='AdminStaffChangePassword'");
+					$content  = str_replace("#AdminName#",$staff[0]['AdminName'],$mContent[0]['Content']);
+					
+					 MailController::Send(array("MailTo"         => $staff[0]['EmailID'],
+												"Category"       => "AdminStaffChangePassword",
+												"AdminCode" 	 => $staff[0]['AdminCode'],
+												"Subject"        => $mContent[0]['Title'],
+												"Message"        => $content),$mailError);
+					 MobileSMSController::sendSMS($staff[0]['MobileNumber']," Dear ".$staff[0]['AdminName'].",Your Login Password has been changed successfully. Your New Login Password is ".$_POST['ConfirmNewPswd']."");  
+				
+			   return Response::returnSuccess("Success",array());  
             }
         
     }
@@ -4508,7 +4559,17 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             return Response::returnError("Account is deactivated so Could not process"); 
         }
         $mysql->execute("update _tbl_admin set TransactionPassword='' where `AdminID`='".$staff[0]['AdminID']."' and AdminCode='".$_POST['StaffCode']."'");
-        return Response::returnSuccess("success",array());
+			$mContent = $mysql->select("select * from `mailcontent` where `Category`='AdminStaffResetTxnPassword'");
+			$content  = str_replace("#AdminName#",$staff[0]['AdminName'],$mContent[0]['Content']);
+			
+			 MailController::Send(array("MailTo"         => $staff[0]['EmailID'],
+										"Category"       => "AdminStaffResetTxnPassword",
+										"FranchiseeCode" => $staff[0]['FrCode'],
+										"Subject"        => $mContent[0]['Title'],
+										"Message"        => $content),$mailError);
+			 MobileSMSController::sendSMS($staff[0]['MobileNumber']," Dear ".$staff[0]['AdminName'].",Your Transaction Password has been reset successfully.");  
+		
+		return Response::returnSuccess("success",array());
     }
     function DeleteAdminStaff(){
         global $mysql,$loginInfo;
@@ -4524,7 +4585,18 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             return Response::returnError("Account is already deleted"); 
         }
         $mysql->execute("update _tbl_admin set IsDeleted='1' where `AdminID`='".$staff[0]['AdminID']."' and AdminCode='".$_POST['StaffCode']."'");
-        return Response::returnSuccess("success",array("AdminCode"=>$_POST['StaffCode']));
+        
+		$mContent = $mysql->select("select * from `mailcontent` where `Category`='DeleteAdminStaffAccount'");
+			$content  = str_replace("#AdminName#",$staff[0]['AdminName'],$mContent[0]['Content']);
+			
+			 MailController::Send(array("MailTo"         => $staff[0]['EmailID'],
+										"Category"       => "DeleteAdminStaffAccount",
+										"FranchiseeCode" => $staff[0]['FrCode'],
+										"Subject"        => $mContent[0]['Title'],
+										"Message"        => $content),$mailError);
+			 MobileSMSController::sendSMS($staff[0]['MobileNumber']," Dear ".$staff[0]['AdminName'].",Your account has been deleted successfully.");  
+		
+		return Response::returnSuccess("success",array("AdminCode"=>$_POST['StaffCode']));
     }
 	function AdminStaffChnPswdFstLogin() {
 		global $mysql,$loginInfo;
@@ -4695,7 +4767,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 												"AdminCode" 	 => $admindata[0]['AdminCode'],
 												"Subject"        => $mContent[0]['Title'],
 												"Message"        => $content),$mailError);
-					// MobileSMSController::sendSMS($admindata[0]['MobileNumber']," Dear ".$admindata[0]['AdminName'].",Your Login Password has been changed successfully. Your New Login Password is ".$_POST['NewPassword']."");  
+					 MobileSMSController::sendSMS($admindata[0]['MobileNumber']," Dear ".$admindata[0]['AdminName'].",Your Login Password has been changed successfully. Your New Login Password is ".$_POST['NewPassword']."");  
                 
                 return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;"><img src="'.AppPath.'assets/images/icon_success_verification.png"></p>
@@ -4851,7 +4923,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 												"FranchiseeCode" => $admindata[0]['FrCode'],
 												"Subject"        => $mContent[0]['Title'],
 												"Message"        => $content),$mailError);
-					// MobileSMSController::sendSMS($admindata[0]['MobileNumber']," Dear ".$admindata[0]['AdminName'].",Your Transaction Password has been changed successfully. Your New Transaction Password is ".$_POST['TransactionPassword']."");  
+					 MobileSMSController::sendSMS($admindata[0]['MobileNumber']," Dear ".$admindata[0]['AdminName'].",Your Transaction Password has been changed successfully. Your New Transaction Password is ".$_POST['TransactionPassword']."");  
                 
                 return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;"><img src="'.AppPath.'assets/images/icon_success_verification.png"></p>
@@ -5466,7 +5538,73 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                     } else {
                                         return $this->EmailVerificationForm("<span style='color:red'>You entered, invalid verification code.</span>",$_POST['loginId'],$_POST['email_otp'],$_POST['reqId']);
                                     }  
-        }  
+        }
+		function GetManageTemplates() {
+
+             global $mysql,$loginInfo;
+              if(url_encrypt){
+				$sql = "SELECT *,Category as AccessCode From `mailcontent`";
+			  }else { 
+				$sql = "SELECT *,md5(concat(ContentID,'".$loginInfo[0]['LoginOn']."')) as AccessCode From `mailcontent`";
+			  }
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }
+		}
+		function GetTemplateInfo(){
+			global $mysql;
+			
+			 if(url_encrypt){
+				$Templates = $mysql->select("select *,Category as AccessCode from mailcontent where Category='".$_POST['Code']."'");
+			  }else { 
+				$Templates = $mysql->select("select *,md5(concat(ContentID,'".$loginInfo[0]['LoginOn']."')) as AccessCode from mailcontent where md5(ContentID,'".$loginInfo[0]['LoginOn']."')='".$_POST['Code']."'");
+			  }
+				
+				
+				return Response::returnSuccess("success",array("Template"=> $Templates[0]));
+		}
+		function EditTemplate(){
+              global $mysql,$loginInfo;    
+              
+              $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+                if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                    return Response::returnError("Invalid transaction password");   
+                }
+				$template = $mysql->select("select * from `mailcontent` where `Category`='".$_POST['Category']."' and Category<>'".$_POST['TCode']."'");
+				if (sizeof($template)>0) {
+					return Response::returnError("Category Already Exists");
+				}
+              
+                    $mysql->execute("update mailcontent set Category='".$_POST['Category']."', 
+                                                           CategoryDescription='".$_POST['CategoryDescription']."', 
+                                                           MobileSMSContent='".$_POST['MobileSMSContent']."', 
+														   IsActiveMobileSms='".(($_POST['IsActiveMobileSms']=="on") ? '1' : '0')."',
+														   IsActiveEmail='".(($_POST['IsActiveEmail']=="on") ? '1' : '0')."',
+														   Title='".$_POST['EmailSubject']."', 
+                                                           Content='".$_POST['EmailContent']."' where Category='".$_POST['TCode']."'");
+                return Response::returnSuccess("success");
+		} 
+		function TemplateCreate() {
+        global $mysql,$loginInfo;
+          $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            } 
+			if (!(strlen(trim($_POST['Category']))>0)) {
+                return Response::returnError("Please enter category ");
+            }
+			$template = $mysql->select("select * from `mailcontent` where `Category`='".$_POST['Category']."'");
+			if (sizeof($template)>0) {
+				return Response::returnError("Category Already Exists");
+			}
+			
+			$mysql->insert("mailcontent",array("Category"        => $_POST['Category'],
+											   "CategoryDescription"  =>$_POST['CategoryDescription']));   
+			   
+			   return Response::returnSuccess("Success",array());  
+            }
+        
+	
 }
 //2801
 ?> 

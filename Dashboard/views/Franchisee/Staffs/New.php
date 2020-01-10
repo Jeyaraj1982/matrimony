@@ -1,16 +1,4 @@
 
-<?php                   
-  if (isset($_POST['BtnSaveStaff'])) {         
-    $response = $webservice->getData("Franchisee","CreateFranchiseeStaff",$_POST);
-    if ($response['status']=="success") {
-        ?>
-        <script>location.href='<?php echo AppUrl;?>Staffs/Created';</script>
-        <?php
-    } else {
-        $errormessage = $response['message']; 
-    }
-    }
-?> 
 <script>
 
 $(document).ready(function () {
@@ -36,10 +24,10 @@ $(document).ready(function () {
                         
    });
    $("#EmailID").blur(function () {
-    
-        IsNonEmpty("EmailID","ErrEmailID","Please Enter Email ID");
-                        
-   }); 
+			if (IsNonEmpty("EmailID","ErrEmailID","Please Enter EmailID")) {
+			    IsEmail("EmailID","ErrEmailID","Please Enter Valid EmailID");    
+			}
+		});
    $("#UserRole").blur(function () {
     
         IsNonEmpty("UserRole","ErrUserRole","Please Enter User Role");
