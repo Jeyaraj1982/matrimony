@@ -15,11 +15,18 @@
                 if (isset($_POST['updateIDProof'])) {
                     
                     $target_dir = "uploads/";
+					if (!is_dir('uploads/members/'.$_Member['MemberCode'])) {
+                        mkdir('uploads/members/'.$_Member['MemberCode'], 0777, true);
+                    }
+                    
+                    if (!is_dir('uploads/members/'.$_Member['MemberCode']."/kyc")) {
+                        mkdir('uploads/members/'.$_Member['MemberCode']."/kyc", 0777, true);
+                    }
                     $err=0;
                     $_POST['IDProofFileName']= "";
                     if (isset($_FILES["IDProofFileName"]["name"]) && strlen(trim($_FILES["IDProofFileName"]["name"]))>0 ) {
                         $idprooffilename = time().basename($_FILES["IDProofFileName"]["name"]);
-                        if (!(move_uploaded_file($_FILES["IDProofFileName"]["tmp_name"], $target_dir . $idprooffilename))) {
+                        if (!(move_uploaded_file($_FILES["IDProofFileName"]["tmp_name"],'uploads/members/'.$_Member['MemberCode'].'/kyc/'. $idprooffilename))) {
                             $err++;
                             echo "Sorry, there was an error uploading your file.";
                         }
@@ -68,7 +75,7 @@
               foreach($Kyc['data']['IdProofDocument'] as $idProof)  { ?>
               
               <div class="col-sm-7" style="padding-top: 5px;color: #888;margin-top:10px">  
-                    <img src="<?php echo AppUrl;?>uploads/<?php echo $idProof['FileName'];?>" style="height:120px;"><br><br>
+                    <img src="<?php echo AppUrl;?>uploads/members/<?php echo $_Member['MemberCode'];?>/kyc/<?php echo $idProof['FileName'];?>" style="height:120px;"><br><br>
                     Document Type&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $idProof['FileType'];?>
                     <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($Kyc['data']['IdProofDocument'][0]['SubmittedOn']);?>
                     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:&nbsp;&nbsp;
@@ -95,12 +102,20 @@
                 if (isset($_POST['updateKYC'])) {
                     
                     $target_dir = "uploads/";
+					 $target_dir = "uploads/";
+					if (!is_dir('uploads/members/'.$_Member['MemberCode'])) {
+                        mkdir('uploads/members/'.$_Member['MemberCode'], 0777, true);
+                    }
+                    
+                    if (!is_dir('uploads/members/'.$_Member['MemberCode']."/kyc")) {
+                        mkdir('uploads/members/'.$_Member['MemberCode']."/kyc", 0777, true);
+                    }
                     $err=0;
                     $_POST['AddressProofFileName']= "";
                     
                     if (isset($_FILES["AddressProofFileName"]["name"]) && strlen(trim($_FILES["AddressProofFileName"]["name"]))>0 ) {
                         $addressfilename = time().basename($_FILES["AddressProofFileName"]["name"]);
-                        if (!(move_uploaded_file($_FILES["AddressProofFileName"]["tmp_name"], $target_dir . $addressfilename))) {
+                        if (!(move_uploaded_file($_FILES["AddressProofFileName"]["tmp_name"],'uploads/members/'.$_Member['MemberCode'].'/kyc/'. $addressfilename))) {
                             $err++;
                             echo "Sorry, there was an error uploading your file..";
                         }
@@ -144,7 +159,7 @@
               foreach($Kyc['data']['AddressProofDocument'] as $addressProof)  { ?>
               
               <div class="col-sm-7" style="padding-top: 5px;color: #888;">  
-                    <img src="<?php echo AppUrl;?>uploads/<?php echo $addressProof['FileName'];?>" style="height:120px;"><br><br>
+                    <img src="<?php echo AppUrl;?>uploads/members/<?php echo $_Member['MemberCode'];?>/kyc/<?php echo $addressProof['FileName'];?>" style="height:120px;"><br><br>
                     Document Type&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $addressProof['FileType'];?>
                     <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($Kyc['data']['AddressProofDocument'][0]['SubmittedOn']);?>
                     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:&nbsp;&nbsp;

@@ -59,7 +59,7 @@
         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show');
         $.ajax({
-            url: API_URL + "m=Member&a=ChangeEmailFromVerificationScreen", 
+            url: getAppUrl() + "m=Member&a=ChangeEmailFromVerificationScreen", 
             success: function(result){
                $('#Mobile_VerificationBody').html(result); 
             }});
@@ -70,13 +70,13 @@
         var param = $( "#"+frmid1).serialize();
         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
-        $.post(API_URL + "m=Member&a=MobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
+        $.post(getAppUrl() + "m=Member&a=MobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
     }
     
     function ChangeMobileNumber() {
         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
-        $.ajax({url: API_URL + "m=Member&a=ChangeMobileNumber",success: function(result2){$('#Mobile_VerificationBody').html(result2);}});
+        $.ajax({url: getAppUrl() + "m=Member&a=ChangeMobileNumber",success: function(result2){$('#Mobile_VerificationBody').html(result2);}});
     } 
     
     function EmailVerificationForm(frmid1) {
@@ -84,7 +84,7 @@
         var param = $( "#"+frmid1).serialize();
         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
-        $.post(API_URL + "m=Member&a=EmailVerificationForm",param,function(result2) {
+        $.post(getAppUrl() + "m=Member&a=EmailVerificationForm",param,function(result2) {
             $('#Mobile_VerificationBody').html(result2);  
         });
     }
@@ -92,7 +92,7 @@
     function ChangeEmailID() {
         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
-        $.ajax({url: API_URL + "m=Member&a=ChangeEmailID", success: function(result2){
+        $.ajax({url: getAppUrl() + "m=Member&a=ChangeEmailID", success: function(result2){
             $('#Mobile_VerificationBody').html(result2);
         }});
     } 
@@ -101,12 +101,15 @@
         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
          $('#myModal').modal('show'); 
         $.ajax({
-                        url: API_URL + "m=Member&a=CheckVerification", 
-                        success: function(result2){
-                            $('#Mobile_VerificationBody').html(result2);
-                               
-                        }
-                    });
+					url: getAppUrl() + "m=Member&a=CheckVerification", 
+					success: function(result2){
+						if(result2 ==1){
+						location.href=AppUrl+"MyProfiles/CreateProfile";
+						}else {         
+						$('#Mobile_VerificationBody').html(result2);
+						}  
+					}
+				});
     }
      function MobileNumberOTPVerification(frmid) {
 		 $("#frmMobileNoVerification_error").html("&nbsp;");
@@ -116,7 +119,7 @@
 		 }
          var param = $( "#"+frmid).serialize();
          $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-                    $.post( API_URL + "m=Member&a=MobileNumberOTPVerification", 
+                    $.post( getAppUrl() + "m=Member&a=MobileNumberOTPVerification", 
                             param,
                             function(result2) {
                                 $('#Mobile_VerificationBody').html(result2);   
@@ -128,12 +131,12 @@
         $('#Mobile_VerificationBody').html("loging....");
          $('#myModal').modal('show');  
         $.ajax({
-            url: API_URL + "m=Member&a=IsMobileVerified", 
+            url: getAppUrl() + "m=Member&a=IsMobileVerified", 
             success: function(result){
                 
               if (!(result)) {
                     $.ajax({
-                        url: API_URL + "m=Views&a=EmailVerificationForm", 
+                        url: getAppUrl() + "m=Views&a=EmailVerificationForm", 
                         success: function(result2){
                             $('#Mobile_VerificationBody').html(result2);
                                
@@ -152,7 +155,7 @@
 		 }
          var param = $( "#"+frmid1).serialize();
          $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-                    $.post(API_URL + "m=Member&a=EmailOTPVerification", 
+                    $.post(getAppUrl() + "m=Member&a=EmailOTPVerification", 
                             param,
                             function(result2) {
                                 $('#Mobile_VerificationBody').html(result2);   
@@ -168,14 +171,14 @@
         var param = $( "#"+frmid1).serialize();
         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
-        $.post(API_URL + "m=Member&a=ResendMobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
+        $.post(getAppUrl() + "m=Member&a=ResendMobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
     }
     function ResendEmailVerificationForm(frmid1) {
         
         var param = $( "#"+frmid1).serialize();
         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
         $('#myModal').modal('show'); 
-        $.post(API_URL + "m=Member&a=ResendEmailVerificationForm", param,function(result2) { $('#Mobile_VerificationBody').html(result2); });
+        $.post(getAppUrl() + "m=Member&a=ResendEmailVerificationForm", param,function(result2) { $('#Mobile_VerificationBody').html(result2); });
     }
     
     function AddtoFavourite(ProfileCode,ImgId) {
@@ -183,7 +186,7 @@
         var grey = $('#img_'+ImgId).attr("src");
         var red = $('#img_'+ImgId).attr("src_a");
         $.ajax({
-                url: API_URL + "m=Member&a=AddToFavourite&ProfileCode="+ProfileCode, 
+                url: getAppUrl() + "m=Member&a=AddToFavourite&ProfileCode="+ProfileCode, 
                 success: function(result){
                     $('#img_'+ImgId).attr("src",red);
                     $('#img_'+ImgId).attr("src_a",grey);
@@ -197,7 +200,7 @@
         var grey = $('#img_'+ImgId).attr("src_a");
         var red = $('#img_'+ImgId).attr("src");
         $.ajax({
-                url: API_URL + "m=Member&a=RemoveFromFavourite&ProfileCode="+ProfileCode, 
+                url: getAppUrl() + "m=Member&a=RemoveFromFavourite&ProfileCode="+ProfileCode, 
                 success: function(result){
                     
                     if (MyFavoritedPage==1) {
@@ -214,7 +217,7 @@
 	/* Code Checked By J2J*/
     function AddToShortList(ProfileCode,ImgId) {
         $('#img_'+ImgId).attr("onclick","javascript:void(0)");
-        var request = $.post(API_URL + "m=Member&a=AddToShortList&ProfileCode="+ProfileCode,"",function(result) {
+        var request = $.post(getAppUrl() + "m=Member&a=AddToShortList&ProfileCode="+ProfileCode,"",function(result) {
             var obj = JSON.parse(result);
             if (obj.status=="success") {
                 $('#img_'+ImgId).html("Shortlisted");
@@ -233,7 +236,7 @@
 	function RemoveFromShortList(ProfileCode,ImgId) {
         $('#img_'+ImgId).attr("onclick","javascript:void(0)");
         $.ajax({
-                url: API_URL + "m=Member&a=RemoveFromShortList&ProfileCode="+ProfileCode, 
+                url: getAppUrl() + "m=Member&a=RemoveFromShortList&ProfileCode="+ProfileCode, 
                 success: function(result){
                     
                     if (MyShortListedPage==1) {
@@ -251,7 +254,7 @@
     function SendToInterest(ProfileCode,ImgId) {
         $('#img_'+ImgId).attr("onclick","javascript:void(0)");
         //$.ajax({
-           $.ajax({url: API_URL + "m=Member&a=SendToInterest",success: function(result2){}});
+           $.ajax({url: getAppUrl() + "m=Member&a=SendToInterest",success: function(result2){}});
 
         //});
     }                                    
@@ -328,7 +331,7 @@
          
         },                                                                    
         showConfirmDeleteAttachmentEducationalInformation:function(AttachmentID,ProfileID,EducationDetails,EducationDegree,OtherEducationDegree,FileName){
-            $('#DeleteNow').modal('show'); 
+            $('#PubplishNow').modal('show'); 
 		  var content = '<div >'
 							+'<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
 								+'<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
@@ -360,10 +363,10 @@
 								+'</div>'
 							+'</form>'                                                                                                          
 						+'</div>';
-				$('#DeleteNow_body').html(content);
+				$('#Publish_body').html(content);
         },
         showAttachmentEducationInformation:function(AttachmentID,ProfileID,FileName){
-             $('#DeleteNow').modal('show'); 
+             $('#PubplishNow').modal('show'); 
       var content = '<div>'
                         +'<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
 							+ '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
@@ -374,7 +377,7 @@
 							+'</div>'
 							+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
 								+'<div class="card-title" style="text-align:right;color:green;margin-bottom:0px">For Administrative Purpose Only</div>'
-								 +'<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+								 +'<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileID+'/edudoc/'+FileName+'" style="height:120px;"></div> <br>'
 							+'</div>'
 							+'<div class="modal-footer">'  
 								+'<button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;&nbsp;'
@@ -382,19 +385,19 @@
 							+'</div>'
 						+'</form>'
                     +'</div>';                                                                                                
-            $('#DeleteNow_body').html(content);
+            $('#Publish_body').html(content);
         },
            showAttachmentEducationInformationForView:function(AttachmentID,ProfileID,FileName,Status){
-             $('#DeleteNow').modal('show'); 
+             $('#PubplishNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
                         +'<div  style="height: 315px;">'
                             + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                             + '<h4 class="modal-title">Education Attachment</h4>'
                              + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div><br>'
-                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"><br><br>'+Status+'<br><br></div> <br>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileID+'/edudoc/'+FileName+'" style="height:120px;"><br><br><br><br></div> <br>'
                         + '</div>'
                     +  '</div>';                                                                                                
-            $('#DeleteNow_body').html(content);
+            $('#Publish_body').html(content);
         },
         showAttachmentOccupation:function(ProfileCode,MemberID,ProfileID,FileName){
              $('#PubplishNow').modal('show'); 
@@ -419,7 +422,7 @@
             $('#Publish_body').html(content);
         },
         showAttachmentOccupationForView:function(ProfileCode,MemberID,ProfileID,FileName){
-             $('#DeleteNow').modal('show'); 
+             $('#PubplishNow').modal('show'); 
       var content = '<div class="Publish_body" style="padding:20px">'
                         +'<div  style="height: 315px;">'
                          + '<form method="post" id="Occupationform_'+ProfileCode+'" name="Occupationform_'+ProfileCode+'" > '
@@ -429,11 +432,11 @@
                             + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                             + '<h4 class="modal-title">Occupation Attachment</h4>'
                               + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
-                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileCode+'/occdoc/'+FileName+'" style="height:120px;"></div> <br>'
                         + '</div>'
                         + '</div>'
                     +  '</div>';                                                                                                
-            $('#DeleteNow_body').html(content);
+            $('#Publish_body').html(content);
         },
         SubmitFamilyInformation:function() {
             

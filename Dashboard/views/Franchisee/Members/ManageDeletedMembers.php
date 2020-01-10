@@ -5,7 +5,7 @@
                 <h4 class="card-title">Manage My Member</h4>
                 <div class="form-group row">
                 <div class="col-sm-6">
-                <button type="submit" class="btn btn-primary "><i class="mdi mdi-plus"></i>Create Member</button>
+                <a href="<?php echo GetUrl("Members/CreateMember");?>" class="btn btn-primary "><i class="mdi mdi-plus"></i>Create Member</a>
                 <button type="submit" class="btn btn-success dropdown-toggle"  data-toggle="dropdown">Export</button>
                 <ul class="dropdown-menu">
                     <li><a href="#">To Excel</a></li>

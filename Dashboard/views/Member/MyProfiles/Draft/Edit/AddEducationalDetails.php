@@ -6,6 +6,10 @@
     if (isset($_POST['BtnSave'])) {
         
         $target_dir = "uploads/";
+		if (!is_dir('uploads/profiles/'.$_GET['Code'].'/edudoc')) {
+			mkdir('uploads/profiles/'.$_GET['Code'].'/edudoc', 0777, true);
+		}
+		
         $err=0;
         $_POST['File']= "";
         $acceptable = array('image/jpeg','image/jpg','image/png');
@@ -21,7 +25,7 @@
         
         if (isset($_FILES["File"]["name"]) && strlen(trim($_FILES["File"]["name"]))>0 ) {
             $EducationDetails = time().$_FILES["File"]["name"];
-            if (!(move_uploaded_file($_FILES["File"]["tmp_name"], $target_dir . $EducationDetails))) {
+            if (!(move_uploaded_file($_FILES["File"]["tmp_name"], 'uploads/profiles/'.$_GET['Code'].'/edudoc/'. $EducationDetails))) {
                 $err++;
                 echo "Sorry, there was an error uploading your file.";
             }

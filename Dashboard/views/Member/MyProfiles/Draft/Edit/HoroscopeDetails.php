@@ -3,11 +3,11 @@
 
     if (isset($_POST['BtnSaveProfile'])) {
         $response = $webservice->getData("Member","EditDraftHoroscopeDetails",$_POST);
-        if ($response['status']=="success") {
-             $successmessage = $response['message']; 
-        } else {
-            $errormessage = $response['message']; 
-        }
+        if ($response['status']=="success") { ?>
+            <script> $(document).ready(function() {   $.simplyToast("Success", 'info'); });  </script>
+      <?php  } else { ?>
+           <script> $(document).ready(function() {   $.simplyToast("failed", 'danger'); });  </script>
+     <?php   }
     }
     
     $response = $webservice->GetDraftProfileInformation(array("ProfileCode"=>$_GET['Code']));

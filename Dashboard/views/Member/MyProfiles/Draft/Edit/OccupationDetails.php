@@ -17,6 +17,9 @@
                 if (isset($_POST['BtnSaveProfile'])) {
                     
                     $target_dir = "uploads/";
+					if (!is_dir('uploads/profiles/'.$_GET['Code'].'/occdoc')) {
+						mkdir('uploads/profiles/'.$_GET['Code'].'/occdoc', 0777, true);
+					}
                     $err=0;
                     $acceptable = array('image/jpeg','image/jpg','image/png');
                     
@@ -33,7 +36,7 @@
                         }
                         
                         $OccupationAttachments = time().$_FILES["File"]["name"];
-                        if (!(move_uploaded_file($_FILES["File"]["tmp_name"], $target_dir . $OccupationAttachments))) {
+                        if (!(move_uploaded_file($_FILES["File"]["tmp_name"],'uploads/profiles/'.$_GET['Code'].'/occdoc/'. $OccupationAttachments))) {
                             $err++;
                             echo "Sorry, there was an error uploading your file.";
                         } else {
@@ -47,11 +50,11 @@
                     if ($err==0) {
                         
                         $res =$webservice->getData("Member","EditDraftOccupationDetails",$_POST);   
-                       if ($res['status']=="success") {
-                             $successmessage = $res['message']; 
-                        } else {
-                            $errormessage = $res['message']; 
-                        }
+                       if ($res['status']=="success") { ?>
+                             <script> $(document).ready(function() {   $.simplyToast("Success", 'info'); });  </script> 
+                       <?php  } else { ?>
+                            <script> $(document).ready(function() {   $.simplyToast("failed", 'danger'); });  </script>
+                       <?php }
                          $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
                          $ProfileInfo  = $response['data']['ProfileInfo'];
                     }
@@ -211,7 +214,7 @@ function submitprofile() {
             <?php if($ProfileInfo['OccupationAttachFileName']==""){  ?>
                 <input type="File" id="File" name="File" Placeholder="File">
             <?php }  else {  ?>  
-                <div id="attachfilediv"><img src="<?php echo AppUrl;?>uploads/<?php echo $ProfileInfo['OccupationAttachFileName'];?>" style="height:120px;"><br><a href="javascript:void(0)" onclick="DraftProfile.showAttachmentOccupation('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')"><img src="<?php echo AppUrl ;?>assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a></div><br><input type="File" id="File" name="File" Placeholder="File">
+                <div id="attachfilediv"><img src="<?php echo AppUrl;?>uploads/profiles/<?php echo$_GET['Code'];?>/occdoc/<?php echo $ProfileInfo['OccupationAttachFileName'];?>" style="height:120px;"><br><a href="javascript:void(0)" onclick="DraftProfile.showAttachmentOccupation('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')"><img src="<?php echo AppUrl ;?>assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a></div><br><input type="File" id="File" name="File" Placeholder="File">
        <?php }?>
        </div>
     </div>

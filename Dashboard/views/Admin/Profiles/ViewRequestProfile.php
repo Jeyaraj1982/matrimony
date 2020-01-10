@@ -1,10 +1,4 @@
  <?php  
-$response = $webservice->getData("Admin","GetDraftProfileInfo",array("ProfileCode"=>$_GET['Code']));   
-     $ProfileInfo          = $response['data']['ProfileInfo'];
-    $Member = $response['data']['Members'];
-    $EducationAttachment = $response['data']['EducationAttachments'];
-    $PartnerExpectation = $response['data']['PartnerExpectation'];
-	
 	if (isset($_POST['Verify'])) {
         $_POST['ApproveProfilePhoto']=implode(",",$_POST['ApproveProfilePhoto']);
         $response = $webservice->getData("Admin","VerifyProfileDetails",$_POST);
@@ -14,6 +8,110 @@ $response = $webservice->getData("Admin","GetDraftProfileInfo",array("ProfileCod
             $errormessage = $response['message']; 
         }
     }
+	if (isset($_POST['VerifyEducation'])) {
+        $_POST['ApproveEducation']=implode(",",$_POST['ApproveEducation']);
+        $response = $webservice->getData("Admin","VerifyEducationDetails",$_POST);
+        if ($response['status']=="success") {
+            $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+	if (isset($_POST['VerifyDocument'])) {
+        $_POST['ApproveDocument']=implode(",",$_POST['ApproveDocument']);
+        $response = $webservice->getData("Admin","VerifyDocumentDetails",$_POST);
+        if ($response['status']=="success") {
+            $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+	if (isset($_POST['VerifyAboutMeInfo'])) {
+        $_POST['ApproveAboutMeInfo']=implode(",",$_POST['ApproveAboutMeInfo']);
+        $response = $webservice->getData("Admin","VerifyAboutMeDetails",$_POST);
+        if ($response['status']=="success") {
+            $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+	if (isset($_POST['VerifyOccupationAdditionInfo'])) {
+        $_POST['ApproveOccupationDESC']=implode(",",$_POST['ApproveOccupationDESC']);
+        $response = $webservice->getData("Admin","VerifyOccupationAdditionalInfo",$_POST);
+        if ($response['status']=="success") {
+            $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+	if (isset($_POST['VerifyFamilyInfoAdditionInfo'])) {
+        $_POST['ApproveFamilyInfoAdditionalInfo']=implode(",",$_POST['ApproveFamilyInfoAdditionalInfo']);
+        $response = $webservice->getData("Admin","VerifyFamilyAdditionalInfo",$_POST);
+        if ($response['status']=="success") {
+            $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+	if (isset($_POST['VerifyPhysicalInfoAdditionInfo'])) {
+        $_POST['ApprovePhysicalInfoAdditionalInfo']=implode(",",$_POST['ApprovePhysicalInfoAdditionalInfo']);
+        $response = $webservice->getData("Admin","VerifyPhysicallAdditionalInfo",$_POST);
+        if ($response['status']=="success") {     
+            $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+	if (isset($_POST['VerifyHoroscopeDOB'])) {
+        $_POST['ApproveHoroscopeDob']=implode(",",$_POST['ApproveHoroscopeDob']);
+        $response = $webservice->getData("Admin","VerifyHoroscopeDOB",$_POST);
+        if ($response['status']=="success") {     
+            $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+	if (isset($_POST['VerifyHoroscopeAdditionInfo'])) {
+        $_POST['ApproveHoroscopeAdditionalInfo']=implode(",",$_POST['ApproveHoroscopeAdditionalInfo']);
+        $response = $webservice->getData("Admin","VerifyHoroscopeAdditionInfo",$_POST);
+        if ($response['status']=="success") {     
+            $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+	if (isset($_POST['VerifyPartnerExpectationAdditionInfo'])) {
+        $_POST['ApprovePartnerExpectationAdditionalInfo']=implode(",",$_POST['ApprovePartnerExpectationAdditionalInfo']);
+        $response = $webservice->getData("Admin","VerifyPartnersexpectationAdditionInfo",$_POST);
+        if ($response['status']=="success") {     
+            $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+	if (isset($_POST['VerifyCommunicationAdditionInfo'])) {
+        $_POST['ApproveCommunicationAdditionalInfo']=implode(",",$_POST['ApproveCommunicationAdditionalInfo']);
+        $response = $webservice->getData("Admin","VerifyCommunicationAdditionalInfo",$_POST);
+        if ($response['status']=="success") {
+            $successmessage = $response['message']; 
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+	
+	$response = $webservice->getData("Admin","GetDraftProfileInfo",array("ProfileCode"=>$_GET['Code']));   
+     $ProfileInfo     = $response['data']['ProfileInfo'];
+     $GIVerification  = $response['data']['GIVerification'];
+     $ODVerification  = $response['data']['ODVerification'];
+     $FIVerification  = $response['data']['FIVerification'];
+     $PIVerification  = $response['data']['PIVerification'];
+     $HDobVerification = $response['data']['HDobVerification'];
+     $HDVerification = $response['data']['HDVerification'];
+     $PEVerification = $response['data']['PEVerification'];
+     $CDVerification = $response['data']['CDVerification'];
+	 $Member = $response['data']['Members'];
+     $EducationAttachment = $response['data']['EducationAttachments'];
+     $PartnerExpectation = $response['data']['PartnerExpectation'];
 ?>
 <script>
 $(window).on("beforeunload", function() { return confirm("Do you really want to close?"); });
@@ -85,10 +183,10 @@ legend {
          </div>
               <div class="form-group row">
                 <div class="col-sm-5">
-                    <div style="border: 1px solid #e6e6e6;;padding: 0px;width: 318px;height: 378px;"> 
+                    <div style="border: 1px solid #e6e6e6;;padding: 0px;width: 318px;height: 420px;"> 
                     <div class="form-group row">                                                       
                         <div class="col-sm-12">
-                            <div class="photoview" style="float:left;width: 316px;height:280px">
+                            <div class="photoview" style="float:left;width: 316px;height:316px">
                                 <img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 100%;width: 100%;">
                             </div>
                         </div> 
@@ -166,27 +264,62 @@ legend {
                      <div class="form-group row">
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['City'])))>0){ echo trim($ProfileInfo['City']);?>,&nbsp;&nbsp;<?php }?><?php if((strlen(trim($ProfileInfo['State'])))>0){ echo trim($ProfileInfo['State']);?>,&nbsp;&nbsp;<?php }?><?php echo trim($ProfileInfo['Country']);?></label>
                     </div>
-					<div class="form-group row">
-						<div class="col-sm-12">
-							<?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
-							<?PHP PRINT_R($ProfileP); ?>
-                            <div class="photoview" style="float: left;text-align:center">
-                                <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 100px;width: 88px;"><br>
-								<select class="form-control" name="ApproveProfilePhoto[]" id="ApproveProfilePhoto" style="width:83px;padding:4px;margin-top:7px;height: 28px;">
-									<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#0";?>" <?php echo ($ProfileP['IsApproved']==0) ? " selected='selected' " : "";?>>No Action</option>
-									<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#1";?>" <?php echo ($ProfileP['IsApproved']==1) ? " selected='selected' " : "";?>>Approve</option>
-                                    <option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#2";?>" <?php echo ($ProfileP['IsApproved']==2) ? " selected='selected' " : "";?>>Reject</option>
-								</select>
-							</div>
-                            <?php }?>
-							<img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 100px;width: 88px;">
-						</div>
-					</div>
-                  
-              </div>
+				</div>
               </div>
          </div>
 </div>
+</div>
+<div class="col-12 grid-margin">
+	<div class="card">
+		<div class="card-body">
+			<div class="form-group row">
+			<?php
+			$i=1;
+			foreach($response['data']['AllProfilePhotos'] as $ProfileP) {
+				
+				?>
+				<div class="col-sm-4" style="margin-bottom:10px">
+					<div class="col-sm-4">
+						<img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 100px;width: 88px;">
+					</div>	
+				    <div class="col-sm-8">
+					<?php if ($ProfileP['IsApproved']==0) { ?>
+						<select class="form-control" name="ApproveProfilePhoto[]" id="ApproveProfilePhoto_<?php echo $i;?>" style="width:95px;padding:4px;margin-top:7px;height: 28px;" onchange="ReasonForRejectProfilePhoto('<?php echo $i;?>');">
+							<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#0";?>" <?php echo ($ProfileP['IsApproved']==0) ? " selected='selected' " : "";?>>No Action</option>
+							<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#1";?>" <?php echo ($ProfileP['IsApproved']==1) ? " selected='selected' " : "";?>>Approve</option>
+							<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#2";?>" <?php echo ($ProfileP['IsApproved']==2) ? " selected='selected' " : "";?>>Reject</option>
+						</select>
+						<br>
+						<div style="display:none;" id="ReasonForRejectProfilePhotoDiv_<?php echo $i;?>">
+							<input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectProfilePhoto_<?php echo $i;?>" name="ReasonForRejectProfilePhoto_<?php echo $i;?>" value="<?php echo (isset($_POST['ReasonForRejectProfilePhoto_'.$i]) ? $_POST['ReasonForRejectProfilePhoto_'.$i] : $ProfileP['ReasonForReject']);?>">
+						</div>
+						
+					<?php $i++; }  else {?>
+						<?php if($ProfileP['IsApproved']==1) { ?>
+							<?php if($ProfileP['PriorityFirst']==1) { ?>
+								<span style="color:green">Default Thumb</span><br>
+							<?php } ?>
+							<span>Approved</span><br>
+							<span><?php echo putDateTime($ProfileP['IsApprovedOn']);?></span>
+						<?php }  else {?>
+							<?php if($ProfileP['PriorityFirst']==1) { ?>
+								<span style="color:green">Default Thumb</span><br>
+							<?php } ?>
+							<span>Rejected</span><br>
+							<span><?php echo putDateTime($ProfileP['RejectedOn']);?></span><br>
+							<span><?php echo $ProfileP['ReasonForReject'];?>
+					<?php } }?>
+					</div>
+				</div>
+			<?php }?>
+			</div>
+			<?php if($ProfileP['IsApproved']==0) { ?>
+			<div style="float:right">
+				<button type="submit" class="btn btn-success" name="Verify" style="font-family:roboto">Save</button>
+			</div>
+			<?php } ?>
+		</div>
+	</div>
 </div>
 <div class="col-12 grid-margin">
   <div class="card">
@@ -205,7 +338,28 @@ legend {
             </h4></div>
          </div>
          <div class="form-group row">
-            <label class="col-sm-12 col-form-label" style="color:#737373;font-size:13px"><?php echo trim($ProfileInfo['AboutMe']);?></label>
+            <label class="col-sm-9 col-form-label" style="color:#737373;font-size:13px"><?php echo trim($ProfileInfo['AboutMe']);?></label>
+			<div class="col-sm-3" style="border-left: 1px solid #ddd;">
+				<?php if($GIVerification['IsVerified']==0) { ?>
+					<select class="form-control" name="ApproveAboutMeInfo[]" id="ApproveAboutMeInfo" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectAboutMeInfo();">
+						<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#0";?>" <?php echo ($GIVerification['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
+						<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#1";?>" <?php echo ($GIVerification['IsVerified']==1) ? " selected='selected' " : "";?>>Approve</option>
+						<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#2";?>" <?php echo ($GIVerification['IsVerified']==2) ? " selected='selected' " : "";?>>Reject</option>
+					</select>
+					<div style="display:none;" id="ReasonForRejectAboutMeInfoDiv">
+						<input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectAboutMeInformation" name="ReasonForRejectAboutMeInformation" style="margin-top: 10px;">
+					</div>
+					<div id="AboutMeInfoSave"><button type="submit" class="btn btn-success" name="VerifyAboutMeInfo" style="font-family:roboto;margin-top: 10px;">Save</button></div>
+					<?php }  else {?>
+					<?php if($GIVerification['IsVerified']==1) { ?>
+						<span>Approved</span><br>
+						<span><?php echo putDateTime($GIVerification['IsVerifiedOn']);?></span>
+					<?php }  else {?>
+						<span>Rejected</span><br>
+						<span><?php echo putDateTime($GIVerification['RejectedOn']);?></span><br>
+						<span><?php echo $GIVerification['ReasonForReject'];?>
+				<?php } }?>
+			</div>
          </div>
     </div>
   </div>
@@ -226,11 +380,14 @@ legend {
                      <th>Education</th>
                     <th>Education details</th>
                     <th>Attachments</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
             <?php   if (sizeof($EducationAttachment)>0) {    ?>
-                <?php foreach($EducationAttachment as $Document) { ?>
+                <?php 
+					$i=1;
+					foreach($EducationAttachment as $Document) { ?>
                 <tr>    
                     <td style="text-align:left"><?php echo $Document['EducationDetails'];?></td>
                     <td style="text-align:left">
@@ -242,17 +399,36 @@ legend {
                         <br><?php echo $Document['EducationDescription']; ?></td>
                     <td>   
                         <?php if($Document['FileName']>0){ ?>
-                            <?php echo $Document['IsVerified']== 1 ? "Attachment Verifiled" : "Attached "; ?> <br>
-                            <a href="javascript:void(0)" onclick="showAttachmentEducationInformationForView('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
-                        <?php } else { echo "Not Attach"; }?></td>
+							<a href="javascript:void(0)" onclick="showAttachmentEducationInformationForView('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">
+								<img src="<?php echo SiteUrl?>/uploads/profiles/<?php echo $Document['ProfileCode'];?>/edudoc/<?php echo $Document['FileName'];?>" style="height: 100px;width: 88px;border-radius: 0px;">
+							</a>
+                            <?php echo $Document['IsVerified']== 1 ? "Attachment Verifiled" : ""; ?> <br>
+                        <?php } else { echo "Not Attach"; }?>
+					</td>
+					<td>
+						<?php if($Document['IsVerified']==0) { ?>
+						<select class="form-control" name="ApproveEducation[]" id="ApproveEducation_<?php echo $i;?>" style="width:95px;padding:4px;margin-top:7px;height: 28px;" onchange="ReasonForRejectEducation('<?php echo $i;?>');">
+							<option value="<?php echo $Document['ProfileCode']."#".$Document['AttachmentID']."#0";?>" <?php echo ($Document['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
+							<option value="<?php echo $Document['ProfileCode']."#".$Document['AttachmentID']."#1";?>" <?php echo ($Document['IsVerified']==1) ? " selected='selected' " : "";?>>Approve</option>
+							<option value="<?php echo $Document['ProfileCode']."#".$Document['AttachmentID']."#2";?>" <?php echo ($Document['IsVerified']==2) ? " selected='selected' " : "";?>>Reject</option>
+						</select>
+						<br>
+						<div style="display:none;" id="ReasonForRejectEducationDiv_<?php echo $i;?>">
+							<input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectEducation_<?php echo $i;?>" name="ReasonForRejectEducation_<?php echo $i;?>" value="<?php echo (isset($_POST['ReasonForRejectEducation_'.$i]) ? $_POST['ReasonForRejectEducation_'.$i] : $Document['ReasonForReject']);?>">
+						</div>
+						<?php $i++; }  else {?>
+						<?php if($Document['IsVerified']==1) { ?>
+							<span>Approved</span><br>
+							<span><?php echo putDateTime($Document['IsVerifiedOn']);?></span>
+						<?php }  else {?>
+							<span>Rejected</span><br>
+							<span><?php echo putDateTime($Document['RejectedOn']);?></span><br>
+							<span><?php echo $Document['ReasonForReject'];?>
+					<?php } }?>
+					</td>
                 </tr>
                 <?php } 
-                /* 
-                 <?php  if($Document['IsVerified']==1) { echo "Attachment Verifiled"; ?>
-                          <?php } else { echo "Attached"; ?>
-                          <?php }?>
-                         <?php } else { echo "Not Attached";?> * 
-                 */
+                  
             } else {?>
                 <tr>    
                     <td colspan="3" style="text-align:center">No datas found</td>
@@ -260,9 +436,15 @@ legend {
                 <?php }?>
             </tbody>
         </table>
+		<?php if($Document['IsVerified']==0) { ?>
+			<div style="float:right">
+				<button type="submit" class="btn btn-success" name="VerifyEducation" style="font-family:roboto">Save</button>
+			</div>
+		<?php } ?>
     </div>
   </div>
 </div>
+
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
@@ -313,7 +495,33 @@ legend {
             <div class="col-sm-12">
                 <fieldset>
                     <legend style="width:132px;">Additional information</legend>
-                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['OccupationDetails']); ?></div>
+						<div class="form-group row">
+							<div class="col-sm-9">
+								<div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['OccupationDetails']); ?></div>
+							</div>
+							<div class="col-sm-3" style="border-left: 1px solid #ddd;">
+								<?php if($ODVerification['IsVerified']==0) { ?>
+									<select class="form-control" name="ApproveOccupationDESC[]" id="ApproveOccupationDESC" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectOccupationAdditionalInfo();">
+										<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#0";?>" <?php echo ($ODVerification['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
+										<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#1";?>" <?php echo ($ODVerification['IsVerified']==1) ? " selected='selected' " : "";?>>Approve</option>
+										<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#2";?>" <?php echo ($ODVerification['IsVerified']==2) ? " selected='selected' " : "";?>>Reject</option>
+									</select>
+									<div style="display:none;" id="ReasonForRejectOccupationAdditionalInfoDiv">
+										<input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectOccupationAdditionalInformation" name="ReasonForRejectOccupationAdditionalInformation" style="margin-top: 10px;">
+									</div>
+									<div id="OccupationAdditionalInfoSave"><button type="submit" class="btn btn-success" name="VerifyOccupationAdditionInfo" style="font-family:roboto;margin-top: 10px;">Save</button></div>
+									<?php }  else {?>
+									<?php if($ODVerification['IsVerified']==1) { ?>
+										<span>Approved</span><br>
+										<span><?php echo putDateTime($ODVerification['IsVerifiedOn']);?></span>
+									<?php }  else {?>
+										<span>Rejected</span><br>
+										<span><?php echo putDateTime($ODVerification['RejectedOn']);?></span><br>
+										<span><?php echo $ODVerification['ReasonForReject'];?>
+								<?php } }?>
+							</div>
+						</div>
+					
                 </fieldset>
             </div>
         </div>
@@ -428,8 +636,33 @@ legend {
             <div class="col-sm-12">
                 <fieldset>
                     <legend style="width:132px;">Additional information</legend>
-                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['AboutMyFamily']); ?></div>
-                </fieldset>
+					<div class="form-group row">
+						<div class="col-sm-9">
+							<div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['AboutMyFamily']); ?></div>
+						</div>
+						<div class="col-sm-3" style="border-left: 1px solid #ddd;">
+							<?php if($FIVerification['IsVerified']==0) { ?>
+								<select class="form-control" name="ApproveFamilyInfoAdditionalInfo[]" id="ApproveFamilyInfoAdditionalInfo" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectFamilyInfoAdditionalInfo();">
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#0";?>" <?php echo ($FIVerification['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#1";?>" <?php echo ($FIVerification['IsVerified']==1) ? " selected='selected' " : "";?>>Approve</option>
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#2";?>" <?php echo ($FIVerification['IsVerified']==2) ? " selected='selected' " : "";?>>Reject</option>
+								</select>
+								<div style="display:none;" id="ReasonForRejectFamilyInfoAdditionalInfoDiv">
+									<input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectFamilyInfoAdditionalInformation" name="ReasonForRejectFamilyInfoAdditionalInformation" style="margin-top: 10px;">
+								</div>
+								<div id="FamilyInfoAdditionalInfoSave"><button type="submit" class="btn btn-success" name="VerifyFamilyInfoAdditionInfo" style="font-family:roboto;margin-top: 10px;">Save</button></div>
+								<?php }  else {?>
+								<?php if($FIVerification['IsVerified']==1) { ?>
+									<span>Approved</span><br>
+									<span><?php echo putDateTime($FIVerification['IsVerifiedOn']);?></span>
+								<?php }  else {?>
+									<span>Rejected</span><br>
+									<span><?php echo putDateTime($FIVerification['RejectedOn']);?></span><br>
+									<span><?php echo $FIVerification['ReasonForReject'];?>
+							<?php } }?>
+							</div>
+						</div>
+					</fieldset>
             </div>
         </div>
         <?php }?>
@@ -511,8 +744,33 @@ legend {
             <div class="col-sm-12">
                 <fieldset>
                     <legend style="width:132px;">Additional information</legend>
-                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['PhysicalDescription']); ?></div>
-                </fieldset>
+					<div class="form-group row">
+						<div class="col-sm-9">
+							<div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['PhysicalDescription']); ?></div>
+                        </div>
+						<div class="col-sm-3" style="border-left: 1px solid #ddd;">
+							<?php if($PIVerification['IsVerified']==0) { ?>
+								<select class="form-control" name="ApprovePhysicalInfoAdditionalInfo[]" id="ApprovePhysicalInfoAdditionalInfo" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectPhysicalInfoAdditionalInfo();">
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#0";?>" <?php echo ($PIVerification['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#1";?>" <?php echo ($PIVerification['IsVerified']==1) ? " selected='selected' " : "";?>>Approve</option>
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#2";?>" <?php echo ($PIVerification['IsVerified']==2) ? " selected='selected' " : "";?>>Reject</option>
+								</select>
+								<div style="display:none;" id="ReasonForRejectPhysicalInfoAdditionalInfoDiv">
+									<input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectPhysicalInfoAdditionalInformation" name="ReasonForRejectPhysicalInfoAdditionalInformation" style="margin-top: 10px;">
+								</div>
+								<div id="PhysicalInfoAdditionalInfoSave"><button type="submit" class="btn btn-success" name="VerifyPhysicalInfoAdditionInfo" style="font-family:roboto;margin-top: 10px;">Save</button></div>
+								<?php }  else {?>
+								<?php if($PIVerification['IsVerified']==1) { ?>
+									<span>Approved</span><br>
+									<span><?php echo putDateTime($PIVerification['IsVerifiedOn']);?></span>
+								<?php }  else {?>
+									<span>Rejected</span><br>
+									<span><?php echo putDateTime($PIVerification['RejectedOn']);?></span><br>
+									<span><?php echo $PIVerification['ReasonForReject'];?>
+							<?php } }?>
+						</div>
+						</div>
+				</fieldset>
             </div>
         </div>
         <?php }?>
@@ -527,8 +785,39 @@ legend {
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" >Date of birth</label>               
-            <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['DateofBirth']))> 0 ? trim($ProfileInfo['DateofBirth']) : "N/A "; ?></label>
-        </div>
+            <label class="col-sm-2 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['DateofBirth']))> 0 ? trim($ProfileInfo['DateofBirth']) : "N/A "; ?></label>
+				<div class="col-sm-8">
+					<div class="col-sm-12">
+					<?php if($HDobVerification['IsVerified']==0) { ?>
+						<div class="col-sm-2" style="margin-right:2px">
+							<select class="form-control" name="ApproveHoroscopeDob[]" id="ApproveHoroscopeDob" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectHoroscopeDob();">
+								<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#0";?>" <?php echo ($HDobVerification['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
+								<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#1";?>" <?php echo ($HDobVerification['IsVerified']==1) ? " selected='selected' " : "";?>>Approve</option>
+								<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#2";?>" <?php echo ($HDobVerification['IsVerified']==2) ? " selected='selected' " : "";?>>Reject</option>
+							</select>
+						</div>
+						<div class="col-sm-5">
+							<div style="display:none;" id="ReasonForRejectHoroscopeDobDiv">
+								<input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectHoroscopeDobInfo" name="ReasonForRejectHoroscopeDobInfo">
+							</div>
+						</div>
+						<div class="col-sm-2">
+							<div id="HoroscopeDobInfoSave"><button type="submit" class="btn btn-success" name="VerifyHoroscopeDOB" style="font-family:roboto">Save</button></div>
+						</div>
+					
+					<?php }  else { ?>
+					<?php if($HDobVerification['IsVerified']==1) { ?>
+						<div class="col-sm-12">
+							Approved &nbsp;&nbsp;<?php echo putDateTime(HDobVerificationDoc['IsVerifiedOn']);?>
+						</div>
+					<?php }  else {?>
+						<div class="col-sm-12">
+							Rejected &nbsp;&nbsp;<?php echo putDateTime(HDobVerificationDoc['RejectedOn']);?>&nbsp;&nbsp;<?php echo $HDobVerification['ReasonForReject'];?> 
+						</div>
+					<?php } }?>
+					</div>
+				</div>
+			</div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Time of birth</label>               
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['TimeOfBirth']))> 0 ? trim($ProfileInfo['TimeOfBirth']) : "N/A "; ?></label>
@@ -552,8 +841,33 @@ legend {
             <div class="col-sm-12">
                 <fieldset>
                     <legend style="width:132px;">Additional information</legend>
-                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['HoroscopeDetails']); ?></div>
-                </fieldset>
+					<div class="form-group row">
+						<div class="col-sm-9">
+							<div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['HoroscopeDetails']); ?></div>
+						</div>
+						<div class="col-sm-3" style="border-left: 1px solid #ddd;">
+							<?php if($HDVerification['IsVerified']==0) { ?>
+								<select class="form-control" name="ApproveHoroscopeAdditionalInfo[]" id="ApproveHoroscopeAdditionalInfo" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectHoroscopeAdditionalInfo();">
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#0";?>" <?php echo ($HDVerification['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#1";?>" <?php echo ($HDVerification['IsVerified']==1) ? " selected='selected' " : "";?>>Approve</option>
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#2";?>" <?php echo ($HDVerification['IsVerified']==2) ? " selected='selected' " : "";?>>Reject</option>
+								</select>
+								<div style="display:none;" id="ReasonForRejectHoroscopeAdditionalInfoDiv">
+									<input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectHoroscopeAdditionalInformation" name="ReasonForRejectHoroscopeAdditionalInformation" style="margin-top: 10px;">
+								</div>
+								<div id="HoroscopeAdditionalInfoSave"><button type="submit" class="btn btn-success" name="VerifyHoroscopeAdditionInfo" style="font-family:roboto;margin-top: 10px;">Save</button></div>
+								<?php }  else {?>
+								<?php if($HDVerification['IsVerified']==1) { ?>
+									<span>Approved</span><br>
+									<span><?php echo putDateTime($HDVerification['IsVerifiedOn']);?></span>
+								<?php }  else {?>
+									<span>Rejected</span><br>
+									<span><?php echo putDateTime($HDVerification['RejectedOn']);?></span><br>
+									<span><?php echo $HDVerification['ReasonForReject'];?>
+							<?php } }?>
+						</div>
+					</div>
+				</fieldset>
             </div>
         </div><br>
         <?php }?>
@@ -667,8 +981,33 @@ legend {
             <div class="col-sm-12">
                 <fieldset>
                     <legend style="width: 132px;">Additional information</legend>
-                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($PartnerExpectation['Details']); ?></div>
-                </fieldset>
+					<div class="form-group row">
+						<div class="col-sm-9">
+							<div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($PartnerExpectation['Details']); ?></div>
+						</div>
+						<div class="col-sm-3" style="border-left: 1px solid #ddd;">
+							<?php if($PEVerification['IsVerified']==0) { ?>
+								<select class="form-control" name="ApprovePartnerExpectationAdditionalInfo[]" id="ApprovePartnerExpectationAdditionalInfo" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectPartnerExpectationAdditionalInfo();">
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#0";?>" <?php echo ($PEVerification['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#1";?>" <?php echo ($PEVerification['IsVerified']==1) ? " selected='selected' " : "";?>>Approve</option>
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#2";?>" <?php echo ($PEVerification['IsVerified']==2) ? " selected='selected' " : "";?>>Reject</option>
+								</select>
+								<div style="display:none;" id="ReasonForRejectPartnerExpectationAdditionalInfoDiv">
+									<input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectPartnerExpectationAdditionalInformation" name="ReasonForRejectPartnerExpectationAdditionalInformation" style="margin-top: 10px;">
+								</div>
+								<div id="PartnerExpectationAdditionalInfoSave"><button type="submit" class="btn btn-success" name="VerifyPartnerExpectationAdditionInfo" style="font-family:roboto;margin-top: 10px;">Save</button></div>
+								<?php }  else {?>
+								<?php if($PEVerification['IsVerified']==1) { ?>
+									<span>Approved</span><br>
+									<span><?php echo putDateTime($PEVerification['IsVerifiedOn']);?></span>
+								<?php }  else {?>
+									<span>Rejected</span><br>
+									<span><?php echo putDateTime($PEVerification['RejectedOn']);?></span><br>
+									<span><?php echo $PEVerification['ReasonForReject'];?>
+							<?php } }?>
+						</div>
+					</div>
+				</fieldset>
             </div>
         </div>
         <?php }?>
@@ -739,8 +1078,33 @@ legend {
             <div class="col-sm-12">
                 <fieldset>
                     <legend style="width: 132px;">Additional information</legend>
-                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['CommunicationDescription']); ?></div>
-                </fieldset>
+					<div class="form-group row">
+						<div class="col-sm-9">
+							<div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['CommunicationDescription']); ?></div>
+						</div>
+						<div class="col-sm-3" style="border-left: 1px solid #ddd;">
+							<?php if($CDVerification['IsVerified']==0) { ?>
+								<select class="form-control" name="ApproveCommunicationAdditionalInfo[]" id="ApproveCommunicationAdditionalInfo" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectCommunicationAdditionalInfo();">
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#0";?>" <?php echo ($CDVerification['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#1";?>" <?php echo ($CDVerification['IsVerified']==1) ? " selected='selected' " : "";?>>Approve</option>
+									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#2";?>" <?php echo ($CDVerification['IsVerified']==2) ? " selected='selected' " : "";?>>Reject</option>
+								</select>
+								<div style="display:none;" id="ReasonForRejectCommunicationAdditionalInfoDiv">
+									<input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectCommunicationAdditionalInformation" name="ReasonForRejectCommunicationAdditionalInformation" style="margin-top: 10px;">
+								</div>
+								<div id="CommunicationAdditionalInfoSave"><button type="submit" class="btn btn-success" name="VerifyCommunicationAdditionInfo" style="font-family:roboto;margin-top: 10px;">Save</button></div>
+								<?php }  else {?>
+								<?php if($CDVerification['IsVerified']==1) { ?>
+									<span>Approved</span><br>
+									<span><?php echo putDateTime($CDVerification['IsVerifiedOn']);?></span>
+								<?php }  else {?>
+									<span>Rejected</span><br>
+									<span><?php echo putDateTime($CDVerification['RejectedOn']);?></span><br>
+									<span><?php echo $CDVerification['ReasonForReject'];?>
+							<?php } }?>
+						</div>
+					</div>
+				</fieldset>
             </div>
         </div>
         <?php }?>
@@ -757,14 +1121,41 @@ legend {
     </div>
     
         <div class="form-group row">
-         <?php foreach($response['data']['Documents'] as $Doc) {?>
+         <?php 
+			$i=1;
+			foreach($response['data']['Documents'] as $Doc) { ?>
                    <div class="Documentview">
                     <img src="<?php echo $Doc['AttachFileName'];?>" style="width: 200px;height:150px">   <br>
                     <label style="color:#737373;"><?php echo $Doc['DocumentType'];?></label> <br>
-                    <label style="color:#737373;">verification pending</label>
+                    <label style="color:#737373;">
+						<?php if($Doc['IsVerified']==0) { ?>
+						<select class="form-control" name="ApproveDocument[]" id="ApproveDocument_<?php echo $i;?>" style="width:95px;padding:4px;margin-top:7px;height: 28px;" onchange="ReasonForRejectDocuments('<?php echo $i;?>');">
+							<option value="<?php echo $Doc['ProfileCode']."#".$Doc['AttachmentID']."#0";?>" <?php echo ($Doc['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
+							<option value="<?php echo $Doc['ProfileCode']."#".$Doc['AttachmentID']."#1";?>" <?php echo ($Doc['IsVerified']==1) ? " selected='selected' " : "";?>>Approve</option>
+							<option value="<?php echo $Doc['ProfileCode']."#".$Doc['AttachmentID']."#2";?>" <?php echo ($Doc['IsVerified']==2) ? " selected='selected' " : "";?>>Reject</option>
+						</select>
+						<br>
+						<div style="display:none;" id="ReasonForRejectDocumentsDiv_<?php echo $i;?>">
+							<input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectDocuments_<?php echo $i;?>" name="ReasonForRejectDocuments_<?php echo $i;?>" value="<?php echo (isset($_POST['ReasonForRejectDocuments_'.$i]) ? $_POST['ReasonForRejectDocuments_'.$i] : $Doc['ReasonForReject']);?>">
+						</div>
+						<?php $i++; }  else {?>
+						<?php if($Doc['IsVerified']==1) { ?>
+							<span>Approved</span><br>
+							<span><?php echo putDateTime($Doc['IsVerifiedOn']);?></span>
+						<?php }  else {?>
+							<span>Rejected</span><br>
+							<span><?php echo putDateTime($Doc['RejectedOn']);?></span><br>
+							<span><?php echo $Doc['ReasonForReject'];?>
+					<?php } }?>
+					</label>
                   </div>
-                  <?php }?>
+                  <?php  }  ?>
          </div>
+		 <?php if($Doc['IsVerified']==0) { ?>
+		 <div style="float:right">
+				<button type="submit" class="btn btn-success" name="VerifyDocument" style="font-family:roboto">Save</button>
+			</div>
+		 <?php } ?>
     </div>
   </div>                                                                                                               
 </div>
@@ -776,7 +1167,6 @@ legend {
       <!--  <button type="submit" class="btn btn-success" name="Approve" style="font-family:roboto">Approve</button>&nbsp; -->
         <button type="submit" class="btn btn-warning" name="Reject" style="font-family:roboto">Reject</button>
         <button type="submit" class="btn btn-danger" name="Delete" style="font-family:roboto">Delete</button>
-        <button type="submit" class="btn btn-success" name="Verify" style="font-family:roboto">Save</button>
         <?php }?>
     </div>
   
@@ -796,6 +1186,145 @@ legend {
             </div>
         </div>                                                                                                              
 <script>
+function ReasonForRejectProfilePhoto(id) {
+            if ($('#ApproveProfilePhoto_'+id+'  :selected').text()=="Reject") {
+                $('#ReasonForRejectProfilePhotoDiv_'+id).show();
+            } else {
+                $('#ReasonForRejectProfilePhotoDiv_'+id).hide();
+				$('#ReasonForRejectProfilePhoto_'+id).val("");
+            }
+        }
+function ReasonForRejectEducation(id) {
+            if ($('#ApproveEducation_'+id+'  :selected').text()=="Reject") {
+                $('#ReasonForRejectEducationDiv_'+id).show();
+            } else {
+                $('#ReasonForRejectEducationDiv_'+id).hide();
+				$('#ReasonForRejectEducation_'+id).val("");
+            }
+        }
+function ReasonForRejectDocuments(id) {
+            if ($('#ApproveDocument_'+id+'  :selected').text()=="Reject") {
+                $('#ReasonForRejectDocumentsDiv_'+id).show();
+            } else {
+                $('#ReasonForRejectDocumentsDiv_'+id).hide();
+				$('#ReasonForRejectDocuments_'+id).val("");
+            }
+        }
+function ReasonForRejectAboutMeInfo() {
+            if ($('#ApproveAboutMeInfo  :selected').text()=="Reject") {
+                $('#ReasonForRejectAboutMeInfoDiv').show();
+            } else {
+                $('#ReasonForRejectAboutMeInfoDiv').hide();
+				$('#ReasonForRejectAboutMeInformation').val("");
+            }
+			if ($('#ApproveAboutMeInfo  :selected').text()=="No Action") {
+                $('#AboutMeInfoSave').hide();
+            } else {
+                $('#AboutMeInfoSave').show();
+				 }
+        }
+function ReasonForRejectOccupationAdditionalInfo() {
+            if ($('#ApproveOccupationDESC  :selected').text()=="Reject") {
+                $('#ReasonForRejectOccupationAdditionalInfoDiv').show();
+            } else {
+                $('#ReasonForRejectOccupationAdditionalInfoDiv').hide();
+				$('#ReasonForRejectOccupationAdditionalInformation').val("");
+            }
+			if ($('#ApproveOccupationDESC  :selected').text()=="No Action") {
+                $('#OccupationAdditionalInfoSave').hide();
+            } else {
+                $('#OccupationAdditionalInfoSave').show();
+				 }
+        }
+function ReasonForRejectFamilyInfoAdditionalInfo() {
+            if ($('#ApproveFamilyInfoAdditionalInfo  :selected').text()=="Reject") {
+                $('#ReasonForRejectFamilyInfoAdditionalInfoDiv').show();
+            } else {
+                $('#ReasonForRejectFamilyInfoAdditionalInfoDiv').hide();
+				$('#ReasonForRejectFamilyInfoAdditionalInformation').val("");
+            }
+			if ($('#ApproveFamilyInfoAdditionalInfo  :selected').text()=="No Action") {
+                $('#FamilyInfoAdditionalInfoSave').hide();
+            } else {
+                $('#FamilyInfoAdditionalInfoSave').show();
+				 }
+        }
+function ReasonForRejectPhysicalInfoAdditionalInfo() {
+            if ($('#ApprovePhysicalInfoAdditionalInfo  :selected').text()=="Reject") {
+                $('#ReasonForRejectPhysicalInfoAdditionalInfoDiv').show();
+            } else {
+                $('#ReasonForRejectPhysicalInfoAdditionalInfoDiv').hide();
+				$('#ReasonForRejectPhysicalInfoAdditionalInformation').val("");
+            }
+			if ($('#ApprovePhysicalInfoAdditionalInfo  :selected').text()=="No Action") {
+                $('#PhysicalInfoAdditionalInfoSave').hide();
+            } else {
+                $('#PhysicalInfoAdditionalInfoSave').show();
+				 }
+        }
+function ReasonForRejectPartnerExpectationAdditionalInfo() {
+            if ($('#ApprovePartnerExpectationAdditionalInfo  :selected').text()=="Reject") {
+                $('#ReasonForRejectPartnerExpectationAdditionalInfoDiv').show();
+            } else {
+                $('#ReasonForRejectPartnerExpectationAdditionalInfoDiv').hide();
+				$('#ReasonForRejectPartnerExpectationAdditionalInformation').val("");
+            }
+			if ($('#ApprovePartnerExpectationAdditionalInfo  :selected').text()=="No Action") {
+                $('#PartnerExpectationAdditionalInfoSave').hide();
+            } else {
+                $('#PartnerExpectationAdditionalInfoSave').show();
+				 }
+        }
+function ReasonForRejectCommunicationAdditionalInfo() {
+            if ($('#ApproveCommunicationAdditionalInfo  :selected').text()=="Reject") {
+                $('#ReasonForRejectCommunicationAdditionalInfoDiv').show();
+            } else {
+                $('#ReasonForRejectCommunicationAdditionalInfoDiv').hide();
+				$('#ReasonForRejectCommunicationAdditionalInformation').val("");
+            }
+			if ($('#ApproveCommunicationAdditionalInfo  :selected').text()=="No Action") {
+                $('#CommunicationAdditionalInfoSave').hide();
+            } else {
+                $('#CommunicationAdditionalInfoSave').show();
+				 }
+        }
+function ReasonForRejectHoroscopeAdditionalInfo() {
+            if ($('#ApproveHoroscopeAdditionalInfo  :selected').text()=="Reject") {
+                $('#ReasonForRejectHoroscopeAdditionalInfoDiv').show();
+            } else {
+                $('#ReasonForRejectHoroscopeAdditionalInfoDiv').hide();
+				$('#ReasonForRejectHoroscopeAdditionalInformation').val("");
+            }
+			if ($('#ApproveHoroscopeAdditionalInfo  :selected').text()=="No Action") {
+                $('#HoroscopeAdditionalInfoSave').hide();
+            } else {
+                $('#HoroscopeAdditionalInfoSave').show();
+				 }
+        }
+function ReasonForRejectHoroscopeDob() {
+            if ($('#ApproveHoroscopeDob  :selected').text()=="Reject") {
+                $('#ReasonForRejectHoroscopeDobDiv').show();
+            } else {
+                $('#ReasonForRejectHoroscopeDobDiv').hide();
+				$('#ReasonForRejectHoroscopeDobInfo').val("");
+            }
+			if ($('#ApproveHoroscopeDob  :selected').text()=="No Action") {
+                $('#HoroscopeDobInfoSave').hide();
+            } else {
+                $('#HoroscopeDobInfoSave').show();
+				 }
+        }
+
+
+
+ReasonForRejectAboutMeInfo();
+ReasonForRejectOccupationAdditionalInfo();
+ReasonForRejectFamilyInfoAdditionalInfo();
+ReasonForRejectPhysicalInfoAdditionalInfo();
+ReasonForRejectPartnerExpectationAdditionalInfo();
+ReasonForRejectCommunicationAdditionalInfo();
+ReasonForRejectHoroscopeAdditionalInfo();
+ReasonForRejectHoroscopeDob();
 
 function showConfirmPublish(ProfileID) {
       $('#PubplishNow').modal('show'); 
@@ -877,7 +1406,7 @@ function TransactionPasswordVerification(frmid) {
 				var content = '<div  style="height: 300px;">'                                                                              
 								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
 									+ '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
-									+ '<h3 style="text-align:center;">Submission Successful</h3>'
+									+ '<h3 style="text-align:center;">Published</h3>'
                                     + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
 									+ '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
 								+'</div>' 
@@ -916,7 +1445,7 @@ function showAttachmentOccupationForView(ProfileCode,MemberID,ProfileID,FileName
                             + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                             + '<h4 class="modal-title">Occupation Attachment</h4>'
                               + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
-                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileCode+'/occdoc/'+FileName+'" style="height:120px;"></div> <br>'
                         + '</div>'
                         + '</div>'
                     +  '</div>';                                                                                                

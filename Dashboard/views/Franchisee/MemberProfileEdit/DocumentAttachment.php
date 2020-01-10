@@ -56,6 +56,9 @@ function submitUpload() {
                 if (isset($_POST['BtnSave'])) {
                     
                     $target_dir = "uploads/";
+					if (!is_dir('uploads/profiles/'.$_GET['Code'].'/kycdoc')) {
+						mkdir('uploads/profiles/'.$_GET['Code'].'/kycdoc', 0777, true);
+					}
                     $err=0;
                     $_POST['File']= "";
                     $acceptable = array('image/jpeg',
@@ -76,7 +79,7 @@ function submitUpload() {
                     
                     if (isset($_FILES["File"]["name"]) && strlen(trim($_FILES["File"]["name"]))>0 ) {
                         $profilephoto = time().$_FILES["File"]["name"];
-                        if (!(move_uploaded_file($_FILES["File"]["tmp_name"], $target_dir . $profilephoto))) {
+                        if (!(move_uploaded_file($_FILES["File"]["tmp_name"], 'uploads/profiles/'.$_GET['Code'].'/kycdoc/' . $profilephoto))) {
                            $err++;
                            echo "Sorry, there was an error uploading your file.";
                         }
@@ -151,9 +154,9 @@ function submitUpload() {
         foreach($res['data'] as $d) { ?> 
         <div id="photoview_<?php echo $d['AttachmentID'];?>" class="photoview">
             <div style="text-align:right;height:22px;">
-                <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $d['AttachmentID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
+                <a href="javascript:void(0)" onclick="showConfirmDeleteDoc('<?php  echo $d['AttachmentID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
             </div>
-            <div><img src="<?php echo AppUrl;?>uploads/<?php echo $d['AttachFileName'];?>" style="height:120px;"></div>
+            <div><img src="<?php echo AppUrl;?>uploads/profiles/<?php echo $_GET['Code'];?>/kycdoc/<?php echo $d['AttachFileName'];?>" style="height:120px;"></div>
             <div>
                 <br><?php echo $d['DocumentType'];?><br> 
                 <?php if($d['IsVerified']==0){ echo "verification pending" ; } else { echo "Verified" ; }?>
@@ -215,7 +218,7 @@ function showLearnMore() {
 <script>
 
     
-    function showConfirmDelete(AttachmentID,ProfileID) {
+    function showConfirmDeleteDoc(AttachmentID,ProfileID) {
         $('#Delete').modal('show'); 
         var content = '<div class="modal-body" style="padding:20px">'
                         + '<div  style="height: 315px;">'
@@ -225,7 +228,7 @@ function showLearnMore() {
                                  + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                                  + '<h4 class="modal-title">Confirmation For remove</h4><br>'
                                 + '<div>Are you sure want to Delete?  </div><br>'
-                                    + '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+AttachmentID+'\')">Yes</button>&nbsp;&nbsp;'
+                                    + '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDeleteDoc(\''+AttachmentID+'\')">Yes</button>&nbsp;&nbsp;'
                                     + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button></div>'
                                 + '</div>'
                             + '</form>'
@@ -234,7 +237,7 @@ function showLearnMore() {
         $('#model_body').html(content);
     }
     
-    function ConfirmDelete(AttachmentID) {
+    function ConfirmDeleteDoc(AttachmentID) {
         
         var param = $( "#form_"+AttachmentID).serialize();
         $('#model_body').html(preloader);

@@ -61,9 +61,11 @@ if ($response['status']=="failed") {
                       <div class="form-group row">
                           <div class="col-sm-3"><small>Mobile Number:</small></div>
                           <div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['CountryCode'];?>-<?php echo $Member['MobileNumber'];?></small></div>
-                          <div class="col-sm-2"><small>Whatsapp Number:</small></div>
+                          <?php if(strlen($Member['WhatsappNumber'])>0) { ?>
+						  <div class="col-sm-2"><small>Whatsapp Number:</small></div>
                           <div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['WhatsappCountryCode'];?>-<?php echo $Member['WhatsappNumber'];?></small></div>
-                       </div>
+						  <?php } ?>
+					   </div>
 					   <div class="form-group row">
 						  <div class="col-sm-3"><small>Email ID:</small></div>
                           <div class="col-sm-9"><small style="color:#737373;"><?php echo  $Member['EmailID'];?></small></div>
@@ -98,7 +100,7 @@ if ($response['status']=="failed") {
                     </div>
                 </div>
                   <?php 
-                         $response = $webservice->getData("Franchisee","GetMemberProfileforView",array("ProfileFrom"=>"All"));   
+                         $response = $webservice->getData("Franchisee","GetMemberProfileforView",array("ProfileFrom"=>"All","XMCode"=>$Member['MemberID']));   
                          if (sizeof($response['data'])>0) {                                                                 
                          ?>
                         <?php foreach($response['data']as $P) { 

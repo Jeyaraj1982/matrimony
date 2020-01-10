@@ -70,7 +70,7 @@
                 <h4 class="card-title">ID Proof</h4>  
                   <?php foreach($response['data']['IDProof'] as $KycIDP) {?>
                      <div class="Documentview">
-                        <img src="<?php echo AppUrl;?>uploads/<?php echo $KycIDP['FileName'];?>" style="width: 200px;height:150px">
+                        <img src="<?php echo AppUrl;?>uploads/members/<?php echo $Member['MemberCode'];?>/kyc/<?php echo $KycIDP['FileName'];?>" style="width: 200px;height:150px">
                     </div>
                     <div class="col-sm-12">
                     <div class="form-group row">
@@ -106,7 +106,7 @@
                 <h4 class="card-title">Address Proof</h4>  
                         <?php foreach($response['data']['AddressProof'] as $KycADP) {?>
                      <div class="Documentview">
-                        <img src="<?php echo AppUrl;?>uploads/<?php echo $KycADP['FileName'];?>" style="width: 200px;height:150px">
+                        <img src="<?php echo AppUrl;?>uploads/members/<?php echo $Member['MemberCode'];?>/kyc/<?php echo $KycADP['FileName'];?>" style="width: 200px;height:150px">
                     </div>
                     <div class="col-sm-12">
                     <div class="form-group row">

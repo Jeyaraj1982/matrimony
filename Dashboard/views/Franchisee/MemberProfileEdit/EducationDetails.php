@@ -140,7 +140,7 @@ function ViewAttchment(AttachmentID,ProfileID,FileName) {
                             + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                             + '<h4 class="modal-title">Confirmation For Remove</h4>'
                               + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
-                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileID+'/edudoc/'+FileName+'" style="height:120px;"></div> <br>'
                               +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;'
                               +  '<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
                         + '</div>'

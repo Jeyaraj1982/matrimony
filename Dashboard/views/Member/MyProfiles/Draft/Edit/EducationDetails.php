@@ -72,19 +72,12 @@
     </div>
 </div>  
 
-<div class="modal" id="DeleteNow" data-backdrop="static" >
-            <div class="modal-dialog" >
-                <div class="modal-content" id="DeleteNow_body"  style="max-height: 300px;min-height: 300px;" >
-            
-                </div>
-            </div>
-        </div>
 <script>
     function DeleteAttach(AttachmentID) {
         var param = $("#form_"+AttachmentID).serialize();
-		$('#DeleteNow_body').html(preloading_withText("Deleting education details ...","95"));
+		$('#Publish_body').html(preloading_withText("Deleting education details ...","95"));
 		$.post(API_URL + "m=Member&a=DeleteAttach", param, function(result2) {                                             
-            $('#DeleteNow_body').html(result2);                                     
+            $('#Publish_body').html(result2);                                     
             $('#Documentview_'+AttachmentID).hide();
         }
     );
@@ -92,9 +85,9 @@
 } 
 function DeleteEducationAttachmentOnly(AttachmentID) {
         var param = $("#form_"+AttachmentID).serialize();
-        $('#DeleteNow_body').html(preloading_withText("Deleting education details ...","95"));
+        $('#Publish_body').html(preloading_withText("Deleting education details ...","95"));
         $.post(API_URL + "m=Member&a=DeleteEducationAttachmentOnly", param, function(result2) {                                             
-            $('#DeleteNow_body').html(result2);                                     
+            $('#Publish_body').html(result2);                                     
           //  $('#Documentview_'+AttachmentID).hide();
         }
     );

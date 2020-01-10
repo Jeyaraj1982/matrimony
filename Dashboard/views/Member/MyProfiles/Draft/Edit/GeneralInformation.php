@@ -185,7 +185,8 @@
         </div>
         <div class="form-group row" style="margin-bottom:0px;">
             <div class="col-sm-6">
-                <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button><br>
+				<!--<a href="javascript:void(0)" onclick="AddGeneralInfo()" class="btn btn-success" name="BtnSaveProfile" style="font-family:roboto">Save</a><br>-->
+				<button type="submit" class="btn btn-success" name="BtnSaveProfile" style="font-family:roboto">Save</button><br>
                 <small style="font-size:11px;">Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
             </div>
             <div class="col-sm-6" style="text-align: right;">
@@ -212,5 +213,18 @@
         DraftProfile.addOtherCasteName();
         DraftProfile.changeAboutLable();
     });
+	
+	/*function AddGeneralInfo() {
+        $('#Publish_body').html(preloading_withText("Loading ...","200"));
+        $('#PubplishNow').modal('show');
+        $.ajax({
+            url: API_URL + "m=Member&a=EditDraftGeneralInformation", 
+            success: function(result){
+               $(document).ready(function() {   $.simplyToast("Success", 'info'); });
+            }else {
+				$(document).ready(function() {   $.simplyToast("failed", 'danger'); });
+			}
+			});
+    }*/
 </script>    
 <?php include_once("settings_footer.php");?>                

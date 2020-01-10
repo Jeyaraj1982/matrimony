@@ -12,20 +12,18 @@
                       <div class="form-group row">
                           <div class="col-sm-3"><small>Member Code:</small> </div>
                           <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberCode'];?></small></div>
-                          <div class="col-sm-2"><small>Member Name:</small> </div>
+                       </div>
+					    <div class="form-group row">
+						  <div class="col-sm-3"><small>Member Name:</small> </div>
                           <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberName'];?></small></div>
+						  <div class="col-sm-2"><small>Gender:</small> </div>
+                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['Sex'];?></small></div>
                       </div>
                       <div class="form-group row">
                           <div class="col-sm-3"><small>Mobile Number:</small></div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MobileNumber'];?></small></div>
+                          <div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['CountryCode'];?>-<?php echo $Member['MobileNumber'];?></small></div>
                           <div class="col-sm-2"><small>Email ID:</small></div>
                           <div class="col-sm-3"><small style="color:#737373;"><?php echo  $Member['EmailID'];?></small></div>
-                      </div>
-                      <div class="form-group row">
-                          <div class="col-sm-3"><small>Login Name:</small></div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberLogin'];?></small></div>
-                          <div class="col-sm-2"><small>Aadhaar No:</small></div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo  $Member['AadhaarNumber'];?></small></div>
                       </div>
                       <div class="form-group row">
                           <div class="col-sm-3"><small>Created on:</small></div>
@@ -120,12 +118,14 @@
                             </div>
                            <div style="float:right;line-height: 1px;">
                                 <?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==0){ ?>
-                                    <a href="<?php echo GetUrl("ViewPostedProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
-                                    <?php } elseif($Profile['IsApproved']==1){  ?>
-                                    <a href="<?php echo GetUrl("ViewPublishedProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
-                                    <?php } else {?>
-                                        <a href="<?php echo GetUrl("MyProfiles/Draft/Edit/GeneralInformation/".$Profile['ProfileCode'].".htm ");?>">Edit</a>&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("ViewDraftProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
-                                        <?php  }    ?>     
+                                    <a href="<?php echo GetUrl("Profiles/ViewRequestProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <?php } ?>
+									<?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==1) {  ?>
+                                    <a href="<?php echo GetUrl("Profiles/ViewPublishProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <?php }?>
+									<?php if($Profile['RequestToVerify']==0 && $Profile['IsApproved']==0) {  ?>
+										<a href="<?php echo GetUrl("Profiles/ViewDraftProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <?php  }    ?>     
                             </div>
                         </div>  
                         <br> 

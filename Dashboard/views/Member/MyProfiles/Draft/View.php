@@ -377,25 +377,19 @@ legend {
              <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['NumberofBrothers']))> 0 ? trim($ProfileInfo['NumberofBrothers']) : "N/A "; ?>
              </label>
              <?php if(trim($ProfileInfo['NumberofBrothers']) > 0){?>
-             <label class="col-sm-1 col-form-label">Elder</label>                       
-             <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Elder']))> 0 ? trim($ProfileInfo['Elder']) : "N/A "; ?> </label>
-             <label class="col-sm-2 col-form-label">Younger</label>                     
-             <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Younger']))> 0 ? trim($ProfileInfo['Younger']) : "N/A "; ?></label>
-             <label class="col-sm-2 col-form-label">Married</label>                      
-             <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Married']))> 0 ? trim($ProfileInfo['Married']) : "N/A "; ?></label>
+             <label class="col-sm-2 col-form-label">Elder:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Elder']))> 0 ? trim($ProfileInfo['Elder']) : "N/A "; ?> </label>                       
+             <label class="col-sm-2 col-form-label">Younger:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Younger']))> 0 ? trim($ProfileInfo['Younger']) : "N/A "; ?></label>                     
+             <label class="col-sm-2 col-form-label">Married:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['Married']))> 0 ? trim($ProfileInfo['Married']) : "N/A "; ?></label>                      
             <?php } ?>
         </div>
         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Number of sisters</label>           
              <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['NumberofSisters']))> 0 ? trim($ProfileInfo['NumberofSisters']) : "N/A "; ?></label>
              <?php if(trim($ProfileInfo['NumberofSisters']) > 0){?>
-             <label class="col-sm-1 col-form-label">Elder</label>                       
-             <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['ElderSister']))> 0 ? trim($ProfileInfo['ElderSister']) : "N/A "; ?> </label>
-             <label class="col-sm-2 col-form-label">Younger</label>                     
-             <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['YoungerSister']))> 0 ? trim($ProfileInfo['YoungerSister']) : "N/A "; ?></label>
-             <label class="col-sm-2 col-form-label">Married</label>                     
-             <label class="col-sm-1 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['MarriedSister']))> 0 ? trim($ProfileInfo['MarriedSister']) : "N/A "; ?>  </label>
-             <?php } ?>
+             <label class="col-sm-2 col-form-label">Elder:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['ElderSister']))> 0 ? trim($ProfileInfo['ElderSister']) : "N/A "; ?> </label>                       
+             <label class="col-sm-2 col-form-label">Younger:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['YoungerSister']))> 0 ? trim($ProfileInfo['YoungerSister']) : "N/A "; ?></label>                    
+             <label class="col-sm-2 col-form-label">Married:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['MarriedSister']))> 0 ? trim($ProfileInfo['MarriedSister']) : "N/A "; ?>  </label>                     
+            <?php } ?>
         </div>
         <?php if(strlen(trim($ProfileInfo['AboutMyFamily']))> 0){ ?>
         <div class="form-group row">
@@ -736,7 +730,8 @@ legend {
     </div>
     
         <div class="form-group row">
-         <?php foreach($response['data']['Documents'] as $Doc) {?>
+         <?php foreach($response['data']['Documents'] as $Doc) 
+		  {?>
                    <div class="Documentview">
                     <img src="<?php echo $Doc['AttachFileName'];?>" style="width: 200px;height:150px">   <br>
                     <label style="color:#737373;"><?php echo $Doc['DocumentType'];?></label> <br>
@@ -746,7 +741,7 @@ legend {
          </div>
     </div>
   </div>                                                                                                               
-</div>
+</div> 
 
 </form>
  
@@ -759,14 +754,7 @@ legend {
             </div>
         </div>
 <script>
-function isJson(str) {
-    try {
-        JSON.parse(str);
-    } catch (e) {
-        return false;
-    }
-    return true;
-}
+
 function showConfirmPublish(ProfileID) {
       $('#PubplishNow').modal('show'); 
       var content = '<div >'
@@ -809,7 +797,7 @@ function agreeToPublish() {
 
 function SendOtpForProfileforPublish(formid) {
     var param = $("#frm_"+formid).serialize();
-	$('#Publish_body').html(preloading_withText("Submitting profile ...","95"));
+	$('#Publish_body').html(preloading_withText("Verify...","95"));
 	
 		$.post(API_URL + "m=Member&a=SendOtpForProfileforPublish",param,function(result) {
 			
@@ -844,7 +832,7 @@ function SendOtpForProfileforPublish(formid) {
 
 function ProfilePublishOTPVerification(frmid) {
         var param = $( "#"+frmid).serialize();
-        $('#Publish_body').html(preloading_withText("Submitting profile ...","95"));
+        $('#Publish_body').html(preloading_withText("Submitting profile.","95"));
         $.post( API_URL + "m=Member&a=ProfilePublishOTPVerification",param).done(function(result) {
 			if (!(isJson(result))) {
 				$('#Publish_body').html(result);
@@ -873,7 +861,7 @@ function ProfilePublishOTPVerification(frmid) {
     
 function ResendSendOtpForProfileforPublish(frmid) {
      var param = $("#"+frmid).serialize();
-      $('#Publish_body').html(preloading_withText("Submitting profile ...","95"));
+      $('#Publish_body').html(preloading_withText("Verify ...","95"));
 	  
         $.post(API_URL + "m=Member&a=ResendSendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
 } 

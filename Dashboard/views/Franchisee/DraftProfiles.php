@@ -25,8 +25,9 @@
                         </tr>                                                                                           
                     </thead>
                      <tbody>  
-                        <?php 
+                        <?php 											 
                          $response = $webservice->getData("Franchisee","GetDraftedProfiles",array("Request"=>"Draft"));
+						 print_r($response['data']);
                          if (sizeof($response['data'])>0) {                                                                 
                          ?>
                         <?php foreach($response['data']as $Profile) print_r($response['data']); { ?>

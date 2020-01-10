@@ -6,6 +6,9 @@
     <?php
                 if (isset($_POST['BtnSaveProfile'])) {
                     $target_dir = "uploads/";
+					if (!is_dir('uploads/profiles/'.$_GET['Code'].'/occdoc')) {
+						mkdir('uploads/profiles/'.$_GET['Code'].'/occdoc', 0777, true);
+					}
                     $err=0;
                     $acceptable = array('image/jpeg','image/jpg','image/png');
                     
@@ -22,7 +25,7 @@
                         }
                         
                         $OccupationAttachments = time().$_FILES["File"]["name"];
-                        if (!(move_uploaded_file($_FILES["File"]["tmp_name"], $target_dir . $OccupationAttachments))) {
+                        if (!(move_uploaded_file($_FILES["File"]["tmp_name"],'uploads/profiles/'.$_GET['Code'].'/occdoc/' . $OccupationAttachments))) {
                             $err++;
                             echo "Sorry, there was an error uploading your file.";
                             unset( $_POST['OccupationAttachmentType']);
@@ -212,7 +215,7 @@ $(document).ready(function() {
             <?php if($ProfileInfo['OccupationAttachFileName']==""){  ?>
                 <input type="File" id="File" name="File" Placeholder="File">
             <?php }  else {  ?>  
-                <div id="attachfilediv"><img src="<?php echo AppUrl;?>uploads/<?php echo $ProfileInfo['OccupationAttachFileName'];?>" style="height:120px;"><br><a href="javascript:void(0)" onclick="showAttachmentOccupation('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')"><img src="<?php echo AppUrl ;?>assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a></div><br><input type="File" id="File" name="File" Placeholder="File">
+                <div id="attachfilediv"><img src="<?php echo AppUrl;?>uploads/profiles/<?php echo $_GET['Code'];?>/occdoc/<?php echo $ProfileInfo['OccupationAttachFileName'];?>" style="height:120px;"><br><a href="javascript:void(0)" onclick="showAttachmentOccupation('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')"><img src="<?php echo AppUrl ;?>assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a></div><br><input type="File" id="File" name="File" Placeholder="File">
        <?php }?>
        </div>
     </div>
@@ -262,7 +265,7 @@ function showAttachmentOccupation(ProfileCode,MemberID,ProfileID,FileName){
                             + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                             + '<h4 class="modal-title">Confirmation For Remove</h4>'
                               + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
-                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileCode+'/occdoc/'+FileName+'" style="height:120px;"></div> <br>'
                                +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteOccupationAttachmentOnly(\''+ProfileCode+'\')">Yes, remove</button>&nbsp;&nbsp;'
                         +  '<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
                         +'</form>'

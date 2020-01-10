@@ -39,7 +39,7 @@ function submitUpload() {
                 return false;
             }
             if (ErrorCount==0) {
-                 setTimeout(function(){$("#BtnSave").attr('disabled', 'disabled');},100);
+                
                             return true;
                         } else{
                             return false;
@@ -57,6 +57,9 @@ function submitUpload() {
                 if (isset($_POST['BtnSave'])) {
                     
                     $target_dir = "uploads/";
+					if (!is_dir('uploads/profiles/'.$_GET['Code'].'/kycdoc')) {
+						mkdir('uploads/profiles/'.$_GET['Code'].'/kycdoc', 0777, true);
+					}
                     $err=0;
                     $_POST['File']= "";
                     $acceptable = array('image/jpeg',
@@ -77,7 +80,7 @@ function submitUpload() {
                     
                     if (isset($_FILES["File"]["name"]) && strlen(trim($_FILES["File"]["name"]))>0 ) {
                         $profilephoto = time().$_FILES["File"]["name"];
-                        if (!(move_uploaded_file($_FILES["File"]["tmp_name"], $target_dir . $profilephoto))) {
+                        if (!(move_uploaded_file($_FILES["File"]["tmp_name"], 'uploads/profiles/'.$_GET['Code'].'/kycdoc/' . $profilephoto))) {
                            $err++;
                            echo "Sorry, there was an error uploading your file.";
                         }
@@ -142,7 +145,7 @@ function submitUpload() {
 	</div>
     <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-3">
-			<input type="submit" name="BtnSave" id="BtnSave" style="display:none">
+			<input type="submit" name="BtnSave" id="BtnSave" style="display:none"  value="Go">
 			<a href="javascript:void(0)" onclick="ConfirmAttachDocument()" class="btn btn-primary" style="font-family:roboto">Update</a>
         </div>
     </div>
@@ -166,7 +169,7 @@ function submitUpload() {
             <div style="text-align:right;height:22px;">
                 <a href="javascript:void(0)" onclick="showConfirmDeleteAttachment('<?php  echo $d['AttachmentID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
             </div>
-            <div><img src="<?php echo AppUrl;?>uploads/<?php echo $d['AttachFileName'];?>" style="height:120px;"></div>
+            <div><img src="<?php echo AppUrl;?>uploads/profiles/<?php echo $_GET['Code'];?>/kycdoc/<?php echo $d['AttachFileName'];?>" style="height:120px;"></div>
             <div>
             <br><?php echo $d['DocumentType'];?><br> 
                 <?php if($d['IsVerified']==0){ echo "verification pending" ; } else { echo "Verified" ; }?>
@@ -226,7 +229,7 @@ function showLearnMore() {
 }
 
 	function ConfirmAttachDocument(){
-        if(submitprofile()) {
+        if(submitUpload()) {
             $('#PubplishNow').modal('show'); 
             var content ='<div class="modal-header">'
                                 + '<h4 class="modal-title">Confirmation for Attach Document</h4>'
@@ -246,13 +249,16 @@ function showLearnMore() {
                             + '</div>' 
                             + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="BtnSave" id="BtnSave" class="btn btn-primary" onclick="AddOccupationDetails()" style="font-family:roboto">Save Occupation Details</button>'
+                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AddDocument()" style="font-family:roboto">Save Occupation Details</button>'
                             + '</div>';                                                                                               
             $('#Publish_body').html(content);
-      } else {
-            return false;
-     }
+      }  
     }
+	
+	function AddDocument() {
+		$( "#BtnSave" ).trigger( "click" );
+		 setTimeout(function(){$("#BtnSave").attr('disabled', 'disabled');},100);
+	}
 
 
     function showConfirmDeleteAttachment(AttachmentID,ProfileID) {

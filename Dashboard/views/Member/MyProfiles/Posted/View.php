@@ -1,6 +1,14 @@
 <?php
     $response = $webservice->getData("Member","GetDraftProfileInfo",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
+	 $GIVerification  = $response['data']['GIVerification'];
+	 $ODVerification  = $response['data']['ODVerification'];
+     $FIVerification  = $response['data']['FIVerification'];
+     $PIVerification  = $response['data']['PIVerification'];
+     $HDobVerification = $response['data']['HDobVerification'];
+     $HDVerification = $response['data']['HDVerification'];
+     $PEVerification = $response['data']['PEVerification'];
+     $CDVerification = $response['data']['CDVerification'];
     $Member = $response['data']['Members'];
     $EducationAttachment = $response['data']['EducationAttachments'];
     $PartnerExpectation = $response['data']['PartnerExpectation'];
@@ -24,7 +32,7 @@ text-align: left;
 }
 .photoview {
     float: right;
-    margin-right: 10px;
+    margin-right: 8px;
     margin-bottom: 10px;
 }
 .Documentview {
@@ -62,11 +70,17 @@ legend {
          </div>
               <div class="form-group row">
                 <div class="col-sm-5">
-                    <div style="border: 1px solid #e6e6e6;;padding: 0px;width: 318px;height: 378px;"> 
+                    <div style="border: 1px solid #e6e6e6;;padding: 0px;width: 318px;height: 420px;"> 
                     <div class="form-group row">                                                       
                         <div class="col-sm-12">
-                            <div class="photoview" style="float:left;width: 316px;height:280px">
-                                <img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 100%;width: 100%;">
+                            <div class="photoview" style="float:left;width: 316px;height:316px">
+								<img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 100%;width: 100%;"><br>
+								<?php if($response['data']['ProfileThumbDetails']['IsApproved']=="1") { ?>
+									<span style="color:green;float:right;font-size:11px">Approved</span>
+								<?php } ?>
+								<?php if($response['data']['ProfileThumbDetails']['IsApproved']=="2") { ?>
+									<span style="color:red;float:right;font-size:11px">Rejected</span>
+								<?php } ?>
                             </div>
                         </div> 
                     </div>
@@ -74,14 +88,22 @@ legend {
                       <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/nextarrow.jpg" style="width:30px"></div>
                         <div class="col-sm-10">
                         <?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
-                            <div class="photoview" style="float: left;">
-                                <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 62px;width: 44px;">
+                            <div class="photoview" style="float: left;text-align:center;">
+                                <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 62px;width: 44px;"><br>
+								<?php if($ProfileP['IsApproved']=="1") { ?>
+									<span style="color:green;font-size:11px">Approved</span>
+								<?php } ?>
+								<?php if($ProfileP['IsApproved']=="2") { ?>
+									<span style="color:red;font-size:11px">Rejected</span>
+								<?php } ?>
                             </div>
                         <?php }?>
                         </div>
                        <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/rightarrow.jpg" style="width:30px"></div>
                   </div>
                 </div>
+				<br>
+				<div class="col-sm-6" style="text-align:left"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','ProfilePhoto')">Edit</a></div>
                 </div>
                 <div class="col-sm-7">
                     <div class="form-group row">                                       
@@ -153,17 +175,26 @@ legend {
   <div class="card">
     <div class="card-body">
      <div class="form-group row">
-            <div class="col-sm-6"><h4 class="card-title">
-                 <?php if ( trim($ProfileInfo['ProfileFor'])=="Myself") { echo "About Myself"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother"){ echo "About My Brother"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister"){ echo "About My Sister"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter"){ echo "About My Daughter"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Son"){ echo "About My Son"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister In Law"){ echo "About My Sister In Law"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother In Law"){ echo "About My Brother In Law"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Son In Law"){ echo "About My Son In Law"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter In Law"){ echo "About My Daughter In Law"; }?>
-            </h4></div>
+            <div class="col-sm-6">
+				<h4 class="card-title">
+					<?php if ( trim($ProfileInfo['ProfileFor'])=="Myself") { echo "About Myself"; }?>
+					<?php if ((trim($ProfileInfo['ProfileFor']))=="Brother"){ echo "About My Brother"; }?>
+					<?php if ((trim($ProfileInfo['ProfileFor']))=="Sister"){ echo "About My Sister"; }?>
+					<?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter"){ echo "About My Daughter"; }?>
+					<?php if ((trim($ProfileInfo['ProfileFor']))=="Son"){ echo "About My Son"; }?>
+					<?php if ((trim($ProfileInfo['ProfileFor']))=="Sister In Law"){ echo "About My Sister In Law"; }?>
+					<?php if ((trim($ProfileInfo['ProfileFor']))=="Brother In Law"){ echo "About My Brother In Law"; }?>
+					<?php if ((trim($ProfileInfo['ProfileFor']))=="Son In Law"){ echo "About My Son In Law"; }?>
+					<?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter In Law"){ echo "About My Daughter In Law"; }?>
+				&nbsp;&nbsp;
+			    <?php if($GIVerification['IsVerified']=="1"){ ?>
+					<span style="color:green;font-size:11px">Approved</span>
+				<?php } ?>
+				<?php if($GIVerification['IsVerified']=="2"){ ?>
+					<span style="color:red;font-size:11px">Rejected</span>
+				<?php } ?>
+				</h4>
+			</div>
             <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','GeneralInformation')">Edit</a></div>
          </div>
          <div class="form-group row">
@@ -204,9 +235,18 @@ legend {
                         <?php } ?> 
                         <br><?php echo $Document['EducationDescription']; ?></td>
 					<td>   
-                        <?php if($Document['FileName']>0){ ?>
-                            <?php echo $Document['IsVerified']== 1 ? "Attachment Verifiled" : "Attached "; ?> <br>
-                            <a href="javascript:void(0)" onclick="DraftProfile.showAttachmentEducationInformationForView('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
+                        <?php if($Document['FileName']>0) { ?>
+							<?php if($Document['IsVerified']=="1"){ ?>
+								<span style="color:green;font-size:11px">Approved</span>
+							<?php } ?>
+							<?php if($Document['IsVerified']=="2"){ ?>
+								<span style="color:red;font-size:11px">Rejected</span>
+							<?php } 
+								if($Document['IsVerified']=="1"){ $status ="Approved"; } 
+								if($Document['IsVerified']=="2"){ $status ="Rejected"; } 
+							?>
+                            <br>
+                            <a href="javascript:void(0)" onclick="DraftProfile.showAttachmentEducationInformationForView('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>','<?php  echo $status;?>')">View</a>
                         <?php } else { echo "Not Attach"; }?></td>
                 </tr>
                 <?php } 
@@ -276,7 +316,14 @@ legend {
         <div class="form-group row">
             <div class="col-sm-12">
                 <fieldset>
-                    <legend style="width:132px;">Additional information</legend>
+                    <legend style="width:190px;">Additional information &nbsp;&nbsp;
+						<?php if($ODVerification['IsVerified']=="1"){ ?>
+							<span style="color:green;font-size:11px">Approved</span>
+						<?php } ?>
+						<?php if($ODVerification['IsVerified']=="2"){ ?>
+							<span style="color:red;font-size:11px">Rejected</span>
+						<?php } ?>
+					</legend>
                     <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['OccupationDetails']); ?></div>
                 </fieldset>
             </div>
@@ -392,7 +439,13 @@ legend {
         <div class="form-group row">
             <div class="col-sm-12">
                 <fieldset>
-                    <legend style="width:132px;">Additional information</legend>
+                    <legend style="width:190px;">Additional information &nbsp;&nbsp;
+						<?php if($FIVerification['IsVerified']=="1"){ ?>
+							<span style="color:green;font-size:11px">Approved</span>
+						<?php } if($FIVerification['IsVerified']=="2"){ ?>
+							<span style="color:red;font-size:11px">Rejected</span>
+						<?php } ?>
+					</legend>
                     <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['AboutMyFamily']); ?></div>
                 </fieldset>
             </div>
@@ -476,7 +529,13 @@ legend {
         <div class="form-group row">
             <div class="col-sm-12">
                 <fieldset>
-                    <legend style="width:132px;">Additional information</legend>
+                    <legend style="width:190px;">Additional information &nbsp;&nbsp;
+						<?php if($PIVerification['IsVerified']=="1"){ ?>
+							<span style="color:green;font-size:11px">Approved</span>
+						<?php } if($PIVerification['IsVerified']=="2"){ ?>
+							<span style="color:red;font-size:11px">Rejected</span>
+						<?php } ?>
+					</legend>
                     <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['PhysicalDescription']); ?></div>
                 </fieldset>
             </div>
@@ -494,7 +553,13 @@ legend {
          </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" >Date of birth</label>               
-            <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['DateofBirth']))> 0 ? trim($ProfileInfo['DateofBirth']) : "N/A "; ?></label>
+            <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['DateofBirth']))> 0 ? trim($ProfileInfo['DateofBirth']) : "N/A "; ?>&nbsp;&nbsp;
+				<?php if($HDobVerification['IsVerified']=="1"){ ?>
+					<span style="color:green;font-size:11px">Approved</span>
+				<?php } if($HDobVerification['IsVerified']=="2"){ ?>
+					<span style="color:red;font-size:11px">Rejected</span>
+				<?php } ?>	
+			</label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Time of birth</label>               
@@ -518,7 +583,13 @@ legend {
          <div class="form-group row">
             <div class="col-sm-12">
                 <fieldset>
-                    <legend style="width:132px;">Additional information</legend>
+                    <legend style="width:190px;">Additional information &nbsp;&nbsp;
+						<?php if($HDVerification['IsVerified']=="1"){ ?>
+							<span style="color:green;font-size:11px">Approved</span>
+						<?php } if($HDVerification['IsVerified']=="2"){ ?>
+							<span style="color:red;font-size:11px">Rejected</span>
+						<?php } ?>	
+					</legend>
                     <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['HoroscopeDetails']); ?></div>
                 </fieldset>
             </div>
@@ -634,7 +705,13 @@ legend {
          <div class="form-group row">
             <div class="col-sm-12">
                 <fieldset>
-                    <legend style="width: 132px;">Additional information</legend>
+                    <legend style="width: 190px;">Additional information &nbsp;&nbsp;
+						<?php if($PEVerification['IsVerified']=="1"){ ?>
+							<span style="color:green;font-size:11px">Approved</span>
+						<?php } if($PEVerification['IsVerified']=="2"){ ?>
+							<span style="color:red;font-size:11px">Rejected</span>
+						<?php } ?>	
+					</legend>
                     <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($PartnerExpectation['Details']); ?></div>
                 </fieldset>
             </div>
@@ -707,7 +784,13 @@ legend {
         <div class="form-group row">
             <div class="col-sm-12">
                 <fieldset>
-                    <legend style="width: 132px;">Additional information</legend>
+                    <legend style="width: 190px;">Additional information &nbsp;&nbsp;
+						<?php if($CDVerification['IsVerified']=="1"){ ?>
+							<span style="color:green;font-size:11px">Approved</span>
+						<?php } if($CDVerification['IsVerified']=="2"){ ?>
+							<span style="color:red;font-size:11px">Rejected</span>
+						<?php } ?>
+					</legend>
                     <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['CommunicationDescription']); ?></div>
                 </fieldset>
             </div>
@@ -731,18 +814,25 @@ legend {
                    <div class="Documentview">
                     <img src="<?php echo $Doc['AttachFileName'];?>" style="width: 200px;height:150px">   <br>
                     <label style="color:#737373;"><?php echo $Doc['DocumentType'];?></label> <br>
-                    <label style="color:#737373;">verification pending</label>
+                    <label style="color:#737373;"><?php if($Doc['IsVerified']=="1"){;?>
+						<span style="color:green;font-size:11px">Approved</span>
+					<?php } if($Doc['IsVerified']=="2"){;?>
+						<span style="color:red;font-size:11px">Rejected</span>
+					<?php } ?>
+					</label>
                   </div>
                   <?php }?>
          </div>
     </div>
   </div>                                                                                                               
 </div>
-<div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-    <div class="modal-dialog">
-        <div class="modal-content" id="DeleteNow_body" style="height:260px"></div>
-    </div>
-</div>
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >
+            
+                </div>
+            </div>
+        </div>
 
 <div class="modal" id="EditNow" data-backdrop="static" >
             <div class="modal-dialog" >
