@@ -12,7 +12,8 @@
 				$array_index_isnumber=0;
                 
 				foreach($filter as $k=>$v ) {
-					if (intval($k)) {
+					//if (intval($k)) {
+                        if (is_int($k)) {
 					 	$array_index_isnumber++;
 					} else {
                     $array_data .= " and `".$k."` = '".$v."' ";

@@ -1,117 +1,98 @@
-    function ChangePasswordScreen(frmid1) {
-        
-        var param = $( "#"+frmid1).serialize();
-        
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","135px"));
-		
-		$('#myModal').modal('show'); 
-        
-        $.post(getAppUrl() + "m=Member&a=ChangePasswordScreen", 
-                            param,
-                            function(result2) {
-                                 $('#Mobile_VerificationBody').html(result2);  
-                            });  
+var response="";
+function restcall(url,param){
+     $.post(getAppUrl() + url,param,function(response) {return response});
+}
+
+function ChangePasswordScreen(frmid1) {
+    var param = $( "#"+frmid1).serialize();
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","135px"));$('#myModal').modal('show');
+    $.post(getAppUrl() + "m=Member&a=ChangePasswordScreen",param,function(response) {$('#Mobile_VerificationBody').html(response);});  
+    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ChangePasswordScreen",param));
+}
+
+function ChangeNewPassword(frmid1) {
+    $("#frmNewPass_error").html("&nbsp;");
+    $("#frmCfmNewPass_error").html("&nbsp;");
+    ErrorCount =0;
+    IsNonEmpty("NewPassword","frmNewPass_error","Please enter new password");
+	IsNonEmpty("NewPassword","frmCfmNewPass_error","Please enter confirm new password");
+    if ($("#ConfirmNewPassword").val().trim() != $("#NewPassword").val().trim()) {
+	    $("#frmCfmNewPass_error").html("Passwords do not match");
+		ErrorCount++;
+	}
+    if(ErrorCount>0){ 
+        return false;
     }
-	function ChangeNewPassword(frmid1) {
-        $("#frmNewPass_error").html("&nbsp;");
-        $("#frmCfmNewPass_error").html("&nbsp;");
-		
-         ErrorCount =0;
-		 
-		 IsNonEmpty("NewPassword","frmNewPass_error","Please enter new password");
-		 IsNonEmpty("NewPassword","frmCfmNewPass_error","Please enter confirm new password");
-         
-		 if ($("#ConfirmNewPassword").val().trim() != $("#NewPassword").val().trim()) {
-			 $("#frmCfmNewPass_error").html("Passwords do not match");
-			 ErrorCount++;
-		 }
-          if(ErrorCount>0){ 
-            return false;
-         }
-        
-        var param = $( "#"+frmid1).serialize();
-        
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-        $('#myModal').modal('show'); 
-        
-        $.post(getAppUrl() + "m=Member&a=ChangeNewPassword", 
-                            param,
-                            function(result2) {
-                                 $('#Mobile_VerificationBody').html(result2);  
-                            }
-                    );
-    }
-	function MobileNumberVerification() {
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-        $('#myModal').modal('show');
-        $.ajax({
-            url: API_URL + "m=Member&a=ChangeMobileNumberFromVerificationScreen", 
+    var param = $( "#"+frmid1).serialize();
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#myModal').modal('show'); 
+    $.post(getAppUrl() + "m=Member&a=ChangeNewPassword",param,function(response) {$('#Mobile_VerificationBody').html(response);});
+    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ChangeNewPassword",param));
+}
+
+function MobileNumberVerification() {
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#myModal').modal('show');
+    $.ajax({url: getAppUrl() + "m=Member&a=ChangeMobileNumberFromVerificationScreen", 
             success: function(result){
-               $('#Mobile_VerificationBody').html(result); 
-               if ($("#verifydiv" ).length ) {
+                $('#Mobile_VerificationBody').html(result); 
+                if ($("#verifydiv" ).length ) {
                     $("#verifydiv").hide(500);
-               }
-            }});
-    }
+                }
+    }});
+}
     
-    function EmailVerification() {
-        
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-        $('#myModal').modal('show');
-        $.ajax({
-            url: getAppUrl() + "m=Member&a=ChangeEmailFromVerificationScreen", 
-            success: function(result){
-               $('#Mobile_VerificationBody').html(result); 
-            }});
-    } 
+function EmailVerification() {
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#myModal').modal('show');
+    $.ajax({url: getAppUrl() + "m=Member&a=ChangeEmailFromVerificationScreen", success: function(result){$('#Mobile_VerificationBody').html(result); }});
+    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ChangeEmailFromVerificationScreen",""));
+} 
     
-    function MobileNumberVerificationForm(frmid1) {
-        
-        var param = $( "#"+frmid1).serialize();
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-        $('#myModal').modal('show'); 
-        $.post(getAppUrl() + "m=Member&a=MobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
-    }
+function MobileNumberVerificationForm(frmid1) {
+    var param = $( "#"+frmid1).serialize();
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#myModal').modal('show'); 
+    $.post(getAppUrl() + "m=Member&a=MobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
+    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=MobileNumberVerificationForm",param));
+}
+
+function ChangeMobileNumber() {
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#myModal').modal('show'); 
+    $.ajax({url: getAppUrl() + "m=Member&a=ChangeMobileNumber",success: function(result2){$('#Mobile_VerificationBody').html(result2);}});
+    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ChangeMobileNumber",""));
+} 
     
-    function ChangeMobileNumber() {
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-        $('#myModal').modal('show'); 
-        $.ajax({url: getAppUrl() + "m=Member&a=ChangeMobileNumber",success: function(result2){$('#Mobile_VerificationBody').html(result2);}});
-    } 
+function EmailVerificationForm(frmid1) {
+    var param = $( "#"+frmid1).serialize();
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#myModal').modal('show'); 
+    $.post(getAppUrl() + "m=Member&a=EmailVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
+    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=EmailVerificationForm",param));
+}
     
-    function EmailVerificationForm(frmid1) {
-        
-        var param = $( "#"+frmid1).serialize();
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-        $('#myModal').modal('show'); 
-        $.post(getAppUrl() + "m=Member&a=EmailVerificationForm",param,function(result2) {
-            $('#Mobile_VerificationBody').html(result2);  
-        });
-    }
+function ChangeEmailID() {
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#myModal').modal('show'); 
+    $.ajax({url: getAppUrl() + "m=Member&a=ChangeEmailID", success: function(result2){$('#Mobile_VerificationBody').html(result2);}});
+    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ChangeEmailID",""));
+} 
     
-    function ChangeEmailID() {
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-        $('#myModal').modal('show'); 
-        $.ajax({url: getAppUrl() + "m=Member&a=ChangeEmailID", success: function(result2){
-            $('#Mobile_VerificationBody').html(result2);
-        }});
-    } 
-    
-    function CheckVerification() {
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-         $('#myModal').modal('show'); 
-        $.ajax({
-					url: getAppUrl() + "m=Member&a=CheckVerification", 
-					success: function(result2){
+function CheckVerification() {
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#myModal').modal('show'); 
+    $.ajax({url: getAppUrl() + "m=Member&a=CheckVerification", success: function(result2){
 						if(result2 ==1){
-						location.href=AppUrl+"MyProfiles/CreateProfile";
+						    location.href=AppUrl+"MyProfiles/CreateProfile";
 						}else {         
-						$('#Mobile_VerificationBody').html(result2);
+						    $('#Mobile_VerificationBody').html(result2);
 						}  
 					}
-				});
-    }
-     function MobileNumberOTPVerification(frmid) {
+    });
+}
+
+function MobileNumberOTPVerification(frmid) {
 		 $("#frmMobileNoVerification_error").html("&nbsp;");
 		 if ($("#mobile_otp_2").val().trim()=="") {
 			 $("#frmMobileNoVerification_error").html("Please enter verification code");
@@ -119,94 +100,58 @@
 		 }
          var param = $( "#"+frmid).serialize();
          $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-                    $.post( getAppUrl() + "m=Member&a=MobileNumberOTPVerification", 
-                            param,
-                            function(result2) {
-                                $('#Mobile_VerificationBody').html(result2);   
-                            }
-                    );
-              
+         $.post( getAppUrl() + "m=Member&a=MobileNumberOTPVerification", param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
+         //$('#Mobile_VerificationBody').html(restcall("m=Member&a=MobileNumberOTPVerification",param));
     } 
-   /* function EmailVerificationForm() {  
-        $('#Mobile_VerificationBody').html("loging....");
-         $('#myModal').modal('show');  
-        $.ajax({
-            url: getAppUrl() + "m=Member&a=IsMobileVerified", 
-            success: function(result){
-                
-              if (!(result)) {
-                    $.ajax({
-                        url: getAppUrl() + "m=Views&a=EmailVerificationForm", 
-                        success: function(result2){
-                            $('#Mobile_VerificationBody').html(result2);
-                               
-                        }
-                    });
-               } 
-            }
-        });
-              
-    }*/
-    function EmailOTPVerification(frmid1) {
-		 $("#frmMobileNoVerification_error").html("&nbsp;");
-		 if ($("#email_otp").val().trim()=="") {
-			 $("#frmMobileNoVerification_error").html("Please enter verification code");
-			 return false;
-		 }
-         var param = $( "#"+frmid1).serialize();
-         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-                    $.post(getAppUrl() + "m=Member&a=EmailOTPVerification", 
-                            param,
-                            function(result2) {
-                                $('#Mobile_VerificationBody').html(result2);   
-                            }
-                    );
-              
-    }
-    //var obj = jQuery.parseJSON(result);
-    //$('#myModal').modal('show');                                                                                   
     
-     function ResendMobileNumberVerificationForm(frmid1) {
-        
-        var param = $( "#"+frmid1).serialize();
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-        $('#myModal').modal('show'); 
-        $.post(getAppUrl() + "m=Member&a=ResendMobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
-    }
-    function ResendEmailVerificationForm(frmid1) {
-        
-        var param = $( "#"+frmid1).serialize();
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-        $('#myModal').modal('show'); 
-        $.post(getAppUrl() + "m=Member&a=ResendEmailVerificationForm", param,function(result2) { $('#Mobile_VerificationBody').html(result2); });
-    }
-    
-    function AddtoFavourite(ProfileCode,ImgId) {
-        $('#img_'+ImgId).attr("onclick","javascript:void(0)");
-        var grey = $('#img_'+ImgId).attr("src");
-        var red = $('#img_'+ImgId).attr("src_a");
-        $.ajax({
-                url: getAppUrl() + "m=Member&a=AddToFavourite&ProfileCode="+ProfileCode, 
-                success: function(result){
+function EmailOTPVerification(frmid1) {
+    $("#frmMobileNoVerification_error").html("&nbsp;");
+	if ($("#email_otp").val().trim()=="") {
+	    $("#frmMobileNoVerification_error").html("Please enter verification code");
+		return false;
+	}
+    var param = $( "#"+frmid1).serialize();
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $.post(getAppUrl() + "m=Member&a=EmailOTPVerification",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
+    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=EmailOTPVerification",param));
+}
+
+function ResendMobileNumberVerificationForm(frmid1) {
+    var param = $( "#"+frmid1).serialize();
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#myModal').modal('show'); 
+    post(getAppUrl() + "m=Member&a=ResendMobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
+    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ResendMobileNumberVerificationForm",param));
+}
+
+function ResendEmailVerificationForm(frmid1) {
+    var param = $( "#"+frmid1).serialize();
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#myModal').modal('show'); 
+    $.post(getAppUrl() + "m=Member&a=ResendEmailVerificationForm", param,function(result2) { $('#Mobile_VerificationBody').html(result2); });
+    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ResendEmailVerificationForm",param));
+}
+
+function AddtoFavourite(ProfileCode,ImgId) {
+    $('#img_'+ImgId).attr("onclick","javascript:void(0)");
+    var grey = $('#img_'+ImgId).attr("src");
+    var red = $('#img_'+ImgId).attr("src_a");
+    $.ajax({url: getAppUrl() + "m=Member&a=AddToFavourite&ProfileCode="+ProfileCode, success: function(result){
                     $('#img_'+ImgId).attr("src",red);
                     $('#img_'+ImgId).attr("src_a",grey);
                     $('#img_'+ImgId).attr("onclick","removeFavourited('"+ProfileCode+"','"+ImgId+"')");
                     $.simplyToast("Profile ID: "+ProfileCode+" has been favourited", 'info');
-        }});
-    }
-    
-    function removeFavourited(ProfileCode,ImgId) {
-        $('#img_'+ImgId).attr("onclick","javascript:void(0)");
-        var grey = $('#img_'+ImgId).attr("src_a");
-        var red = $('#img_'+ImgId).attr("src");
-        $.ajax({
-                url: getAppUrl() + "m=Member&a=RemoveFromFavourite&ProfileCode="+ProfileCode, 
-                success: function(result){
-                    
+    }});
+}
+
+function removeFavourited(ProfileCode,ImgId) {
+    $('#img_'+ImgId).attr("onclick","javascript:void(0)");
+    var grey = $('#img_'+ImgId).attr("src_a");
+    var red = $('#img_'+ImgId).attr("src");
+    $.ajax({url: getAppUrl() + "m=Member&a=RemoveFromFavourite&ProfileCode="+ProfileCode, success: function(result){
                     if (MyFavoritedPage==1) {
                         $('#div_'+ProfileCode).hide(500);
                     }
-        
                     $('#img_'+ImgId).attr("src",grey); 
                     $('#img_'+ImgId).attr("src_a",red); 
                     $('#img_'+ImgId).attr("onclick","AddtoFavourite('"+ProfileCode+"','"+ImgId+"')");
@@ -214,53 +159,42 @@
         }});
     }
     
-	/* Code Checked By J2J*/
-    function AddToShortList(ProfileCode,ImgId) {
-        $('#img_'+ImgId).attr("onclick","javascript:void(0)");
-        var request = $.post(getAppUrl() + "m=Member&a=AddToShortList&ProfileCode="+ProfileCode,"",function(result) {
-            var obj = JSON.parse(result);
-            if (obj.status=="success") {
-                $('#img_'+ImgId).html("Shortlisted");
-                $('#img_'+ImgId).attr("onclick","RemoveFromShortList('"+ProfileCode+"','"+ImgId+"')");
-                $.simplyToast(obj.message, 'info');
-            } else {
-                $('#img_'+ImgId).attr("onclick","AddToShortList('"+ProfileCode+"','"+ImgId+"')");
-                $.simplyToast(obj.message, 'danger');
-            }
-        }).fail(function(xhr, status, error) {
+function AddToShortList(ProfileCode,ImgId) {
+    $('#img_'+ImgId).attr("onclick","javascript:void(0)");
+    var request = $.post(getAppUrl() + "m=Member&a=AddToShortList&ProfileCode="+ProfileCode,"",function(result) {
+        var obj = JSON.parse(result);
+        if (obj.status=="success") {
+            $('#img_'+ImgId).html("Shortlisted");
+            $('#img_'+ImgId).attr("onclick","RemoveFromShortList('"+ProfileCode+"','"+ImgId+"')");
+            $.simplyToast(obj.message, 'info');
+        } else {
             $('#img_'+ImgId).attr("onclick","AddToShortList('"+ProfileCode+"','"+ImgId+"')");
-            $.simplyToast("Network unavailable" ,'danger');
-        }); 
-    }                    
-    
-	function RemoveFromShortList(ProfileCode,ImgId) {
-        $('#img_'+ImgId).attr("onclick","javascript:void(0)");
-        $.ajax({
-                url: getAppUrl() + "m=Member&a=RemoveFromShortList&ProfileCode="+ProfileCode, 
-                success: function(result){
-                    
-                    if (MyShortListedPage==1) {
-                        $('#div_'+ProfileCode).hide(500);
-                    }
-					  $('#img_'+ImgId).html("Add To Shortlist");
-                    $('#img_'+ImgId).attr("onclick","AddToShortList('"+ProfileCode+"','"+ImgId+"')");
-                    $.simplyToast("Profile ID: "+ProfileCode+" has been removed from shortlist", 'warning');
-        }});
-    }
-    
-    
-    
-	
-    function SendToInterest(ProfileCode,ImgId) {
-        $('#img_'+ImgId).attr("onclick","javascript:void(0)");
-        //$.ajax({
-           $.ajax({url: getAppUrl() + "m=Member&a=SendToInterest",success: function(result2){}});
+            $.simplyToast(obj.message, 'danger');
+        }
+    }).fail(function(xhr, status, error) {
+        $('#img_'+ImgId).attr("onclick","AddToShortList('"+ProfileCode+"','"+ImgId+"')");
+        $.simplyToast("Network unavailable" ,'danger');
+    }); 
+}                    
 
-        //});
-    }                                    
-    
-                                     
-    var DraftProfile = {
+function RemoveFromShortList(ProfileCode,ImgId) {
+    $('#img_'+ImgId).attr("onclick","javascript:void(0)");
+    $.ajax({url: getAppUrl() + "m=Member&a=RemoveFromShortList&ProfileCode="+ProfileCode, success: function(result){
+            if (MyShortListedPage==1) {
+                $('#div_'+ProfileCode).hide(500);
+            }
+			$('#img_'+ImgId).html("Add To Shortlist");
+            $('#img_'+ImgId).attr("onclick","AddToShortList('"+ProfileCode+"','"+ImgId+"')");
+            $.simplyToast("Profile ID: "+ProfileCode+" has been removed from shortlist", 'warning');
+    }});
+}
+
+function SendToInterest(ProfileCode,ImgId) {
+    $('#img_'+ImgId).attr("onclick","javascript:void(0)");
+    $.ajax({url: getAppUrl() + "m=Member&a=SendToInterest",success: function(result2){}});
+}                                    
+
+var DraftProfile = {
     
         SubmitGeneralInformation:function() {
             
@@ -412,7 +346,7 @@
 							+'</div>'
 							+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
 								+'<div class="card-title" style="text-align:right;color:green;margin-bottom:0px">For Administrative Purpose Only</div>'
-								 +'<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+								 +'<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileCode+'/occdoc/'+FileName+'" style="height:120px;"></div> <br>'
 							+'</div>'
 							+'<div class="modal-footer">'  
 								+'<button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteOccupationAttachmentOnly(\''+ProfileCode+'\')">Yes, remove</button>&nbsp;&nbsp;&nbsp;'
@@ -568,12 +502,10 @@
             $('#Aboutlabel').html("About my daughter in law<span style='color:red'>*</span>");
         }
     },
-        
         Personal:function() {
             alert("personal");
         }
 };
-
 
     function getHowmanyChildrenInfo() {
         if ($('#MaritalStatus').val()=="MST001" || $('#MaritalStatus').val()=="0") {
@@ -630,40 +562,37 @@
         }
     }
     
-    function displayMotherIncome() {
-        if ($("#MothersOccupation").val()=="OT107" || $("#MothersOccupation").val()==0) {
-            $('#mother_income_1').hide();
-            $('#mother_income_2').hide();
-             $('#MotherOccupation_additionalinfo').hide(); 
-        } else {
-            
-            if ($("#MothersOccupation").val()=="OT112")  {
-                 $('#MotherOccupation_additionalinfo').show(); 
-                 $('#mother_income_1').show();
+function displayMotherIncome() {
+    if ($("#MothersOccupation").val()=="OT107" || $("#MothersOccupation").val()==0) {
+        $('#mother_income_1').hide();
+        $('#mother_income_2').hide();
+        $('#MotherOccupation_additionalinfo').hide(); 
+    } else {
+        if ($("#MothersOccupation").val()=="OT112")  {
+            $('#MotherOccupation_additionalinfo').show(); 
+            $('#mother_income_1').show();
             $('#mother_income_2').show();
-            } else {
-            
-             $('#mother_income_1').show();
+        } else {
+            $('#mother_income_1').show();
             $('#mother_income_2').show();
             $('#MotherOccupation_additionalinfo').hide(); 
-            }
         }
     }
+}
     
-     function verifiyMotherPassedaway() {
-         if ($('#MothersAlive').is(":checked")){
-           
-            $('#MotherAlive_row_1').hide();
-            $('#MotherAlive_row_2').hide();
-            $('#MotherAlive_row_3').hide();
-        } else {
-            $('#MotherAlive_row_1').show();
-            $('#MotherAlive_row_2').show();
-            $('#MotherAlive_row_3').show();
-        }
+function verifiyMotherPassedaway() {
+    if ($('#MothersAlive').is(":checked")){
+        $('#MotherAlive_row_1').hide();
+        $('#MotherAlive_row_2').hide();
+        $('#MotherAlive_row_3').hide();
+    } else {
+        $('#MotherAlive_row_1').show();
+        $('#MotherAlive_row_2').show();
+        $('#MotherAlive_row_3').show();
     }
-    
-    function print_sister_counts() {
+}
+
+function print_sister_counts() {
         
         var n_brothers = $('#NumberofSisters').val();
         
@@ -789,3 +718,4 @@
             }
         }
     }
+//791

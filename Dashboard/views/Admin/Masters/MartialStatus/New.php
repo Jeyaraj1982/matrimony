@@ -28,7 +28,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $MaritalStatusCode = $webservice->GetMastersManageDetails(); 
+  $MaritalStatusCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextMaritalStatusCode="";
         if ($MaritalStatusCode['status']=="success") {
             $GetNextMaritalStatusCode  =$MaritalStatusCode['data']['MaritalStatusCode'];

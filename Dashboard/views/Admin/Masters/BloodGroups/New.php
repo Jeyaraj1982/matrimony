@@ -26,7 +26,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $BloodGroupCode = $webservice->GetMastersManageDetails(); 
+  $BloodGroupCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextBloodGroupCode="";
         if ($BloodGroupCode['status']=="success") {
             $GetNextBloodGroupCode  =$BloodGroupCode['data']['BloodGroupCode'];

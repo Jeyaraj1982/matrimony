@@ -1,5 +1,5 @@
 <?php
-  $response = $webservice->GetMasterAllViewInfo();
+  $response = $webservice->getData("Admin","GetMasterAllViewInfo");
     $BloodGroup          = $response['data']['ViewInfo'];
 ?>
 <form method="post" action="" onsubmit="">

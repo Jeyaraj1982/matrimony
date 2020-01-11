@@ -1,12 +1,12 @@
+<?php include_once(__DIR__."/../header.php"); ?>
 <style>
 .mytr:hover{background:#f6f6f6;cursor:pointer}
 </style>
-<script src="./../../assets/js/jquery-1.7.2.js"></script>
-<link rel="stylesheet" href="./../../assets/css/demo.css">
+ 
 <body style="margin:0px;">
  <div class="titleBar">List of News</div>
 <?php error_reporting(0);
-include_once("../../config.php");
+ 
 
             $obj = new CommonController();  
             if (!($obj->isLogin())){

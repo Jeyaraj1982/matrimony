@@ -222,7 +222,7 @@ legend {
                     <td>   
                         <?php if($Document['FileName']>0){ ?>
                             <?php echo $Document['IsVerified']== 1 ? "Attachment Verifiled" : "Attached "; ?> <br>
-                            <a href="javascript:void(0)" onclick="showAttachmentEducationInformationForView('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
+                            <a href="javascript:void(0)" onclick="showAttachmentEducationInformationForView('<?php  echo $Document['AttachmentID'];?>','<?php echo $Document['DraftProfileCode'];?>','<?php  echo $Document['FileName'];?>')">View</a>
                         <?php } else { echo "Not Attach"; }?></td>
                 </tr>
                 <?php } 
@@ -283,7 +283,7 @@ legend {
             <label class="col-sm-2 col-form-label">Attachment</label>                      
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
                 <?php if($ProfileInfo['OccupationAttachFileName']==""){ echo "Not Attach";} else{ echo "Attached";?> &nbsp;&nbsp;
-                (<a href="javascript:void(0)" onclick="showAttachmentOccupationForView('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')">View</a>) <?php }?>
+                (<a href="javascript:void(0)" onclick="showAttachmentOccupationForView('<?php echo $ProfileInfo['DraftProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')">View</a>) <?php }?>
             </label>
         </div>
         <?php }?>
@@ -766,7 +766,7 @@ legend {
                             + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                             + '<h4 class="modal-title">Occupation Attachment</h4>'
                               + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
-                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileCode+'/occdoc/'+FileName+'" style="height:120px;"></div> <br>'
                         + '</div>'
                         + '</div>'
                     +  '</div>';                                                                                                
@@ -779,7 +779,7 @@ legend {
                             + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
                             + '<h4 class="modal-title">Education Attachment</h4>'
                              + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div><br>'
-                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/'+FileName+'" style="height:120px;"></div> <br>'
+                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileID+'/edudoc/'+FileName+'" style="height:120px;"></div> <br>'
                         + '</div>'
                     +  '</div>';                                                                                                
             $('#DeleteNow_body').html(content);

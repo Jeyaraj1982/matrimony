@@ -27,7 +27,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $OccupationTypeCode = $webservice->GetMastersManageDetails(); 
+  $OccupationTypeCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextOccupationTypeCode="";
         if ($OccupationTypeCode['status']=="success") {
             $GetNextOccupationTypeCode  =$OccupationTypeCode['data']['OccupationTypesCode'];

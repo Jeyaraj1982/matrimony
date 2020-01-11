@@ -30,7 +30,7 @@
                         </tr>
                       </thead>
                       <tbody>  
-                        <?php $ProfileSigninFors = $webservice->GetMastersManageDetails(); ?>
+                        <?php $ProfileSigninFors = $webservice->getData("Admin","GetMastersManageDetails"); ?>
                         <?php foreach($ProfileSigninFors['data']['ProfileSignInFor'] as $ProfileSigninFor) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($ProfileSigninFor['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $ProfileSigninFor['SoftCode'];?></td>

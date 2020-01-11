@@ -35,7 +35,8 @@
                     <img src='../../../images/loader.gif'> Loading ....
                 </div>
             </div>
-        </div>
+        </div> 
+        
         
         <?php } ?>                  
         
@@ -80,7 +81,7 @@ function RequestToshowUpgrades(PProfileID) {
         $('#OverAll').modal('show'); 
         var html_design="";
         $.ajax({
-            url: API_URL + "m=Member&a=RequestToDownload&PProfileID="+PProfileID, 
+            url: getAppUrl() + "m=Member&a=RequestToDownload&PProfileID="+PProfileID, 
             success: function(result){
                 
                 var obj = JSON.parse(result); 

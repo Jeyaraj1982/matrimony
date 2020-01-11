@@ -28,7 +28,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $OccupationCode = $webservice->GetMastersManageDetails(); 
+  $OccupationCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextOccupationCode="";
         if ($OccupationCode['status']=="success") {
             $GetNextOccupationCode  =$OccupationCode['data']['OccupationCode'];

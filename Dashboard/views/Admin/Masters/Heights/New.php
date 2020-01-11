@@ -27,7 +27,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $HeightCode = $webservice->GetMastersManageDetails(); 
+  $HeightCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextHeightCode="";
         if ($HeightCode['status']=="success") {
             $GetNextHeightCode  =$HeightCode['data']['HeightCode'];

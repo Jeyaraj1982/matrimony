@@ -28,7 +28,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $BankCode = $webservice->GetMastersManageDetails(); 
+  $BankCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextBankCode="";
         if ($BankCode['status']=="success") {
             $GetNextBankCode  =$BankCode['data']['BankCode'];

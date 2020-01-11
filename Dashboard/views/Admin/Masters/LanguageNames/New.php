@@ -31,7 +31,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $LanguageCode = $webservice->GetMastersManageDetails(); 
+  $LanguageCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextLanguageCode="";
         if ($LanguageCode['status']=="success") {
             $GetNextLanguageCode  =$LanguageCode['data']['LanguageNameCode'];

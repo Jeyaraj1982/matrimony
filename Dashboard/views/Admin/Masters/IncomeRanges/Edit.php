@@ -38,7 +38,7 @@ $(document).ready(function () {
             $errormessage = $response['message']; 
         }
     }
-    $response     = $webservice->GetMasterAllViewInfo();
+    $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $IncomeRange = $response['data']['ViewInfo'];
 ?>
 <form method="post" action="" onsubmit="return SubmitNewIncomeRange();">

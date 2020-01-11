@@ -39,7 +39,7 @@ $(document).ready(function () {
             $errormessage = $response['message']; 
         }
     }
-    $response     = $webservice->GetMasterAllViewInfo();
+    $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $StarName = $response['data']['ViewInfo'];
 ?>   
 <form method="post" action="" onsubmit="return SubmitNewStarName();">

@@ -38,7 +38,7 @@ $(document).ready(function () {
         $errormessage = $response['message']; 
     }
     } 
-  $ProfileSignInCode = $webservice->GetMastersManageDetails(); 
+  $ProfileSignInCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextProfileSignInCode="";
         if ($ProfileSignInCode['status']=="success") {
             $GetNextProfileSignInCode  =$ProfileSignInCode['data']['ProfileSignInForCode'];

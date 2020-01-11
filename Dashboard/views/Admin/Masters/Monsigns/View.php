@@ -1,5 +1,5 @@
 <?php
-    $response     = $webservice->GetMasterAllViewInfo();
+    $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $Monsign = $response['data']['ViewInfo'];
 ?>
 <form method="post" action="" onsubmit="">

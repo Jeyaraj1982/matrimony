@@ -27,7 +27,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $DietCode = $webservice->GetMastersManageDetails(); 
+  $DietCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextDietCode="";
         if ($DietCode['status']=="success") {
             $GetNextDietCode  =$DietCode['data']['DietCode'];

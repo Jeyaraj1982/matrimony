@@ -16,8 +16,8 @@
                 </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                 <a href="ManagePlan"><small style="font-weight:bold;text-decoration:underline">All</small> </a>&nbsp;|&nbsp;
-                <a href="ManageActivePlan"><small style="font-weight:bold;text-decoration:underline">Active</small> </a>&nbsp;|&nbsp;
-                <a href="ManageDeactivePlan"><small style="font-weight:bold;text-decoration:underline">Deactive</small> </a>
+                <a href="ManageActivePlan"><small>Active</small> </a>&nbsp;|&nbsp;
+                <a href="ManageDeactivePlan"><small>Deactive</small> </a>
                 </div>
                 </div>
                 <br><br>
@@ -38,7 +38,7 @@
                       </thead>                                            
                       <tbody>  
                         <?php 
-                         $response = $webservice->GetManagePlans(); ?>
+                         $response = $webservice->getData("Admin","GetManagePlans"); ?>
                         <?php foreach($response['data'] as $Plan) { ?>
                                 <tr>
                                 <td>

@@ -199,7 +199,7 @@ legend {margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px
 					<td>   
                         <?php if($Document['FileName']>0){ ?>
                             <?php echo $Document['IsVerified']== 1 ? "Attachment Verifiled" : "Attached "; ?> <br>
-                            <a href="javascript:void(0)" onclick="DraftProfile.showAttachmentEducationInformationForView('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
+                            <a href="javascript:void(0)" onclick="DraftProfile.showAttachmentEducationInformationForView('<?php  echo $Document['AttachmentID'];?>','<?php echo $Document['DraftProfileCode'];?>','<?php  echo $Document['FileName'];?>')">View</a>
                         <?php } else { echo "Not Attach"; }?></td>
                 </tr>
                 <?php } 
@@ -261,7 +261,7 @@ legend {margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px
             <label class="col-sm-2 col-form-label">Attachment</label>                      
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
                 <?php if($ProfileInfo['OccupationAttachFileName']==""){ echo "Not Attach";} else{ echo "Attached";?> &nbsp;&nbsp;
-                (<a href="javascript:void(0)" onclick="DraftProfile.showAttachmentOccupationForView('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')">View</a>) <?php }?>
+                (<a href="javascript:void(0)" onclick="DraftProfile.showAttachmentOccupationForView('<?php echo $ProfileInfo['DraftProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')">View</a>) <?php }?>
             </label>
         </div>
         <?php }?>
@@ -732,6 +732,13 @@ legend {margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px
     </div>
   </div>                                                                                                               
 </div>
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >
+            
+                </div>
+            </div>
+        </div>
  <div class="modal" id="EditNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
                 <div class="modal-content" id="Edit_body" style="height:315px">

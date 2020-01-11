@@ -28,7 +28,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $LakanamCode = $webservice->GetMastersManageDetails(); 
+  $LakanamCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextLakanamCode="";
         if ($LakanamCode['status']=="success") {
             $GetNextLakanamCode  =$LakanamCode['data']['LakanamCode'];

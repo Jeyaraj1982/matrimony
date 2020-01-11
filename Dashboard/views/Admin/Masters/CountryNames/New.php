@@ -74,7 +74,7 @@ $(document).ready(function () {
         $errormessage = $response['message']; 
     }
     } 
-  $CountryCode = $webservice->GetMastersManageDetails(); 
+  $CountryCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextCountryCode="";
         if ($CountryCode['status']=="success") {
             $GetNextCountryCode  =$CountryCode['data']['CountryCode'];

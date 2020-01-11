@@ -27,7 +27,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $FamilyValueCode = $webservice->GetMastersManageDetails(); 
+  $FamilyValueCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextFamilyValueCode="";
         if ($FamilyValueCode['status']=="success") {
             $GetNextFamilyValueCode  =$FamilyValueCode['data']['FamilyValueCode'];

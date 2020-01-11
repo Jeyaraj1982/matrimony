@@ -201,7 +201,7 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                     <td>Header Background Image</td>
                     <td>
                     <?php if (strlen(trim($data[57]['paramvalue']))>0) {?>
-                    <img src="<?php echo BaseUrl;?>><?php echo $config['thumb'].$data[57]['paramvalue'];?>" height="100"> <br>
+                    <img src="<?php echo BaseUrl;?>/<?php echo $config['thumb'].$data[57]['paramvalue'];?>" height="100"> <br>
                     <input type="submit" value="Remove" name="rmimageheader">
                     <?php } ?>
                     <input type="file" class="input" size="30" name="headerbgimg"/><br>
@@ -237,8 +237,6 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                         
                     </td>
                   </tr>
-                  
-                  
                   <tr>
                      <td>Display Slider Prev/Next Icon</td>
                      <td>
@@ -256,7 +254,7 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                     <td> Background Image</td>
                     <td>
                     <?php if (strlen(trim($data[2]['paramvalue']))>0) {?>
-                    <img src="../../assets/cms/<?php echo $data[2]['paramvalue'];?>" height="100"> <br>
+                    <img src="<?php echo BaseUrl;?>/<?php echo $config['thumb'].$data[2]['paramvalue'];?>" height="100"> <br>
                     <input type="submit" value="Remove" name="rmimage">
                     <?php } ?>
                     <input type="file" class="input" size="30" name="backgroundimage"/><br>

@@ -30,7 +30,7 @@
                         </tr>
                       </thead>
                       <tbody>  
-                           <?php $IncomeRanges = $webservice->GetMastersManageDetails(); ?>
+                           <?php $IncomeRanges = $webservice->getData("Admin","GetMastersManageDetails"); ?>
                         <?php foreach($IncomeRanges['data']['IncomeRange'] as $IncomeRange) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($IncomeRange['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $IncomeRange['SoftCode'];?></td>

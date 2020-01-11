@@ -8,7 +8,7 @@
             $errormessage = $response['message']; 
         }
     }
-    $response     = $webservice->GetMasterAllViewInfo();
+    $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $Height = $response['data']['ViewInfo'];
 ?>
 <script>

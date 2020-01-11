@@ -26,7 +26,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $FamilyAffluenceCode = $webservice->GetMastersManageDetails(); 
+  $FamilyAffluenceCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextFamilyAffluenceCode="";
         if ($FamilyAffluenceCode['status']=="success") {
             $GetNextFamilyAffluenceCode  =$FamilyAffluenceCode['data']['FamilyAffluenceCode'];

@@ -9,7 +9,7 @@
             $errormessage = $response['message']; 
         }
     }
-    $response     = $webservice->GetMasterAllViewInfo();
+    $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $EducationTitle = $response['data']['ViewInfo'];
 ?>
 <script>

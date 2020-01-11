@@ -27,7 +27,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $MonsignCode = $webservice->GetMastersManageDetails(); 
+  $MonsignCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextMonsignCode="";
         if ($MonsignCode['status']=="success") {
             $GetNextMonsignCode  =$MonsignCode['data']['MonsignCode'];

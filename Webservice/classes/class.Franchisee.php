@@ -99,18 +99,12 @@
         if (!(strlen(trim($_POST['MemberName']))>0)) {
             return Response::returnError("Please enter your name");
         }
-        if (!(strlen(trim($_POST['Sex']))>0)) {
-            return Response::returnError("Please enter your Sex");
-        }
-        if (!(strlen(trim($_POST['MobileNumber']))>0)) {
+       if (!(strlen(trim($_POST['MobileNumber']))>0)) {
             return Response::returnError("Please enter your MobileNumber");
         }
         if (!(strlen(trim($_POST['EmailID']))>0)) {
             return Response::returnError("Please enter your email");
         }
-        //if (!(strlen(trim($_POST['AadhaarNumber']))>0)) {
-           // return Response::returnError("Please enter AadhaarNumber");
-        //}
         if (!(strlen(trim($_POST['LoginPassword']))>0)) {                                                 
             return Response::returnError("Please enter MemberPassword");    
         }
@@ -129,7 +123,6 @@
                                                   "WhatsappCountryCode"           => $_POST['WhatsappCountryCode'],
                                                   "WhatsappNumber"           => $_POST['WhatsappNumber'],
                                                   "EmailID"                  => $_POST['EmailID'],
-                                                  "AadhaarNumber"            => $_POST['AadhaarNumber'],
                                                   "CreatedOn"                => date("Y-m-d H:i:s"),
                                                   "ReferedBy"                => $loginInfo[0]['FranchiseeID'],
 												  "ChangePasswordFstLogin"   => (($_POST['PasswordFstLogin']=="on") ? '1' : '0'),
@@ -2028,20 +2021,8 @@
               if ($_POST['EmployedAs']=="O002") {
                     $updateSql = "update `_tbl_draft_profiles` set  `EmployedAsCode`       ='".$_POST['EmployedAs']."',
                                                                     `EmployedAs`           = '".$EmployedAs[0]['CodeValue']."',
-                                                                    `OccupationTypeCode`   = '',
-                                                                    `OccupationType`       = '',
-                                                                    `TypeofOccupationCode` = '',
-                                                                    `TypeofOccupation`     = '',
-                                                                    `AnnualIncomeCode`     = '',
-                                                                    `WorkedCountryCode`    = '',
-                                                                    `WorkedCountry`        = '',
-                                                                    `WorkedCityName`        = '',
-                                                                    `OccupationDescription`        = '',
-                                                                    `OccupationAttachFileName`= '',
-                                                                    `OccupationAttachmentType`= '',
                                                                     `OccupationDetails`   = '".$_POST['OccupationDetails']."',
-                                                                    `LastUpdatedOn`     = '',
-                                                                    `AnnualIncome`         = ''";
+                                                                    `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."'";
                 } 
                 if ($_POST['EmployedAs']=="O001" && $_POST['OccupationType']=="OT112") {
                     $DuplicateOccupationType = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='OCCUPATIONTYPES' and `CodeValue`='".trim($_POST['OtherOccupation'])."'");
@@ -3684,10 +3665,10 @@
              $Profiles = array();
              $Position = "";   
 
-             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All)  `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  */
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All)  `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."'  */
                                                                                                 
                  $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where  `RequestToVerify`='0' and IsApproved='0'");
-                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where    RequestToVerify='1'");
+                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where    RequestToVerify='1' and IsApproved='1'");
                  
                  if (sizeof($DraftProfiles)>0) {
                      

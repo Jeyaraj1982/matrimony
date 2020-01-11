@@ -40,7 +40,7 @@ $(document).ready(function () {
         $errormessage = $response['message']; 
     }
     } 
-  $StateCode = $webservice->GetMastersManageDetails(); 
+  $StateCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextStateCode="";
         if ($StateCode['status']=="success") {
             $GetNextStateCode  =$StateCode['data']['StateCode'];
@@ -48,7 +48,7 @@ $(document).ready(function () {
         {     
 ?> 
 <?php 
- $info    = $webservice->GetMastersManageDetails();
+ $info    = $webservice->getData("Admin","GetMastersManageDetails");
  ?>  
 <form method="post" action="" onsubmit="return SubmitNewStateName();">
     <div class="col-12 grid-margin">

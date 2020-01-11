@@ -27,7 +27,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $ComplexionCode = $webservice->GetMastersManageDetails(); 
+  $ComplexionCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextComplexionCode="";
         if ($ComplexionCode['status']=="success") {
             $GetNextComplexionCode  =$ComplexionCode['data']['ComplexionCode'];

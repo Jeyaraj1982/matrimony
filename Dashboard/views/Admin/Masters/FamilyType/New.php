@@ -26,7 +26,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $FamilyTypeCode = $webservice->GetMastersManageDetails(); 
+  $FamilyTypeCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextFamilyTypeCode="";
         if ($FamilyTypeCode['status']=="success") {
             $GetNextFamilyTypeCode =$FamilyTypeCode['data']['FamilyTypeCode'];

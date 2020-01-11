@@ -43,7 +43,7 @@ $("#CasteCode").blur(function () {
             $errormessage = $response['message']; 
         }
     }
-    $response     = $webservice->GetMasterAllViewInfo();
+    $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $CasteName = $response['data']['ViewInfo'];
 ?>
 <form method="post" action="" onsubmit="return SubmitNewCasteName();">

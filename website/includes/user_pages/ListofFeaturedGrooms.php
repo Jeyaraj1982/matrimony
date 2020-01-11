@@ -62,6 +62,7 @@
                             <?php
                             include_once(application_config_path);
                             $response = $webservice->getData("Member","GetFeatureGroom",$_POST);
+                            print_r($response);
 								if (sizeof($response['data'])>0) {							 
 								foreach($response['data'] as $p) { 
 									$Profile=$p['ProfileInfo']                   

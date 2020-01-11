@@ -190,7 +190,7 @@ function SubmitNewPlan() {
 </script> 
 <?php
      if (isset($_POST['BtnSavePlan'])) {   
-    $response = $webservice->CreateFranchiseePlan($_POST);
+    $response = $webservice->getData("Admin","CreateFranchiseePlan",$_POST);
     if ($response['status']=="success") {
        $successmessage = $response['message']; 
        unset($_POST);
@@ -198,7 +198,7 @@ function SubmitNewPlan() {
         $errormessage = $response['message']; 
     }
     } 
-    $planinfo = $webservice->GetNextFranchiseePlanNumber(); 
+    $planinfo = $webservice->getData("Admin","GetNextFranchiseePlanNumber"); 
      $PlanCode="";
         if ($planinfo['status']=="success") {
             $PlanCode  =$planinfo['data']['PlanCode'];

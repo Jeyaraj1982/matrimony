@@ -344,7 +344,7 @@ class Master {
                                                                 "SoftCode"  => trim($_POST['StateCode']),
                                                                 "CodeValue" => trim($_POST['StateName']),
                                                                 "ParamA"    => trim($_POST['CountryName'])));
-            return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
+			return (sizeof($id)>0) ? Response::returnSuccess("success",array()) :
                                      Response::returnError("Access denied. Please contact support");   
         }
         

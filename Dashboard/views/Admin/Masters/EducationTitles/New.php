@@ -28,7 +28,7 @@
     }
     } 
     
-  $EducationCode = $webservice->GetMastersManageDetails(); 
+  $EducationCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextEducationDegreeCode="";
         if ($EducationCode['status']=="success") {
             $GetNextEducationDegreeCode  =$EducationCode['data']['EducationTitleCode'];

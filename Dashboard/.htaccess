@@ -1,4 +1,5 @@
 
+
 RewriteRule ^Masters/(.*)/Manage/Edit/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/Edit
 RewriteRule ^Masters/(.*)/Manage/View/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/View
 RewriteRule ^Requests/Member/ViewPaypalRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Member/ViewPaypalRequests
@@ -208,6 +209,10 @@ RewriteRule ^Franchisees/DeactiveFranchiseeStaffs/(.*)\.html$ ./index.php?Code=$
 RewriteRule ^Franchisees/FrStaffCreate/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FrStaffCreate 
 RewriteRule ^Franchisees/FrStaffEdit/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FrStaffEdit           
 RewriteRule ^Franchisees/FrStaffView/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FrStaffView
+
+RewriteRule ^Settings/Template/EditTemplate/(.*)\.html$ ./index.php?Code=$1&p=Settings/Template/EditTemplate
+
+RewriteRule ^Members/KYC/ViewKyc/(.*)\.htm$ ./index.php?Code=$1&p=Members/KYC/ViewKyc
 
 
 RewriteRule ^([a-zA-Z0-9-/+]+)([0-9]+)$ index.php?p=$1&pn=$2 [L]

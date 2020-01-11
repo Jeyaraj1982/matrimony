@@ -23,7 +23,7 @@
                         </tr>
                       </thead>
                        <tbody>  
-                        <?php $LanguageNames =  $webservice->GetMastersManageDetails(); ?>
+                        <?php $LanguageNames =  $webservice->getData("Admin","GetMastersManageDetails"); ?>
                         <?php foreach($LanguageNames['data']['LanguageName'] as $LanguageName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($LanguageName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $LanguageName['SoftCode'];?></td>

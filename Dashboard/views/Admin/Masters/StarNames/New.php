@@ -39,7 +39,7 @@ $(document).ready(function () {
         $errormessage = $response['message']; 
     }
     } 
-  $StarCode = $webservice->GetMastersManageDetails(); 
+  $StarCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextStarCode="";
         if ($StarCode['status']=="success") {
             $GetNextStarCode  =$StarCode['data']['StarCode'];

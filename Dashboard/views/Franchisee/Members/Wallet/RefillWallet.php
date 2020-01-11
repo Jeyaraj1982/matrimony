@@ -1,5 +1,5 @@
 <?php
-  $response = $webservice->RefillWallet($_POST); 
+  $response = $webservice->getData("Franchisee","RefillWallet",$_POST); 
   $Member=$response['data'];
                     ?> 
 

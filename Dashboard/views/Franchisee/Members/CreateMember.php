@@ -13,14 +13,8 @@
     $CountryCodes=$response['data']['CountryCode'];
 ?>  
 <script>
-
+ErrorCount=0
 $(document).ready(function () {
-  $("#AadhaarNumber").keypress(function (e) {
-     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-        $("#ErrAadhaarNumber").html("Digits Only").fadeIn().fadeIn("fast");
-               return false;
-    }
-   });
    $("#WhatsappNumber").keypress(function (e) {
      if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
         $("#ErrWhatsappNumber").html("Digits Only").fadeIn().fadeIn("fast");
@@ -38,11 +32,11 @@ $(document).ready(function () {
         IsNonEmpty("MemberName","ErrMemberName","Please Enter Member Name");
                         
    });
-   $("#MemberCode").blur(function () {
+   /*$("#MemberCode").blur(function () {
     
         IsNonEmpty("MemberCode","ErrMemberCode","Please Enter Member Code");
                         
-   });
+   });*/
    $("#MobileNumber").blur(function () {
     
         IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter Mobile Number");
@@ -82,7 +76,7 @@ function myFunction() {
 function SubmitNewMember() {
                       //   $('#ErrMemberCode').html("");
                          $('#ErrMemberName').html("");
-                         $('#ErrSex').html("");
+                        // $('#ErrSex').html("");
                          $('#ErrMobileNumber').html("");
                          $('#ErrWhatsappNumber').html("");
                          $('#ErrEmailID').html("");
@@ -96,7 +90,7 @@ function SubmitNewMember() {
                         if (IsNonEmpty("MemberName","ErrMemberName","Please Enter Member Name")) {
                         IsAlphabet("MemberName","ErrMemberName","Please Enter Alpha Numeric characters only");
                         }
-                        IsNonEmpty("Sex","ErrSex","Please Enter Valid Sex");
+                      //  IsNonEmpty("Sex","ErrSex","Please Enter Valid Sex");
                         if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please Enter MobileNumber")) {
                         IsMobileNumber("MobileNumber","ErrMobileNumber","Please Enter Valid Mobile Number");
                         }
@@ -358,7 +352,7 @@ function SubmitNewMember() {
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-header">'
                                     +'<h4 class="modal-title">Create Member</h4>'
-                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
                                 +'</div>'
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
                                     + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'

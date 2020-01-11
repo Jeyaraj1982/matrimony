@@ -38,7 +38,7 @@ $(document).ready(function () {
         $errormessage = $response['message']; 
     }
     } 
-  $IncomeRangeCode = $webservice->GetMastersManageDetails(); 
+  $IncomeRangeCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextIncomeRangeCode="";
         if ($IncomeRangeCode['status']=="success") {
             $GetNextIncomeRangeCode  =$IncomeRangeCode['data']['IncomeRangeCode'];

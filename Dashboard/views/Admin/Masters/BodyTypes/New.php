@@ -28,7 +28,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $BodyTypeCode = $webservice->GetMastersManageDetails(); 
+  $BodyTypeCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextBodyTypeCode="";
         if ($BodyTypeCode['status']=="success") {
             $GetNextBodyTypeCode  =$BodyTypeCode['data']['BodyTypeCode'];

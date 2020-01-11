@@ -35,11 +35,11 @@ $(document).ready(function () {
     if ($response['status']=="success") {
        $successmessage = $response['message']; 
        unset($_POST);
-    } else {
+    } else { 
         $errormessage = $response['message']; 
     }
     } 
-  $ReligionCode = $webservice->GetMastersManageDetails(); 
+  $ReligionCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextReligionCode="";
         if ($ReligionCode['status']=="success") {
             $GetNextReligionCode  =$ReligionCode['data']['ReligionCode'];

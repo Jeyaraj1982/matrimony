@@ -149,7 +149,7 @@ textarea {font-family:'Trebuchet MS';font-size:13px;color:#222;width:100%}
                     <td>Logo</td>
                     <td>
                     <?php if (strlen(trim($data[24]['paramvalue']))>0) {?>
-                    <img src="<?php echo BaseUrl;?>/assets/<?php echo $config['thumb'].$data[24]['paramvalue'];?>"><br>
+                    <img src="<?php echo BaseUrl;?>/<?php echo $config['thumb'].$data[24]['paramvalue'];?>"><br>
                     <input type="submit" value="Remove" name="rmimagelogo">
                     <?php } ?>
                     <input type="file" class="input" size="30" name="logo"/>

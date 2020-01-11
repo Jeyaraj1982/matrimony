@@ -27,7 +27,7 @@
         $errormessage = $response['message']; 
     }
     } 
-  $WeightCode = $webservice->GetMastersManageDetails(); 
+  $WeightCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextWeightCode="";
         if ($WeightCode['status']=="success") {
             $GetNextWeightCode  =$WeightCode['data']['WeightCode'];

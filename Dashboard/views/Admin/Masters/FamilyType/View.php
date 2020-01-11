@@ -1,5 +1,5 @@
 <?php
-  $response = $webservice->GetMasterAllViewInfo();
+  $response = $webservice->getData("Admin","GetMasterAllViewInfo");
     $FamilyType          = $response['data']['ViewInfo'];
 ?>
 <form method="post" action="" onsubmit="">

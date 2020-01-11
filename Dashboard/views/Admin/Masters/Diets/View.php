@@ -1,5 +1,5 @@
 <?php
-    $response     = $webservice->GetMasterAllViewInfo();
+    $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $Diet = $response['data']['ViewInfo'];
 ?>
 <form method="post" action="" onsubmit="">

@@ -1,4 +1,4 @@
-<?php $response     = $webservice->GetMasterAllViewInfo();
+<?php $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $BankName = $response['data']['ViewInfo'];
     ?>
 <form method="post" action="" onsubmit="">

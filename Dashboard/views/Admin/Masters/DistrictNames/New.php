@@ -47,7 +47,7 @@ $(document).ready(function () {
         $errormessage = $response['message']; 
     }
     } 
-  $DistrictCode = $webservice->GetMastersManageDetails(); 
+  $DistrictCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextDistrictCode="";
         if ($DistrictCode['status']=="success") {
             $GetNextDistrictCode  =$DistrictCode['data']['DistrictCode'];
@@ -55,7 +55,7 @@ $(document).ready(function () {
         {     
 ?>
 <?php 
- $info    = $webservice->GetMastersManageDetails();
+ $info    = $webservice->getData("Admin","GetMastersManageDetails");
  ?>
 <form method="post" action="" onsubmit="return SubmitNewDistrictName();">
     <div class="col-12 grid-margin">

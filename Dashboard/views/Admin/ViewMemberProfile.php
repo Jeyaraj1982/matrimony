@@ -46,7 +46,20 @@ text-align: left;
     margin-bottom: 10px;
     border-radius: 10px;
 }
-
+ fieldset {
+  display: block;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-top: 0.35em;
+  padding-bottom: 0.625em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  border: 1px groove;
+  border-color: #ddd;
+}
+legend {
+    margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px;
+}
  </style>
 <form method="post" action="" >
 <div class="col-12 grid-margin">

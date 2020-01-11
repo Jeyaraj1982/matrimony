@@ -37,8 +37,8 @@ $("#CasteCode").blur(function () {
     } else {
         $errormessage = $response['message']; 
     }
-    } 
-  $CasteCode = $webservice->GetMastersManageDetails(); 
+    }
+  $CasteCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextCasteCode="";
         if ($CasteCode['status']=="success") {
             $GetNextCasteCode  =$CasteCode['data']['CasteCode'];

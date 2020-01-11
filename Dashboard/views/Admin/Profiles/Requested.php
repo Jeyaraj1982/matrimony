@@ -26,10 +26,12 @@
                          $response = $webservice->getData("Admin","GetProfilesRequestVerify");
                          if (sizeof($response['data'])>0) {
                          ?>
-                        <?php foreach($response['data'] as $Profile) { ?>  
+                         <?php foreach($response['data']as $P) { 
+                            $Profile = $P['ProfileInfo'];
+                            ?>
                         <tr>
                            <td><?php echo putDateTime($Profile['RequestVerifyOn']);?></td>
-                           <td><?php echo $Profile['MemberName'];?></td>
+                           <td><?php echo $P['Members']['MemberName'];?></td>
                            <td><?php echo $Profile['ProfileName'];?></td>
                            <td><a href="<?php echo GetUrl("Profiles/ViewRequestProfile/". $Profile['ProfileCode'].".htm");?>"><span>View</span></a></td>
                       </tr>

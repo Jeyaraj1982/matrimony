@@ -47,9 +47,9 @@ $(document).ready(function () {
             $errormessage = $response['message']; 
         }
     }
-    $response     = $webservice->GetMasterAllViewInfo();            
+    $response     = $webservice->getData("Admin","GetMasterAllViewInfo");            
     $DistrictName = $response['data']['ViewInfo'];
-    $response     = $webservice->GetMastersManageDetails();
+    $response     = $webservice->getData("Admin","GetMastersManageDetails");
     $CountryNames = $response['data']['CountryName'];
     $StateNames   = $response['data']['StateName'];
 ?>

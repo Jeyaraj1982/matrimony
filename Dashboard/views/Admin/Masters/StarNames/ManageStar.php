@@ -30,7 +30,7 @@
                         </tr>
                       </thead>
                        <tbody>  
-                          <?php $StarNames =  $webservice->GetMastersManageDetails(); ?>
+                          <?php $StarNames =  $webservice->getData("Admin","GetMastersManageDetails"); ?>
                         <?php foreach($StarNames['data']['StarNames'] as $StarName) { ?>
                                 <tr>
                                 <td><span class="<?php echo ($StarName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $StarName['SoftCode'];?></td>

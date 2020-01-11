@@ -39,7 +39,7 @@ $(document).ready(function () {
         $errormessage = $response['message']; 
     }
     } 
-  $NationalityCode = $webservice->GetMastersManageDetails(); 
+  $NationalityCode = $webservice->getData("Admin","GetMastersManageDetails"); 
      $GetNextNationalityCode="";
         if ($NationalityCode['status']=="success") {
             $GetNextNationalityCode  =$NationalityCode['data']['NationalityNameCode'];

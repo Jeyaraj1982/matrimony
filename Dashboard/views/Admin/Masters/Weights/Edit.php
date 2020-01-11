@@ -10,7 +10,7 @@
             $errormessage = $response['message']; 
         }
     }
-    $response     = $webservice->GetMasterAllViewInfo();
+    $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $Weight = $response['data']['ViewInfo'];
 ?>
  function SubmitNewWeight() {
