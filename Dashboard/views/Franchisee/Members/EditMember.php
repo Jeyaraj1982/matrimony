@@ -117,7 +117,7 @@
                           <div class="col-sm-3">
                                 <select class="selectpicker form-control" data-live-search="true" id="Sex" name="Sex">
                                     <?php foreach($Member['Gender'] as $Sex) { ?>
-                                    <option value="<?php echo $Sex['CodeValue'];?>" <?php echo (isset($_POST[ 'Sex'])) ? (($_POST[ 'Sex']==$Sex[ 'CodeValue']) ? " selected='selected' " : "") : (($Member[ 'Sex']==$Sex[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $Sex['CodeValue'];?></option>
+                                    <option value="<?php echo $Sex['SoftCode'];?>" <?php echo (isset($_POST[ 'Sex'])) ? (($_POST[ 'Sex']==$Sex[ 'SoftCode']) ? " selected='selected' " : "") : (($Member[ 'Sex']==$Sex[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $Sex['CodeValue'];?></option>
                                     <?php } ?>
                                 </select>
                                 <span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>
