@@ -1844,7 +1844,6 @@
                                                      "OrderValue"           => $plan[0]['Amount'],
                                                      "Description"          => "Days :" .$plan[0]['Decreation'] .","."Free Profiles :" .$plan[0]['FreeProfiles'],
                                                      "Createdon"            => DATE("Y-m-d H:i:s"),
-                                                     "OrderedOn"            => "0000-00-00 00:00:00",
                                                      "OrderByMemberID"      => $loginInfo[0]['MemberID'],
                                                      "OrderByMemberCode"    => $OwnlProfile[0]['MemberCode'],
                                                      "OrderedProfileID"     => $Profiles[0]['ProfileID'],
@@ -1867,19 +1866,7 @@
                                                     "TAmount"               => "0",
                                                     "ServiceCharge"         => "0",
                                                     "Remarks"               => "0"));   
-         $mysql->insert("_tbl_profile_credits",array("MemberID"             => $loginInfo[0]['MemberID'],
-                                                     "MemberCode"           => $OwnlProfile[0]['MemberCode'],
-                                                     "ProfileID"            => $OwnlProfile[0]['ProfileID'],
-                                                     "ProfileCode"          => $OwnlProfile[0]['ProfileCode'],
-                                                     "Particulars"          => "0",
-                                                     "Credits"              => $plan[0]['FreeProfiles'],
-                                                     "Debits"               => "0",
-                                                     "Available"            => $plan[0]['FreeProfiles']-"0",
-                                                     "DownloadedProfileID"  => $Profiles[0]['ProfileID'],
-                                                     "DownloadedProfileCode"=> $Profiles[0]['ProfileCode'],
-                                                     "DownloadedMemberID"   => $Profiles[0]['MemberID'],
-                                                     "DownloadedMemberCode" => $Profiles[0]['MemberCode']));   
-
+         
              return Response::returnSuccess("succss",array("OrderNumber"=>$orderid));
          }
 
@@ -2506,20 +2493,7 @@
               if ($_POST['EmployedAs']=="O002") {
                     $updateSql = "update `_tbl_draft_profiles` set  `EmployedAsCode`       ='".$_POST['EmployedAs']."',
                                                                     `EmployedAs`           = '".$EmployedAs[0]['CodeValue']."',
-                                                                    `OccupationTypeCode`   = '',
-                                                                    `OccupationType`       = '',
-                                                                    `TypeofOccupationCode` = '',
-                                                                    `TypeofOccupation`     = '',
-                                                                    `AnnualIncomeCode`     = '',
-                                                                    `WorkedCountryCode`    = '',
-                                                                    `WorkedCountry`        = '',
-                                                                    `WorkedCityName`        = '',
-                                                                    `OccupationDescription`        = '',
-                                                                    `OccupationAttachFileName`= '',
-                                                                    `OccupationAttachmentType`= '',
-                                                                    `OccupationDetails`   = '".$_POST['OccupationDetails']."',
-                                                                    `LastUpdatedOn`     = '',
-                                                                    `AnnualIncome`         = ''";
+                                                                    `OccupationDetails`   = '".$_POST['OccupationDetails']."'";
                 } 
                 if ($_POST['OccupationType']=="OT112") {
                 
@@ -2928,7 +2902,7 @@
                  
               if (sizeof($myprofile) > 0) {
                 
-                  $credits  = $mysql->select("select (sum(Credits)-Sum(Debits)) as bal from `_tbl_profile_credits` where `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode` ='".$myprofile[0]['ProfileCode']."'");
+                  $credits  = $mysql->select("select (sum(Credits)-Sum(Debits)) as bal from `_tbl_profile_credits` where `MemberID`='".$loginInfo[0]['MemberID']."' and `MemberCode` ='".$myprofile[0]['MemberCode']."'");
                   return Response::returnSuccess("success",array("balancecredits"=>isset($credits[0]['bal']) ? $credits[0]['bal'] : 0)); 
               } else {
                   return Response::returnError("You must be submit your profile"); 
@@ -4723,9 +4697,38 @@
                                                                  "IsMember"         => "1")); 
              
              if (sizeof($id)>0) {
+				 
+				$date = date_create(date("Y-m-d"));					
+				$e = $Plan[0]['Decreation']. " days";				
+				date_add($date,date_interval_create_from_date_string($e));
+				$endingdate= date("Y-m-d",strtotime(date_format($date,"Y-m-d")));
+				$endingdate= date_format($date,"Y-m-d");
+				
+				$mysql->insert("_tbl_profile_credits",array("MemberID"     		   => $loginInfo[0]['MemberID'],
+															"MemberCode"           => $OwnProfile[0]['MemberCode'],
+															"ProfileID"            => "0",
+															"ProfileCode"          => "0",
+															"Particulars"          => "0",
+															"Credits"              => $Plan[0]['FreeProfiles'],
+															"Debits"               => "0",
+															"Available"            =>  $Plan[0]['FreeProfiles']-"0",
+															"DownloadedProfileID"  => "0",
+															"DownloadedProfileCode"=> "0",
+															"DownloadedMemberID"   => "0",
+															"DownloadedMemberCode" => "0",
+															"OrderID"              => $Orders[0]['OrderID'],
+															"OrderCode"            => $Orders[0]['OrderCode'],
+															"MemberPlanID"         => $Plan[0]['PlanID'],
+															"MemberPlanCode"       => $Plan[0]['PlanCode'],
+															"PlanName"             => $Plan[0]['PlanName'], 
+															"TxnDate"         	   => date("Y-m-d H:i:s"),
+															"StartingDate"         => date("Y-m-d H:i:s"),
+															"EndingDate"           => $endingdate));
                  
                  // Invoice Table
                  $invoiceCode=SeqMaster::GetNextInvoiceCode(); 
+				 
+				 
                  
                  $invoiceid = $mysql->insert("_tbl_invoices",array("OrderID"              => $Orders[0]['OrderID'],
                                                                    "OrderDate"            => DATE("Y-m-d H:i:s"),
@@ -4773,10 +4776,11 @@
                                                                              "Remarks"        => "0"));   
              
                  // Download Table
-                 $Did = $mysql->insert("_tbl_profile_download",array("MemberID"             =>  $Member[0]['MemberID'],
+                /* $Did = $mysql->insert("_tbl_profile_download",array("MemberID"             =>  $Member[0]['MemberID'],
                                                                      "ProfileCode"          =>  $OwnProfile[0]['ProfileCode'],
                                                                      "PartnerProfileCode"   =>  $Profiles[0]['ProfileCode'],
                                                                      "DownLoadOn"           =>  date("Y-m-d H:i:s"))) ;  
+												*/
                  // Receipt Table
                  
                  $receiptCode=SeqMaster::GetNextReceiptCode(); 

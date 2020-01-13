@@ -1,52 +1,191 @@
 <?php
    $response = $webservice->getData("Admin","GetMemberInfo");
-    $Member          = $response['data']['MemberInfo'];
+   $Member          = $response['data']['MemberInfo'];
 ?>
-<form method="post" action="" onsubmit="">
+<div class="form-group row">
+<div class="col-sm-9">
 <div class="col-12 grid-margin">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Manage Members</h4>  
-                      <h4 class="card-title">View Member Information</h4>  
-                      <form class="forms-sample">
-                      <div class="form-group row">
-                          <div class="col-sm-3"><small>Member Code:</small> </div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberCode'];?></small></div>
-                       </div>
-					    <div class="form-group row">
-						  <div class="col-sm-3"><small>Member Name:</small> </div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberName'];?></small></div>
-						  <div class="col-sm-2"><small>Gender:</small> </div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['Sex'];?></small></div>
-                      </div>
-                      <div class="form-group row">
-                          <div class="col-sm-3"><small>Mobile Number:</small></div>
-                          <div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['CountryCode'];?>-<?php echo $Member['MobileNumber'];?></small></div>
-                          <div class="col-sm-2"><small>Email ID:</small></div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo  $Member['EmailID'];?></small></div>
-                      </div>
-                      <div class="form-group row">
-                          <div class="col-sm-3"><small>Created on:</small></div>
-                          <div class="col-sm-3"><small style="color:#737373;"><?php echo  putDateTime($Member['CreatedOn']);?></small></div>
-                          <div class="col-sm-2"><small>Status:</small></div>
-                          <div class="col-sm-3"><small style="color:#737373;">
-                              <?php if($Member['IsActive']==1){
-                                  echo "Active";
-                              }                                  
-                              else{
-                                  echo "Deactive";
-                              }
-                              ?>
-                              </small>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="col-sm-3"><small>Franchisee Name:</small></div>
-                        <div class="col-sm-3"><span class="<?php echo ($Member['FIsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<small style="color:#737373;"><?php echo  $Member['FranchiseName'];?> (<?php echo  $Member['FranchiseeCode'];?>)</small></div>                                                         
-                </div>                                                                                                        
-              </div>                                      
-</div>    
-</div>                                                                                                    
+	<div class="card">
+		<div class="card-body">
+			<div style="padding:15px !important;max-width:770px !important;">
+				<h4 class="card-title">Manage Members</h4>  
+				<h4 class="card-title">View Member Information</h4>  
+				<div class="form-group row">
+					<div class="col-sm-3"><small>Member Code:</small> </div>
+					<div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberCode'];?></small></div>
+				</div>
+				<div class="form-group row">
+					<div class="col-sm-3"><small>Member Name:</small> </div>
+					<div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberName'];?></small></div>
+					<div class="col-sm-2"><small>Gender:</small> </div>
+					<div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['Sex'];?></small></div>
+				</div>
+				<div class="form-group row">
+					<div class="col-sm-3"><small>Mobile Number:</small></div>
+					<div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['CountryCode'];?>-<?php echo $Member['MobileNumber'];?></small></div>
+					<div class="col-sm-2"><small>Email ID:</small></div>
+					<div class="col-sm-3"><small style="color:#737373;"><?php echo  $Member['EmailID'];?></small></div>
+				</div>
+				<div class="form-group row">
+					<div class="col-sm-3"><small>Created on:</small></div>
+					<div class="col-sm-3"><small style="color:#737373;"><?php echo  putDateTime($Member['CreatedOn']);?></small></div>
+					<div class="col-sm-2"><small>Status:</small></div>
+					<div class="col-sm-3"><small style="color:#737373;">
+						<?php if($Member['IsActive']==1){
+							echo "Active";
+						}                                  
+						else{
+							echo "Deactive";
+						}
+						?></small>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-sm-3"><small>Franchisee Name:</small></div>
+					<div class="col-sm-9"><span class="<?php echo ($Member['FIsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<small style="color:#737373;"><?php echo  $Member['FranchiseName'];?> (<?php echo  $Member['FranchiseeCode'];?>)</small></div>                                                         
+				</div>                                                                                                        
+			</div>                                      
+		</div>    
+	</div> 
+</div>	
+
+<div class="col-12 grid-margin">
+    <div class="card">
+        <div class="card-body">
+			<div style="padding:15px !important;max-width:770px !important;">
+				<?php if(sizeof($response['data']['IDProof'])==0 && sizeof($response['data']['AddressProof'])==0 ) { ?>
+					<h4 class="card-title">Kyc</h4>
+					<span style="text-align:center">No documents Available</span>
+				<?php } else { ?>
+				<div class="form-group row"> 
+				  <div class="col-sm-6">
+					<h4 class="card-title">ID Proof</h4>  
+					  <?php foreach($response['data']['IDProof'] as $KycIDP) {?>
+						<form method="post" id="frmfrn_<?php echo $KycIDP['DocID'];?>" >
+						<input type="hidden" value="" name="txnPassword" id="txnPassword_<?php echo $KycIDP['DocID'];?>">
+						<input type="hidden" value="" name="IDApproveReaseon" id="IDApproveReaseon_<?php echo $KycIDP['DocID'];?>">
+						<input type="hidden" value="" name="IDRejectReaseon" id="IDRejectReaseon_<?php echo $KycIDP['DocID'];?>">
+						<input type="hidden" value="" name="IsApproved" id="IsApproved_<?php echo $KycIDP['DocID'];?>">
+						<input type="hidden" value="" name="IsRejected" id="IsRejected_<?php echo $KycIDP['DocID'];?>">
+						<input type="hidden" value="<?php echo $_GET['Code'];?>" name="MemberID" id="MemberID">
+						<input type="hidden" value="<?php echo $KycIDP['DocID'];?>" name="DocID" id="DocID">
+						</form>
+						 <div class="Documentview">
+							<img src="<?php echo AppUrl;?>uploads/members/<?php echo $Member['MemberCode'];?>/kyc/<?php echo $KycIDP['FileName'];?>" style="width: 200px;height:150px">
+						</div> 
+						<div class="form-group row">
+							<div class="col-sm-12"><small style="color:#737373;font-weight: 600;"><?php echo $KycIDP['FileType'];?></small></div>
+						</div>
+						<div class="form-group row">
+							<div class="col-sm-4"><small>Submitted</small></div>
+							<div class="col-sm-8"><small style="color:#737373;"><?php echo putDatetime($KycIDP['SubmittedOn']);?></small></div>
+						</div>
+						<?php if($KycIDP['IsVerified']=="1" && $KycIDP['IsRejected']=="0"){?>
+						<div class="form-group row">
+							<div class="col-sm-4"><small style="color: green;">Approved</small></div>
+							<div class="col-sm-8"><small style="color:#737373;">:<?php echo putDatetime($KycIDP['VerifiedOn']);?></small></div>
+						</div>
+						<?php }?>
+						<?php if($KycIDP['IsRejected']=="1"){?>
+						<div class="form-group row">
+							<div class="col-sm-4"><small style="color: red;">Rejected</small></div>
+							<div class="col-sm-8"><small style="color:#737373;">:<?php echo putDatetime($KycIDP['RejectedOn']);?></small></div>
+						</div>
+						<?php }?>
+						<?php if($KycIDP['IsVerified']=="0" && $KycIDP['IsRejected']=="0"){?>
+						<div class="form-group row">
+							<div class="col-sm-3"><a href="javascript:void(0)" onclick="showConfirmApproved('<?php echo $KycIDP['DocID'];?>')" class="btn btn-success" name="AddressProofApproved" style="font-family:roboto">Approve</a></div>
+							<div class="col-sm-6"><a href="javascript:void(0)" onclick="showConfirmRejected('<?php echo $KycIDP['DocID'];?>')" class="btn btn-danger" name="AddressProofRejected" style="font-family:roboto">Reject</a></div>
+						</div>  
+						<?php }?>
+					<?php }?>
+					
+				  </div>
+				  <div class="col-sm-6">
+					<h4 class="card-title">Address Proof</h4>  
+							<?php foreach($response['data']['AddressProof'] as $KycADP) { ?>
+							<form method="post" id="frmfrAd_<?php echo $KycADP['DocID'];?>" >
+							<input type="hidden" value="" name="txnPassword" id="txnPassword_<?php echo $KycADP['DocID'];?>">
+							<input type="hidden" value="" name="AddressApproveReaseon" id="AddressApproveReaseon_<?php echo $KycADP['DocID'];?>">
+							<input type="hidden" value="" name="AddressRejectReaseon" id="AddressRejectReaseon_<?php echo $KycADP['DocID'];?>">
+							<input type="hidden" value="" name="IsApproved" id="IsApproved_<?php echo $KycADP['DocID'];?>">
+							<input type="hidden" value="" name="IsRejected" id="IsRejected_<?php echo $KycADP['DocID'];?>">
+							<input type="hidden" value="<?php echo $_GET['Code'];?>" name="MemberID" id="MemberID">
+							<input type="hidden" value="<?php echo $KycADP['DocID'];?>" name="DocID" id="DocID">
+							</form>
+						 <div class="Documentview">
+							<img src="<?php echo AppUrl;?>uploads/members/<?php echo $Member['MemberCode'];?>/kyc/<?php echo $KycADP['FileName'];?>" style="width: 200px;height:150px">
+						</div>
+						<div class="form-group row">
+							<div class="col-sm-12"><small style="color:#737373;font-weight: 600;"><?php echo $KycADP['FileType'];?></small></div>
+						</div>
+						<div class="form-group row">
+							<div class="col-sm-4"><small>Submitted</small></div>
+							<div class="col-sm-8"><small style="color:#737373;">:<?php echo putDatetime($KycADP['SubmittedOn']);?></small></div>
+						</div>
+						<?php if($KycADP['IsVerified']=="1" && $KycADP['IsRejected']=="0"){?>
+						<div class="form-group row">
+							<div class="col-sm-4"><small style="color: green;">Approved On</small></div>
+							<div class="col-sm-8"><small style="color:#737373;">:<?php echo putDatetime($KycADP['VerifiedOn']);?></small></div>
+						</div>
+						<?php }?>
+						<?php if($KycADP['IsRejected']=="1"){?>
+						<div class="form-group row">
+							<div class="col-sm-4"><small style="color: red;">Rejected On</small></div>
+							<div class="col-sm-8"><small style="color:#737373;">:<?php echo putDatetime($KycADP['RejectedOn']);?></small></div>
+						</div>
+						<?php }?>
+						<?php if($KycADP['IsVerified']=="0" && $KycADP['IsRejected']=="0"){?>
+						<div class="form-group row">
+							<div class="col-sm-3"><a href="javascript:void(0)" onclick="showConfirmAddressProofApproved('<?php echo $KycADP['DocID'];?>')" class="btn btn-success" name="AddressProofApproved" style="font-family:roboto">Approve</a></div>
+							<div class="col-sm-6"><a href="javascript:void(0)" onclick="showConfirmAddressProofRejected('<?php echo $KycADP['DocID'];?>')" class="btn btn-danger" name="AddressProofRejected" style="font-family:roboto">Reject</a></div>
+						</div>
+						<?php }?>
+						 <?php }?>
+				  </div> 
+				</div>
+				<?php } ?>
+			</div>
+		</form>
+		</div> 
+	</div>
+</div>	
+ <div class="modal" id="ApproveNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+            <div class="modal-dialog" style="width: 367px;">
+                <div class="modal-content" id="Approve_body" style="height:235px">
+            
+                </div>
+            </div>
+        </div>  
+	<div class="modal" id="PubplishNow" data-backdrop="static" >
+        <div class="modal-dialog" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 313px;min-height: 313px;" >
+        
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-3">
+	<div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Custom Manage</small></a></div>
+	<div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Custom Email</small></a></div>
+	<div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Custom Sms</small></a></div>
+	<div class="col-sm-12 col-form-label"><?php if($Member['IsActive']==1) { ?>
+		<a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Block</small></a>                                   
+		 <?php } else {    ?>
+			<a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Unblock</small></a>                                   
+		<?php } ?>
+	</div>
+    <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Edit Member</small></a></div>                       
+    <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Profiles</small></a></div>                       
+    <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Member Plan</small></a></div>                       
+	<div class="col-sm-12 col-form-label">
+	<hr>
+		Wallet Balance: <br>
+		<?php $res = $webservice->getData("Admin","GetMemberWalletBalance"); ?>
+		<?php echo $res['data']['WalletBalance'];?>
+	</div>
+</div>	
+</div>	
 <div class="col-12 grid-margin">
         <div class="card">
             <div class="card-body">
@@ -145,19 +284,7 @@
                 </div>
               </div>
             </div>
-<div class="col-12 grid-margin">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Wallet</h4>   
-                      <form class="forms-sample">
-                      <?php $res = $webservice->getData("Admin","GetMemberWalletBalance"); ?>
-                      <div class="form-group row">
-                           <div class="col-sm-2"><small>Balance:</small></div>
-                           <div class="col-sm-3"><small style="color:#737373;"><?php echo $res['data']['WalletBalance'];?></small></div>
-                      </div>
-                </div>
-              </div>
-</div>
+
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
@@ -743,6 +870,426 @@
         $('#Activities').css({"background":"#95abfb"});
      }
  }
+
+function showConfirmApproved(DocID) {
+	$('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for approve</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to approve</div>'
+                                + '</div>'
+								+ 'Reason for Approved<br>'
+								+ '<textarea class="form-control" rows="2" cols="3" id="ApproveRemarks_IDProof"></textarea>'
+								+'<div class="col-sm-12" id="frmRemark_error" style="color:red;text-align:center"></div>'
+							+ '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="GetTxnPswdfrApproveIDProof(\''+DocID+'\')" style="font-family:roboto">Yes, I want to appove</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     
+}
+function GetTxnPswdfrApproveIDProof(DocID) {
+		if ($("#ApproveRemarks_IDProof").val().trim()=="") {
+             $("#frmRemark_error").html("Please enter reason");
+             return false;
+         }
+		$("#IDApproveReaseon_"+DocID).val($("#ApproveRemarks_IDProof").val());
+		$("#IsApproved_"+DocID).val('1');
+		$("#IsRejected_"+DocID).val('0');
+		var content =   '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for approve</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group">'
+									+ '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
+							 + '</div>'
+							 + '<div class="form-group">'
+								+ '<div class="input-group">'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-8">'
+										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '</div>'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+								+ '</div>'
+							+ '</div>'
+						+ '</div>'
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" onclick="AproveMemberIDProof(\''+DocID+'\')" class="btn btn-primary">Continue</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);            
+	}
+function AproveMemberIDProof(formid) {
+ 
+if ($("#TransactionPassword").val().trim()=="") {
+		 $("#frmTxnPass_error").html("Please enter transaction password");
+		 return false;
+	}
+	
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Activate ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=AproveMemberIDProof",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">successfully Approved.</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Approve Document</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }
+function showConfirmRejected(DocID) {
+	$('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for reject</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to reject</div>'
+                                + '</div>'
+								+ 'Reason for Reject<br>'
+								+ '<textarea class="form-control" rows="2" cols="3" id="RejectRemarks_IDProof"></textarea>'
+								+'<div class="col-sm-12" id="frmRejRemark_error" style="color:red;text-align:center"></div>'
+							+ '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" name="Create" class="btn btn-danger" onclick="GetTxnPswdfrRejectIDProof(\''+DocID+'\')" style="font-family:roboto">Yes, I want to reject</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     
+}
+function GetTxnPswdfrRejectIDProof(DocID) {
+		if ($("#RejectRemarks_IDProof").val().trim()=="") {
+             $("#frmRejRemark_error").html("Please enter reason");
+             return false;
+         }
+		$("#IDRejectReaseon_"+DocID).val($("#RejectRemarks_IDProof").val());
+		$("#IsApproved_"+DocID).val('0');
+		$("#IsRejected_"+DocID).val('1');
+		var content =   '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for reject</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group">'
+									+ '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
+							 + '</div>'
+							 + '<div class="form-group">'
+								+ '<div class="input-group">'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-8">'
+										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '</div>'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+								+ '</div>'
+							+ '</div>'
+						+ '</div>'
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" onclick="RejectMemberIDProof(\''+DocID+'\')" class="btn btn-primary">Continue</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);            
+	}
+function RejectMemberIDProof(formid) {
+ 
+if ($("#TransactionPassword").val().trim()=="") {
+		 $("#frmTxnPass_error").html("Please enter transaction password");
+		 return false;
+	}
+	
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Activate ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=RejectMemberIDProof",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">successfully Rejected.</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Reject Document</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }
+
+
+function showConfirmAddressProofApproved(DocID) {
+	$('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for approve</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to approve</div>'
+                                + '</div>'
+								+ 'Reason for Approved<br>'
+								+ '<textarea class="form-control" rows="2" cols="3" id="ApproveRemarks_AddressProof"></textarea>'
+								+'<div class="col-sm-12" id="frmRemark_error" style="color:red;text-align:center"></div>'
+							+ '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="GetTxnPswdfrApproveAddressProof(\''+DocID+'\')" style="font-family:roboto">Yes, I want to appove</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     
+}
+function GetTxnPswdfrApproveAddressProof(DocID) {
+		if ($("#ApproveRemarks_AddressProof").val().trim()=="") {
+             $("#frmRemark_error").html("Please enter reason");
+             return false;
+         }
+		$("#AddressApproveReaseon_"+DocID).val($("#ApproveRemarks_AddressProof").val());
+		$("#IsApproved_"+DocID).val('1');
+		$("#IsRejected_"+DocID).val('0');
+		var content =   '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for approve</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group">'
+									+ '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
+							 + '</div>'
+							 + '<div class="form-group">'
+								+ '<div class="input-group">'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-8">'
+										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '</div>'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+								+ '</div>'
+							+ '</div>'
+						+ '</div>'
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" onclick="AproveMemberAddressProof(\''+DocID+'\')" class="btn btn-primary">Continue</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);            
+	}
+function AproveMemberAddressProof(formid) {
+ 
+if ($("#TransactionPassword").val().trim()=="") {
+		 $("#frmTxnPass_error").html("Please enter transaction password");
+		 return false;
+	}
+	
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrAd_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Activate ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=AproveMemberAddressProof",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">successfully Approved.</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Approve Document</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }
+
+function showConfirmAddressProofRejected(DocID) {
+	$('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for reject</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to reject</div>'
+                                + '</div>'
+								+ 'Reason for Reject<br>'
+								+ '<textarea class="form-control" rows="2" cols="3" id="RejectRemarks_AddressProof"></textarea>'
+								+'<div class="col-sm-12" id="frmRejRemark_error" style="color:red;text-align:center"></div>'
+							+ '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-danger" onclick="GetTxnPswdfrRejectAddressProof(\''+DocID+'\')" style="font-family:roboto">Yes, I want to reject</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     
+}
+function GetTxnPswdfrRejectAddressProof(DocID) {
+		if ($("#RejectRemarks_AddressProof").val().trim()=="") {
+             $("#frmRejRemark_error").html("Please enter reason");
+             return false;
+         }
+		$("#AddressRejectReaseon_"+DocID).val($("#RejectRemarks_AddressProof").val());
+		$("#IsApproved_"+DocID).val('0');
+		$("#IsRejected_"+DocID).val('1');
+		var content =   '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for reject</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group">'
+									+ '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
+							 + '</div>'
+							 + '<div class="form-group">'
+								+ '<div class="input-group">'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-8">'
+										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '</div>'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+								+ '</div>'
+							+ '</div>'
+						+ '</div>'
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" onclick="RejectMemberAddressProof(\''+DocID+'\')" class="btn btn-primary">Continue</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);            
+	}
+function RejectMemberAddressProof(formid) {
+ 
+if ($("#TransactionPassword").val().trim()=="") {
+		 $("#frmTxnPass_error").html("Please enter transaction password");
+		 return false;
+	}
+	
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrAd_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Activate ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=RejectMemberAddressProof",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">successfully Rejected.</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Reject Document</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }
 </script>                                                                                     
 <div class="col-sm-12 grid-margin" style="text-align: center; padding-top:5px;color:skyblue;">
                         <a href="../ManageMember"><small style="font-weight:bold;text-decoration:underline">List of Members</small></a>&nbsp;|&nbsp;
@@ -750,5 +1297,5 @@
                         <a href="<?php echo GetUrl("Members/BlockMember/".$_REQUEST['Code'].".htm"); ?>"><small style="font-weight:bold;text-decoration:underline">Block Member</small></a>&nbsp;|&nbsp;
                         <a href="<?php echo GetUrl("Members/ResetPassword/".$_REQUEST['Code'].".htm"); ?>"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a>
 </div>         
-</form>
+
   

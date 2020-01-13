@@ -308,7 +308,7 @@
 			$bank = CodeMaster::getData("BANKNAMES",$_POST['BankName']);
 			$AccountType = CodeMaster::getData("AccountType",$_POST['AccountType']);
 			$sex = CodeMaster::getData("SEX",$_POST['Sex']);
-			$ID = CodeMaster::getData("DOCTYPES",$_POST['IDProof']);
+			$ID = CodeMaster::getData("DOCTYPES",$_POST['IDProof']);   
             
 			 $id =  $mysql->insert("_tbl_franchisees",array("FranchiseeCode"       		 => $_POST['FranchiseeCode'],
 															"FranchiseName"        		 => $_POST['FranchiseeName'],
@@ -415,7 +415,7 @@
     function EditFranchisee(){
               global $mysql,$loginInfo;
 
-        $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+		$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
             if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
                 return Response::returnError("Invalid transaction password");   
             }
@@ -957,7 +957,7 @@
                                                                   "DraftProfileID"       => $dPp['ProfileID'],
                                                                   "DraftProfileCode"     => $dPp['ProfileCode'],
                                                                   "IsDelete"             => $dPp['IsDelete'],
-                                                                  "IsDeletedOn"          => $dPp['IsDeletedOn'],
+                                                                  //"IsDeletedOn"          => $dPp['IsDeletedOn'],
                                                                   "DraftProfilePhotoID"  => $dPp['ProfilePhotoID'],
                                                                   "ProfileID"            => $pid,
                                                                   "ProfileCode"          => $ProfileCode,
@@ -1238,7 +1238,8 @@
 
     function GetManagePlans() {
            global $mysql;    
-              $Plans = $mysql->select("SELECT t1.*,  COUNT(t2.PlanID) AS cnt FROM _tbl_franchisees_plans AS t1 LEFT OUTER JOIN _tbl_franchisees AS t2 ON t1.PlanID = t2.PlanID GROUP BY t1.PlanID");
+           //   $Plans = $mysql->select("SELECT t1.*,  COUNT(t2.PlanID) AS cnt FROM _tbl_franchisees_plans AS t1 LEFT OUTER JOIN _tbl_franchisees AS t2 ON t1.PlanID = t2.PlanID GROUP BY t1.PlanID");
+              $Plans = $mysql->select("select * from _tbl_franchisees_plans");
                 return Response::returnSuccess("success",$Plans);
     }
 
@@ -1273,6 +1274,7 @@
         $insArray = array("PlanCode"  => $_POST['PlanCode'],
                           "PlanName"  => $_POST['PlanName'],
                           "Duration"  => $_POST['Duration'],
+                          "CreatedOn"  => date("Y-m-d H:i:s"),
                           "Amount"    => $_POST['Amount']);
 
         if ($_POST['ProfileActiveCommissionType'] == "Rs") {
@@ -1392,7 +1394,7 @@
                                                            "CountryCode"         => SeqMaster::GetNextCode('CONTNAMES'),
                                                            "CountryName"         => CodeMaster::getData('CONTNAMES'),
                                                            "DistrictCode"        => SeqMaster::GetNextCode('DISTNAMES'),
-                                                           "DistrictName"        => CodeMaster::getData('DISTNAMES'),
+                                                           "DistrictName"        => CodeMaster::getData('DistrictName'),
                                                            "StateCode"           => SeqMaster::GetNextCode('STATNAMES'),
                                                            "StateName"           => CodeMaster::getData('STATNAMES'),
                                                            "ProfileSignInForCode"=> SeqMaster::GetNextCode('PROFILESIGNIN'),
@@ -2115,10 +2117,16 @@
                                     INNER JOIN _tbl_franchisees
                                     ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.MemberID='".$_POST['Code']."'");
         
+		$Documents = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['Code']."'");               
+		$IDProofs = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['Code']."' and DocumentType='Id Proof' order by `DocID` DESC ");               
+		$AddressProofs = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['Code']."' and DocumentType='Address Proof' order by `DocID` DESC ");               
+            
 		
-        return Response::returnSuccess("success",array("MemberInfo"    => $Members[0],
-                                                       "Countires" =>CodeMaster::getData('RegisterAllowedCountries'),
-                                                       "Gender" =>CodeMaster::getData('SEX')));
+        return Response::returnSuccess("success"."select * from `_tbl_member_documents` where MemberID='".$_POST['Code']."'",array("MemberInfo"    => $Members[0],
+                                                       "Countires"     =>CodeMaster::getData('RegisterAllowedCountries'),
+                                                       "Gender"        =>CodeMaster::getData('SEX'),
+													   "IDProof"       => $IDProofs,
+                                                       "AddressProof"  => $AddressProofs));
     }
   function GetFranchiseeInfoInFranchiseeWise() {        
            global $mysql;    
@@ -2291,17 +2299,21 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
              global $mysql,$loginInfo;    
 
-             $sql = "select * from _tbl_member_plan";
-             
-
-             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+             $sql = "SELECT * FROM _tbl_member_plan
+					LEFT JOIN
+					(SELECT MemberPlanID, COUNT(*) AS cnt FROM _tbl_profile_credits WHERE MemberPlanID>0  GROUP BY MemberPlanID) tbl2
+					ON
+					_tbl_member_plan.PlanID=tbl2.MemberPlanID";
+			 
+			
+			 if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql));    
              }                                                                                                                                                                            
              if (isset($_POST['Request']) && $_POST['Request']=="Active") {
-                return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive` ='1'"));    
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE _tbl_member_plan.IsActive ='1'"));    
              }
              if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
-                return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive` ='0'"));    
+                return Response::returnSuccess("success",$mysql->select($sql." WHERE _tbl_member_plan.IsActive ='0'"));    
              }
          }
          
@@ -2312,6 +2324,11 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
     function CreateMemberPlan() {
 
         global $mysql,$loginInfo;
+		
+		$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+		if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+			return Response::returnError("Invalid transaction password");   
+		}
       
         $data = $mysql->select("select * from  _tbl_member_plan where PlanCode='".trim($_POST['PlanCode'])."'");
         if (sizeof($data)>0) {
@@ -2343,30 +2360,56 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
     
     function EditMemberPlan(){
               global $mysql,$loginInfo;
+		
+		$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
         
-        $data = $mysql->select("select * from  _tbl_member_plan where PlanName='".trim($_POST['PlanName'])."' and PlanCode <>'".$_POST['Code']."'");
+        $data = $mysql->select("select * from  _tbl_member_plan where PlanName='".trim($_POST['PlanName'])."' and PlanCode <>'".$_POST['PlanCode']."'");
         if (sizeof($data)>0) {
             return Response::returnError("Plan Name Already Exists");
-        }
+        }   /* Videos='".$_POST['Videos']."',*/
+		
+		$Subscribed = $mysql->select("SELECT * FROM _tbl_member_plan
+											LEFT JOIN
+											(SELECT MemberPlanID, COUNT(*) AS cnt FROM _tbl_profile_credits WHERE MemberPlanID>0  GROUP BY MemberPlanID) tbl2
+											ON
+											_tbl_member_plan.PlanID=tbl2.MemberPlanID where _tbl_member_plan.PlanCode='".$_POST['PlanCode']."'");
+		
+		if($Subscribed[0]['cnt']>0) { 
+			$mysql->execute("update _tbl_member_plan set ShortDescription='".$_POST['ShortDescription']."',
+														 DetailDescription='".$_POST['DetailDescription']."',
+														 Remarks='".$_POST['Remarks']."'
+														 where  PlanCode='".$_POST['PlanCode']."'");
+			return Response::returnSuccess("success",array());
+		}else {
+		
         $mysql->execute("update _tbl_member_plan set PlanName='".$_POST['PlanName']."',
                                                  Decreation='".$_POST['Decreation']."',
                                                  Amount='".$_POST['Amount']."',
                                                  Photos='".$_POST['Photos']."',
-                                                 Videos='".$_POST['Videos']."',
-                                                 FreeProfiles='".$_POST['Freeprofiles']."',
+												 FreeProfiles='".$_POST['Freeprofiles']."',
                                                  ShortDescription='".$_POST['ShortDescription']."',
                                                  DetailDescription='".$_POST['DetailDescription']."',
                                                  Remarks='".$_POST['Remarks']."'
-                                                 where  PlanCode='".$_POST['Code']."'");
+                                                 where  PlanCode='".$_POST['PlanCode']."'");
 
-         return Response::returnSuccess("success",array());
+         return Response::returnSuccess("success".$Subscribed['cnt'],array());
+		}
 
     }
     
      function GetMemberPlanInfo() {
-           global $mysql;    
-              $Plans = $mysql->select("select * from _tbl_member_plan where PlanCode='".$_POST['Code']."'");
-                return Response::returnSuccess("success",$Plans[0]);
+        global $mysql;    
+            $Plans = $mysql->select("select * from _tbl_member_plan where PlanCode='".$_POST['Code']."'");
+            $Subscribed = $mysql->select("SELECT * FROM _tbl_member_plan
+											LEFT JOIN
+											(SELECT MemberPlanID, COUNT(*) AS cnt FROM _tbl_profile_credits WHERE MemberPlanID>0  GROUP BY MemberPlanID) tbl2
+											ON
+											_tbl_member_plan.PlanID=tbl2.MemberPlanID where _tbl_member_plan.PlanCode='".$_POST['Code']."'");
+			return Response::returnSuccess("success",array("Plans" => $Plans[0],
+														   "SubscribedPlan" => $Subscribed[0]));
     }
          
          function GetRequestforDocumentVerification() {    
@@ -2448,38 +2491,53 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
          }
          function AproveMemberIDProof() {
 
-            global $mysql,$mail,$loginInfo;      
-       
-                $data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
+            global $mysql,$mail,$loginInfo; 
+				
+			$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+            }
+			
+			$data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
+			
+			if($data[0]['IsVerified']==1) {
+				return Response::returnError("Document already approved");
+			}
+			
+			$member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
 
-                $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='IDProofApproved'");
+            $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
 
-             $mContent = $mysql->select("select * from `mailcontent` where `Category`='IDProofApproved'");
-             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
-
-             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+            MailController::Send(array("MailTo"   => $member[0]['EmailID'],
                                         "Category" => "IDProofApproved",
                                         "MemberID" => $member[0]['MemberID'],
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
-             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your ID Proof Approved"); 
+            MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your ID Proof Approved"); 
 
-           $mysql->execute("update _tbl_member_documents set IsVerified='1',ApproveRemarks='".$_POST['ApproveRemarks']."',
-                                                 VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
-
-         return $mailError.'<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/icon_success_verification.png" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">successfully Approved. </h5>
-                            <p style="text-align:center"><a  href="javascript:void(0)" onclick="location.href=location.href">Continue</a></p>
-                       </div>';
+            $mysql->execute("update _tbl_member_documents set IsVerified='1',
+															  ApproveRemarks='".$_POST['IDApproveReaseon']."',
+															  VerifiedOn='".date("Y-m-d H:i:s")."' 
+															  where  DocID='".$data[0]['DocID']."'");
+			return Response::returnSuccess("successfully Approved",array());
+			
 
     }
     function AproveMemberAddressProof() {
 
             global $mysql,$mail,$loginInfo;      
        
-                $data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
-
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+            }
+			
+			$data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
+			
+			if($data[0]['IsVerified']==1) {
+				return Response::returnError("Document already approved");
+			}
                 $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
 
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddressProofApproved'");
@@ -2492,25 +2550,30 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your Address Proof Approved"); 
 
-           $mysql->execute("update _tbl_member_documents set IsVerified='1',ApproveRemarks='".$_POST['AddressProofApproveRemarks']."',
+           $mysql->execute("update _tbl_member_documents set IsVerified='1',ApproveRemarks='".$_POST['AddressApproveReaseon']."',
                                                  VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
 
-         return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/icon_success_verification.png" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">successfully Approved. </h5>
-                            <p style="text-align:center"><a  href="javascript:void(0)" onclick="location.href=location.href">Continue</a></p>
-                       </div>';
+         return Response::returnSuccess("successfully Approved",array());
 
     }
     function RejectMemberIDProof() {
 
             global $mysql,$mail,$loginInfo;      
+				
+			$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+			
+			$data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
+			
+			if($data[0]['IsRejected']==1) {
+				return Response::returnError("Document already rejected");
+			}
        
-                $data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
-
-                $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+                 $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
                 
-                if (!(strlen(trim($_POST['RejectRemarks']))>0)) {
+                if (!(strlen(trim($_POST['IDRejectReaseon']))>0)) {
                 return Response::returnError("Please enter Rejected Remarks");
                 }
 
@@ -2525,23 +2588,28 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your ID Proof Rejected"); 
              
            $mysql->execute("update _tbl_member_documents set IsRejected='1',
-                                                             RejectedOn='".date("Y-m-d H:i:s")."'
-                                                             RejectedRemarks='".$_POST['RejectRemarks']."',
+                                                             RejectedOn='".date("Y-m-d H:i:s")."',
+                                                             RejectedRemarks='".$_POST['IDRejectReaseon']."',
                                                              IsVerified='1',
                                                              VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
 
-         return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/icon_success_verification.png" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">successfully Approved. </h5>
-                            <p style="text-align:center"><a  href="javascript:void(0)" onclick="location.href=location.href">Continue</a></p>
-                       </div>';
+        return Response::returnSuccess("successfully Rejected",array());
 
     }
     function RejectMemberAddressProof() {
 
             global $mysql,$mail,$loginInfo;      
        
-                $data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
+                $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+			
+			$data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
+			
+			if($data[0]['IsRejected']==1) {
+				return Response::returnError("Document already rejected");
+			}
 
                 $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
 
@@ -2556,16 +2624,12 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your Address Proof Rejected"); 
 
            $mysql->execute("update _tbl_member_documents set IsRejected='1',
-                                                             RejectedRemarks='".$_POST['AddressProofRejectRemarks']."',
+                                                             RejectedRemarks='".$_POST['AddressRejectReaseon']."',
                                                              RejectedOn='".date("Y-m-d H:i:s")."',
                                                              IsVerified='1',
                                                              VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
 
-         return '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/icon_success_verification.png" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">successfully Approved. </h5>
-                            <p style="text-align:center"><a  href="javascript:void(0)" onclick="location.href=location.href">Continue</a></p>
-                       </div>';
+         return Response::returnSuccess("successfully Rejected",array());
 
     }
     

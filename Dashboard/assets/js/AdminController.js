@@ -1,5 +1,4 @@
-var Franchisee = { 
-
+var Franchisee = {
     ConfirmCreateFranchisee:function() {
         if (Franchisee.SubmitNewFranchisee()) {
             $('#PubplishNow').modal('show'); 
@@ -1690,10 +1689,11 @@ var Member ={
 							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
 						+ '</div>'
 						+ '<div class="modal-body">'
+							+ '<div class="form-group" style="text-align:center">'
+								+ '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+								+ '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+							+ '</div>'
 							+ '<div class="form-group">'
-									+ '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-							 + '</div>'
-							 + '<div class="form-group">'
 								+ '<div class="input-group">'
 									+ '<div class="col-sm-2"></div>'
 									+ '<div class="col-sm-8">'
@@ -1717,7 +1717,7 @@ var Member ={
          }
     $("#txnPassword").val($("#TransactionPassword").val());
     var param = $("#frmfrn").serialize();
-    $('#Publish_body').html(preloading_withText("Creating Franchisee ...","95"));
+    $('#Publish_body').html(preloading_withText("Update Member ...","95"));
         $.post(API_URL + "m=Admin&a=EditMemberInfo",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
@@ -1752,11 +1752,358 @@ var Member ={
             $('#Publish_body').html(content);
             }
         });
-	}
+	},
 	
+	ConfirmCreateMemberPlan:function() {
+     if(SubmitNewPlan()) {
+     $('#PubplishNow').modal('show'); 
+      var content = ''
+                    +''
+                    +'<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for create plan</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8"><br>'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to create member plan</div>'
+                                + '</div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPasswordfrCreateMemberPlan()" style="font-family:roboto">Create Plan</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     } else {
+            return false;
+     }
+	},
+	 GetTxnPasswordfrCreateMemberPlan:function() {
+		var content =     '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for create member plan</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group" style="text-align:center">'
+								+ '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+								+ '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+							+ '</div>'
+                            + '<div class="form-group">'
+								+ '<div class="input-group">'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-8">'
+										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '</div>'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+								+ '</div>'
+							+ '</div>'
+						+ '</div>'
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" onclick="Member.CreateMemberPlan()" class="btn btn-primary">Continue</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);            
+	},
+	CreateMemberPlan:function() {
+		if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+    var param = $("#frmfrn").serialize();
+    $('#Publish_body').html(preloading_withText("Creating Plan ...","95"));
+        $.post(API_URL + "m=Admin&a=CreateMemberPlan",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            
+            if (obj.status == "success") {
+               
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Member Plan Created</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Members/Plan/ManagePlan" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create Member Plan</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+	},
+	
+	ConfirmGotoBackFromCreatePlan:function() {
+        $('#PubplishNow').modal('show'); 
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for Exit</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                            +'<div class="col-sm-12">Are you sure want to cancel from create member plan</div>'
+                      + '</div>' 
+                      + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<a href="'+AppUrl+'Members/Plan/ManagePlan" style="cursor:pointer" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
+                    + '</div>';
+        $('#Publish_body').html(content);
+    },
+	
+	ConfirmEditMemberPlan:function() {
+     if(SubmitNewPlan()) {
+     $('#PubplishNow').modal('show'); 
+      var content = ''
+                    +''
+                    +'<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for edit plan</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8"><br>'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want edit member plan</div>'
+                                + '</div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPasswordfrMemberPlan()" style="font-family:roboto">Update Plan</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     } else {
+            return false;
+     }
+	},
+	 GetTxnPasswordfrMemberPlan:function() {
+		var content =     '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for edit member plan</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group" style="text-align:center">'
+								+ '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+								+ '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+							+ '</div>'
+                            + '<div class="form-group">'
+								+ '<div class="input-group">'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-8">'
+										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '</div>'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+								+ '</div>'
+							+ '</div>'
+						+ '</div>'
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" onclick="Member.EditMemberPlan()" class="btn btn-primary">Continue</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);            
+	},
+	EditMemberPlan:function() {
+		if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+    var param = $("#frmfrn").serialize();
+    $('#Publish_body').html(preloading_withText("Updating Plan ...","95"));
+        $.post(API_URL + "m=Admin&a=EditMemberPlan",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            
+            if (obj.status == "success") {
+               
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Member Plan Updated</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Members/Plan/ManagePlan" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Edit Member Plan</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+	},
+	ConfirmGotoBackFromEditPlan:function() {
+        $('#PubplishNow').modal('show'); 
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for Exit</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                            +'<div class="col-sm-12">Are you sure want to cancel from edit member plan</div>'
+                      + '</div>' 
+                      + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<a href="'+AppUrl+'Members/Plan/ManagePlan" style="cursor:pointer" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
+                    + '</div>';
+        $('#Publish_body').html(content);
+    }
 };
 
 var AdminStaff = { 
+	
+	ConfirmCreateAdminStaff:function() {
+        if (SubmitNewStaff()) {
+            $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for create admin staff</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                          + '</div>'
+                          + '<div class="modal-body">'
+                            + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                + '<div class="col-sm-4">'
+                                    + '<img src="'+ImgUrl+'icons/franchisee_icon.png" width="128px">' 
+                                + '</div>'
+                                + '<div class="col-sm-8"><br>'
+                                    + '<div class="form-group row">'
+                                        +'<div class="col-sm-12">Are you sure want create Admin staff</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +  '</div>'                    
+                          + '</div>' 
+                          + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordCreatAdminStf()" style="font-family:roboto">Create Staff</button>'
+                          + '</div>';
+            $('#Publish_body').html(content);
+        } else {
+            return false;
+        }
+    },
+	
+	GetTxnPasswordCreatAdminStf:function() {
+        
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for create admin staff</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                        + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
+								+ '</div>'
+                                + '<div class="col-sm-2"></div>'
+							+ '</div>'
+                        + '</div>'
+                      + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="AdminStaff.CreateAdminStaff()" class="btn btn-primary" >Create Staff</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);            
+    },
+	CreateAdminStaff:function() {
+		if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+        $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Creating Admin Staff ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=CreateAdminStaff",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result.trim());
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Admin Staff Created</h3>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Staff Code:' + data.StaffCode+'</h5>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Staffs/ManageStaffs" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create Admin Staff</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+	ConfirmGotoBackFromCreateAdminStaff:function() {
+        $('#PubplishNow').modal('show'); 
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for Exit</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                            +'<div class="col-sm-12">Are you sure want to cancel from Create admin staff</div>'
+                      + '</div>' 
+                      + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<a href="'+AppUrl+'Staffs/ManageStaffs" style="cursor:pointer" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
+                    + '</div>';
+        $('#Publish_body').html(content);
+    },
     ConfirmationfrEditAdminStf:function(StaffCode) {
     $('#PubplishNow').modal('show'); 
       var content = '<div class="modal-header">'
@@ -1819,9 +2166,10 @@ var AdminStaff = {
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
                     + '<div class="modal-body">'
-                        + '<div class="form-group">'
-                                + '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-                         + '</div>'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
                          + '<div class="form-group">'
                             + '<div class="input-group">'
                                 + '<div class="col-sm-2"></div>'
@@ -1895,7 +2243,7 @@ var AdminStaff = {
                     + '</div>';
         $('#Publish_body').html(content);
     },
-    ConfirmDeactiveAdminStaff:function() {
+	ConfirmDeactiveAdminStaff:function() {
         $('#PubplishNow').modal('show'); 
             var content = '<div class="modal-header">'
                                 + '<h4 class="modal-title">Confirmation for deactive staff</h4>'
@@ -1925,9 +2273,10 @@ var AdminStaff = {
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
                     + '<div class="modal-body">'
-                        + '<div class="form-group">'
-                                + '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-                         + '</div>'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
                          + '<div class="form-group">'
                             + '<div class="input-group">'
                                 + '<div class="col-sm-2"></div>'
@@ -2017,9 +2366,10 @@ var AdminStaff = {
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
                     + '<div class="modal-body">'
-                        + '<div class="form-group">'
-                                + '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-                         + '</div>'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
                          + '<div class="form-group">'
                             + '<div class="input-group">'
                                 + '<div class="col-sm-2"></div>'
@@ -2263,9 +2613,10 @@ var AdminStaff = {
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
                     + '<div class="modal-body">'
-                        + '<div class="form-group">'
-                                + '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-                         + '</div>'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
                          + '<div class="form-group">'
                             + '<div class="input-group">'
                                 + '<div class="col-sm-2"></div>'
@@ -2356,9 +2707,10 @@ var AdminStaff = {
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
                     + '<div class="modal-body">'
-                        + '<div class="form-group">'
-                                + '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-                         + '</div>'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
                          + '<div class="form-group">'
                             + '<div class="input-group">'
                                 + '<div class="col-sm-2"></div>'
@@ -2448,9 +2800,10 @@ var AdminStaff = {
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
                     + '<div class="modal-body">'
-                        + '<div class="form-group">'
-                                + '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-                         + '</div>'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
                          + '<div class="form-group">'
                             + '<div class="input-group">'
                                 + '<div class="col-sm-2"></div>'
@@ -2511,13 +2864,10 @@ var AdminStaff = {
     }
 };
 
-	function CheckVerification() {
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-         $('#myModal').modal('show'); 
-          
-        $.ajax({
-                        url: getAppUrl() + "m=Admin&a=CheckVerification" , 
-                        success: function(result2){
+function CheckVerification() {
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#myModal').modal('show');
+    $.ajax({url: getAppUrl() + "m=Admin&a=CheckVerification", success: function(result2) {
                             var v = $.trim(result2).length;
                             if (parseInt(v)>0) {    
                                 $('#Mobile_VerificationBody').html(result2);
@@ -2528,16 +2878,13 @@ var AdminStaff = {
                             }
                         }
                     });
-    }
-	function ChangePasswordScreen(frmid1) {
-        
-        var param = $( "#"+frmid1).serialize();
-        
-        $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","135px"));
-		
-		$('#myModal').modal('show'); 
-        
-        $.post(getAppUrl() + "m=Admin&a=ChangePasswordScreen", 
+}
+
+function ChangePasswordScreen(frmid1) {
+    var param = $( "#"+frmid1).serialize();
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","135px"));
+	$('#myModal').modal('show');
+    $.post(getAppUrl() + "m=Admin&a=ChangePasswordScreen", 
                             param,
                             function(result2) {
                                  $('#Mobile_VerificationBody').html(result2);  
@@ -2672,13 +3019,14 @@ var AdminStaff = {
         $('#myModal').modal('show'); 
         $.post(getAppUrl() + "m=Admin&a=MobileNumberOTPVerification",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
     }
+    
 	function EmailVerificationForm(frmid1) {
-		if($("#new_email").length) {
-        $("#frmEmailIDVerification_error").html("&nbsp;");
-		 if ($("#new_email").val().trim()=="") {
-			 $("#frmEmailIDVerification_error").html("Please enter new email id");
-			 return false;
-		 }
+        if($("#new_email").length) {
+            $("#frmEmailIDVerification_error").html("&nbsp;");
+		    if ($("#new_email").val().trim()=="") {
+                $("#frmEmailIDVerification_error").html("Please enter new email id");
+			    return false;
+		    }
 		}
         var param = $( "#"+frmid1).serialize();
         
@@ -2721,3 +3069,237 @@ var AdminStaff = {
         $('#myModal').modal('show'); 
         $.post(getAppUrl() + "m=Admin&a=EmailOTPVerification",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
     }
+	function ConfirmEditTemplate() {
+     
+    if(SubmitTemplate()) {
+            $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation of edit template</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want edit template<br>'
+                                            +'</div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="GetTxnPasswordFrEditTemplate()" style="font-family:roboto">Update Staff</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+        } else {
+           return false;
+        }
+     }
+    function GetTxnPasswordFrEditTemplate() {
+    var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for edit template</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="EditTemplate()" style="font-family:roboto">Update Staff</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    }
+    function EditTemplate() {
+         if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+	$('#EmailContent').val($("#EmailContent_ifr").contents().find("#tinymce").html());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Updating Admin Staff ...","95"));
+        $.post(API_URL + "m=Admin&a=EditTemplate",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Template Updated</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/Template/ManageTemplates" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Edit Template</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }
+	
+    function CreateTemplate() {
+		  $('#PubplishNow').modal('show'); 
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Create Template</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="row">'
+                                + '<div class="col-sm-8"><h6>Category<span style="color:red">*</span></h6></div>'
+                        + '</div>'
+                        + '<div class="row">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-12">'
+                                    + '<input type="text" onblur="text_blur(\'CategoryName\',\'frmCategory_error\',\'Please Enter Category\')" class="form-control" id="CategoryName" name="CategoryName" Placeholder="Enter Category">'
+                                + '</div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmCategory_error" style="color:red;">&nbsp;</div>'
+                        + '</div>'
+						+ '<div class="row">'
+                                + '<div class="col-sm-8"><h6>Description<span style="color:red">*</span></h6></div>'
+                        + '</div>'
+                        + '<div class="row">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-12">'
+                                    + '<input type="text" onblur="text_blur(\'Description\',\'frmDescription_error\',\'Please Enter Description\')" class="form-control" id="Description" name="Description" Placeholder="Enter Description">'
+                                + '</div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmDescription_error" style="color:red;">&nbsp;</div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="GetTxnPasswordFrCreateTemplate()" style="font-family:roboto">Create</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    }
+	
+	function text_blur(txtBox,errorDiv,errorMsg){
+	
+			$("#"+txtBox).blur(function () {
+				if(IsNonEmpty(txtBox,errorDiv,errorMsg)){
+					//IsAlphaNumeric(txtBox,"frmCategory_error","Please enter alpha numerics characters only");
+				}
+			});
+	
+	}
+	
+	function GetTxnPasswordFrCreateTemplate() {
+		$("#frmCategory_error").html("");
+        $("#frmDescription_error").html("");
+      var Error =0;
+        if ($("#CategoryName").val().trim()=="") {
+             $("#frmCategory_error").html("Please enter category");
+            Error++;
+         }if ($("#Description").val().trim()=="") {
+             $("#frmDescription_error").html("Please enter description");
+            Error++;
+         }
+       
+         if(Error>0){ 
+            return false;
+         }
+		  $("#Category").val($("#CategoryName").val());
+		 $("#CategoryDescription").val($("#Description").val());
+    var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Create Template</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="TemplateCreate()" style="font-family:roboto">Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    }
+    
+    function TemplateCreate() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+		 $("#txnPassword").val($("#TransactionPassword").val());
+		
+		var param = $("#FrmTemplate").serialize();
+        $('#Publish_body').html(preloading_withText("Creating...","161"));
+        $.post(API_URL + "m=Admin&a=TemplateCreate",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 78px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Template Created</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create Template</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }
+    //3078

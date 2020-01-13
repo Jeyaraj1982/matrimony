@@ -1,5 +1,5 @@
   <?php $response = $webservice->getData("Admin","GetMemberPlanInfo");
-    $Plan          = $response['data'];?>
+    $Plan          = $response['data']['Plans'];?>
 <form method="post" action="" onsubmit="return SubmitNewPlan();">
              <div class="col-12 stretch-card">
                   <div class="card">

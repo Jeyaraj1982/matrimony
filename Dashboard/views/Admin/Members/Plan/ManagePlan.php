@@ -22,10 +22,11 @@
                     <table id="myTable" class="table table-striped">
                       <thead>  
                         <tr> 
+                        <th>Plan Code</th>
                         <th>Plan Name</th>
                         <th>Duration</th>
                         <th>Amount</th>
-                        <th>No of Profiles</th>
+                        <th>Subscribed</th>
                         <th>Created</th>
                         <th></th>
                         </tr>  
@@ -34,12 +35,14 @@
                      <?php $response = $webservice->getData("Admin","GetManageMemberPlan",array("Request"=>"All")); ?>  
                         <?php foreach($response['data'] as $Plan) { ?>
                                 <tr>
+								
                                 <td>
                                 <span class="<?php echo ($Plan['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;
-                                <?php echo $Plan['PlanName'];?></td>
-                                <td><?php echo $Plan['Decreation']; echo"days";?></td>
-                                <td><?php echo $Plan['Amount'];?> <?php echo ".00"; ?></td>
-                                <td></td>
+                                <?php echo $Plan['PlanCode'];?></td>
+                                <td><?php echo $Plan['PlanName'];?></td>
+                                <td style="text-align:right"><?php echo $Plan['Decreation'];?></td>
+                                <td style="text-align:right"><?php echo number_format($Plan['Amount'],2);?></td>
+                                <td style="text-align:right"><?php echo ($Plan['cnt']==1) ? '1' : '0';?></td>
                                 <td><?php echo putDateTime($Plan['CreatedOn']);?></td>
                                 <td style="text-align:right"><a href="<?php echo GetUrl("Members/Plan/EditPlan/". $Plan['PlanCode'].".htm");?>">Edit</a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Members/Plan/View/". $Plan['PlanCode'].".htm");?>">View</a></td>

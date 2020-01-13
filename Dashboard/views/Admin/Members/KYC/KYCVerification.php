@@ -38,7 +38,7 @@
                                 <td><?php echo $KYC['DocumentType'];?></td>
                                 <td><?php echo $KYC['FileType'];?></td>
                                 <td><?php echo putDateTime($KYC['SubmittedOn']);?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Members/KYC/ViewKyc/".$KYC['MemberID'].".htm"); ?>"><span>View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Members/ViewMember/".$KYC['MemberID'].".htm"); ?>"><span>View</span></a></td>
                                 </tr>
                         <?php } } else {?>            
                         
