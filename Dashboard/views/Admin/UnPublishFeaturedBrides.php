@@ -1,7 +1,7 @@
 
 <?php
-    $response = $webservice->getData("Admin","GetFeatuerdGrooms",array("Request"=>"All"));
-	if(sizeof($response)>0){
+    $response = $webservice->getData("Admin","GetFeatuerdBrides",array("Request"=>"UnPublish"));
+    if(sizeof($response)>0){
 ?>
            <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
@@ -9,10 +9,10 @@
                 <div class="form-group row">
                     <div class="col-sm-4"><h4 class="card-title">Landing Page Profiles</h4></div>
                     <div class="col-sm-8" style="text-align:right;padding-top:5px;color:skyblue;">
-                        <a href="FeaturedGrooms" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                        <a href="ActiveFeaturedGrooms"><small>Active</small></a>&nbsp;|&nbsp;
-                        <a href="UnPublishFeaturedGrooms"><small>Unpublish</small></a>&nbsp;|&nbsp;
-                        <a href="ExpiredFeaturedGrooms"><small>Expired</small></a>
+                        <a href="FeaturedBrides" ><small>All</small></a>&nbsp;|&nbsp;
+                        <a href="ActiveFeaturedBrides"><small>Active</small></a>&nbsp;|&nbsp;
+                        <a href="UnPublishFeaturedBrides"><small style="font-weight:bold;text-decoration:underline">UnPublish</small></a>&nbsp;|&nbsp;
+                        <a href="ExpiredFeaturedBrides"><small>Expired</small></a>
                     </div>
                 </div>                          
                                                                             

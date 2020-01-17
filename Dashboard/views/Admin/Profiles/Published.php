@@ -4,13 +4,14 @@
             <div class="card-body">
                 <div class="form-group row">
                         <div class="col-sm-6">
-                        <h4 class="card-title">Drafted</h4>
+                        <h4 class="card-title">Published</h4>
                         </div>
                         <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                            <a href="Drafted"><small style="font-weight:bold;text-decoration:underline">Drafted</small></a>&nbsp;|&nbsp;
-                            <a href="Requested"><small style="font-weight:bold;text-decoration:underline">Requested</small></a>&nbsp;|&nbsp;
-                            <a href="Published"><small style="font-weight:bold;text-decoration:underline">Published</small></a>
-                            <a href="Rejected"><small style="font-weight:bold;text-decoration:underline">Rejected</small></a>
+                            <a href="Drafted"><small>Drafted</small></a>&nbsp;|&nbsp;
+                            <a href="Requested"><small>Requested</small></a>&nbsp;|&nbsp;
+                            <a href="Published"><small style="font-weight:bold;text-decoration:underline">Published</small></a>&nbsp;|&nbsp;
+                            <a href="UnPublished"><small>UnPublished</small></a>&nbsp;|&nbsp;
+                            <a href="Rejected"><small>Rejected</small></a>
                         </div>
                     </div>
                 <div class="table-responsive">
@@ -36,7 +37,8 @@
                                 <td><?php echo $Profile['MemberCode'];?></td> 
                                 <td><?php echo $Profile['ApprovedOn'];?></td>
                                 <td><?php echo $Profile['MemberName'];?></td>
-                                <td><?php echo $Profile['ProfileName'];?></td>                                         
+                                <td><?php echo $Profile['ProfileName'];?></td> 
+								<td></td>								
                                 <td><?php //echo putDateTime($Profile['CreatedOn']);?></td>
                                 <td><a href="<?php echo GetUrl("Profiles/ViewPublishProfile/". $Profile['ProfileCode'].".htm");?>"><span>View</span></a></td>
                                 </tr>

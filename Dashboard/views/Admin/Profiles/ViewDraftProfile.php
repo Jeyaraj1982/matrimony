@@ -51,7 +51,11 @@ legend {
     margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px;
 }
  </style>
-<form method="post" action="" onsubmit="">
+<form method="post" id="frmfrn_<?php echo $ProfileInfo['ProfileCode'];?>" >
+	<input type="hidden" value="" name="txnPassword" id="txnPassword_<?php echo $ProfileInfo['ProfileCode'];?>">
+	<input type="hidden" value="" name="DeleteProfileRemarks" id="DeleteProfileRemarks_<?php echo $ProfileInfo['ProfileCode'];?>">
+	<input type="hidden" value="<?php echo $_GET['Code'];?>" name="ProfileCode" id="ProfileCode">
+						
 <div class="col-12 grid-margin">
   <div class="card">                                                                                                               
     <div class="card-body">
@@ -727,7 +731,8 @@ legend {
         <?php }?>
         </div>
     </div>
-  </div>                                             
+  </div> 
+    
 <div class="col-12 grid-margin">
   <div class="card">                                                                                                        
     <div class="card-body">
@@ -749,6 +754,9 @@ legend {
     </div>
   </div>                                                                                                               
 </div>
+<div class="col-12" style="text-align:right">
+        <a href="javascript:void(0)" onclick="Member.showConfirmDeleteDraftProfile('<?php echo $_GET['Code'];?>')" class="btn btn-danger" name="Delete" style="font-family:roboto">Delete Profile</a>
+     </div>
 </form>
 <div class="modal" id="ViewEducationAttach" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
@@ -757,8 +765,18 @@ legend {
                 </div>
             </div>
         </div>
-
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+        <div class="modal-dialog" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 341px;min-height: 341px;" >
+        
+            </div>
+        </div>
+    </div>
 <script>
+
+
+
+
 function AttachmentEducationInformation(AttachmentID,ProfileID,FileName) {
       $('#ViewEducationAttach').modal('show'); 
       var content = '<div class="ViewEducationAttach_body" style="padding:20px">'
@@ -793,6 +811,8 @@ function showAttachmentOccupationForView(ProfileCode,MemberID,ProfileID,FileName
             $('#ViewEducationAttach_body').html(content);
         }
 </script>
+
+
    
             
                

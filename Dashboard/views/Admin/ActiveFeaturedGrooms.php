@@ -1,4 +1,3 @@
-
 <?php
     $response = $webservice->getData("Admin","GetFeatuerdGrooms",array("Request"=>"Active"));
     if(sizeof($response)>0){
@@ -11,6 +10,7 @@
                     <div class="col-sm-8" style="text-align:right;padding-top:5px;color:skyblue;">
                         <a href="FeaturedGrooms" ><small>All</small></a>&nbsp;|&nbsp;
                         <a href="ActiveFeaturedGrooms"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
+                        <a href="UnPublishFeaturedGrooms"><small>Unpublish</small></a>&nbsp;|&nbsp;
                         <a href="ExpiredFeaturedGrooms"><small>Expired</small></a>
                     </div>
                 </div>                          
@@ -21,6 +21,13 @@
                 </div>
             </div>
         </div>
+		<div class="modal" id="PubplishNow" data-backdrop="static" >
+        <div class="modal-dialog" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
+        
+            </div>
+        </div>
+    </div>
     <?php     } else   { ?>
 
         <div class="col-lg-12 grid-margin stretch-card bshadow" style="background:#fff;padding:90px;">

@@ -11,8 +11,9 @@
         <link rel="stylesheet" href="<?php echo SiteUrl?>assets/css/selectboxstyle.css">
         <link rel="shortcut icon" href="<?php echo SiteUrl?>assets/images/favicon.png" /> 
         <link rel="stylesheet" href="<?php echo SiteUrl?>assets/vendors/iconfonts/puse-icons-feather/feather.css">
-         
+        
         <script src="<?php echo SiteUrl?>assets/vendors/jquery-3.1.1.min.js" type='text/javascript'></script> 
+        
         
         <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -1528,7 +1529,11 @@ function getAppUrl() {
             ?>
         <?php function Admin_Landing_page_Profiles($Profile,$p) {  ?>  
    <div class="profile_horizontal_row" id="div_<?php echo $Profile['ProfileCode']; ?>">
-                <div class="form-group row">
+   <form method="post" id="frmfrn_<?php echo $Profile['ProfileCode'];?>" >
+	<input type="hidden" value="" name="txnPassword" id="txnPassword_<?php echo $Profile['ProfileCode'];?>">
+	<input type="hidden" value="" name="UnpublishProfileRemarks" id="UnpublishProfileRemarks_<?php echo $Profile['ProfileCode'];?>">
+	<input type="hidden" value="<?php echo $Profile['ProfileCode'];?>" name="ProfileCode" id="ProfileCode">
+	<div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
                         <img src="<?php echo $p['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
@@ -1586,8 +1591,13 @@ function getAppUrl() {
                                 <a href="">Who Shortisted (<?php echo $p['WhoShortListedcount'];?>) </a></div></div>
                            <div style="float:right;line-height: 1px;">
                                <a href="<?php echo GetUrl("ViewMemberProfile/".$Profile['ProfileCode'].".htm ");?>">View Profile</a>&nbsp;&nbsp;
-                               <a href="#">View Details</a>
-                            </div>
+							   <?php if($p['IsShow']==1) { ?>
+								<a href="javascript:void(0)" onclick="LandingPage.showConfirmUnPublishLandingProfile('<?php echo $Profile['ProfileCode'];?>')" style="font-family:roboto">Unpublish</a>
+							   <?php } else { ?>
+								<a href="javascript:void(0)" onclick="LandingPage.showConfirmPublishLandingProfile('<?php echo $Profile['ProfileCode'];?>')" style="font-family:roboto">Publish</a>
+							   <?php } ?>	
+						   </div>
+							</form>
 						</div> 
                        
                     <?php  } /* 4 5 Browse Matches 1*/?>

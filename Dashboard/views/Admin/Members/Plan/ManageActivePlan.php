@@ -13,9 +13,9 @@
                                 <li><a href="#">To Htm</a></li>
                             </ul>                   </div> 
                         <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                        <a href="ManagePlan" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
+                        <a href="ManagePlan" ><small>All</small></a>&nbsp;|&nbsp;
                         <a href="ManageActivePlan"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
-                        <a href="ManageDeactivePlan"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>
+                        <a href="ManageDeactivePlan"><small>Deactive</small></a>
                 </div>
                 </div>                                            
                 <div class="table-responsive">
@@ -37,9 +37,9 @@
                                 <td>
                                 <span class="<?php echo ($Plan['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;
                                 <?php echo $Plan['PlanName'];?></td>
-                                <td><?php echo $Plan['Decreation'];?></td>
-                                <td><?php echo $Plan['Amount'];?></td>
-                                <td></td>
+                                 <td style="text-align:right"><?php echo $Plan['Decreation'];?></td>
+                                <td style="text-align:right"><?php echo number_format($Plan['Amount'],2);?></td>
+                                <td style="text-align:right"><?php echo ($Plan['cnt']==1) ? '1' : '0';?></td>
                                 <td><?php echo putDateTime($Plan['CreatedOn']);?></td>
                                 <td style="text-align:right"><a href="<?php echo GetUrl("Members/Plan/EditPlan/". $Plan['PlanCode'].".htm");?>">Edit</a>&nbsp;&nbsp;&nbsp;
                                 <a href="<?php echo GetUrl("Members/Plan/View/". $Plan['PlanCode'].".htm");?>">View</a></td>

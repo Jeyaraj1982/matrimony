@@ -11,6 +11,7 @@
                     <div class="col-sm-8" style="text-align:right;padding-top:5px;color:skyblue;">
                         <a href="FeaturedBrides" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
                         <a href="ActiveFeaturedBrides"><small>Active</small></a>&nbsp;|&nbsp;
+                        <a href="UnPublishFeaturedBrides"><small>UnPublish</small></a>&nbsp;|&nbsp;
                         <a href="ExpiredFeaturedBrides"><small>Expired</small></a>
                     </div>
                 </div>                          
@@ -21,6 +22,13 @@
                 </div>
             </div>
         </div>
+		<div class="modal" id="PubplishNow" data-backdrop="static" >
+        <div class="modal-dialog" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
+        
+            </div>
+        </div>
+    </div>
     <?php     } else   { ?>
 
         <div class="col-lg-12 grid-margin stretch-card bshadow" style="background:#fff;padding:90px;">

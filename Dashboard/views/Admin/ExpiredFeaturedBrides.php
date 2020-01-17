@@ -11,6 +11,7 @@
                     <div class="col-sm-8" style="text-align:right;padding-top:5px;color:skyblue;">
                         <a href="FeaturedBrides" ><small>All</small></a>&nbsp;|&nbsp;
                         <a href="ActiveFeaturedBrides"><small >Active</small></a>&nbsp;|&nbsp;
+                        <a href="UnPublishFeaturedBrides"><small >UnPublish</small></a>&nbsp;|&nbsp;
                         <a href="ExpiredFeaturedBrides"><small style="font-weight:bold;text-decoration:underline">Expired</small></a>
                     </div>
                 </div>                          

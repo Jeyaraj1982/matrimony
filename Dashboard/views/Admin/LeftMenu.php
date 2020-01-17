@@ -32,6 +32,7 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Requested");?>">Requested</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Drafted");?>">Drafted</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Published");?>">Published</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/UnPublished");?>">UnPublished</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Expired");?>">Expired</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Rejected");?>">Rejected</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/DocumentVerification");?>">Document Verification</a></li>
