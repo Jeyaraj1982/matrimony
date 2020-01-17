@@ -1083,8 +1083,8 @@
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
 
-                 $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and  RequestToVerify='0' and IsApproved='0'");
-                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and  RequestToVerify='1'");
+                 $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and  RequestToVerify='0' and IsApproved='0' and IsDelete='0'");
+                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID` = '".$loginInfo[0]['MemberID']."' and  RequestToVerify='1' and IsDelete='0'");
                  
 				  
                  if (sizeof($DraftProfiles)>0) {
@@ -1641,15 +1641,234 @@
 				}
         }
 		 /* end Submit profile */  
-                       
-         public function DeleteProfile() {
-			return '<div class="modal-body" style="text-align:center;height: 300px;">
-						<p style="text-align:center;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
-						<h5 style="text-align:center;color:#ada9a9">Your Profile has been deleted</h4>    <br>
-						<a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
-					</div>';
-		}
-                                                              
+		 
+		 /* Delete Draft Profile */
+		
+         public function SendOtpForProfileDelete($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
+			global $mysql,$mail,$loginInfo;      
+        
+			$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+			$member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+			
+				if ($reqID=="")      {
+					$otp=rand(1000,9999);
+					$mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToDeleteDraftProfile'");
+					$content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+					$content  = str_replace("#otp#",$otp,$content);
+
+					MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+											   "Category" => "RequestToDeleteDraftProfile",
+											   "MemberID" => $member[0]['MemberID'],
+											   "Subject"  => $mContent[0]['Title'],
+											   "Message"  => $content),$mailError);
+					MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']."Verification Security Code is ".$otp);
+
+					if($mailError){
+                        return "Mailer Error: " . $mail->ErrorInfo.
+                        "Error. unable to process your request.";
+                    } else {
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
+                                                                                      "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                                      "EmailTo"       =>$member[0]['EmailID'],
+                                                                                      "SMSTo"         =>$member[0]['MobileNumber'],
+                                                                                      "SecurityCode"  =>$otp,
+                                                                                      "Type"          =>"RequestToDeleteDraftProfile",
+                                                                                      "messagedon"    =>date("Y-m-d h:i:s"))) ;
+                        $formid = "frmDeleteOTPVerification_".rand(30,3000);
+                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
+                                return '<div id="otpfrm">
+											<form method="POST" id="'.$formid.'" name="'.$formid.'">
+											<input type="hidden" value="'.$securitycode.'" name="reqId">
+											<input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
+												<div class="modal-header">
+													<h4 class="modal-title">Delete draft profile</h4>
+													<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
+												</div>
+												<div class="modal-body">
+													<p style="text-align:center;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+													<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9;font-size: 15px;">'.$memberdata[0]['EmailID'].' & '.$memberdata[0]['MobileNumber'].'</h4>
+													<div class="form-group">
+														<div class="input-group">
+															<div class="col-sm-12">
+																<div class="col-sm-3"></div>
+																<div class="col-sm-4"><input type="text"  class="form-control" id="DeleteOtp" maxlength="4" name="DeleteOtp" style="width: 126%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+																<div class="col-sm-2"><button type="button" onclick="ProfileDeleteOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+																<div class="col-sm-3"></div>
+															</div>															
+															<div class="col-sm-12" style="text-align:center;color:red" id="Error_delete_otp">'.$errormessage.'&nbsp;</div>
+														</div>
+													</div>
+												</div>
+												<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileDelete(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+											</form>                                                                                                       
+										</div>'; 
+					}
+				} else {
+					$memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
+						$formid = "frmDeleteOTPVerification_".rand(30,3000);
+								return '<div id="otpfrm" >
+									<form method="POST" id="'.$formid.'" name="'.$formid.'">
+										<input type="hidden" value="'.$reqID.'" name="reqId">
+										<input type="hidden" value="'.$ProfileID.'" name="ProfileID">
+										<div class="modal-header">
+											<h4 class="modal-title">Delete draft profile</h4>
+											<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
+										</div>
+										<div class="modal-body">
+											<p style="text-align:center;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+											<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9;font-size: 15px;">'.$memberdata[0]['EmailID'].' & '.$memberdata[0]['MobileNumber'].'</h4>
+											<div class="form-group">
+												<div class="input-group">
+													<div class="col-sm-12">
+														<div class="col-sm-3"></div>
+														<div class="col-sm-4"><input type="text"  class="form-control" value="'.$otpdata.'" id="DeleteOtp" maxlength="4" name="DeleteOtp" style="width: 126%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+														<div class="col-sm-2"><button type="button" onclick="ProfileDeleteOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+														<div class="col-sm-3"></div>
+													</div>															
+													<div class="col-sm-12" style="text-align:center;color:red" id="Error_delete_otp">'.$errormessage.'&nbsp;</div>
+												</div>
+											</div>
+										</div>
+										<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileDelete(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+									</form>                                                                                                       
+								</div>'; 
+				}
+        }
+         
+         public function ProfileDeleteOTPVerification() {
+            global $mysql,$loginInfo ;
+             
+            $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
+			$otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
+			
+			 if(strlen(trim($_POST['DeleteOtp'])) == 0) {
+				 return Response::returnError("Please enter security code");
+			 }
+			
+            if (strlen(trim($_POST['DeleteOtp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['DeleteOtp']))  {
+
+                $mysql->execute("update `_tbl_draft_profiles` set  `IsDelete`      = '1',
+																	`DeletedRemarks` ='".$_POST['DeleteRemarks_DraftProfile']."',
+																`DeletedOn`      = '".date("Y-m-d H:i:s")."'
+																 where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'");
+				
+				
+				$mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberDeleteDraftProfile'");
+				$content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+				$content  = str_replace("#ProfileCode#",$data[0]['ProfileCode'],$content);
+
+				MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+										   "Category" => "MemberDeleteDraftProfile",
+										   "MemberID" => $member[0]['MemberID'],
+										   "Subject"  => $mContent[0]['Title'],
+										   "Message"  => $content),$mailError);
+				MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']." [ ".$data[0]['ProfileCode']." ] Your profile deleted ");
+			  
+				$id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+																"ActivityType"   => 'DeleteDraftProfile.',
+																"ActivityString" => 'Delete Draft Profile.',
+																"SqlQuery"       => base64_encode($updateSql),
+																//"oldData"      => base64_encode(json_encode($oldData)),
+																"ActivityOn"     => date("Y-m-d H:i:s")));
+				return Response::returnSuccess("Your profile has been deleted.");
+                
+            } else {
+                 return $this->SendOtpForProfileDelete("<span style='color:red'>Invalid verification code.</span>",$_POST['DeleteOtp'],$_POST['reqId'],$_POST['ProfileID']);
+				} 
+        }
+		
+		public function ResendSendOtpForProfileDelete($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
+			global $mysql,$mail,$loginInfo;      
+			
+			$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+			$member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
+             
+				$resend = $mysql->insert("_tbl_resend",array("MemberID" =>$member[0]['MemberID'],
+															 "Reason" 	=>"Resend Profile Delete Verfication Code",
+															 "ResendOn" =>date("Y-m-d h:i:s"))) ;
+				if ($reqID=="") {
+					$otp=rand(1000,9999);
+
+					$mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToDeleteDraftProfile'");
+					$content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+					$content  = str_replace("#otp#",$otp,$content);
+
+					MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+											   "Category" => "RequestToDeleteDraftProfile",
+											   "MemberID" => $member[0]['MemberID'],
+											   "Subject"  => $mContent[0]['Title'],
+											   "Message"  => $content),$mailError);
+					MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']." Verification Security Code is ".$otp);
+                                                                                                                          
+					if($mailError){
+                        return "Mailer Error: " . $mail->ErrorInfo.
+                        "Error. unable to process your request.";                                                               
+                    } else {
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" 	=>$member[0]['MemberID'],
+                                                                                     "RequestSentOn"=>date("Y-m-d H:i:s"),
+                                                                                     "EmailTo" 		=>$member[0]['EmailID'],
+                                                                                     "SMSTo" 		=>$member[0]['MobileNumber'],
+                                                                                     "SecurityCode" =>$otp,
+                                                                                     "Type"         =>"RequestToDeleteDraftProfile",
+                                                                                     "messagedon"  	=>date("Y-m-d h:i:s"))) ;
+                        $formid = "frmDeleteOTPVerification_".rand(30,3000);
+                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
+                            return '<div id="otpfrm">
+										<form method="POST" id="'.$formid.'" name="'.$formid.'">
+											<form method="POST" id="'.$formid.'" name="'.$formid.'">
+											<input type="hidden" value="'.$securitycode.'" name="reqId">
+											<input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
+												<div class="modal-header">
+													<h4 class="modal-title">Delete draft profile</h4>
+													<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
+												</div>
+												<div class="modal-body">
+													<p style="text-align:center;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+													<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9;font-size: 15px;">'.$memberdata[0]['EmailID'].' & '.$memberdata[0]['MobileNumber'].'</h4>
+													<div class="form-group">
+														<div class="input-group">
+															<div class="col-sm-12">
+																<div class="col-sm-3"></div>
+																<div class="col-sm-4"><input type="text"  class="form-control" id="DeleteOtp" maxlength="4" name="DeleteOtp" style="width: 126%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+																<div class="col-sm-2"><button type="button" onclick="ProfileDeleteOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+																<div class="col-sm-3"></div>
+															</div>															
+															<div class="col-sm-12" style="text-align:center;color:red" id="Error_delete_otp">'.$errormessage.'&nbsp;</div>
+														</div>
+													</div>
+												</div>
+											<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileDelete(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+										</form>                                                                                                       
+									</div>'; 
+                    }
+			    } else {
+						$formid = "frmDeleteOTPVerification_".rand(30,3000);
+							return '<div id="otpfrm">
+										<form method="POST" id="'.$formid.'" name="'.$formid.'">
+											<input type="hidden" value="'.$reqID.'" name="reqId">
+											<input type="hidden" value="'.$ProfileID.'" name="ProfileID">
+											<div class="modal-body">
+												<p style="text-align:center;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
+												<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9;font-size: 15px;">'.$memberdata[0]['EmailID'].' & '.$memberdata[0]['MobileNumber'].'</h4>
+												<div class="form-group">
+													<div class="input-group">
+														<div class="col-sm-12">
+															<div class="col-sm-3"></div>
+															<div class="col-sm-4"><input type="text"  class="form-control" id="DeleteOtp" maxlength="4" name="DeleteOtp" style="width: 126%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+															<div class="col-sm-2"><button type="button" onclick="ProfileDeleteOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+															<div class="col-sm-3"></div>
+														</div>															
+														<div class="col-sm-12" style="text-align:center;color:red" id="Error_delete_otp">'.$errormessage.'&nbsp;</div>
+													</div>
+												</div>
+											</div>
+											<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileDelete(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+										</form>                                                                                                       
+									</div>'; 
+				}
+        }
+                                                             
          public function DeleteAttach() {
 
              global $mysql,$loginInfo;
@@ -3714,7 +3933,7 @@
 		
          public function GetFeatureGroom () {
 			global $mysql;
-				$landingpageProfiles = $mysql->select("select ProfileCode from _tbl_profiles where SexCode='SX001' and  ProfileCode in (select ProfileCode from `_tbl_landingpage_profiles` where `IsShow`='1')"); 
+				$landingpageProfiles = $mysql->select("select ProfileCode from _tbl_profiles where SexCode='SX001' and  ProfileCode in (select ProfileCode from `_tbl_landingpage_profiles` where `IsShow`='1') group by `ProfileCode`"); 
                 foreach($landingpageProfiles as $profile) {
 					$Profiles[] =Profiles::getProfileInfo($profile['ProfileCode'],2);
 				} 
@@ -3723,7 +3942,7 @@
 		 
          public function GetFeatureBride (){
 			global $mysql;
-				$landingpageProfiles = $mysql->select("select ProfileCode from _tbl_profiles where SexCode='SX002' and  ProfileCode in (select ProfileCode from `_tbl_landingpage_profiles` where `IsShow`='1')"); 
+				$landingpageProfiles = $mysql->select("select ProfileCode from _tbl_profiles where SexCode='SX002' and  ProfileCode in (select ProfileCode from `_tbl_landingpage_profiles` where `IsShow`='1') group by `ProfileCode`"); 
                 foreach($landingpageProfiles as $profile) {
 					$Profiles[] =Profiles::getProfileInfo($profile['ProfileCode'],2);
 				} 

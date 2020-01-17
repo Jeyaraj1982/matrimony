@@ -66,15 +66,6 @@
                             </div>
                         </div>
                     <?php 
-                       
-                    if ($i==3) { 
-                        
-                         echo '</div></div>';
-                        $i=1;
-                    } else {
-                        $i++;
-                    }
-                    $j++;
                 } 
             ?>
         </div>
