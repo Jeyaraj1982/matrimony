@@ -65,7 +65,7 @@ var Franchisee = {
         $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Creating Franchisee ...","123"));
-        $.post(API_URL + "m=Admin&a=CreateFranchisee",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=CreateFranchisee",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -107,7 +107,7 @@ var Franchisee = {
 		$("#ErrStateName").html("Please select State Name"); 
 		$("#ErrDistrictName").html("Please select District Name"); 
 		if(CountryCode !="0"){
-		$.ajax({url: API_URL + "action=getStateNames&CountryCode="+CountryCode,success: function(result){
+		$.ajax({url: getAppUrl() + "action=getStateNames&CountryCode="+CountryCode,success: function(result){
             var obj = JSON.parse(result.trim());
             $.when (
                 $.each(obj, function () {
@@ -135,7 +135,7 @@ var Franchisee = {
 		$("#ErrDistrictName").html("Please select District Name"); 
 		if(StateCode !="0"){
 			$("#ErrStateName").html(""); 
-        $.ajax({url: API_URL + "action=getDistrictNames&StateCode="+StateCode, success: function(result){
+        $.ajax({url: getAppUrl() + "action=getDistrictNames&StateCode="+StateCode, success: function(result){
                 var obj = JSON.parse(result.trim());
                 $.when(
                     $.each(obj, function () {
@@ -225,7 +225,7 @@ var Franchisee = {
         $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Updating Franchisee ...","123"));
-        $.post(API_URL + "m=Admin&a=EditFranchisee",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=EditFranchisee",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -648,7 +648,7 @@ var FranchiseeStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Updating Franchisee Staff ...","123"));
-        $.post(API_URL + "m=Admin&a=EditFranchiseeStaff",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=EditFranchiseeStaff",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
             }  
@@ -754,7 +754,7 @@ var FranchiseeStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Deactivate ...","123"));
-        $.post(API_URL + "m=Admin&a=DeactiveFranchiseeStaff",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=DeactiveFranchiseeStaff",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -848,7 +848,7 @@ var FranchiseeStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Activate ...","123"));
-        $.post(API_URL + "m=Admin&a=ActiveFranchiseeStaff",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=ActiveFranchiseeStaff",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -1001,7 +1001,7 @@ var FranchiseeStaff = {
     $("#ChnPswdFstLogin").val($("#PasswordFstLogin").val());
         var param = $("#frmfrn").serialize();
         $('#ChnPswd_body').html(preloading_withText("Change Password...","161"));
-        $.post(API_URL + "m=Admin&a=FranchiseeStaffChnPswd",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=FranchiseeStaffChnPswd",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#ChnPswd_body').html(result);
                 return ;
@@ -1095,7 +1095,7 @@ var FranchiseeStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Reset ...","123"));
-		$.post(API_URL + "m=Admin&a=ResetTxnPswdFranchiseeStaff",param,function(result) {
+		$.post(getAppUrl() + "m=Admin&a=ResetTxnPswdFranchiseeStaff",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -1189,7 +1189,7 @@ var FranchiseeStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Delete ...","123"));
-        $.post(API_URL + "m=Admin&a=DeleteFranchiseeStaff",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=DeleteFranchiseeStaff",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -1282,7 +1282,7 @@ var FranchiseeStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Activate ...","123"));
-        $.post(API_URL + "m=Admin&a=FranchiseeStaffMobVerification",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=FranchiseeStaffMobVerification",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -1374,7 +1374,7 @@ var FranchiseeStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Activate ...","123"));
-        $.post(API_URL + "m=Admin&a=FranchiseeStaffEmailverification",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=FranchiseeStaffEmailverification",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -1466,7 +1466,7 @@ var FranchiseeStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Activate ...","123"));
-        $.post(API_URL + "m=Admin&a=FranchiseeStaffChnPswdFstLogin",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=FranchiseeStaffChnPswdFstLogin",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -1620,7 +1620,7 @@ var Member ={
     $("#ChnPswdFstLogin").val($("#PasswordFstLogin").val());
         var param = $("#frmfrn").serialize();
         $('#ChnPswd_body').html(preloading_withText("Change Password...","161"));
-        $.post(API_URL + "m=Admin&a=MemberChnPswd",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=MemberChnPswd",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#ChnPswd_body').html(result);
                 return ;
@@ -1718,7 +1718,7 @@ var Member ={
     $("#txnPassword").val($("#TransactionPassword").val());
     var param = $("#frmfrn").serialize();
     $('#Publish_body').html(preloading_withText("Update Member ...","95"));
-        $.post(API_URL + "m=Admin&a=EditMemberInfo",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=EditMemberInfo",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -1753,6 +1753,21 @@ var Member ={
             }
         });
 	},
+	ConfirmGotoBackFromEditMember:function() {
+        $('#PubplishNow').modal('show'); 
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for Exit</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                            +'<div class="col-sm-12">Are you sure want to cancel from edit member</div>'
+                      + '</div>' 
+                      + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<a href="'+AppUrl+'Members/ManageMember" style="cursor:pointer" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
+                    + '</div>';
+        $('#Publish_body').html(content);
+    },
 	
 	ConfirmCreateMemberPlan:function() {
      if(SubmitNewPlan()) {
@@ -1819,7 +1834,7 @@ var Member ={
     $("#txnPassword").val($("#TransactionPassword").val());
     var param = $("#frmfrn").serialize();
     $('#Publish_body').html(preloading_withText("Creating Plan ...","95"));
-        $.post(API_URL + "m=Admin&a=CreateMemberPlan",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=CreateMemberPlan",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -1936,7 +1951,7 @@ var Member ={
     $("#txnPassword").val($("#TransactionPassword").val());
     var param = $("#frmfrn").serialize();
     $('#Publish_body').html(preloading_withText("Updating Plan ...","95"));
-        $.post(API_URL + "m=Admin&a=EditMemberPlan",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=EditMemberPlan",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -1985,7 +2000,309 @@ var Member ={
                         + '<a href="'+AppUrl+'Members/Plan/ManagePlan" style="cursor:pointer" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
                     + '</div>';
         $('#Publish_body').html(content);
+    },
+	showConfirmDeleteDraftProfile:function(ProfileCode) {
+	$('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for delete</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to delete</div>'
+                                + '</div><br>'
+								+ 'Reason for Delete<br>'
+								+ '<textarea class="form-control" rows="2" cols="3" id="DeleteRemarks_DraftProfile"></textarea>'
+								+'<div class="col-sm-12" id="frmDeleteRemark_error" style="color:red;text-align:center"></div>'
+							+ '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" name="Create" class="btn btn-danger" onclick="Member.GetTxnPswdfrDeleteDraftProfile(\''+ProfileCode+'\')" style="font-family:roboto">Yes, I want to delete</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     
+},
+  GetTxnPswdfrDeleteDraftProfile:function(ProfileCode) {
+		if ($("#DeleteRemarks_DraftProfile").val().trim()=="") {
+             $("#frmDeleteRemark_error").html("Please enter reason");
+             return false;
+         }
+		$("#DeleteProfileRemarks_"+ProfileCode).val($("#DeleteRemarks_DraftProfile").val());
+		var content =   '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for delete</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group" style="text-align:center">'
+								+ '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+								+ '<h4 style="text-align:center;color:#ada9a9;">Please Enter Your Transaction Password</h4>'
+							+ '</div>'
+							 + '<div class="form-group">'
+								+ '<div class="input-group">'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-8">'
+										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '</div>'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+								+ '</div>'
+							+ '</div>'
+						+ '</div>'
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" onclick="Member.DeleteMemberDraftProfile(\''+ProfileCode+'\')" class="btn btn-primary">Continue</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);            
+	},
+  DeleteMemberDraftProfile:function(formid) {
+ 
+if ($("#TransactionPassword").val().trim()=="") {
+		 $("#frmTxnPass_error").html("Please enter transaction password");
+		 return false;
+	}
+	
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Activate ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=DeleteMemberDraftProfile",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">successfully Deleted.</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Delete Profile</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+	showConfirmUnPublishProfile:function(ProfileCode) {
+	$('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for unpublish</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to unpublish this profile</div>'
+                                + '</div><br>'
+								+ 'Reason for Unpublish<br>'
+								+ '<textarea class="form-control" rows="2" cols="3" id="UnpublishRemarks_Profile"></textarea>'
+								+'<div class="col-sm-12" id="frmUnpublishRemark_error" style="color:red;text-align:center"></div>'
+							+ '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" name="Create" class="btn btn-danger" onclick="Member.GetTxnPswdfrUnpublishProfile(\''+ProfileCode+'\')" style="font-family:roboto">Yes, I want to Unpublish</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     
+},
+  GetTxnPswdfrUnpublishProfile:function(ProfileCode) {
+		if ($("#UnpublishRemarks_Profile").val().trim()=="") {
+             $("#frmUnpublishRemark_error").html("Please enter reason");
+             return false;
+         }
+		$("#UnpublishProfileRemarks_"+ProfileCode).val($("#UnpublishRemarks_Profile").val());
+		var content =   '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for unpublish</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group" style="text-align:center">'
+								+ '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+								+ '<h4 style="text-align:center;color:#ada9a9;">Please Enter Your Transaction Password</h4>'
+							+ '</div>'
+							 + '<div class="form-group">'
+								+ '<div class="input-group">'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-8">'
+										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '</div>'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+								+ '</div>'
+							+ '</div>'
+						+ '</div>'
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" onclick="Member.UnpublishMemberPublishProfile(\''+ProfileCode+'\')" class="btn btn-primary">Continue</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);            
+	},
+  UnpublishMemberPublishProfile:function(formid) {
+ 
+if ($("#TransactionPassword").val().trim()=="") {
+		 $("#frmTxnPass_error").html("Please enter transaction password");
+		 return false;
+	}
+	
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Activate ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=UnpublishMemberPublishProfile",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Unpublished successfully.</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Unpublish Profile</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+	showConfirmPublishProfile:function(ProfileCode) {
+	$('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for publish</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to publish this profile</div>'
+                                + '</div><br>'
+							+ '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" name="Create" class="btn btn-primary" onclick="Member.GetTxnPswdfrPublishProfile(\''+ProfileCode+'\')" style="font-family:roboto">Yes, I want to Publish</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     
+},
+  GetTxnPswdfrPublishProfile:function(ProfileCode) {
+		var content =   '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for publish</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group" style="text-align:center">'
+								+ '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+								+ '<h4 style="text-align:center;color:#ada9a9;">Please Enter Your Transaction Password</h4>'
+							+ '</div>'
+							 + '<div class="form-group">'
+								+ '<div class="input-group">'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-8">'
+										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '</div>'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+								+ '</div>'
+							+ '</div>'
+						+ '</div>'
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" onclick="Member.PublishMemberPublishProfile(\''+ProfileCode+'\')" class="btn btn-primary">Continue</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);            
+	},
+  PublishMemberPublishProfile:function(formid) {
+ 
+if ($("#TransactionPassword").val().trim()=="") {
+		 $("#frmTxnPass_error").html("Please enter transaction password");
+		 return false;
+	}
+	
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Activate ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=PublishMemberPublishProfile",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Published successfully.</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Publish Profile</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
     }
+	
 };
 
 var AdminStaff = { 
@@ -2195,7 +2512,7 @@ var AdminStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Updating Admin Staff ...","95"));
-        $.post(API_URL + "m=Admin&a=EditAdminStaff",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=EditAdminStaff",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -2302,7 +2619,7 @@ var AdminStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Deactivate ...","95"));
-        $.post(API_URL + "m=Admin&a=DeactiveAdminStaff",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=DeactiveAdminStaff",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -2396,7 +2713,7 @@ var AdminStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Activate ...","95"));
-        $.post(API_URL + "m=Admin&a=ActiveAdminStaff",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=ActiveAdminStaff",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -2549,7 +2866,7 @@ var AdminStaff = {
     $("#ChnPswdFstLogin").val($("#PasswordFstLogin").val());
         var param = $("#frmfrn").serialize();
         $('#ChnPswd_body').html(preloading_withText("Change Password...","161"));
-        $.post(API_URL + "m=Admin&a=AdminStaffChnPswd",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=AdminStaffChnPswd",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#ChnPswd_body').html(result);
                 return ;
@@ -2643,7 +2960,7 @@ var AdminStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Reset ...","95"));
-        $.post(API_URL + "m=Admin&a=ResetTxnPswdAdminStaff",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=ResetTxnPswdAdminStaff",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -2737,7 +3054,7 @@ var AdminStaff = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Delete ...","95"));
-        $.post(API_URL + "m=Admin&a=DeleteADminStaff",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=DeleteADminStaff",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -2829,7 +3146,7 @@ var AdminStaff = {
 	$("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Activate ...","95"));
-        $.post(API_URL + "m=Admin&a=AdminStaffChnPswdFstLogin",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=AdminStaffChnPswdFstLogin",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -3135,7 +3452,7 @@ function ChangePasswordScreen(frmid1) {
 	$('#EmailContent').val($("#EmailContent_ifr").contents().find("#tinymce").html());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Updating Admin Staff ...","95"));
-        $.post(API_URL + "m=Admin&a=EditTemplate",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=EditTemplate",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -3269,7 +3586,7 @@ function ChangePasswordScreen(frmid1) {
 		
 		var param = $("#FrmTemplate").serialize();
         $('#Publish_body').html(preloading_withText("Creating...","161"));
-        $.post(API_URL + "m=Admin&a=TemplateCreate",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=TemplateCreate",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -3302,4 +3619,715 @@ function ChangePasswordScreen(frmid1) {
             }
         });
     }
-    //3078
+
+var LandingPage = {    
+	showConfirmUnPublishLandingProfile:function(ProfileCode) {
+		$('#PubplishNow').modal('show'); 
+		  var content = '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for unpublish</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group row" style="margin:0px;">'
+								+ '<div class="col-sm-4">'
+									+ '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+								+ '</div>'
+								+ '<div class="col-sm-8">'
+									+ '<div class="form-group row">'
+										+'<div class="col-sm-12">Are you sure want to unpublish this profile</div>'
+									+ '</div><br>'
+									+ 'Reason for Unpublish<br>'
+									+ '<textarea class="form-control" rows="2" cols="3" id="UnpublishRemarks_Profile"></textarea>'
+									+'<div class="col-sm-12" id="frmUnpublishRemark_error" style="color:red;text-align:center"></div>'
+								+ '</div>'
+							+  '</div>'                    
+						+ '</div>' 
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" name="Create" class="btn btn-danger" onclick="LandingPage.GetTxnPswdfrUnpublishLandingProfile(\''+ProfileCode+'\')" style="font-family:roboto">Yes, I want to Unpublish</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);
+	},
+	GetTxnPswdfrUnpublishLandingProfile:function(ProfileCode) {
+		if ($("#UnpublishRemarks_Profile").val().trim()=="") {
+             $("#frmUnpublishRemark_error").html("Please enter reason");
+             return false;
+         }
+		$("#UnpublishProfileRemarks_"+ProfileCode).val($("#UnpublishRemarks_Profile").val());
+		var content =   '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for unpublish</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group" style="text-align:center">'
+								+ '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+								+ '<h4 style="text-align:center;color:#ada9a9;">Please Enter Your Transaction Password</h4>'
+							+ '</div>'
+							 + '<div class="form-group">'
+								+ '<div class="input-group">'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-8">'
+										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '</div>'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+								+ '</div>'
+							+ '</div>'
+						+ '</div>'
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" onclick="LandingPage.UnpublishMemberLandingProfile(\''+ProfileCode+'\')" class="btn btn-primary">Continue</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);            
+	},
+	UnpublishMemberLandingProfile:function(formid) {
+		if ($("#TransactionPassword").val().trim()=="") {
+			 $("#frmTxnPass_error").html("Please enter transaction password");
+			 return false;
+		}
+	
+		$("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=UnpublishMemberLandingProfile",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Unpublished successfully.</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Unpublish Profile</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+	showConfirmPublishLandingProfile:function(ProfileCode) {
+		$('#PubplishNow').modal('show'); 
+		  var content = '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for publish</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group row" style="margin:0px;">'
+								+ '<div class="col-sm-4">'
+									+ '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+								+ '</div>'
+								+ '<div class="col-sm-8">'
+									+ '<div class="form-group row">'
+										+'<div class="col-sm-12">Are you sure want to publish this profile</div>'
+									+ '</div><br>'
+								+ '</div>'
+							+  '</div>'                    
+						+ '</div>' 
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" name="Create" class="btn btn-primary" onclick="LandingPage.GetTxnPswdfrPublishLandingProfile(\''+ProfileCode+'\')" style="font-family:roboto">Yes, I want to Publish</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);
+	},
+	GetTxnPswdfrPublishLandingProfile:function(ProfileCode) {
+		var content =   '<div class="modal-header">'
+							+ '<h4 class="modal-title">Confirmation for publish</h4>'
+							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+						+ '</div>'
+						+ '<div class="modal-body">'
+							+ '<div class="form-group" style="text-align:center">'
+								+ '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+								+ '<h4 style="text-align:center;color:#ada9a9;">Please Enter Your Transaction Password</h4>'
+							+ '</div>'
+							 + '<div class="form-group">'
+								+ '<div class="input-group">'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-8">'
+										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+									+ '</div>'
+									+ '<div class="col-sm-2"></div>'
+									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+								+ '</div>'
+							+ '</div>'
+						+ '</div>'
+						+ '<div class="modal-footer">'
+							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+							+ '<button type="button" onclick="LandingPage.PublishMemberLandingProfile(\''+ProfileCode+'\')" class="btn btn-primary">Continue</button>'
+						+ '</div>';
+				$('#Publish_body').html(content);            
+	},
+	PublishMemberLandingProfile:function(formid) {
+		if ($("#TransactionPassword").val().trim()=="") {
+			 $("#frmTxnPass_error").html("Please enter transaction password");
+			 return false;
+		}
+	
+		$("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=PublishMemberLandingProfile",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Published successfully.</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Publish Profile</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }
+};
+
+var AppSettings = {    
+   
+ ConfirmCreateOrdersHeaderFooter:function() {
+     
+  //  if(SubmitOrderHeaderFooter()) {
+            $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation of create order header and footer</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to create order header and footer<br>'
+                                            +'</div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'                                                                                                                                                                             
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AppSettings.GetTxnPasswordFrCreateOrderHeaderFooter()" style="font-family:roboto">Update</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     //   } else {
+     //      return false;
+     //   }
+     } ,
+     GetTxnPasswordFrCreateOrderHeaderFooter:function() {
+        
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for create order header and footer</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="AppSettings.CreateOrderHeaderFooter()" class="btn btn-primary" >Update</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);            
+    },
+
+    CreateOrderHeaderFooter:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }    
+        $("#txnPassword").val($("#TransactionPassword").val());
+        $('#OrderHeader').val($( "#OrderHeader_ifr" ).contents().find('body').html());
+        $('#OrderFooter').val($( "#OrderFooter_ifr" ).contents().find('body').html());
+        var param = $("#frmfrTemplate").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=CreateOrderHeaderFooter",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result.trim());
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Header and Footer created</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/Template/Order/OrderHeaderFooter" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create Order header and footer</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    ConfirmCreateInvoiceHeaderFooter:function() {
+     
+  //  if(SubmitOrderHeaderFooter()) {
+            $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation of create invoice header and footer</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to create invoice header and footer<br>'
+                                            +'</div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'                                                                                                                                                                             
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AppSettings.GetTxnPasswordFrCreateInvoiceHeaderFooter()" style="font-family:roboto">Update</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     //   } else {
+     //      return false;
+     //   }
+     } ,
+     GetTxnPasswordFrCreateInvoiceHeaderFooter:function() {
+        
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for create invoice header and footer</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="AppSettings.CreateInvoiceHeaderFooter()" class="btn btn-primary" >Update</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);            
+    },
+
+    CreateInvoiceHeaderFooter:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }    
+        $("#txnPassword").val($("#TransactionPassword").val());
+        $('#InvoiceHeader').val($( "#InvoiceHeader_ifr" ).contents().find('body').html());
+        $('#InvoiceFooter').val($( "#InvoiceFooter_ifr" ).contents().find('body').html());
+        var param = $("#frmfrTemplate").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=CreateInvoiceHeaderFooter",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result.trim());
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Header and Footer created</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/Template/Invoice/InvoiceHeaderFooter" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create invoice header and footer</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    ConfirmCreateReceiptHeaderFooter:function() {
+     
+  //  if(SubmitOrderHeaderFooter()) {
+            $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation of create receipt header and footer</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to create receipt header and footer<br>'
+                                            +'</div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'                                                                                                                                                                             
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AppSettings.GetTxnPasswordFrCreateReceiptHeaderFooter()" style="font-family:roboto">Update</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     //   } else {
+     //      return false;
+     //   }
+     } ,
+     GetTxnPasswordFrCreateReceiptHeaderFooter:function() {
+        
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for create receipt header and footer</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="AppSettings.CreateReceiptHeaderFooter()" class="btn btn-primary" >Update</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);            
+    },
+
+    CreateReceiptHeaderFooter:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }    
+        $("#txnPassword").val($("#TransactionPassword").val());
+        $('#ReceiptHeader').val($( "#ReceiptHeader_ifr" ).contents().find('body').html());
+        $('#ReceiptFooter').val($( "#ReceiptFooter_ifr" ).contents().find('body').html());
+        var param = $("#frmfrTemplate").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=CreateReceiptHeaderFooter",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result.trim());
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Header and Footer created</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/Template/Receipt/ReceiptHeaderFooter" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create receipt header and footer</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+     ConfirmCreateEmailHeaderFooter:function() {
+     
+  //  if(SubmitOrderHeaderFooter()) {
+            $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation of create email header and footer</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to create email header and footer<br>'
+                                            +'</div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'                                                                                                                                                                             
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AppSettings.GetTxnPasswordFrCreateEmailHeaderFooter()" style="font-family:roboto">Update</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     //   } else {
+     //      return false;
+     //   }
+     } ,
+     GetTxnPasswordFrCreateEmailHeaderFooter:function() {
+        
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for create email header and footer</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="AppSettings.CreateEmailHeaderFooter()" class="btn btn-primary" >Update</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);            
+    },
+
+    CreateEmailHeaderFooter:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }    
+        $("#txnPassword").val($("#TransactionPassword").val());
+        $('#EmailHeader').val($( "#EmailHeader_ifr" ).contents().find('body').html());
+        $('#EmailFooter').val($( "#EmailFooter_ifr" ).contents().find('body').html());
+        var param = $("#frmfrTemplate").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=CreateEmailHeaderFooter",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result.trim());
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Header and Footer created</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/Template/Email/EmailHeaderFooter" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create email header and footer</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    ConfirmCreateProfileDownloadHeaderFooter:function() {
+     
+  //  if(SubmitOrderHeaderFooter()) {
+            $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation of create profile header and footer</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to create profile download header and footer<br>'
+                                            +'</div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'                                                                                                                                                                             
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AppSettings.GetTxnPasswordFrCreateProfileHeaderFooter()" style="font-family:roboto">Update</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     //   } else {
+     //      return false;
+     //   }
+     } ,
+     GetTxnPasswordFrCreateProfileHeaderFooter:function() {
+                                                                                                                                                 
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for create profile header and footer</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="AppSettings.CreateProfileDownloadHeaderFooter()" class="btn btn-primary" >Update</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);            
+    },
+
+    CreateProfileDownloadHeaderFooter:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }    
+        $("#txnPassword").val($("#TransactionPassword").val());
+        $('#ProfileDownloadHeader').val($( "#ProfileDownloadHeader_ifr" ).contents().find('body').html());
+        $('#ProfileDownloadFooters').val($( "#ProfileDownloadFooters_ifr" ).contents().find('body').html());
+        var param = $("#frmfrTemplate").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=CreateProfiledownloadHeaderFooter",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result.trim());
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Header and Footer created</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/Template/ProfileDownload/ProfileDownloadHeaderFooter" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create profile download header and footer</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }
+};
+   //3078

@@ -146,8 +146,18 @@
                         <!-- <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Invoice/Invoice");?>">Invoice</a></li> -->
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Bank/ListofBanks");?>">Add Bank</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/PayPal/Paypal");?>">Paypal</a></li>
-						<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/ManageTemplates");?>">Template</a></li>
-                    </ul>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/NormalSettings");?>">Normal Setting</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/ManageTemplates");?>">Template</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/PaymentGateway/Payu");?>">Pay U</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/PaymentGateway/CCavenue");?>">CCavenue</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/PaymentGateway/PayTm");?>">Pay Tm</a></li>
+						<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/PaymentGateway/InstaMajo");?>">Instamajo</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/Order/OrderHeaderFooter");?>">Order Header Footer</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/Receipt/ReceiptHeaderFooter");?>">Receipt Header Footer</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/Invoice/InvoiceHeaderFooter");?>">Invoice Header Footer</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/Email/EmailHeaderFooter");?>">Email Header Footer</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/ProfileDownload/ProfileDownloadHeaderFooter");?>">Profile Download Header Footer</a></li>
+                    </ul>                                                                                          
                 </div>
             </li> 
             <li class="nav-item">
