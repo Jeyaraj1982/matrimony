@@ -1,45 +1,50 @@
-<?php $page="instamajo";?>
+<?php $page="Paypal";?>
 <?php include_once("settings_header.php");?>
-
 <script>
 $(document).ready(function () {
-   $("#InstamajoName").blur(function () {
-        IsNonEmpty("InstamajoName","ErrInstamajoName","Please Enter Instamajo Name");
+   $("#PaypalName").blur(function () {
+    
+        IsNonEmpty("PaypalName","ErrPaypalName","Please Enter Paypal Name");
+                        
    });
-   $("#ActionUrl").blur(function () {
-        IsNonEmpty("ActionUrl","ErrActionUrl","Please Enter Action Url");
+   $("#PaypalEmailID").blur(function () {
+    
+        IsNonEmpty("PaypalEmailID","ErrPaypalEmailID","Please Enter Paypal EmailID");
+                        
    });
-   $("#ClientID").blur(function () {
-        IsNonEmpty("ClientID","ErrClientID","Please Enter Client ID");
-   }); 
+   $("#MarchantID").blur(function () {
+        IsNonEmpty("MarchantID","ErrMarchantID","Please Enter Marchant ID");
+   });
    $("#SecretKey").blur(function () {
         IsNonEmpty("SecretKey","ErrSecretKey","Please Enter Secret Key");
-   });
-   $("#SuccessUrl").blur(function () {
+   }); 
+    $("#SuccessUrl").blur(function () {
         IsNonEmpty("SuccessUrl","ErrSuccessUrl","Please Enter Success Url");
    });
    $("#FailureUrl").blur(function () {
         IsNonEmpty("FailureUrl","ErrFailureUrl","Please Enter Failure Url");
    });
-   
+ 
 });       
-function SubmitInstamajo() {
-                         $('#ErrInstamajoName').html("");
-                         $('#ErrActionUrl').html("");
-                         $('#ErrClientID').html("");
+function SubmitPaypal() {
+                         $('#ErrPaypalName').html("");
+                         $('#ErrPaypalEmailID').html("");
+                         $('#ErrMarchantID').html("");
                          $('#ErrSecretKey').html("");
                          $('#ErrSuccessUrl').html("");
                          $('#ErrFailureUrl').html("");
+                         //$('#ErrPayuRemarks').html("");
                          
                          ErrorCount=0;
         
-                        IsNonEmpty("InstamajoName","ErrInstamajoName","Please Enter Instamajo Name");
-                        IsNonEmpty("ActionUrl","ErrActionUrl","Please Enter Action Url");
-                        IsNonEmpty("ClientID","ErrClientID","Please Enter Client ID");
+                        IsNonEmpty("PaypalName","ErrPaypalName","Please Enter Paypal Name");
+                        IsNonEmpty("PaypalEmailID","ErrPaypalEmailID","Please Enter Paypal Email ID");
+                        IsNonEmpty("MarchantID","ErrMarchantID","Please Enter Marchant ID");
                         IsNonEmpty("SecretKey","ErrSecretKey","Please Enter Secret Key");
                         IsNonEmpty("SuccessUrl","ErrSuccessUrl","Please Enter Success Url");
                         IsNonEmpty("FailureUrl","ErrFailureUrl","Please Enter Failure Url");
-                       
+                     //   IsNonEmpty("PayuRemarks","ErrPayuRemarks","Please Enter Remarks");
+                        
                         if (ErrorCount==0) {
                             return true;
                         } else{
@@ -48,38 +53,32 @@ function SubmitInstamajo() {
                  
 }
 </script>
+<?php $PaypalInfo = $webservice->getData("Admin","GetPaymentGatewayDatas");?>
 <div class="col-sm-10 rightwidget">
 <form method="post" id="frmfrPaymentGateway">
     <input type="hidden" value="" name="txnPassword" id="txnPassword">
-    <input type="hidden" value="VT0002" name="InstamajoSoftCode" id="InstamajoSoftCode">
-    <input type="hidden" value="instamajo" name="InstamajoCodeValue" id="InstamajoCodeValue">
-    <h4 class="card-title">Create Instamajo</h4>                    
+    <input type="hidden" value="VT0005" name="PaypalSoftCode" id="PaypalSoftCode">
+    <input type="hidden" value="Paypal" name="PaypalCodeValue" id="PaypalCodeValue">
+    <h4 class="card-title">Create Paypal</h4>                    
 						<div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Instamajo Name<span id="star">*</span></label>
+                            <label class="col-sm-3 col-form-label">Paypal Name<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="InstamajoName" name="InstamajoName" value="<?php echo isset($_POST['InstamajoName']) ? $_POST['InstamajoName'] : "";?>">
-                                <span class="errorstring" id="ErrInstamajoName"><?php echo isset($ErrInstamajoName)? $ErrInstamajoName : "";?></span>
+                                <input type="text" class="form-control" id="PaypalName" name="PaypalName" value="<?php echo isset($_POST['PaypalName']) ? $_POST['PaypalName'] : "";?>">
+                                <span class="errorstring" id="ErrPaypalName"><?php echo isset($ErrPaypalName)? $ErrPaypalName : "";?></span>
+                            </div>
+                        </div>
+						<div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Email ID<span id="star">*</span></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="PaypalEmailID" name="PaypalEmailID" value="<?php echo isset($_POST['PaypalEmailID']) ? $_POST['PaypalEmailID'] : "";?>">
+                                <span class="errorstring" id="ErrPaypalEmailID"><?php echo isset($ErrPaypalEmailID)? $ErrPaypalEmailID : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Logo<span id="star">*</span></label>
-                          <div class="col-sm-9">
-                            <input type="file" id="InstamajoLogo" name="InstamajoLogo">
-                            <span class="errorstring" id="ErrInstamajoLogo"><?php echo isset($ErrInstamajoLogo)? $ErrInstamajoLogo : "";?></span>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Action Url<span id="star">*</span></label>
+                            <label class="col-sm-3 col-form-label">Marchant ID<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="ActionUrl" name="ActionUrl" value="<?php echo isset($_POST['ActionUrl']) ? $_POST['ActionUrl'] : "";?>">
-                                <span class="errorstring" id="ErrActionUrl"><?php echo isset($ErrActionUrl)? $ErrActionUrl : "";?></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Client ID<span id="star">*</span></label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="ClientID" name="ClientID" value="<?php echo isset($_POST['ClientID']) ? $_POST['ClientID'] : "";?>">
-                                <span class="errorstring" id="ErrClientID"><?php echo isset($ErrClientID)? $ErrClientID : "";?></span>
+                                <input type="text" class="form-control" id="MarchantID" name="MarchantID" value="<?php echo isset($_POST['MarchantID']) ? $_POST['MarchantID'] : "";?>">
+                                <span class="errorstring" id="ErrMarchantID"><?php echo isset($ErrMarchantID)? $ErrMarchantID : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -90,15 +89,17 @@ function SubmitInstamajo() {
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Mode<span id="star">*</span></label>
-                            <div class="col-sm-4">
-                                <select class="form-control" id="Mode"  name="Mode" >
-                                    <option value="Live" <?php echo ($_POST['Mode']=="Live") ? " selected='selected' " : "";?>>Live</option>
-                                    <option value="Test" <?php echo ($_POST['Mode']=="Test") ? " selected='selected' " : "";?>>Test</option>
-                                </select>
-                              <span class="errorstring" id="ErrMode"><?php echo isset($ErrMode)? $ErrMode : "";?></span>
-                            </div>
-							<label class="col-sm-2 col-form-label">Status<span id="star">*</span></label>
+							<label class="col-sm-3 col-form-label">Currency<span id="star">*</span></label>
+							<div class="col-sm-4">
+								<select class="form-control" id="Currency" name="Currency">
+									<?php foreach($PaypalInfo['data']['Currency'] as $Currency) { ?>
+									<option value="<?php echo $Currency['SoftCode'];?>" <?php echo ($Currency[ 'SoftCode']==$_POST[ 'Currency']) ? ' selected="selected" ' : '';?>>
+										<?php echo $Currency['CodeValue'];?>
+									</option>
+									<?php } ?>
+								</select>
+							</div>
+                            <label class="col-sm-2 col-form-label">Status<span id="star">*</span></label>
 							<div class="col-sm-3">
 							    <select class="form-control" id="Status"  name="Status" >
                                     <option value="1" <?php echo ($_POST['Status']=="1") ? " selected='selected' " : "";?>>Active</option>
@@ -123,18 +124,17 @@ function SubmitInstamajo() {
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Remarks</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" id="InstaRemarks" name="InstaRemarks"><?php echo isset($_POST['InstaRemarks']) ? $_POST['InstaRemarks'] : "";?></textarea>
-                                <span class="errorstring" id="ErrInstaRemarks"><?php echo isset($ErrInstaRemarks)? $ErrInstaRemarks : "";?></span>
+                                <textarea class="form-control" id="Remarks" name="Remarks"><?php echo isset($_POST['Remarks']) ? $_POST['Remarks'] : "";?></textarea>
+                                <span class="errorstring" id="ErrRemarks"><?php echo isset($ErrRemarks)? $ErrRemarks : "";?></span>
                             </div>
                         </div> 
 		           
 		<div class="form-group row" >
-						<div class="col-sm-12" style="text-align:right">
-							&nbsp;<a href="javascript:void(0)" class="btn btn-default" style="padding:7px 20px" onclick="AppSettings.ConfirmGotoBackFromCreateInstamajo()">Cancel</a>&nbsp;
-							<a href="javascript:void(0)" onclick="PaymentGateway.ConfirmCreateInstamajo()" class="btn btn-primary">Create</a>
-						</div>
-					</div>
-	</div>
+			<div class="col-sm-12" style="text-align:right">
+				&nbsp;<a href="javascript:void(0)" class="btn btn-default" style="padding:7px 20px" onclick="AppSettings.ConfirmGotoBackFromCreatePaypal()">Cancel</a>&nbsp;
+				<a href="javascript:void(0)" onclick="PaymentGateway.ConfirmCreatePaypal()" class="btn btn-primary">Create</a>
+			</div>
+		</div>
     
 </form>
 <div class="modal" id="PubplishNow" data-backdrop="static" >

@@ -1,3 +1,6 @@
+
+<?php include_once("../settings_header.php");?>
+<?php $page="instamajo";?>
 <script>
 $(document).ready(function () {
 $("#PaypalCode").blur(function () {
@@ -66,26 +69,17 @@ function SubmitNewPaypal() {
             $GetNextPaypalCode  =$PaypalCode['data']['PaypalCode'];
         }
         {
-?>                                                      
-<form method="post" action="" onsubmit="return SubmitNewPaypal();">            
-<div class="col-12 grid-margin">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Create Paypal</h4>
-                  <form class="form-sample">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group row">
+?>   
+<div class="col-sm-10 rightwidget">
+<form method="post" action="" onsubmit="return SubmitNewPaypal();">      
+    <h4 class="card-title">Create Paypal</h4>                    
+						<div class="form-group row">
                           <label class="col-sm-2 col-form-label">Paypal Code<span id="star">*</span></label>
                           <div class="col-sm-2">                                                      
                             <input type="text" class="form-control" id="PaypalCode" name="PaypalCode" value="<?php echo (isset($_POST['PaypalCode']) ? $_POST['PaypalCode'] : $GetNextPaypalCode);?>">
                             <span class="errorstring" id="ErrPaypalCode"><?php echo isset($ErrPaypalCode)? $ErrPaypalCode : "";?></span>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Paypal Name<span id="star">*</span></label>
                           <div class="col-sm-8">
@@ -93,10 +87,6 @@ function SubmitNewPaypal() {
                             <span class="errorstring" id="ErrPaypalName"><?php echo isset($ErrPaypalName)? $ErrPaypalName : "";?></span>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Paypa Email ID<span id="star">*</span></label>
                           <div class="col-sm-8">
@@ -104,10 +94,6 @@ function SubmitNewPaypal() {
                             <span class="errorstring" id="ErrPaypalEmailID"><?php echo isset($ErrPaypalEmailID)? $ErrPaypalEmailID : "";?></span>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Remarks<span id="star">*</span></label>
                           <div class="col-sm-8">
@@ -115,16 +101,14 @@ function SubmitNewPaypal() {
                             <span class="errorstring" id="ErrRemarks"><?php echo isset($ErrRemarks)? $ErrRemarks : "";?></span>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="form-group row"><div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div></div>
+                        <div class="form-group row"><div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div></div>
                    <div class="form-group row">
                         <div class="col-sm-2"><button type="submit" name="BtnSavePaypal" class="btn btn-primary mr-2">Create</button></div>
                         <div class="col-sm-2"><a href="Paypal" style="text-decoration: underline;">List of Paypal</a></div>
                    </div>
-                </form>
-             </div>                                        
-          </div>
+	</div>
+    
+</form>
 </div>
-</form>    
-<?php }?>                                              
+		<?php } ?>
+<?php include_once("../PaymentGateway/settings_footer.php");?>                    

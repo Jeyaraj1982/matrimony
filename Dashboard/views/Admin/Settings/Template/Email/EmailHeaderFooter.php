@@ -1,4 +1,8 @@
 <script src="<?php echo SiteUrl?>/assets/tiny_mce/tiny_mce.js"></script>
+<?php 
+	$response = $webservice->getData("Admin","GetHeaderandFooterInfo",array("Request" =>"Email"));
+    $Email          = $response['data'];
+ ?>
 <script>
 $(document).ready(function () {
    $("#EmailHeader").blur(function () {
@@ -33,12 +37,12 @@ function SubmitEmail() {
 						<h4 class="card-title">Email Header Footer</h4>                    
 						<div class="form-group">
                             <label class="col-form-label" style="Background:none !important">Email Header</label>
-                            <textarea id="EmailHeader" class="mceEditor" name="EmailHeader" style="height:300px;max-width:570px !important;min-width:570px !important"></textarea>
+                            <textarea id="EmailHeader" class="mceEditor" name="EmailHeader" style="height:300px;max-width:570px !important;min-width:570px !important"><?php echo (isset($_POST['EmailHeader']) ? $_POST['EmailHeader'] : $Email[0]['HeaderContent']);?></textarea>
                             <span class="errorstring" id="ErrEmailHeader"><?php echo isset($ErrEmailHeader)? $ErrEmailHeader : "";?></span>
                         </div>
                         <div class="form-group">
                             <label class="col-form-label" style="Background:none !important">Email Footer</label>
-							<textarea id="EmailFooter" class="mceEditor" name="EmailFooter" style="height:300px;max-width:570px !important;min-width:570px !important"></textarea>
+							<textarea id="EmailFooter" class="mceEditor" name="EmailFooter" style="height:300px;max-width:570px !important;min-width:570px !important"><?php echo (isset($_POST['EmailFooter']) ? $_POST['EmailFooter'] : $Email[0]['FooterContent']);?></textarea>
 							<span class="errorstring" id="ErrEmailFooter"><?php echo isset($ErrEmailFooter)? $ErrEmailFooter : "";?></span>
 						</div>
 					</div>

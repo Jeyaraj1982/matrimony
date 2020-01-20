@@ -1,4 +1,8 @@
 <script src="<?php echo SiteUrl?>/assets/tiny_mce/tiny_mce.js"></script>
+<?php 
+	$response = $webservice->getData("Admin","GetHeaderandFooterInfo",array("Request" =>"ProfileDownload"));
+    $ProfileDownload         = $response['data'];
+ ?>
 <script>
 $(document).ready(function () {
    $("#ProfileDownloadHeader").blur(function () {
@@ -32,12 +36,12 @@ function SubmitProfileDownload() {
 						<h4 class="card-title">Profile Download Header Footer</h4>                    
 						<div class="form-group">
                             <label class="col-form-label" style="Background:none !important">Profile Download Header</label>
-                            <textarea id="ProfileDownloadHeader" class="mceEditor" name="ProfileDownloadHeader" style="height:300px;max-width:570px !important;min-width:570px !important"></textarea>
+                            <textarea id="ProfileDownloadHeader" class="mceEditor" name="ProfileDownloadHeader" style="height:300px;max-width:570px !important;min-width:570px !important"><?php echo (isset($_POST['ProfileDownloadHeader']) ? $_POST['ProfileDownloadHeader'] : $ProfileDownload[0]['HeaderContent']);?></textarea>
                             <span class="errorstring" id="ErrProfileDownloadHeader"><?php echo isset($ErrProfileDownloadHeader)? $ErrProfileDownloadHeader : "";?></span>
                         </div>
                         <div class="form-group">
                             <label class="col-form-label" style="Background:none !important">ProfileDownload Footer</label>
-							<textarea id="ProfileDownloadFooters" class="mceEditor" name="ProfileDownloadFooters" style="height:300px;max-width:570px !important;min-width:570px !important"></textarea>
+							<textarea id="ProfileDownloadFooters" class="mceEditor" name="ProfileDownloadFooters" style="height:300px;max-width:570px !important;min-width:570px !important"><?php echo (isset($_POST['ProfileDownloadFooters']) ? $_POST['ProfileDownloadFooters'] : $ProfileDownload[0]['FooterContent']);?></textarea>
 							<span class="errorstring" id="ErrProfileDownloadFooters"><?php echo isset($ErrProfileDownloadFooters)? $ErrProfileDownloadFooters : "";?></span>
 						</div>
 					</div>

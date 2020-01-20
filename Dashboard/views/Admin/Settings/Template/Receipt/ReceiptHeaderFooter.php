@@ -1,4 +1,8 @@
 <script src="<?php echo SiteUrl?>/assets/tiny_mce/tiny_mce.js"></script>
+<?php 
+	$response = $webservice->getData("Admin","GetHeaderandFooterInfo",array("Request" =>"Receipt"));
+    $Receipt          = $response['data'];
+ ?>
 <script>
 $(document).ready(function () {
    $("#ReceiptHeader").blur(function () {
@@ -33,12 +37,12 @@ function SubmitReceipt() {
 						<h4 class="card-title">Receipt Header Footer</h4>                    
 						<div class="form-group">
                             <label class="col-form-label" style="Background:none !important">Receipt Header</label>
-                            <textarea id="ReceiptHeader" class="mceEditor" name="ReceiptHeader" style="height:300px;max-width:570px !important;min-width:570px !important"></textarea>
+                            <textarea id="ReceiptHeader" class="mceEditor" name="ReceiptHeader" style="height:300px;max-width:570px !important;min-width:570px !important"><?php echo (isset($_POST['ReceiptFooter']) ? $_POST['ReceiptFooter'] : $Receipt[0]['FooterContent']);?></textarea>
                             <span class="errorstring" id="ErrReceiptHeader"><?php echo isset($ErrReceiptHeader)? $ErrReceiptHeader : "";?></span>
                         </div>
                         <div class="form-group">
                             <label class="col-form-label" style="Background:none !important">Receipt Footer</label>
-							<textarea id="ReceiptFooter" class="mceEditor" name="ReceiptFooter" style="height:300px;max-width:570px !important;min-width:570px !important"></textarea>
+							<textarea id="ReceiptFooter" class="mceEditor" name="ReceiptFooter" style="height:300px;max-width:570px !important;min-width:570px !important"><?php echo (isset($_POST['ReceiptFooter']) ? $_POST['ReceiptFooter'] : $Receipt[0]['FooterContent']);?></textarea>
                             <span class="errorstring" id="ErrReceiptFooter"><?php echo isset($ErrReceiptFooter)? $ErrReceiptFooter : "";?></span>
 						</div>
 					</div>

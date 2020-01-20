@@ -4330,4 +4330,502 @@ var AppSettings = {
         });
     }
 };
+var PaymentGateway = {    
+   
+ ConfirmCreatePayu:function() {
+     
+    if(SubmitPayu()) {
+            $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation of create payu</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to create payu<br>'
+                                            +'</div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'                                                                                                                                                                             
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="PaymentGateway.GetTxnPasswordFrCreatePayu()" style="font-family:roboto">Create</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+       } else {
+          return false;
+       }
+     } ,
+	 GetTxnPasswordFrCreatePayu:function() {
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for create payu</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="PaymentGateway.CreatePayu()" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);            
+    },
+
+    CreatePayu:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }    
+        $("#txnPassword").val($("#TransactionPassword").val());
+		var param = $("#frmfrPaymentGateway").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=CreatePayu",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result.trim());
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Payu created</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/PaymentGateway/ManagePayu" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create payu</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+	ConfirmCreatePaytm:function() {
+     
+    if(SubmitPaytm()) {
+            $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation of create paytm</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to create paytm<br>'
+                                            +'</div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'                                                                                                                                                                             
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="PaymentGateway.GetTxnPasswordFrCreatePaytm()" style="font-family:roboto">Create</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+       } else {
+          return false;
+       }
+     } ,
+	 GetTxnPasswordFrCreatePaytm:function() {
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for create paytm</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="PaymentGateway.CreatePaytm()" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);            
+    },
+
+    CreatePaytm:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }    
+        $("#txnPassword").val($("#TransactionPassword").val());
+		var param = $("#frmfrPaymentGateway").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=CreatePaytm",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result.trim());
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Paytm created</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/PaymentGateway/ManagePayTm" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create paytm</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+	ConfirmCreateCcavenue:function() {
+     
+    if(SubmitCCavenue()) {
+            $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation of create ccavenue</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to create ccavenue<br>'
+                                            +'</div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'                                                                                                                                                                             
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="PaymentGateway.GetTxnPasswordFrCreateCcavenue()" style="font-family:roboto">Create</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+       } else {
+          return false;
+       }
+     } ,
+	 GetTxnPasswordFrCreateCcavenue:function() {
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for create ccavenue</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="PaymentGateway.CreateCcavenue()" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);            
+    },
+
+    CreateCcavenue:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }    
+        $("#txnPassword").val($("#TransactionPassword").val());
+		var param = $("#frmfrPaymentGateway").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=CreateCcavenue",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result.trim());
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">CCavenue created</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/PaymentGateway/ManageCCavenue" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create ccavenue</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+	ConfirmCreateInstamajo:function() {
+     
+    if(SubmitInstamajo()) {
+            $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation of create instamajo</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to create instamajo<br>'
+                                            +'</div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'                                                                                                                                                                             
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="PaymentGateway.GetTxnPasswordFrCreateInstamajo()" style="font-family:roboto">Create</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+       } else {
+          return false;
+       }
+     } ,
+	 GetTxnPasswordFrCreateInstamajo:function() {
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for create instamajo</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="PaymentGateway.CreateInstamajo()" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);            
+    },
+
+    CreateInstamajo:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }    
+        $("#txnPassword").val($("#TransactionPassword").val());
+		var param = $("#frmfrPaymentGateway").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=CreateInstamajo",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result.trim());
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Instamajo created</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/PaymentGateway/ManageInstaMajo" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create instamajo</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+	ConfirmCreatePaypal:function() {
+     
+    if(SubmitPaypal()) {
+            $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation of create paypal</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to create paypal<br>'
+                                            +'</div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'                                                                                                                                                                             
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="PaymentGateway.GetTxnPasswordFrCreatePaypal()" style="font-family:roboto">Create</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+       } else {
+          return false;
+       }
+     } ,
+	 GetTxnPasswordFrCreatePaypal:function() {
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for create paypal</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="PaymentGateway.CreatePaypal()" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);            
+    },
+
+    CreatePaypal:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }    
+        $("#txnPassword").val($("#TransactionPassword").val());
+		var param = $("#frmfrPaymentGateway").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=CreatePaypal",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result.trim());
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Paypal created</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/PaymentGateway/ManagePaypal" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create paypal</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }
+};
    //3078

@@ -1,3 +1,6 @@
+<?php $page="paytm";?>
+<?php include_once("settings_header.php");?>
+
 <script>
 $(document).ready(function () {
    $("#Name").blur(function () {
@@ -9,8 +12,8 @@ $(document).ready(function () {
    $("#Website").blur(function () {
         IsNonEmpty("Website","ErrWebsite","Please Enter Website");
    });
-   $("#Industry").blur(function () {
-        IsNonEmpty("Industry","ErrIndustry","Please Enter Industry");
+   $("#Identity").blur(function () {
+        IsNonEmpty("Identity","ErrIdentity","Please Enter Identity");
    }); 
    $("#Channel").blur(function () {
         IsNonEmpty("Channel","ErrChannel","Please Enter Channel");
@@ -24,33 +27,29 @@ $(document).ready(function () {
    $("#FailureUrl").blur(function () {
         IsNonEmpty("FailureUrl","ErrFailureUrl","Please Enter Failure Url");
    });
-   $("#PaytmRemarks").blur(function () {
-        IsNonEmpty("PaytmRemarks","ErrPaytmRemarks","Please Enter Remarks");
-   });
+  
 });       
 function SubmitPaytm() {
                          $('#ErrName').html("");
                          $('#ErrMatchantID').html("");
                          $('#ErrWebsite').html("");
-                         $('#ErrIndustry').html("");
+                         $('#ErrIdentity').html("");
                          $('#ErrChannel').html("");
                          $('#ErrSecretKey').html("");
                          $('#ErrSuccessUrl').html("");
                          $('#ErrFailureUrl').html("");
-                         $('#ErrPaytmRemarks').html("");
                          
                          ErrorCount=0;
         
                         IsNonEmpty("Name","ErrName","Please Enter Name");
                         IsNonEmpty("MarchantID","ErrMarchantID","Please Enter Marchant ID");
                         IsNonEmpty("Website","ErrWebsite","Please Enter Website");
-                        IsNonEmpty("Industry","ErrIndustry","Please Enter Industry");
+                        IsNonEmpty("Identity","ErrIdentity","Please Enter Identity");
                         IsNonEmpty("Channel","ErrChannel","Please Enter Channel");
                         IsNonEmpty("SecretKey","ErrSecretKey","Please Enter Secret Key");
                         IsNonEmpty("SuccessUrl","ErrSuccessUrl","Please Enter Success Url");
                         IsNonEmpty("FailureUrl","ErrFailureUrl","Please Enter Failure Url");
-                        IsNonEmpty("PaytmRemarks","ErrPaytmRemarks","Please Enter Remarks");
-                       
+                        
                         if (ErrorCount==0) {
                             return true;
                         } else{
@@ -59,13 +58,12 @@ function SubmitPaytm() {
                  
 }
 </script>
-<form method="post" id="frmfrn" onsubmit="return SubmitPaytm();">
-	<div class="row">
-		<div class="col-sm-9">
-            <div class="card">
-				<div class="card-body">
-					<div style="max-width:770px !important;">
-						<h4 class="card-title">Create Paytm</h4>                    
+<div class="col-sm-10 rightwidget">
+<form method="post" id="frmfrPaymentGateway">
+    <input type="hidden" value="" name="txnPassword" id="txnPassword">
+    <input type="hidden" value="VT0004" name="PaytmSoftCode" id="PaytmSoftCode">
+    <input type="hidden" value="paytm" name="PaytmCodeValue" id="PaytmCodeValue">
+    <h4 class="card-title">Create Paytm</h4>                    
 						<div class="form-group row">
                             <label class="col-sm-3 col-form-label">Name<span id="star">*</span></label>
                             <div class="col-sm-9">
@@ -76,8 +74,8 @@ function SubmitPaytm() {
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Logo<span id="star">*</span></label>
                           <div class="col-sm-9">
-                            <input type="file" id="CCavenueLogo" name="CCavenueLogo">
-                            <span class="errorstring" id="ErrCCavenueLogo"><?php echo isset($ErrCCavenueLogo)? $ErrCCavenueLogo : "";?></span>
+                            <input type="file" id="PaytmLogo" name="PaytmLogo">
+                            <span class="errorstring" id="ErrPaytmLogo"><?php echo isset($ErrPaytmLogo)? $ErrPaytmLogo : "";?></span>
                           </div>
                         </div>
                         <div class="form-group row">
@@ -95,10 +93,10 @@ function SubmitPaytm() {
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Industry<span id="star">*</span></label>
+                            <label class="col-sm-3 col-form-label">Identity<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="Industry" name="Industry" value="<?php echo isset($_POST['Industry']) ? $_POST['Industry'] : "";?>">
-                                <span class="errorstring" id="ErrIndustry"><?php echo isset($ErrIndustry)? $ErrIndustry : "";?></span>
+                                <input type="text" class="form-control" id="Identity" name="Identity" value="<?php echo isset($_POST['Identity']) ? $_POST['Identity'] : "";?>">
+                                <span class="errorstring" id="ErrIdentity"><?php echo isset($ErrIdentity)? $ErrIdentity : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -124,10 +122,8 @@ function SubmitPaytm() {
                                 </select>
                               <span class="errorstring" id="ErrMode"><?php echo isset($ErrMode)? $ErrMode : "";?></span>
                             </div>
-                        </div>
-                        <div class="form-group row">
-						    <label class="col-sm-3 col-form-label">Status<span id="star">*</span></label>
-							<div class="col-sm-4">
+							<label class="col-sm-2 col-form-label">Status<span id="star">*</span></label>
+							<div class="col-sm-3">
 							    <select class="form-control" id="Status"  name="Status" >
                                     <option value="1" <?php echo ($_POST['Status']=="1") ? " selected='selected' " : "";?>>Active</option>
 							        <option value="0" <?php echo ($_POST['Status']=="0") ? " selected='selected' " : "";?>>Deactive</option>
@@ -149,26 +145,29 @@ function SubmitPaytm() {
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Remarks<span id="star">*</span></label>
+                            <label class="col-sm-3 col-form-label">Remarks</label>
                             <div class="col-sm-9">
                                 <textarea class="form-control" id="PaytmRemarks" name="PaytmRemarks"><?php echo isset($_POST['PaytmRemarks']) ? $_POST['PaytmRemarks'] : "";?></textarea>
                                 <span class="errorstring" id="ErrPaytmRemarks"><?php echo isset($ErrPaytmRemarks)? $ErrPaytmRemarks : "";?></span>
                             </div>
-                        </div> 
-		            </div>
-	            </div>
-            </div>
-	<br>
-	<div class="form-group row" >
-						<div class="col-sm-12" style="text-align:right">
-							&nbsp;<a href="" class="btn btn-default" style="padding:7px 20px">Cancel</a>&nbsp;
-							<button type="submit" name="CreatePaytm" id="CreatePaytm" class="btn btn-primary">Update</a>
-						</div>
-					</div>
+                        </div>
+		           
+		<div class="form-group row" >
+			<div class="col-sm-12" style="text-align:right">
+				&nbsp;<a href="javascript:void(0)" class="btn btn-default" style="padding:7px 20px" onclick="AppSettings.ConfirmGotoBackFromCreatePaytm()">Cancel</a>&nbsp;
+				<a href="javascript:void(0)" onclick="PaymentGateway.ConfirmCreatePaytm()" class="btn btn-primary">Create</a>
+			</div>
+		</div>
 	</div>
-		<div class="col-sm-3">
-          
-        </div>
-           
-</div>
+    
 </form>
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+		<div class="modal-dialog" >
+			<div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
+		
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php include_once("settings_footer.php");?>                    

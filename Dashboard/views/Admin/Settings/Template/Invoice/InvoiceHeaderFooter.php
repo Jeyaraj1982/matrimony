@@ -1,14 +1,8 @@
 <script src="<?php echo SiteUrl?>/assets/tiny_mce/tiny_mce.js"></script>
 <?php 
-    if (isset($_POST['BtnOrderHeaderFooter'])) {   
-            $response = $webservice->getData("Admin","CreateOrderHeaderFooter",$_POST);
-            if ($response['status']=="success") {
-               $successmessage = $response['message']; 
-            } else {
-                $errormessage = $response['message']; 
-            }
-        }
-?>
+	$response = $webservice->getData("Admin","GetHeaderandFooterInfo",array("Request" =>"Invoice"));
+    $Invoice          = $response['data'];
+ ?>
 <script>
 $(document).ready(function () {
    $("#InvoiceHeader").blur(function () {
@@ -43,12 +37,12 @@ function SubmitInvoice() {
 						<h4 class="card-title">Invoice Header Footer</h4>                    
 						<div class="form-group">
                             <label class="col-form-label" style="Background:none !important">Invoice Header</label>
-                            <textarea id="InvoiceHeader" class="mceEditor" name="InvoiceHeader" style="height:300px;max-width:570px !important;min-width:570px !important"></textarea>
+                            <textarea id="InvoiceHeader" class="mceEditor" name="InvoiceHeader" style="height:300px;max-width:570px !important;min-width:570px !important"><?php echo (isset($_POST['InvoiceHeader']) ? $_POST['InvoiceHeader'] : $Invoice[0]['HeaderContent']);?></textarea>
                             <span class="errorstring" id="ErrInvoiceHeader"><?php echo isset($ErrInvoiceHeader)? $ErrInvoiceHeader : "";?></span>
                         </div>
                         <div class="form-group">
                             <label class="col-form-label" style="Background:none !important">Invoice Footer</label>
-							<textarea id="InvoiceFooter" class="mceEditor" name="InvoiceFooter" style="height:300px;max-width:570px !important;min-width:570px !important"></textarea>
+							<textarea id="InvoiceFooter" class="mceEditor" name="InvoiceFooter" style="height:300px;max-width:570px !important;min-width:570px !important"><?php echo (isset($_POST['InvoiceFooter']) ? $_POST['InvoiceFooter'] : $Invoice[0]['FooterContent']);?></textarea>
 							<span class="errorstring" id="ErrInvoiceFooter"><?php echo isset($ErrInvoiceFooter)? $ErrInvoiceFooter : "";?></span>
 						</div>
 					</div>

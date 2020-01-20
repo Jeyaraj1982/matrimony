@@ -1,4 +1,6 @@
 <?php 
+	$response = $webservice->getData("Admin","GetHeaderandFooterInfo",array("Request" =>"Order"));
+    $Order          = $response['data'];
     if (isset($_POST['BtnOrderHeaderFooter'])) {   
         
             $response = $webservice->getData("Admin","CreateOrderHeaderFooter",$_POST);
@@ -44,12 +46,12 @@ function SubmitOrderHeaderFooter() {
 						<h4 class="card-title">Order Form Template</h4>                    
 						<div class="form-group">
                             <label class="col-form-label" style="Background:none !important">Order Header</label>
-                            <textarea id="OrderHeader" class="mceEditor" name="OrderHeader" style="height:400px;max-width:100% !important;min-width:570px !important"><?php echo (isset($_POST['OrderHeader']) ? $_POST['OrderHeader'] : "");?></textarea>
+                            <textarea id="OrderHeader" class="mceEditor" name="OrderHeader" style="height:400px;max-width:100% !important;min-width:570px !important"><?php echo (isset($_POST['OrderHeader']) ? $_POST['OrderHeader'] : $Order[0]['HeaderContent']);?></textarea>
                             <span class="errorstring" id="ErrOrderHeader"><?php echo isset($ErrOrderHeader)? $ErrOrderHeader : "";?></span>
                         </div>
                         <div class="form-group">
                             <label class="col-form-label" style="Background:none !important">Order Footer</label>
-							<textarea id="OrderFooter" class="mceEditor" name="OrderFooter" style="height:400px;max-width:100% !important;min-width:570px !important"><?php echo (isset($_POST['OrderFooter']) ? $_POST['OrderFooter'] : "");?></textarea>
+							<textarea id="OrderFooter" class="mceEditor" name="OrderFooter" style="height:400px;max-width:100% !important;min-width:570px !important"><?php echo (isset($_POST['OrderFooter']) ? $_POST['OrderFooter'] : $Order[0]['FooterContent']);?></textarea>
                             <span class="errorstring" id="ErrOrderFooter"><?php echo isset($ErrOrderFooter)? $ErrOrderFooter : "";?></span>
 						</div>
 					</div>

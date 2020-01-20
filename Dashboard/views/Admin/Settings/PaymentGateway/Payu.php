@@ -1,7 +1,10 @@
+<?php $page="Payu";?>
+<?php include_once("settings_header.php");?>
+
 <script>
 $(document).ready(function () {
    $("#PayBi2Name").blur(function () {
-        IsNonEmpty("PayBi2Name","ErrPayBi2Name","Please Enter Pay Bi2 Name");
+        IsNonEmpty("PayBi2Name","ErrPayBi2Name","Please Enter Pay Biz Name");
    });
    $("#MarchantID").blur(function () {
         IsNonEmpty("MarchantID","ErrMarchantID","Please Enter Marchant ID");
@@ -18,9 +21,9 @@ $(document).ready(function () {
    $("#FailureUrl").blur(function () {
         IsNonEmpty("FailureUrl","ErrFailureUrl","Please Enter Failure Url");
    });
-   $("#PayuRemarks").blur(function () {
-        IsNonEmpty("PayuRemarks","ErrPayuRemarks","Please Enter Remarks");
-   });
+  // $("#PayuRemarks").blur(function () {
+   //     IsNonEmpty("PayuRemarks","ErrPayuRemarks","Please Enter Remarks");
+   //});
 });       
 function SubmitPayu() {
                          $('#ErrPayBi2Name').html("");
@@ -29,17 +32,17 @@ function SubmitPayu() {
                          $('#ErrSaltID').html("");
                          $('#ErrSuccessUrl').html("");
                          $('#ErrFailureUrl').html("");
-                         $('#ErrPayuRemarks').html("");
+                         //$('#ErrPayuRemarks').html("");
                          
                          ErrorCount=0;
         
-                        IsNonEmpty("PayBi2Name","ErrPayBi2Name","Please Enter Pay Bi2 Name");
+                        IsNonEmpty("PayBi2Name","ErrPayBi2Name","Please Enter Pay Biz Name");
                         IsNonEmpty("MarchantID","ErrMarchantID","Please Enter Marchant ID");
                         IsNonEmpty("PayuKey","ErrPayuKey","Please Enter Key");
                         IsNonEmpty("SaltID","ErrSaltID","Please Enter Salt ID");
                         IsNonEmpty("SuccessUrl","ErrSuccessUrl","Please Enter Success Url");
                         IsNonEmpty("FailureUrl","ErrFailureUrl","Please Enter Failure Url");
-                        IsNonEmpty("PayuRemarks","ErrPayuRemarks","Please Enter Remarks");
+                     //   IsNonEmpty("PayuRemarks","ErrPayuRemarks","Please Enter Remarks");
                         
                         if (ErrorCount==0) {
                             return true;
@@ -49,22 +52,21 @@ function SubmitPayu() {
                  
 }
 </script>
-<form method="post" id="frmfrn" onsubmit="return SubmitPayu();">
-	<div class="row">
-		<div class="col-sm-9">
-            <div class="card">
-				<div class="card-body">
-					<div style="max-width:770px !important;">
-						<h4 class="card-title">Create Payu</h4>                    
-						<div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Payu Bi2 Name<span id="star">*</span></label>
+<div class="col-sm-10 rightwidget">
+<form method="post" id="frmfrPaymentGateway">
+    <input type="hidden" value="" name="txnPassword" id="txnPassword">
+    <input type="hidden" value="VT0001" name="PayuSoftCode" id="PayuSoftCode">
+    <input type="hidden" value="Payu" name="PayuCodeValue" id="PayuCodeValue">
+    <h4 class="card-title">Create Payu</h4>                    
+    <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Payu Biz Name<span id="star">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="PayBi2Name" name="PayBi2Name" value="<?php echo isset($_POST['PayBi2Name']) ? $_POST['PayBi2Name'] : "";?>">
                                 <span class="errorstring" id="ErrPayBi2Name"><?php echo isset($ErrPayBi2Name)? $ErrPayBi2Name : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Payu Bi2 Logo<span id="star">*</span></label>
+                          <label class="col-sm-3 col-form-label">Payu Biz Logo<span id="star">*</span></label>
                           <div class="col-sm-9">
                             <input type="file" id="PayBi2Logo" name="PayBi2Logo">
                             <span class="errorstring" id="ErrPayBi2Logo"><?php echo isset($ErrPayBi2Logo)? $ErrPayBi2Logo : "";?></span>
@@ -100,10 +102,8 @@ function SubmitPayu() {
                                 </select>
                               <span class="errorstring" id="ErrMode"><?php echo isset($ErrMode)? $ErrMode : "";?></span>
                             </div>
-                        </div>
-                        <div class="form-group row">
-						    <label class="col-sm-3 col-form-label">Status<span id="star">*</span></label>
-							<div class="col-sm-4">
+							<label class="col-sm-2 col-form-label">Status<span id="star">*</span></label>
+							<div class="col-sm-3">
 							    <select class="form-control" id="Status"  name="Status" >
                                     <option value="1" <?php echo ($_POST['Status']=="1") ? " selected='selected' " : "";?>>Active</option>
 							        <option value="0" <?php echo ($_POST['Status']=="0") ? " selected='selected' " : "";?>>Deactive</option>
@@ -125,26 +125,28 @@ function SubmitPayu() {
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Remarks<span id="star">*</span></label>
+                            <label class="col-sm-3 col-form-label">Remarks</label>
                             <div class="col-sm-9">
                                 <textarea class="form-control" id="PayuRemarks" name="PayuRemarks"><?php echo isset($_POST['PayuRemarks']) ? $_POST['PayuRemarks'] : "";?></textarea>
                                 <span class="errorstring" id="ErrPayuRemarks"><?php echo isset($ErrPayuRemarks)? $ErrPayuRemarks : "";?></span>
                             </div>
                         </div> 
-		            </div>
-	            </div>
-            </div>
-	<br>
-	<div class="form-group row" >
-						<div class="col-sm-12" style="text-align:right">
-							&nbsp;<a href="" class="btn btn-default" style="padding:7px 20px">Cancel</a>&nbsp;
-							<button type="submit" name="CreatePayu" id="CreatePayu" class="btn btn-primary">Update</a>
-						</div>
-					</div>
-	</div>
-		<div class="col-sm-3">
-          
-        </div>
-           
-</div>
+		           
+		<div class="form-group row" >
+			<div class="col-sm-12" style="text-align:right">
+				&nbsp;<a href="javascript:void(0)" class="btn btn-default" style="padding:7px 20px" onclick="AppSettings.ConfirmGotoBackFromCreatePayu()">Cancel</a>&nbsp;
+				<a href="javascript:void(0)" onclick="PaymentGateway.ConfirmCreatePayu()" class="btn btn-primary">Create</a>
+			</div>
+		</div>
+    
 </form>
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+		<div class="modal-dialog" >
+			<div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
+		
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php include_once("settings_footer.php");?>                    

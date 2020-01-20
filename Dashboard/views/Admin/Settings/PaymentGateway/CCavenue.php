@@ -1,3 +1,6 @@
+<?php $page="ccavenue";?>
+<?php include_once("settings_header.php");?>
+
 <script>
 $(document).ready(function () {
    $("#Name").blur(function () {
@@ -15,9 +18,7 @@ $(document).ready(function () {
    $("#FailureUrl").blur(function () {
         IsNonEmpty("FailureUrl","ErrFailureUrl","Please Enter Failure Url");
    });
-   $("#CCAvenueRemarks").blur(function () {
-        IsNonEmpty("CCAvenueRemarks","ErrCCAvenueRemarks","Please Enter Remarks");
-   });
+   
 });       
 function SubmitCCavenue() {
                          $('#ErrName').html("");
@@ -25,7 +26,6 @@ function SubmitCCavenue() {
                          $('#ErrSecretKey').html("");
                          $('#ErrSuccessUrl').html("");
                          $('#ErrFailureUrl').html("");
-                         $('#ErrCCAvenueRemarks').html("");
                          
                          ErrorCount=0;
         
@@ -34,8 +34,7 @@ function SubmitCCavenue() {
                         IsNonEmpty("SecretKey","ErrSecretKey","Please Enter Secret Key");
                         IsNonEmpty("SuccessUrl","ErrSuccessUrl","Please Enter Success Url");
                         IsNonEmpty("FailureUrl","ErrFailureUrl","Please Enter Failure Url");
-                        IsNonEmpty("CCAvenueRemarks","ErrCCAvenueRemarks","Please Enter Remarks");
-                       
+                        
                         if (ErrorCount==0) {
                             return true;
                         } else{
@@ -44,13 +43,12 @@ function SubmitCCavenue() {
                  
 }
 </script>
-<form method="post" id="frmfrn" onsubmit="return SubmitCCavenue();">
-	<div class="row">
-		<div class="col-sm-9">
-            <div class="card">
-				<div class="card-body">
-					<div style="max-width:770px !important;">
-						<h4 class="card-title">Create CCavenue</h4>                    
+<div class="col-sm-10 rightwidget">
+<form method="post" id="frmfrPaymentGateway">
+    <input type="hidden" value="" name="txnPassword" id="txnPassword">
+    <input type="hidden" value="VT0003" name="CcavenueSoftCode" id="CcavenueSoftCode">
+    <input type="hidden" value="ccavenue" name="CcavenueCodeValue" id="CcavenueCodeValue">
+    <h4 class="card-title">Create CCavenue</h4>                    
 						<div class="form-group row">
                             <label class="col-sm-3 col-form-label">Name<span id="star">*</span></label>
                             <div class="col-sm-9">
@@ -88,10 +86,8 @@ function SubmitCCavenue() {
                                 </select>
                               <span class="errorstring" id="ErrMode"><?php echo isset($ErrMode)? $ErrMode : "";?></span>
                             </div>
-                        </div>
-                        <div class="form-group row">
-						    <label class="col-sm-3 col-form-label">Status<span id="star">*</span></label>
-							<div class="col-sm-4">
+							<label class="col-sm-2 col-form-label">Status<span id="star">*</span></label>
+							<div class="col-sm-3">
 							    <select class="form-control" id="Status"  name="Status" >
                                     <option value="1" <?php echo ($_POST['Status']=="1") ? " selected='selected' " : "";?>>Active</option>
 							        <option value="0" <?php echo ($_POST['Status']=="0") ? " selected='selected' " : "";?>>Deactive</option>
@@ -113,26 +109,29 @@ function SubmitCCavenue() {
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Remarks<span id="star">*</span></label>
+                            <label class="col-sm-3 col-form-label">Remarks</label>
                             <div class="col-sm-9">
                                 <textarea class="form-control" id="CCAvenueRemarks" name="CCAvenueRemarks"><?php echo isset($_POST['CCAvenueRemarks']) ? $_POST['CCAvenueRemarks'] : "";?></textarea>
                                 <span class="errorstring" id="ErrCCAvenueRemarks"><?php echo isset($ErrCCAvenueRemarks)? $ErrCCAvenueRemarks : "";?></span>
                             </div>
-                        </div> 
-		            </div>
-	            </div>
-            </div>
-	<br>
-	<div class="form-group row" >
+                        </div>
+		           
+		<div class="form-group row" >
 						<div class="col-sm-12" style="text-align:right">
-							&nbsp;<a href="" class="btn btn-default" style="padding:7px 20px">Cancel</a>&nbsp;
-							<button type="submit" name="CreateCcavenue" id="CreateCcavenue" class="btn btn-primary">Update</a>
+							&nbsp;<a href="javascript:void(0)" class="btn btn-default" style="padding:7px 20px" onclick="AppSettings.ConfirmGotoBackFromCreateCcavenue()">Cancel</a>&nbsp;
+							<a href="javascript:void(0)" onclick="PaymentGateway.ConfirmCreateCcavenue()" class="btn btn-primary">Create</a>
 						</div>
 					</div>
 	</div>
-		<div class="col-sm-3">
-          
-        </div>
-           
-</div>
+    
 </form>
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+		<div class="modal-dialog" >
+			<div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
+		
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php include_once("settings_footer.php");?>                    
