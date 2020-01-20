@@ -92,6 +92,8 @@
                             "DELETEREASON"       => "select * from `_tbl_master_codemaster` Where `HardCode`='DELETEREASON'".$filter,
                             "PRIMARYPRIORITY"    => "select * from `_tbl_master_codemaster` Where `HardCode`='PRIMARYPRIORITY'".$filter,
                             "TEAMNAMES"    		 => "select * from `_tbl_master_codemaster` Where `HardCode`='TEAMNAMES'".$filter,
+                            "VENDORTYPE"    		 => "select * from `_tbl_master_codemaster` Where `HardCode`='VENDORTYPE'".$filter,
+                            "PAYPALCURRENCY"    		 => "select * from `_tbl_master_codemaster` Where `HardCode`='PAYPALCURRENCY'".$filter,
                             "RegisterAllowedCountries" => "select *, CONCAT(CodeValue,' (+',ParamA,')') as str FROM `_tbl_master_codemaster`  WHERE `HardCode`='CONTNAMES' and ParamE='1'");
               return $mysql->select($quries[$Request]);
         }

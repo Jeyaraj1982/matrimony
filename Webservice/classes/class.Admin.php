@@ -608,17 +608,17 @@
              $sql = "SELECT *
                                     FROM _tbl_draft_profiles
                                     LEFT  JOIN _tbl_members
-                                    ON _tbl_draft_profiles.MemberID=_tbl_members.MemberID";
+                                    ON _tbl_draft_profiles.MemberID=_tbl_members.MemberID where _tbl_draft_profiles.IsDelete='0'";
              
 
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql));    
              }                                                                                                                                                                            
              if (isset($_POST['Request']) && $_POST['Request']=="Draft") {
-                return Response::returnSuccess("success",$mysql->select($sql." WHERE _tbl_draft_profiles.RequestToVerify='0'"));    
+                return Response::returnSuccess("success",$mysql->select($sql." and _tbl_draft_profiles.RequestToVerify='0'"));    
              }
              if (isset($_POST['Request']) && $_POST['Request']=="Publish") {
-                return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_draft_profiles.IsApproved='1'"));    
+                return Response::returnSuccess("success",$mysql->select($sql."  and _tbl_draft_profiles.IsApproved='1'"));    
              }
          }
 
@@ -1884,7 +1884,7 @@
     function GetPaypalCode(){
             return Response::returnSuccess("success",array("PaypalCode" => SeqMaster::GetNextPaypalNumber()));
     }
-    function CreatePaypal() {
+    /*function CreatePaypal() {
 
         global $mysql,$loginInfo;
         if (!(strlen(trim($_POST['PaypalName']))>0)) {
@@ -1922,7 +1922,7 @@
             } else{
                 return Response::returnError("Access denied. Please contact support");   
             }
-    }
+    }*/
     function EditPaypal(){
               global $mysql,$loginInfo;
 
@@ -2464,10 +2464,10 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnSuccess("success",$mysql->select($sql." where `IsVerified`='0' and`IsRejected`='0'"));    
              }                       
              if (isset($_POST['Request']) && $_POST['Request']=="Verified") {
-                return Response::returnSuccess("success",$mysql->select($sql." where `IsVerified`='1' and`IsRejected`='0'"));    
+                return Response::returnSuccess("success",$mysql->select($sql." where `IsVerified`='1' and `IsRejected`='0'"));    
              }
              if (isset($_POST['Request']) && $_POST['Request']=="Rejected") {
-                return Response::returnSuccess("success",$mysql->select($sql." where `IsRejected`='1'"));    
+                return Response::returnSuccess("success",$mysql->select($sql." where `IsVerified`='0' and `IsRejected`='1'"));    
              }  
                 return Response::returnSuccess("success",$KYCs);
                 
@@ -2517,6 +2517,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your ID Proof Approved"); 
 
             $mysql->execute("update _tbl_member_documents set IsVerified='1',
+															  IsRejected='0',
 															  ApproveRemarks='".$_POST['IDApproveReaseon']."',
 															  VerifiedOn='".date("Y-m-d H:i:s")."' 
 															  where  DocID='".$data[0]['DocID']."'");
@@ -2550,7 +2551,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your Address Proof Approved"); 
 
-           $mysql->execute("update _tbl_member_documents set IsVerified='1',ApproveRemarks='".$_POST['AddressApproveReaseon']."',
+           $mysql->execute("update _tbl_member_documents set IsVerified='1',IsRejected='0',ApproveRemarks='".$_POST['AddressApproveReaseon']."',
                                                  VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
 
          return Response::returnSuccess("successfully Approved",array());
@@ -2590,7 +2591,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
            $mysql->execute("update _tbl_member_documents set IsRejected='1',
                                                              RejectedOn='".date("Y-m-d H:i:s")."',
                                                              RejectedRemarks='".$_POST['IDRejectReaseon']."',
-                                                             IsVerified='1',
+                                                             IsVerified='0',
                                                              VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
 
         return Response::returnSuccess("successfully Rejected",array());
@@ -2626,7 +2627,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
            $mysql->execute("update _tbl_member_documents set IsRejected='1',
                                                              RejectedRemarks='".$_POST['AddressRejectReaseon']."',
                                                              RejectedOn='".date("Y-m-d H:i:s")."',
-                                                             IsVerified='1',
+                                                             IsVerified='0',
                                                              VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
 
          return Response::returnSuccess("successfully Rejected",array());
@@ -2652,7 +2653,10 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                     ON _tbl_profiles.MemberID=_tbl_members.MemberID";
 
              if (isset($_POST['Request']) && $_POST['Request']=="Publish") {
-                return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_profiles.IsApproved='1'"));    
+                return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_profiles.IsApproved='1' and _tbl_profiles.IsPublish='1'"));    
+             }
+			 if (isset($_POST['Request']) && $_POST['Request']=="UnPublish") {
+                return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_profiles.IsApproved='1' and _tbl_profiles.IsPublish='0'"));    
              }
          }
     function GetPublishProfileInfo() {
@@ -2836,9 +2840,10 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 				 
 				$landingpageProfiles = $mysql->select("SELECT * FROM _tbl_landingpage_profiles
 													   LEFT  JOIN _tbl_profiles  
-													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX001' AND `IsShow`='1'");  
+													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX001'");  
 				foreach($landingpageProfiles as $profile) {
 					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['IsShow']=$profile['IsShow'];
 					 $tmp['DateTo']=$profile['DateTo'];
 					 $tmp['DateFrom']=$profile['DateFrom'];
 					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
@@ -2856,6 +2861,25 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX001' AND Date(_tbl_landingpage_profiles.`DateTo`)>=Date('".date("Y-m-d")."') AND `IsShow`='1'");  
 				foreach($landingpageProfiles as $profile) {
 					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['IsShow']=$profile['IsShow'];
+					 $tmp['DateTo']=$profile['DateTo'];
+					 $tmp['DateFrom']=$profile['DateFrom'];
+					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
+					 $tmp['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($profile['ProfileCode']));
+					 $tmp['MutualCount']= sizeof($this->GetMutualProfilesCount($profile['ProfileCode']));
+					 $tmp['WhoShortListedcount']= sizeof($this->GetWhoShortListedMyProfile($profile['ProfileCode']));
+					 $Profiles[] =$tmp;
+             }
+             return Response::returnSuccess("success",$Profiles);   
+             }
+			 if (isset($_POST['Request']) && $_POST['Request']=="UnPublish") {
+				 
+				$landingpageProfiles = $mysql->select("SELECT * FROM _tbl_landingpage_profiles
+													   LEFT  JOIN _tbl_profiles  
+													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX001' AND _tbl_landingpage_profiles.`IsShow`='0'");  
+				foreach($landingpageProfiles as $profile) {
+					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['IsShow']=$profile['IsShow'];
 					 $tmp['DateTo']=$profile['DateTo'];
 					 $tmp['DateFrom']=$profile['DateFrom'];
 					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
@@ -2873,6 +2897,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX001' AND Date(_tbl_landingpage_profiles.`DateTo`)<=Date('".date("Y-m-d")."') AND `IsShow`='1'");  
 				foreach($landingpageProfiles as $profile) {
 					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['IsShow']=$profile['IsShow'];
 					 $tmp['DateTo']=$profile['DateTo'];
 					 $tmp['DateFrom']=$profile['DateFrom'];
 					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
@@ -2883,6 +2908,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              }
              return Response::returnSuccess("success",$Profiles);   
              }
+			 
             
          }
 	function GetFeatuerdBrides() {
@@ -2895,9 +2921,10 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 				 
 				$landingpageProfiles = $mysql->select("SELECT * FROM _tbl_landingpage_profiles
 													   LEFT  JOIN _tbl_profiles  
-													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX002' AND `IsShow`='1'");  
+													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX002'");  
 				foreach($landingpageProfiles as $profile) {
 					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['IsShow']=$profile['IsShow'];
 					 $tmp['DateTo']=$profile['DateTo'];
 					 $tmp['DateFrom']=$profile['DateFrom'];
 					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
@@ -2912,9 +2939,28 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 				 
 				$landingpageProfiles = $mysql->select("SELECT * FROM _tbl_landingpage_profiles
 													   LEFT  JOIN _tbl_profiles  
-													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX002' AND Date(_tbl_landingpage_profiles.`DateTo`)>=Date('".date("Y-m-d")."') AND `IsShow`='1'");  
+													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX002' AND Date(_tbl_landingpage_profiles.`DateTo`)>=Date('".date("Y-m-d")."') AND _tbl_landingpage_profiles.`IsShow`='1'");  
 				foreach($landingpageProfiles as $profile) {
 					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['IsShow']=$profile['IsShow'];
+					 $tmp['DateTo']=$profile['DateTo'];
+					 $tmp['DateFrom']=$profile['DateFrom'];
+					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
+					 $tmp['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($profile['ProfileCode']));
+					 $tmp['MutualCount']= sizeof($this->GetMutualProfilesCount($profile['ProfileCode']));
+					 $tmp['WhoShortListedcount']= sizeof($this->GetWhoShortListedMyProfile($profile['ProfileCode']));
+					 $Profiles[] =$tmp;
+             }
+             return Response::returnSuccess("success",$Profiles);   
+             }
+			 if (isset($_POST['Request']) && $_POST['Request']=="UnPublish") {
+				 
+				$landingpageProfiles = $mysql->select("SELECT * FROM _tbl_landingpage_profiles
+													   LEFT  JOIN _tbl_profiles  
+													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX002' AND _tbl_landingpage_profiles.`IsShow`='0'");  
+				foreach($landingpageProfiles as $profile) {
+					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['IsShow']=$profile['IsShow'];
 					 $tmp['DateTo']=$profile['DateTo'];
 					 $tmp['DateFrom']=$profile['DateFrom'];
 					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
@@ -2929,9 +2975,10 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 				 
 				$landingpageProfiles = $mysql->select("SELECT * FROM _tbl_landingpage_profiles
 													   LEFT  JOIN _tbl_profiles  
-													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX002' AND Date(_tbl_landingpage_profiles.`DateTo`)<=Date('".date("Y-m-d")."') AND `IsShow`='1'");  
+													   ON _tbl_landingpage_profiles.ProfileCode=_tbl_profiles.ProfileCode WHERE _tbl_profiles.SexCode='SX002' AND Date(_tbl_landingpage_profiles.`DateTo`)<=Date('".date("Y-m-d")."')");  
 				foreach($landingpageProfiles as $profile) {
 					 $tmp = Profiles::getProfileInfo($profile['ProfileCode'],2);
+					 $tmp['IsShow']=$profile['IsShow'];
 					 $tmp['DateTo']=$profile['DateTo'];
 					 $tmp['DateFrom']=$profile['DateFrom'];
 					 $tmp['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($profile['ProfileCode']));
@@ -5668,8 +5715,594 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 			   
 			   return Response::returnSuccess("Success",array());  
             }
-        
-	
+	function DeleteMemberDraftProfile() {
+
+            global $mysql,$mail,$loginInfo;      
+				
+			$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+			
+			$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");   
+			
+			if($data[0]['IsDelete']==1) {
+				return Response::returnError("Profile Already Deleted");
+			}
+       
+                 $member= $mysql->select("Select * from `_tbl_members` where `MemberCode`='".$data[0]['MemberCode']."'");   
+                
+                if (!(strlen(trim($_POST['DeleteProfileRemarks']))>0)) {
+                return Response::returnError("Please enter Deleted Remarks");
+                }
+
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberDeletedraftProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$_POST['ProfileCode'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "MemberDeletedraftProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your draft profile (".$_POST['ProfileCode'].") has been deleted"); 
+             
+           $mysql->execute("update `_tbl_draft_profiles` set  `IsDelete`      = '1',
+																`DeletedOn`      = '".date("Y-m-d H:i:s")."',
+																`DeletedRemarks` = '".$_POST['DeleteProfileRemarks']."'
+																 where  `MemberID`='".$member[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'");
+
+        return Response::returnSuccess("successfully Deleted",array());
+
+    }
+	function UnpublishMemberPublishProfile() {
+
+            global $mysql,$mail,$loginInfo;      
+				
+			$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+			
+			$data = $mysql->select("Select * from `_tbl_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");   
+			
+			if($data[0]['IsPublish']==0) {
+				return Response::returnError("Profile Already Unpublished");
+			}
+       
+                 $member= $mysql->select("Select * from `_tbl_members` where `MemberCode`='".$data[0]['MemberCode']."'");   
+                
+                if (!(strlen(trim($_POST['UnpublishProfileRemarks']))>0)) {
+                return Response::returnError("Please enter Unpublish Remarks");
+                }
+
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='UnpublishMemberProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$_POST['ProfileCode'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "UnpublishMemberProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your profile (".$_POST['ProfileCode'].") has been unpublished"); 
+             
+           $mysql->execute("update `_tbl_profiles` set  `IsPublish`      = '0',
+														`IsUnPublishOn`      = '".date("Y-m-d H:i:s")."',
+														`UnPublishRemarks` = '".$_POST['UnpublishProfileRemarks']."'
+														where  `MemberID`='".$member[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'");
+
+        return Response::returnSuccess("successfully Unpublished",array());
+
+    }
+	function PublishMemberPublishProfile() {
+
+            global $mysql,$mail,$loginInfo;      
+				
+			$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+			
+			$data = $mysql->select("Select * from `_tbl_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");   
+			
+			if($data[0]['IsPublish']==1) {
+				return Response::returnError("Profile Already Published");
+			}
+       
+                 $member= $mysql->select("Select * from `_tbl_members` where `MemberCode`='".$data[0]['MemberCode']."'");   
+            
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='PublishMemberProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$_POST['ProfileCode'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "PublishMemberProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your profile (".$_POST['ProfileCode'].") has been published"); 
+             
+           $mysql->execute("update `_tbl_profiles` set  `IsPublish`      = '1' where `MemberID`='".$member[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'");
+
+        return Response::returnSuccess("successfully Published",array());
+
+    }
+	function UnpublishMemberLandingProfile() {
+
+            global $mysql,$mail,$loginInfo;      
+				
+			$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+			
+			$data = $mysql->select("Select * from `_tbl_landingpage_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");   
+			$Profile = $mysql->select("Select * from `_tbl_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");   
+			if($data[0]['IsShow']==0) {
+				return Response::returnError("Profile Already Unpublished");
+			}
+       
+                 $member= $mysql->select("Select * from `_tbl_members` where `MemberCode`='".$Profile[0]['MemberCode']."'");   
+                
+                if (!(strlen(trim($_POST['UnpublishProfileRemarks']))>0)) {
+                return Response::returnError("Please enter Unpublish Remarks");
+                }
+
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='UnpublishLandingProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$_POST['ProfileCode'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "UnpublishLandingProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your profile (".$_POST['ProfileCode'].") has been unpublished form landing page"); 
+             
+           $mysql->execute("update `_tbl_landingpage_profiles` set  `IsShow`      		= '0',
+															        `IsUnPublishOn`     = '".date("Y-m-d H:i:s")."',
+																    `UnPublishRemarks`  = '".$_POST['UnpublishProfileRemarks']."'
+																	where `ProfileCode`='".$_POST['ProfileCode']."'");
+
+        return Response::returnSuccess("successfully Unpublished",array());
+
+    }
+	function PublishMemberLandingProfile() {
+
+            global $mysql,$mail,$loginInfo;      
+				
+			$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			}
+			
+			$data = $mysql->select("Select * from `_tbl_landingpage_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");   
+			$Profile = $mysql->select("Select * from `_tbl_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");   
+			if($data[0]['IsShow']==1) {
+				return Response::returnError("Profile Already Published");
+			}
+       
+                 $member= $mysql->select("Select * from `_tbl_members` where `MemberCode`='".$Profile[0]['MemberCode']."'");   
+                
+               
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='PublishLandingProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$_POST['ProfileCode'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "PublishLandingProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your profile (".$_POST['ProfileCode'].") has been published form landing page"); 
+             
+           $mysql->execute("update `_tbl_landingpage_profiles` set `IsShow`= '1' where `ProfileCode`='".$_POST['ProfileCode']."'");
+
+        return Response::returnSuccess("successfully Unpublished",array());
+
+    }
+    function CreateOrderHeaderFooter(){
+              global $mysql,$loginInfo;
+              
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+              
+            if (!(strlen(trim($_POST['OrderHeader']))>0)) {
+                return Response::returnError("Please enter order header");
+            }       
+            
+            if (!(strlen(trim($_POST['OrderFooter']))>0)) {
+                return Response::returnError("Please enter order footer");
+            }    
+             $id =  $mysql->insert("_tbl_appmaster",array("FormType"            => "OrderForm",                    
+                                                          "HeaderContent"       => $_POST['OrderHeader'], 
+                                                          "FooterContent"       => $_POST['OrderFooter'],
+                                                          "CreatedOn"           => date("Y-m-d H:i:s"),
+                                                          "CreatedByAdminID"    => $loginInfo[0]['AdminID']));
+
+            if (sizeof($id)>0) {
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+    function CreateInvoiceHeaderFooter(){
+              global $mysql,$loginInfo;
+              
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+              
+            if (!(strlen(trim($_POST['InvoiceHeader']))>0)) {
+                return Response::returnError("Please enter invoice header");
+            }       
+            
+            if (!(strlen(trim($_POST['InvoiceFooter']))>0)) {
+                return Response::returnError("Please enter invoice footer");
+            }    
+             $id =  $mysql->insert("_tbl_appmaster",array("FormType"            => "InvoiceForm",                    
+                                                          "HeaderContent"       => $_POST['InvoiceHeader'], 
+                                                          "FooterContent"       => $_POST['InvoiceFooter'],
+                                                          "CreatedOn"           => date("Y-m-d H:i:s"),
+                                                          "CreatedByAdminID"    => $loginInfo[0]['AdminID']));
+
+            if (sizeof($id)>0) {
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+    function CreateReceiptHeaderFooter(){
+              global $mysql,$loginInfo;
+             $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }  
+            if (!(strlen(trim($_POST['ReceiptHeader']))>0)) {
+                return Response::returnError("Please enter receipt header");
+            }       
+            
+            if (!(strlen(trim($_POST['ReceiptFooter']))>0)) {
+                return Response::returnError("Please enter receipt footer");
+            }    
+             $id =  $mysql->insert("_tbl_appmaster",array("FormType"            => "ReceiptForm",                    
+                                                          "HeaderContent"       => $_POST['ReceiptHeader'], 
+                                                          "FooterContent"       => $_POST['ReceiptFooter'],
+                                                          "CreatedOn"           => date("Y-m-d H:i:s"),
+                                                          "CreatedByAdminID"    => $loginInfo[0]['AdminID']));
+
+            if (sizeof($id)>0) {
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+    function CreateEmailHeaderFooter(){
+              global $mysql,$loginInfo;
+             $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }  
+            if (!(strlen(trim($_POST['EmailHeader']))>0)) {
+                return Response::returnError("Please enter email header");
+            }       
+            
+            if (!(strlen(trim($_POST['EmailFooter']))>0)) {
+                return Response::returnError("Please enter email footer");
+            }    
+             $id =  $mysql->insert("_tbl_appmaster",array("FormType"            => "EmailForm",                    
+                                                          "HeaderContent"       => $_POST['EmailHeader'], 
+                                                          "FooterContent"       => $_POST['EmailFooter'],
+                                                          "CreatedOn"           => date("Y-m-d H:i:s"),
+                                                          "CreatedByAdminID"    => $loginInfo[0]['AdminID']));
+
+            if (sizeof($id)>0) {
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+    function CreateProfileDownloadHeaderFooter(){
+              global $mysql,$loginInfo;
+             $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }  
+            if (!(strlen(trim($_POST['ProfileDownloadHeader']))>0)) {
+                return Response::returnError("Please enter profile download header");
+            }       
+            
+            if (!(strlen(trim($_POST['ProfileDownloadFooters']))>0)) {
+                return Response::returnError("Please enter profile download footer");
+            }    
+             $id =  $mysql->insert("_tbl_appmaster",array("FormType"            => "ProfileDownloadForm",                    
+                                                          "HeaderContent"       => $_POST['ProfileDownloadFooters'], 
+                                                          "FooterContent"       => $_POST['ProfileDownloadFooters'],
+                                                          "CreatedOn"           => date("Y-m-d H:i:s"),
+                                                          "CreatedByAdminID"    => $loginInfo[0]['AdminID']));
+
+            if (sizeof($id)>0) {
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+    function CreatePayu(){
+        global $mysql,$loginInfo;
+		
+		$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			} 
+		$data = $mysql->select("select * from  _tbl_pg_vendors where MarchantID='".trim($_POST['MarchantID'])."' and VendorTypeCode='VT0001'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Marchant ID Already Exists");
+			}
+		$data = $mysql->select("select * from  _tbl_pg_vendors where Secretky='".trim($_POST['PayuKey'])."' and VendorTypeCode='VT0001'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Key Already Exists");
+			}
+		$data = $mysql->select("select * from  _tbl_pg_vendors where SaltID='".trim($_POST['SaltID'])."' and VendorTypeCode='VT0001'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Salt ID Already Exists");
+			}
+				
+			$PaymentGatewayVendorCode = SeqMaster::GetNextPaymentGatewayVendorCode();
+               
+             $id =  $mysql->insert("_tbl_pg_vendors",array("PaymentGatewayVendorCode"   => $PaymentGatewayVendorCode,                    
+                                                           "VendorTypeCode"   			=> $_POST['PayuSoftCode'],                    
+                                                           "VendorType"       			=> $_POST['PayuCodeValue'], 
+                                                           "VenderName"       			=> $_POST['PayBi2Name'],
+                                                           "VendorLogo"       			=> $_POST['PayBi2Logo'],
+                                                           "MarchantID"       			=> $_POST['MarchantID'],
+                                                           "Secretky"         			=> $_POST['PayuKey'],
+                                                           "SaltID"       	  			=> $_POST['SaltID'],
+                                                           "VendorMode"       			=> $_POST['Mode'],
+                                                           "VendorStatus"     			=> $_POST['Status'],
+                                                           "SuccessUrl"       			=> $_POST['SuccessUrl'],
+                                                           "FailureUrl"       			=> $_POST['FailureUrl'],
+                                                           "Remarks"          			=> $_POST['PayuRemarks'],
+                                                           "CreatedOn"        			=> date("Y-m-d H:i:s")));
+			
+            if (sizeof($id)>0) {
+					$mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='PaymentGatewayVendorCode'");  
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+    function CreatePaytm(){
+        global $mysql,$loginInfo;
+		
+		$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			} 
+		$data = $mysql->select("select * from  _tbl_pg_vendors where VenderName='".trim($_POST['Name'])."' and VendorTypeCode='VT0004'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Name Already Exists");
+			}
+		$data = $mysql->select("select * from  _tbl_pg_vendors where MarchantID='".trim($_POST['MarchantID'])."' and VendorTypeCode='VT0004'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Marchant ID Already Exists");
+			}
+		$data = $mysql->select("select * from  _tbl_pg_vendors where Secretky='".trim($_POST['SecretKey'])."' and VendorTypeCode='VT0004'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Secret Key Already Exists");
+			}
+		$data = $mysql->select("select * from  _tbl_pg_vendors where Identity='".trim($_POST['Identity'])."' and VendorTypeCode='VT0004'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Identity Already Exists");
+			}		
+			$PaymentGatewayVendorCode = SeqMaster::GetNextPaymentGatewayVendorCode();
+               
+             $id =  $mysql->insert("_tbl_pg_vendors",array("PaymentGatewayVendorCode"   => $PaymentGatewayVendorCode,                    
+                                                           "VendorTypeCode"   			=> $_POST['PaytmSoftCode'],                    
+                                                           "VendorType"       			=> $_POST['PaytmCodeValue'], 
+                                                           "VenderName"       			=> $_POST['Name'],
+                                                           "VendorLogo"       			=> $_POST['PaytmLogo'],
+                                                           "MarchantID"       			=> $_POST['MarchantID'],
+                                                           "WebsiteName"       			=> $_POST['Website'],
+                                                           "Identity"       			=> $_POST['Identity'],
+                                                           "Channel"       			    => $_POST['Channel'],
+                                                           "Secretky"         			=> $_POST['SecretKey'],
+                                                           "VendorMode"       			=> $_POST['Mode'],
+                                                           "VendorStatus"     			=> $_POST['Status'],
+                                                           "SuccessUrl"       			=> $_POST['SuccessUrl'],
+                                                           "FailureUrl"       			=> $_POST['FailureUrl'],
+                                                           "Remarks"          			=> $_POST['PaytmRemarks'],
+                                                           "CreatedOn"        			=> date("Y-m-d H:i:s")));
+			
+            if (sizeof($id)>0) {
+					$mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='PaymentGatewayVendorCode'");  
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+	function CreateCcavenue(){
+        global $mysql,$loginInfo;
+		
+		$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			} 
+		$data = $mysql->select("select * from  _tbl_pg_vendors where VenderName='".trim($_POST['Name'])."' and VendorTypeCode='VT0003'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Name Already Exists");
+			}
+		$data = $mysql->select("select * from  _tbl_pg_vendors where MarchantID='".trim($_POST['MarchantID'])."' and VendorTypeCode='VT0003'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Marchant ID Already Exists");
+			}
+		$data = $mysql->select("select * from  _tbl_pg_vendors where Secretky='".trim($_POST['SecretKey'])."' and VendorTypeCode='VT0003'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Secret Key Already Exists");
+			}
+		$PaymentGatewayVendorCode = SeqMaster::GetNextPaymentGatewayVendorCode();
+               
+             $id =  $mysql->insert("_tbl_pg_vendors",array("PaymentGatewayVendorCode"   => $PaymentGatewayVendorCode,                    
+                                                           "VendorTypeCode"   			=> $_POST['CcavenueSoftCode'],                    
+                                                           "VendorType"       			=> $_POST['CcavenueCodeValue'], 
+                                                           "VenderName"       			=> $_POST['Name'],
+                                                           "VendorLogo"       			=> $_POST['CCavenueLogo'],
+                                                           "MarchantID"       			=> $_POST['MarchantID'],
+                                                           "Secretky"         			=> $_POST['SecretKey'],
+                                                           "VendorMode"       			=> $_POST['Mode'],
+                                                           "VendorStatus"     			=> $_POST['Status'],
+                                                           "SuccessUrl"       			=> $_POST['SuccessUrl'],
+                                                           "FailureUrl"       			=> $_POST['FailureUrl'],
+                                                           "Remarks"          			=> $_POST['CCAvenueRemarks'],
+                                                           "CreatedOn"        			=> date("Y-m-d H:i:s")));
+			
+            if (sizeof($id)>0) {
+					$mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='PaymentGatewayVendorCode'");  
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+	function CreateInstamajo(){
+        global $mysql,$loginInfo;
+		
+		$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			} 
+		$data = $mysql->select("select * from  _tbl_pg_vendors where VenderName='".trim($_POST['InstamajoName'])."' and VendorTypeCode='VT0002'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Name Already Exists");
+			}
+		$data = $mysql->select("select * from  _tbl_pg_vendors where ClientID='".trim($_POST['ClientID'])."' and VendorTypeCode='VT0002'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Client ID Already Exists");
+			}
+		$data = $mysql->select("select * from  _tbl_pg_vendors where Secretky='".trim($_POST['SecretKey'])."' and VendorTypeCode='VT0002'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Secret Key Already Exists");
+			}
+		$PaymentGatewayVendorCode = SeqMaster::GetNextPaymentGatewayVendorCode();
+               
+             $id =  $mysql->insert("_tbl_pg_vendors",array("PaymentGatewayVendorCode"   => $PaymentGatewayVendorCode,                    
+                                                           "VendorTypeCode"   			=> $_POST['InstamajoSoftCode'],                    
+                                                           "VendorType"       			=> $_POST['InstamajoCodeValue'], 
+                                                           "VenderName"       			=> $_POST['InstamajoName'],
+                                                           "VendorLogo"       			=> $_POST['InstamajoLogo'],
+                                                           "ActionUrl"       			=> $_POST['ActionUrl'],
+                                                           "ClientID"         			=> $_POST['ClientID'],
+                                                           "Secretky"         			=> $_POST['SecretKey'],
+                                                           "VendorMode"       			=> $_POST['Mode'],
+                                                           "VendorStatus"     			=> $_POST['Status'],
+                                                           "SuccessUrl"       			=> $_POST['SuccessUrl'],
+                                                           "FailureUrl"       			=> $_POST['FailureUrl'],
+                                                           "Remarks"          			=> $_POST['InstaRemarks'],
+                                                           "CreatedOn"        			=> date("Y-m-d H:i:s")));
+			
+            if (sizeof($id)>0) {
+					$mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='PaymentGatewayVendorCode'");  
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }	
+	function GetPaymentGatewayDatas(){
+	global $mysql;
+		return Response::returnSuccess("success",array("Currency"  => CodeMaster::getData('PAYPALCURRENCY')));
+	}
+	function CreatePaypal(){
+        global $mysql,$loginInfo;
+		
+		$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+				return Response::returnError("Invalid transaction password");   
+			} 
+		$data = $mysql->select("select * from  _tbl_pg_vendors where VenderName='".trim($_POST['PaypalName'])."' and VendorTypeCode='VT0005'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Name Already Exists");
+			}
+		$data = $mysql->select("select * from  _tbl_pg_vendors where EmailID='".trim($_POST['PaypalEmailID'])."' and VendorTypeCode='VT0005'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Email ID Already Exists");
+			}
+		$data = $mysql->select("select * from  _tbl_pg_vendors where MarchantID='".trim($_POST['MarchantID'])."' and VendorTypeCode='VT0005'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Marchant ID Already Exists");
+			}
+		$data = $mysql->select("select * from  _tbl_pg_vendors where Secretky='".trim($_POST['SecretKey'])."' and VendorTypeCode='VT0005'");
+			if (sizeof($data)>0) {
+				return Response::returnError("Secret Key Already Exists");
+			}
+		$PaymentGatewayVendorCode = SeqMaster::GetNextPaymentGatewayVendorCode();
+            $Currency = CodeMaster::getData("PAYPALCURRENCY",$_POST['Currency']);  
+             $id =  $mysql->insert("_tbl_pg_vendors",array("PaymentGatewayVendorCode"   => $PaymentGatewayVendorCode,                    
+                                                           "VendorTypeCode"   			=> $_POST['PaypalSoftCode'],                    
+                                                           "VendorType"       			=> $_POST['PaypalCodeValue'], 
+                                                           "VenderName"       			=> $_POST['PaypalName'],
+                                                           "EmailID"         	        => $_POST['PaypalEmailID'],
+                                                           "MarchantID"         	    => $_POST['MarchantID'],
+                                                           "Secretky"         			=> $_POST['SecretKey'],
+                                                           "PaypalCurrencyCode"     	=> $Currency[0]['SoftCode'],
+                                                           "PaypalCurrency"     	    => $Currency[0]['CodeValue'],
+                                                           "VendorStatus"     			=> $_POST['Status'],
+                                                           "SuccessUrl"       			=> $_POST['SuccessUrl'],
+                                                           "FailureUrl"       			=> $_POST['FailureUrl'],
+                                                           "Remarks"          			=> $_POST['Remarks'],
+                                                           "CreatedOn"        			=> date("Y-m-d H:i:s")));
+			
+            if (sizeof($id)>0) {
+					$mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='PaymentGatewayVendorCode'");  
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }	
+	function GetHeaderandFooterInfo() {
+           global $mysql;    
+             $sql = "select * from  _tbl_appmaster";
+			 
+             if (isset($_POST['Request']) && $_POST['Request']=="Order") {
+                return Response::returnSuccess("success",$mysql->select($sql." where FormType='OrderForm' Order by FormTemplateID DESC"));    
+             }                                                                                                                                                                            
+             if (isset($_POST['Request']) && $_POST['Request']=="Invoice") {
+                return Response::returnSuccess("success",$mysql->select($sql." where FormType='InvoiceForm' Order by FormTemplateID DESC"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Receipt") {
+                return Response::returnSuccess("success",$mysql->select($sql." where FormType='ReceiptForm' Order by FormTemplateID DESC"));    
+             }
+			 if (isset($_POST['Request']) && $_POST['Request']=="Email") {
+                return Response::returnSuccess("success",$mysql->select($sql." where FormType='EmailForm' Order by FormTemplateID DESC"));    
+             }
+			 if (isset($_POST['Request']) && $_POST['Request']=="ProfileDownload") {
+                return Response::returnSuccess("success",$mysql->select($sql." where FormType='ProfileDownloadForm' Order by FormTemplateID DESC"));    
+             }
+         }
+	function GetPaymentGatewayMenu() {
+        return Response::returnSuccess("success",array("VendorType" => CodeMaster::getData('VENDORTYPE')));
+    }
+	function GetManagePaymentGateway() {
+           global $mysql;    
+             $sql = "select * from  _tbl_pg_vendors";
+             if (isset($_POST['Request']) && $_POST['Request']=="Payu") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='Payu'"));    
+             }
+			 if (isset($_POST['Request']) && $_POST['Request']=="Instamajo") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='instamajo'"));    
+             }
+			 if (isset($_POST['Request']) && $_POST['Request']=="CCavenue") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='ccavenue'"));    
+             }
+			 if (isset($_POST['Request']) && $_POST['Request']=="Paytm") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='paytm'"));    
+             }
+			 if (isset($_POST['Request']) && $_POST['Request']=="Paypal") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='Paypal'"));    
+             }                                                                                                                                                                            
+             
+         }
 }
 //2801
 ?> 

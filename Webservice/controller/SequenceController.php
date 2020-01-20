@@ -127,6 +127,14 @@
             $length = $data[0]['StringLength'];
             $LastNumber = $data[0]['LastNumber']+1;
             return SeqMaster::GenerateCode($prefix,$length,$LastNumber); 
+        }
+		function GetNextPaymentGatewayVendorCode() {
+            global $mysql;
+            $data = $mysql->select("select * from _tbl_sequence where SequenceFor='PaymentGatewayVendorCode'");
+            $prefix = $data[0]['Prefix'];
+            $length = $data[0]['StringLength'];
+            $LastNumber = $data[0]['LastNumber']+1;
+            return SeqMaster::GenerateCode($prefix,$length,$LastNumber); 
         } 
         function GetNextPublishProfileCode() {
             global $mysql;
