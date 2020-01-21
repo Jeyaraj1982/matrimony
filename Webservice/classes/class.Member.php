@@ -14,7 +14,7 @@
                  return Response::returnError("Please enter password ");
              }
 
-             $data=$mysql->select("select * from `_tbl_members` where (`EmailID`='".$_POST['UserName']."' or `MobileNumber`='".$_POST['UserName']."' or `MemberCode`='".$_POST['UserName']."') and `IsDeleted`='0'");
+             $data=$mysql->select("select * from `_tbl_members` where (`EmailID`='".$_POST['UserName']."' or `MobileNumber`='".$_POST['UserName']."' or `MemberCode`='".$_POST['UserName']."')");
              $clientinfo = $j2japplication->GetIPDetails($_POST['qry']);
              $loginid = $mysql->insert("_tbl_logs_logins",array("LoginOn"       => date("Y-m-d H:i:s"),
                                                                 "LoginFrom"     => "Web",
@@ -30,6 +30,12 @@
              if (sizeof($data)==1) { /* Single Information */
              
                  $settings = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='APPSETTINGS' and `CodeValue`='AllowToPasswordCaseSensitive'");
+                 if($data[0]['IsActive']==0){
+                      return Response::returnError("Account deactivated.Please contact administrator");
+                 }
+                 if($data[0]['IsDeleted']==1){
+                      return Response::returnError("Please contact administrator");
+                 }
                  if($settings[0]['ParamA']=="1"){
                      if(md5($data[0]['MemberPassword'])!=md5($_POST['Password'])) {              
                         return Response::returnError("Invalid login details ");
@@ -60,8 +66,13 @@
 
              } elseif (sizeof($data)>1) { /* Same email more than one member */
                  
-                 $data=$mysql->select("select * from `_tbl_members` where MemberPassword='".$_POST['Password']."' and (`MemberLogin`='".$_POST['UserName']."' or `EmailID`='".$_POST['UserName']."' or `MobileNumber`='".$_POST['UserName']."' or `MemberCode`='".$_POST['UserName']."') and `IsDeleted`='0'");
-                 
+                 $data=$mysql->select("select * from `_tbl_members` where MemberPassword='".$_POST['Password']."' and (`MemberLogin`='".$_POST['UserName']."' or `EmailID`='".$_POST['UserName']."' or `MobileNumber`='".$_POST['UserName']."' or `MemberCode`='".$_POST['UserName']."')");
+                  if($data[0]['IsActive']==0){
+                      return Response::returnError("Account deactivated.Please contact administrator");
+                 }
+                 if($data[0]['IsDeleted']==1){
+                      return Response::returnError("Please contact administrator");
+                 }
                  if (sizeof($data)==0) {
                      return Response::returnError("Invalid login details"); 
                  } 
@@ -168,7 +179,8 @@
                                                        "EmailID"        => $_POST['Email'],
                                                        "MemberPassword" => $_POST['LoginPassword'],
                                                        "CountryCode"    => $_POST['CountryCode'],
-                                                       "ReferedBy"      => AdminFranchise,
+                                                       "ReferedBy"      => 1,
+                                                       "CreatedBy"      => "Member",
                                                        "CreatedOn"      => date("Y-m-d H:i:s"))); 
 			
 					if (!is_dir('uploads/members/'.$MemberCode)) {

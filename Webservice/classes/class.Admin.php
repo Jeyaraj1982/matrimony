@@ -2069,9 +2069,11 @@
              global $mysql,$loginInfo;
 
              $sql = "SELECT `_tbl_members`.MemberID AS MemberID,
+                            _tbl_members.MemberCode AS MemberCode,
                             _tbl_members.MemberName AS MemberName,
                             _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
                             _tbl_franchisees.FranchiseName AS FranchiseeName,
+                            _tbl_members.CreatedBy AS CreatedBy,
                             _tbl_members.CreatedOn AS CreatedOn,
                             _tbl_members.IsActive AS IsActive
                         FROM _tbl_members
@@ -2105,17 +2107,25 @@
                                      _tbl_members.Sex AS Sex,
                                      _tbl_members.CountryCode AS CountryCode,
                                      _tbl_members.MobileNumber AS MobileNumber,
+                                     _tbl_members.WhatsappCountryCode AS WhatsappCountryCode,
+                                     _tbl_members.WhatsappNumber AS WhatsappNumber,
                                      _tbl_members.EmailID AS EmailID,
                                      _tbl_members.MemberPassword AS MemberPassword,
+                                     _tbl_members.IsMobileVerified AS IsMobileVerified,
+                                     _tbl_members.IsEmailVerified AS IsEmailVerified,
+                                     _tbl_members.IsDeleted AS IsDeleted,
+                                     _tbl_members.DeletedOn AS DeletedOn,
+                                     _tbl_members.DeactivatedOn AS DeactivatedOn,
                                      _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
                                      _tbl_franchisees.FranchiseName AS FranchiseName,
                                      _tbl_franchisees.FranchiseeID AS FranchiseeID,
+                                     _tbl_members.CreatedBy AS CreatedBy,
                                      _tbl_members.CreatedOn AS CreatedOn,
                                      _tbl_franchisees.IsActive AS FIsActive,
                                      _tbl_members.IsActive AS IsActive
                                     FROM _tbl_members
                                     INNER JOIN _tbl_franchisees
-                                    ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.MemberID='".$_POST['Code']."'");
+                                    ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.MemberCode='".$_POST['Code']."'");
         
 		$Documents = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['Code']."'");               
 		$IDProofs = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$_POST['Code']."' and DocumentType='Id Proof' order by `DocID` DESC ");               
@@ -2155,11 +2165,17 @@
                     }
              }
 			}
+        $MemberInfo =  $mysql->select("select * from  `_tbl_members` where `MemberCode` ='".$_POST['MemberCode']."'");
+        if($MemberInfo[0]['MobileNumber'] <> $_POST['MobileNumber']){
+              $mysql->execute("update _tbl_members set IsMobileVerified='0' where MemberCode='".$_POST['MemberCode']."'");
+        } 
+        if($MemberInfo[0]['EmailID'] <> $_POST['EmailID']){
+              $mysql->execute("update _tbl_members set IsEmailVerified='0' where MemberCode='".$_POST['MemberCode']."'");
+        }
 			$dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
 			$Sex = CodeMaster::getData("SEX",$_POST['Sex']);	
         $mysql->execute("update _tbl_members set MemberName='".$_POST['MemberName']."',
-												 DateofBirth='".$dob."',
-                                                 SexCode='".$_POST['Sex']."',
+												 SexCode='".$_POST['Sex']."',
                                                  Sex='".$Sex[0]['CodeValue']."',
                                                  EmailID='".$_POST['EmailID']."',
                                                  CountryCode='".$_POST['CountryCode']."',
@@ -6303,6 +6319,110 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              }                                                                                                                                                                            
              
          }
+    function DeactiveMember(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+        $Member = $mysql->select("select * from `_tbl_members` where MemberCode='".$_POST['MemberCode']."'");
+            if(!(sizeof($Member)==1)){
+                return Response::returnError("Invalid staff information"); 
+            }
+        if($Member[0]['IsActive']==0){
+            return Response::returnError("Member already deactivated"); 
+        }
+        $mysql->execute("update _tbl_members set IsActive='0',DeactivatedOn='".date("Y-m-d H:i:s")."' where `MemberID`='".$Member[0]['MemberID']."' and MemberCode='".$_POST['MemberCode']."'");
+                    
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='DeactivateMember'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "DeactivateMember",
+                                                "MemberCode"     => $Member[0]['MemberCode'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($Member[0]['MobileNumber']," Dear ".$Member[0]['MemberName'].",Your member account has been deactivated.");  
+       return Response::returnSuccess("Deactivated Successfully",array());
+    } 
+    function ActiveMember(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+        $Member = $mysql->select("select * from `_tbl_members` where MemberCode='".$_POST['MemberCode']."'");
+            if(!(sizeof($Member)==1)){
+                return Response::returnError("Invalid member information"); 
+            }
+        if($Member[0]['IsActive']==1){
+            return Response::returnError("Member already activated"); 
+        }
+        $mysql->execute("update _tbl_members set IsActive='1' where `MemberID`='".$Member[0]['MemberID']."' and MemberCode='".$_POST['MemberCode']."'");
+                    
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='ActivateMember'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "ActivateMember",
+                                                "MemberCode"     => $Member[0]['MemberCode'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($Member[0]['MobileNumber']," Dear ".$Member[0]['MemberName'].",Your member account has been activated.");  
+       return Response::returnSuccess("Activated Successfully",array());
+    }
+    function DeleteMember(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+        $Member = $mysql->select("select * from `_tbl_members` where MemberCode='".$_POST['MemberCode']."'");
+            if(!(sizeof($Member)==1)){
+                return Response::returnError("Invalid member information"); 
+            }
+        if($Member[0]['IsDeleted']==1){
+            return Response::returnError("Member already deleted"); 
+        }
+        $mysql->execute("update _tbl_members set IsDeleted='1',DeletedOn='".date("Y-m-d H:i:s")."',DeletedRemarks='".$_POST['DeletedRemarks']."' where `MemberID`='".$Member[0]['MemberID']."' and MemberCode='".$_POST['MemberCode']."'");
+                    
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='DeleteMember'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "DeleteMember",
+                                                "MemberCode"     => $Member[0]['MemberCode'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($Member[0]['MobileNumber']," Dear ".$Member[0]['MemberName'].",Your member account has been deleted.");  
+       return Response::returnSuccess("Deleted Successfully",array());
+    }
+    function RestoreMember(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+        $Member = $mysql->select("select * from `_tbl_members` where MemberCode='".$_POST['MemberCode']."'");
+            if(!(sizeof($Member)==1)){
+                return Response::returnError("Invalid member information"); 
+            }
+        if($Member[0]['IsDeleted']==0){
+            return Response::returnError("Member already restore"); 
+        }
+        $mysql->execute("update _tbl_members set IsDeleted='0',DeletedRemarks='' where `MemberID`='".$Member[0]['MemberID']."' and MemberCode='".$_POST['MemberCode']."'");
+                    
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='RestoreMember'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "RestoreMember",
+                                                "MemberCode"     => $Member[0]['MemberCode'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($Member[0]['MobileNumber']," Dear ".$Member[0]['MemberName'].",Your member account has been restored.");  
+       return Response::returnSuccess("Restored Successfully",array());
+    }
 }
 //2801
 ?> 

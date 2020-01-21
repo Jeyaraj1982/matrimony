@@ -20,7 +20,7 @@ var Franchisee = {
                           + '</div>' 
                           + '<div class="modal-footer">'
                             + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                            + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Franchisee.GetTxnPassword()" style="font-family:roboto">Create Franchisee</button>'
+                            + '<button type="button" class="btn btn-primary" name="Create" onclick="Franchisee.GetTxnPassword()" style="font-family:roboto">Create Franchisee</button>'
                           + '</div>';
             $('#Publish_body').html(content);
         } else {
@@ -181,7 +181,7 @@ var Franchisee = {
 							+'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Franchisee.GetTxnPasswordEditFranchisee()" style="font-family:roboto">Update Franchisee</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="Franchisee.GetTxnPasswordEditFranchisee()" style="font-family:roboto">Update Franchisee</button>'
                            + '</div>';
             $('#Publish_body').html(content);
         } else {
@@ -212,7 +212,7 @@ var Franchisee = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-						+ '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Franchisee.EditFranchisee()" style="font-family:roboto">Update Franchisee</button>'
+						+ '<button type="button" class="btn btn-primary" name="Create" onclick="Franchisee.EditFranchisee()" style="font-family:roboto">Update Franchisee</button>'
 					+ '</div>';
         $('#Publish_body').html(content);            
     },
@@ -270,7 +270,7 @@ var Franchisee = {
                       + '</div>' 
                       + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<a href="'+AppUrl+'Franchisees/MangeFranchisees" class="btn btn-primary" name="Create" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
+                        + '<a href="'+AppUrl+'Franchisees/MangeFranchisees" class="btn btn-primary" name="Create" style="font-family:roboto;color:white">Yes</a>'
                     + '</div>';
         $('#Publish_body').html(content);
     },
@@ -285,7 +285,7 @@ var Franchisee = {
                       + '</div>' 
                       + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<a href="'+AppUrl+'Franchisees/MangeFranchisees" class="btn btn-primary" name="Create" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
+                        + '<a href="'+AppUrl+'Franchisees/MangeFranchisees" class="btn btn-primary" name="Create" style="font-family:roboto;color:white">Yes</a>'
                     + '</div>';
         $('#Publish_body').html(content);
     },
@@ -463,7 +463,7 @@ var FranchiseeStaff = {
                           + '</div>' 
                           + '<div class="modal-footer">'
                             + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                            + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordCreatFrStf()" style="font-family:roboto">Create Franchisee</button>'
+                            + '<button type="button" class="btn btn-primary" name="Create" onclick="FranchiseeStaff.GetTxnPasswordCreatFrStf()" style="font-family:roboto">Create Franchisee</button>'
                           + '</div>';
             $('#Publish_body').html(content);
         } else {
@@ -552,7 +552,7 @@ var FranchiseeStaff = {
                       + '</div>' 
                       + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<a href="'+AppUrl+'Franchisees/FranchiseeStaffs/'+FranchiseeCode+'.html" class="btn btn-primary" name="Create" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
+                        + '<a href="'+AppUrl+'Franchisees/FranchiseeStaffs/'+FranchiseeCode+'.html" class="btn btn-primary" name="Create" style="font-family:roboto;color:white">Yes</a>'
                     + '</div>';
         $('#Publish_body').html(content);
     },
@@ -568,7 +568,7 @@ var FranchiseeStaff = {
                     + '</div>' 
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<a href="'+AppUrl+'Franchisees/FrStaffEdit/'+StaffCode+'.html" class="btn btn-primary" name="Create" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
+                        + '<a href="'+AppUrl+'Franchisees/FrStaffEdit/'+StaffCode+'.html" class="btn btn-primary" name="Create" style="font-family:roboto;color:white">Yes</a>'
                     + '</div>';
             $('#Publish_body').html(content);
      
@@ -606,7 +606,7 @@ var FranchiseeStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordEditFrstaff()" style="font-family:roboto">Update Franchisee</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="FranchiseeStaff.GetTxnPasswordEditFrstaff()" style="font-family:roboto">Update Franchisee</button>'
                            + '</div>';
             $('#Publish_body').html(content);
         } else {
@@ -636,7 +636,7 @@ var FranchiseeStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="FranchiseeStaff.EditFranchiseeStaff()" style="font-family:roboto">Update Franchisee</button>'
+                        + '<button type="button" class="btn btn-primary" name="Update" onclick="FranchiseeStaff.EditFranchiseeStaff()" style="font-family:roboto">Update Franchisee</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     },
@@ -715,7 +715,7 @@ var FranchiseeStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordDeactiveFrstaff()" style="font-family:roboto">Yes ,Deactive</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordDeactiveFrstaff()" style="font-family:roboto">Yes ,Deactive</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      },
@@ -742,7 +742,7 @@ var FranchiseeStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.DeactiveFranchiseeStaff()" style="font-family:roboto">Yes ,Deactive</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.DeactiveFranchiseeStaff()" style="font-family:roboto">Yes ,Deactive</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     },
@@ -807,7 +807,7 @@ var FranchiseeStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordActiveFrstaff()" style="font-family:roboto">Yes ,Active</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordActiveFrstaff()" style="font-family:roboto">Yes ,Active</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      },
@@ -835,7 +835,7 @@ var FranchiseeStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.ActiveFranchiseeStaff()" style="font-family:roboto">Yes ,Active</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.ActiveFranchiseeStaff()" style="font-family:roboto">Yes ,Active</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     },
@@ -901,7 +901,7 @@ var FranchiseeStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordChnPswdFrstaff()" style="font-family:roboto">Yes ,Change</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordChnPswdFrstaff()" style="font-family:roboto">Yes ,Change</button>'
                            + '</div>';
             $('#ChnPswd_body').html(content);
      },
@@ -966,7 +966,7 @@ var FranchiseeStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.FranchiseeStaffChnPswd()" style="font-family:roboto">Yes ,Change</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.FranchiseeStaffChnPswd()" style="font-family:roboto">Yes ,Change</button>'
                     + '</div>';
         $('#ChnPswd_body').html(content);            
     },
@@ -1054,7 +1054,7 @@ var FranchiseeStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordResetTxnPswdFrstaff()" style="font-family:roboto">Yes ,Continue</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordResetTxnPswdFrstaff()" style="font-family:roboto">Yes ,Continue</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      },
@@ -1082,7 +1082,7 @@ var FranchiseeStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.ResetTxnPswdFranchiseeStaff()" style="font-family:roboto">Yes ,Continue</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.ResetTxnPswdFranchiseeStaff()" style="font-family:roboto">Yes ,Continue</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     },
@@ -1148,7 +1148,7 @@ var FranchiseeStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordDeleteFrstaff()" style="font-family:roboto">Yes ,Continue</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordDeleteFrstaff()" style="font-family:roboto">Yes ,Continue</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      },
@@ -1176,7 +1176,7 @@ var FranchiseeStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.DeleteFranchiseeStaff()" style="font-family:roboto">Yes ,Continue</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.DeleteFranchiseeStaff()" style="font-family:roboto">Yes ,Continue</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     },
@@ -1243,7 +1243,7 @@ var FranchiseeStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordMobVerificationFrstaff()" style="font-family:roboto">Yes ,Continue</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordMobVerificationFrstaff()" style="font-family:roboto">Yes ,Continue</button>'
                            + '</div>';
             $('#Publish_body').html(content);
     },
@@ -1270,7 +1270,7 @@ var FranchiseeStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.FranchiseeStaffMobverification()" style="font-family:roboto">Yes ,Continue</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.FranchiseeStaffMobverification()" style="font-family:roboto">Yes ,Continue</button>'
                     + '</div>';
         $('#Publish_body').html(content);   
     },
@@ -1335,7 +1335,7 @@ var FranchiseeStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordEmailVerificationFrstaff()" style="font-family:roboto">Yes ,Continue</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordEmailVerificationFrstaff()" style="font-family:roboto">Yes ,Continue</button>'
                            + '</div>';
             $('#Publish_body').html(content);
     },
@@ -1362,7 +1362,7 @@ var FranchiseeStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.FranchiseeStaffEmailverification()" style="font-family:roboto">Yes ,Continue</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.FranchiseeStaffEmailverification()" style="font-family:roboto">Yes ,Continue</button>'
                     + '</div>';
         $('#Publish_body').html(content);   
     },
@@ -1427,7 +1427,7 @@ var FranchiseeStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordChnPswdFrFstLoginFrstaff()" style="font-family:roboto">Yes ,Continue</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.GetTxnPasswordChnPswdFrFstLoginFrstaff()" style="font-family:roboto">Yes ,Continue</button>'
                            + '</div>';
             $('#Publish_body').html(content);
     },
@@ -1454,7 +1454,7 @@ var FranchiseeStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="FranchiseeStaff.FranchiseeStaffChnPswdFstLogin()" style="font-family:roboto">Yes ,Continue</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="FranchiseeStaff.FranchiseeStaffChnPswdFstLogin()" style="font-family:roboto">Yes ,Continue</button>'
                     + '</div>';
         $('#Publish_body').html(content);   
     },
@@ -1522,7 +1522,7 @@ var Member ={
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="Member.GetTxnPasswordChnPswdFrAdmin()" style="font-family:roboto">Yes ,Change</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordChnPswdFrAdmin()" style="font-family:roboto">Yes ,Change</button>'
                            + '</div>';
             $('#ChnPswd_body').html(content);
     },
@@ -1586,7 +1586,7 @@ var Member ={
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="Member.MemberChnPswd()" style="font-family:roboto">Yes ,Change</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.MemberChnPswd()" style="font-family:roboto">Yes ,Change</button>'
                     + '</div>';
         $('#ChnPswd_body').html(content);            
     },
@@ -1656,9 +1656,15 @@ var Member ={
 	ConfirmEditMember:function() {
      if(SubmitNewMember()) {
      $('#PubplishNow').modal('show'); 
-      var content = ''
-                    +''
-                    +'<div class="modal-header">'
+      var user_alert="";
+            if ($('#MobileNumber').val()!=$('#MobileNumber').attr("OldValue")) {
+            user_alert = "You have changed mobile number"    ;
+            }
+            
+            if ($('#EmailID').val()!=$('#EmailID').attr("OldValue")) {
+            user_alert += ((user_alert!="")  ? "<br>" : "") + "You have changed email id";
+            }
+      var content = '<div class="modal-header">'
                         + '<h4 class="modal-title">Confirmation for edit member</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
@@ -1670,20 +1676,21 @@ var Member ={
                             + '<div class="col-sm-8"><br>'
                                 + '<div class="form-group row">'
                                     +'<div class="col-sm-12">Are you sure want edit member</div>'
+                                     + user_alert 
                                 + '</div>'
                             + '</div>'
                         +  '</div>'                    
                     + '</div>' 
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPassword()" style="font-family:roboto">Update Member</button>'
+                        + '<button type="button" class="btn btn-primary" name="Create" onclick="Member.GetTxnPassword()" style="font-family:roboto">Update Member</button>'
                     + '</div>';
             $('#Publish_body').html(content);
      } else {
             return false;
      }
 	},
-	 GetTxnPassword:function() {
+	GetTxnPassword:function() {
 		var content =     '<div class="modal-header">'
 							+ '<h4 class="modal-title">Confirmation for edit member</h4>'
 							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -1768,7 +1775,6 @@ var Member ={
                     + '</div>';
         $('#Publish_body').html(content);
     },
-	
 	ConfirmCreateMemberPlan:function() {
      if(SubmitNewPlan()) {
      $('#PubplishNow').modal('show'); 
@@ -1792,14 +1798,14 @@ var Member ={
                     + '</div>' 
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPasswordfrCreateMemberPlan()" style="font-family:roboto">Create Plan</button>'
+                        + '<button type="button" class="btn btn-primary" name="Create" onclick="Member.GetTxnPasswordfrCreateMemberPlan()" style="font-family:roboto">Create Plan</button>'
                     + '</div>';
             $('#Publish_body').html(content);
      } else {
             return false;
      }
 	},
-	 GetTxnPasswordfrCreateMemberPlan:function() {
+	GetTxnPasswordfrCreateMemberPlan:function() {
 		var content =     '<div class="modal-header">'
 							+ '<h4 class="modal-title">Confirmation for create member plan</h4>'
 							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -1869,7 +1875,6 @@ var Member ={
             }
         });
 	},
-	
 	ConfirmGotoBackFromCreatePlan:function() {
         $('#PubplishNow').modal('show'); 
         var content = '<div class="modal-header">'
@@ -1885,7 +1890,6 @@ var Member ={
                     + '</div>';
         $('#Publish_body').html(content);
     },
-	
 	ConfirmEditMemberPlan:function() {
      if(SubmitNewPlan()) {
      $('#PubplishNow').modal('show'); 
@@ -1909,14 +1913,14 @@ var Member ={
                     + '</div>' 
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPasswordfrMemberPlan()" style="font-family:roboto">Update Plan</button>'
+                        + '<button type="button" class="btn btn-primary" name="Create" onclick="Member.GetTxnPasswordfrMemberPlan()" style="font-family:roboto">Update Plan</button>'
                     + '</div>';
             $('#Publish_body').html(content);
      } else {
             return false;
      }
 	},
-	 GetTxnPasswordfrMemberPlan:function() {
+	GetTxnPasswordfrMemberPlan:function() {
 		var content =     '<div class="modal-header">'
 							+ '<h4 class="modal-title">Confirmation for edit member plan</h4>'
 							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -2029,7 +2033,7 @@ var Member ={
             $('#Publish_body').html(content);
      
 },
-  GetTxnPswdfrDeleteDraftProfile:function(ProfileCode) {
+    GetTxnPswdfrDeleteDraftProfile:function(ProfileCode) {
 		if ($("#DeleteRemarks_DraftProfile").val().trim()=="") {
              $("#frmDeleteRemark_error").html("Please enter reason");
              return false;
@@ -2061,7 +2065,7 @@ var Member ={
 						+ '</div>';
 				$('#Publish_body').html(content);            
 	},
-  DeleteMemberDraftProfile:function(formid) {
+    DeleteMemberDraftProfile:function(formid) {
  
 if ($("#TransactionPassword").val().trim()=="") {
 		 $("#frmTxnPass_error").html("Please enter transaction password");
@@ -2132,7 +2136,7 @@ if ($("#TransactionPassword").val().trim()=="") {
             $('#Publish_body').html(content);
      
 },
-  GetTxnPswdfrUnpublishProfile:function(ProfileCode) {
+    GetTxnPswdfrUnpublishProfile:function(ProfileCode) {
 		if ($("#UnpublishRemarks_Profile").val().trim()=="") {
              $("#frmUnpublishRemark_error").html("Please enter reason");
              return false;
@@ -2164,7 +2168,7 @@ if ($("#TransactionPassword").val().trim()=="") {
 						+ '</div>';
 				$('#Publish_body').html(content);            
 	},
-  UnpublishMemberPublishProfile:function(formid) {
+    UnpublishMemberPublishProfile:function(formid) {
  
 if ($("#TransactionPassword").val().trim()=="") {
 		 $("#frmTxnPass_error").html("Please enter transaction password");
@@ -2232,7 +2236,7 @@ if ($("#TransactionPassword").val().trim()=="") {
             $('#Publish_body').html(content);
      
 },
-  GetTxnPswdfrPublishProfile:function(ProfileCode) {
+    GetTxnPswdfrPublishProfile:function(ProfileCode) {
 		var content =   '<div class="modal-header">'
 							+ '<h4 class="modal-title">Confirmation for publish</h4>'
 							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -2259,7 +2263,7 @@ if ($("#TransactionPassword").val().trim()=="") {
 						+ '</div>';
 				$('#Publish_body').html(content);            
 	},
-  PublishMemberPublishProfile:function(formid) {
+    PublishMemberPublishProfile:function(formid) {
  
 if ($("#TransactionPassword").val().trim()=="") {
 		 $("#frmTxnPass_error").html("Please enter transaction password");
@@ -2301,6 +2305,383 @@ if ($("#TransactionPassword").val().trim()=="") {
             $('#Publish_body').html(content);
             }
         });
+    },
+    ConfirmDeactiveMember:function() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for deactive member</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want deactive member<br></div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordDeactiveMember()" style="font-family:roboto">Yes ,Deactive</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     },
+     GetTxnPasswordDeactiveMember:function() {
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for deactive member</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.DeactiveMember()" style="font-family:roboto">Yes ,Deactive</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    DeactiveMember:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Deactivate ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=DeactiveMember",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Deactivated Successfully</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Deactive member</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    ConfirmActiveMember:function() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for active member</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want active member<br></div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordActiveMember()" style="font-family:roboto">Yes ,Active</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     },
+     GetTxnPasswordActiveMember:function() {
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for active member</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.ActiveMember()" style="font-family:roboto">Yes ,Active</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    ActiveMember:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Deactivate ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=ActiveMember",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Activated Successfully</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Active member</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    ConfirmDeleteMember:function() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for delete member</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                     + '<div class="col-sm-8">'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to delete</div>'
+                                        + '</div>'
+                                        + 'Reason for Delete<br>'
+                                        + '<textarea class="form-control" rows="2" cols="3" id="DeletedReason"></textarea>'
+                                        +'<div class="col-sm-12" id="frmDeletedReason_error" style="color:red;text-align:center"></div>'
+                                     + '</div>'
+                                + '</div>'
+                            +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-danger" onclick="Member.GetTxnPasswordDeleteMember()" style="font-family:roboto">Yes ,Delete</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     },
+     GetTxnPasswordDeleteMember:function() {
+         if ($("#DeletedReason").val().trim()=="") {
+             $("#frmDeletedReason_error").html("Please enter reason for delete");
+             return false;
+         }
+        $("#DeletedRemarks").val($("#DeletedReason").val());
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for delete member</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-danger" class="btn btn-primary" onclick="Member.DeleteMember()" style="font-family:roboto">Yes ,Delete</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    DeleteMember:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Deactivate ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=DeleteMember",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Deleted Successfully</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Delete member</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    ConfirmRestoreMember:function() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for restore member</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                     + '<div class="col-sm-8">'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to restore</div>'
+                                        + '</div>'
+                                     + '</div>'
+                                + '</div>'
+                            +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordRestoreMember()" style="font-family:roboto">Yes ,Restore</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     },
+     GetTxnPasswordRestoreMember:function() {
+         
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for restore member</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.RestoreMember()" style="font-family:roboto">Yes ,Restore</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    RestoreMember:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Restore ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=RestoreMember",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Restored Successfully</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Restore member</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
     }
 	
 };
@@ -2328,7 +2709,7 @@ var AdminStaff = {
                           + '</div>' 
                           + '<div class="modal-footer">'
                             + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                            + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordCreatAdminStf()" style="font-family:roboto">Create Staff</button>'
+                            + '<button type="button" class="btn btn-primary" name="Create" onclick="AdminStaff.GetTxnPasswordCreatAdminStf()" style="font-family:roboto">Create Staff</button>'
                           + '</div>';
             $('#Publish_body').html(content);
         } else {
@@ -2432,7 +2813,7 @@ var AdminStaff = {
                     + '</div>' 
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<a href="'+AppUrl+'Staffs/Edit/'+StaffCode+'.html" class="btn btn-primary" name="Create" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
+                        + '<a href="'+AppUrl+'Staffs/Edit/'+StaffCode+'.html" class="btn btn-primary" name="Create" style="font-family:roboto;color:white">Yes</a>'
                     + '</div>';
             $('#Publish_body').html(content);
      
@@ -2470,7 +2851,7 @@ var AdminStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordEditAdminstaff()" style="font-family:roboto">Update Staff</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="AdminStaff.GetTxnPasswordEditAdminstaff()" style="font-family:roboto">Update Staff</button>'
                            + '</div>';
             $('#Publish_body').html(content);
         } else {
@@ -2500,7 +2881,7 @@ var AdminStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="AdminStaff.EditAdminStaff()" style="font-family:roboto">Update Staff</button>'
+                        + '<button type="button" class="btn btn-primary" name="Update" onclick="AdminStaff.EditAdminStaff()" style="font-family:roboto">Update Staff</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     },
@@ -2580,7 +2961,7 @@ var AdminStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordDeactiveAdminstaff()" style="font-family:roboto">Yes ,Deactive</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordDeactiveAdminstaff()" style="font-family:roboto">Yes ,Deactive</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      },
@@ -2607,7 +2988,7 @@ var AdminStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AdminStaff.DeactiveAdminStaff()" style="font-family:roboto">Yes ,Deactive</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="AdminStaff.DeactiveAdminStaff()" style="font-family:roboto">Yes ,Deactive</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     },
@@ -2672,7 +3053,7 @@ var AdminStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordActiveAdminstaff()" style="font-family:roboto">Yes ,Active</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordActiveAdminstaff()" style="font-family:roboto">Yes ,Active</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      },
@@ -2700,7 +3081,7 @@ var AdminStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AdminStaff.ActiveAdminStaff()" style="font-family:roboto">Yes ,Active</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="AdminStaff.ActiveAdminStaff()" style="font-family:roboto">Yes ,Active</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     },
@@ -2766,7 +3147,7 @@ var AdminStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordChnPswdAdminstaff()" style="font-family:roboto">Yes ,Change</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordChnPswdAdminstaff()" style="font-family:roboto">Yes ,Change</button>'
                            + '</div>';
             $('#ChnPswd_body').html(content);
      },
@@ -2831,7 +3212,7 @@ var AdminStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AdminStaff.AdminStaffChnPswd()" style="font-family:roboto">Yes ,Change</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="AdminStaff.AdminStaffChnPswd()" style="font-family:roboto">Yes ,Change</button>'
                     + '</div>';
         $('#ChnPswd_body').html(content);            
     },
@@ -2919,7 +3300,7 @@ var AdminStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordResetTxnPswdAdminstaff()" style="font-family:roboto">Yes ,Continue</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordResetTxnPswdAdminstaff()" style="font-family:roboto">Yes ,Continue</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      },
@@ -2947,7 +3328,7 @@ var AdminStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AdminStaff.ResetTxnPswdAdminStaff()" style="font-family:roboto">Yes ,Continue</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="AdminStaff.ResetTxnPswdAdminStaff()" style="font-family:roboto">Yes ,Continue</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     },
@@ -3013,7 +3394,7 @@ var AdminStaff = {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordDeleteAdminstaff()" style="font-family:roboto">Yes ,Continue</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordDeleteAdminstaff()" style="font-family:roboto">Yes ,Continue</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      },
@@ -3041,7 +3422,7 @@ var AdminStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AdminStaff.DeleteAdminStaff()" style="font-family:roboto">Yes ,Continue</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="AdminStaff.DeleteAdminStaff()" style="font-family:roboto">Yes ,Continue</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     },
@@ -3107,7 +3488,7 @@ var AdminStaff = {
 							+'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordChnPswdFrFstLoginAdminstaff()" style="font-family:roboto">Yes ,Continue</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="AdminStaff.GetTxnPasswordChnPswdFrFstLoginAdminstaff()" style="font-family:roboto">Yes ,Continue</button>'
                            + '</div>';
             $('#Publish_body').html(content);
 	},
@@ -3134,7 +3515,7 @@ var AdminStaff = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-						+ '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="AdminStaff.AdminStaffChnPswdFstLogin()" style="font-family:roboto">Yes ,Continue</button>'
+						+ '<button type="button" class="btn btn-primary" onclick="AdminStaff.AdminStaffChnPswdFstLogin()" style="font-family:roboto">Yes ,Continue</button>'
 					+ '</div>';
         $('#Publish_body').html(content);   
 	},
@@ -3409,7 +3790,7 @@ function ChangePasswordScreen(frmid1) {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="GetTxnPasswordFrEditTemplate()" style="font-family:roboto">Update Staff</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="GetTxnPasswordFrEditTemplate()" style="font-family:roboto">Update Staff</button>'
                            + '</div>';
             $('#Publish_body').html(content);
         } else {
@@ -3439,7 +3820,7 @@ function ChangePasswordScreen(frmid1) {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="EditTemplate()" style="font-family:roboto">Update Staff</button>'
+                        + '<button type="button" class="btn btn-primary" name="Update" onclick="EditTemplate()" style="font-family:roboto">Update Staff</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     }
@@ -3518,7 +3899,7 @@ function ChangePasswordScreen(frmid1) {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="GetTxnPasswordFrCreateTemplate()" style="font-family:roboto">Create</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="GetTxnPasswordFrCreateTemplate()" style="font-family:roboto">Create</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     }
@@ -3572,7 +3953,7 @@ function ChangePasswordScreen(frmid1) {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="TemplateCreate()" style="font-family:roboto">Continue</button>'
+                        + '<button type="button" class="btn btn-primary" name="Update" onclick="TemplateCreate()" style="font-family:roboto">Continue</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     }
@@ -3842,7 +4223,7 @@ var AppSettings = {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AppSettings.GetTxnPasswordFrCreateOrderHeaderFooter()" style="font-family:roboto">Update</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="AppSettings.GetTxnPasswordFrCreateOrderHeaderFooter()" style="font-family:roboto">Update</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      //   } else {
@@ -3944,7 +4325,7 @@ var AppSettings = {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AppSettings.GetTxnPasswordFrCreateInvoiceHeaderFooter()" style="font-family:roboto">Update</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="AppSettings.GetTxnPasswordFrCreateInvoiceHeaderFooter()" style="font-family:roboto">Update</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      //   } else {
@@ -4046,7 +4427,7 @@ var AppSettings = {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AppSettings.GetTxnPasswordFrCreateReceiptHeaderFooter()" style="font-family:roboto">Update</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="AppSettings.GetTxnPasswordFrCreateReceiptHeaderFooter()" style="font-family:roboto">Update</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      //   } else {
@@ -4148,7 +4529,7 @@ var AppSettings = {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AppSettings.GetTxnPasswordFrCreateEmailHeaderFooter()" style="font-family:roboto">Update</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="AppSettings.GetTxnPasswordFrCreateEmailHeaderFooter()" style="font-family:roboto">Update</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      //   } else {
@@ -4250,7 +4631,7 @@ var AppSettings = {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="AppSettings.GetTxnPasswordFrCreateProfileHeaderFooter()" style="font-family:roboto">Update</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="AppSettings.GetTxnPasswordFrCreateProfileHeaderFooter()" style="font-family:roboto">Update</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      //   } else {
@@ -4355,7 +4736,7 @@ var PaymentGateway = {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="PaymentGateway.GetTxnPasswordFrCreatePayu()" style="font-family:roboto">Create</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="PaymentGateway.GetTxnPasswordFrCreatePayu()" style="font-family:roboto">Create</button>'
                            + '</div>';
             $('#Publish_body').html(content);
        } else {
@@ -4454,7 +4835,7 @@ var PaymentGateway = {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="PaymentGateway.GetTxnPasswordFrCreatePaytm()" style="font-family:roboto">Create</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="PaymentGateway.GetTxnPasswordFrCreatePaytm()" style="font-family:roboto">Create</button>'
                            + '</div>';
             $('#Publish_body').html(content);
        } else {
@@ -4553,7 +4934,7 @@ var PaymentGateway = {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="PaymentGateway.GetTxnPasswordFrCreateCcavenue()" style="font-family:roboto">Create</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="PaymentGateway.GetTxnPasswordFrCreateCcavenue()" style="font-family:roboto">Create</button>'
                            + '</div>';
             $('#Publish_body').html(content);
        } else {
@@ -4652,7 +5033,7 @@ var PaymentGateway = {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="PaymentGateway.GetTxnPasswordFrCreateInstamajo()" style="font-family:roboto">Create</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="PaymentGateway.GetTxnPasswordFrCreateInstamajo()" style="font-family:roboto">Create</button>'
                            + '</div>';
             $('#Publish_body').html(content);
        } else {
@@ -4751,7 +5132,7 @@ var PaymentGateway = {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="PaymentGateway.GetTxnPasswordFrCreatePaypal()" style="font-family:roboto">Create</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="PaymentGateway.GetTxnPasswordFrCreatePaypal()" style="font-family:roboto">Create</button>'
                            + '</div>';
             $('#Publish_body').html(content);
        } else {

@@ -125,6 +125,7 @@
                                                   "EmailID"                  => $_POST['EmailID'],
                                                   "CreatedOn"                => date("Y-m-d H:i:s"),
                                                   "ReferedBy"                => $loginInfo[0]['FranchiseeID'],
+                                                  "CreatedBy"                => "Franchisee",
 												  "ChangePasswordFstLogin"   => (($_POST['PasswordFstLogin']=="on") ? '1' : '0'),
                                                   "MemberPassword"           => $_POST['LoginPassword']));
         if (sizeof($id)>0) {
