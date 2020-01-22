@@ -2,6 +2,13 @@
    $response = $webservice->getData("Admin","GetMemberInfo");
    $Member          = $response['data']['MemberInfo'];
 ?>
+<form method="post" id="frmfrn">
+    <input type="hidden" value="" name="txnPassword" id="txnPassword">
+    <input type="hidden" value="" name="NewPswd" id="NewPswd">
+    <input type="hidden" value="" name="ConfirmNewPswd" id="ConfirmNewPswd">
+    <input type="hidden" value="" name="ChnPswdFstLogin" id="ChnPswdFstLogin">
+    <input type="hidden" value="" name="DeletedRemarks" id="DeletedRemarks">
+    <input type="hidden" value="<?php echo $Member['MemberCode'];?>" name="MemberCode" id="MemberCode">
 <div class="form-group row">
 <div class="col-sm-9">
 <div class="col-12 grid-margin">
@@ -9,7 +16,7 @@
 		<div class="card-body">
 			<div style="padding:15px !important;max-width:770px !important;">
 				<h4 class="card-title">Manage Members</h4>  
-				<h4 class="card-title">View Member Information</h4>  
+				<h4 class="card-title" style="font-weight:399">View Member Information</h4>  
 				<div class="form-group row">
 					<div class="col-sm-3"><small>Member Code:</small> </div>
 					<div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberCode'];?></small></div>
@@ -17,33 +24,34 @@
 				<div class="form-group row">
 					<div class="col-sm-3"><small>Member Name:</small> </div>
 					<div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberName'];?></small></div>
-					<div class="col-sm-2"><small>Gender:</small> </div>
+				</div>
+				<div class="form-group row">
+					<div class="col-sm-3"><small>Date of Birth:</small> </div>
+					<div class="col-sm-9"><small style="color:#737373;"><?php echo PutDate($Member['DateofBirth']);?></small></div>
+				</div>
+				<div class="form-group row">	
+					<div class="col-sm-3"><small>Gender:</small> </div>
 					<div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['Sex'];?></small></div>
 				</div>
 				<div class="form-group row">
 					<div class="col-sm-3"><small>Mobile Number:</small></div>
-					<div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['CountryCode'];?>-<?php echo $Member['MobileNumber'];?></small></div>
-					<div class="col-sm-2"><small>Email ID:</small></div>
-					<div class="col-sm-3"><small style="color:#737373;"><?php echo  $Member['EmailID'];?></small></div>
-				</div>
-				<div class="form-group row">
-					<div class="col-sm-3"><small>Created on:</small></div>
-					<div class="col-sm-3"><small style="color:#737373;"><?php echo  putDateTime($Member['CreatedOn']);?></small></div>
-					<div class="col-sm-2"><small>Status:</small></div>
-					<div class="col-sm-3"><small style="color:#737373;">
-						<?php if($Member['IsActive']==1){
-							echo "Active";
-						}                                  
-						else{
-							echo "Deactive";
-						}
-						?></small>
+					<div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['CountryCode'];?>-<?php echo $Member['MobileNumber'];?></small>&nbsp;&nbsp;
+						<?php if($Member['IsMobileVerified']==1){ ?> <img src="<?php echo SiteUrl?>assets/images/icon_verified.png" ><?php } ?>
 					</div>
 				</div>
+				<?php if(strlen($Member['WhatsappNumber'])>0){ ?>
 				<div class="form-group row">
-					<div class="col-sm-3"><small>Franchisee Name:</small></div>
-					<div class="col-sm-9"><span class="<?php echo ($Member['FIsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<small style="color:#737373;"><?php echo  $Member['FranchiseName'];?> (<?php echo  $Member['FranchiseeCode'];?>)</small></div>                                                         
-				</div>                                                                                                        
+					<div class="col-sm-3"><small>Whatsapp Number:</small></div>
+					<div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['WhatsappCountryCode'];?>-<?php echo $Member['WhatsappNumber'];?></small></div>
+				</div>
+				<?php } ?>
+				<div class="form-group row">
+					<div class="col-sm-3"><small>Email ID:</small></div>
+					<div class="col-sm-9"><small style="color:#737373;"><?php echo  $Member['EmailID'];?></small> &nbsp;&nbsp;
+						<?php if($Member['IsEmailVerified']==1){ ?> <img src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } ?>
+					</div>
+				</div>
+				                                                                                                       
 			</div>                                      
 		</div>    
 	</div> 
@@ -146,7 +154,6 @@
 				</div>
 				<?php } ?>
 			</div>
-		</form>
 		</div> 
 	</div>
 </div>	
@@ -159,33 +166,69 @@
         </div>  
 	<div class="modal" id="PubplishNow" data-backdrop="static" >
         <div class="modal-dialog" >
-            <div class="modal-content" id="Publish_body"  style="max-height: 313px;min-height: 313px;" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
         
             </div>
         </div>
     </div>
 </div>
 <div class="col-sm-3">
-	<div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Custom Manage</small></a></div>
-	<div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Custom Email</small></a></div>
-	<div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Custom Sms</small></a></div>
-	<div class="col-sm-12 col-form-label"><?php if($Member['IsActive']==1) { ?>
-		<a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Block</small></a>                                   
-		 <?php } else {    ?>
-			<a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Unblock</small></a>                                   
-		<?php } ?>
-	</div>
-    <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Edit Member</small></a></div>                       
-    <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Profiles</small></a></div>                       
-    <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Member Plan</small></a></div>                       
-	<div class="col-sm-12 col-form-label">
-	<hr>
-		Wallet Balance: <br>
-		<?php $res = $webservice->getData("Admin","GetMemberWalletBalance"); ?>
-		<?php echo $res['data']['WalletBalance'];?>
-	</div>
+            <div class="col-sm-12 col-form-label">
+                Created On <br>
+                <?php echo putDateTime($Member['CreatedOn']);?><br><br> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                Franchisee Name <br>
+                <span class="<?php echo ($Member['FIsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo  $Member['FranchiseName'];?> (<?php echo  $Member['FranchiseeCode'];?>)<br><br> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>
+                 &nbsp;&nbsp;&nbsp;
+                 <small style="color:#737373;">
+                    <?php if($Member['IsActive']==1){
+                      echo "Active";
+                    }else{
+                      echo "Deactive"."( ".PutDatetime($Member['DeactivatedOn'])." )";
+                    }?>
+                 </small>
+            </div>
+            <?php if($Member['IsDeleted']==1) { ?>
+                <div class="col-sm-12 col-form-label">
+                     Deleted On <br>
+                <?php echo putDateTime($Member['DeletedOn']);?>
+                </div>
+            <?php } ?>
+            <div class="col-sm-12 col-form-label"><a href="../ManageMember"><small style="font-weight:bold;text-decoration:underline">List of Members</small></a></div>
+            <div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Members/EditMember/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">Edit Member</small></a></div>
+            <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick="Member.ConfirmMemberChnPswd()"><small style="font-weight:bold;text-decoration:underline">Change Password</small></a></div>
+            <div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Members/ResetPassword/".$_REQUEST['Code'].".htm "); ?>"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a></div>
+            <div class="col-sm-12 col-form-label"><?php if($Member['IsActive']==1) { ?>
+                <a href="javascript:void(0)" onclick="Member.ConfirmDeactiveMember()"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>                                   
+                 <?php } else {    ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmActiveMember()"><small style="font-weight:bold;text-decoration:underline">Active</small></a>                                   
+                <?php } ?>
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsDeleted']==0) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmDeleteMember()"><small style="font-weight:bold;text-decoration:underline">Delete</small></a>                                   
+                <?php } else { ?>    
+                    <a href="javascript:void(0)" onclick="Member.ConfirmRestoreMember()"><small style="font-weight:bold;text-decoration:underline">Restore</small></a>                                   
+                <?php } ?>
+            </div>
+            <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Custom Manage</small></a></div>
+            <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Custom Email</small></a></div>
+            <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Custom Sms</small></a></div>
+            <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Profiles</small></a></div>                       
+            <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Member Plan</small></a></div>                       
+            <div class="col-sm-12 col-form-label">
+            <hr>
+                Wallet Balance: <br>
+                <?php $res = $webservice->getData("Admin","GetMemberWalletBalance"); ?>
+                <?php echo $res['data']['WalletBalance'];?>
+            </div>
+        </div>
 </div>	
-</div>	
+</form>
 <div class="col-12 grid-margin">
         <div class="card">
             <div class="card-body">
@@ -473,7 +516,6 @@
                             <div class="Invoice" id="Invoicediv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
                                          <h4>Invoice</h4>
                                          <?php $response = $webservice->getData("Admin","GetMemberWalletAndProfileDetails",array("DetailFor"=>"Invoice")); ?>
-                                         <?php print_r($response); ?>
                                          <?php if (sizeof($response['data'])>0) {   ?>
                                     <div class="table-responsive">
                                     <table id="myTable" class="table table-striped" style="width:100%;border-bottom:1px solid #ccc;">
@@ -511,105 +553,117 @@
                             </div>
                             <div class="RecentlyViewed" id="RecentlyVieweddiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
                                 <h4>Recently Viewed</h4>
-                                   <?php $response = $webservice->getData("Admin","GetMemberWalletAndProfileDetails",array("DetailFor"=>"Recentlyviewed")); 
-                                   print_R($response);
-                                ?>
+                                   <?php $response = $webservice->getData("Admin","GetMemberWalletAndProfileDetails",array("DetailFor"=>"Recentlyviewed")); ?>
                                     <?php if (sizeof($response['data'])>0) {   ?>
                                       <?php foreach($response['data']as $P) { 
                                             $Profile = $P['ProfileInfo'];
                                             ?>
                                         <div class="profile_horizontal_row" id="div_<?php echo $Profile['ProfileCode']; ?>">
                                             <div class="form-group row">
-                    <div class="col-sm-3" style="text-align:center;max-width: 182px;">
-                    <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                        <img src="<?php echo $P['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
-                    </div>
-                    <div class="col-sm-9">
-                            <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
-                                <div class="form-group row">                                                                                     
-                                       <div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
-                                       <div class="col-sm-4">
-                                       <div style="text-align:right;">
-                        <?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
-                                                <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
-                                                <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
-                                            <?php } else if ($Profile['isMutured']==1) {?>
-                                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
-                                            <?php } else{?>
-                                                <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
-                                            <?php }?>
-                        </div>
-                        </div> 
-                                </div>
-                                <div class="form-group row">
-                                       <div class="col-sm-7">
-                                            <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
-                                       </div>
-                                       <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:35px;"></span></div> 
-                                       <div class="col-sm-4" style="float:right;font-size: 12px;">
-                                                <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
-                                                <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?>
-                                                <br>
-                                                <br>
-                                       </div>
-                                </div>
-                                </div>
-                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
-                                        <div><?php echo $Profile['Height'];?></div>
-                                        <div><?php echo $Profile['Religion'];?></div>                                                                                      
-                                        <div><?php echo $Profile['Caste'];?></div>
-                                    </div>
-                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
-                                        <div><?php echo $Profile['MaritalStatus'];?></div>
-                                        <div><?php echo $Profile['OccupationType'];?></div>
-                                        <div><?php echo $Profile['AnnualIncome'];?></div>
-                                    </div>
-                                    <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
-                                        <?php echo $Profile['AboutMe'];?>
-                                    </div>
-                                </div>
-                            </div>
+												<div class="col-sm-3" style="text-align:center;max-width: 182px;">
+													<div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
+														<img src="<?php echo $P['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
+													</div>
+												<div class="col-sm-9">
+													<div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
+														<div class="form-group row">                                                                                     
+															<div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
+															<div class="col-sm-4">
+																<div style="text-align:right;">
+																<?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
+																	<span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
+																	<img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
+																<?php } else if ($Profile['isMutured']==1) {?>
+																	<img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+																<?php } else{?>
+																	<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+																<?php }?>
+																</div>
+															</div> 
+														</div>
+														<div class="form-group row">
+														   <div class="col-sm-7">
+																<div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
+														   </div>
+														   <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:35px;"></span></div> 
+														   <div class="col-sm-4" style="float:right;font-size: 12px;">
+																<?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
+																<?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?>
+																<br>
+																<br>
+															</div>
+														</div>
+													</div>
+													<div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+														<div><?php echo $Profile['Height'];?></div>
+														<div><?php echo $Profile['Religion'];?></div>                                                                                      
+														<div><?php echo $Profile['Caste'];?></div>
+													</div>
+													<div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+														<div><?php echo $Profile['MaritalStatus'];?></div>
+														<div><?php echo $Profile['OccupationType'];?></div>
+														<div><?php echo $Profile['AnnualIncome'];?></div>
+													</div>
+													<div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
+														<?php echo $Profile['AboutMe'];?>
+													</div>
+												</div>
+											</div>
                                             <div style="float:right;line-height: 1px;">
-                                <a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <?php if ($Profile['IsDownloaded']==0) { ?>
-                                    <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
-                                <?php } else { ?>
-                                    Alredy Downloaded
-                                <?php } ?>
-                                &nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=MyRecentViewed");?>">view</a>
-                            </div>
+												<a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;
+												<?php if ($Profile['IsDownloaded']==0) { ?>
+													<a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
+												<?php } else { ?>
+													Alredy Downloaded
+												<?php } ?>
+												&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=MyRecentViewed");?>">view</a>
+											</div>
                                             <div class="modal" id="Upgrades" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-                                <div class="modal-dialog" style="width: 367px;">
-                                    <div class="modal-content" id="Upgrades_body" style="height:335px"></div>
-                                </div>
-                            </div>
+												<div class="modal-dialog" style="width: 367px;">
+													<div class="modal-content" id="Upgrades_body" style="height:335px"></div>
+												</div>
+											</div>
                                             <div class="modal" id="OverAll" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-                                <div class="modal-dialog" style="width: 367px;">
-                                    <div class="modal-content" id="OverAll_body" style="height:335px"></div>
-                                </div>
-                            </div>
+												<div class="modal-dialog" style="width: 367px;">
+													<div class="modal-content" id="OverAll_body" style="height:335px"></div>
+												</div>
+											</div>
                                         </div>
-                                 <?php } } else { ?>
-                                   <div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
-                                    <img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
-                                    No profiles found at this time<br><br>
-                                </div>     
-                              <?php } ?> 
+										<?php } } else { ?>
+										<div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+											<img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
+											No profiles found at this time<br><br>
+										</div>     
+									  <?php } ?> 
                                 
-                            </div>
+							</div>
                             <div class="RecentlyWhoViewed" id="RecentlyWhoVieweddiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
                                 <h4>Recently Who Viewed</h4>
-                                
-                                
+									<div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+										<img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
+										No profiles found at this time<br><br>
+									</div>
                             </div>
                             <div class="Favorited" id="Favoriteddiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
-                                         <h4>Favorited</h4>
+                                <h4>Favorited</h4>
+									<div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+										<img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
+										No profiles found at this time<br><br>
+									</div>
                             </div> 
                             <div class="WhoLiked" id="WhoLikeddiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
-                                         <h4>Who Liked</h4>
+                                <h4>Who Liked</h4>
+									<div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+										<img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
+										No profiles found at this time<br><br>
+									</div>
                             </div>
                             <div class="Mutual" id="Mutualdiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
-                                         <h4>Mutual</h4>
+                                <h4>Mutual</h4>
+								<div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+										<img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
+										No profiles found at this time<br><br>
+									</div>
                             </div>
                             <div class="LoginLogs" id="LoginLogsdiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
                                 <h4>Login Logs</h4>

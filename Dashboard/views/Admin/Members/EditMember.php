@@ -144,14 +144,31 @@ if (isset($_POST['Btnupdate'])) {
     <input type="hidden" value="" name="NewPswd" id="NewPswd">
     <input type="hidden" value="" name="ConfirmNewPswd" id="ConfirmNewPswd">
     <input type="hidden" value="" name="ChnPswdFstLogin" id="ChnPswdFstLogin">
+    <input type="hidden" value="" name="DeletedRemarks" id="DeletedRemarks">
+    <input type="hidden" value="" name="SmsMessage" id="SmsMessage">
+    <input type="hidden" value="" name="EmailSubjectMessage" id="EmailSubjectMessage">
+    <input type="hidden" value="" name="EmailContentMessage" id="EmailContentMessage">
     <input type="hidden" value="<?php echo $Member['MemberCode'];?>" name="MemberCode" id="MemberCode">
-	<div class="col-12 grid-margin">
+    <?php
+         $disbaled = ( $Member['IsActive']==0 || $Member['IsDeleted']==1 ) ? true : false;
+         $stars = (!($disbaled)) ? '<span id="star">*</span>' : ""; 
+     ?>
+	<div class="row">
 		<div class="col-sm-9">
             <div class="card">
 				<div class="card-body">
-					<div style="padding:15px !important;max-width:770px !important;">
-						<h4 class="card-title">Manage Members</h4>
+					<div style="max-width:770px !important;">
 						<h4 class="card-title">Edit Member</h4>
+                            <?php if($Member['IsDeleted']==1){ ?>
+                            <div class="alert alert-warning">
+                                <strong>Warning!</strong>&nbsp;Member Status has deleted So you can't edit the details
+                            </div> 
+                            <?php } else {?>
+                            <?php if($Member['IsActive']==0) {?>
+                            <div class="alert alert-warning">
+                                <strong>Warning!</strong>&nbsp;Member Status has deactivated So you can't edit the details
+                            </div>
+                            <?php } }?>
 							<div class="form-group row">
 								<div class="col-sm-3"><small>Member Code</small> </div>
 								<div class="col-sm-3">
@@ -159,128 +176,186 @@ if (isset($_POST['Btnupdate'])) {
 								</div>
 							</div>
 							<div class="form-group row">
-								<div class="col-sm-3"><small>Member Name<span id="star">*</span></small> </div>
+								<div class="col-sm-3"><small>Member Name<?php echo $stars; ?></small> </div>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="MemberName" name="MemberName" value="<?php echo (isset($_POST['MemberName']) ? $_POST['MemberName'] : $Member['MemberName']);?>" placeholder="Member Name">
-									<span class="errorstring" id="ErrMemberName"><?php echo isset($ErrMemberName)? $ErrMemberName : "";?></span>
-								</div>
+                                    <?php if($disbaled) { ?>
+                                        <input type="text" class="form-control" disabled="disabled" value="<?php echo (isset($_POST['MemberName']) ? $_POST['MemberName'] : $Member['MemberName']);?>">
+									<?php } else { ?>
+                                        <input type="text" class="form-control" id="MemberName" maxlength="60" name="MemberName" value="<?php echo (isset($_POST['MemberName']) ? $_POST['MemberName'] : $Member['MemberName']);?>" placeholder="Member Name">
+									    <span class="errorstring" id="ErrMemberName"><?php echo isset($ErrMemberName)? $ErrMemberName : "";?></span>
+								    <?php } ?>
+                                </div>
 							</div>
 							<div class="form-group row">
-								<div class="col-sm-3"><small>Date of Birth<span id="star">*</span></small></div>
+								<div class="col-sm-3"><small>Date of Birth<?php echo $stars; ?></small></div>
 								<div class="col-sm-5" >
-									<?php if($Member['IsActive']==1){ ?>
-									<div class="col-sm-4" style="max-width:63px !important;padding:0px !important;">
-										<?php $dob=strtotime($Member['DateofBirth'])  ; ?>
-											<select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
-												<?php for($i=1;$i<=31;$i++) {?>
-												<option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'date'])) ? (($_POST[ 'date']==$i) ? " selected='selected' " : "") : ((date("d",$dob)==$i) ? " selected='selected' " : "");?>><?php echo $i;?></option>
-												<?php } ?>
-											</select>
-									</div>
-									<div class="col-sm-4" style="max-width:73px !important;padding:0px !important;margin-right:6px;margin-left:6px;">        
-										<select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px">
-											<?php foreach($_Month as $key=>$value) {?>
-												<option value="<?php echo $key+1; ?>" <?php echo (isset($_POST[ 'month'])) ? (($_POST[ 'month']==$key+1) ? " selected='selected' " : "") : ((date("m",$dob)==$key+1) ? " selected='selected' " : "");?>><?php echo $value;?></option>
-											<?php } ?>
-										</select>
-									</div>
-									<div class="col-sm-4" style="max-width:110px !important;padding:0px !important;">
-										<select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
-											<?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
-												<option value="<?php echo $i; ?>" <?php echo (isset($_POST['year'])) ? (($_POST['year']==$i) ? " selected='selected' " : "") : ((date("Y",$dob)==$i) ? " selected='selected' " : "");?>><?php echo $i;?></option>
-											<?php } ?>
-										</select>
-									</div>
+									<?php if($Member['IsActive']==0 || $Member['IsDeleted']==1 ) { ?>
+                                    <div class="col-sm-4" style="max-width:75px !important;padding:0px !important;">
+                                            <?php $dob=strtotime($Member['DateofBirth'])  ; ?>
+                                            <select class="form-control" disabled="disabled">
+                                                <?php for($i=1;$i<=31;$i++) {?>
+                                                <option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'date'])) ? (($_POST[ 'date']==$i) ? " selected='selected' " : "") : ((date("d",$dob)==$i) ? " selected='selected' " : "");?>><?php echo $i;?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4" style="max-width:90px !important;padding:0px !important;margin-right:6px;margin-left:6px;">        
+                                            <select class="form-control" disabled="disabled">
+                                                <?php foreach($_Month as $key=>$value) {?>
+                                                    <option value="<?php echo $key+1; ?>" <?php echo (isset($_POST[ 'month'])) ? (($_POST[ 'month']==$key+1) ? " selected='selected' " : "") : ((date("m",$dob)==$key+1) ? " selected='selected' " : "");?>><?php echo $value;?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4" style="max-width:120px !important;padding:0px !important;">
+                                            <select class="form-control" disabled="disabled">
+                                                <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
+                                                    <option value="<?php echo $i; ?>" <?php echo (isset($_POST['year'])) ? (($_POST['year']==$i) ? " selected='selected' " : "") : ((date("Y",$dob)==$i) ? " selected='selected' " : "");?>><?php echo $i;?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
 									<?php } else { ?>
-										<div class="col-sm-4" style="max-width:63px !important;padding:0px !important;">
-										<?php $dob=strtotime($Member['DateofBirth'])  ; ?>
-											<select class="form-control" disabled="disabled">
-												<?php for($i=1;$i<=31;$i++) {?>
-												<option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'date'])) ? (($_POST[ 'date']==$i) ? " selected='selected' " : "") : ((date("d",$dob)==$i) ? " selected='selected' " : "");?>><?php echo $i;?></option>
-												<?php } ?>
-											</select>
-									</div>
-									<div class="col-sm-4" style="max-width:73px !important;padding:0px !important;margin-right:6px;margin-left:6px;">        
-										<select class="form-control" disabled="disabled">
-											<?php foreach($_Month as $key=>$value) {?>
-												<option value="<?php echo $key+1; ?>" <?php echo (isset($_POST[ 'month'])) ? (($_POST[ 'month']==$key+1) ? " selected='selected' " : "") : ((date("m",$dob)==$key+1) ? " selected='selected' " : "");?>><?php echo $value;?></option>
-											<?php } ?>
-										</select>
-									</div>
-									<div class="col-sm-4" style="max-width:110px !important;padding:0px !important;">
-										<select class="form-control" disabled="disabled">
-											<?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
-												<option value="<?php echo $i; ?>" <?php echo (isset($_POST['year'])) ? (($_POST['year']==$i) ? " selected='selected' " : "") : ((date("Y",$dob)==$i) ? " selected='selected' " : "");?>><?php echo $i;?></option>
-											<?php } ?>
-										</select>
-									</div>
+										<div class="col-sm-4" style="max-width:75px !important;padding:0px !important;">
+                                        <?php $dob=strtotime($Member['DateofBirth'])  ; ?>
+                                            <select class="selectpicker form-control" data-live-search="true" id="date" name="date" style="width:56px">
+                                                <?php for($i=1;$i<=31;$i++) {?>
+                                                <option value="<?php echo $i; ?>" <?php echo (isset($_POST[ 'date'])) ? (($_POST[ 'date']==$i) ? " selected='selected' " : "") : ((date("d",$dob)==$i) ? " selected='selected' " : "");?>><?php echo $i;?></option>
+                                                <?php } ?>
+                                            </select>
+                                    </div>
+                                    <div class="col-sm-4" style="max-width:90px !important;padding:0px !important;margin-right:6px;margin-left:6px;">        
+                                        <select class="selectpicker form-control" data-live-search="true" id="month" name="month" style="width:56px">
+                                            <?php foreach($_Month as $key=>$value) {?>
+                                                <option value="<?php echo $key+1; ?>" <?php echo (isset($_POST[ 'month'])) ? (($_POST[ 'month']==$key+1) ? " selected='selected' " : "") : ((date("m",$dob)==$key+1) ? " selected='selected' " : "");?>><?php echo $value;?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4" style="max-width:120px !important;padding:0px !important;">
+                                        <select class="selectpicker form-control" data-live-search="true" id="year" name="year" style="width:56px">
+                                            <?php for($i=$_DOB_Year_Start;$i>=$_DOB_Year_End;$i--) {?>
+                                                <option value="<?php echo $i; ?>" <?php echo (isset($_POST['year'])) ? (($_POST['year']==$i) ? " selected='selected' " : "") : ((date("Y",$dob)==$i) ? " selected='selected' " : "");?>><?php echo $i;?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
 									<?php } ?>
 								</div>
 							</div>
 							<div class="form-group row">
-								<div class="col-sm-3"><small>Gender<span id="star">*</span></small></div>
-							  <div class="col-sm-5">
-									<select class="selectpicker form-control" data-live-search="true" id="Sex" name="Sex">
-										<?php foreach($Gender as $Sex) { ?>
-										<option value="<?php echo $Sex['SoftCode'];?>" <?php echo (isset($_POST[ 'Sex'])) ? (($_POST[ 'Sex']==$Sex[ 'SoftCode']) ? " selected='selected' " : "") : (($Member[ 'Sex']==$Sex[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $Sex['CodeValue'];?></option>
-										<?php } ?>
-									</select>
-									<span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>
+								<div class="col-sm-3"><small>Gender<?php echo $stars; ?></small></div>
+							    <div class="col-sm-5">
+                                    <?php if($disbaled) { ?>
+                                        <select class="form-control" disabled="disabled">
+										    <?php foreach($Gender as $Sex) { ?>
+										    <option value="<?php echo $Sex['SoftCode'];?>" <?php echo (isset($_POST[ 'Sex'])) ? (($_POST[ 'Sex']==$Sex[ 'SoftCode']) ? " selected='selected' " : "") : (($Member[ 'Sex']==$Sex[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $Sex['CodeValue'];?></option>
+										    <?php } ?>
+									    </select>
+                                    <?php } else { ?>
+                                         <select class="selectpicker form-control" data-live-search="false" id="Sex" name="Sex">
+                                            <?php foreach($Gender as $Sex) { ?>
+                                            <option value="<?php echo $Sex['SoftCode'];?>" <?php echo (isset($_POST[ 'Sex'])) ? (($_POST[ 'Sex']==$Sex[ 'SoftCode']) ? " selected='selected' " : "") : (($Member[ 'Sex']==$Sex[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $Sex['CodeValue'];?></option>
+                                            <?php } ?>
+                                        </select>
+									    <span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>
+                                    <?php } ?>
 							  </div>
 							</div>
 							<div class="form-group row">
-								<div class="col-sm-3"><small>Mobile Number<span id="star">*</span></small></div>
+								<div class="col-sm-3"><small>Mobile Number<?php echo $stars; ?></small></div>
 								<div class="col-sm-3">
+                                <?php if($disbaled) { ?>
+                                    <select class="form-control" disabled="disabled">
+                                        <?php foreach($CountryCodes as $CountryCode) { ?>
+                                            <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'CountryCode'])) ? (($_POST[ 'CountryCode']==$CountryCode[ 'ParamB']) ? " selected='selected' " : "") : (($Member[ 'CountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                                <?php echo $CountryCode['str'];?>
+                                            </option>
+                                            <?php } ?>
+                                    </select>
+                                <?php } else{ ?>
 									<select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="width: 61px;">
 										<?php foreach($CountryCodes as $CountryCode) { ?>
-											<option value="<?php echo $CountryCode['ParamB'];?>" <?php echo (isset($_POST[ 'CountryCode'])) ? (($_POST[ 'CountryCode']==$CountryCode[ 'ParamB']) ? " selected='selected' " : "") : (($Member[ 'CountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
+											<option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'CountryCode'])) ? (($_POST[ 'CountryCode']==$CountryCode[ 'ParamB']) ? " selected='selected' " : "") : (($Member[ 'CountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
 												<?php echo $CountryCode['str'];?>
 											</option>
 											<?php } ?>
 									</select>
+                                <?php } ?>
 								</div>
-								<div class="col-sm-5">
-									<input type="text" class="form-control" maxlength="10" id="MobileNumber" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Member['MobileNumber']);?>" placeholder="Mobile Number">
-									<span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
-								</div>
-								<div class="col-sm-1">
-									<?php if($Member['IsMobileVerified']=1){ ?> <img src="<?php echo SiteUrl?>assets/images/icon_verified.png" style="margin-top: 8px;margin-left: -23px;"><?php } ?>
-								</div>
-							</div>
+								<div class="col-sm-6">
+                                 <?php if($disbaled) { ?>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" disabled="disabled" value="<?php echo $Member['MobileNumber'];?>">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default reveal" type="button" style="background: #eeeeee;"><?php if($Member['IsMobileVerified']==1){ ?> <img src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } else {?><img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } ?></button>
+                                        </span>          
+                                    </div>
+								 <?php } else { ?>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" maxlength="10" id="MobileNumber" oldvalue="<?php echo $Member['MobileNumber'];?>" name="MobileNumber" value="<?php echo (isset($_POST['MobileNumber']) ? $_POST['MobileNumber'] : $Member['MobileNumber']);?>" placeholder="Mobile Number">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default reveal" type="button"><?php if($Member['IsMobileVerified']==1){ ?> <img src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } else {?><img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } ?></button>
+                                        </span>          
+                                    </div>
+                                    <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
+								<?php } ?>
+                                </div>                                                          
+                                </div>                                   
 							<div class="form-group row">
-								<div class="col-sm-3"><small>Whatsapp Number<span id="star">*</span></small></div>
+								<div class="col-sm-3"><small>Whatsapp Number</small></div>
 								<div class="col-sm-3">
+                                <?php if($disbaled ) { ?>
+                                    <select class="form-control" disabled="disabled">
+                                        <?php foreach($CountryCodes as $CountryCode) { ?>
+                                            <option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'WhatsappCountryCode'])) ? (($_POST[ 'WhatsappCountryCode']==$CountryCode[ 'ParamB']) ? " selected='selected' " : "") : (($Member[ 'WhatsappCountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
+                                                <?php echo $CountryCode['str'];?>
+                                            </option>
+                                            <?php } ?>
+                                    </select>
+                                <?php } else{ ?>
 									<select class="selectpicker form-control" data-live-search="true" name="WhatsappCountryCode" id="WhatsappCountryCode" style="width: 61px;">
 										<?php foreach($CountryCodes as $CountryCode) { ?>
-											<option value="<?php echo $CountryCode['ParamB'];?>" <?php echo (isset($_POST[ 'WhatsappCountryCode'])) ? (($_POST[ 'WhatsappCountryCode']==$CountryCode[ 'ParamB']) ? " selected='selected' " : "") : (($Member[ 'WhatsappCountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
+											<option value="<?php echo $CountryCode['ParamA'];?>" <?php echo (isset($_POST[ 'WhatsappCountryCode'])) ? (($_POST[ 'WhatsappCountryCode']==$CountryCode[ 'ParamB']) ? " selected='selected' " : "") : (($Member[ 'WhatsappCountryCode']==$CountryCode[ 'SoftCode']) ? " selected='selected' " : "");?>>
 												<?php echo $CountryCode['str'];?>
 											</option>
 											<?php } ?>
 									</select>
+                                <?php } ?>
 								</div>
-								<div class="col-sm-5">
-									<input type="text" class="form-control" maxlength="10" id="WhatsappNumber" name="WhatsappNumber" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : $Member['WhatsappNumber']);?>" placeholder="Whatsapp Number">
+								<div class="col-sm-6">
+                                <?php if($disbaled ) { ?>
+                                    <input type="text" class="form-control" disabled="disabled"  value="<?php echo $Member['WhatsappNumber'];?>">
+								<?php } else { ?>
+                                    <input type="text" class="form-control" maxlength="10" id="WhatsappNumber" name="WhatsappNumber" value="<?php echo (isset($_POST['WhatsappNumber']) ? $_POST['WhatsappNumber'] : $Member['WhatsappNumber']);?>" placeholder="Whatsapp Number">
 									<span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
-								</div>
+								<?php } ?>
+                                </div>
 							</div>
 							
 							<div class="form-group row">
-								<div class="col-sm-3"><small>Email ID<span id="star">*</span></small></div>
-								<div class="col-sm-8">
-									<input type="text" class="form-control" id="EmailID" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $Member['EmailID']);?>" placeholder="Email ID">
+								<div class="col-sm-3"><small>Email ID<?php echo $stars; ?></small></div>
+								<div class="col-sm-9">
+                                <?php if($disbaled) { ?>
+                                    <div class="input-group">
+                                        <input type="text" disabled="disabled" class="form-control"  value="<?php echo $Member['EmailID'];?>">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default reveal" type="button" style="background: #eeeeee;"><?php if($Member['IsEmailVerified']==1){ ?> <img src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } else {?><img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } ?></button>
+                                        </span>          
+                                    </div>
+								<?php } else { ?>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" maxlength="60" id="EmailID" oldvalue="<?php echo $Member['EmailID'];?>" name="EmailID" value="<?php echo (isset($_POST['EmailID']) ? $_POST['EmailID'] : $Member['EmailID']);?>" placeholder="Email ID">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default reveal" type="button"><?php if($Member['IsEmailVerified']==1){ ?> <img src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } else {?><img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } ?></button>
+                                        </span>          
+                                    </div>
 									<span class="errorstring" id="ErrEmailID"><?php echo isset($ErrEmailID)? $ErrEmailID : "";?></span>
-								</div>
-								<div class="col-sm-1">
-									<?php if($Member['IsEmailVerified']=1){ ?> <img src="<?php echo SiteUrl?>assets/images/icon_verified.png" style="margin-top: 8px;margin-left: -23px;"><?php } ?>
+                                <?php } ?>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-sm-3 col-form-label">Login Password</label>
 								<div class="col-sm-5">
 									<div class="input-group">
-										<input type="password" disabled="disabled" class="form-control pwd" id="MemberPassword" name="MemberPassword" Placeholder="Login Password" value="<?php echo (isset($_POST['LoginPassword']) ? $_POST['LoginPassword'] : $Member['MemberPassword']);?>">
+										<input type="password" disabled="disabled" class="form-control pwd" id="MemberPassword" name="MemberPassword"   value="<?php echo (isset($_POST['LoginPassword']) ? $_POST['LoginPassword'] : $Member['MemberPassword']);?>">
 										<span class="input-group-btn">
-											<button  onclick="showHidePwd('MemberPassword',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
+											<button  onclick="showHidePwd('MemberPassword',$(this))" class="btn btn-default reveal" type="button" style="background: #eeeeee;"><i class="glyphicon glyphicon-eye-close"></i></button>
 										</span>          
 									</div>
 								</div>
@@ -300,45 +375,116 @@ if (isset($_POST['Btnupdate'])) {
 			<div class="form-group row" >
 				<div class="col-sm-12" style="text-align:right">
 				&nbsp;<a href="javascript:void(0)" class="btn btn-default" style="padding:7px 20px" onclick="Member.ConfirmGotoBackFromEditMember()">Cancel</a>&nbsp;
-				<a href="javascript:void(0)" onclick="Member.ConfirmEditMember()" name="Btnupdate" id="Btnupdate" class="btn btn-primary mr-2">Update Information</a>
-				</div>
+				<?php if (!($disbaled)) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmEditMember()" name="Btnupdate" id="Btnupdate" class="btn btn-primary mr-2">Update Information</a>
+				<?php } ?>
+                </div>
 			</div>
 		</div>
-		<div class="col-sm-3">
-				<div class="col-sm-12 col-form-label">
-					Created On <br>
-					<?php echo putDateTime($Member['CreatedOn']);?><br><br> 
-				</div>
-				<div class="col-sm-12 col-form-label">
-				    <span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>
-					 &nbsp;&nbsp;&nbsp;
-					 <small style="color:#737373;">
-						<?php if($Member['IsActive']==1){
-						  echo "Active";
-						}else{
-						  echo "Deactive";
-						}?>
-					 </small>
-				</div>
-				<div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick="Member.ConfirmMemberChnPswd()"><small style="font-weight:bold;text-decoration:underline">Change Password</small></a></div>
-				<div class="col-sm-12 col-form-label"><a href="../ManageMember"><small style="font-weight:bold;text-decoration:underline">List of Members</small></a></div>
-				<div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Members/ViewMember/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">View Member</small></a></div>
-				<div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Members/BlockMember/".$_REQUEST['Code'].".htm "); ?>"><small style="font-weight:bold;text-decoration:underline">Block Member</small></a></div>
-				<div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Members/ResetPassword/".$_REQUEST['Code'].".htm "); ?>"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a></div>
-        </div>
-</div>
-
+		
+        <div class="col-sm-3">
+            <div class="col-sm-12 col-form-label">
+                Created On <br>
+                <?php echo putDateTime($Member['CreatedOn']);?><br><br> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                Franchisee <br>
+                <span class="<?php echo ($Member['FIsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo  $Member['FranchiseName'];?> (<?php echo  $Member['FranchiseeCode'];?>)<br><br> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>
+                 &nbsp;&nbsp;&nbsp;
+                 <small style="color:#737373;">
+                    <?php if($Member['IsActive']==1){
+                      echo "Active";
+                    }else{
+                      echo "Deactive"."( ".PutDatetime($Member['DeactivatedOn'])." )";
+                    }?>
+                 </small>
+            </div>
+            <?php if($Member['IsDeleted']==1) { ?>
+                <div class="col-sm-12 col-form-label">
+                     Deleted On <br>
+                <?php echo putDateTime($Member['DeletedOn']);?>
+                </div>
+            <?php } ?>
+            <div class="col-sm-12 col-form-label"><a href="../ManageMembers"><small style="font-weight:bold;text-decoration:underline">List of Members</small></a></div>
+            <div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Members/ViewMember/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">View Member</small></a></div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 || $Member['IsDeleted']==0 ) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmMemberChnPswd()"><small style="font-weight:bold;text-decoration:underline">Change Password</small></a>
+                <?php } else { ?> 
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Change Password</small></a>
+                <?php }   ?> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 || $Member['IsDeleted']==0 ) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmResetPassword()"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a>
+                <?php } else { ?> 
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Reset Password</small></a>
+                <?php }   ?> 
+            </div>
+            <div class="col-sm-12 col-form-label"><?php if($Member['IsActive']==1) { ?>
+                <a href="javascript:void(0)" onclick="Member.ConfirmDeactiveMember()"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>                                   
+                 <?php } else {    ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmActiveMember()"><small style="font-weight:bold;text-decoration:underline">Active</small></a>                                   
+                <?php } ?>
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 || $Member['IsDeleted']==0 ) { ?>
+                    <?php if($Member['IsDeleted']==0) { ?>
+                        <a href="javascript:void(0)" onclick="Member.ConfirmDeleteMember()"><small style="font-weight:bold;text-decoration:underline">Delete</small></a>                                   
+                    <?php } else { ?>    
+                        <a href="javascript:void(0)" onclick="Member.ConfirmRestoreMember()"><small style="font-weight:bold;text-decoration:underline">Restore</small></a>                                   
+                    <?php } ?>
+                <?php } else { ?> 
+                    <?php if($Member['IsDeleted']==0) { ?>
+                        <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Delete</small></a>
+                     <?php } else { ?>
+                         <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Restore</small></a>
+                <?php } }  ?> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 || $Member['IsDeleted']==0 ) { ?>
+                    <a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Profiles</small></a>
+                <?php } else { ?> 
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Profiles</small></a>
+                <?php }   ?> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 || $Member['IsDeleted']==0 ) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ShowMemberCurrentPlan()"><small style="font-weight:bold;text-decoration:underline">Member Plan</small></a>
+                <?php } else { ?> 
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Member Plan</small></a>
+                <?php }   ?> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 || $Member['IsDeleted']==0 ) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmSendIndividualSmsToMember('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>','<?php echo $Member['MobileNumber'];?>')"><small style="font-weight:bold;text-decoration:underline">Send Individual Sms</small></a>
+                <?php } else { ?> 
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Send Individual Sms</small></a>
+                <?php }   ?> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 || $Member['IsDeleted']==0 ) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmSendIndividualEmailToMember('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>','<?php echo $Member['EmailID'];?>')"><small style="font-weight:bold;text-decoration:underline">Send Individual Email</small></a>
+                <?php } else { ?> 
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Send Individual Email</small></a>
+                <?php }   ?> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 || $Member['IsDeleted']==0 ) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmPopupMessage('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>')"><small style="font-weight:bold;text-decoration:underline">Popup Message</small></a>
+                <?php } else { ?> 
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Send Individual Email</small></a>
+                <?php }   ?> 
+            </div>
+        </div>    
+    </div>
 </form> 
 <div class="modal" id="PubplishNow" data-backdrop="static" >
 		<div class="modal-dialog" >
 			<div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
-		
-			</div>
-		</div>
-	</div>
-	<div class="modal" id="ChnPswdNow" data-backdrop="static" >
-		<div class="modal-dialog" >
-			<div class="modal-content" id="ChnPswd_body"  style="max-height: 462px;;min-height: 462px;;" >
 		
 			</div>
 		</div>

@@ -76,17 +76,11 @@ function GetFranchiseeDetails() {
                 <h4 class="card-title">List of Members</h4>
                 <div class="table-responsive">
                 <div class="form-group row">
-                <div class="col-sm-3">
-                          <button type="submit" class="btn btn-success dropdown-toggle"  data-toggle="dropdown">Export</button>
-                            <ul class="dropdown-menu">
-                            <li><a href="#">To Excel</a></li>
-                            <li><a href="#">To Pdf</a></li>                                                                                                        
-                            <li><a href="#">To Htm</a></li>
-                            </ul></div>
-                </div>
+               </div>
                     <table id="myTable" class="table table-striped">
                       <thead>  
                         <tr> 
+                        <th>Member Code</th>
                         <th>Member Name</th>
                         <th>Created </th>            
                         <th></th>
@@ -95,11 +89,11 @@ function GetFranchiseeDetails() {
                     <tbody>
                         <?php foreach($response['data']['Member'] as $Member) {    ?>
                         <tr>
-                        <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberName'];?></td>
+                        <td><span class="<?php if($Member['IsActive']==1 && $Member['IsDeleted']==0){ echo 'Activedot'; } if($Member['IsActive']==0 && $Member['IsDeleted']==0){ echo 'Deactivedot'; } if($Member['IsDeleted']==1){ echo 'DeletedDot'; }?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberCode'];?></td>
+                        <td><?php echo $Member['MemberName'];?></td>
                         <td><?php echo  putDateTime($Member['CreatedOn']);?></td>
-                        <td style="text-align:right"><a href="<?php echo GetUrl("Members/EditMember/". $Member['MemberID'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
-                        <a href="<?php echo GetUrl("Members/ViewMember/". $Member['MemberID'].".htm"); ?>"><span>View</span></a>&nbsp;&nbsp;&nbsp; 
-                        <a href="<?php echo GetUrl("Members/ResetPassword/". $Member['MemberID'].".htm"); ?>"><span>Reset Password</span></a>&nbsp;&nbsp;&nbsp; </td>
+                        <td style="text-align:right"><a href="<?php echo GetUrl("Members/EditMember/". $Member['MemberCode'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
+                        <a href="<?php echo GetUrl("Members/ViewMember/". $Member['MemberCode'].".htm"); ?>"><span>View</span></a></td>
                         </tr>
                          <?php } ?> 
                       </tbody>                         

@@ -40,7 +40,10 @@
         <style>                                                                                                           
            .Activedot {height:10px;width:10px;background-color:#20e512;border-radius:50%;display:inline-block;}
            .Deactivedot {height:10px;width:10px;background-color:#888;border-radius:50%;display:inline-block;}
+           .DeletedDot {height:10px;width:10px;background-color:red;border-radius:50%;display:inline-block;}
            #star{color:red;}
+           .imageGrey{-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+           filter: grayscale(100%);}
            .errorstring {font-size:10px;color:red}
            div.scrollmenu {background:#fff;border-bottom:2px solid #e5e5e5;white-space: nowrap;padding-left:25px;padding-top:5px;}
            div.scrollmenu a {display: inline-block;color: #333;text-align: center;padding: 10px 10px;font-family:'Roboto';text-decoration: none;border-bottom:3px solid #fff;margin-right:15px;}

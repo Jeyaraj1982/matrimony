@@ -30,8 +30,8 @@
                     <?php }?>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-					<p class="float-left"> 
-					<i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Members/ManageMember">View</a>
+					<p class="float-left">                                                                               
+					<i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Members/ManageMembers">View</a>
 					</p>
 					<p class="float-right"> 
 					Banned : 0

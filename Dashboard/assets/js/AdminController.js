@@ -1501,9 +1501,22 @@ var FranchiseeStaff = {
     }
 };
 
+function CreateModal(modelHeight,modelWidth) {
+    var modalBoxID = "div_" + Math.random().toString(36).substr(2,5 );
+    var m ='<div class="modal" id="'+modalBoxID+'" data-backdrop="static" >'
+            + '<div class="modal-dialog" >'
+                + '<div class="modal-content" id="'+modalBoxID+'_body"  style="max-height: '+modelHeight+'px;;min-height: '+modelWidth+'px;" >'
+            + '</div>'
+        + '</div>'
+    + '</div>';
+    $( "body" ).append( m );
+    return modalBoxID;
+}
+
 var Member ={
 	ConfirmMemberChnPswd:function() {
-        $('#ChnPswdNow').modal('show'); 
+        var mBox = CreateModal(462,462);
+        $('#'+mBox).modal('show'); 
             var content = '<div class="modal-header">'
                                 + '<h4 class="modal-title">Confirmation for change password</h4>'
                                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -1522,11 +1535,11 @@ var Member ={
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordChnPswdFrAdmin()" style="font-family:roboto">Yes ,Change</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordChnPswdFrAdmin(\''+mBox+'\')" style="font-family:roboto">Yes ,Change</button>'
                            + '</div>';
-            $('#ChnPswd_body').html(content);
+            $('#'+mBox+'_body').html(content);
     },
-	GetTxnPasswordChnPswdFrAdmin:function() {
+	GetTxnPasswordChnPswdFrAdmin:function(mBox) {
         var content = '<div class="modal-header">'
                         + '<h4 class="modal-title">Confirmation for change password</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -1540,11 +1553,11 @@ var Member ={
                             + '<div class="input-group">'
                                 + '<div class="col-sm-2"></div>'
                                 + '<div class="col-sm-8">'
-                                    + '<input type="password"  class="form-control" id="NewPassword" name="NewPassword" Placeholder="Enter New Password" style="font-weight: normal;font-size: 13px;font-family:Roboto;">'
+                                    + '<input type="password"  class="form-control" id="'+mBox+'NewPassword" name="NewPassword" Placeholder="Enter New Password" style="font-weight: normal;font-size: 13px;font-family:Roboto;">'
                                 + '</div>'
                                 + '<div class="col-sm-2"></div>'
                             + '</div>'
-                            + '<div class="col-sm-12" id="frmNewPass_error" style="color:red;text-align:center">&nbsp;</div>'
+                            + '<div class="col-sm-12" id="'+mBox+'frmNewPass_error" style="color:red;text-align:center">&nbsp;</div>'
                         + '</div>'
                         + '<div class="row">'
                                 + '<div class="col-sm-2"></div>'
@@ -1554,17 +1567,17 @@ var Member ={
                             + '<div class="input-group">'
                                 + '<div class="col-sm-2"></div>'
                                 + '<div class="col-sm-8">'
-                                    + '<input type="password"  class="form-control" id="ConfirmNewPassword" name="ConfirmNewPassword" Placeholder="Enter Confirm New Password" style="font-weight: normal;font-size: 13px;font-family:Roboto;">'
+                                    + '<input type="password"  class="form-control" id="'+mBox+'ConfirmNewPassword" name="ConfirmNewPassword" Placeholder="Enter Confirm New Password" style="font-weight: normal;font-size: 13px;font-family:Roboto;">'
                                 + '</div>'
                                 + '<div class="col-sm-2"></div>'
                             + '</div>'
-                            + '<div class="col-sm-12" id="frmCnfmPass_error" style="color:red;text-align:center">&nbsp;</div>'
+                            + '<div class="col-sm-12" id="'+mBox+'frmCnfmPass_error" style="color:red;text-align:center">&nbsp;</div>'
                         + '</div>'
                         + '<div class="row">'
                             + '<div class="col-sm-2"></div>'
                             + '<div class="col-sm-8" style="padding-left: 15px;">'
                                 + '<div class="custom-control custom-checkbox mb-3">'
-                                    + '<input type="checkbox" class="custom-control-input" id="PasswordFstLogin" name="PasswordFstLogin">'
+                                    + '<input type="checkbox" class="custom-control-input" id="'+mBox+'PasswordFstLogin" name="PasswordFstLogin">'
                                     + '<label class="custom-control-label" for="PasswordFstLogin" style="font-weight:normal;margin-top: 2px;">&nbsp;Change password on first login</label>'
                                 + '</div>'
                             + '</div>'
@@ -1576,53 +1589,53 @@ var Member ={
                                 + '<div class="input-group">'
                                     + '<div class="col-sm-2"></div>'
                                     + '<div class="col-sm-8">'
-                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" Placeholder="Transaction Password" style="font-weight: normal;font-size: 13px;text-align: center;font-family:Roboto;">'
+                                        + '<input type="password"  class="form-control" id="'+mBox+'TransactionPassword" name="TransactionPassword" Placeholder="Transaction Password" style="font-weight: normal;font-size: 13px;text-align: center;font-family:Roboto;">'
                                     + '</div>'
                                     + '<div class="col-sm-2"></div>'
                                 + '</div>'
-                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center">&nbsp;</div>'
+                                + '<div class="col-sm-12" id="'+mBox+'frmTxnPass_error" style="color:red;text-align:center">&nbsp;</div>'
                             + '</div>' 
                         + '</div>' 
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" onclick="Member.MemberChnPswd()" style="font-family:roboto">Yes ,Change</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.MemberChnPswd(\''+mBox+'\')" style="font-family:roboto">Yes ,Change</button>'
                     + '</div>';
-        $('#ChnPswd_body').html(content);            
+        $('#'+mBox+'_body').html(content);            
     },
-	MemberChnPswd:function() {
-        $("#frmNewPass_error").html("");
-        $("#frmCnfmPass_error").html("");
-        $("#frmTxnPass_error").html("");
+	MemberChnPswd:function(mBox) {
+        $("#"+mBox+"frmNewPass_error").html("");
+        $("#"+mBox+"frmCnfmPass_error").html("");
+        $("#"+mBox+"frmTxnPass_error").html("");
         var Error =0;
-        if ($("#NewPassword").val().trim()=="") {
-             $("#frmNewPass_error").html("Please enter new password");
+        if ($("#"+mBox+"NewPassword").val().trim()=="") {
+             $("#"+mBox+"frmNewPass_error").html("Please enter new password");
             Error++;
          }
-         if ($("#ConfirmNewPassword").val().trim()=="") {
-             $("#frmCnfmPass_error").html("Please enter confirm new password");
+         if ($("#"+mBox+"ConfirmNewPassword").val().trim()=="") {
+             $("#"+mBox+"frmCnfmPass_error").html("Please enter confirm new password");
              Error++;
          }
-         if ($("#ConfirmNewPassword").val().trim() != $("#NewPassword").val().trim()) {
-             $("#frmCnfmPass_error").html("Passwords do not match");
+         if ($("#"+mBox+"ConfirmNewPassword").val().trim() != $("#"+mBox+"NewPassword").val().trim()) {
+             $("#"+mBox+"frmCnfmPass_error").html("Passwords do not match");
              Error++;
          }
-         if ($("#TransactionPassword").val().trim()=="") {
-             $("#frmTxnPass_error").html("Please enter transaction password");
+         if ($("#"+mBox+"TransactionPassword").val().trim()=="") {
+             $("#"+mBox+"frmTxnPass_error").html("Please enter transaction password");
              Error++;
          }
          if(Error>0){ 
             return false;
          }
-    $("#txnPassword").val($("#TransactionPassword").val());
-    $("#NewPswd").val($("#NewPassword").val());
-    $("#ConfirmNewPswd").val($("#ConfirmNewPassword").val());
-    $("#ChnPswdFstLogin").val($("#PasswordFstLogin").val());
+    $("#txnPassword").val($("#"+mBox+"TransactionPassword").val());
+    $("#NewPswd").val($("#"+mBox+"NewPassword").val());
+    $("#ConfirmNewPswd").val($("#"+mBox+"ConfirmNewPassword").val());
+    $("#ChnPswdFstLogin").val($("#"+mBox+"PasswordFstLogin").val());
         var param = $("#frmfrn").serialize();
-        $('#ChnPswd_body').html(preloading_withText("Change Password...","161"));
+        $('#'+mBox+'_body').html(preloading_withText("Change Password...","161"));
         $.post(getAppUrl() + "m=Admin&a=MemberChnPswd",param,function(result) {
             if (!(isJson(result.trim()))) {
-                $('#ChnPswd_body').html(result);
+                $('#'+mBox+'_body').html(result);
                 return ;
             }  
             var obj = JSON.parse(result.trim());
@@ -1635,7 +1648,7 @@ var Member ={
                                     + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
                                 +'</div>' 
                             +'</div>';
-                $('#ChnPswd_body').html(content);
+                $('#'+mBox+'_body').html(content);
             } else {
                 var data = obj.data; 
                 var content = '<div  style="height: 300px;">'                                                                              
@@ -1649,7 +1662,7 @@ var Member ={
                                         +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
                                 +'</div>' 
                             +'</div>';
-            $('#ChnPswd_body').html(content);
+            $('#'+mBox+'_body').html(content);
             }
         });
     },
@@ -2330,7 +2343,7 @@ if ($("#TransactionPassword").val().trim()=="") {
                            + '</div>';
             $('#Publish_body').html(content);
      },
-     GetTxnPasswordDeactiveMember:function() {
+    GetTxnPasswordDeactiveMember:function() {
         var content = '<div class="modal-header">'
                         + '<h4 class="modal-title">Confirmation for deactive member</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -2422,7 +2435,7 @@ if ($("#TransactionPassword").val().trim()=="") {
                            + '</div>';
             $('#Publish_body').html(content);
      },
-     GetTxnPasswordActiveMember:function() {
+    GetTxnPasswordActiveMember:function() {
         var content = '<div class="modal-header">'
                         + '<h4 class="modal-title">Confirmation for active member</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -2517,7 +2530,7 @@ if ($("#TransactionPassword").val().trim()=="") {
                            + '</div>';
             $('#Publish_body').html(content);
      },
-     GetTxnPasswordDeleteMember:function() {
+    GetTxnPasswordDeleteMember:function() {
          if ($("#DeletedReason").val().trim()=="") {
              $("#frmDeletedReason_error").html("Please enter reason for delete");
              return false;
@@ -2614,7 +2627,7 @@ if ($("#TransactionPassword").val().trim()=="") {
                            + '</div>';
             $('#Publish_body').html(content);
      },
-     GetTxnPasswordRestoreMember:function() {
+    GetTxnPasswordRestoreMember:function() {
          
         var content = '<div class="modal-header">'
                         + '<h4 class="modal-title">Confirmation for restore member</h4>'
@@ -2682,7 +2695,440 @@ if ($("#TransactionPassword").val().trim()=="") {
             $('#Publish_body').html(content);
             }
         });
-    }
+    },
+    ConfirmResetPassword:function() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for reset password</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                     + '<div class="col-sm-8">'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to reset password</div>'
+                                        + '</div>'
+                                     + '</div>'
+                                + '</div>'
+                            +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordResetMemberPassword()" style="font-family:roboto">Yes ,Reset</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPasswordResetMemberPassword:function() {
+         
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for reset password</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.ResetMemberPassword()" style="font-family:roboto">Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    ResetMemberPassword:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=ResetMemberPassword",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Reset Successfully</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Reset member password</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    ConfirmSendIndividualSmsToMember:function(MemCode,MemName,Mob) {
+        var mBox = CreateModal(360,360);
+        $('#'+mBox).modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Send Individual sms</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                +'<div class="form-group row">'
+                                    +'<div class="col-sm-4">Member Name</div>'
+                                    +'<div class="col-sm-6">'+MemName+' ['+MemCode+']</div>'
+                                 + '</div>'
+                                 +'<div class="form-group row">'
+                                    +'<div class="col-sm-4">Mobile Number</div>'
+                                    +'<div class="col-sm-6">'+Mob+'</div>'
+                                 + '</div>'
+                                 +'<div class="form-group row">'
+                                    +'<div class="col-sm-12">Message</div>'
+                                        +'<div class="col-sm-12">'
+                                            + '<textarea class="form-control" rows="2" cols="3" id="'+mBox+'SendMessage"></textarea>'
+                                        +'</div>'
+                                    +'<div class="col-sm-12" id="'+mBox+'frmSendMessage_error" style="color:red;text-align:center"></div>'
+                                 + '</div>'
+                           +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordSendIndividualSmsToMember(\''+mBox+'\')" style="font-family:roboto">Send</button>'
+                           + '</div>';
+            $('#'+mBox+'_body').html(content);
+     },
+    GetTxnPasswordSendIndividualSmsToMember:function(mBox) {
+         if ($("#"+mBox+"SendMessage").val().trim()=="") {
+             $("#"+mBox+"frmSendMessage_error").html("Please enter message");
+             return false;
+         }
+        $("#SmsMessage").val($("#"+mBox+"SendMessage").val());
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Send Individual sms</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="'+mBox+'TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="'+mBox+'frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.SendIndividualSmsToMember(\''+mBox+'\')" style="font-family:roboto">Continue</button>'
+                    + '</div>';
+        $('#'+mBox+'_body').html(content);         
+    },
+    SendIndividualSmsToMember:function(mBox) {
+        if ($("#"+mBox+"TransactionPassword").val().trim()=="") {
+             $("#"+mBox+"frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#"+mBox+"TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#'+mBox+'_body').html(preloading_withText("Sending ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=SendIndividualSmsToMember",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#'+mBox+'_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Message Sent</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#'+mBox+'_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Send Individual sms</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#'+mBox+'_body').html(content); 
+            }
+        });
+    },
+    ConfirmSendIndividualEmailToMember:function(MemName,MemCode,EmailID) {
+        var mBox = CreateModal(462,462);
+        $('#'+mBox).modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Send Individual Email</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">' 
+                                +'<div class="form-group row">'
+                                    +'<div class="col-sm-4">Member Name</div>'
+                                    +'<div class="col-sm-6">'+MemName+' ['+MemCode+']</div>'
+                                 + '</div>'
+                                 +'<div class="form-group row">'
+                                    +'<div class="col-sm-4">Email ID</div>'
+                                    +'<div class="col-sm-6">'+EmailID+'</div>'
+                                 + '</div>'
+                                 +'<div class="form-group row">'
+                                    +'<div class="col-sm-12">Subject</div>'
+                                    +'<div class="col-sm-12"><input type="text" class="form-control" id="'+mBox+'EmailSubject"></div>'
+                                    +'<div class="col-sm-12" id="'+mBox+'frmEmailSubject_error" style="color:red;text-align:center"></div>' 
+                                 +'</div>'
+                                 +'<div class="form-group row">'
+                                    +'<div class="col-sm-12">Content</div>'
+                                    +'<div class="col-sm-12"><textarea class="form-control" id="'+mBox+'EmailContent" rows="3"></textarea></div>'
+                                    +'<div class="col-sm-12" id="'+mBox+'frmEmailContent_error" style="color:red;text-align:center"></div>' 
+                                 +'</div>' 
+                           +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordSendIndividualEmailToMember(\''+mBox+'\')" style="font-family:roboto">Send</button>'
+                           + '</div>';
+            $('#'+mBox+'_body').html(content);
+     },
+    GetTxnPasswordSendIndividualEmailToMember:function(mBox) {
+         if ($("#"+mBox+"EmailSubject").val().trim()=="") {
+             $("#"+mBox+"frmEmailSubject_error").html("Please enter subject");
+             return false;
+         }
+         if ($("#"+mBox+"EmailContent").val().trim()=="") {
+             $("#"+mBox+"frmEmailContent_error").html("Please enter content");
+             return false;
+         }
+        $("#EmailSubjectMessage").val($("#"+mBox+"EmailSubject").val());
+        $("#EmailContentMessage").val($("#"+mBox+"EmailContent").val());
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Send Individual Email</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="'+mBox+'TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="'+mBox+'frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.SendIndividualEmailToMember(\''+mBox+'\')" style="font-family:roboto">Continue</button>'
+                    + '</div>';
+        $('#'+mBox+'_body').html(content);          
+    },
+    SendIndividualEmailToMember:function(mBox) {
+        if ($("#"+mBox+"TransactionPassword").val().trim()=="") {
+             $("#"+mBox+"frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#"+mBox+"TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#'+mBox+'_body').html(preloading_withText("Sending ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=SendIndividualEmailToMember",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#'+mBox+'_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 105px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Email Sent</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#'+mBox+'_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Send Individual Email</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#'+mBox+'_body').html(content);
+            }
+        });
+    },
+    ConfirmPopupMessage:function(MemCode,MemName) {
+        var mBox = CreateModal(462,462);
+        $('#'+mBox).modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Popup Message</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">' 
+                                +'<div class="form-group row">'
+                                    +'<div class="col-sm-4">Member Code</div>'
+                                    +'<div class="col-sm-6">'+MemCode+'</div>'
+                                 + '</div>'
+                                 +'<div class="form-group row">'
+                                    +'<div class="col-sm-4">Member Name</div>'
+                                    +'<div class="col-sm-6">'+MemName+'</div>'
+                                 + '</div>'
+                                 +'<div class="form-group row">'
+                                    +'<div class="col-sm-12">Subject</div>'
+                                    +'<div class="col-sm-12"><input type="text" class="form-control" id="'+mBox+'PopupSubject"></div>'
+                                    +'<div class="col-sm-12" id="'+mBox+'frmPopupSubject_error" style="color:red;text-align:center"></div>' 
+                                 +'</div>'
+                                 +'<div class="form-group row">'
+                                    +'<div class="col-sm-12">Content</div>'
+                                    +'<div class="col-sm-12"><textarea class="form-control" id="'+mBox+'PopupContent" rows="3"></textarea></div>'
+                                    +'<div class="col-sm-12" id="'+mBox+'frmPopupContent_error" style="color:red;text-align:center"></div>' 
+                                 +'</div>' 
+                           +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordSendIndividualPopupToMember(\''+mBox+'\')" style="font-family:roboto">Send</button>'
+                           + '</div>';
+            $('#'+mBox+'_body').html(content);
+     },
+    GetTxnPasswordSendIndividualPopupToMember:function(mBox) {
+         if ($("#"+mBox+"PopupSubject").val().trim()=="") {
+             $("#"+mBox+"frmPopupSubject_error").html("Please enter subject");
+             return false;
+         }
+         if ($("#"+mBox+"PopupContent").val().trim()=="") {
+             $("#"+mBox+"frmPopupContent_error").html("Please enter content");
+             return false;
+         }
+        $("#PopupSubjectMessage").val($("#"+mBox+"PopupSubject").val());
+        $("#PopupContentMessage").val($("#"+mBox+"PopupContent").val());
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Popup Message</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="'+mBox+'TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="'+mBox+'frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.SetIndividualPopupToMember(\''+mBox+'\')" style="font-family:roboto">Continue</button>'
+                    + '</div>';
+        $('#'+mBox+'_body').html(content);          
+    },
+    SetIndividualPopupToMember:function(mBox) {
+        if ($("#"+mBox+"TransactionPassword").val().trim()=="") {
+             $("#"+mBox+"frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#"+mBox+"TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#'+mBox+'_body').html(preloading_withText("Sending ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=SetIndividualPopupToMember",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#'+mBox+'_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top:105px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Message Sent</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#'+mBox+'_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Popup Message</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#'+mBox+'_body').html(content);
+            }
+        });
+    },
+    ShowMemberCurrentPlan:function() {
+        var mBox = CreateModal(462,462);
+        $('#'+mBox).modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Current Plan</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">' 
+                             + '<br><br><br><br><br><br><br>'  
+                           +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                           + '</div>';
+            $('#'+mBox+'_body').html(content);
+     }
 	
 };
 
