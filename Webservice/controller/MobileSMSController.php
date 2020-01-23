@@ -46,7 +46,7 @@
             $response = curl_exec($ch);
             $mysql->execute("update _tbl_logs_mobilesms set ApiResponse ='".$response."' where ReqID='".$id."' ");
             curl_close ($ch);
-             
+            return $id;  
         }
     }
     

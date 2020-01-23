@@ -182,6 +182,35 @@
                                                        "ReferedBy"      => 1,
                                                        "CreatedBy"      => "Member",
                                                        "CreatedOn"      => date("Y-m-d H:i:s"))); 
+             
+             $Plan = $mysql->select("select * from _tbl_member_plan where IsDefault='1'");                                          
+                                                       
+             $date = date_create(date("Y-m-d"));                    
+                $e = $Plan[0]['Decreation']. " days";                
+                date_add($date,date_interval_create_from_date_string($e));
+                $endingdate= date("Y-m-d",strtotime(date_format($date,"Y-m-d")));
+                $endingdate= date_format($date,"Y-m-d");
+                
+                $mysql->insert("_tbl_profile_credits",array("MemberID"                => $id,
+                                                            "MemberCode"           => $MemberCode,
+                                                            "ProfileID"            => "0",
+                                                            "ProfileCode"          => "0",
+                                                            "Particulars"          => "0",
+                                                            "Credits"              => $Plan[0]['FreeProfiles'],
+                                                            "Debits"               => "0",
+                                                            "Available"            =>  $Plan[0]['FreeProfiles']-"0",
+                                                            "DownloadedProfileID"  => "0",
+                                                            "DownloadedProfileCode"=> "0",
+                                                            "DownloadedMemberID"   => "0",
+                                                            "DownloadedMemberCode" => "0",
+                                                            "OrderID"              => "0",
+                                                            "OrderCode"            => "0",
+                                                            "MemberPlanID"         => $Plan[0]['PlanID'],
+                                                            "MemberPlanCode"       => $Plan[0]['PlanCode'],
+                                                            "PlanName"             => $Plan[0]['PlanName'], 
+                                                            "TxnDate"                => date("Y-m-d H:i:s"),
+                                                            "StartingDate"         => date("Y-m-d H:i:s"),
+                                                            "EndingDate"           => $endingdate));
 			
 					if (!is_dir('uploads/members/'.$MemberCode)) {
                         mkdir('uploads/members/'.$MemberCode, 0777, true);
@@ -5453,6 +5482,50 @@
         }
 
     }
+    function CheckResetPasswordDetails() {
+        global $mysql,$loginInfo;
+         $Reset = $mysql->select("select * from `_tbl_member_reset_password` where `ResetLink`='".$_POST['link']."'");
+         return Response::returnSuccess("Success".$_POST['link'],array("Reset" => $Reset));
+    }
+    public function ResetPsswordSavePassword(){
+
+             global $mysql;
+             $data = $mysql->select("Select * from `_tbl_member_reset_password` where `ResetLink`='".$_POST['link']."' ");
+
+             if (!(strlen(trim($_POST['newpassword']))>=6)) {
+                return Response::returnError("Please enter valid new password must have 6 characters");
+             } 
+             if (!(strlen(trim($_POST['confirmnewpassword']))>=6)) {
+                return Response::returnError("Please enter valid confirm new password  must have 6 characters"); 
+             } 
+             if ($_POST['confirmnewpassword']!=$_POST['newpassword']) {
+                return Response::returnError("Password do not match"); 
+             }
+             $sqlQry ="update _tbl_members set `MemberPassword`='".$_POST['newpassword']."' where `MemberID`='".$data[0]['MemberID']."' and MemberCode='".$data[0]['MemberCode']."'";
+             $mysql->execute($sqlQry);
+             $mysql->execute("update `_tbl_member_reset_password` set `IsUsed`='1',`UsedOn`='".date("Y-m-d H:i:s")."'  where `ResetLink`='".$_POST['link']."' ");
+               
+             $data = $mysql->select("select * from `_tbl_members` where  MemberID='".$data[0]['MemberID']."'");
+             
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberChangePassword'");
+                    $content  = str_replace("#MemberName#",$data[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#MemberPassword#",$_POST['newpassword'],$content);
+
+                     MailController::Send(array("MailTo"         => $data[0]['EmailID'],
+                                                "Category"       => "MemberChangePassword",
+                                                "MemberCode"      => $data[0]['MemberCode'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($data[0]['MobileNumber']," Dear ".$data[0]['MemberName'].",Your Login Password has been changed successfully. Your New Login Password is ".$_POST['newpassword']."");  
+             
+             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $data[0]['MemberID'],
+                                                             "ActivityType"   => 'ResetPasswordChangePassword.',
+                                                             "ActivityString" => 'Reset password changed password.',
+                                                             "SqlQuery"       => base64_encode($sqlQry),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+
+             return Response::returnSuccess("New Password saved successfully",$data[0]);  
+         }
     
  }  
 //4084   5500

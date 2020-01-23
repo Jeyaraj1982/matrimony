@@ -18,6 +18,8 @@
                 $mailError="Email not configured";
                 $mysql->execute("update _tbl_logs_email set  IsFailure='1', FailureMessage='Email not configured' where EmailLogID='".$reqID."'");
                 return false;  
+            }else{
+                 $mailError = $reqID;
             }
 
             $mysql->execute("update _tbl_logs_email set EmailAPIID='".$emailSettings[0]['ApiID']."', APIRequestedOn='".date("Y-m-d H:i:s")."' where EmailLogID='".$reqID."'");
