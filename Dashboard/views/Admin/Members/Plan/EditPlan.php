@@ -278,8 +278,19 @@ function SubmitNewPlan() {
 		</div>
 	</div>
 	<div class="col-sm-3">
+		<div class="col-sm-12 col-form-label">
+		<span class="<?php echo ($Plan['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>
+		 &nbsp;&nbsp;&nbsp;
+		 <small style="color:#737373;">
+			<?php if($Plan['IsActive']==1){
+			  echo "Active";
+			}else{
+			  echo "Deactive";
+			}?>
+		 </small>
+		</div>
 		<div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Members/Plan/ManagePlan");?>"><small style="font-weight:bold;text-decoration:underline">List of Plans</small></a></div>
-		<div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Members/Plan/View/". $Plan['PlanCode'].".htm");?>"><small style="font-weight:bold;text-decoration:underline">View Plans</small></a></div>
+		<div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Members/Plan/View/". $Plan['PlanCode'].".htm");?>"><small style="font-weight:bold;text-decoration:underline">View Plan</small></a></div>
         <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">View Subscribed</small></a></div>
 		<div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Delete</small></a></div>
         <div class="col-sm-12 col-form-label"><?php if($Staffs[0]['IsActive']==1) { ?>

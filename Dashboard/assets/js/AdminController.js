@@ -2716,7 +2716,7 @@ if ($("#TransactionPassword").val().trim()=="") {
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordResetMemberPassword()" style="font-family:roboto">Yes ,Reset</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordResetMemberPassword()" style="font-family:roboto">Yes , Continue</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      },
@@ -2789,11 +2789,11 @@ if ($("#TransactionPassword").val().trim()=="") {
             }
         });
     },
-    ConfirmSendIndividualSmsToMember:function(MemCode,MemName,Mob) {
+    ConfirmSendIndividualSmsToMember:function(MemCode,MemName,Mob,CountryCode) {
         var mBox = CreateModal(360,360);
         $('#'+mBox).modal('show'); 
             var content = '<div class="modal-header">'
-                                + '<h4 class="modal-title">Send Individual sms</h4>'
+                                + '<h4 class="modal-title">Send Individual Mobile SMS</h4>'
                                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                            + '</div>'
                            + '<div class="modal-body">'
@@ -2803,7 +2803,7 @@ if ($("#TransactionPassword").val().trim()=="") {
                                  + '</div>'
                                  +'<div class="form-group row">'
                                     +'<div class="col-sm-4">Mobile Number</div>'
-                                    +'<div class="col-sm-6">'+Mob+'</div>'
+                                    +'<div class="col-sm-6">+'+CountryCode+'-'+Mob+'</div>'
                                  + '</div>'
                                  +'<div class="form-group row">'
                                     +'<div class="col-sm-12">Message</div>'
@@ -2815,7 +2815,7 @@ if ($("#TransactionPassword").val().trim()=="") {
                            +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordSendIndividualSmsToMember(\''+mBox+'\')" style="font-family:roboto">Send</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordSendIndividualSmsToMember(\''+mBox+'\')" style="font-family:roboto">Send Mobile SMS</button>'
                            + '</div>';
             $('#'+mBox+'_body').html(content);
      },
@@ -2826,7 +2826,7 @@ if ($("#TransactionPassword").val().trim()=="") {
          }
         $("#SmsMessage").val($("#"+mBox+"SendMessage").val());
         var content = '<div class="modal-header">'
-                        + '<h4 class="modal-title">Send Individual sms</h4>'
+                        + '<h4 class="modal-title">Send Individual Mobile SMS</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
                     + '<div class="modal-body">'
@@ -2879,7 +2879,7 @@ if ($("#TransactionPassword").val().trim()=="") {
                 var data = obj.data; 
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-header">'
-                                    +'<h4 class="modal-title">Send Individual sms</h4>'
+                                    +'<h4 class="modal-title">Send Individual Mobile SMS</h4>'
                                     +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
                                 +'</div>'
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
@@ -3114,15 +3114,46 @@ if ($("#TransactionPassword").val().trim()=="") {
             }
         });
     },
-    ShowMemberCurrentPlan:function() {
+    ShowMemberCurrentPlan:function(PlanCode,PlanName,Duration,Amount,FreeProfiles,StartingDate,EndingDate) {
         var mBox = CreateModal(462,462);
         $('#'+mBox).modal('show'); 
+         if (Amount == "0") {
+             var PlanAmount = '<a href="javascript:void(0)" class="btn btn-primary">Upgrade Plan</a>';
+            }else { 
+             var  PlanAmount = "Amount (Rs)  "+Amount; 
+            }
             var content = '<div class="modal-header">'
-                                + '<h4 class="modal-title">Current Plan</h4>'
+                                + '<h4 class="modal-title">Current Plan Information</h4>'
                                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                            + '</div>'
                            + '<div class="modal-body">' 
-                             + '<br><br><br><br><br><br><br>'  
+                                +'<div class="form-group row">'
+                                    +'<div class="col-sm-4">Plan Code</div>'
+                                    +'<div class="col-sm-8">'+PlanCode+'</div>'
+                                +'</div>'
+                                +'<div class="form-group row">'
+                                    +'<div class="col-sm-4">Plan Name</div>'
+                                    +'<div class="col-sm-8">'+PlanName+'</div>'
+                                +'</div>'
+                                +'<div class="form-group row">'
+                                    +'<div class="col-sm-4">Duration</div>'
+                                    +'<div class="col-sm-8">'+Duration+' days</div>'
+                                +'</div>'
+                                +'<div class="form-group row">'
+                                    +'<div class="col-sm-4">Allow To Purchase</div>'
+                                    +'<div class="col-sm-8">'+FreeProfiles+' Profiles</div>'
+                                +'</div>'
+                                +'<div class="form-group row">'
+                                    +'<div class="col-sm-4">Starting Date</div>'
+                                    +'<div class="col-sm-8">'+StartingDate+'</div>'
+                                +'</div>'
+                                +'<div class="form-group row">'
+                                    +'<div class="col-sm-4">Ending Date</div>'
+                                    +'<div class="col-sm-8">'+EndingDate+'</div>'
+                                +'</div>'
+                                   +'<div class="form-group row">'
+                                    +'<div class="col-sm-12">'+PlanAmount+'</div>'
+                                +'</div>'
                            +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'

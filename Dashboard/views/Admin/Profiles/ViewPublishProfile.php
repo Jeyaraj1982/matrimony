@@ -70,6 +70,10 @@ legend {
   </div>
 </div>
 </div>
+<form method="post" id="frmfrn_<?php echo $ProfileInfo['ProfileCode'];?>" >
+	<input type="hidden" value="" name="txnPassword" id="txnPassword_<?php echo $ProfileInfo['ProfileCode'];?>">
+	<input type="hidden" value="" name="UnpublishProfileRemarks" id="UnpublishProfileRemarks_<?php echo $ProfileInfo['ProfileCode'];?>">
+	<input type="hidden" value="<?php echo $_GET['Code'];?>" name="ProfileCode" id="ProfileCode">
 <div class="col-12 grid-margin">                                                     
     <div class="card">
         <div class="card-body">
@@ -748,12 +752,26 @@ legend {
     </div>
   </div>                                                                                                               
 </div>
-
+<div class="col-12" style="text-align:right">
+<?php if($ProfileInfo['IsPublish']==1) { ?>
+        <a href="javascript:void(0)" onclick="Member.showConfirmUnPublishProfile('<?php echo $_GET['Code'];?>')" class="btn btn-danger" style="font-family:roboto">Unpublish</a>
+<?php } else { ?>
+		<a href="javascript:void(0)" onclick="Member.showConfirmPublishProfile('<?php echo $_GET['Code'];?>')" class="btn btn-danger" style="font-family:roboto">Publish</a>
+<?php } ?>
+  </div>
+</form>
 <div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
     <div class="modal-dialog">
         <div class="modal-content" id="DeleteNow_body" style="height:260px"></div>
     </div>
 </div>
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+        <div class="modal-dialog" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 341px;min-height: 341px;" >
+        
+            </div>
+        </div>
+    </div>
 <script>
  function showAttachmentOccupationForView(ProfileCode,MemberID,ProfileID,FileName){
              $('#DeleteNow').modal('show'); 
