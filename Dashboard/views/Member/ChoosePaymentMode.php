@@ -67,16 +67,23 @@
                 </div>
                <div class="form-group row">
                     <div class="col-sm-12" style="text-align:center">
-                    <form method="post" action="<?php echo SiteUrl;?>Payments/Wallet/Collect/<?php echo $Oreders['OrderNumber'];?>.htm" >
+                   <!-- <form method="post" action="<?php echo SiteUrl;?>Payments/Wallet/Collect/<?php echo $Oreders['OrderNumber'];?>.htm" > -->
                         <input type="hidden" name="OrderNumber" value="<?php echo $Oreders['OrderNumber'];?>">
                         <input type="hidden" name="PaymentMode" value="Wallet">
-                        <button type="submit" name="Confirm" class="btn btn-primary" style="font-family: roboto;">Pay Now ₹&nbsp;<?php echo number_format($Oreders['OrderValue'],2);?></button>
-                    </form> 
+                        <a href="javascript:void(0)" onclick="showConfirmPayNow('<?php echo $Oreders['OrderByMemberCode'];?>','<?php echo number_format($Oreders['OrderValue'],2);?>','<?php echo $Oreders['OrderNumber'];?>')" name="Confirm" class="btn btn-primary" style="font-family: roboto;">Pay Now ₹&nbsp;<?php echo number_format($Oreders['OrderValue'],2);?></a>
+                    <!--</form> -->
                     </div>
                </div>
         </div>
         </div>
     </div>
+    <div class="modal" id="PubplishNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >
+            
+                </div>
+            </div>
+        </div>
 <script>
  function loadPaymentOption(pOption){    
      $("#resdiv").html("Bankdiv");
@@ -112,5 +119,95 @@
  $(document).ready(function () {
       loadPaymentOption('Wallet');
  });  
+ 
+ function showConfirmPayNow(MemberCode,OrderValue,OrderNumber) {
+      $('#PubplishNow').modal('show'); 
+      var content = '<div >'
+                        +'<div>'                                                                              
+                            +'<form method="post" id="frm_'+MemberCode+'" name="frm_'+MemberCode+'" action="" >'
+                                +'<input type="hidden" value="'+MemberCode+'" name="MemberCode">'
+                                +'<input type="hidden" value="'+OrderNumber+'" name="OrderNumber">'
+                                +'<input type="hidden" name="PaymentMode" value="Wallet">'
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Confirmation For Pay Now</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="max-height: 175px;min-height: 175px;">'
+                                    +'<div style="text-align:left"> Dear ,<br></div>'
+                                    +'<div style="text-align:center">Order value&nbsp;&nbsp;:&nbsp;₹&nbsp;'+OrderValue+' </div><br><br>'
+                                +'</div>' 
+                                +'<div class="modal-footer">' 
+                                    +'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>&nbsp;&nbsp;&nbsp;' 
+                                    +'<button type="button" class="btn btn-primary" name="Paynow" id="Paynow"  onclick="SendOtpForPayNow(\''+MemberCode+'\')" style="font-family:roboto">Yes, Continue</button>'
+                                +'</div>'
+                            +'</form>'                                                                                                          
+                        +'</div>'
+                    +'</div>';
+            $('#Publish_body').html(content);
+}
+function SendOtpForPayNow(formid) {
+    var param = $("#frm_"+formid).serialize();
+    $('#Publish_body').html(preloading_withText("Loading ...","95"));
+        $.post(getAppUrl() + "m=Member&a=SendOtpForPayNow",param,function(result) {
+            
+            if (!(isJson(result))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                $('#Publish_body').html(result);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Confirmation For Pay Now</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
+                                +'</div>' 
+                                +'<div class="modal-footer">'  
+                                    +'<a class="btn btn-primary"  location.href="location.href" style="cursor:pointer">continue</a>'
+                                +'</div>'
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+}
+function ResendSendOtpForPayNow(frmid) {
+     var param = $("#"+frmid).serialize();
+    $('#Publish_body').html(preloading_withText("Loading ...","95"));
+    
+        $.post(getAppUrl() + "m=Member&a=ResendSendOtpForPayNow",param,function(result2) {$('#Publish_body').html(result2);});
+}
+function PayNowOTPVerification(frmid) {
+        var param = $( "#"+frmid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","95"));
+        $.post( API_URL + "m=Member&a=PayNowOTPVerification",param).done(function(result) {
+            if (!(isJson(result))) {
+                $('#Publish_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            
+             
+            }
+            
+    });
+}
+ 
 </script>
 <?php include_once("PaymentModeFooter.php");?>                    

@@ -17,16 +17,16 @@
             $("#Remarks").blur(function() {
                 IsNonEmpty("Remarks", "ErrRemarks", "Please Enter Remarks");
             });
-            $("#check").blur(function() {
-                IsNonEmpty("check", "Errcheck", "If yo agree terms and conditions please select");
-            });
+         //   $("#check").blur(function() {
+         //       IsNonEmpty("check", "Errcheck", "If yo agree terms and conditions please select");
+           // });
         });
 
         function SubmitDetails() {
 
             $('#ErrAmountToTransfer').html("");
             $('#ErrRemarks').html("");
-            $('#Errcheck').html("");
+           // $('#Errcheck').html("");
             
             ErrorCount==0
             
@@ -43,10 +43,10 @@
             }
             IsNonEmpty("Remarks","ErrRemarks","Please Enter Remarks");
            
-            if (document.form1.check.checked == false) {
+           /* if (document.frmfrn.check.checked == false) {
                 $("#Errcheck").html("Please agree terms and conditions");
                 return false;
-            }
+            } */
            if (ErrorCount==0) {
                             return true;
                         } else{
@@ -66,8 +66,10 @@
             }
         }
         ?>
-<form method="post" name="form1" id="form1" onsubmit="return SubmitDetails();">
-        <div class="content-wrapper">
+<form method="post" id="frmfrn">
+    <input type="hidden" value="" name="txnPassword" id="txnPassword">
+    <input type="hidden" value="<?php echo $_GET['Code'];?>" name="MemberID" id="MemberID">
+     <div class="content-wrapper">
           <div class="col-12 stretch-card">                                         
                   <div class="card">
                     <div class="card-body">
@@ -106,7 +108,7 @@
                         <input type="checkbox" name="check" id="check">&nbsp;<label for="check" style="font-weight:normal">I accept transfer amount </label><Br><span class="errorstring" id="Errcheck"></span><br>
                         <div class="form-group row">
                         <div class="col-sm-3">
-                       <button type="submit" name="BtnNext" class="btn btn-success mr-2">Confirm</button></div>
+                        <a href="javascript:void(0)" onclick="ConfirmFrTransferAmountToMemberFromFranchisee();" name="Btnupdate" id="Btnupdate" class="btn btn-primary mr-2">Confirm</a>
                        <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"> <a href="../SearchMemberDetails"><small>back</small> </a></div>
                          </div>
                     </div>
@@ -114,3 +116,10 @@
                 </div>
               </div>
 </form> 
+ <div class="modal" id="PubplishNow" data-backdrop="static" >
+            <div class="modal-dialog" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
+            
+                </div>
+            </div>
+        </div> 

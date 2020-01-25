@@ -39,13 +39,23 @@ legend {margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px
             <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter In Law"){ echo "Aunty"; }?>
                         </label>
                     </div>
+            </div>                                                                         
+            <div class="col-sm-4" style="text-align: right;">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <a href="<?php echo GetUrl("Profile/".$ProfileInfo['ProfileCode'].".htm"); ?>"><i class="menu-icon mdi mdi-printer" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Print</label> </a>
+                    </div>
+                    <div class="col-sm-6">
+                            <a href="<?php echo GetUrl("Downloads/".$ProfileInfo['ProfileCode'].".pdf"); ?>"><i class="menu-icon mdi mdi-download" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Download</label></a>   
+                        </div>
+                </div>
             </div>
         </div>
   </div>
 </div>
 </div>
     <div class="col-12 grid-margin">                                                     
-        <div class="card">
+        <div class="card">                                                                                              
             <div class="card-body">
                 <div class="form-group row">
                     <div class="col-sm-6"><h4 class="card-title">Profile Information</h4></div>

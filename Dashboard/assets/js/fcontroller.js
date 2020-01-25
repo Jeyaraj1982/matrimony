@@ -1321,7 +1321,6 @@ var Member = {
 					+ '</div>';
         $('#Publish_body').html(content);            
     },
-
     ViewMemberEditScreen:function(MemberCode) {
         if ($("#TransactionPassword").val().trim()=="") {
              $("#frmTxnPass_error").html("Please enter transaction password");
@@ -1388,7 +1387,7 @@ var Member = {
             return false;
      }
 	},
-	 GetTxnPassword:function() {
+	GetTxnPassword:function() {
 		var content =     '<div class="modal-header">'
 							+ '<h4 class="modal-title">Confirmation for edit member</h4>'
 							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -1484,7 +1483,6 @@ var Member = {
 					+ '</div>';
         $('#Publish_body').html(content);            
     },
-
     ViewMemberScreen:function(MemberCode) {
         if ($("#TransactionPassword").val().trim()=="") {
              $("#frmTxnPass_error").html("Please enter transaction password");
@@ -1520,6 +1518,106 @@ var Member = {
             $('#Publish_body').html(content);
             }
         });
+    },
+    
+    
+        
+    GetTxnPasswordTransferAmoutTomemberFromFranchisee:function() {
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for transfer amount</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="Member.FranchiseeTransferAmountToMemberWallet()" style="font-family:roboto">Yes ,Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    
+    FranchiseeTransferAmountToMemberWallet:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","95"));
+        $.post(API_URL + "m=Franchisee&a=FranchiseeTransferAmountToMemberWallet",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Transfered Successfully</h3>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Transfer amount</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
     }
 
 }
+function ConfirmFrTransferAmountToMemberFromFranchisee() {
+        if(SubmitDetails()) {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for transfer amount to member</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to transfer amount<br></div>'
+                                        +'</div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="Member.GetTxnPasswordTransferAmoutTomemberFromFranchisee()" style="font-family:roboto">Yes ,Continue</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+        }  else {
+            return false;
+     }
+     }

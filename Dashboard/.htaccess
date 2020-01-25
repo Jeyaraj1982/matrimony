@@ -1,7 +1,6 @@
+RewriteRule ^Settings/Masters/(.*)/Manage/Edit/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Settings/Masters/$1/Edit
+RewriteRule ^Settings/Masters/(.*)/Manage/View/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Settings/Masters/$1/View
 
-
-RewriteRule ^Masters/(.*)/Manage/Edit/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/Edit
-RewriteRule ^Masters/(.*)/Manage/View/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Masters/$1/View
 RewriteRule ^Requests/Member/ViewPaypalRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Member/ViewPaypalRequests
 RewriteRule ^Profiles/ViewDraftProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewDraftProfile
 RewriteRule ^Profiles/ViewRequestProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewRequestProfile           
@@ -12,33 +11,26 @@ RewriteRule ^Profile/(.*)\.htm$ ./Profileview.php?Code=$1
 RewriteRule ^Invoice/(.*)\.htm$ ./Invoiceview.php?Code=$1
 RewriteRule ^Order/(.*)\.htm$ ./Orderview.php?Code=$1
 RewriteRule ^Receipt/(.*)\.htm$ ./ReceiptView.php?Code=$1
-RewriteRule ^Download/(.*)\.pdf$ ./downloadprofile.php?Code=$1
+RewriteRule ^Downloads/(.*)\.pdf$ ./downloadprofile.php?Code=$1
 RewriteRule ^DownloadInvoice/(.*)\.pdf$ ./downloadinvoice.php?Code=$1
 RewriteRule ^DownloadOrder/(.*)\.pdf$ ./downloadorder.php?Code=$1
 RewriteRule ^DownloadReceipt/(.*)\.pdf$ ./downloadreceipt.php?Code=$1
-
+                                                                                             
 RewriteRule ^FranchiseeInvoice/(.*)\.htm$ ./FranchiseeInvoiceview.php?Code=$1
 RewriteRule ^FranchiseeOrder/(.*)\.htm$ ./FranchiseeOrderview.php?Code=$1
 RewriteRule ^FranchiseeReceipt/(.*)\.htm$ ./FranchiseeReceiptView.php?Code=$1
-
 
 RewriteRule ^DownloadFranchiseeOrder/(.*)\.pdf$ ./downloadfranchiseeorder.php?Code=$1
 RewriteRule ^DownloadFranchiseeInvoice/(.*)\.pdf$ ./downloadfranchiseeinvoice.php?Code=$1
 RewriteRule ^DownloadFranchiseeReceipt/(.*)\.pdf$ ./downloadfranchiseereceipt.php?Code=$1
 
-
-
 RewriteRule ^AdminInvoiceView/(.*)\.htm$ ./AdminInvoiceView.php?Code=$1
 RewriteRule ^AdminOrder/(.*)\.htm$ ./AdminOrderview.php?Code=$1
 RewriteRule ^AdminReceipt/(.*)\.htm$ ./AdminReceiptView.php?Code=$1
 
-
 RewriteRule ^DownloadAdminOrder/(.*)\.pdf$ ./downloadadminorder.php?Code=$1
 RewriteRule ^DownloadAdminInvoice/(.*)\.pdf$ ./downloadadmininvoice.php?Code=$1
 RewriteRule ^DownloadAdminReceipt/(.*)\.pdf$ ./downloadadminreceipt.php?Code=$1
-
-
-
 
 RewriteRule ^ViewProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewProfile [QSA]
 RewriteRule ^MyContacts/ViewDownloadProfile(.*)\.htm$ ./index.php?Code=$1&p=MyContacts/ViewDownloadProfile [QSA]
@@ -65,9 +57,6 @@ RewriteRule ^Matches/BasicSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/
 RewriteRule ^Matches/AdvancedSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/AdvancedSearchResult [QSA]
 RewriteRule ^Matches/ProfileIDSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/ProfileIDSearchResult [QSA]
 
-
-
-
 RewriteRule ^Matches/Search/BasicSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/BasicSearchResult [QSA]
 RewriteRule ^Matches/Search/AdvancedSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/AdvancedSearchResult [QSA]
 RewriteRule ^Matches/Search/ProfileIDSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ProfileIDSearchResult [QSA]
@@ -87,7 +76,6 @@ RewriteRule ^ViewProfileforaddLandingPage/(.*)\.htm$ ./index.php?Code=$1&p=ViewP
 RewriteRule ^SequenceMaster/EditSequence/(.*)\.htm$ ./index.php?Code=$1&p=SequenceMaster/EditSequence
 RewriteRule ^SequenceMaster/ViewSequence/(.*)\.htm$ ./index.php?Code=$1&p=SequenceMaster/ViewSequence
 
-
 RewriteRule ^Matches/Search/ViewPlans/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ViewPlans
 RewriteRule ^Matches/Search/ChoosePaymentMode/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ChoosePaymentMode
 RewriteRule ^Orders/(.*)\.htm$ ./index.php?Code=$1&p=Orders
@@ -95,19 +83,15 @@ RewriteRule ^ChoosePaymentMode/(.*)\.htm$ ./index.php?Code=$1&p=ChoosePaymentMod
 RewriteRule ^Payments/Wallet/Collect/(.*)\.htm$ ./index.php?Code=$1&p=Payments/Wallet/Collect
 RewriteRule ^Matches/Search/BasicSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/BasicSearchResult
 
-
 RewriteRule ^Requests/Member/ViewBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Member/ViewBankRequests
 RewriteRule ^Requests/Franchisee/ViewBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Franchisee/ViewBankRequests
 RewriteRule ^MyAccounts/ViewBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewBankRequests
 RewriteRule ^MyAccounts/ViewFranchiseeBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewFranchiseeBankRequests
 
 RewriteRule ^Member/(.*)\/ProfileEdit/GeneralInformation/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/GeneralInformation&Code=$2
-
 RewriteRule ^Member/(.*)\/ProfileEdit/EducationDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/EducationDetails&Code=$2
-
 RewriteRule ^Member/(.*)\/ProfileEdit/AddEducationalDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/AddEducationalDetails&Code=$2
 RewriteRule ^Member/(.*)\/ProfileEdit/AttachEducationDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/AttachEducationDetails&Code=$2 [QSA]
-
 RewriteRule ^Member/(.*)\/ProfileEdit/OccupationDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/OccupationDetails&Code=$2
 RewriteRule ^Member/(.*)\/ProfileEdit/FamilyInformation/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/FamilyInformation&Code=$2
 RewriteRule ^Member/(.*)\/ProfileEdit/PhysicalInformation/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/PhysicalInformation&Code=$2
@@ -117,8 +101,6 @@ RewriteRule ^Member/(.*)\/ProfileEdit/PartnersExpectation/(.*)\.htm$ ./index.php
 RewriteRule ^Member/(.*)\/ProfileEdit/HoroscopeDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/HoroscopeDetails&Code=$2
 RewriteRule ^Member/(.*)\/ProfileEdit/ProfilePhoto/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/ProfilePhoto&Code=$2
 RewriteRule ^Member/(.*)\/ProfileEdit/ProfilePhotoCrop/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/ProfilePhotoCrop&Code=$2
-
-
 
 RewriteRule ^MyProfiles/Draft/Edit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/GeneralInformation
 RewriteRule ^MyProfiles/Draft/Edit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/EducationDetails
@@ -183,7 +165,6 @@ RewriteRule ^Franchisees/BlockFranchisee/(.*)\.html$ ./index.php?Code=$1&p=Franc
 RewriteRule ^Members/ResetPassword/Reset/(.*)\.html$ ./index.php?Code=$1&p=Members/ResetPassword/Reset
 RewriteRule ^Staffs/LoginHistory/(.*)\.html$ ./index.php?Code=$1&p=Staffs/LoginHistory
 
-
 RewriteRule ^Members/EditMember/(.*)\.html$ ./index.php?Code=$1&p=Members/EditMember
 RewriteRule ^Members/ViewMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMember
 RewriteRule ^Members/BlockMember/(.*)\.html$ ./index.php?Code=$1&p=Members/BlockMember
@@ -213,12 +194,15 @@ RewriteRule ^Franchisees/FrStaffView/(.*)\.html$ ./index.php?Code=$1&p=Franchise
 RewriteRule ^Settings/Template/EditTemplate/(.*)\.html$ ./index.php?Code=$1&p=Settings/Template/EditTemplate
 
 RewriteRule ^Members/KYC/ViewKyc/(.*)\.htm$ ./index.php?Code=$1&p=Members/KYC/ViewKyc
-
+RewriteRule ^Members/ViewIndividualSMS/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewIndividualSMS
+RewriteRule ^Members/ViewIndividualEmail/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewIndividualEmail
+RewriteRule ^Members/ViewIndividualMessage/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewIndividualMessage
 
 RewriteRule ^([a-zA-Z0-9-/+]+)([0-9]+)$ index.php?p=$1&pn=$2 [L]
 RewriteRule ^([a-zA-Z0-9-/+]+)$ index.php?p=$1 [L]
 RewriteRule ^([a-zA-Z0-9-/+]+)([a-zA-Z/]+)([0-9]+)$ index.php?p=/$1&t=$2&pn=$3/ [L]
 RewriteRule ^([a-zA-Z0-9-/+]+)([a-zA-Z/]+)([0-9]+)$ index.php?p=/$1&q=$2&pn=$3/ [L]
+
 
 
  

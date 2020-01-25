@@ -4923,7 +4923,7 @@
              
              global $mysql,$loginInfo;
              
-             $Orders = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$loginInfo[0]['MemberID']."' and `OrderNumber`='".$_POST['Code']."'");
+             $Orders = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$loginInfo[0]['MemberID']."' and `OrderNumber`='".$_POST['OrderNumber']."'");
              $Profiles = $mysql->select("select * from `_tbl_profiles` where `ProfileCode`='".$Orders[0]['OrderedProfileCode']."'");
              $OwnProfile = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
@@ -5526,6 +5526,218 @@
 
              return Response::returnSuccess("New Password saved successfully",$data[0]);  
          }
+         public function SendOtpForPayNow($errormessage="",$otpdata="",$reqID="",$MemberID="") {
+            global $mysql,$mail,$loginInfo;      
+        
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+           
+                if ($reqID=="")      {
+                    $otp=rand(1000,9999);
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberPayNowForPlaceOrder'");
+                    $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#otp#",$otp,$content);
+
+                    MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                               "Category" => "MemberPayNowForPlaceOrder",
+                                               "MemberID" => $member[0]['MemberID'],
+                                               "Subject"  => $mContent[0]['Title'],
+                                               "Message"  => $content),$mailError);
+                    MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']."Verification Security Code is ".$otp);
+
+                    if($mailError){
+                        return "Mailer Error: " . $mail->ErrorInfo.
+                        "Error. unable to process your request.";
+                    } else {
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
+                                                                                      "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                                      "EmailTo"       =>$member[0]['EmailID'],
+                                                                                      "SMSTo"         =>$member[0]['MobileNumber'],
+                                                                                      "SecurityCode"  =>$otp,
+                                                                                      "Type"          =>"MemberPayNowForPlaceOrder",
+                                                                                      "messagedon"    =>date("Y-m-d h:i:s"))) ;
+                        $formid = "frmPayNowOTPVerification_".rand(30,3000);
+                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
+                                return '<div id="otpfrm">
+                                            <form method="POST" id="'.$formid.'" name="'.$formid.'">
+                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                            <input type="hidden" value="'.$_POST['MemberCode'].'" name="MemberCode">
+                                            <input type="hidden" value="'.$_POST['OrderNumber'].'" name="OrderNumber">
+                                            <input type="hidden" name="PaymentMode" value="Wallet">   
+                                            <div class="modal-header">                                                             
+                                                <h4 class="modal-title">Confirmation for pay now</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-12"> 
+                                                        <div class="col-sm-3"></div> 
+                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="PayNowOtp" maxlength="4" name="PayNowOtp" style="width: 127%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                        <div class="col-sm-2"><button type="button" onclick="PayNowOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error">'.$error.'</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForPayNow(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+                                            </form>                                                                                                       
+                                         </div>'; 
+                    }
+                } else {
+                        $formid = "frmPayNowOTPVerification_".rand(30,3000);
+                                return '<div id="otpfrm">
+                                            <form method="POST" id="'.$formid.'" name="'.$formid.'">
+                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                            <input type="hidden" value="'.$_POST['MemberCode'].'" name="MemberCode">
+                                            <input type="hidden" value="'.$_POST['OrderNumber'].'" name="OrderNumber">
+                                            <input type="hidden" name="PaymentMode" value="Wallet">   
+                                            <div class="modal-header">                                                             
+                                                <h4 class="modal-title">Confirmation for pay now</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-12"> 
+                                                        <div class="col-sm-3"></div> 
+                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="PayNowOtp" maxlength="4" name="PayNowOtp" style="width: 127%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                        <div class="col-sm-2"><button type="button" onclick="PayNowOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error">'.$error.'</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForPayNow(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+                                            </form>                                                                                                       
+                                         </div>'; 
+                }
+        }
+        public function ResendSendOtpForPayNow($errormessage="",$otpdata="",$reqID="",$MemberCode="") {
+            global $mysql,$mail,$loginInfo;      
+            
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
+             
+                $resend = $mysql->insert("_tbl_resend",array("MemberID" =>$member[0]['MemberID'],
+                                                             "Reason"     =>"Resend Member Pay Now for Place Order",
+                                                             "ResendOn" =>date("Y-m-d h:i:s"))) ;
+                if ($reqID=="")      {
+                    $otp=rand(1000,9999);
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberPayNowForPlaceOrder'");
+                    $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#otp#",$otp,$content);
+
+                    MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                               "Category" => "MemberPayNowForPlaceOrder",
+                                               "MemberID" => $member[0]['MemberID'],
+                                               "Subject"  => $mContent[0]['Title'],
+                                               "Message"  => $content),$mailError);
+                    MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']."Verification Security Code is ".$otp);
+
+                    if($mailError){
+                        return "Mailer Error: " . $mail->ErrorInfo.
+                        "Error. unable to process your request.";
+                    } else {
+                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
+                                                                                      "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                                      "EmailTo"       =>$member[0]['EmailID'],
+                                                                                      "SMSTo"         =>$member[0]['MobileNumber'],
+                                                                                      "SecurityCode"  =>$otp,
+                                                                                      "Type"          =>"MemberPayNowForPlaceOrder",
+                                                                                      "messagedon"    =>date("Y-m-d h:i:s"))) ;
+                        $formid = "frmPayNowOTPVerification_".rand(30,3000);
+                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
+                                return '<div id="otpfrm">
+                                            <form method="POST" id="'.$formid.'" name="'.$formid.'">
+                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                            <input type="hidden" value="'.$_POST['MemberCode'].'" name="MemberCode">
+                                            <input type="hidden" value="'.$_POST['OrderNumber'].'" name="OrderNumber">
+                                            <input type="hidden" name="PaymentMode" value="Wallet">   
+                                            <div class="modal-header">                                                             
+                                                <h4 class="modal-title">Confirmation for pay now</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-12"> 
+                                                        <div class="col-sm-3"></div> 
+                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="PayNowOtp" maxlength="4" name="PayNowOtp" style="width: 127%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                        <div class="col-sm-2"><button type="button" onclick="PayNowOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error">'.$error.'</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForPayNow(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+                                            </form>                                                                                                       
+                                         </div>'; 
+                    }
+                } else {
+                        $formid = "frmPayNowOTPVerification_".rand(30,3000);
+                                return '<div id="otpfrm">
+                                            <form method="POST" id="'.$formid.'" name="'.$formid.'">
+                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                            <input type="hidden" value="'.$_POST['MemberCode'].'" name="MemberCode">
+                                            <input type="hidden" value="'.$_POST['OrderNumber'].'" name="OrderNumber">
+                                            <input type="hidden" name="PaymentMode" value="Wallet">   
+                                            <div class="modal-header">                                                             
+                                                <h4 class="modal-title">Confirmation for pay now</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="col-sm-12"> 
+                                                        <div class="col-sm-3"></div> 
+                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="PayNowOtp" maxlength="4" name="PayNowOtp" style="width: 127%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                        <div class="col-sm-2"><button type="button" onclick="PayNowOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error">'.$error.'</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForPayNow(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+                                            </form>                                                                                                       
+                                         </div>';
+                }
+        }
+        public function PayNowOTPVerification() {
+            global $mysql,$loginInfo ;
+             
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
+            $otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
+            
+            if (strlen(trim($_POST['PayNowOtp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['PayNowOtp']))  {
+
+                $res = $this->CollectPaymentFromWallet();
+                
+                $mContent = $mysql->select("select * from `mailcontent` where `Category`='PaidForOrderPlaced'");
+                $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+
+                MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                           "Category" => "PaidForOrderPlaced",
+                                           "MemberID" => $member[0]['MemberID'],
+                                           "Subject"  => $mContent[0]['Title'],
+                                           "Message"  => $content),$mailError);
+                MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']." Paid amount for order placed ");
+              
+                $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
+                                                                "ActivityType"   => 'PaidOrderPlaced.',
+                                                                "ActivityString" => 'Paid Order Placed.',
+                                                                "SqlQuery"       => base64_encode($updateSql),
+                                                                //"oldData"      => base64_encode(json_encode($oldData)),
+                                                                "ActivityOn"     => date("Y-m-d H:i:s")));
+                return Response::returnSuccess("Paid Successfully.");
+                
+            } else {
+                 return $this->SendOtpForPayNow("<span style='color:red'>Invalid verification code.</span>",$_POST['PayNow'],$_POST['reqId'],$_POST['MemberCode']);
+                } 
+        }
+        
     
  }  
 //4084   5500

@@ -31,8 +31,25 @@
                     <tbody> 
                         <?php $response = $webservice->getData("Admin","GetManageMembers",array("Request"=>"All")); ?>  
                         <?php foreach($response['data'] as $Member) { ?>
-                                <tr>
-                                <td><span title="Deleted" class="<?php if($Member['IsActive']==1 && $Member['IsDeleted']==0){ echo 'Activedot'; } if($Member['IsActive']==0 && $Member['IsDeleted']==0){ echo 'Deactivedot'; } if($Member['IsDeleted']==1){ echo 'DeletedDot'; }?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberCode'];?></td>
+                            <tr>
+                                <td>
+                                <?php
+                                    if ($Member['IsDeleted']==1) {
+                                       echo ' <span title="Member: Deleted" data-toggle="tooltip" class="DeletedDot"></span>'; 
+                                    } elseif ($Member['IsActive']==1) {
+                                        echo ' <span title="Member: Active" data-toggle="tooltip"class="Activedot"></span>'; 
+                                    } elseif ($Member['IsActive']==0){
+                                        echo ' <span title="Member: Deactivated" data-toggle="tooltip" class="Deactivedot"></span>'; 
+                                    }
+                                    
+                                    if ($Member['Gender']=="Male") {
+                                        echo '&nbsp;<i class="fa fa-male" data-toggle="tooltip" title="Gender: Male" aria-hidden="true"></i>';
+                                    } else {
+                                        echo '&nbsp;<i class="fa fa-female" data-toggle="tooltip" title="Gender: Female" aria-hidden="true"></i>';
+                                    }
+                                ?> 
+                                &nbsp;&nbsp;&nbsp;<?php echo $Member['MemberCode'];?>
+                                </td>
                                 <td><?php echo $Member['MemberName'];?></td>
                                 <td><?php echo $Member['FranchiseeCode'];?></td>
                                 <td><?php echo $Member['FranchiseeName'];?></td>
@@ -53,6 +70,9 @@
  <script>
 $(document).ready(function(){
     $('#myTable').dataTable();
+    $('[data-toggle="tooltip"]').tooltip({ container: 'body' }); 
+    $('#myTable_filter input').addClass('form-control'); 
+    $('#myTable_length select').addClass('form-control'); 
     setTimeout("DataTableStyleUpdate()",500);
 });
 </script>

@@ -19,6 +19,9 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/SearchMember");?>">Search Member</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/Plan/ManagePlan");?>">Manage Plans</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/KYC/KYCVerification");?>">KYC Verification</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/IndividualSMS");?>">Individual SMS</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/IndividualEmail");?>">Individual Email</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/IndividualMessages");?>">Individual Message</a></li>
                     </ul>
                 </div>
             </li>
@@ -93,7 +96,7 @@
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
+           <!-- <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#masters" aria-expanded="false" aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>
                     <span class="menu-title">Masters</span>
@@ -131,7 +134,7 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("SequenceMaster/ManageSequenceMaster");?>">Sequence Master</a></li>
                     </ul>
                 </div>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#settings" aria-expanded="false" aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>
@@ -146,15 +149,11 @@
                         <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Application/ManageApplication");?>">Application</a></li>-->
                         <!-- <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Invoice/Invoice");?>">Invoice</a></li> -->
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Bank/ListofBanks");?>">Add Bank</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Masters/ReligionNames/ManageReligion");?>">Masters</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/NormalSettings");?>">Normal Setting</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/ManageTemplates");?>">Template</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/OrderHeaderFooter");?>">Templates</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/PaymentGateway/ManagePayu");?>">Payment Gateway</a></li>
                         
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/Order/OrderHeaderFooter");?>">Order Header Footer</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/Receipt/ReceiptHeaderFooter");?>">Receipt Header Footer</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/Invoice/InvoiceHeaderFooter");?>">Invoice Header Footer</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/Email/EmailHeaderFooter");?>">Email Header Footer</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/ProfileDownload/ProfileDownloadHeaderFooter");?>">Profile Download Header Footer</a></li>
                     </ul>                                                                                          
                 </div>
             </li> 

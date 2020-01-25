@@ -21,7 +21,7 @@
                       </thead>
                       <tbody>
                       <?php 
-                         $response = $webservice->GetFranchiseeRefillWalletManage(); 
+                         $response = $webservice->getData("Admin","GetFranchiseeRefillWalletManage"); 
                          if (sizeof($response['data'])>0) {
                          ?>
                         <?php foreach($response['data'] as $Wallet) { ?>

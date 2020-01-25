@@ -1869,6 +1869,38 @@
                  return Response::returnSuccess("success",$mysql->select($sql." WHERE `IsActive`='0'"));    
              }
          }
+         function GetIndividualMessage() {    
+
+             global $mysql,$loginInfo;
+
+             $sql = "SELECT * From `_tbl_send_individual_message` WHERE `MessageFromID`='".$loginInfo[0]['AdminID']."'";
+
+             if (isset($_POST['Request']) && $_POST['Request']=="SMS") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and `IsSMS`='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Email") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and `IsEmail`='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Messages") {
+                 return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_board` where `FromID`='".$loginInfo[0]['AdminID']."'"));    
+             }
+         }
+         function GetIndividualMessageInfo() {    
+
+             global $mysql,$loginInfo;
+
+             $sql = "SELECT * From `_tbl_send_individual_message` WHERE `MessageFromID`='".$loginInfo[0]['AdminID']."' and `ManualSendID`='".$_POST['Code']."'";
+
+             if (isset($_POST['Request']) && $_POST['Request']=="SMS") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and `IsSMS`='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Email") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and `IsEmail`='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Messages") {
+                 return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_board` where `FromID`='".$loginInfo[0]['AdminID']."' and `BoardID`='".$_POST['Code']."'"));    
+             }
+         }
     function GetSettingsMobileApiCode(){     
             return Response::returnSuccess("success",array("MobileApiCode" => SeqMaster::GetNextMobileApiNumber(),
                                                            "SMSMethod"        => CodeMaster::getData('SMSMETHOD'),
@@ -1989,6 +2021,7 @@
              $sql = "SELECT `_tbl_members`.MemberID AS MemberID,
                             _tbl_members.MemberCode AS MemberCode,
                             _tbl_members.MemberName AS MemberName,
+                            _tbl_members.Sex AS Gender,
                             _tbl_members.IsDeleted AS IsDeleted,
                             _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
                             _tbl_franchisees.FranchiseName AS FranchiseeName,
@@ -3255,8 +3288,8 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
          function FranchiseeDetailsforRefillWallet(){
            global $mysql,$loginInfo;    
               
-              $Franchisee = $mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_POST['Code']."'");
-              $sql="select * from _tbl_franchisees where FranchiseeID='".$_POST['Code']."'";
+              $Franchisee = $mysql->select("select * from _tbl_franchisees where FranchiseeCode='".$_POST['Code']."'");
+              $sql="select * from _tbl_franchisees where FranchiseeCode='".$_POST['Code']."'";
                 return Response::returnSuccess("success".$sql,$Franchisee);
                                                             
          }
@@ -3274,7 +3307,12 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
              global $mysql,$loginInfo;
              
-             $Franchisee = $mysql->select("select * from `_tbl_franchisees` where `FranchiseeID`='".$_POST['Code']."'");         
+             $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+             
+             $Franchisee = $mysql->select("select * from `_tbl_franchisees` where `FranchiseeCode`='".$_POST['FranchiseeCode']."'");         
              
              $Admin = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
              

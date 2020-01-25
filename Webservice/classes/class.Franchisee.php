@@ -128,6 +128,35 @@
                                                   "CreatedBy"                => "Franchisee",
 												  "ChangePasswordFstLogin"   => (($_POST['PasswordFstLogin']=="on") ? '1' : '0'),
                                                   "MemberPassword"           => $_POST['LoginPassword']));
+                                                  
+       $Plan = $mysql->select("select * from _tbl_member_plan where IsDefault='1'");                                          
+                                                       
+             $date = date_create(date("Y-m-d"));                    
+                $e = $Plan[0]['Decreation']. " days";                
+                date_add($date,date_interval_create_from_date_string($e));
+                $endingdate= date("Y-m-d",strtotime(date_format($date,"Y-m-d")));
+                $endingdate= date_format($date,"Y-m-d");
+                
+                $mysql->insert("_tbl_profile_credits",array("MemberID"                => $id,
+                                                            "MemberCode"           => $MemberCode,
+                                                            "ProfileID"            => "0",
+                                                            "ProfileCode"          => "0",
+                                                            "Particulars"          => "0",
+                                                            "Credits"              => $Plan[0]['FreeProfiles'],
+                                                            "Debits"               => "0",
+                                                            "Available"            =>  $Plan[0]['FreeProfiles']-"0",
+                                                            "DownloadedProfileID"  => "0",
+                                                            "DownloadedProfileCode"=> "0",
+                                                            "DownloadedMemberID"   => "0",
+                                                            "DownloadedMemberCode" => "0",
+                                                            "OrderID"              => "0",
+                                                            "OrderCode"            => "0",
+                                                            "MemberPlanID"         => $Plan[0]['PlanID'],
+                                                            "MemberPlanCode"       => $Plan[0]['PlanCode'],
+                                                            "PlanName"             => $Plan[0]['PlanName'], 
+                                                            "TxnDate"                => date("Y-m-d H:i:s"),
+                                                            "StartingDate"         => date("Y-m-d H:i:s"),
+                                                            "EndingDate"           => $endingdate));
         if (sizeof($id)>0) {
             $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='Member'");
               return Response::returnSuccess("success",array("MemberCode"=>$MemberCode));
@@ -1265,9 +1294,9 @@
               global $mysql,$loginInfo;    
               
                $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
-            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
-                return Response::returnError("Invalid transaction password");   
-            }
+                    if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                    return Response::returnError("Invalid transaction password");   
+                    }
 				
 			  $Member_session = $mysql->select("select * from _tbl_member_edit where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `FranchiseeStaffID`='".$loginInfo[0]['FranchiseeID']."' and `Session`='".$_POST['SCode']."' and `IsAllow`='1'" );	
               
@@ -4020,7 +4049,12 @@
 
              global $mysql,$loginInfo;
              
-             $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$_POST['Code']."'");
+             $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+                if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                    return Response::returnError("Invalid transaction password");   
+                }
+             
+             $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$_POST['MemberID']."'");
              $Franchisee = $mysql->select("select * from `_tbl_franchisees` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
              
              if($this->getAvailableBalance() > $_POST['AmountToTransfer']) {
@@ -4029,11 +4063,11 @@
              
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeTransferAmountToMember'");
              $content  = str_replace("#FranchiseeName#",$Franchisee[0]['FranchiseName'],$mContent[0]['Content']);
-             $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$content);
              $content  = str_replace("#Amount#",$_POST['AmountToTransfer'],$content);
 
              MailController::Send(array("MailTo"   => $Franchisee[0]['ContactEmail'],
-                                        "Category" => "AdminTransferAmountToFranchisee",
+                                        "Category" => "FranchiseeTransferAmountToMember",
                                         "FranchiseeID" => $Franchisee[0]['FranchiseeID'],
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
@@ -4049,13 +4083,13 @@
                                                                    "IsMember"         =>"0"));  
                                                                    
                
-             $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeAmountReceivedFromAdmin'");
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberAmountReceivedFromFranchisee'");
              $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
-             $content  = str_replace("#FranchiseeName#",$Franchisee[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#FranchiseeName#",$Franchisee[0]['MemberName'],$content);
              $content  = str_replace("#Amount#",$_POST['AmountToTransfer'],$content);
 
              MailController::Send(array("MailTo"   => $Member[0]['EmailID'],
-                                        "Category" => "FranchiseeAmountReceivedFromAdmin",
+                                        "Category" => "MemberAmountReceivedFromFranchisee",
                                         "MemberID" => $Member[0]['MemberID'],
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
