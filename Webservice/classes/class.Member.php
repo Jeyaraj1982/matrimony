@@ -1562,12 +1562,17 @@
 																`RequestVerifyOn`      = '".date("Y-m-d H:i:s")."'
 																 where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'");
 				
-				$mysql->insert("_tbl_request_edit",array("MemberID"          	=> $loginInfo[0]['MemberID'],
-														 "MemberCode"        	=> $member[0]['MemberCode'],
-														 "DraftProfileID"    	=> $data[0]['ProfileID'],
-														 "DraftProfileCode"  	=> $data[0]['ProfileCode'],
-														 "RequestToSubmit"   	=> "1",
-														 "RequestToSubmittedOn" => date("Y-m-d H:i:s")));
+				$mysql->insert("_tbl_profiles_activity",array("MemberID"              => $loginInfo[0]['MemberID'],
+                                                              "MemberCode"            => $member[0]['MemberCode'],
+                                                              "DraftProfileID"        => $data[0]['ProfileID'],
+                                                              "DraftProfileCode"      => $data[0]['ProfileCode'],
+                                                              "Activity"              => "SubmittedToDAT",
+                                                              "ActivityOn"            => date("Y-m-d H:i:s"),
+                                                              "ActivityDoneBy"        => "Member",
+                                                              "ActivityDoneByID"      => $loginInfo[0]['MemberID'],
+                                                              "ActivityDoneByCode"    => $member[0]['MemberCode'],
+                                                              "Remarks"               => "" ));
+                
              
 				$mContent = $mysql->select("select * from `mailcontent` where `Category`='SubmitToVerifyPublishProfile'");
 				$content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);

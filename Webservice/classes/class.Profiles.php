@@ -370,7 +370,8 @@
 				$HDobVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Hd_Dob']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
 				$HDVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Hd_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
 				$PEVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Pe_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
-				$CDVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Cd_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+                $CDVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Cd_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+				$DATSummary = $mysql->select("select * from _tbl_profiles_activity where `MemberCode` ='".$members[0]['MemberCode']."' and `MemberID`='".$Profiles[0]['MemberID']."' and `DraftProfileID`='".$Profiles[0]['ProfileID']."' and `DraftProfileCode`='".$Profiles[0]['ProfileCode']."'");
             } else {   
                 $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where ProfileCode='".$ProfileCode."'");               
                  $members = $mysql->select("select * from `_tbl_members` where `MemberCode`='".$Profiles[0]['MemberCode']."'");   
@@ -388,6 +389,7 @@
 				$HDVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Hd_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
 				$PEVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Pe_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
 				$CDVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Cd_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
+                $DATSummary = $mysql->select("select * from _tbl_profiles_activity where `MemberCode` ='".$members[0]['MemberCode']."' and `MemberID`='".$Profiles[0]['MemberID']."' and `DraftProfileID`='".$Profiles[0]['ProfileID']."' and `DraftProfileCode`='".$Profiles[0]['ProfileCode']."'");
             }
             
             if (sizeof($Profiles)==0) {
@@ -437,6 +439,7 @@
                             "HDVerification"       => $HDVerification[0],
                             "PEVerification"       => $PEVerification[0],
                             "CDVerification"       => $CDVerification[0],
+                            "DATSummary"       => $DATSummary[0],
                             "Position"             => $Position,
                             "EducationAttachments" => $Educationattachments,
                             "Documents"            => $Documents,

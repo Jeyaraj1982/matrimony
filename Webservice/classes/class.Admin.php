@@ -1090,7 +1090,32 @@
             $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
             $TransactionPassword = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
             if (strlen(trim($TransactionPassword[0]['TransactionPassword']==$_POST['TransactionPassword'])))  {
-				$res = $this->ApproveProfile();
+				//$res = $this->ApproveProfile();
+                $mysql->execute("update `_tbl_draft_profiles` set  `IsObservation`      = '2',
+                                                                    `IsSendToAdmin`      = '1',
+                                                                    `ObservationCompletedOn`      = '".date("Y-m-d H:i:s")."',
+                                                                    `SendToAdminOn`      = '".date("Y-m-d H:i:s")."'
+                                                                    where `ProfileCode`='".$_POST['ProfileID']."'");  
+                $mysql->insert("_tbl_profiles_activity",array("MemberID"              => $member[0]['MemberID'],
+                                                              "MemberCode"            => $member[0]['MemberCode'],
+                                                              "DraftProfileID"        => $data[0]['ProfileID'],
+                                                              "DraftProfileCode"      => $data[0]['ProfileCode'],
+                                                              "Activity"              => "Verification Proccess completed",
+                                                              "ActivityOn"            => date("Y-m-d H:i:s"),
+                                                              "ActivityDoneBy"        => "Admin",
+                                                              "ActivityDoneByID"      => $loginInfo[0]['AdminID'],
+                                                              "ActivityDoneByCode"    => $TransactionPassword[0]['AdminCode'],
+                                                              "Remarks"               => "" ));
+                $mysql->insert("_tbl_profiles_activity",array("MemberID"              => $member[0]['MemberID'],
+                                                              "MemberCode"            => $member[0]['MemberCode'],
+                                                              "DraftProfileID"        => $data[0]['ProfileID'],
+                                                              "DraftProfileCode"      => $data[0]['ProfileCode'],
+                                                              "Activity"              => "SubmittedToAdmin",
+                                                              "ActivityOn"            => date("Y-m-d H:i:s"),
+                                                              "ActivityDoneBy"        => "Admin",
+                                                              "ActivityDoneByID"      => $loginInfo[0]['AdminID'],
+                                                              "ActivityDoneByCode"    => $TransactionPassword[0]['AdminCode'],
+                                                              "Remarks"               => "" ));
 				return Response::returnSuccess("Profile has been Published. Profile Code ".$res['ProfileCode']);
             } else {
                 return $this->TransactionPasswordSubmit("<span style='color:red'>Invalid Transaction Password.</span>",$_POST['ProfileID']);
@@ -2102,8 +2127,8 @@
     
   function GetFranchiseeInfoInFranchiseeWise() {        
            global $mysql;    
-        $Franchisees = $mysql->select("select * from _tbl_franchisees where FranchiseeID='".$_POST['Code']."'");
-        $Members = $mysql->select("select * from _tbl_members where ReferedBy='".$_POST['Code']."'");
+        $Franchisees = $mysql->select("select * from _tbl_franchisees where FranchiseeCode='".$_POST['Code']."'");
+        $Members = $mysql->select("select * from _tbl_members where ReferedBy='".$Franchisees[0]['FranchiseeID']."'");
         return Response::returnSuccess("success",array("FranchiseeInfo"    => $Franchisees[0],
                                                        "Member"    => $Members));
     } 
@@ -2406,26 +2431,39 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              $member =  $mysql->select("SELECT * FROM `_tbl_members` ORDER BY `MemberID` DESC LIMIT 3");
              $profilecount =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM _tbl_profiles");
              $profile =  $mysql->select("SELECT * FROM `_tbl_draft_profiles` ORDER BY `ProfileID` DESC LIMIT 3");
-             $profileverification =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM _tbl_profiles where RequestToVerify='1'");
+             $MaleProfileCount =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM `_tbl_draft_profiles` where SexCode='SX001' ORDER BY `ProfileID` DESC LIMIT 3");
+             $FemaleProfileCount =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM `_tbl_draft_profiles` where SexCode='SX002' ORDER BY `ProfileID` DESC LIMIT 3");
+             $profileverification =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM _tbl_draft_profiles where RequestToVerify='1' and IsApproved='0'");
              $documentverification =  $mysql->select("SELECT COUNT(DocID) AS cnt FROM _tbl_member_documents");
              $ordercount =  $mysql->select("SELECT COUNT(OrderID) AS cnt FROM _tbl_orders");
              $invoicecount =  $mysql->select("SELECT COUNT(InvoiceID) AS cnt FROM _tbl_invoices");
              $paypalcount =  $mysql->select("SELECT COUNT(PaypalID) AS cnt FROM _tbl_settings_paypal");
+             $OnlineMembercount =  $mysql->select("SELECT COUNT(LoginID) AS cnt FROM _tbl_logs_logins where FranchiseeID='0' and FranchiseeStaffID='0' and AdminID='0' and AdminStaffID='0' and date(LoginOn)=date('".date("Y-m-d")."')");
              
              $MemberWalletRequestCount =  $mysql->select("SELECT COUNT(ReqID) AS cnt FROM _tbl_wallet_bankrequests where IsMember='1'"); 
              $FranchiseeWalletRequestCount =  $mysql->select("SELECT COUNT(ReqID) AS cnt FROM _tbl_wallet_bankrequests where IsMember='0'"); 
-             
+             $FreeMemberCount =  $mysql->select("SELECT COUNT(ProfileCreditID) AS cnt FROM _tbl_profile_credits where MemberPlanCode='PLN0008'"); 
+             $PaidMemberCount =  $mysql->select("SELECT COUNT(ProfileCreditID) AS cnt FROM _tbl_profile_credits where MemberPlanCode!='PLN0008'"); 
+             $LandingPageProfileCount =  $mysql->select("SELECT COUNT(ProfileLandingID) AS cnt FROM _tbl_landingpage_profiles where Date(_tbl_landingpage_profiles.`DateTo`)>=Date('".date("Y-m-d")."') AND `IsShow`='1'"); 
+             $FranchiseeCount =  $mysql->select("SELECT COUNT(FranchiseeID) AS cnt FROM _tbl_franchisees"); 
                 
                 return Response::returnSuccess("success",array("MemberCount"                  => $memberCount,
-                                                               "Member"                       => $member,
+                                                               "Member"                       => $member,               
                                                                "ProfileCount"                 => $profilecount,
                                                                "Profile"                      => $profile,
+                                                               "MaleProfileCount"             => $MaleProfileCount,
+                                                               "FemaleProfileCount"           => $FemaleProfileCount,
                                                                "OrderCount"                   => $ordercount,
                                                                "InvoiceCount"                 => $invoicecount,
                                                                "PaypalCount"                  => $paypalcount,
                                                                "Document"                     => $documentverification,
                                                                "ProfileVerification"          => $profileverification,
                                                                "MemberWalletRequestCount"     => $MemberWalletRequestCount,
+                                                               "OnlineMemberCount"             => $OnlineMembercount,
+                                                               "FreeMemberCount"             => $FreeMemberCount,
+                                                               "PaidMemberCount"             => $PaidMemberCount,
+                                                               "LandingPageProfileCount"             => $LandingPageProfileCount,
+                                                               "FranchiseeCount"             => $FranchiseeCount,
                                                                "FranchiseeWalletRequestCount" => $FranchiseeWalletRequestCount));
         }
      function ViewMemberKYCDoc() {
@@ -6518,6 +6556,15 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                             "CreatedOn"       => date("Y-m-d H:i:s")));
        return Response::returnSuccess("Success",array());
     }
+    function ProfileAddToObservationMode() {
+      global $mysql,$loginInfo;
+      
+      $mysql->execute("update `_tbl_draft_profiles` set  `IsObservation`      = '1',
+                                                         `ObservationOn`      = '".date("Y-m-d H:i:s")."'
+                                                         where `ProfileCode`='".$_POST['Code']."'");  
+      return Response::returnSuccess("Success",array()); 
+    }
 }
+
 //2801
 ?> 
