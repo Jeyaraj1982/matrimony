@@ -1,3 +1,7 @@
+<?php 
+$page="ManageLanguage";
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
 <script>
  function SubmitNewLanguageName() {
                         $('#ErrLanguageName').html("");
@@ -27,15 +31,15 @@
     }
     $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $LanguageName = $response['data']['ViewInfo'];
-?>
+?> 
+<div class="col-sm-10 rightwidget">
 <form method="post" action="" onsubmit="return SubmitNewLanguageName();">
-          <div class="col-12 stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Masters</h4>  
-                      <h4 class="card-title">Edit Language Name</h4>  
-                      <form class="forms-sample">
-                      <div class="form-group row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Masters</h4>
+                <h4 class="card-title">Edit Language Name</h4>
+                    <div class="form-group row">
                           <label for="LanguageCode" class="col-sm-3 col-form-label">Language Code<span id="star">*</span></label>
                           <div class="col-sm-9">
                             <input type="text" readonly="readonly" style="width:80px;background:#f1f1f1" maxlength="10" class="form-control" id="LanguageCode" name="LanguageCode" value="<?php echo $LanguageName['SoftCode'];?>" placeholder="Language Code">
@@ -67,8 +71,10 @@
                         <button type="submit" name="BtnUpdateLanguageName" class="btn btn-primary mr-2">Update Language Name</button></div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageLanguage"><small>List of Language Names</small></a> </div>
                         </div>
-                        </form>
-                    </div>
-                  </div>
+                </div>
               </div>
-</form>
+            </div>
+        </form>
+</div>
+ 
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

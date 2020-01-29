@@ -9,6 +9,7 @@
      $HDVerification = $response['data']['HDVerification'];
      $PEVerification = $response['data']['PEVerification'];
      $CDVerification = $response['data']['CDVerification'];
+     $DATSummary = $response['data']['DATSummary'];
     $Member = $response['data']['Members'];
     $EducationAttachment = $response['data']['EducationAttachments'];
     $PartnerExpectation = $response['data']['PartnerExpectation'];
@@ -105,7 +106,7 @@ legend {
 				<br>
 				<div class="col-sm-6" style="text-align:left"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','ProfilePhoto')">Edit</a></div>
                 </div>
-                <div class="col-sm-7">
+                <div class="col-sm-5">
                     <div class="form-group row">                                       
                         <label class="col-sm-12 col-form-label" style="color: #1e1e1e;font-size: 17px;"><?php echo strlen(trim($ProfileInfo['ProfileName']))> 0 ? trim($ProfileInfo['ProfileName']) : "N/A "; ?>&nbsp;<?php if((strlen(trim($ProfileInfo['Age'])))>0){ echo "("." ".trim($ProfileInfo['Age'])." "."yrs".")";  }?>&nbsp;</label>
                     </div>
@@ -165,7 +166,15 @@ legend {
                      <div class="form-group row">
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['City'])))>0){ echo trim($ProfileInfo['City']);?>,&nbsp;&nbsp;<?php }?><?php if((strlen(trim($ProfileInfo['State'])))>0){ echo trim($ProfileInfo['State']);?>,&nbsp;&nbsp;<?php }?><?php echo trim($ProfileInfo['Country']);?></label>
                     </div>
-                  
+              </div>
+              <div class="col-sm-2">
+                Summary
+                <div class="form-group row">
+                   <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($DATSummary['Activity']);?></label> 
+                </div>
+                <div class="form-group row">
+                   <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo putDateTime($DATSummary['ActivityOn']);?></label> 
+                </div>
               </div>
               </div>
          </div>

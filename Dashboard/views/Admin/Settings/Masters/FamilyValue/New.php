@@ -1,4 +1,7 @@
-
+<?php 
+$page="ManageFamilyValue";
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
 <script>
  function SubmitFamilyValue() {
                          $('#ErrFamilyValueCode').html("");
@@ -32,17 +35,15 @@
         if ($FamilyValueCode['status']=="success") {
             $GetNextFamilyValueCode  =$FamilyValueCode['data']['FamilyValueCode'];
         }
-        {     
 ?>
- 
+<div class="col-sm-10 rightwidget">
 <form method="post" action="" onsubmit="return SubmitFamilyValue();">
-          <div class="col-12 stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Masters</h4>
-                      <h4 class="card-title">Add FamilyValue</h4>
-                      <form class="forms-sample">
-                      <div class="form-group row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Masters</h4>
+                <h4 class="card-title">Add FamilyValue</h4>
+                <div class="form-group row">
                           <label for="FamilyValue Code" class="col-sm-3 col-form-label">FamilyValue Code<span id="star">*</span></label>
                           <div class="col-sm-2">
                             <input type="text" class="form-control" id="FamilyValueCode" name="FamilyValueCode" maxlength="10" value="<?php echo isset($_POST['FamilyValueCode']) ? $_POST['FamilyValueCode'] : $GetNextFamilyValueCode;?>" placeholder="FamilyValue Code">
@@ -62,9 +63,9 @@
                                 <button type="submit" name="BtnSaveFamilyValue" id="BtnSaveFamilyValue"  class="btn btn-primary mr-2" style="font-family: roboto;">Save FamilyValue</button> </div>
                             <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageFamilyValue">List of FamilyValues </a>  </div>
                         </div>
-                      </form>
-                    </div>
-                  </div>
                 </div>
-</form>
-<?php }?>
+              </div>
+            </div>
+        </form>
+</div>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

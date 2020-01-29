@@ -1,10 +1,15 @@
-<form method="post" action="<?php echo GetUrl("Masters/BankNames/New");?>" onsubmit="">      
-    <div class="col-lg-12 grid-margin stretch-card">
+<?php 
+$page="ManageBank";
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
+
+<div class="col-sm-10 rightwidget">
+<form method="post" action="<?php echo GetUrl("Settings/Masters/BankNames/New");?>" onsubmit="">      
+<div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Masters</h4>
                 <h4 class="card-title">Manage Bank Names</h4>
-
                 <button type="submit" class="btn btn-primary"><i class="mdi mdi-plus"></i>Bank Name</button>
                 <button type="submit" class="btn btn-success dropdown-toggle"  data-toggle="dropdown">Export</button>
                 <ul class="dropdown-menu">
@@ -28,8 +33,8 @@
                                 <tr>
                                 <td><span class="<?php echo ($BankName['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $BankName['SoftCode'];?></td>
                                 <td><?php echo $BankName['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/BankNames/Manage/Edit/". $BankName['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/BankNames/Manage/View/". $BankName['SoftCode'].".html");?>">View</a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Settings/Masters/BankNames/Manage/Edit/". $BankName['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Settings/Masters/BankNames/Manage/View/". $BankName['SoftCode'].".html");?>">View</a></td>
                                 </tr>
                         <?php } ?>            
                       </tbody>
@@ -39,6 +44,8 @@
               </div>
             </div>
         </form>
+</div>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    
  <script>
 $(document).ready(function(){
     $('#myTable').dataTable();

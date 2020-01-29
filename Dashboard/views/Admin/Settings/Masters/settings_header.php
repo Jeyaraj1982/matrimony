@@ -32,6 +32,7 @@
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="IncomeRange") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/Masters/IncomeRanges/ManageIncomeRanges");?>" class="Notification" style="text-decoration:none"><span>Income Ranges</span></a>
                                         </li>
+                                        
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="CountryNames") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/Masters/CountryNames/ManageCountry");?>" class="Notification" style="text-decoration:none"><span>Country Names</span></a>
                                         </li>

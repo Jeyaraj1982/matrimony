@@ -544,6 +544,46 @@
     return $string ? implode(', ', $string) . ' ago' : 'just now';
 }
 
+class JHTML {  
+    function li($text,$attributes=array()) {
+        $r = "<li ";
+        foreach($attributes as $attr=>$value) {
+            $r.= $attr.="'".$value."' ";
+        }
+        return $r." >".$text."</li>";
+    }
+    function td($text,$attributes=array()) {
+        $r = "<td ";
+        foreach($attributes as $attr=>$value) {
+            $r.= $attr.="'".$value."' ";
+        }
+        return $r." >".$text."</td>";
+    }
+    function th($text,$attributes=array()) {
+        $r = "<th ";
+        foreach($attributes as $attr=>$value) {
+            $r.= $attr."='".$value."' ";
+        }
+        return $r." >".$text."</th>";
+    }
+     function span($text,$attributes=array()) {
+        $r = "<span ";
+        foreach($attributes as $attr=>$value) {
+            $r.= $attr."='".$value."' ";
+        }
+        return $r." >".$text."</span>";
+    }
+    function a($text,$attributes=array()) {
+        $r = "<a ";
+        foreach($attributes as $attr=>$value) {
+            $r.= $attr."='".$value."' ";
+        }
+        return $r." >".$text."</a>";
+    }
+    
+}
+$html = new JHTML();
+
 
  
 ?>

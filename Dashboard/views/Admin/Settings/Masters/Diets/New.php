@@ -1,3 +1,7 @@
+<?php 
+$page="ManageDiets";
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
 <script>
  function SubmitDiet() {
                          $('#ErrDietCode').html("");
@@ -6,8 +10,9 @@
                          ErrorCount=0;
         
                         IsNonEmpty("DietCode","ErrDietCode","Please Enter Valid Diet Code");
-                        IsNonEmpty("DietName","ErrDietName","Please Enter Valid Diet Name");
-                        IsAlphaNumeric("DietName","ErrDietName","Please Enter Alphanumeric Charactors only");
+                        if(IsNonEmpty("DietName","ErrDietName","Please Enter Valid Diet Name")) {
+                            IsAlphaNumeric("DietName","ErrDietName","Please Enter Alphanumeric Charactors only");
+                        }
          
                         if (ErrorCount==0) {
                             return true;
@@ -32,16 +37,15 @@
         if ($DietCode['status']=="success") {
             $GetNextDietCode  =$DietCode['data']['DietCode'];
         }
-        {     
 ?>
+<div class="col-sm-10 rightwidget">
 <form method="post" action="" onsubmit="return SubmitDiet();">
-          <div class="col-12 stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Masters</h4>
-                      <h4 class="card-title">Create Diet Name</h4>
-                      <form class="forms-sample">
-                      <div class="form-group row">
+<div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Masters</h4>
+                <h4 class="card-title">Create Diet Name</h4>
+                <div class="form-group row">
                           <label for="Diet Code" class="col-sm-3 col-form-label">Diet Code<span id="star">*</span></label>
                           <div class="col-sm-2">
                             <input type="text" class="form-control" id="DietCode" name="DietCode" maxlength="10" value="<?php echo isset($_POST['DietCode']) ? $_POST['DietCode'] : $GetNextDietCode;?>" placeholder="Diet Code">
@@ -61,9 +65,9 @@
                                 <button type="submit" name="BtnSaveDiet" id="BtnSaveDiet"  class="btn btn-primary mr-2">Save Diet</button> </div>
                             <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageDiets"><small>List of Diets</small> </a>  </div>
                         </div>
-                      </form>
-                    </div>
-                  </div>
                 </div>
-</form>
-<?php }?>
+              </div>
+            </div>
+        </form>
+</div>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

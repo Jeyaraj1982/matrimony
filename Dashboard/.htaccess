@@ -190,6 +190,7 @@ RewriteRule ^Franchisees/DeactiveFranchiseeStaffs/(.*)\.html$ ./index.php?Code=$
 RewriteRule ^Franchisees/FrStaffCreate/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FrStaffCreate 
 RewriteRule ^Franchisees/FrStaffEdit/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FrStaffEdit           
 RewriteRule ^Franchisees/FrStaffView/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FrStaffView
+RewriteRule ^Franchisees/FranchiseeMembers/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FranchiseeMembers
 
 RewriteRule ^Settings/Template/EditTemplate/(.*)\.html$ ./index.php?Code=$1&p=Settings/Template/EditTemplate
 

@@ -1,4 +1,9 @@
-<form method="post" action="<?php echo GetUrl("Masters/CountryNames/New");?>" onsubmit="">      
+<?php 
+$page="CountryNames";           
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
+<div class="col-sm-10 rightwidget">
+<form method="post" action="<?php echo GetUrl("Settings/Masters/CountryNames/New");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
            <div class="card-body">
@@ -15,10 +20,10 @@
                 </ul>
                 </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                    <a href="ManageCountry" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                    <a href="ManageActiveCountry"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
-                    <a href="ManageDeactiveCountry"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>&nbsp;|&nbsp;
-                    <a href="ManageRegisterAllowCountry"><small style="font-weight:bold;text-decoration:underline">Register Country</small></a>
+                    <a href="<?php echo GetUrl("Settings/Masters/CountryNames/ManageCountry");?>" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
+                    <a href="<?php echo GetUrl("Settings/Masters/CountryNames/ManageActiveCountry");?>"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
+                    <a href="<?php echo GetUrl("Settings/Masters/CountryNames/ManageDeactiveCountry");?>"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>&nbsp;|&nbsp;
+                    <a href="<?php echo GetUrl("Settings/Masters/CountryNames/ManageRegisterAllowCountry");?>"><small style="font-weight:bold;text-decoration:underline">Register Country</small></a>
                 </div>
                 </div>
                 <div class="table-responsive">
@@ -46,8 +51,8 @@
                                 <td><?php echo $CountryName['ParamC'];?></td>
                                 <td><?php echo $CountryName['ParamD'];?></td>
 				                <td><?php if($CountryName['ParamE']==1){ ?><img src="<?php echo SiteUrl?>assets/images/tick.gif" style="height: 23px;width: 31px;"><?php }?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/CountryNames/Manage/Edit/". $CountryName['SoftCode'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/CountryNames/Manage/View/". $CountryName['SoftCode'].".html");?>"><span>View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Settings/Masters/CountryNames/Manage/Edit/". $CountryName['SoftCode'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Settings/Masters/CountryNames/Manage/View/". $CountryName['SoftCode'].".html");?>"><span>View</span></a></td>
                             </tr>
                         <?php } ?>
                        </tbody> 
@@ -63,3 +68,4 @@ $(document).ready(function(){
     setTimeout("DataTableStyleUpdate()",500);
 });
 </script>            
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

@@ -47,12 +47,10 @@ $(document).ready(function () {
                  }                                          
     
 </script>
-
 <form method="post" action="" onsubmit="return SubmitNewReligionName();">
           <div class="col-12 stretch-card">
                   <div class="card">
                     <div class="card-body">
-                      <h4 class="card-title">Masters</h4>  
                       <h4 class="card-title">Edit Religion Name</h4>  
                       <div class="form-group row">
                           <label for="ReligionCode" class="col-sm-3 col-form-label">Religion Code</label>
@@ -84,7 +82,7 @@ $(document).ready(function () {
                         <button type="submit" name="BtnUpdateReligionName" class="btn btn-primary mr-2">Update Religion Name</button></div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageReligion"><small>List of Religion Names</small></a></div>
                         </div>
-                        </form>
+                        
                     </div>
                   </div>
                 </div>

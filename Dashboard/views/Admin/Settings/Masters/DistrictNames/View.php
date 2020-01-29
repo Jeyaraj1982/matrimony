@@ -1,14 +1,18 @@
+<?php 
+$page="ManageDistrict";           
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
+<div class="col-sm-10 rightwidget">
 <?php
     $response     = $webservice->getData("Admin","GetMasterAllViewInfo");            
     $DistrictName = $response['data']['ViewInfo'];
 ?>
-<form method="post" action="" onsubmit="">
+<form method="post" action="">
           <div class="col-12 stretch-card">
                   <div class="card">
                     <div class="card-body">
                       <h4 class="card-title">Masters</h4>  
                       <h4 class="card-title">District Name Details</h4>  
-                      <form class="forms-sample">
                       <div class="form-group row">
                           <label for="DistrictCode" class="col-sm-3 col-form-label">District Code</label>
                           <label for="DistrictCode" class="col-sm-3 col-form-label"><?php echo $DistrictName['SoftCode'];?></label>
@@ -29,3 +33,4 @@
                   </div>
                 </div>
 </form>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

@@ -34,6 +34,14 @@ $(document).ready(function () {
     
 </script>
 <div class="col-sm-10 rightwidget">
+ <div class="row" style="margin-bottom:0px;">
+        <div class="col-sm-6">
+            <h4 class="card-title">Create Religion Name</h4>                   
+        </div>
+        <div class="cols-sm-6">
+        </div>
+ </div>
+        
 <?php                   
   if (isset($_POST['BtnReligionName'])) {   
     $response = $webservice->getData("Admin","CreateReligionName",$_POST);
@@ -50,9 +58,8 @@ $(document).ready(function () {
             $GetNextReligionCode  =$ReligionCode['data']['ReligionCode'];
         }
 ?>
-<form method="post" action="" onsubmit="return SubmitNewReligionName();">   
-    <h4 class="card-title">Masters</h4>
-    <h4 class="card-title">Create Religion Name</h4>                  
+<form method="post" action="" onsubmit="return SubmitNewReligionName();">
+    
         <div class="form-group row">
           <label for="Religion Name" class="col-sm-3 col-form-label">Religion Name Code<span id="star">*</span></label>
           <div class="col-sm-2">

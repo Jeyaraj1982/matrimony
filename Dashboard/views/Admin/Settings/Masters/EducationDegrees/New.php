@@ -1,39 +1,6 @@
-<?php
-   /* if (isset($_POST['BtnSaveEducationDegree'])) {
-        
-        $ErrorCount =0;
-            
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='EDUCATIONDEGREES' and CodeValue='".trim($_POST['EducationDegree'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrEducationDegree="Education Degree Alreay Exists";    
-             echo $ErrEducationDegree;
-             $ErrorCount++;
-        }
-        
-        $duplicate = $mysql->select("select * from  _tbl_master_codemaster where HardCode='EDUCATIONDEGREES' and SoftCode='".trim($_POST['EducationDegreeCode'])."'");
-        if (sizeof($duplicate)>0) {
-             $ErrEducationDegreeCode="Education Degree Code Alreay Exists";    
-             echo $ErrEducationDegreeCode;
-             $ErrorCount++;
-        }
-        
-        if ($ErrorCount==0) {
-        $EducationDegreeID = $mysql->insert("_tbl_master_codemaster",array("HardCode"   => "EDUCATIONDEGREES",
-                                                                          "SoftCode"   => trim($_POST['EducationDegreeCode']),
-                                                                          "CodeValue"  =>trim($_POST['EducationDegree'])));
-                                                                  
-        if ($EducationDegreeID>0) {
-            echo "Successfully Added";
-            unset($_POST);
-        } else {
-            echo "Error occured. Couldn't save Education Degree";
-        }
-    
-    }
-    
-    }  */
-    
-    
+<?php 
+$page="ManageEducationDegrees";
+include_once("views/Admin/Settings/Masters/settings_header.php");
 ?>
 <script>
  function SubmitEducationDegree() {
@@ -69,16 +36,15 @@
         if ($EducationCode['status']=="success") {
             $GetNextEducationDegreeCode  =$EducationCode['data']['EducationDegreeCode'];
         }
-        {     
 ?>
+<div class="col-sm-10 rightwidget">
 <form method="post" action="" onsubmit="return SubmitEducationDegree();">
-          <div class="col-12 stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Masters</h4>
-                      <h4 class="card-title">Create Education Degree</h4>
-                      <form class="forms-sample">
-                      <div class="form-group row">
+<div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+         <h4 class="card-title">Masters</h4>
+         <h4 class="card-title">Create Education Degree</h4>
+          <div class="form-group row">
                           <label for="Education Degree Code" class="col-sm-3 col-form-label">Education Degree Code<span id="star">*</span></label>
                           <div class="col-sm-2">
                             <input type="text" class="form-control" id="EducationDegreeCode" maxlength="10" name="EducationDegreeCode" value="<?php echo isset($_POST['EducationDegreeCode']) ? $_POST['EducationDegreeCode'] : $GetNextEducationDegreeCode;?>" placeholder="Education Degree Code">
@@ -94,13 +60,13 @@
                         </div>
                         <div class="form-group row"><div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div></div>
                         <div class="form-group row">
-                        <div class="col-sm-5">
+                        <div class="col-sm-3">
                         <button type="submit" name="BtnSaveEducationDegree" class="btn btn-primary mr-2" style="font-family: roboto;">Save Education Degree</button></div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageEducationDegrees"><small>List of Education Degrees</small> </a></div>
                          </div>
-                        </form>
-                    </div>
-                  </div>
                 </div>
-</form>
-<?php }?>
+              </div>
+            </div>
+        </form>
+</div>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

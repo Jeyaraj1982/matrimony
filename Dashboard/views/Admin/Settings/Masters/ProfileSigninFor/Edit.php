@@ -1,3 +1,7 @@
+<?php 
+$page="ManageProfileSigninFor";
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
 <script>
  function SubmitNewProfileSigninFor() {
                         $('#ErrReligionName').html("");
@@ -28,14 +32,14 @@
     $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $ProfileSigninFor = $response['data']['ViewInfo'];
 ?>
-<form method="post" action="" onsubmit="return SubmitNewProfileSigninFor();">
-    <div class="col-12 stretch-card">
+<div class="col-sm-10 rightwidget">
+<form method="post" action="" onsubmit="return SubmitProfileSignIn();">
+    <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Masters</h4>
-                <h4 class="card-title">Edit Profile SigninFor</h4>
-                <form class="forms-sample">
-                    <div class="form-group row">
+                <h4 class="card-title">Edit Profile Signin For</h4>
+                 <div class="form-group row">
                         <label for="ProfileSigninForCode" class="col-sm-3 col-form-label">ProfileSigninFor Code<span id="star">*</span></label>
                         <div class="col-sm-9">
                             <input type="text" disabled="disabled" style="width:80px;background:#f1f1f1" class="form-control" id="ProfileSigninForCode" name="ProfileSigninForCode" value="<?php echo $ProfileSigninFor['SoftCode'];?>" placeholder="Profile SigninFor Code">
@@ -68,8 +72,10 @@
                         </div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageProfileSigninFor"><small>List of Profile SigninFor</small></a></div>
                     </div>
-                </form>
+                </div>
+              </div>
             </div>
-        </div>
-    </div>
-</form>
+        </form>
+</div>
+ 
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

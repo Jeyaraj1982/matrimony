@@ -1,5 +1,6 @@
-<?php
-   
+<?php 
+$page="ManageLanguage";
+include_once("views/Admin/Settings/Masters/settings_header.php");
 ?>
 <script>
  function SubmitLanguage() {
@@ -36,16 +37,15 @@
         if ($LanguageCode['status']=="success") {
             $GetNextLanguageCode  =$LanguageCode['data']['LanguageNameCode'];
         }
-        {     
 ?> 
+<div class="col-sm-10 rightwidget">
 <form method="post" action="" onsubmit="return SubmitLanguage();">
-    <div class="col-12 stretch-card">
+    <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Masters</h4>
                 <h4 class="card-title">Create Language Name</h4>
-                <form class="forms-sample">
-                    <div class="form-group row">
+                <div class="form-group row">
                         <label for="Language Name Code" class="col-sm-3 col-form-label">Language Name Code<span id="star">*</span></label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="LanguageNameCode" name="LanguageNameCode" maxlength="10" value="<?php echo (isset($_POST['LanguageNameCode']) ? $_POST['LanguageNameCode'] :$GetNextLanguageCode);?>" placeholder="Language Name Code">
@@ -70,9 +70,10 @@
                         </div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageLanguage"><small>List of Language Names</small> </a> </div>
                     </div>
-                </form>
+                </div>
+              </div>
             </div>
-        </div>
-    </div>
-</form>
-<?php }?>
+        </form>
+</div>
+ 
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

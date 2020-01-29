@@ -38,8 +38,8 @@
                                 <td style="text-align: right"><?php echo $Franchisee['MemberCount'];?></td>
                                 <td style="text-align:right">
                                     <?php if ($Franchisee['MemberCount']>0) {?>
-                                        <a href="<?php echo GetUrl("Members/ViewFranchiseeInfo/". $Franchisee['FranchiseeID'].".htm"); ?>"><span >View Members</span>
-                                    <?php } else { ?>
+                                        <a href="<?php echo GetUrl("Franchisees/FranchiseeMembers/". $Franchisee['FranchiseeCode'].".html");?>"><span >View Members</span>
+                                    <?php } else { ?>               
                                         <span title="No members found" style="color:#888;cursor:pointer" >View Member</span>
                                     <?php } ?>
                                 </a>

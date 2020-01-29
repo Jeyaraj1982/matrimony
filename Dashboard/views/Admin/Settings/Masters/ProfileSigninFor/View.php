@@ -1,15 +1,19 @@
+<?php 
+$page="ManageProfileSigninFor";
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
 <?php
     $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $ProfileSigninFor = $response['data']['ViewInfo'];
 ?>
-<form method="post" action="" onsubmit="">
-          <div class="col-12 stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Masters</h4>  
-                      <h4 class="card-title">Profile Signin For Details</h4>  
-                      <form class="forms-sample">
-                        <div class="form-group row">
+<div class="col-sm-10 rightwidget">
+<form method="post" action="" >
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Masters</h4>
+                <h4 class="card-title">Profile Signin For Details</h4>
+                 <div class="form-group row">
                           <label for="ProfileSigninFor" class="col-sm-3 col-form-label">ProfileSigninFor Code</label>
                           <label for="ProfileSigninFor" class="col-sm-3 col-form-label"><?php echo $ProfileSigninFor['SoftCode'];?></label>
                         </div>
@@ -28,4 +32,7 @@
                 </div>
               </div>
             </div>
-</form>
+        </form>
+</div>
+ 
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

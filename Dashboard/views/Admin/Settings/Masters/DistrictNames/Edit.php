@@ -1,3 +1,8 @@
+<?php 
+$page="ManageDistrict";           
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
+<div class="col-sm-10 rightwidget">
 <script>
 $(document).ready(function () {
     $("#DistrictCode").blur(function () {
@@ -53,14 +58,13 @@ $(document).ready(function () {
     $CountryNames = $response['data']['CountryName'];
     $StateNames   = $response['data']['StateName'];
 ?>
-<form method="post" action="" onsubmit="return SubmitNewDistrictName();">
-    <div class="col-12 stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Masters</h4>
-                <h4 class="card-title">Edit District Name</h4>
-                <form class="forms-sample">
-                    <div class="form-group row">
+<form method="post" action="" onsubmit="return SubmitNewCountryName();">
+          <div class="col-12 stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Masters</h4>  
+                      <h4 class="card-title">Edit District Name</h4>  
+                      <div class="form-group row">
                         <label for="DistrictCode" class="col-sm-3 col-form-label">District Code<span id="star">*</span></label>
                         <div class="col-sm-9">
                             <input type="text" disabled="disabled" style="width:80px;background:#f1f1f1" maxlength="10" class="form-control" id="DistrictCode" name="DistrictCode" value="<?php echo $DistrictName['SoftCode'];?>" placeholder="District Code">
@@ -119,8 +123,8 @@ $(document).ready(function () {
                         </div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageDistrict"><small>List of District Names</small></a></div>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                    </div>
+                  </div>
+                </div>
 </form>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

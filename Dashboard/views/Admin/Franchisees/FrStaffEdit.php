@@ -1,3 +1,7 @@
+<?php 
+$page="FranchiseeStaffs";
+include_once("topmenu.php");  
+?>
 <style>
 .switch input { 
     display:none;

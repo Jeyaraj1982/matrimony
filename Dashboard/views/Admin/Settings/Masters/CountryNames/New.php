@@ -1,4 +1,8 @@
-
+<?php 
+$page="CountryNames";           
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
+<div class="col-sm-10 rightwidget">
 <script>
 
 $(document).ready(function () {
@@ -170,3 +174,4 @@ $(document).ready(function () {
               
 </form>
 <?php }?>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

@@ -1,18 +1,19 @@
-<form method="post" action="#" onsubmit="">      
-    <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
+<?php $page="LoginLog";?>
+<?php include_once("settings_header.php");?>
+<div class="col-sm-10 rightwidget">   
+<form method="post" action="#" onsubmit="">
+<div class="card-body">
             <div class="form-group row">
                 <div class="col-sm-3">
                 <h4 class="card-title" style="margin-bottom: 0px;margin-top: 0px;">Login Log</h4>
                 </div>
                     <div class="col-sm-9" style="text-align:right;padding-top:5px;color:skyblue;">
-                    <a href="LoginLog" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                    <a href="MemberLoginLog"><small style="font-weight:bold;text-decoration:underline">Member</small></a>&nbsp;|&nbsp;
-                    <a href="FranchiseeLoginLog"><small style="font-weight:bold;text-decoration:underline">Franchisee</small></a>&nbsp;|&nbsp;
-                    <a href="SuccessLoginLog"><small style="font-weight:bold;text-decoration:underline">Success</small></a>&nbsp;|&nbsp;
+                    <a href="LoginLog" ><small>All</small></a>&nbsp;|&nbsp;
+                    <a href="MemberLoginLog"><small>Member</small></a>&nbsp;|&nbsp;
+                    <a href="FranchiseeLoginLog"><small>Franchisee</small></a>&nbsp;|&nbsp;
+                    <a href="SuccessLoginLog"><small>Success</small></a>&nbsp;|&nbsp;
                     <a href="FailureLoginLog"><small style="font-weight:bold;text-decoration:underline">Failure</small></a>&nbsp;|&nbsp;
-                    <a href="Report"><small style="font-weight:bold;text-decoration:underline">Report</small></a>
+                    <a href="Report"><small>Report</small></a>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -43,14 +44,11 @@
                      </table>
                   </div>
                 </div>
-              </div>
-            </div>
-        </form>   
-        
- <script>                                                                                                         
+</form>
+<?php include_once("settings_footer.php");?>                    
+ <script>
 $(document).ready(function(){
     $('#myTable').dataTable();
     setTimeout("DataTableStyleUpdate()",500);
 });
 </script>
-

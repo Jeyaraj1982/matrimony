@@ -1,7 +1,12 @@
-<form method="post" action="<?php echo GetUrl("Masters/OccupationTypes/New");?>" onsubmit="">      
-    <div class="col-lg-12 grid-margin stretch-card">
-       <div class="card">
-         <div class="card-body">
+<?php 
+$page="ManageOccupationTypes";
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
+<div class="col-sm-10 rightwidget">
+<form method="post" action="<?php echo GetUrl("Settings/Masters/OccupationTypes/New");?>" onsubmit="">  
+<div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
           <h4 class="card-title">Masters</h4>
           <h4 class="card-title">Manage Occupation Types</h4>
            <button type="submit" class="btn btn-primary ">
@@ -28,8 +33,8 @@
                                 <tr>
                                 <td><span class="<?php echo ($OccupationType['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $OccupationType['SoftCode'];?></td>
                                 <td><?php echo $OccupationType['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/OccupationTypes/Manage/Edit/". $OccupationType['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/OccupationTypes/Manage/View/". $OccupationType['SoftCode'].".html");?>">View</a></td> 
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Settings/Masters/OccupationTypes/Manage/Edit/". $OccupationType['SoftCode'].".html");?>">Edit</a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Settings/Masters/OccupationTypes/Manage/View/". $OccupationType['SoftCode'].".html");?>">View</a></td> 
                                 </tr>
                         <?php } ?> 
                       </tbody>
@@ -39,10 +44,11 @@
               </div>
             </div>
         </form>
- <script>
+</div>
+       <script>
 $(document).ready(function(){
     $('#myTable').dataTable();
     setTimeout("DataTableStyleUpdate()",500);
 });
-</script>                        
-             
+</script>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

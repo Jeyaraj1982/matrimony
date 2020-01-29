@@ -7,7 +7,6 @@
     .linkactive1 a{color:#fff !important;font-weight: bold;} 
     .rightwidget {padding:15px !important;max-width:770px !important;border-left:1px solid #e5e5e5;min-height:450px}
 </style>
-
 <div class="col-md-12 d-flex align-items-stretch grid-margin" style="padding:0px !important">
     <div class="row flex-grow">
         <div class="col-12">
@@ -15,7 +14,7 @@
                 <div class="card-body" style="padding:0px">
                     <div class="form-group-row">
                         <div>
-                            <div class="col-sm-2" style="min-width:200px;padding-left:0px;padding-right: 0px;;">
+                            <div class="col-sm-2" style="padding-left:0px;padding-right: 0px;;">
                                 <div class="sidemenu">
                                     <ul class="ft-left-nav fusmyacc_leftnav" style="padding: 0px;list-style: none;">
 									<?php $response = $webservice->getData("Admin","GetPaymentGatewayMenu");  ?>  

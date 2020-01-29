@@ -1,3 +1,7 @@
+<?php 
+$page="ManageState";
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
 <script>
 $(document).ready(function () {
    $("#StateCode").blur(function () {  
@@ -45,13 +49,13 @@ $(document).ready(function () {
         if ($StateCode['status']=="success") {
             $GetNextStateCode  =$StateCode['data']['StateCode'];
         }
-        {     
 ?> 
 <?php 
  $info    = $webservice->getData("Admin","GetMastersManageDetails");
- ?>  
+ ?>
+<div class="col-sm-10 rightwidget">
 <form method="post" action="" onsubmit="return SubmitNewStateName();">
-    <div class="col-12 grid-margin">
+    <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Masters</h4>
@@ -94,9 +98,9 @@ $(document).ready(function () {
                     </div>
                     <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageState"><small>List of State Names</small> </a> </div>
                 </div>
+                </div>
+              </div>
             </div>
-        </div>
-    </div>
-
-</form>
-<?php }?>
+        </form>
+</div>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

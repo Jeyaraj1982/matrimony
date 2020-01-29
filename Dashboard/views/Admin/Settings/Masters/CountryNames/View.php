@@ -1,3 +1,8 @@
+<?php 
+$page="CountryNames";           
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
+<div class="col-sm-10 rightwidget">
 <?php
     $response     = $webservice->getData("Admin","GetMasterAllViewInfo");
     $CountryName = $response['data']['ViewInfo'];
@@ -45,3 +50,4 @@
                   </div>
                 </div>
 </form>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

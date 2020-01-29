@@ -33,7 +33,7 @@
                 </a>
                 <div class="collapse" id="manageprofiles">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Requested");?>">Requested</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/AdminRequested");?>">Admin Requested</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Drafted");?>">Drafted</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Published");?>">Published</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/UnPublished");?>">UnPublished</a></li>
@@ -64,6 +64,18 @@
                 </div>                             
             </li>
             <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#DAT" aria-expanded="false" aria-controls="ui-basic">
+                    <i class="menu-icon mdi mdi-content-copy "></i>
+                    <span class="menu-title">Doc Auth Team (DAT)</span> 
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="DAT">
+                    <ul class="nav flex-column sub-menu"> 
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Requested");?>">Requested</a></li>
+                    </ul>
+                </div>                             
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#manageaccount" aria-expanded="false" aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>
                     <span class="menu-title">My Accounts</span>
@@ -75,8 +87,6 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Accounts/ManageOrder");?>">Manage Orders</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Accounts/Invoice/Invoices");?>">Manage Invoices</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Accounts/Receipt/Receipts");?>">Manage Receipts</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Accounts/ManagePayouts");?>">Manage Payouts</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Accounts/ManageWalletReceipts");?>">Manage Wallet Receipts</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Accounts/ManagePGTransaction");?>">Manage PG Txns</a></li>
                     </ul>
                 </div>
@@ -148,11 +158,10 @@
                         <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/General/ManageGeneral");?>">General</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Application/ManageApplication");?>">Application</a></li>-->
                         <!-- <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Invoice/Invoice");?>">Invoice</a></li> -->
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Bank/ListofBanks");?>">Add Bank</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Masters/ReligionNames/ManageReligion");?>">Masters</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/NormalSettings");?>">Normal Setting</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/OrderHeaderFooter");?>">Templates</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/PaymentGateway/ManagePayu");?>">Payment Gateway</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/ApplicationSettings/ConfigurationSettings");?>">Application Settings</a></li>
                         
                     </ul>                                                                                          
                 </div>
@@ -160,12 +169,15 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#staffs" aria-expanded="false" aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>
-                    <span class="menu-title">Staffs</span>
+                    <span class="menu-title">Applications</span>
                     <i class="menu-arrow"></i>
                 </a>                                                                   
                 <div class="collapse" id="staffs">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/ManageStaffs");?>">Manage Staffs</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/Backup");?>">Backup</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/TextOnImage");?>">Text On Image</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/LogoOnImage");?>">Logo On Image</a></li>
                     </ul>
                 </div>
             </li>
@@ -205,37 +217,9 @@
                 </div>
             </li>  -->
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#Logs" aria-expanded="false" aria-controls="ui-basic">
+                <a class="nav-link" href="<?php echo GetUrl("Logs/SMSLog");?>"  aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>
                     <span class="menu-title">Logs</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="Logs">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Logs/SMSLog");?>">SMS Log</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Logs/EmailLog");?>">Email Log</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Logs/LoginLog");?>">Login Log</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Logs/Activity");?>">Activity</a></li>
-                    </ul>
-                </div>
-            </li>
-           <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ApplicationSettings" aria-expanded="false" aria-controls="ui-basic">
-                    <i class="menu-icon mdi mdi-content-copy "></i>
-                    <span class="menu-title">Application Settings</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="ApplicationSettings">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("ConfigurationSettings");?>">Configuration Setings</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("GeneralSettings");?>">General Setings</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?php echo GetUrl("OnlineMembers");?>">
-                    <i class="menu-icon mdi mdi-content-copy "></i>
-                    <span class="menu-title">Online Members</span>
                     <i class="menu-arrow"></i>
                 </a>
             </li>

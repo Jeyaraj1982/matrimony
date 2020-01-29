@@ -1,4 +1,7 @@
-
+<?php 
+$page="ManageWeights";
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
 <script>
  function SubmitWeight() {
                          $('#ErrWeightCode').html("");
@@ -32,17 +35,15 @@
         if ($WeightCode['status']=="success") {
             $GetNextWeightCode  =$WeightCode['data']['WeightCode'];
         }
-        {     
 ?>
- 
+<div class="col-sm-10 rightwidget">
 <form method="post" action="" onsubmit="return SubmitWeight();">
-          <div class="col-12 stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Masters</h4>
-                      <h4 class="card-title">Add Weight</h4>
-                      <form class="forms-sample">
-                      <div class="form-group row">
+<div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Masters</h4>
+                <h4 class="card-title">Add Weight</h4>
+                <div class="form-group row">
                           <label for="Weight Code" class="col-sm-3 col-form-label">Weight Code<span id="star">*</span></label>
                           <div class="col-sm-2">
                             <input type="text" class="form-control" id="WeightCode" name="WeightCode" maxlength="10" value="<?php echo isset($_POST['WeightCode']) ? $_POST['WeightCode'] : $GetNextWeightCode;?>" placeholder="Weight Code">
@@ -62,9 +63,9 @@
                                 <button type="submit" name="BtnSaveWeight" id="BtnSaveWeight"  class="btn btn-primary mr-2" style="font-family: roboto;">Save Weight</button> </div>
                             <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageWeights">List of Weights </a>  </div>
                         </div>
-                      </form>
-                    </div>
-                  </div>
                 </div>
-</form>
-<?php }?>
+              </div>
+            </div>
+        </form>
+</div>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

@@ -1,3 +1,7 @@
+<?php 
+$page="ManageOccupations";
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
 <?php   
     if (isset($_POST['BtnUpdateOccupation'])) {
         
@@ -28,15 +32,14 @@
                  }
     
 </script>
-
+<div class="col-sm-10 rightwidget">
 <form method="post" action="" onsubmit="return SubmitNewOccupation();">
-          <div class="col-12 stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Masters</h4>  
-                      <h4 class="card-title">Edit Occupation</h4>  
-                      <form class="forms-sample">
-                      <div class="form-group row">
+<div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Masters</h4>
+                <h4 class="card-title">Edit Occupation</h4>
+                <div class="form-group row">
                           <label for="OccupationCode" class="col-sm-3 col-form-label">Occupation Code<span id="star">*</span></label>
                           <div class="col-sm-9">
                             <input type="text" readonly="readonly" style="width:80px;background:#f1f1f1" maxlength="10" class="form-control" id="OccupationCode" name="OccupationCode" value="<?php echo $Occupation['SoftCode'];?>" placeholder="Occupation Code">
@@ -64,8 +67,10 @@
                         <button type="submit" name="BtnUpdateOccupation" class="btn btn-primary mr-2" style="font-family: roboto;">Update Occupation</button></div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="../../ManageOccupations">List of Occupations</a></div>
                         </div>
-                        </form>
-                    </div>
-                  </div>
                 </div>
-</form>
+              </div>
+            </div>
+        </form>
+</div>
+
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

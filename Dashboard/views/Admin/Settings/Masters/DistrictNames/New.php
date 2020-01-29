@@ -1,3 +1,7 @@
+<?php 
+$page="ManageDistrict";           
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
 <script>
 $(document).ready(function () {
     $("#DistrictCode").blur(function () {
@@ -37,6 +41,7 @@ $(document).ready(function () {
                  }
     
 </script>
+<div class="col-sm-10 rightwidget">
 <?php                   
   if (isset($_POST['BtnSaveDistrictName'])) {   
     $response = $webservice->getData("Admin","CreateDistrictName",$_POST);  
@@ -52,19 +57,17 @@ $(document).ready(function () {
         if ($DistrictCode['status']=="success") {
             $GetNextDistrictCode  =$DistrictCode['data']['DistrictCode'];
         }
-        {     
 ?>
 <?php 
  $info    = $webservice->getData("Admin","GetMastersManageDetails");
  ?>
 <form method="post" action="" onsubmit="return SubmitNewDistrictName();">
-    <div class="col-12 grid-margin">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Masters</h4>
-                <h4 class="card-title">Create District Name</h4>
-                <form class="form-sample">
-                    <div class="row">
+          <div class="col-12 stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Masters</h4>  
+                      <h4 class="card-title">Create District Name</h4>  
+                      <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">District Name Code<span id="star">*</span></label>
@@ -132,10 +135,8 @@ $(document).ready(function () {
                         </div>
                         <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"><a href="ManageDistrict"><small>List of District Names</small> </a> </div>
                     </div>
-            </div>
-        </div>
-    </div>
-
-    </form>
-    <?php }?>
-         
+                    </div>
+                  </div>
+                </div>
+</form>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

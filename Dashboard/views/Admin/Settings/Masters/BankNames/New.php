@@ -62,7 +62,7 @@
                                         <div class="col-sm-12"><?php if(sizeof($successmessage)>0){ echo  $successmessage ; } else {echo  $errormessage;}?></div>
                                         </div>
                         <div class="form-group row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                        <button type="submit" name="BtnBankName" class="btn btn-primary mr-2" style="font-family:roboto">Save Bank Name</button></div>
                       <div class="col-sm-6" align="left" style="padding-top:5px;text-decoration: underline; color: skyblue;"> <a href="ManageBank">List of Bank Names </a></div>
                          </div>

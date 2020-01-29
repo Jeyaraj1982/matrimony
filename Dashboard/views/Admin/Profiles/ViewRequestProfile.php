@@ -1,3 +1,14 @@
+ <?php 
+ if (isset($_POST['Observation'])) {
+         $response =$webservice->getData("Admin","ProfileAddToObservationMode",$_POST);
+        if ($response['status']=="success") {   ?>
+           <script>location.href=location.href;</script>
+        <?php
+        } else {
+            $errormessage = $response['message']; 
+        }
+    }
+ ?>
  <?php  
 	if (isset($_POST['Verify'])) {
         $_POST['ApproveProfilePhoto']=implode(",",$_POST['ApproveProfilePhoto']);
@@ -167,7 +178,13 @@ legend {
   <div class="card">                                                                                                               
     <div class="card-body">
         <div class="form-group row">
-            <label class="col-sm-10 col-form-label"></label>
+            <div class="col-sm-10">
+            <?php if($ProfileInfo['IsObservation']=="0") {?>
+                <button type="submit" name="Observation" id="Observation" class="btn btn-primary">Observation</button>
+            <?php } else {?>
+            Observation On: <?php echo putDateTime($ProfileInfo['ObservationOn']);?>
+            <?php } ?>
+            </div>
             <div class="col-sm-2">
                 <i class="menu-icon mdi mdi-printer" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Print</label> 
             </div>
@@ -283,6 +300,7 @@ legend {
 						<img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 100px;width: 88px;">
 					</div>	
 				    <div class="col-sm-8">
+                    <?php if($ProfileInfo['IsObservation']==1) {?>
 					<?php if ($ProfileP['IsApproved']==0) { ?>
 						<select class="form-control" name="ApproveProfilePhoto[]" id="ApproveProfilePhoto_<?php echo $i;?>" style="width:95px;padding:4px;margin-top:7px;height: 28px;" onchange="ReasonForRejectProfilePhoto('<?php echo $i;?>');">
 							<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#0";?>" <?php echo ($ProfileP['IsApproved']==0) ? " selected='selected' " : "";?>>No Action</option>
@@ -308,16 +326,17 @@ legend {
 							<span>Rejected</span><br>
 							<span><?php echo putDateTime($ProfileP['RejectedOn']);?></span><br>
 							<span><?php echo $ProfileP['ReasonForReject'];?>
-					<?php } }?>
+					<?php } } }?>
 					</div>
 				</div>
 			<?php }?>
 			</div>
+            <?php if($ProfileInfo['IsObservation']==1) {?>
 			<?php if($ProfileP['IsApproved']==0) { ?>
 			<div style="float:right">
 				<button type="submit" class="btn btn-success" name="Verify" style="font-family:roboto">Save</button>
 			</div>
-			<?php } ?>
+			<?php } }?>
 		</div>
 	</div>
 </div>
@@ -339,7 +358,8 @@ legend {
          </div>
          <div class="form-group row">
             <label class="col-sm-9 col-form-label" style="color:#737373;font-size:13px"><?php echo trim($ProfileInfo['AboutMe']);?></label>
-			<div class="col-sm-3" style="border-left: 1px solid #ddd;">
+		    <?php if($ProfileInfo['IsObservation']==1) {?>
+        	<div class="col-sm-3" style="border-left: 1px solid #ddd;">
 				<?php if($GIVerification['IsVerified']==0) { ?>
 					<select class="form-control" name="ApproveAboutMeInfo[]" id="ApproveAboutMeInfo" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectAboutMeInfo();">
 						<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#0";?>" <?php echo ($GIVerification['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
@@ -358,8 +378,9 @@ legend {
 						<span>Rejected</span><br>
 						<span><?php echo putDateTime($GIVerification['RejectedOn']);?></span><br>
 						<span><?php echo $GIVerification['ReasonForReject'];?>
-				<?php } }?>
+				<?php } } ?>
 			</div>
+            <?php } ?>
          </div>
     </div>
   </div>
@@ -406,6 +427,7 @@ legend {
                         <?php } else { echo "Not Attach"; }?>
 					</td>
 					<td>
+                    <?php if($ProfileInfo['IsObservation']==1) {?>
 						<?php if($Document['IsVerified']==0) { ?>
 						<select class="form-control" name="ApproveEducation[]" id="ApproveEducation_<?php echo $i;?>" style="width:95px;padding:4px;margin-top:7px;height: 28px;" onchange="ReasonForRejectEducation('<?php echo $i;?>');">
 							<option value="<?php echo $Document['ProfileCode']."#".$Document['AttachmentID']."#0";?>" <?php echo ($Document['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
@@ -424,7 +446,7 @@ legend {
 							<span>Rejected</span><br>
 							<span><?php echo putDateTime($Document['RejectedOn']);?></span><br>
 							<span><?php echo $Document['ReasonForReject'];?>
-					<?php } }?>
+					<?php } } }?>
 					</td>
                 </tr>
                 <?php } 
@@ -436,11 +458,12 @@ legend {
                 <?php }?>
             </tbody>
         </table>
+        <?php if($ProfileInfo['IsObservation']==1) {?>
 		<?php if($Document['IsVerified']==0) { ?>
 			<div style="float:right">
 				<button type="submit" class="btn btn-success" name="VerifyEducation" style="font-family:roboto">Save</button>
 			</div>
-		<?php } ?>
+		<?php } }?>
     </div>
   </div>
 </div>
@@ -499,6 +522,7 @@ legend {
 							<div class="col-sm-9">
 								<div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['OccupationDetails']); ?></div>
 							</div>
+                            <?php if($ProfileInfo['IsObservation']==1) {?>
 							<div class="col-sm-3" style="border-left: 1px solid #ddd;">
 								<?php if($ODVerification['IsVerified']==0) { ?>
 									<select class="form-control" name="ApproveOccupationDESC[]" id="ApproveOccupationDESC" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectOccupationAdditionalInfo();">
@@ -518,8 +542,9 @@ legend {
 										<span>Rejected</span><br>
 										<span><?php echo putDateTime($ODVerification['RejectedOn']);?></span><br>
 										<span><?php echo $ODVerification['ReasonForReject'];?>
-								<?php } }?>
+								<?php } }  ?>
 							</div>
+                            <?php } ?>
 						</div>
 					
                 </fieldset>
@@ -640,6 +665,7 @@ legend {
 						<div class="col-sm-9">
 							<div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['AboutMyFamily']); ?></div>
 						</div>
+                        <?php if($ProfileInfo['IsObservation']==1) {?>
 						<div class="col-sm-3" style="border-left: 1px solid #ddd;">
 							<?php if($FIVerification['IsVerified']==0) { ?>
 								<select class="form-control" name="ApproveFamilyInfoAdditionalInfo[]" id="ApproveFamilyInfoAdditionalInfo" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectFamilyInfoAdditionalInfo();">
@@ -661,6 +687,7 @@ legend {
 									<span><?php echo $FIVerification['ReasonForReject'];?>
 							<?php } }?>
 							</div>
+                        <?php } ?>
 						</div>
 					</fieldset>
             </div>
@@ -748,6 +775,7 @@ legend {
 						<div class="col-sm-9">
 							<div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['PhysicalDescription']); ?></div>
                         </div>
+                        <?php if($ProfileInfo['IsObservation']==1) {?>
 						<div class="col-sm-3" style="border-left: 1px solid #ddd;">
 							<?php if($PIVerification['IsVerified']==0) { ?>
 								<select class="form-control" name="ApprovePhysicalInfoAdditionalInfo[]" id="ApprovePhysicalInfoAdditionalInfo" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectPhysicalInfoAdditionalInfo();">
@@ -769,6 +797,7 @@ legend {
 									<span><?php echo $PIVerification['ReasonForReject'];?>
 							<?php } }?>
 						</div>
+                        <?php } ?>
 						</div>
 				</fieldset>
             </div>
@@ -788,6 +817,7 @@ legend {
             <label class="col-sm-2 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['DateofBirth']))> 0 ? trim($ProfileInfo['DateofBirth']) : "N/A "; ?></label>
 				<div class="col-sm-8">
 					<div class="col-sm-12">
+                    <?php if($ProfileInfo['IsObservation']==1) {?>
 					<?php if($HDobVerification['IsVerified']==0) { ?>
 						<div class="col-sm-2" style="margin-right:2px">
 							<select class="form-control" name="ApproveHoroscopeDob[]" id="ApproveHoroscopeDob" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectHoroscopeDob();">
@@ -808,13 +838,13 @@ legend {
 					<?php }  else { ?>
 					<?php if($HDobVerification['IsVerified']==1) { ?>
 						<div class="col-sm-12">
-							Approved &nbsp;&nbsp;<?php echo putDateTime(HDobVerificationDoc['IsVerifiedOn']);?>
+							Approved &nbsp;&nbsp;<?php echo putDateTime($HDobVerificationDoc['IsVerifiedOn']);?>
 						</div>
 					<?php }  else {?>
 						<div class="col-sm-12">
-							Rejected &nbsp;&nbsp;<?php echo putDateTime(HDobVerificationDoc['RejectedOn']);?>&nbsp;&nbsp;<?php echo $HDobVerification['ReasonForReject'];?> 
+							Rejected &nbsp;&nbsp;<?php echo putDateTime($HDobVerificationDoc['RejectedOn']);?>&nbsp;&nbsp;<?php echo $HDobVerification['ReasonForReject'];?> 
 						</div>
-					<?php } }?>
+					<?php } } }?>
 					</div>
 				</div>
 			</div>
@@ -846,6 +876,7 @@ legend {
 							<div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['HoroscopeDetails']); ?></div>
 						</div>
 						<div class="col-sm-3" style="border-left: 1px solid #ddd;">
+                        <?php if($ProfileInfo['IsObservation']==1) {?>
 							<?php if($HDVerification['IsVerified']==0) { ?>
 								<select class="form-control" name="ApproveHoroscopeAdditionalInfo[]" id="ApproveHoroscopeAdditionalInfo" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectHoroscopeAdditionalInfo();">
 									<option value="<?php echo $ProfileInfo['ProfileID']."#".$ProfileInfo['MemberID']."#0";?>" <?php echo ($HDVerification['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
@@ -864,7 +895,7 @@ legend {
 									<span>Rejected</span><br>
 									<span><?php echo putDateTime($HDVerification['RejectedOn']);?></span><br>
 									<span><?php echo $HDVerification['ReasonForReject'];?>
-							<?php } }?>
+							<?php } } } ?>
 						</div>
 					</div>
 				</fieldset>
@@ -985,6 +1016,7 @@ legend {
 						<div class="col-sm-9">
 							<div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($PartnerExpectation['Details']); ?></div>
 						</div>
+                        <?php if($ProfileInfo['IsObservation']==1) {?>
 						<div class="col-sm-3" style="border-left: 1px solid #ddd;">
 							<?php if($PEVerification['IsVerified']==0) { ?>
 								<select class="form-control" name="ApprovePartnerExpectationAdditionalInfo[]" id="ApprovePartnerExpectationAdditionalInfo" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectPartnerExpectationAdditionalInfo();">
@@ -1006,6 +1038,7 @@ legend {
 									<span><?php echo $PEVerification['ReasonForReject'];?>
 							<?php } }?>
 						</div>
+                        <?php } ?>
 					</div>
 				</fieldset>
             </div>
@@ -1082,6 +1115,7 @@ legend {
 						<div class="col-sm-9">
 							<div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['CommunicationDescription']); ?></div>
 						</div>
+                        <?php if($ProfileInfo['IsObservation']==1) {?>
 						<div class="col-sm-3" style="border-left: 1px solid #ddd;">
 							<?php if($CDVerification['IsVerified']==0) { ?>
 								<select class="form-control" name="ApproveCommunicationAdditionalInfo[]" id="ApproveCommunicationAdditionalInfo" style="width:95px;padding:4px;height: 28px;" onchange="ReasonForRejectCommunicationAdditionalInfo();">
@@ -1103,6 +1137,7 @@ legend {
 									<span><?php echo $CDVerification['ReasonForReject'];?>
 							<?php } }?>
 						</div>
+                        <?php } ?>
 					</div>
 				</fieldset>
             </div>
@@ -1128,6 +1163,7 @@ legend {
                     <img src="<?php echo $Doc['AttachFileName'];?>" style="width: 200px;height:150px">   <br>
                     <label style="color:#737373;"><?php echo $Doc['DocumentType'];?></label> <br>
                     <label style="color:#737373;">
+                    <?php if($ProfileInfo['IsObservation']==1) {?>
 						<?php if($Doc['IsVerified']==0) { ?>
 						<select class="form-control" name="ApproveDocument[]" id="ApproveDocument_<?php echo $i;?>" style="width:95px;padding:4px;margin-top:7px;height: 28px;" onchange="ReasonForRejectDocuments('<?php echo $i;?>');">
 							<option value="<?php echo $Doc['ProfileCode']."#".$Doc['AttachmentID']."#0";?>" <?php echo ($Doc['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
@@ -1146,19 +1182,21 @@ legend {
 							<span>Rejected</span><br>
 							<span><?php echo putDateTime($Doc['RejectedOn']);?></span><br>
 							<span><?php echo $Doc['ReasonForReject'];?>
-					<?php } }?>
+					<?php } } } ?>
 					</label>
                   </div>
                   <?php  }  ?>
          </div>
+         <?php if($ProfileInfo['IsObservation']==1) {?>
 		 <?php if($Doc['IsVerified']==0) { ?>
 		 <div style="float:right">
 				<button type="submit" class="btn btn-success" name="VerifyDocument" style="font-family:roboto">Save</button>
 			</div>
-		 <?php } ?>
+		 <?php }} ?>
     </div>
   </div>                                                                                                               
 </div>
+<?php if($ProfileInfo['IsObservation']==1) {?>
   <div style="text-align: right">
      <?php if($ProfileInfo['IsApproved']==1){?>
          Profile Already Published
@@ -1169,7 +1207,7 @@ legend {
         <button type="submit" class="btn btn-danger" name="Delete" style="font-family:roboto">Delete</button>
         <?php }?>
     </div>
-  
+  <?php } ?>
  </form> 
         <div class="modal" id="ApproveNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">

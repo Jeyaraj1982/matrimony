@@ -1,3 +1,8 @@
+<?php 
+$page="CountryNames";           
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
+<div class="col-sm-10 rightwidget">
 <form method="post" action="<?php echo GetUrl("Masters/CountryNames/New");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
@@ -15,10 +20,10 @@
                 </ul>
                 </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                    <a href="ManageCountry" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                    <a href="ManageActiveCountry"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
+                    <a href="ManageCountry" ><small>All</small></a>&nbsp;|&nbsp;
+                    <a href="ManageActiveCountry"><small>Active</small></a>&nbsp;|&nbsp;
                     <a href="ManageDeactiveCountry"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>&nbsp;|&nbsp;
-                    <a href="ManageRegisterAllowCountry"><small style="font-weight:bold;text-decoration:underline">Register Country</small></a>
+                    <a href="ManageRegisterAllowCountry"><small>Register Country</small></a>
                 </div>
                 </div>
                 <div class="table-responsive">
@@ -63,3 +68,4 @@ $(document).ready(function(){
     setTimeout("DataTableStyleUpdate()",500);
 });
 </script>            
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

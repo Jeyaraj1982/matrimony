@@ -1,10 +1,15 @@
-<form method="post" action="<?php echo GetUrl("Masters/ProfileSigninFor/New");?>" onsubmit="">      
+<?php 
+$page="ManageProfileSigninFor";
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
+<div class="col-sm-10 rightwidget">
+<form method="post" action="<?php echo GetUrl("Settings/Masters/ProfileSigninFor/New");?>" onsubmit="">
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Masters</h4>
                 <h4 class="card-title">Manage Profile Signin For</h4>
-                <div class="form-group row">
+                   <div class="form-group row">
                 <div class="col-sm-6">
                 <button type="submit" class="btn btn-primary"><i class="mdi mdi-plus"></i>Profile Signin For</button>
                 <button type="submit" class="btn btn-success dropdown-toggle"  data-toggle="dropdown">Export</button>
@@ -15,9 +20,9 @@
                 </ul>
                 </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                    <a href="ManageProfileSigninFor" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
+                    <a href="ManageProfileSigninFor" ><small>All</small></a>&nbsp;|&nbsp;
                     <a href="ManageActiveProfileSigninFor"><small style="font-weight:bold;text-decoration:underline">Active</small></a>&nbsp;|&nbsp;
-                    <a href="ManageDeactiveProfileSigninFor"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>
+                    <a href="ManageDeactiveProfileSigninFor"><small>Deactive</small></a>
                 </div>
                 </div>
                 <div class="table-responsive">
@@ -35,8 +40,8 @@
                                 <tr>
                                 <td><span class="<?php echo ($ProfileSigninFor['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo $ProfileSigninFor['SoftCode'];?></td>
                                 <td><?php echo $ProfileSigninFor['CodeValue'];?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Masters/ProfileSigninFor/Manage/Edit/". $ProfileSigninFor['SoftCode'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
-                                <a href="<?php echo GetUrl("Masters/ProfileSigninFor/Manage/View/". $ProfileSigninFor['SoftCode'].".html");?>"><span>View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Settings/Masters/ProfileSigninFor/Manage/Edit/". $ProfileSigninFor['SoftCode'].".html");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="<?php echo GetUrl("Settings/Masters/ProfileSigninFor/Manage/View/". $ProfileSigninFor['SoftCode'].".html");?>"><span>View</span></a></td>
                                 </tr>
                         <?php } ?>            
                       </tbody>
@@ -46,9 +51,11 @@
               </div>
             </div>
         </form>
+</div>
  <script>
 $(document).ready(function(){
     $('#myTable').dataTable();
     setTimeout("DataTableStyleUpdate()",500);
 });
-</script>          
+</script>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

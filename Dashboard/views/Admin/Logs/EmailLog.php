@@ -1,18 +1,19 @@
-<form method="post" action="#" onsubmit="">      
-    <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
+<?php $page="EmailLog";?>
+<?php include_once("settings_header.php");?>
+<div class="col-sm-10 rightwidget">   
+<form method="post" action="#" onsubmit="">
+  <div class="card-body">
             <div class="form-group row">
                 <div class="col-sm-3">
                 <h4 class="card-title" style="margin-bottom: 0px;margin-top: 0px;">Email Log</h4>
                 </div>
                         <div class="col-sm-9" style="text-align:right;padding-top:5px;color:skyblue;">
                         <a href="EmailLog" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                        <a href="MemberEmailLog"><small style="font-weight:bold;text-decoration:underline">Member</small></a>&nbsp;|&nbsp;
-                        <a href="FranchiseeEmailLog"><small style="font-weight:bold;text-decoration:underline">Franchisee</small></a>&nbsp;|&nbsp;
-                        <a href="SuccessEmailLog"><small style="font-weight:bold;text-decoration:underline">Success</small></a>&nbsp;|&nbsp;
-                        <a href="FailureEmailLog"><small style="font-weight:bold;text-decoration:underline">Failure</small></a>&nbsp;|&nbsp;
-                        <a href="Report"><small style="font-weight:bold;text-decoration:underline">Report</small></a>
+                        <a href="MemberEmailLog"><small>Member</small></a>&nbsp;|&nbsp;
+                        <a href="FranchiseeEmailLog"><small>Franchisee</small></a>&nbsp;|&nbsp;
+                        <a href="SuccessEmailLog"><small>Success</small></a>&nbsp;|&nbsp;
+                        <a href="FailureEmailLog"><small>Failure</small></a>&nbsp;|&nbsp;
+                        <a href="Report"><small>Report</small></a>
                 </div>
                 </div>
                 <h4 class="card-title"></h4>
@@ -48,10 +49,8 @@
                      </table>
                   </div>
                 </div>
-              </div>
-            </div>
-        </form>   
-        
+</form>
+<?php include_once("settings_footer.php");?>                    
  <script>
 $(document).ready(function(){
     $('#myTable').dataTable();

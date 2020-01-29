@@ -1,3 +1,8 @@
+<?php 
+$page="CountryNames";           
+include_once("views/Admin/Settings/Masters/settings_header.php");
+?>
+<div class="col-sm-10 rightwidget">
 <script>
 $(document).ready(function () {
     $("#STDCode").keypress(function (e) {
@@ -190,3 +195,4 @@ $(document).ready(function () {
                   </div>
                 </div>
 </form>
+<?php include_once("views/Admin/Settings/Masters/settings_footer.php");?>                    

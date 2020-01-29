@@ -112,73 +112,261 @@
             </div>
             
           </div>
+          
+          <div class="row"> 
+          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Groom</p>
+                      <div class="fluid-container"> 
+                      <?php foreach($response['data']['MaleProfileCount'] as $profile) { ?>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $profile['cnt']?></h3>
+                      <?php }?>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                  <p class="float-left">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Profiles/Published">View</a>
+                  </p>    
+                
+                 </p>
+                </div>
+              </div>
+            </div>
+          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Bride</p>
+                      <div class="fluid-container"> 
+                      <?php foreach($response['data']['FemaleProfileCount'] as $profile) { ?>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $profile['cnt']?></h3>
+                      <?php }?>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                  <p class="float-left">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Profiles/Published">View</a>
+                  </p>    
+                
+                 </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Online Members</p>
+                      <div class="fluid-container"> 
+                      <?php foreach($response['data']['OnlineMemberCount'] as $profile) { ?>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $profile['cnt']?></h3>
+                      <?php }?>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                  <p class="float-left">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Profiles/Published">View</a>
+                  </p>    
+                
+                 </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Free Members</p>
+                      <div class="fluid-container"> 
+                      <?php foreach($response['data']['FreeMemberCount'] as $profile) { ?>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $profile['cnt']?></h3>
+                      <?php }?>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                  <p class="float-left">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Profiles/Published">View</a>
+                  </p>    
+                
+                 </p>
+                </div>
+              </div>
+            </div>
+       </div>
+       
+          <div class="row"> 
+          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Landing Page Profiles</p>
+                      <div class="fluid-container"> 
+                      <?php foreach($response['data']['LandingPageProfileCount'] as $profile) { ?>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $profile['cnt']?></h3>
+                      <?php }?>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                  <p class="float-left">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Profiles/Published">View</a>
+                  </p>    
+                
+                 </p>
+                </div>                                                                   
+              </div>
+            </div>
+          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Franchisee</p>
+                      <div class="fluid-container"> 
+                        <?php foreach($response['data']['FranchiseeCount'] as $profile) { ?>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $profile['cnt']?></h3>
+                      <?php }?>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                  <p class="float-left">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Profiles/Published">View</a>
+                  </p>    
+                
+                 </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right"></p>
+                      <div class="fluid-container"> 
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $profile['cnt']?></h3>
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                  <p class="float-left">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Profiles/Published">View</a>
+                  </p>    
+                
+                 </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+              <div class="card card-statistics">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
+                  <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right"></p>
+                      <div class="fluid-container"> 
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $profile['cnt']?></h3>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                  <p class="float-left">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Profiles/Published">View</a>
+                  </p>    
+                
+                 </p>
+                </div>
+              </div>
+            </div>
+       </div>
           <div class="row">
             <div class="col-lg-9 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Earning Chart</h4>
-                  <canvas id="barChart" style="height:250px"></canvas>
+                   <canvas id="barChart" style="height:250px"></canvas>
                 </div>
               </div>
-            </div> 
-           <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card" style="height: 164px;">
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card" style="height: 164px;">
               <div class="card card-statistics">
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
+                 <div class="clearfix">
+                    <div class="float-left">
+                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                    </div>
+                    <div class="float-right">
+                      <p class="mb-0 text-right">Paid Members</p>
+                      <div class="fluid-container"> 
+                      <?php foreach($response['data']['PaidMemberCount'] as $profile) { ?>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $profile['cnt']?></h3>
+                      <?php }?>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-muted mt-3 mb-0">
+                  <p class="float-left">
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Profiles/Published">View</a>
+                  </p>    
+                
+                 </p>
+            </div>
+              <br>
+              <div class="card card-statistics" style="margin-top: 42px;">
+                <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
-                    <div class="clearfix">
                     <div class="float-left">
                       <i class="mdi mdi-poll-box text-success icon-lg"></i>
                     </div>
-                    <?php foreach($response['data']['Document'] as $doc) { ?>
                     <div class="float-right">
                       <p class="mb-0 text-right">Document Verification (Member)</p>
                       <div class="fluid-container">
+                      <?php foreach($response['data']['Document'] as $doc) { ?>
                         <h3 class="font-weight-medium text-right mb-0"><?php echo $doc['cnt']?></h3>
+                      <?php }?>
                       </div>
                     </div>
-                    <?php }?>
-                  </div>
-                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo SiteUrl?>Requests/Member/ViewDocumentsVerification">View</a>
-                  </p>
-                </div>
-			</div>
-              <br>
-              <div class="card card-statistics" style="margin-top: 42px;">
-                <div class="card-body" style="padding: 0.88rem 0.81rem;">
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <i class="mdi mdi-poll-box text-success icon-lg"></i>
-                    </div>
-                    <?php //foreach($response['data']['FranchiseeWalletRequestCount'] as $FranchiseeReqCount) { ?>     
-                    <div class="float-right">
-                      <p class="mb-0 text-right">Profile Verification</p>
-                      <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0">0<?php //echo $FranchiseeReqCount['cnt'];?></h3>
-                      </div>
-                    </div>
-                    <?php// }?>
-                  </div>
-                  <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a>View</a>
-                  </p>
-                </div>
-              </div>
-              <br>
-              <div class="card card-statistics" style="margin-top: 42px;">
-                <div class="card-body" style="padding: 0.88rem 0.81rem;">
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <i class="mdi mdi-poll-box text-success icon-lg"></i>
-                    </div>
-                    <?php //foreach($response['data']['FranchiseeWalletRequestCount'] as $FranchiseeReqCount) { ?>     
-                    <div class="float-right">
-                      <p class="mb-0 text-right">Profile Verification</p>
-                      <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0">0<?php //echo $FranchiseeReqCount['cnt'];?></h3>
-                      </div>
-                    </div>
-                    <?php// }?>
                   </div>
                   <p class="text-muted mt-3 mb-0">
                     <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a>View</a>
@@ -186,8 +374,9 @@
                 </div>
               </div>
        </div> 
-       </div>
-       </div>
+       </div> 
+          </div>  
+          
        <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
               <div class="card card-statistics">
@@ -418,7 +607,7 @@
                       <i class="mdi mdi-account-location text-info icon-lg"></i>
                     </div>
                     <div class="float-right">
-                      <p class="mb-0 text-right"></p>
+                      <p class="mb-0 text-right">Profile Verification</p>
                       <div class="fluid-container">
                         <h3 class="font-weight-medium text-right mb-0">0</h3>
                       </div>

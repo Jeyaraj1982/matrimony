@@ -43,6 +43,10 @@ input:checked + .slider {
 }
 </style>
 <?php 
+$page="FranchiseeStaffs";
+include_once("topmenu.php");  
+?>
+<?php 
     $response = $webservice->getData("Admin","GetFranchiseeStaffs");
     $Staffs=$response['data']['Staffs'];
 ?>
