@@ -3,7 +3,8 @@ RewriteRule ^Settings/Masters/(.*)/Manage/View/(.*)\.html$ ./index.php?Fname=Edi
 
 RewriteRule ^Requests/Member/ViewPaypalRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Member/ViewPaypalRequests
 RewriteRule ^Profiles/ViewDraftProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewDraftProfile
-RewriteRule ^Profiles/ViewRequestProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewRequestProfile           
+RewriteRule ^Profiles/ViewRequestProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewRequestProfile    
+RewriteRule ^Profiles/DATViewRequestProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/DATViewRequestProfile           
 RewriteRule ^Profiles/ViewPublishProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewPublishProfile
 RewriteRule ^ViewMemberProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewMemberProfile
 

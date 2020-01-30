@@ -13,7 +13,7 @@
     }
 </style>
 <?php
-     $response = $webservice->getData("Admin","GetProfilesRequestVerify");
+     $response = $webservice->getData("Admin","GetProfilesRequestVerifyFrAdmin");
 	
     if (sizeof($response['data'])>0) {
 ?>
@@ -92,11 +92,11 @@
                             </div>
                            <div style="float:right;line-height: 1px;">
                                 <?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==0){ ?>
-                                    <a href="<?php echo GetUrl("Profiles/DATViewRequestProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
+                                    <a href="<?php echo GetUrl("Profiles/ViewRequestProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
                                     <?php } elseif($Profile['IsApproved']==1){  ?>
-                                    <a href="<?php echo GetUrl("Profiles/DATViewRequestProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
+                                    <a href="<?php echo GetUrl("Profiles/ViewRequestProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
                                     <?php } else {?>
-                                        <a href="<?php echo GetUrl("Profiles/DATViewRequestProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
+                                        <a href="<?php echo GetUrl("Profiles/ViewRequestProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
                                         <?php  }    ?>     
                             </div>
                         </div>

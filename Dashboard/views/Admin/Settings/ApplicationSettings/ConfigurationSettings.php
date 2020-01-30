@@ -5,7 +5,7 @@ include_once("views/Admin/Settings/ApplicationSettings/settings_header.php");
 <?php
 
 if (isset($_POST['savparam'])) {
-        $response = $webservice->getData("Admin","UpdateAllowDuplicateDetails",$_POST);
+        $response = $webservice->getData("Admin","UpdateAppConfiguration",$_POST);
         if ($response['status']=="success") {
             echo $successmessage = $response['message']; 
         } else {
@@ -13,7 +13,7 @@ if (isset($_POST['savparam'])) {
         }
     }
     
-    $response = $webservice->getData("Admin","GetAllowDuplicateDetails");
+    //$response = $webservice->getData("Admin","GetAllowDuplicateDetails");    
      
 ?>
 <div class="col-sm-10 rightwidget" style="padding: 0px;">
@@ -22,7 +22,7 @@ if (isset($_POST['savparam'])) {
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Configuration Settings</h4>
-                    <div class="form-group row" style="margin-bottom:0px;">
+                   <!-- <div class="form-group row" style="margin-bottom:0px;">
                         <div class="col-sm-1" style="margin-right: -23px;"><input type="checkbox"  id="IsAllowDuplicateMobile" name="IsAllowDuplicateMobile" <?php echo ($response['data']['Mobile']['ParamA']==1) ? ' checked="checked" ' :'';?> style="margin-top: 0px;"></div>
                         <label for="Sms" class="col-sm-11" style="margin-top: 2px;padding-left: 3px;color:#444">Is Allow Duplicate Mobile Number</label>
                     </div>
@@ -59,11 +59,53 @@ if (isset($_POST['savparam'])) {
                     </div>
                     <br><div class="form-group row">
                         <div class="col-sm-3"><button type="submit" name="savparam" id="savparam" class="btn btn-primary" style="font-family:roboto">Update</button></div>
-                    </div>
+                    </div> -->
+                    <div class="table-responsive">   
+                <table id="myTable" class="table table-striped">
+                  <thead>  
+                    <tr> 
+                        <th>Parameter</th>                          
+                        <th style="text-align: right;">Value</th>                          
+                    </tr>  
+                </thead>
+                <tbody> 
+                    <?php $response = $webservice->getData("Admin","GetConfigurationSettingsList"); ?>  
+                    <?php foreach($response['data'] as $Config) { 
+                        if(strlen(trim($Config['CodeValue']))>0) { 
+                        ?>
+                    
+                        <tr>
+                            <td style="padding: 1px;font-size:12px"><?php echo $Config['CodeValue'];?>
+                            </td>    
+                            <td style="text-align:right;padding: 1px">
+                                <?php if($Config['ParamB']=="boolean") {?>
+                                    <select style="width:80px" name="app_<?php echo $Config['CodeValue'];?>">
+                                        <option value="1" <?php echo $Config['ParamA']==1 ? " selected='selected' ":"";?>>Yes</option>
+                                        <option value="0" <?php echo $Config['ParamA']==0 ? " selected='selected' ":"";?>>No</option>
+                                    </select>
+                                <?php } ?>
+                                 <?php if($Config['ParamB']=="integer") {?>
+                                    <input tyep="text" name="app_<?php echo $Config['CodeValue'];?>" style="width:80px;text-align:right;border:1px solid #888;" value="<?php echo $Config['ParamA'];?>">
+                                <?php } ?>
+                                <?php if($Config['ParamB']=="string") {?>
+                                    <input tyep="text" name="app_<?php echo $Config['CodeValue'];?>" style="width:80px;border:1px solid #888;" value="<?php echo $Config['ParamA'];?>">
+                                <?php } ?>
+                            </td>    
+                        </tr>
+                    <?php } }?>            
+                  </tbody>                        
+                 </table>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-12" style="text-align: right;">
+                    <button type="submit" name="savparam" id="savparam" class="btn btn-primary" style="font-family:roboto">Update</button>
+                </div>
+              </div>
                 </div>
               </div>
             </div>
         </form>
 </div>
+
 <?php include_once("views/Admin/Settings/ApplicationSettings/settings_footer.php");?>                    
           
