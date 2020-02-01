@@ -72,7 +72,7 @@
         if (sizeof($data)>0) {
             return Response::returnError("MemberCode Already Exists");
         }
-        $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'");
+        $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IS_ALLOW_DUPLICATE_MOBILE'");
              if ($allowDuplicateMobile[0]['ParamA']==0) {
                 $data = $mysql->select("select * from _tbl_members where  MobileNumber='".$_POST['MobileNumber']."'");
                 if (sizeof($data)>0) {
@@ -80,7 +80,7 @@
                 }
              }
         if (strlen(trim($_POST['WhatsappNumber']))>0) {
-         $allowDuplicateWhatsapp = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateWhatsapp'");
+         $allowDuplicateWhatsapp = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IS_ALLOW_DUPLICATE_WHATSAPP'");
              if ($allowDuplicateWhatsapp[0]['ParamA']==0) {
                 $data = $mysql->select("select * from  _tbl_members where WhatsappNumber='".trim($_POST['WhatsappNumber'])."'");
                     if (sizeof($data)>0) {
@@ -88,7 +88,7 @@
                     }
              }
         }
-        $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
+        $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IS_ALLOW_DUPLICATE_EMAIL'");
              if ($allowDuplicateEmail[0]['ParamA']==0) {
                 $data = $mysql->select("select * from _tbl_members where  EmailID='".$_POST['EmailID']."'");
                  if (sizeof($data)>0) {
@@ -108,6 +108,11 @@
         if (!(strlen(trim($_POST['LoginPassword']))>0)) {                                                 
             return Response::returnError("Please enter MemberPassword");    
         }
+        
+        $plan =  $mysql->select("select * from _tbl_member_plan where IsActive='1'");
+             if(sizeof($plan)==0) {
+                return Response::returnError("Sorry, something went wrong"); 
+             }
         $login = $mysql->select("Select * from _tbl_logs_logins where LoginID='".$loginid."'");
          $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
          $MemberCode   = SeqMaster::GetNextMemberNumber();
@@ -1302,14 +1307,14 @@
               
               $Member = $mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and  MemberCode='".$Member_session[0]['MemberCode']."'");
 
-              $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
+              $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IS_ALLOW_DUPLICATE_EMAIL'");
                     if ($allowDuplicateMobile[0]['ParamA']==0) {
                         $data = $mysql->select("select * from  _tbl_members where EmailID='".trim($_POST['EmailID'])."' and MemberCode <>'".$_POST['MemberCode']."' ");
                             if (sizeof($data)>0) {
                             return Response::returnError("EmailID Already Exists");    
                         }
                     }
-              $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'");
+              $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IS_ALLOW_DUPLICATE_MOBILE'");
                     if ($allowDuplicateEmail[0]['ParamA']==0) {
                         $data = $mysql->select("select * from  _tbl_members where MobileNumber='".trim($_POST['MobileNumber'])."' and MemberCode <>'".$_POST['MemberCode']."' ");
                             if (sizeof($data)>0) {
@@ -1317,7 +1322,7 @@
                         }
                     }
               if (strlen(trim($_POST['WhatsappNumber']))>0) {
-			$allowDuplicateWhatsapp = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateWhatsapp'");
+			$allowDuplicateWhatsapp = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IS_ALLOW_DUPLICATE_WHATSAPP'");
              if ($allowDuplicateWhatsapp[0]['ParamA']==0) {
                 $data = $mysql->select("select * from  _tbl_members where WhatsappNumber='".trim($_POST['WhatsappNumber'])."' and MemberCode <>'".$_POST['MemberCode']."' ");
                     if (sizeof($data)>0) {

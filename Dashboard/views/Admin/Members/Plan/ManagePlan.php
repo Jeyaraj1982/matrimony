@@ -1,3 +1,24 @@
+<?php 
+    $response = $webservice->getData("Admin","GetManageMemberPlan",array("Request"=>"All"));
+    if (sizeof($response['data'])==0) {
+        ?>
+<div class="form-group row">
+     <div class="col-sm-12">
+        <div class="card">
+        <div class="card-body">
+            <div style="text-align: center;padding-top:calc( (100vh - 105px)/2 - 130px) !important;padding-bottom:calc( (100vh - 105px)/2 - 130px) !important;">
+                <div>
+                    <div style="">
+                    <img src="<?php echo ImagePath ?>/plan_icon.svg" style="width:128px;">
+                    </div><br>
+                    Member Plans Not Found <br><a href="<?php echo GetUrl("Members/Plan/CreatePlan");?>">click here to create plan</a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+<?php } else {?>
 <form method="post" action="<?php echo GetUrl("Members/Plan/CreatePlan");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
@@ -22,7 +43,6 @@
                     <table id="myTable" class="table table-striped">
                       <thead>  
                         <tr> 
-                        <th>Plan Code</th>
                         <th>Plan Name</th>
                         <th>Duration</th>
                         <th>Amount</th>
@@ -32,14 +52,12 @@
                         </tr>  
                     </thead>
                      <tbody>  
-                     <?php $response = $webservice->getData("Admin","GetManageMemberPlan",array("Request"=>"All")); ?>  
                         <?php foreach($response['data'] as $Plan) { ?>
                                 <tr>
 								
                                 <td>
                                 <span class="<?php echo ($Plan['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;
-                                <?php echo $Plan['PlanCode'];?></td>
-                                <td><?php echo $Plan['PlanName'];?></td>
+                                <?php echo $Plan['PlanName'];?><?php if($Plan['IsDefault']==1) {?>&nbsp;<button class="btn btn-primary" style="padding: 0px 4px;font-size: 12px;background: orange;border: orange">Default</button><?php } ?></td>
                                 <td style="text-align:right"><?php echo $Plan['Decreation'];?></td>
                                 <td style="text-align:right"><?php echo number_format($Plan['Amount'],2);?></td>
                                 <td style="text-align:right"><?php echo ($Plan['cnt']==1) ? '1' : '0';?></td>
@@ -64,5 +82,5 @@ $(document).ready(function(){
 </script>
 <?php/* $Franchisees = $mysql->select("select * from _tbl_Franchisees"); ?>
                         <?php foreach($Franchisees as $Franchisee) { */?>
-                         <?php // }  
+                         <?php  }  
                         ?>

@@ -1,3 +1,24 @@
+<?php 
+    $response = $webservice->getData("Admin","GetManagePlans"); 
+    if (sizeof($response['data'])==0) {
+        ?>
+<div class="form-group row">
+     <div class="col-sm-12">
+        <div class="card">
+        <div class="card-body">
+            <div style="text-align: center;padding-top:calc( (100vh - 105px)/2 - 130px) !important;padding-bottom:calc( (100vh - 105px)/2 - 130px) !important;">
+                <div>
+                    <div style="">
+                    <img src="<?php echo ImagePath ?>/plan_icon.svg" style="width:128px;">
+                    </div><br>
+                    Franchisee Plans Not Found <br><a href="<?php echo GetUrl("Franchisees/Plan/New");?>">click here to create plan</a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+<?php } else {?>
 <form method="post" action="<?php echo GetUrl("Franchisees/Plan/New");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
@@ -43,7 +64,7 @@
                                 <tr>
                                 <td>
                                 <span class="<?php echo ($Plan['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;
-                                <?php echo $Plan['PlanName'];?></td>
+                                <?php echo $Plan['PlanName'];?><?php if($Plan['IsDefault']==1) {?>&nbsp;<button class="btn btn-primary" style="padding: 0px 4px;font-size: 12px;background: orange;border: orange">Default</button><?php } ?></td>
                                 <td><?php echo $Plan['Duration'];?></td>
                                 <td><?php echo $Plan['Amount'];?></td>
                                 <td>
@@ -52,7 +73,7 @@
                                             echo $Plan['ProfileCommissionWithPercentage']."%";
                                         }
                                         if ($Plan['ProfileCommissionWithRupees']>0) {
-                                            echo "Rs. ".$Plan['ProfileCommissionWithRupees'];
+                                            echo $Plan['CurrencyCode']." ". $Plan['ProfileCommissionWithRupees'];
                                         }
                                     ?>
                                 </td>
@@ -62,7 +83,7 @@
                                             echo $Plan['RefillCommissionWithPercentage']."%";
                                         }
                                         if ($Plan['RefillCommissionWithRupees']>0) {
-                                            echo "Rs. ".$Plan['RefillCommissionWithRupees'];
+                                            echo $Plan['CurrencyCode']." ". $Plan['RefillCommissionWithRupees'];
                                         }
                                     ?>
                                 </td>
@@ -72,7 +93,7 @@
                                             echo $Plan['ProfileDownloadCommissionWithPercentage']."%";
                                         }
                                         if ($Plan['ProfileDownloadCommissionWithRupees']>0) {
-                                            echo "Rs. ".$Plan['ProfileDownloadCommissionWithRupees'];
+                                            echo $Plan['CurrencyCode']." ". $Plan['ProfileDownloadCommissionWithRupees'];
                                         }
                                     ?>
                                 </td>                                           
@@ -100,3 +121,4 @@ $(document).ready(function(){
     setTimeout("DataTableStyleUpdate()",500);
 });
 </script>           
+<?php } ?>

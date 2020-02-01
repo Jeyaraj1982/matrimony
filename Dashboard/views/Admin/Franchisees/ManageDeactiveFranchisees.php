@@ -39,7 +39,7 @@
                          ?>
                         <?php foreach($response['data'] as $Franchisee) { ?>
                                 <tr>
-                                <td><span class="<?php echo ($Franchisee['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Franchisee['FranchiseName'];?></td>
+                                <td><span class="<?php echo ($Franchisee['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Franchisee['FranchiseName'];?><?php if($Franchisee['IsAdmin']==1) {?>&nbsp;<button class="btn btn-primary" style="padding: 0px 4px;font-size: 12px;background: orange;border: orange">Default</button><?php } ?></td>
                                 <td><?php echo $Franchisee['StateName'];?></td>
                                 <td><?php echo $Franchisee['DistrictName'];?></td>
                                 <td><?php echo $Franchisee['Plan'];?></td>

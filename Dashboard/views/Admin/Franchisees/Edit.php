@@ -489,6 +489,14 @@ $page="PrimaryDetails";
 							    <a href="javascript:void(0)" onclick="ViewFranchiseePlanDetails()">view plan</a>
 						    </div>
 					    </div>
+                        <div class="form-group row">                           
+                    <div class="col-sm-12">
+                        <div class="custom-control custom-checkbox mb-3">
+                            <input type="checkbox" class="custom-control-input" id="IsAdmin" name="IsAdmin" <?php echo ($Franchisee['IsAdmin']==1) ? ' checked="checked" ' :'';?>>
+                            <label class="custom-control-label" for="IsAdmin" style="vertical-align: middle;">Make as Admin Franchisee</label>
+                        </div>
+                    </div>
+                </div>
 					    
 				    </div>
 					    </div>

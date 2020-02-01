@@ -1,3 +1,22 @@
+<?php 
+    $response = $webservice->getData("Admin","GetManageFranchisee");
+    if (sizeof($response['data'])==0) {
+?>
+<div class="form-group row">
+     <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div style="text-align: center;padding-top:calc( (100vh - 105px)/2 - 130px) !important;padding-bottom:calc( (100vh - 105px)/2 - 130px) !important;">
+                    <div style="">
+                    <img src="<?php echo ImagePath ?>/icons/franchisee_icon.png" style="width:128px;">
+                    </div><br>
+                    Franchisee Not Found <br><a href="<?php echo GetUrl("Franchisees/Create");?>">click here to create franchisee</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+<?php } else {?>
 <form method="post" action="<?php echo GetUrl("Franchisees/Create");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
@@ -33,13 +52,9 @@
                         </tr>  
                     </thead>
                      <tbody>  
-                        <?php 
-                            $response = $webservice->getData("Admin","GetManageFranchisee");
-                            if (sizeof($response['data'])>0) {
-                         ?>
                         <?php foreach($response['data'] as $Franchisee) { ?>
                                 <tr>
-                                <td><span class="<?php echo ($Franchisee['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Franchisee['FranchiseName'];?></td>
+                                <td><span class="<?php echo ($Franchisee['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Franchisee['FranchiseName'];?><?php if($Franchisee['IsAdmin']==1) {?>&nbsp;<button class="btn btn-primary" style="padding: 0px 4px;font-size: 12px;background: orange;border: orange">Default</button><?php } ?></td>
                                 <td><?php echo $Franchisee['StateName'];?></td>
                                 <td><?php echo $Franchisee['DistrictName'];?></td>
                                 <td><?php echo $Franchisee['Plan'];?></td>
@@ -51,7 +66,7 @@
                                 <a href="<?php echo GetUrl("Franchisees/Report/". $Franchisee['FranchiseeCode'].".html");?>"><span>Report</span></a>
                                 </td>
                                 </tr>
-                        <?php }} ?>            
+                        <?php } ?>            
                       </tbody>                        
                      </table>
                   </div>
@@ -89,3 +104,4 @@ $(document).ready(function(){
     setTimeout("DataTableStyleUpdate()",500);
 });
 </script>
+<?php } ?>

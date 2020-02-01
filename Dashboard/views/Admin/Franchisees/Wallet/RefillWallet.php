@@ -1,3 +1,22 @@
+<?php 
+     $response = $webservice->getData("Admin","GetFranchiseeRefillWalletManage"); 
+     if (sizeof($response['data']['Franchisee'])==0) {
+     ?>
+     <div class="form-group row">
+     <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div style="text-align: center;padding-top:calc( (100vh - 105px)/2 - 130px) !important;padding-bottom:calc( (100vh - 105px)/2 - 130px) !important;">
+                    <div style="">
+                    <img src="<?php echo ImagePath ?>/icons/franchisee_icon.png" style="width:128px;">
+                    </div><br>
+                    Franchisee Not Found <br><a href="<?php echo GetUrl("Franchisees/Create");?>">click here to create franchisee</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+<?php } else { ?>
 <form method="post" action="<?php echo GetUrl("Franchisees/Wallet/RefillTransfer");?>" onsubmit="">      
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
@@ -21,8 +40,7 @@
                       </thead>
                       <tbody>
                       <?php 
-                         $response = $webservice->getData("Admin","GetFranchiseeRefillWalletManage"); 
-                         if (sizeof($response['data'])>0) {
+                         if (sizeof($response['data']['RefillWallet'])>0) {
                          ?>
                         <?php foreach($response['data'] as $Wallet) { ?>
                         <tr>
@@ -48,5 +66,5 @@ $(document).ready(function(){
     setTimeout("DataTableStyleUpdate()",500);
 });
 </script>           
-
-                       
+<?php } ?>
+           

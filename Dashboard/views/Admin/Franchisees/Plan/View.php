@@ -1,5 +1,5 @@
 <?php  
-  $response = $webservice->GetFranchiseePlanInfo();
+  $response = $webservice->getData("Admin","GetFranchiseePlanInfo");
     $Plan     = $response['data'];
 ?>   
 <form method="post" action="" onsubmit="return SubmitNewPlan();">

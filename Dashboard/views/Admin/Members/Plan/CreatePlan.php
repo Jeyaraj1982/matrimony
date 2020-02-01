@@ -12,7 +12,8 @@
 
     $response = $webservice->getData("Admin","GetMemberPlanInfo");
     $Plan          = $response['data']['Plans'];
-	$Subscribed = $response['data']['SubscribedPlan'];
+    $Subscribed = $response['data']['SubscribedPlan'];
+	$Currency = $response['data']['Currency'];
 
  ?>  
 
@@ -191,7 +192,7 @@ function SubmitNewPlan() {
 									<label for="Amount" class="col-sm-3 col-form-label">Amount<span id="star">*</span></label>
 								<div class="col-sm-4">
 								<div class="input-group">
-								  <div class="input-group-addon">Rs</div>
+								  <div class="input-group-addon"><?php echo $Currency;?></div>
 									<input type="text" class="form-control" id="Amount" name="Amount" value="<?php echo (isset($_POST['Amount']) ? $_POST['Amount'] : "");?>" placeholder="Amount"> </div>
 									<span class="errorstring" id="ErrAmount"><?php echo isset($ErrAmount) ? $ErrAmount : "";?></span>
 								</div>
@@ -237,6 +238,14 @@ function SubmitNewPlan() {
 									<span class="errorstring" id="ErrRemarks"><?php echo isset($ErrRemarks) ? $ErrRemarks : "";?></span>
 								</div>
 							</div>
+                            <div class="form-group row">                           
+                                <div class="col-sm-12">
+                                    <div class="custom-control custom-checkbox mb-3">
+                                        <input type="checkbox" class="custom-control-input" id="IsDefault" name="IsDefault" <?php echo ($_POST['IsDefault']==1) ? ' checked="checked" ' :'';?>>
+                                        <label class="custom-control-label" for="IsDefault" style="vertical-align: middle;">Make as Default Plan</label>
+                                    </div>
+                                </div>
+                            </div>
 					</div>
 				</div>
             </div>

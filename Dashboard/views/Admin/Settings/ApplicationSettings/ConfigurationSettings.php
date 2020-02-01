@@ -79,19 +79,27 @@ if (isset($_POST['savparam'])) {
                             </td>    
                             <td style="text-align:right;padding: 1px">
                                 <?php if($Config['ParamB']=="boolean") {?>
-                                    <select style="width:80px" name="app_<?php echo $Config['CodeValue'];?>">
+                                    <select style="width:150px" name="app_<?php echo $Config['CodeValue'];?>">
                                         <option value="1" <?php echo $Config['ParamA']==1 ? " selected='selected' ":"";?>>Yes</option>
                                         <option value="0" <?php echo $Config['ParamA']==0 ? " selected='selected' ":"";?>>No</option>
                                     </select>
                                 <?php } ?>
                                  <?php if($Config['ParamB']=="integer") {?>
-                                    <input tyep="text" name="app_<?php echo $Config['CodeValue'];?>" style="width:80px;text-align:right;border:1px solid #888;" value="<?php echo $Config['ParamA'];?>">
+                                    <input tyep="text" name="app_<?php echo $Config['CodeValue'];?>" style="width:150px;text-align:right;border:1px solid #888;" value="<?php echo $Config['ParamA'];?>">
                                 <?php } ?>
                                 <?php if($Config['ParamB']=="string") {?>
-                                    <input tyep="text" name="app_<?php echo $Config['CodeValue'];?>" style="width:80px;border:1px solid #888;" value="<?php echo $Config['ParamA'];?>">
+                                    <?php if(sizeof($Config['ParamC'])>0) {  ?>
+                                        <select  name="app_<?php echo $Config['CodeValue'];?>" style="width: 150px;">
+                                            <?php foreach($Config['ParamC'] as $c) {?>
+                                                <option value="<?php echo $c['SoftCode'];?>" <?php echo $Config['ParamD']==$c['SoftCode'] ? " selected='selected' ":"";?>><?php echo $c['CodeValue'];?></option>
+                                            <?php } ?>
+                                        </select>
+                                    <?php } else { ?>
+                                    <input tyep="text" name="app_<?php echo $Config['CodeValue'];?>" style="width:150px;border:1px solid #888;" value="<?php echo $Config['ParamA'];?>">
+                                    <?php } ?>
                                 <?php } ?>
                             </td>    
-                        </tr>
+                        </tr>                                              
                     <?php } }?>            
                   </tbody>                        
                  </table>

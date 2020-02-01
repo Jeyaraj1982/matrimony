@@ -1,3 +1,29 @@
+<?php                   
+ 
+  $fInfo = $webservice->getData("Admin","GetFranchiseeCode");
+     $FranchiseeCode="";
+        if ($fInfo['status']=="success") {
+            $FranchiseeCode  =$fInfo['data']['FranchiseeCode'];
+        }
+?>
+ <?php if(sizeof($fInfo['data']['Plans'])==0){   ?>
+    <div class="form-group row">
+     <div class="col-sm-12">
+        <div class="card">
+        <div class="card-body">
+            <div style="text-align: center;padding-top:calc( (100vh - 105px)/2 - 130px) !important;padding-bottom:calc( (100vh - 105px)/2 - 130px) !important;">
+                <div>
+                    <div style="">
+                    <img src="<?php echo ImagePath ?>/plan_icon.svg" style="width:128px;">
+                    </div><br>
+                    Franchisee Plans Not Found <br><a href="<?php echo GetUrl("Franchisees/Plan/New");?>">click here to create plan</a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+     <?php } else {?>                                                            
 <style>
 #star{color:red;}
 </style>
@@ -210,29 +236,8 @@
 		});
 	});
 </script>
-<?php                   
- 
-  $fInfo = $webservice->getData("Admin","GetFranchiseeCode");
-     $FranchiseeCode="";
-        if ($fInfo['status']=="success") {
-            $FranchiseeCode  =$fInfo['data']['FranchiseeCode'];
-        }
-        {
-?>
     <form method="post" id="frmfrn">
 	<input type="hidden" value="" name="txnPassword" id="txnPassword">
-     <div class="form-group row">
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="card-body">
-				<div>
-					<h4 class="card-title">Create Franchisee</h4> Franchising your matrimony business is a proven route to rapid growth. Follow simple bellow steps, you will create a Franchisee.
-				</div>
-			</div>
-        </div>
-    </div>
-    </div>
-    
      <div class="form-group row">
      <div class="col-sm-9">
         <div class="card">
@@ -384,14 +389,22 @@
                         <select class="selectpicker form-control" data-live-search="true" id="Plan" name="Plan">
                             <option value="0">--Choose Plan--</option>
                             <?php foreach($fInfo['data']['Plans'] as $Plan) { ?>
-                                <option value="<?php echo $Plan['PlanID'];?>" <?php echo ($Plan[ 'PlanName']==$_POST[ 'Plan']) ? ' selected="selected" ' : '';?>>
-                                    <?php echo $Plan['PlanName'];?>
-                                </option>
+                                <option value="<?php echo $Plan['PlanID'];?>" <?php echo (isset($_POST[ 'Plan'])) ? (($_POST[ 'Plan']==$Plan['PlanName']) ? " selected='selected' " : "") : (($fInfo['data']['DefaultPlanCode']==$Plan[ 'PlanCode']) ? " selected='selected' " : "");?> >
+                                            <?php echo $Plan['PlanName'];?>
+                                        </option>
                                 <?php } ?>
                         </select>
 						<span class="errorstring" id="ErrPlan"><?php echo isset($ErrPlan)? $ErrPlan : "";?></span>
 						<br>
-						<a href="javascript:void(0)" onclick="ViewPlan()">View Plan</a>
+						<a href="javascript:void(0)" onclick="ViewPlan()">View Plan</a>          
+                    </div>
+                </div>
+                <div class="form-group row">                           
+                    <div class="col-sm-12">
+                        <div class="custom-control custom-checkbox mb-3">
+                            <input type="checkbox" class="custom-control-input" id="IsAdmin" name="IsAdmin" <?php echo ($_POST['IsAdmin']==1) ? ' checked="checked" ' :'';?>>
+                            <label class="custom-control-label" for="IsAdmin" style="vertical-align: middle;">Make as Admin Franchisee</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -637,9 +650,8 @@
                                
                     </div>
     </div>
-    
- </form>   
-<?php }?>
+    </form>   
+
 <div class="modal" id="PubplishNow" data-backdrop="static" >
             <div class="modal-dialog" >
                 <div class="modal-content" id="Publish_body"  style="max-height: 340px;min-height: 340px;" >
@@ -665,4 +677,4 @@ function ViewPlan() {
   //alert("Goodbye!");
 //});
 </script>
-    
+<?php } ?>    

@@ -29,7 +29,7 @@
                                                                 "LoginPassword" => $_POST['Password']));
              if (sizeof($data)==1) { /* Single Information */
              
-                 $settings = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='APPSETTINGS' and `CodeValue`='AllowToPasswordCaseSensitive'");
+                 $settings = $mysql->select("SELECT * FROM `_tbl_master_codemaster` WHERE `HardCode`='APPSETTINGS' and `CodeValue`='MEMBER_LOGIN_PASSWORD_CASE_SENSITIVE'");
                  if($data[0]['IsActive']==0){
                       return Response::returnError("Account deactivated.Please contact administrator");
                  }
@@ -151,22 +151,27 @@
                 return Response::returnError("Please enter password");
              }
 
-             $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'");
-            
-             if ($allowDuplicateMobile[0]['ParamA']==0) {
+             if (Configuration::IS_ALLOW_DUPLICATE_MOBILE==0) {
                  $data = $mysql->select("select * from `_tbl_members` where  `MobileNumber`='".$_POST['MobileNumber']."'");
                  if (sizeof($data)>0) {
                      return Response::returnError("Mobile Number Already Exists");
                  }
              }
  
-             $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
-             
-             if ($allowDuplicateEmail[0]['ParamA']==0) {
+             if (Configuration::IS_ALLOW_DUPLICATE_EMAIL==0) {
                  $data = $mysql->select("select * from `_tbl_members` where  `EmailID`='".$_POST['Email']."'");
                  if (sizeof($data)>0) {
                     return Response::returnError("Email Already Exists");
                  }
+             }
+             
+             $franchisee =  $mysql->select("select * from _tbl_franchisees where IsActive='1' and IsAdmin='1'");
+             if(sizeof($franchisee)==0) {
+                return Response::returnError("Sorry, something went wrong"); 
+             }  
+             $plan =  $mysql->select("select * from _tbl_member_plan where IsActive='1'");
+             if(sizeof($plan)==0) {
+                return Response::returnError("Sorry, something went wrong"); 
              }
              
              $MemberCode=SeqMaster::GetNextMemberNumber();
@@ -345,7 +350,7 @@
 
              if($Member[0]['IsMobileVerified']==0) {
                  $sqlQry .= ", MobileNumber='".$_POST['MobileNumber']."' " ;
-             $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateMobile'");
+             $allowDuplicateMobile = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IS_ALLOW_DUPLICATE_MOBILE'");
                 if ($allowDuplicateMobile[0]['ParamA']==0) {
                  $data = $mysql->select("select * from `_tbl_members` where `MobileNumber`='".trim($_POST['MobileNumber'])."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
                      if (sizeof($data)>0) {
@@ -355,7 +360,7 @@
              } 
              if($Member[0]['IsEmailVerified']==0) {
                  $sqlQry .= ", `EmailID`='".$_POST['EmailID']."', `CountryCode`='".$_POST['CountryCode']."' " ;
-                 $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IsAllowDuplicateEmail'");
+                 $allowDuplicateEmail = $mysql->select("select * from `_tbl_master_codemaster` where  `HardCode`='APPSETTINGS' and `CodeValue`='IS_ALLOW_DUPLICATE_EMAIL'");
                  if ($allowDuplicateEmail[0]['ParamA']==0) {
                     $data = $mysql->select("select * from  `_tbl_members` where `EmailID`='".trim($_POST['EmailID'])."' and `MemberID` <>'".$loginInfo[0]['MemberID']."'");
                     if (sizeof($data)>0) {

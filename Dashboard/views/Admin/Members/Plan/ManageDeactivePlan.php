@@ -36,7 +36,7 @@
                                 <tr>
                                 <td>
                                 <span class="<?php echo ($Plan['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;
-                                <?php echo $Plan['PlanName'];?></td>
+                                <?php echo $Plan['PlanName'];?><?php if($Plan['IsDefault']==1) {?>&nbsp;<button class="btn btn-primary" style="padding: 0px 4px;font-size: 12px;background: orange;border: orange">Default</button><?php } ?></td>
                                  <td style="text-align:right"><?php echo $Plan['Decreation'];?></td>
                                 <td style="text-align:right"><?php echo number_format($Plan['Amount'],2);?></td>
                                 <td style="text-align:right"><?php echo ($Plan['cnt']==1) ? '1' : '0';?></td>

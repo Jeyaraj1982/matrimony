@@ -206,7 +206,7 @@ legend {
          <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Profile Information</h4></div>
          </div>
-              <div class="form-group row">
+              <div class="form-group row" style="height:420px">
                 <div class="col-sm-5">
                     <div style="border: 1px solid #e6e6e6;;padding: 0px;width: 318px;height: 420px;"> 
                     <div class="form-group row">                                                       
@@ -290,7 +290,7 @@ legend {
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['City'])))>0){ echo trim($ProfileInfo['City']);?>,&nbsp;&nbsp;<?php }?><?php if((strlen(trim($ProfileInfo['State'])))>0){ echo trim($ProfileInfo['State']);?>,&nbsp;&nbsp;<?php }?><?php echo trim($ProfileInfo['Country']);?></label>
                     </div>
 				</div>
-                <div class="col-sm-2">
+                <div class="col-sm-2" style="height:420px;overflow: auto;">
                 Summary
                 <?php foreach($DATSummarys as $DATSummary) {?>
                     <div class="form-group row">
@@ -306,7 +306,7 @@ legend {
          </div>
 </div>
 </div>
-<div class="col-12 grid-margin">
+<div class="col-12 grid-margin">                                                                                 
 	<div class="card">
 		<div class="card-body">
 			<div class="form-group row">
@@ -323,15 +323,17 @@ legend {
                     <?php if($ProfileInfo['IsObservation']==1) {?>
 					<?php if ($ProfileP['IsApproved']==0) { ?>
 						<select class="form-control" name="ApproveProfilePhoto[]" id="ApproveProfilePhoto_<?php echo $i;?>" style="width:95px;padding:4px;margin-top:7px;height: 28px;" onchange="ReasonForRejectProfilePhoto('<?php echo $i;?>');">
-							<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#0";?>" <?php echo ($ProfileP['IsApproved']==0) ? " selected='selected' " : "";?>>No Action</option>
-							<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#1";?>" <?php echo ($ProfileP['IsApproved']==1) ? " selected='selected' " : "";?>>Approve</option>
-							<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#2";?>" <?php echo ($ProfileP['IsApproved']==2) ? " selected='selected' " : "";?>>Reject</option>
+							<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#".$ProfileP['ProfileID']."#".$ProfileP['MemberID']."#0";?>" <?php echo ($ProfileP['IsApproved']==0) ? " selected='selected' " : "";?>>No Action</option>
+							<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#".$ProfileP['ProfileID']."#".$ProfileP['MemberID']."#1";?>" <?php echo ($ProfileP['IsApproved']==1) ? " selected='selected' " : "";?>>Approve</option>
+							<option value="<?php echo $ProfileP['ProfileCode']."#".$ProfileP['ProfilePhotoID']."#".$ProfileP['ProfileID']."#".$ProfileP['MemberID']."#2";?>" <?php echo ($ProfileP['IsApproved']==2) ? " selected='selected' " : "";?>>Reject</option>
 						</select>
 						<br>
 						<div style="display:none;" id="ReasonForRejectProfilePhotoDiv_<?php echo $i;?>">
 							<input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectProfilePhoto_<?php echo $i;?>" name="ReasonForRejectProfilePhoto_<?php echo $i;?>" value="<?php echo (isset($_POST['ReasonForRejectProfilePhoto_'.$i]) ? $_POST['ReasonForRejectProfilePhoto_'.$i] : $ProfileP['ReasonForReject']);?>">
 						</div>
-						
+						<div style="display:none;" id="ProfilePhotoDivSave_<?php echo $i;?>" style="float:right">
+                            <button type="submit" class="btn btn-success" name="Verify" style="font-family:roboto">Save</button>
+                        </div>
 					<?php $i++; }  else {?>
 						<?php if($ProfileP['IsApproved']==1) { ?>
 							<?php if($ProfileP['PriorityFirst']==1) { ?>
@@ -1186,14 +1188,14 @@ legend {
                     <?php if($ProfileInfo['IsObservation']==1) {?>
 						<?php if($Doc['IsVerified']==0) { ?>
                         <select class="form-control" name="ApproveDocument[]" id="ApproveDocument_<?php echo $i;?>" style="width:95px;padding:4px;margin-top:7px;height: 28px;" onchange="ReasonForRejectDocuments('<?php echo $i;?>');">
-                            <option value="<?php echo $Doc['ProfileCode']."#".$Doc['AttachmentID']."#0";?>" <?php echo ($Doc['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
-                            <option value="<?php echo $Doc['ProfileCode']."#".$Doc['AttachmentID']."#1";?>" <?php echo ($Doc['IsVerified']==1) ? " selected='selected' " : "";?>>Approve</option>
-                            <option value="<?php echo $Doc['ProfileCode']."#".$Doc['AttachmentID']."#2";?>" <?php echo ($Doc['IsVerified']==2) ? " selected='selected' " : "";?>>Reject</option>
+                            <option value="<?php echo $Doc['ProfileCode']."#".$Doc['AttachmentID']."#".$Doc['ProfileID']."#".$Doc['MemberID']."#0";?>" <?php echo ($Doc['IsVerified']==0) ? " selected='selected' " : "";?>>No Action</option>
+                            <option value="<?php echo $Doc['ProfileCode']."#".$Doc['AttachmentID']."#".$Doc['ProfileID']."#".$Doc['MemberID']."#1";?>" <?php echo ($Doc['IsVerified']==1) ? " selected='selected' " : "";?>>Approve</option>
+                            <option value="<?php echo $Doc['ProfileCode']."#".$Doc['AttachmentID']."#".$Doc['ProfileID']."#".$Doc['MemberID']."#2";?>" <?php echo ($Doc['IsVerified']==2) ? " selected='selected' " : "";?>>Reject</option>
                         </select> <br>
                         <div style="display:none;" id="ReasonForRejectDocumentsDiv_<?php echo $i;?>">
                             <input type="text" class="form-control" placeholder="Reason For Reject" id="ReasonForRejectDocuments_<?php echo $i;?>" name="ReasonForRejectDocuments_<?php echo $i;?>" value="<?php echo (isset($_POST['ReasonForRejectDocuments_'.$i]) ? $_POST['ReasonForRejectDocuments_'.$i] : $Doc['ReasonForReject']);?>">
                         </div>
-                                <div id="DocumentsVerificationSave"><button type="submit" class="btn btn-success" name="VerifyDocument" style="font-family:roboto">Save</button></div>
+                                <div style="display:none;" id="DocumentsVerificationSave"><button type="submit" class="btn btn-success" name="VerifyDocument" style="font-family:roboto">Save</button></div>
 						<?php $i++; }  else {?>
 						<?php if($Doc['IsVerified']==1) { ?>
 							<span>Approved</span><br>
@@ -1208,12 +1210,6 @@ legend {
                   </div>
                   <?php  }  ?>
          </div>
-         <?php if($ProfileInfo['IsObservation']==1) {?>
-		 <?php if($Doc['IsVerified']==0) { ?>
-		 <div style="float:right">
-				<button type="submit" class="btn btn-success" name="VerifyDocument" style="font-family:roboto">Save</button>
-			</div>
-		 <?php }} ?>
     </div>
   </div>                                                                                                               
 </div>
@@ -1252,6 +1248,11 @@ function ReasonForRejectProfilePhoto(id) {
                 $('#ReasonForRejectProfilePhotoDiv_'+id).hide();
 				$('#ReasonForRejectProfilePhoto_'+id).val("");
             }
+            if ($('#ApproveProfilePhoto_'+id+' :selected').text()=="No Action") {
+                $('#ProfilePhotoDivSave_'+id).hide();
+            } else {
+                $('#ProfilePhotoDivSave_'+id).show();
+                 }
         }
 function ReasonForRejectEducation(id) {
             if ($('#ApproveEducation_'+id+'  :selected').text()=="Reject") {
@@ -1266,8 +1267,13 @@ function ReasonForRejectDocuments(id) {
                 $('#ReasonForRejectDocumentsDiv_'+id).show();
             } else {
                 $('#ReasonForRejectDocumentsDiv_'+id).hide();
-				$('#ReasonForRejectDocuments_'+id).val("");
+				$('#ReasonForRejectDocuments_'+id).val("");        
             }
+            if ($('#ApproveDocument_'+id+' :selected').text()=="No Action") {
+                $('#DocumentsVerificationSave').hide();
+            } else {
+                $('#DocumentsVerificationSave').show();
+                 }
         }
 function ReasonForRejectAboutMeInfo() {
             if ($('#ApproveAboutMeInfo  :selected').text()=="Reject") {

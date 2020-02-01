@@ -1,22 +1,23 @@
 <?php  
     include_once("config_client.php");
+    
+    include_once("classes/class.Config.php");  
+    date_default_timezone_set(Configuration::TIMEZONE_VALUE);
+    
+    include_once(Configuration::LANGUAGE.".php");
+    
     define ("url_encrypt",0);
-	 function writeSql($text) {
-            $myFile = date("Y_m_d").".txt";
-            $fh = fopen($myFile, 'a') or die ("can't open file");
-            fwrite($fh, "[".date("Y-m-d H:i:s")."]\t".$text."\n");
-            fclose($fh);
-        }
-	writeSql("GET: ".json_encode($_GET));
+	
+    function writeSql($text) {
+        $myFile = date("Y_m_d").".txt";
+        $fh = fopen($myFile, 'a') or die ("can't open file");
+        fwrite($fh, "[".date("Y-m-d H:i:s")."]\t".$text."\n");
+        fclose($fh);
+    }
+	
+    writeSql("GET: ".json_encode($_GET));
 	writeSql("POST: ".json_encode($_POST));
 
-    $cdata=json_decode(json_encode(array('TimeZone'        => "Asia/Kolkata",
-                                         'DateFormat'      => "",
-                                         'Language'        => "la-en",
-                                         'DateTimeFormat'  => "")));
-              
-    date_default_timezone_set($cdata->TimeZone);
-       
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
@@ -25,11 +26,11 @@
     require __DIR__.'/lib/mail/src/SMTP.php';
      
     $mail    = new PHPMailer;
-  function reInitMail() {
-global $mail;
- $mail    = new PHPMailer;
-  }	  
-    include_once($cdata->Language.".php");
+    
+    function reInitMail() {
+        global $mail;
+        $mail = new PHPMailer;
+    }	  
     
     class J2JApplication {
         
@@ -131,7 +132,6 @@ global $mail;
     include_once("controller/SequenceController.php");
     include_once("controller/ResponseController.php");
     include_once("classes/class.Profiles.php");
-    
     include_once("modules/class.Shortlist.php");               
     include_once("modules/class.MailContent.php");               
      
