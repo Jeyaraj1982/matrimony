@@ -93,7 +93,10 @@
                             "PRIMARYPRIORITY"    => "select * from `_tbl_master_codemaster` Where `HardCode`='PRIMARYPRIORITY'".$filter,
                             "TEAMNAMES"    		 => "select * from `_tbl_master_codemaster` Where `HardCode`='TEAMNAMES'".$filter,
                             "VENDORTYPE"    		 => "select * from `_tbl_master_codemaster` Where `HardCode`='VENDORTYPE'".$filter,
-                            "PAYPALCURRENCY"    		 => "select * from `_tbl_master_codemaster` Where `HardCode`='PAYPALCURRENCY'".$filter,
+                            "PAYPALCURRENCY"             => "select * from `_tbl_master_codemaster` Where `HardCode`='PAYPALCURRENCY'".$filter,
+                            "TIMEZONE"             => "select * from `_tbl_master_codemaster` Where `HardCode`='TIMEZONE'".$filter,
+                            "CURRENCY"             => "select * from `_tbl_master_codemaster` Where `HardCode`='CURRENCY'".$filter,
+                            "DOCTYPES"    		 => "select * from `_tbl_master_codemaster` Where `HardCode`='DOCTYPES'".$filter,
                             "RegisterAllowedCountries" => "select *, CONCAT(CodeValue,' (+',ParamA,')') as str FROM `_tbl_master_codemaster`  WHERE `HardCode`='CONTNAMES' and ParamE='1'");
               return $mysql->select($quries[$Request]);
         }

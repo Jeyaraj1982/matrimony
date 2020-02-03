@@ -6,8 +6,8 @@
 		 const LANGUAGE = 'la-en';
 		 const TIMEZONE_CODE = 'TZ0079';
 		 const TIMEZONE_VALUE = 'Asia/Kolkata';
-		 const CURRENCY_CODE = 'CY0001';
-		 const CURRENCY_VALUE = 'USD';
+		 const CURRENCY_CODE = 'CY0002';
+		 const CURRENCY_VALUE = 'INR';
 		 const EMAIL_API_ENABLE = 8;
 		 const MOBILE_SMS_API_ENABLE = 9;
 		 const IS_ALLOW_DUPLICATE_MOBILE = 0;
