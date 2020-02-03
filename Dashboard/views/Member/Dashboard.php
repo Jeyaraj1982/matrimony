@@ -1,7 +1,11 @@
 <?php
     if (isset($_POST['welcomebutton'])) {
         //$response = $webservice->WelcomeMessage();
-		$response = $webservice->getData("Member","WelcomeMessage");
+        $response = $webservice->getData("Member","WelcomeMessage");          
+    }
+    if (isset($_POST['boardmsgbutton'])) {
+        //$response = $webservice->WelcomeMessage();
+		$response = $webservice->getData("Member","BoardMessage",$_POST);
     }  
     $response = $webservice->getData("Member","GetMyProfiles",array("ProfileFrom"=>"All"));
 	//print_r($response);
@@ -364,16 +368,27 @@
             $(".hide-modal").click(function(){
                 $("#MemberWelcome").modal('hide');
             });
-        }); 
-        <?php } else { ?>
+        });   
+        <?php  
+         
+         } else { ?>
             <?php  if ($response['data']['IsMobileVerified']==0) { ?>
                 $('#verificationContent').html('<span style="color:#666;font-size:13px;"><img src="assets/images/exclamation-mark.png" style="margin-top: -3px;margin-right: 3px;">&nbsp;Your mobile number is not verified. Click to&nbsp;<a href="javascript:void(0)" onclick="MobileNumberVerification()">verify now</a></span>');
                 setTimeout(function(){$("#verifydiv").show(500)},1500);
-            <?php } else if ($response['data']['IsEmailVerified']==0) { ?>
+            <?php } elseif ($response['data']['IsEmailVerified']==0) { ?>
                 $('#verificationContent').html('<span style="color:#666;font-size:13px;"><img src="assets/images/exclamation-mark.png" style="margin-top: -3px;margin-right: 3px;">&nbsp;Your email address is not verified.Click to &nbsp;<a href="javascript:void(0)" onclick="EmailVerification()">verify now</a></span>');
                 setTimeout(function(){$("#verifydiv").show(500)},1500);
-            <?php } ?>
-        <?php } ?>
+            <?php } else { 
+            if(sizeof($response['data']['Popup'])>0) { ?> 
+        $(document).ready(function(){
+            $("#MemberBoard").modal('show');
+            $(".hide-modal").click(function(){
+                $("#MemberBoard").modal('hide');
+            });
+        });
+       <?php    } ?>
+        <?php } } ?>
+        
     </script>  
     <?php  if($response['data']['WelcomeMsg']==0) {     ?>
     <div class="modal fade" id="MemberWelcome" role="dialog" data-backdrop="static" style="padding-top:200px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
@@ -392,7 +407,42 @@
         </div>
     </div>
     <?php } ?>
+    <div class="modal fade" id="MemberBoard" role="dialog" data-backdrop="static" style="padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+        <div class="modal-dialog" >
+            <div class="modal-content" style="max-height: 500px;min-height: 500px;">
+                <form method="POST" id="frmBrd" action="">
+                <input type="hidden" name="BoardID" value="<?php echo $response['data']['Popup'][0]['BoardID'];?>">
+                    <div class="modal-header">   
+                        <h4 class="modal-title">Latest Message</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>
+                    </div>
+                    <div class="modal-body" style="max-height:375px;min-height: 375px;overflow-y:scroll;">
+                            <p><b><?php echo $response['data']['Popup'][0]['MessageSubject'];?></b></p>
+                            <p style="color:#959494"><?php echo $response['data']['Popup'][0]['MessageContent'];?></p>  <br>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="IhaveRead" name="check" onclick="IhaveReadFn();" value="1">
+                            <label class="custom-control-label" for="IhaveRead" style="font-weight:normal;margin-top:3px">&nbsp;I have Read</label>
+                        </div>&nbsp;&nbsp;
+                        <button type="submit" disabled="disabled" class="btn btn-primary" name="boardmsgbutton" id="boardmsgbutton">Continue</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 <script>
+
+function IhaveReadFn() {
+    
+    if($("#IhaveRead").prop("checked") == true){ 
+        $('#boardmsgbutton').removeAttr("Disabled");
+    }
+    
+    if($("#IhaveRead").prop("checked") == false){
+        $('#boardmsgbutton').attr("Disabled","Disabled");
+    }
+}
         function showConfirmDelete(LatestID) {                                           
         $('#Delete').modal('show'); 
         var content = '<div class="modal-body" style="padding:20px">'

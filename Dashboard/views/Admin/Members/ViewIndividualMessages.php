@@ -1,7 +1,7 @@
 <?php
     $response = $webservice->getData("Admin","GetMemberInfo");
     $Member          = $response['data']['MemberInfo'];
-    $Email          = $response['data']['IndividualEmail'];
+    $SMS          = $response['data']['BoardMessage'];
 ?>
 <form method="post" id="frmfrn">
     <input type="hidden" value="" name="txnPassword" id="txnPassword">
@@ -72,19 +72,23 @@
                             <h4 class="card-title" style="font-weight:399">Message Information</h4>  
                             <div class="form-group row">
                                 <div class="col-sm-3"><small>Message From Code:</small> </div>
-                                <div class="col-sm-9"><small style="color:#737373;"><?php echo $Email['MessageFromCode'];?></small></div>
+                                <div class="col-sm-9"><small style="color:#737373;"><?php echo $SMS['FromCode'];?></small></div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-sm-3"><small>Subject:</small> </div>
-                                <div class="col-sm-9"><small style="color:#737373;"><?php echo $Email['EmailSubject'];?></small></div>
+                                <div class="col-sm-3"><small>Message Subject:</small> </div>
+                                <div class="col-sm-9"><small style="color:#737373;"><?php echo $SMS['MessageSubject'];?></small></div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-sm-3"><small>Content:</small> </div>
-                                <div class="col-sm-9"><small style="color:#737373;"><?php echo $Email['EmailContent'];?></small></div>
+                                <div class="col-sm-3"><small>Message Content:</small> </div>
+                                <div class="col-sm-9"><small style="color:#737373;"><?php echo $SMS['MessageContent'];?></small></div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-sm-3"><small>Sent On:</small> </div>
-                                <div class="col-sm-9"><small style="color:#737373;"><?php echo putDatetime($Email['SentOn']);?></small></div>
+                                <div class="col-sm-3"><small>Created On:</small> </div>
+                                <div class="col-sm-9"><small style="color:#737373;"><?php echo putDatetime($SMS['CreatedOn']);?></small></div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-3"><small>Read On:</small> </div>
+                                <div class="col-sm-9"><small style="color:#737373;"><?php echo putDatetime($SMS['ReadOn']);?></small></div>
                             </div>
                         </div>                                      
                     </div>    

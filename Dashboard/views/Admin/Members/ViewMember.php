@@ -260,21 +260,21 @@
             </div>
             <div class="col-sm-12 col-form-label">
                 <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmSendIndividualSmsToMember('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>','<?php echo $Member['MobileNumber'];?>')"><small style="font-weight:bold;text-decoration:underline">Send Individual Sms</small></a>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmSendIndividualSmsToMember('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>','<?php echo $Member['MobileNumber'];?>')"><small style="font-weight:bold;text-decoration:underline">Send Individual Sms</small></a>&nbsp;&nbsp;<a href="<?php echo GetUrl("Members/ListOfIndividualSMS/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">List</small></a>
                 <?php } else { ?> 
                     <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Send Individual Sms</small></a>
                 <?php }   ?> 
             </div>
             <div class="col-sm-12 col-form-label">
                 <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmSendIndividualEmailToMember('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>','<?php echo $Member['EmailID'];?>')"><small style="font-weight:bold;text-decoration:underline">Send Individual Email</small></a>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmSendIndividualEmailToMember('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>','<?php echo $Member['EmailID'];?>')"><small style="font-weight:bold;text-decoration:underline">Send Individual Email</small></a>&nbsp;&nbsp;<a href="<?php echo GetUrl("Members/ListOfIndividualEmail/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">List</small></a>
                 <?php } else { ?> 
                     <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Send Individual Email</small></a>
                 <?php }   ?> 
             </div>
             <div class="col-sm-12 col-form-label">
                 <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmPopupMessage('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>')"><small style="font-weight:bold;text-decoration:underline">Popup Message</small></a>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmPopupMessage('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>')"><small style="font-weight:bold;text-decoration:underline">Popup Message</small></a>&nbsp;&nbsp;<a href="<?php echo GetUrl("Members/ListOfIndividualMessages/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">List</small></a>
                 <?php } else { ?> 
                     <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Popup Message</small></a>
                 <?php }   ?> 
@@ -422,6 +422,12 @@
                                 </li>
                                 <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="Activities") ? ' linkactive1 ':'';?>" id="Activities" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                     <a id="myaccount_leftnav_a_6"  href="javascript:loadPaymentOption('Activities')" class="Notification" style="text-decoration:none"><span>Activities</span></a>
+                                </li>
+                                <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="EmailLog") ? ' linkactive1 ':'';?>" id="EmailLog" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                    <a id="myaccount_leftnav_a_6"  href="javascript:loadPaymentOption('EmailLog')" class="Notification" style="text-decoration:none"><span>Email Log</span></a>
+                                </li>
+                                <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="SMSLog") ? ' linkactive1 ':'';?>" id="SMSLog" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                    <a id="myaccount_leftnav_a_6"  href="javascript:loadPaymentOption('SMSLog')" class="Notification" style="text-decoration:none"><span>SMS Log</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -785,7 +791,7 @@
                             </div>
                             <div class="Activities" id="Activitiesdiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
                                 <h4>Activities</h4>
-                                  <?php $response = $webservice->getData("Admin","GetMemberWalletAndProfileDetails",array("DetailFor"=>"Activities")); 
+                                  <?php $response = $webservice->getData("Admin","GetMemberWalletAndProfileDetails",array("DetailFor"=>"Activities","Code"=>$_GET['Code'])); 
                                 ?>
                                     <?php if (sizeof($response['data'])>0) {   ?>
                                         <div class="table-responsive">
@@ -813,6 +819,66 @@
                                 </div>     
                               <?php } ?>  
                             </div>
+                            <div class="EmailLog" id="EmailLogdiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+                                <h4>Email Log</h4>
+                                  <?php $response = $webservice->getData("Admin","GetMemberWalletAndProfileDetails",array("DetailFor"=>"EmailLog","Code"=>$_GET['Code'])); 
+                                ?>
+                                    <?php if (sizeof($response['data'])>0) {   ?>
+                                        <div class="table-responsive">
+                                        <table id="myTable" class="table table-striped" style="width:100%;border-bottom:1px solid #ccc;">
+                                            <thead>  
+                                               <tr>
+                                                    <th style="width: 110px;;">Email On</th>
+                                                    <th>Subject</th> 
+                                                </tr>
+                                            </thead>
+                                            <tbody>  
+                                           <?php foreach($response['data'] as $History) { ?>
+                                                <tr>
+                                                    <td><?php echo putDateTime($History['EmailRequestedOn']);?></td>
+                                                    <td><?php echo $History['EmailSubject'];?></td>
+                                                </tr>
+                                            <?php } ?>          
+                                            </tbody>                        
+                                        </table>
+                                    </div>
+                                 <?php }else { ?>
+                                   <div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+                                    <img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
+                                    No Logs found at this time<br><br>
+                                </div>     
+                              <?php } ?>  
+                            </div>
+                            <div class="SMSLog" id="SMSLogdiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+                                <h4>SMS Log</h4>
+                                  <?php $response = $webservice->getData("Admin","GetMemberWalletAndProfileDetails",array("DetailFor"=>"SMSLog","Code"=>$_GET['Code'])); 
+                                ?>
+                                    <?php if (sizeof($response['data'])>0) {   ?>
+                                        <div class="table-responsive">
+                                        <table id="myTable" class="table table-striped" style="width:100%;border-bottom:1px solid #ccc;">
+                                            <thead>  
+                                               <tr>
+                                                    <th style="width: 110px;;">Email On</th>
+                                                    <th>Subject</th> 
+                                                </tr>
+                                            </thead>
+                                            <tbody>  
+                                           <?php foreach($response['data'] as $History) { ?>
+                                                <tr>
+                                                    <td><?php echo putDateTime($History['RequestedOn']);?></td>
+                                                    <td><?php echo $History['TextMessage'];?></td>
+                                                </tr>
+                                            <?php } ?>          
+                                            </tbody>                        
+                                        </table>
+                                    </div>
+                                 <?php }else { ?>
+                                   <div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+                                    <img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
+                                    No Logs found at this time<br><br>
+                                </div>     
+                              <?php } ?>  
+                            </div>
                          </div>
                      </div>
                    </div>
@@ -836,6 +902,8 @@
         $('#WhoLiked').css({"background":"Transparent"});
         $('#LoginLogs').css({"background":"Transparent"});
         $('#Activities').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"Transparent"});
+        $('#SMSLog').css({"background":"Transparent"});
      }
      if (pOption=="WalletTransactions") {                  
         $("#resdiv").html($('#WalletTransactionsdiv').html());
@@ -850,6 +918,8 @@
         $('#WhoLiked').css({"background":"Transparent"});
         $('#LoginLogs').css({"background":"Transparent"});
         $('#Activities').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"Transparent"});
+        $('#SMSLog').css({"background":"Transparent"});
      }
      if (pOption=="Orders") {                  
         $("#resdiv").html($('#Ordersdiv').html());
@@ -864,6 +934,8 @@
         $('#WhoLiked').css({"background":"Transparent"});
         $('#LoginLogs').css({"background":"Transparent"});
         $('#Activities').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"Transparent"});
+        $('#SMSLog').css({"background":"Transparent"});
      }
      if (pOption=="Invoice") {                  
         $("#resdiv").html($('#Invoicediv').html());
@@ -878,6 +950,8 @@
         $('#WhoLiked').css({"background":"Transparent"});
         $('#LoginLogs').css({"background":"Transparent"});
         $('#Activities').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"Transparent"});
+        $('#SMSLog').css({"background":"Transparent"});
      }
      if (pOption=="RecentlyViewed") {                  
         $("#resdiv").html($('#RecentlyVieweddiv').html());
@@ -892,6 +966,8 @@
         $('#WhoLiked').css({"background":"Transparent"});
         $('#LoginLogs').css({"background":"Transparent"});
         $('#Activities').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"SMSLog"});
      }
      if (pOption=="RecentlyWhoViewed") {                  
         $("#resdiv").html($('#RecentlyWhoVieweddiv').html());
@@ -906,6 +982,8 @@
         $('#WhoLiked').css({"background":"Transparent"});
         $('#LoginLogs').css({"background":"Transparent"});
         $('#Activities').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"Transparent"});
+        $('#SMSLog').css({"background":"Transparent"});
      }
      if (pOption=="Favorited") {                  
         $("#resdiv").html($('#Favoriteddiv').html());
@@ -920,6 +998,8 @@
         $('#WhoLiked').css({"background":"Transparent"});
         $('#LoginLogs').css({"background":"Transparent"});
         $('#Activities').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"Transparent"});
+        $('#SMSLog').css({"background":"Transparent"});
      }
      if (pOption=="Mutual") {                  
         $("#resdiv").html($('#Mutualdiv').html());
@@ -934,6 +1014,8 @@
         $('#WhoLiked').css({"background":"Transparent"});
         $('#LoginLogs').css({"background":"Transparent"});
         $('#Activities').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"Transparent"});
+        $('#SMSLog').css({"background":"Transparent"});
      }
      if (pOption=="WhoLiked") {                  
         $("#resdiv").html($('#WhoLikeddiv').html());
@@ -948,6 +1030,8 @@
         $('#WhoLiked').css({"background":"#95abfb"});
         $('#LoginLogs').css({"background":"Transparent"});
         $('#Activities').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"Transparent"});
+        $('#SMSLog').css({"background":"Transparent"});
      }
      if (pOption=="LoginLogs") {                  
         $("#resdiv").html($('#LoginLogsdiv').html());
@@ -962,6 +1046,8 @@
         $('#WhoLiked').css({"background":"Transparent"});
         $('#LoginLogs').css({"background":"#95abfb"});
         $('#Activities').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"Transparent"});
+        $('#SMSLog').css({"background":"Transparent"});
      }
      if (pOption=="Activities") {                  
         $("#resdiv").html($('#Activitiesdiv').html());
@@ -976,6 +1062,40 @@
         $('#WhoLiked').css({"background":"Transparent"});
         $('#LoginLogs').css({"background":"Transparent"});
         $('#Activities').css({"background":"#95abfb"});
+        $('#EmailLog').css({"background":"Transparent"});
+        $('#SMSLog').css({"background":"Transparent"});
+     }
+     if (pOption=="EmailLog") {                  
+        $("#resdiv").html($('#EmailLogdiv').html());
+        $('#WalletRequests').css({"background":"Transparent"});
+        $('#WalletTransactions').css({"background":"Transparent"});
+        $('#Orders').css({"background":"Transparent"});
+        $('#Invoice').css({"background":"Transaparent"});
+        $('#RecentlyViewed').css({"background":"Transparent"});
+        $('#RecentlyWhoViewed').css({"background":"Transparent"});
+        $('#Favorited').css({"background":"Transparent"});
+        $('#Mutual').css({"background":"Transparennt"});
+        $('#WhoLiked').css({"background":"Transparent"});
+        $('#LoginLogs').css({"background":"Transparent"});
+        $('#Activities').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"#95abfb"});
+        $('#SMSLog').css({"background":"Transparent"});
+     }
+     if (pOption=="SMSLog") {                  
+        $("#resdiv").html($('#SMSLogdiv').html());
+        $('#WalletRequests').css({"background":"Transparent"});
+        $('#WalletTransactions').css({"background":"Transparent"});
+        $('#Orders').css({"background":"Transparent"});
+        $('#Invoice').css({"background":"Transaparent"});
+        $('#RecentlyViewed').css({"background":"Transparent"});
+        $('#RecentlyWhoViewed').css({"background":"Transparent"});
+        $('#Favorited').css({"background":"Transparent"});
+        $('#Mutual').css({"background":"Transparennt"});
+        $('#WhoLiked').css({"background":"Transparent"});
+        $('#LoginLogs').css({"background":"Transparent"});
+        $('#Activities').css({"background":"Transparent"});
+        $('#EmailLog').css({"background":"Transparent"});
+        $('#SMSLog').css({"background":"#95abfb"});
      }
  }
 

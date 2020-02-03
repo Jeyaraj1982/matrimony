@@ -33,6 +33,15 @@
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="NotificationsandActionsLog") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Logs/Notification");?>" class="Notification" style="text-decoration:none"><span>Notifications &amp; Actions</span></a>
                                         </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="IndividualSMSLog") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Logs/IndividualSMS");?>" class="Notification" style="text-decoration:none"><span>Individual SMS</span></a>
+                                        </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="IndividualEmailLog") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Logs/IndividualEmail");?>" class="Notification" style="text-decoration:none"><span>Individual Email</span></a>
+                                        </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="IndividualMessagesLog") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Logs/IndividualMessages");?>" class="Notification" style="text-decoration:none"><span>Individual Messages</span></a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

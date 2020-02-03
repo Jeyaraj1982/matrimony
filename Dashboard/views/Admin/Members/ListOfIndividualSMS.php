@@ -1,7 +1,6 @@
 <?php
     $response = $webservice->getData("Admin","GetMemberInfo");
     $Member          = $response['data']['MemberInfo'];
-    $Email          = $response['data']['IndividualEmail'];
 ?>
 <form method="post" id="frmfrn">
     <input type="hidden" value="" name="txnPassword" id="txnPassword">
@@ -64,31 +63,39 @@
             </div>                                      
         </div>    
                 </div> 
-            </div>                                                                                                        
+            </div>
             <div class="col-12 grid-margin">
-                <div class="card">
-                    <div class="card-body">
-                        <div style="max-width:770px !important;">
-                            <h4 class="card-title" style="font-weight:399">Message Information</h4>  
-                            <div class="form-group row">
-                                <div class="col-sm-3"><small>Message From Code:</small> </div>
-                                <div class="col-sm-9"><small style="color:#737373;"><?php echo $Email['MessageFromCode'];?></small></div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-3"><small>Subject:</small> </div>
-                                <div class="col-sm-9"><small style="color:#737373;"><?php echo $Email['EmailSubject'];?></small></div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-3"><small>Content:</small> </div>
-                                <div class="col-sm-9"><small style="color:#737373;"><?php echo $Email['EmailContent'];?></small></div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-3"><small>Sent On:</small> </div>
-                                <div class="col-sm-9"><small style="color:#737373;"><?php echo putDatetime($Email['SentOn']);?></small></div>
-                            </div>
-                        </div>                                      
-                    </div>    
-                </div> 
+            <div class="card">
+                <div class="card-body">
+                    <div style="max-width:770px !important;">
+                        <h4 class="card-title">Indvidual SMS</h4>
+                        <div class="table-responsive">
+                        <table id="myTable" class="table table-striped">
+                          <thead>  
+                            <tr> 
+                            <th>Message From Code</th>  
+                            <th>Message</th>
+                            <th>Sent On</th>
+                            <th></th>
+                            </tr>  
+                        </thead>
+                         <tbody>  
+                            <?php 
+                                $response = $webservice->getData("Admin","GetIndividualMessagesList",array("Request"=>"SMS"));
+                                foreach($response['data'] as $SMS) { ?>
+                                    <tr>
+                                    <td><?php echo $SMS['MessageFromCode'];?></td>
+                                    <td><?php echo $SMS['SMSMessage'];?></td>
+                                    <td><?php echo PutDateTime($SMS['SentOn']);?></td>
+                                    <td><a href="<?php echo GetUrl("Members/ViewIndividualSMS/". $_GET['Code'].".htm?ManualSendID=".$SMS['ManualSendID']."");?>"><span>View</span></a></td>                                                                                                                                                                                                                                       
+                                    </tr>
+                            <?php } ?>            
+                          </tbody>                        
+                         </table>
+                      </div>   
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
         <div class="col-sm-3">

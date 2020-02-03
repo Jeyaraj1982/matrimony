@@ -98,6 +98,27 @@
                                         </li> 
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="ManageAffluence") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/Masters/FamilyAffluence/ManageAffluence");?>" class="Notification" style="text-decoration:none"><span>Family Affluence</span></a>
+                                        </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="ManageTimeZone") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/Masters/TimeZone/ManageTimeZone");?>" class="Notification" style="text-decoration:none"><span>Time Zone</span></a>
+                                        </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="ManageCurrency") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/Masters/Currency/ManageCurrency");?>" class="Notification" style="text-decoration:none"><span>Currency</span></a>
+                                        </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="ManageDocumentType") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/Masters/DocumentTypes/ManageDocumentType");?>" class="Notification" style="text-decoration:none"><span>Document Type</span></a>
+                                        </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="ManageCommunity") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/Masters/Community/ManageCommunity");?>" class="Notification" style="text-decoration:none"><span>Community</span></a>
+                                        </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="ManageIDProof") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/Masters/IDProof/ManageIDProof");?>" class="Notification" style="text-decoration:none"><span>ID Proof</span></a>
+                                        </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="ManageAddressProof") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/Masters/AddressProof/ManageAddressProof");?>" class="Notification" style="text-decoration:none"><span>Address Proof</span></a>
+                                        </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="ManageVenderType") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/Masters/VenderType/ManageVenderType");?>" class="Notification" style="text-decoration:none"><span>Vender Type</span></a>
                                         </li> 
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="ManageSequenceMaster") ? ' linkactive1 ':'';?>" style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/Masters/SequenceMaster/ManageSequenceMaster");?>" class="Notification" style="text-decoration:none"><span>Sequence Master</span></a>

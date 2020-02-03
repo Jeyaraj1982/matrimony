@@ -18,10 +18,6 @@
                        <!-- <li class="nav-item"><a class="nav-link" href="<?php //echo GetUrl("Members/News/NewsandEvents");?>">News & Events</a></li> -->
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/SearchMember");?>">Search Member</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/Plan/ManagePlan");?>">Manage Plans</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/KYC/KYCVerification");?>">KYC Verification</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/IndividualSMS");?>">Individual SMS</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/IndividualEmail");?>">Individual Email</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/IndividualMessages");?>">Individual Message</a></li>
                     </ul>
                 </div>
             </li>
@@ -57,7 +53,7 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Franchisees/Create");?>">New Franchisee</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Franchisees/MangeFranchisees");?>">Manage Franchisees</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Franchisees/Plan/ManagePlan");?>">Manage Plans</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Franchisees/Wallet/RefillWallet");?>">Refill Wallet</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Franchisees/Wallet/FrRefillWallet");?>">Refill Wallet</a></li>
                         <!--<li class="nav-item"><a class="nav-link" href="<?php //echo GetUrl("Franchisees/News/NewsandEvents");?>">News & Events</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="<?php //echo GetUrl("Franchisees/ResetPassword/SearchMember");?>">Reset Password</a></li> -->
                     </ul>
@@ -72,6 +68,7 @@
                 <div class="collapse" id="DAT">
                     <ul class="nav flex-column sub-menu"> 
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Requested");?>">Requested</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/KYC/KYCVerification");?>">KYC Verification</a></li>
                     </ul>
                 </div>                             
             </li>

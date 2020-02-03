@@ -469,21 +469,21 @@ if (isset($_POST['Btnupdate'])) {
             </div>
             <div class="col-sm-12 col-form-label">
                 <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmSendIndividualSmsToMember('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>','<?php echo $Member['MobileNumber'];?>','<?php echo $Member['CountryCode'];?>')"><small style="font-weight:bold;text-decoration:underline">Send Individual Sms</small></a>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmSendIndividualSmsToMember('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>','<?php echo $Member['MobileNumber'];?>','<?php echo $Member['CountryCode'];?>')"><small style="font-weight:bold;text-decoration:underline">Send Individual Sms</small></a>&nbsp;&nbsp;<a href="<?php echo GetUrl("Members/ListOfIndividualSMS/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">List</small></a>
                 <?php } else { ?> 
                     <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Send Individual Sms</small></a>
                 <?php }   ?> 
             </div>
             <div class="col-sm-12 col-form-label">
                 <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmSendIndividualEmailToMember('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>','<?php echo $Member['EmailID'];?>')"><small style="font-weight:bold;text-decoration:underline">Send Individual Email</small></a>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmSendIndividualEmailToMember('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>','<?php echo $Member['EmailID'];?>')"><small style="font-weight:bold;text-decoration:underline">Send Individual Email</small></a>&nbsp;&nbsp;<a href="<?php echo GetUrl("Members/ListOfIndividualEmail/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">List</small></a>
                 <?php } else { ?> 
                     <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Send Individual Email</small></a>
                 <?php }   ?> 
             </div>
             <div class="col-sm-12 col-form-label">
                 <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmPopupMessage('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>')"><small style="font-weight:bold;text-decoration:underline">Popup Message</small></a>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmPopupMessage('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>')"><small style="font-weight:bold;text-decoration:underline">Popup Message</small></a>&nbsp;&nbsp;<a href="<?php echo GetUrl("Members/ListOfIndividualMessages/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">List</small></a>
                 <?php } else { ?> 
                     <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Popup Message</small></a>
                 <?php }   ?> 

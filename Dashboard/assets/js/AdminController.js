@@ -654,7 +654,7 @@ var Franchisee = {
 };
 
 function ConfirmFrTransferAmountToFranchiseeFromAdmin () {      
-      //  if(SubmitDetails()) {
+       if(SubmitDetails()) {
         $('#PubplishNow').modal('show'); 
             var content = '<div class="modal-header">'
                                 + '<h4 class="modal-title">Confirmation for transfer amount to franchisee</h4>'
@@ -677,9 +677,9 @@ function ConfirmFrTransferAmountToFranchiseeFromAdmin () {
                                 + '<button type="button" class="btn btn-primary" class="btn btn-primary" onclick="GetTxnPasswordTransferAmoutToFranchiseeFromAdmin()" style="font-family:roboto">Yes ,Continue</button>'
                            + '</div>';
             $('#Publish_body').html(content);
-    //    }  else {
-     //       return false;
-    // }
+       }  else {
+           return false;
+     }
      }
      function GetTxnPasswordTransferAmoutToFranchiseeFromAdmin() {
         var content = '<div class="modal-header">'

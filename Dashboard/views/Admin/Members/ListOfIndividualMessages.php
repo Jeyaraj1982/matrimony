@@ -1,7 +1,6 @@
 <?php
     $response = $webservice->getData("Admin","GetMemberInfo");
     $Member          = $response['data']['MemberInfo'];
-    $Email          = $response['data']['IndividualEmail'];
 ?>
 <form method="post" id="frmfrn">
     <input type="hidden" value="" name="txnPassword" id="txnPassword">
@@ -23,7 +22,7 @@
         <div class="col-sm-9">
             <div class="col-12 grid-margin">
                 <div class="card">
-                    <div class="card-body">
+        <div class="card-body">
             <div style="max-width:770px !important;">
                 <h4 class="card-title" style="font-weight:399">Member Information</h4>  
                 <div class="form-group row">
@@ -63,32 +62,44 @@
                                                                                                                        
             </div>                                      
         </div>    
-                </div> 
-            </div>                                                                                                        
+    </div> 
+            </div>
             <div class="col-12 grid-margin">
                 <div class="card">
-                    <div class="card-body">
-                        <div style="max-width:770px !important;">
-                            <h4 class="card-title" style="font-weight:399">Message Information</h4>  
-                            <div class="form-group row">
-                                <div class="col-sm-3"><small>Message From Code:</small> </div>
-                                <div class="col-sm-9"><small style="color:#737373;"><?php echo $Email['MessageFromCode'];?></small></div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-3"><small>Subject:</small> </div>
-                                <div class="col-sm-9"><small style="color:#737373;"><?php echo $Email['EmailSubject'];?></small></div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-3"><small>Content:</small> </div>
-                                <div class="col-sm-9"><small style="color:#737373;"><?php echo $Email['EmailContent'];?></small></div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-3"><small>Sent On:</small> </div>
-                                <div class="col-sm-9"><small style="color:#737373;"><?php echo putDatetime($Email['SentOn']);?></small></div>
-                            </div>
-                        </div>                                      
-                    </div>    
-                </div> 
+                <div class="card-body">
+                    <div style="max-width:770px !important;">
+                        <h4 class="card-title">Indvidual Messages</h4>
+                        <div class="table-responsive">
+                        <table id="myTable" class="table table-striped">
+                          <thead>  
+                            <tr> 
+                            <th>Message From Code</th>  
+                            <th>Subject</th>
+                            <th>Content</th>
+                            <th>Created On</th>
+                            <th></th>
+                            </tr>  
+                        </thead>
+                         <tbody>  
+                            <?php 
+                                $response = $webservice->getData("Admin","GetIndividualMessagesList",array("Request"=>"Messages"));
+                                foreach($response['data'] as $SMS) { ?>
+                                    <tr>
+                                    <td><span class="<?php echo ($SMS['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $SMS['FromCode'];?>&nbsp;
+                                        <?php if($SMS['IsRead']==1) {?>&nbsp;<button class="btn btn-primary" style="padding: 0px 4px;font-size: 12px;background: orange;border: orange">R</button><?php } else { ?>
+                                        &nbsp;<button class="btn btn-primary" style="padding: 0px 4px;font-size: 12px;background: grey;border: orange">R</button><?php } ?></td>
+                                    <td><?php echo $SMS['MessageSubject'];?></td>
+                                    <td><?php echo $SMS['MessageContent'];?></td>
+                                    <td><?php echo PutDateTime($SMS['CreatedOn']);?></td>
+                                    <td><a href="<?php echo GetUrl("Members/ViewIndividualMessages/". $_GET['Code'].".htm?BoardID=".$SMS['BoardID']."");?>"><span>View</span></a></td>                                                                                                                                                                                                                                       
+                                    </tr>
+                            <?php } ?>            
+                          </tbody>                        
+                         </table>
+                      </div>   
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
         <div class="col-sm-3">
