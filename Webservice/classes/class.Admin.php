@@ -1542,7 +1542,21 @@
                                                            "FamilyValueCode"    => SeqMaster::GetNextCode('FAMILYVALUE'),          
                                                            "FamilyValue"        => CodeMaster::getData('FAMILYVALUE'),
                                                            "FamilyAffluenceCode"    => SeqMaster::GetNextCode('FAMILYAFFLUENCE'),          
-                                                           "FamilyAffluence"        => CodeMaster::getData('FAMILYAFFLUENCE')));    
+                                                           "FamilyAffluence"        => CodeMaster::getData('FAMILYAFFLUENCE'),
+                                                           "TimeZoneCode"    => SeqMaster::GetNextCode('TIMEZONE'),          
+                                                           "TimeZone"        => CodeMaster::getData('TIMEZONE'),
+                                                           "CurrencyCode"    => SeqMaster::GetNextCode('CURRENCY'),          
+                                                           "Currency"        => CodeMaster::getData('CURRENCY'),
+                                                           "DocumentTypeCode"    => SeqMaster::GetNextCode('DOCTYPES'),          
+                                                           "DocumentType"        => CodeMaster::getData('DOCTYPES'),
+                                                           "CommunityCode"    => SeqMaster::GetNextCode('COMMUNITY'),          
+                                                           "Community"        => CodeMaster::getData('COMMUNITY'),
+                                                           "IDProofCode"    => SeqMaster::GetNextCode('IDPROOF'),          
+                                                           "IDProof"        => CodeMaster::getData('IDPROOF'),
+                                                           "AddressProofCode"    => SeqMaster::GetNextCode('ADDRESSPROOF'),          
+                                                           "AddressProof"        => CodeMaster::getData('ADDRESSPROOF'),
+                                                           "VenderTypeCode"    => SeqMaster::GetNextCode('VENDORTYPE'),          
+                                                           "VenderType"        => CodeMaster::getData('VENDORTYPE')));    
     }                                                                          
 
     function CreateEmailApi() {
@@ -2245,7 +2259,7 @@
 
          function GetMemberInfo() {
            global $mysql;    
-        $Members = $mysql->select("SELECT 
+           $Members = $mysql->select("SELECT 
                                      _tbl_members.MemberID AS MemberID,
                                      _tbl_members.MemberCode AS MemberCode,
                                      _tbl_members.MemberName AS MemberName,
@@ -2281,12 +2295,17 @@
                                 FROM _tbl_member_plan
                                 LEFT  JOIN _tbl_profile_credits  
                                 ON _tbl_member_plan.PlanCode=_tbl_profile_credits.MemberPlanCode where _tbl_profile_credits.MemberCode='".$_POST['Code']."'");    
-        
+        $BoardMessage = $mysql->select("select * from `_tbl_board` where ToMemberCode='".$_POST['Code']."' and BoardID='".$_POST['BoardID']."'");
+        $IndividualSMS = $mysql->select("select * from `_tbl_send_individual_message` where MessageToMemberCode='".$_POST['Code']."' and ManualSendID='".$_POST['ManualSendID']."' and IsSms='1'");
+        $IndividualEmail = $mysql->select("select * from `_tbl_send_individual_message` where MessageToMemberCode='".$_POST['Code']."' and ManualSendID='".$_POST['ManualSendID']."' and IsEmail='1'");
         return Response::returnSuccess("success"."select * from `_tbl_member_documents` where MemberID='".$_POST['Code']."'",array("MemberInfo"    => $Members[0],
                                                        "Countires"     =>CodeMaster::getData('RegisterAllowedCountries'),
                                                        "Gender"        =>CodeMaster::getData('SEX'),
 													   "IDProof"       => $IDProofs,
                                                        "AddressProof"  => $AddressProofs,
+                                                       "BoardMessage"  => $BoardMessage[0],
+                                                       "IndividualSMS"  => $IndividualSMS[0],
+                                                       "IndividualEmail"  => $IndividualEmail[0],
                                                        "Plan" => $Plan[0]));
     }
     
@@ -2296,7 +2315,40 @@
         $Members = $mysql->select("select * from _tbl_members where ReferedBy='".$Franchisees[0]['FranchiseeID']."'");
         return Response::returnSuccess("success",array("FranchiseeInfo"    => $Franchisees[0],
                                                        "Member"    => $Members));
-    } 
+    }
+    function ViewMemberEditScreen(){
+              global $mysql,$loginInfo;    
+               $rand = md5(time().$_POST['MemberCode']."@#!-&*+");  
+               
+               $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+               if(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword']))  {
+                    $id = $mysql->insert("_tbl_member_edit",array("MemberCode"           => $_POST['MemberCode'],
+                                                                  "TransactionPassword"  => $_POST['txnPassword'],
+                                                                  "Session"              => $rand,
+                                                                  "AdminID"              => $loginInfo[0]['AdminID'],
+                                                                  "ViewEditOn"           => date("Y-m-d H:i:s"))); 
+                     echo "<script>location.href='".AppPath."Members/EditMember/".$_POST['MemberCode'].".html'</script>";
+                
+                } else {
+                    return Response::returnError("Invalid transaction password");
+                }
+         } 
+    function ViewMemberScreen(){
+              global $mysql,$loginInfo;    
+               $rand = md5(time().$_POST['MemberCode']."@#!-&*+");    
+               $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+               if(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword']))  {
+                    $id = $mysql->insert("_tbl_member_edit",array("MemberCode"            => $_POST['MemberCode'],
+                                                                  "TransactionPassword"  => $_POST['txnPassword'],
+                                                                  "Session"              => $rand,
+                                                                  "AdminID"              => $loginInfo[0]['AdminID'],
+                                                                  "ViewEditOn"              => date("Y-m-d H:i:s"))); 
+                     echo "<script>location.href='".AppPath."Members/ViewMember/".$_POST['MemberCode'].".html'</script>";
+                
+                } else {
+                    return Response::returnError("Invalid transaction password");
+                }
+         }
     function EditMemberInfo(){
               global $mysql,$loginInfo;
 
@@ -2699,7 +2751,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             global $mysql,$mail,$loginInfo; 
 				
 			$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
-            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['IDPtxnPassword'])))  {
 				return Response::returnError("Invalid transaction password");   
             }
 			
@@ -2724,8 +2776,17 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             $mysql->execute("update _tbl_member_documents set IsVerified='1',
 															  IsRejected='0',
 															  ApproveRemarks='".$_POST['IDApproveReaseon']."',
-															  VerifiedOn='".date("Y-m-d H:i:s")."' 
+															  VerifiedOn='".date("Y-m-d H:i:s")."',
+                                                              VerifyByID='".$txnPwd[0]['AdminID']."', 
+                                                              VerifyByCode='".$txnPwd[0]['AdminCode']."', 
+                                                              VerifyByName='".$txnPwd[0]['AdminName']."' 
 															  where  DocID='".$data[0]['DocID']."'");
+            $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                            "ActivityType"   => 'ApprovedIDProof.',
+                                                            "ActivityString" => 'Approved ID Proof.',
+                                                            "SqlQuery"       => base64_encode($sqlQry),
+                                                            //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
 			return Response::returnSuccess("successfully Approved",array());
 			
 
@@ -2735,9 +2796,9 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             global $mysql,$mail,$loginInfo;      
        
             $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
-            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['ADPtxnPassword'])))  {
 				return Response::returnError("Invalid transaction password");   
-            }
+            }                                                                                        
 			
 			$data = $mysql->select("Select * from `_tbl_member_documents` where `DocID`='".$_POST['DocID']."'");   
 			
@@ -2756,8 +2817,21 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your Address Proof Approved"); 
 
-           $mysql->execute("update _tbl_member_documents set IsVerified='1',IsRejected='0',ApproveRemarks='".$_POST['AddressApproveReaseon']."',
-                                                 VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
+           $mysql->execute("update _tbl_member_documents set IsVerified='1',
+                                                             IsRejected='0',
+                                                             ApproveRemarks='".$_POST['AddressApproveReaseon']."',
+                                                             VerifiedOn='".date("Y-m-d H:i:s")."',
+                                                             VerifyByID='".$txnPwd[0]['AdminID']."', 
+                                                             VerifyByCode='".$txnPwd[0]['AdminCode']."', 
+                                                             VerifyByName='".$txnPwd[0]['AdminName']."'
+                                                             where  DocID='".$data[0]['DocID']."'");
+           
+           $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                            "ActivityType"   => 'ApprovedAddressProof.',
+                                                            "ActivityString" => 'Approved Address Proof.',
+                                                            "SqlQuery"       => base64_encode($sqlQry),
+                                                            //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
 
          return Response::returnSuccess("successfully Approved",array());
 
@@ -2767,7 +2841,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             global $mysql,$mail,$loginInfo;      
 				
 			$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
-			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['IDPtxnPassword'])))  {
 				return Response::returnError("Invalid transaction password");   
 			}
 			
@@ -2796,8 +2870,18 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
            $mysql->execute("update _tbl_member_documents set IsRejected='1',
                                                              RejectedOn='".date("Y-m-d H:i:s")."',
                                                              RejectedRemarks='".$_POST['IDRejectReaseon']."',
-                                                             IsVerified='0',
-                                                             VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
+                                                             IsVerified='1',
+                                                             VerifiedOn='".date("Y-m-d H:i:s")."',
+                                                             VerifyByID='".$txnPwd[0]['AdminID']."', 
+                                                             VerifyByCode='".$txnPwd[0]['AdminCode']."', 
+                                                             VerifyByName='".$txnPwd[0]['AdminName']."'
+                                                             where  DocID='".$data[0]['DocID']."'");
+           $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                            "ActivityType"   => 'RejectIDProofKyc.',
+                                                            "ActivityString" => 'Reject ID Proof.',
+                                                            "SqlQuery"       => base64_encode($sqlQry),
+                                                            //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
 
         return Response::returnSuccess("successfully Rejected",array());
 
@@ -2807,7 +2891,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             global $mysql,$mail,$loginInfo;      
        
                 $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
-			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['ADPtxnPassword'])))  {
 				return Response::returnError("Invalid transaction password");   
 			}
 			
@@ -2815,10 +2899,10 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 			
 			if($data[0]['IsRejected']==1) {
 				return Response::returnError("Document already rejected");
-			}
+			}                                                                                                           
 
                 $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
-
+                                                                                                                                               
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddressProofRejected'");
              $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
 
@@ -2832,8 +2916,18 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
            $mysql->execute("update _tbl_member_documents set IsRejected='1',
                                                              RejectedRemarks='".$_POST['AddressRejectReaseon']."',
                                                              RejectedOn='".date("Y-m-d H:i:s")."',
-                                                             IsVerified='0',
-                                                             VerifiedOn='".date("Y-m-d H:i:s")."' where  DocID='".$data[0]['DocID']."'");
+                                                             IsVerified='1',
+                                                             VerifiedOn='".date("Y-m-d H:i:s")."',
+                                                             VerifyByID='".$txnPwd[0]['AdminID']."', 
+                                                             VerifyByCode='".$txnPwd[0]['AdminCode']."', 
+                                                             VerifyByName='".$txnPwd[0]['AdminName']."'
+                                                             where  DocID='".$data[0]['DocID']."'");
+           $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                            "ActivityType"   => 'RejectAddressProof.',
+                                                            "ActivityString" => 'Reject Adress Proof.',
+                                                            "SqlQuery"       => base64_encode($sqlQry),
+                                                            //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
 
          return Response::returnSuccess("successfully Rejected",array());
 
@@ -3743,26 +3837,28 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
          function GetMemberWalletAndProfileDetails() {
              
              global $mysql,$loginInfo;
+             
+             $Mem = $mysql->select("select * from _tbl_members where MemberCode='".$_POST['Code']."'");
           
             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="WalletRequests") {
-                 $Requests = $mysql->select("select * from `_tbl_wallet_bankrequests` where `MemberID`='".$_POST['Code']."' and `IsMember`='1' order by `ReqID` DESC");
+                 $Requests = $mysql->select("select * from `_tbl_wallet_bankrequests` where `MemberID`='".$Mem[0]['MemberID']."' and `IsMember`='1' order by `ReqID` DESC");
              return Response::returnSuccess("success",$Requests);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="WalletTransactions") {
-                 $Requests = $mysql->select("select * from `_tbl_wallet_transactions` where `MemberID`='".$_POST['Code']."' and `IsMember`='1' order by `TxnID` DESC");
+                 $Requests = $mysql->select("select * from `_tbl_wallet_transactions` where `MemberID`='".$Mem[0]['MemberID']."' and `IsMember`='1' order by `TxnID` DESC");
              return Response::returnSuccess("success",$Requests);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Order") {
-                 $Requests = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$_POST['Code']."' order by `OrderID` DESC");
+                 $Requests = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$Mem[0]['MemberID']."' order by `OrderID` DESC");
              return Response::returnSuccess("success",$Requests);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Invoice") {
-                 $Requests = $mysql->select("select * from `_tbl_invoices` where `MemberID`='".$_POST['Code']."' order by `InvoiceID` DESC");
+                 $Requests = $mysql->select("select * from `_tbl_invoices` where `MemberID`='".$Mem[0]['MemberID']."' order by `InvoiceID` DESC");
              return Response::returnSuccess("success",$Requests);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Recentlyviewed") {
                 
-                 $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$_POST['Code']."' order by LastSeenID DESC");
+                 $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$Mem[0]['MemberID']."' order by LastSeenID DESC");
                      $profileCodes  = array();
                      foreach($RecentProfiles as $RecentProfile) {
                          if (!(in_array($RecentProfile['ProfileCode'], $profileCodes)))
@@ -3781,15 +3877,23 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              return Response::returnSuccess("success",$Profiles);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="LoginLogs") {
-                 $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$_POST['Code']."' ORDER BY `LoginID` DESC LIMIT 0,10");
+                 $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$Mem[0]['MemberID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
              return Response::returnSuccess("success",$LoginHistory);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Activities") {
-                 $Activities = $mysql->select("select * from `_tbl_logs_activity` where `MemberID`='".$_POST['Code']."' ORDER BY `ActivityID` DESC LIMIT 0,5");
+                 $Activities = $mysql->select("select * from `_tbl_logs_activity` where `MemberID`='".$Mem[0]['MemberID']."' ORDER BY `ActivityID` DESC LIMIT 0,5");
              return Response::returnSuccess("success",$Activities);
              }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="EmailLog") {
+                 $EmailLog = $mysql->select("select * from `_tbl_logs_email` where `MemberID`='".$Mem[0]['MemberID']."' ORDER BY `EmailLogID` DESC LIMIT 0,5");
+             return Response::returnSuccess("success",$EmailLog);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="SMSLog") {
+                 $SMSLog = $mysql->select("select * from `_tbl_logs_mobilesms` where `MemberID`='".$Mem[0]['MemberID']."' ORDER BY `ReqID` DESC LIMIT 0,5");
+             return Response::returnSuccess("success",$SMSLog);
+             }
          }
-         function GetOrderInvoiceReceiptDetails() {
+         function GetOrderInvoiceReceiptDetails() {                  
              
              global $mysql,$loginInfo;
              
@@ -7047,6 +7151,102 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
         
         return Response::returnSuccess("Success",$result);
     }
+    function GetManageSequenceMaster() {
+           global $mysql;    
+             $sql = "SELECT * FROM _tbl_sequence";
+
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                return Response::returnSuccess("success",$mysql->select($sql));    
+             }                                                                                                                                                                            
+             if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+                return Response::returnSuccess("success",$mysql->select($sql." where IsActive='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
+                return Response::returnSuccess("success",$mysql->select($sql."  where IsActive='0'"));    
+             }
+         }
+    function GetSequenceMasterViewInfo() {
+        global $mysql;
+        $Sequence = $mysql->select("Select * from _tbl_sequence where SequenceID='".$_POST['Code']."'");
+        return Response::returnSuccess("Success",array("Sequence" => $Sequence[0]));
+    }
+    function CreateSequence() {
+            global $mysql,$loginInfo;
+           
+            if (!(strlen(trim($_POST['SequenceFor']))>0)) {
+                return Response::returnError("Please enter sequence for");
+            }
+            if (!(strlen(trim($_POST['Prefix']))>0)) {
+                return Response::returnError("Please enter prefix");
+            }
+            if (!(strlen(trim($_POST['StringLength']))>0)) {
+                return Response::returnError("Please enter string length");
+            }
+            if (!(strlen(trim($_POST['LastNumber']))>0)) {
+                return Response::returnError("Please enter last number");
+            }
+            
+            $data = $mysql->select("select * from  _tbl_sequence where SequenceFor='".trim($_POST['SequenceFor'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Sequence for Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_sequence where Prefix='".trim($_POST['Prefix'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Prefix for Already Exists");
+            }
+            
+            $mysql->insert("_tbl_sequence",array("SequenceFor"  => $_POST['SequenceFor'],
+                                                 "Prefix"       => $_POST['Prefix'],
+                                                 "StringLength" => $_POST['StringLength'],
+                                                 "LastNumber"   => $_POST['LastNumber']));
+                                                 
+            return Response::returnSuccess("success");
+        }
+        function EditSequence() {
+            global $mysql,$loginInfo;
+           
+            if (!(strlen(trim($_POST['SequenceFor']))>0)) {
+                return Response::returnError("Please enter sequence for");
+            }
+            if (!(strlen(trim($_POST['Prefix']))>0)) {
+                return Response::returnError("Please enter prefix");
+            }
+            if (!(strlen(trim($_POST['StringLength']))>0)) {
+                return Response::returnError("Please enter string length");
+            }
+            if (!(strlen(trim($_POST['LastNumber']))>0)) {
+                return Response::returnError("Please enter last number");
+            }
+            
+            $data = $mysql->select("select * from  _tbl_sequence where SequenceFor='".trim($_POST['SequenceFor'])."' and SequenceID<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Sequence for Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_sequence where Prefix='".trim($_POST['Prefix'])."' and SequenceID<>'".$_POST['Code']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Prefix for Already Exists");
+            }
+            
+            $mysql->execute("update `_tbl_sequence` set  `SequenceFor`      = '".$_POST['SequenceFor']."',
+                                                         `Prefix`           = '".$_POST['Prefix']."',
+                                                         `StringLength`     = '".$_POST['StringLength']."',
+                                                         `LastNumber`       = '".$_POST['LastNumber']."'
+                                                         where `SequenceID` ='".$_POST['Code']."'"); 
+            return Response::returnSuccess("success");
+        }
+        function GetIndividualMessagesList() {
+           global $mysql;    
+             $sql = "select * from _tbl_send_individual_message where MessageToMemberCode='".$_POST['Code']."'";
+             if (isset($_POST['Request']) && $_POST['Request']=="SMS") {
+                return Response::returnSuccess("success",$mysql->select($sql." and IsSMS='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Email") {
+                return Response::returnSuccess("success",$mysql->select($sql." and IsEmail='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Messages") {
+                return Response::returnSuccess("success",$mysql->select("select * From `_tbl_board` where ToMemberCode='".$_POST['Code']."'"));    
+             }                                                                                                                                                                             
+         }
 }
 
 //2801

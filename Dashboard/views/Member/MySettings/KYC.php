@@ -55,9 +55,7 @@
         
         <div class="form-group row">
             <div class="col-sm-3">ID Proof</div>
-              <?php 
-              
-              if ($Kyc['data']['isAllowToUploadIDproof']==1) { ?>
+              <?php  if ($Kyc['data']['isAllowToUploadIDproof']==1) { ?>   
                 <div class="col-sm-3" >
                     <select name="IDType" id="IDType"  class="selectpicker form-control" data-live-search="true">
                         <?php foreach($Kyc['data']['IDProof'] as $IDType) { ?>
@@ -67,32 +65,31 @@
                     <button type="submit" class="btn btn-primary" name="updateIDProof" style="font-family:roboto;margin-top: 10px;">Submit Document</button>
                 </div>
                 <div class="col-sm-3" style="padding-top: 5px;"><input type="file" name="IDProofFileName"></div>
-                <br>
-                <br>
-                
-                 
-              <?php } 
-              foreach($Kyc['data']['IdProofDocument'] as $idProof)  { ?>
+              <?php } ?>
+               </div>
+              <div class="form-group row"> 
+              <?php foreach($Kyc['data']['IdProofDocument'] as $idProof)  { ?>
               
-              <div class="col-sm-7" style="padding-top: 5px;color: #888;margin-top:10px">  
-                    <img src="<?php echo AppUrl;?>uploads/members/<?php echo $_Member['MemberCode'];?>/kyc/<?php echo $idProof['FileName'];?>" style="height:120px;"><br><br>
-                    Document Type&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $idProof['FileType'];?>
-                    <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($Kyc['data']['IdProofDocument'][0]['SubmittedOn']);?>
-                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:&nbsp;&nbsp;
+              <div class="col-sm-4" style="padding-top: 5px;color: #888;margin-top:10px;border-right:1px solid #f1f1f1;">  
+                    <img src="<?php echo AppUrl;?>uploads/members/<?php echo $_Member['MemberCode'];?>/kyc/<?php echo $idProof['FileName'];?>" style="height:120px;border: 2px solid #d9d8d8;margin-bottom: 5px;"><br>
+                    <!--Document Type&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $idProof['FileType'];?>  
+                    <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($Kyc['data']['IdProofDocument'][0]['SubmittedOn']);?> -->
+                    <!--<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:&nbsp;&nbsp; -->
                     <?php 
                         if($idProof['IsVerified']==0 && $idProof['IsRejected']==0){ 
                             echo "Verification pending";
                         } else if ($idProof['IsVerified']==1 && $idProof['IsRejected']==0) { 
-                            echo "verified";
+                            echo '<span style="color:green;font-size:12px">Verified</span>';
                         } else if($idProof['IsRejected']==1) { 
-                            echo '<span style="color:red">Rejected</span><br>';    ?>
-                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reason &nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $idProof['RejectedRemarks'];?>  
-                       <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Rejected On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($idProof['RejectedOn']);?>
+                            echo '<span style="color:red;font-size: 12px;">Rejected,&nbsp;'. $idProof['RejectedRemarks'] .'</span>';    ?>
+                      <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reason &nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $idProof['RejectedRemarks'];?>  -->
+                       <!--<br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Rejected On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($idProof['RejectedOn']);?>-->
                       <?php }  ?>                                                               
               </div>
+               
               <?php  } ?>
+            </div>
               
-              </div>
         </form>
         <div class="form-group row" style="margin-bottom: 0px;" >
             <hr style="border:none;border-bottom:1px solid #eee;width:90%;margin:15px">
@@ -154,37 +151,29 @@
                 <div class="col-sm-3" style="padding-top: 5px;"><input type="file" name="AddressProofFileName"></div>
                 <br>
                 <br>
-                 
-              <?php } 
-              foreach($Kyc['data']['AddressProofDocument'] as $addressProof)  { ?>
-              
-              <div class="col-sm-7" style="padding-top: 5px;color: #888;">  
-                    <img src="<?php echo AppUrl;?>uploads/members/<?php echo $_Member['MemberCode'];?>/kyc/<?php echo $addressProof['FileName'];?>" style="height:120px;"><br><br>
-                    Document Type&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $addressProof['FileType'];?>
+              <?php }     ?>
+        </div>
+        <div class="form-group row">  
+             <?php  foreach($Kyc['data']['AddressProofDocument'] as $addressProof)  { ?>
+              <div class="col-sm-4" style="padding-top: 5px;color: #888;margin-top:10px;border-right:1px solid #f1f1f1;">  
+                    <img src="<?php echo AppUrl;?>uploads/members/<?php echo $_Member['MemberCode'];?>/kyc/<?php echo $addressProof['FileName'];?>" style="height:120px;border: 2px solid #d9d8d8;margin-bottom: 5px;"><br>
+                  <!--  Document Type&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $addressProof['FileType'];?>
                     <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Updated On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($Kyc['data']['AddressProofDocument'][0]['SubmittedOn']);?>
-                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:&nbsp;&nbsp;
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status &nbsp;&nbsp;:&nbsp;&nbsp;    -->
                     <?php 
                         if($addressProof['IsVerified']==0 && $addressProof['IsRejected']==0){ 
                             echo "Verification pending";
                         } else if ($addressProof['IsVerified']==1 && $addressProof['IsRejected']==0) { 
-                            echo "verified";
+                            echo '<span style="color:green;font-size:12px">Verified</span>';
                         } else if($addressProof['IsRejected']==1) { 
-                            echo '<span style="color:red">Rejected</span><br>';    ?>
-                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reason &nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $addressProof['RejectedRemarks'];?>  
-                       <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Rejected On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($addressProof['RejectedOn']);?>
+                            echo '<span style="color:red;font-size:12px">Rejected,&nbsp;'. $addressProof['RejectedRemarks'] .'</span>';    ?>
+                       <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reason &nbsp;&nbsp;:&nbsp;&nbsp;<?php echo $addressProof['RejectedRemarks'];?>  
+                       <br><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;">&nbsp;Rejected On&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo putDateTime($addressProof['RejectedOn']);?>-->
                       <?php }  ?>                                                               
               </div>
               <?php  } ?>
-              
-              </div> 
-                                                                                                                                                  
-                 
-               
-           
-            
-            
-     
-       
+         </div>      
+             
 </form>
 <div class="form-group row">
         <span style="color:#ff6b6b;;">We do not share your documents with any 3rd party except local law enforcement agencies, if required.</span>

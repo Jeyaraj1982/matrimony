@@ -718,4 +718,395 @@ function print_sister_counts() {
             }
         }
     }
+    
+    function ConfirmChangeMobileNumber() {
+        $('#NewMobileNumber').val("");
+        $('#NewMobileNumber_error').html("");
+        $('#ChangeMobile_body').html($('#primary_content').html());
+        $('#ChangeMobile').modal('show'); 
+    }
+    
+    
+    function randomStrings(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
+
+function ResendOtpForChangeMobileNumber(frmid) {
+     var param = $("#"+frmid).serialize();
+    $('#ChangeMobile_body').html(preloading_withText("Loading ...","195"));
+      $.post(getAppUrl() + "m=Member&a=ResendOtpForChangeMobileNumber",param,function(result) {
+            if (!(isJson(result))) {
+                $('#ChangeMobile_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Change Mobile Number</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">+'+data.CountryCode+'-'+data.mobileNumber+'</h4></p>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="ChangemobilenumberOtp" maxlength="4" name="ChangemobilenumberOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="ChangeMobileNumberOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendOtpForChangeMobileNumber(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';                               
+                                         
+                $('#ChangeMobile_body').html(content);
+                
+            } else {
+                var data = obj.data;
+                $('#NewMobileNumber_error').html(obj.message);
+                $('#ChangeMobile_body').html($('#primary_content').html());
+                $('#ChangeMobile').modal('show'); 
+                $('#NewMobileNumber').val(data.mobileNumber);
+            }
+        });
+}
+    function ChangeMemberMobileNumber() {
+        if ($("#NewMobileNumber").val().trim()=="") {
+             $("#NewMobileNumber_error").html("Please enter new mobile number");
+             return false;
+        }
+        if(!($("#NewMobileNumber").val()>6000000000 && $("#NewMobileNumber").val()<9999999999)) {
+             $("#NewMobileNumber_error").html("Invalid Mobile Number");
+             return false;
+        }
+        var param = $("#FrmChnMob").serialize();
+        $('#ChangeMobile_body').html(preloading_withText("Loading ...","195"));
+        $.post(getAppUrl() + "m=Member&a=SendOtpForChangeMobileNumber",param,function(result) {
+            if (!(isJson(result))) {
+                $('#ChangeMobile_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Change Mobile Number</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">+'+data.CountryCode+'-'+data.mobileNumber+'</h4></p>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="ChangemobilenumberOtp" maxlength="4" name="ChangemobilenumberOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="ChangeMobileNumberOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="ChangemobilenumberOtp_error"></div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendOtpForChangeMobileNumber(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';                               
+                                         
+                $('#ChangeMobile_body').html(content);
+                
+            } else {
+                var data = obj.data;
+                $('#NewMobileNumber_error').html(obj.message);
+                $('#ChangeMobile_body').html($('#primary_content').html());
+                $('#ChangeMobile').modal('show'); 
+                $('#NewMobileNumber').val(data.mobileNumber);
+            }
+        });
+    }
+    function ChangeMobileNumberOTPVerification(frmId) {
+        if ($("#ChangemobilenumberOtp").val().trim()=="") {
+             $("#ChangemobilenumberOtp_error").html("Please enter verification code");
+             return false;
+        }
+        var param = $( "#"+frmId).serialize();
+        $('#ChangeMobile_body').html(preloading_withText("Loading ...","195"));
+        $.post( getAppUrl() + "m=Member&a=ChangeMobileNumberOTPVerification",param).done(function(result) {
+            if (!(isJson(result))) {
+                $('#ChangeMobile_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;"margin-top: 90px;><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+            $('#ChangeMobile_body').html(content);
+            }  else {
+             var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm">'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                   +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Change Mobile Number</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                       +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                       +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">+'+data.CountryCode+'-'+data.mobileNumber+'</h4></p>'
+                                        + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="ChangemobilenumberOtp" maxlength="4" name="ChangemobilenumberOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="ChangeMobileNumberOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-12" style="color:red;text-align:center">'+obj.message+'</div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                       +'</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendOtpForChangeMobileNumber(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';
+                                         
+                $('#ChangeMobile_body').html(content);
+                
+            } 
+            
+    });
+}
+    function ConfirmChangeEmailID() {
+        $('#NewEmailID').val("");
+        $('#NewEmailID_error').html("");
+        $('#ChangeMobile').modal('show'); 
+        var content = '<form method="post" id="FrmChnMob" >'  
+                     +'<div class="modal-header">'
+                            +'<h4 class="modal-title">Confirmation for change email id</h4>'
+                            +'<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        +'</div>'
+                       +'<div class="modal-body" style="max-height:400px;min-height:400px;">'
+                            +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                            +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;"><b>Caution!</b> You are going to change your primary Email ID. All further communication from us ill be delivered on this new Email ID.</p>'
+                            +'<div class="form-group row" style="margin-bottom:0px">'
+                                +'<div class="col-sm-2"></div>'
+                                +'<label class="col-sm-10" style="color:#ada9a9;font-size: 14px;">Email ID</label>'
+                            +'</div>' 
+                            +'<div class="form-group row">'
+                                +'<div class="col-sm-2"></div>'
+                                +'<div class="col-sm-8"><input type="text" class="form-control" id="NewEmailID" name="EmailID"></div>'
+                                +'<div class="col-sm-12" id="NewEmailID_error" style="color:red;text-align:center"></div>'
+                            +'</div>'
+                        +'</div>' 
+                        +'<div class="modal-footer">'
+                            +'<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            +'<button type="button" class="btn btn-primary" name="Create" onclick="SendOtpForChangeEmailID()" style="font-family:roboto">Continue</button>'
+                        +'</div>'
+                     +'</form>';
+        $('#ChangeMobile_body').html(content);
+    }
+    function SendOtpForChangeEmailID() {
+        if ($("#NewEmailID").val().trim()=="") {
+             $("#NewEmailID_error").html("Please enter new email id");
+             return false;
+        }
+       /* if(!($("#NewEmailID").val()== /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/)) {
+             $("#NewEmailID_error").html("Invalid Email ID");
+             return false;
+        }  */
+        
+        var param = $("#FrmChnMob").serialize();
+        $('#ChangeMobile_body').html(preloading_withText("Loading ...","195"));
+        
+        $.post(getAppUrl() + "m=Member&a=SendOtpForChangeEmailID",param,function(result) {
+            if (!(isJson(result))) {
+                $('#ChangeMobile_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Change Email ID</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'</h4></p>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="ChangeemailidOtp" maxlength="4" name="ChangeemailidOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="ChangeEmailIDOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="ChangeemailidOtp_error"></div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendOtpForChangeEmailID(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';                               
+                                         
+                $('#ChangeMobile_body').html(content);
+                
+            } else {
+                var data = obj.data;
+                $('#NewEmailID_error').html(obj.message);
+                $('#ChangeMobile').modal('show'); 
+                $('#NewEmailID').val(data.EmailID);
+            }
+        });
+    }
+    
+    function ResendOtpForChangeEmailID(frmid) {
+     var param = $("#"+frmid).serialize();
+    $('#ChangeMobile_body').html(preloading_withText("Loading ...","195"));
+      $.post(getAppUrl() + "m=Member&a=ResendOtpForChangeEmailID",param,function(result) {
+            if (!(isJson(result))) {
+                $('#ChangeMobile_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Change Email ID</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'</h4></p>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="ChangeemailidOtp" maxlength="4" name="ChangeemailidOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="ChangeEmailIDOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="ChangeemailidOtp_error"></div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendOtpForChangeEmailID(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';                               
+                                         
+                $('#ChangeMobile_body').html(content);
+                
+            } else {
+                var data = obj.data;
+                $('#NewMobileNumber_error').html(obj.message);
+                $('#ChangeMobile_body').html($('#primary_content').html());
+                $('#ChangeMobile').modal('show'); 
+                $('#NewMobileNumber').val(data.mobileNumber);
+            }
+        });
+}
+    
+     function ChangeEmailIDOTPVerification(frmId) {
+        if ($("#ChangeemailidOtp").val().trim()=="") {
+             $("#ChangeemailidOtp_error").html("Please enter verification code");
+             return false;
+        }
+        var param = $( "#"+frmId).serialize();
+        $('#ChangeMobile_body').html(preloading_withText("Loading ...","195"));
+        $.post( getAppUrl() + "m=Member&a=ChangeEmailIDOTPVerification",param).done(function(result) {
+            if (!(isJson(result))) {
+                $('#ChangeMobile_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 90px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+            $('#ChangeMobile_body').html(content);
+            }  else {
+             var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm">'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                   +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Change Email ID</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                       +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                       +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'</h4></p>'
+                                        + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="ChangeemailidOtp" maxlength="4" name="ChangeemailidOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="ChangeEmailIDOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-12" style="color:red;text-align:center" id="ChangeemailidOtp_error">'+obj.message+'</div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                       +'</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendOtpForChangeEmailID(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';
+                                         
+                $('#ChangeMobile_body').html(content);
+                
+            } 
+            
+    });
+}
+    
 //791

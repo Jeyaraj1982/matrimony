@@ -24,11 +24,11 @@
                     <table id="myTable" class="table table-striped">
                       <thead>  
                         <tr> 
-                        <th>Member Code</th>  
-                        <th>Member Names</th>  
-                        <th>Created</th>
-                        <th>No of Profiles</th>
-                        <th></th>
+                            <th>Member Code</th>
+                            <th>Member Name</th>
+                            <th>Created By</th>
+                            <th style="width:100px;">Created</th>
+                            <th style="width:50px;"></th>                          
                         </tr>  
                     </thead>
                      <tbody>  
@@ -43,10 +43,27 @@
 										<input type="hidden" value="" name="txnPassword" id="txnPassword_<?php echo $Member['MemberCode'];?>">
 										<input type="hidden" value="<?php echo $Member['MemberCode'];?>" name="MemberCode" id="MemberCode"> 
 										<input type="hidden" value="<?php echo session_id() ;?>" name="Session" id="Session"> 
-										<td><?php echo $Member['MemberCode'];?></td>
-										<td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberName'];?></td>
-										<td><?php echo putDateTime($Member['CreatedOn']);?></td>
-										<td></td>
+										<?php
+                                            $txt_a = "";
+                                            if ($Member['IsDeleted']==1) {
+                                                $txt_a = '<span title="Member: Deleted" data-toggle="tooltip" class="DeletedDot"></span>'; 
+                                            } elseif ($Member['IsActive']==1) {
+                                                $txt_a = '<span title="Member: Active" data-toggle="tooltip"class="Activedot"></span>'; 
+                                            } elseif ($Member['IsActive']==0){
+                                                $txt_a = '<span title="Member: Deactivated" data-toggle="tooltip" class="Deactivedot"></span>'; 
+                                            }
+                                            
+                                            if ($Member['Gender']=="Male") {
+                                                $txt_a .= '&nbsp;<i class="fa fa-male" data-toggle="tooltip" title="Gender: Male" aria-hidden="true"></i>';
+                                            } else {
+                                                $txt_a .= '&nbsp;<i class="fa fa-female" data-toggle="tooltip" title="Gender: Female" aria-hidden="true"></i>';
+                                            }
+                                            $txt_a .= '&nbsp;&nbsp;&nbsp;'.$Member['MemberCode'];
+                                            echo $html->td($txt_a);
+                                            echo $html->td($Member['MemberName']);
+                                            echo $html->td($html->span($Member['CreatedBy'],array("class"=>"btn btn-primary","style"=>"padding: 0px 4px;font-size: 12px;background: #b3d285;border: #b3d285;")));
+                                            echo $html->td(putDateTime($Member['CreatedOn']));
+                                        ?>
 										<td style="text-align:right">
 											 <?php if($Member['NoOfProfile']>0) {?>
 											<a href="<?php echo GetUrl("ViewMemberProfile/".$Member['ProfilesCode'].".htm"); ?>"><span>View</span></a>
@@ -72,32 +89,19 @@
               </div>
             </div>
            
- <div class="modal" id="PubplishNow" data-backdrop="static" >
-            <div class="modal-dialog" >
-                <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >
-            
-                </div>
+<div class="modal" id="PubplishNow" data-backdrop="static" >
+        <div class="modal-dialog" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
+        
             </div>
         </div>
+    </div>
  <script>
- function ConfirmationfrEdit(MemberID) {
-    $('#PubplishNow').modal('show'); 
-      var content = '<div class="modal-header">'
-                        + '<h4 class="modal-title">Confirmation for Edit</h4>'
-                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
-                    + '</div>'
-                    + '<div class="modal-body">'
-                        +'<div class="col-sm-12">Are you sure want to Edit</div>'
-                    + '</div>' 
-                    + '<div class="modal-footer">'
-                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<a href="'+AppUrl+'Members/EditMember/'+MemberID+'.html" class="btn btn-primary" name="Create" class="btn btn-primary" style="font-family:roboto;color:white">Yes</a>'
-                    + '</div>';
-            $('#Publish_body').html(content);
-     
-     }
 $(document).ready(function(){
     $('#myTable').dataTable();
+    $('[data-toggle="tooltip"]').tooltip({ container: 'body' }); 
+    $('#myTable_filter input').addClass('form-control'); 
+    $('#myTable_length select').addClass('form-control'); 
     setTimeout("DataTableStyleUpdate()",500);
 });
 </script>

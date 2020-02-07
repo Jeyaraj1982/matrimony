@@ -302,7 +302,7 @@ function SubmitNewPlan() {
 		<div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Members/Plan/View/". $Plan['PlanCode'].".htm");?>"><small style="font-weight:bold;text-decoration:underline">View Plan</small></a></div>
         <div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">View Subscribed</small></a></div>
 		<div class="col-sm-12 col-form-label"><a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Delete</small></a></div>
-        <div class="col-sm-12 col-form-label"><?php if($Staffs[0]['IsActive']==1) { ?>
+        <div class="col-sm-12 col-form-label"><?php if($Plan['IsActive']==1) { ?>
 			<a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>                                   
 			 <?php } else {    ?>
 				<a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Active</small></a>                                   

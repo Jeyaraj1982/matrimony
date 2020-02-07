@@ -31,6 +31,9 @@
                     <?php $response = $webservice->getData("Admin","GetManageMembers",array("Request"=>"All")); ?>  
                     <?php foreach($response['data'] as $Member) { ?>
                         <tr>
+                        <form method="post" id="frmfrn_<?php echo $Member['MemberCode'];?>">      
+                                        <input type="hidden" value="" name="txnPassword" id="txnPassword_<?php echo $Member['MemberCode'];?>">
+                                        <input type="hidden" value="<?php echo $Member['MemberCode'];?>" name="MemberCode" id="MemberCode"> 
                             <?php
                                 $txt_a = "";
                                 if ($Member['IsDeleted']==1) {
@@ -54,8 +57,11 @@
                                 echo $html->td($html->span($Member['CreatedBy'],array("class"=>"btn btn-primary","style"=>"padding: 0px 4px;font-size: 12px;background: #b3d285;border: #b3d285;")));
                                 echo $html->td(putDateTime($Member['CreatedOn']));
                             ?>
-                            <td style="text-align:right"><a href="<?php echo GetUrl("Members/EditMember/". $Member['MemberCode'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
-                            <a href="<?php echo GetUrl("Members/ViewMember/". $Member['MemberCode'].".htm"); ?>"><span>View</span></a>&nbsp;&nbsp;&nbsp;
+                            <td style="text-align:right">
+                                <a href="javascript:void(0)" onclick="Member.GetTxnPasswordViewMemberEditScreen('<?php echo $Member['MemberCode'];?>')"><span>Edit</span></a>&nbsp;&nbsp;
+                                <a href="javascript:void(0)" onclick="Member.GetTxnPasswordViewMember('<?php echo $Member['MemberCode'];?>')"><span>View</span></a>
+                            </td>
+                            </form>
                             </tr>
                     <?php } ?>            
                   </tbody>                        
@@ -64,6 +70,13 @@
             </div>
           </div>
         </div>
+        <div class="modal" id="PubplishNow" data-backdrop="static" >
+        <div class="modal-dialog" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
+        
+            </div>
+        </div>
+    </div>
  <script>
 $(document).ready(function(){
     $('#myTable').dataTable();

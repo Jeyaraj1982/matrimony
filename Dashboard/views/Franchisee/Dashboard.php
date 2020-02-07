@@ -141,20 +141,7 @@ $PostedProfilesCount = $response['data']['PostedProfiles'];
               </div>
             </div>
           </div> 
-       
-        
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        
-        
-        
       
-
-
-   
-    
-         
-        
    <div class="modal fade" id="FranchiseeWelcome" role="dialog" data-backdrop="static" style="padding-top:200px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
     <div class="modal-dialog" style="width: 367px;">
         <div class="modal-content">
@@ -167,7 +154,6 @@ $PostedProfilesCount = $response['data']['PostedProfiles'];
         </div>
     </div>
 </div>
-
 
 <div class="modal" id="myModal" data-backdrop="static" >
             <div class="modal-dialog" >

@@ -3,20 +3,13 @@
    $Member          = $response['data']['MemberInfo'];
    $Plan=$response['data']['Plan'];
 ?>
-<form method="post" id="frmfrn">
-    <input type="hidden" value="" name="txnPassword" id="txnPassword">
-    <input type="hidden" value="" name="NewPswd" id="NewPswd">
-    <input type="hidden" value="" name="ConfirmNewPswd" id="ConfirmNewPswd">
-    <input type="hidden" value="" name="ChnPswdFstLogin" id="ChnPswdFstLogin">
-    <input type="hidden" value="" name="DeletedRemarks" id="DeletedRemarks">
-    <input type="hidden" value="<?php echo $Member['MemberCode'];?>" name="MemberCode" id="MemberCode">
 <div class="row">
 <div class="col-sm-9">
 <div class="col-12 grid-margin">
-	<div class="card">
-		<div class="card-body">
-			<div style="max-width:770px !important;">
-				<h4 class="card-title" style="font-weight:399">View Member Information</h4>  
+    <div class="card">
+        <div class="card-body">
+            <div style="max-width:770px !important;">
+                <h4 class="card-title" style="font-weight:399">View Member Information</h4>  
                  <?php if($Member['IsDeleted']==1){ ?>
                             <div class="alert alert-warning">
                                 <strong>Warning!</strong>&nbsp;Member Status has deleted So you can't edit the details
@@ -27,146 +20,170 @@
                                 <strong>Warning!</strong>&nbsp;Member Status has deactivated So you can't edit the details
                             </div>
                             <?php } }?>
-				<div class="form-group row">
-					<div class="col-sm-3"><small>Member Code:</small> </div>
-					<div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberCode'];?></small></div>
-				</div>
-				<div class="form-group row">
-					<div class="col-sm-3"><small>Member Name:</small> </div>
-					<div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberName'];?></small></div>
-				</div>
-				<div class="form-group row">
-					<div class="col-sm-3"><small>Date of Birth:</small> </div>
-					<div class="col-sm-9"><small style="color:#737373;"><?php echo PutDate($Member['DateofBirth']);?></small></div>
-				</div>
-				<div class="form-group row">	
-					<div class="col-sm-3"><small>Gender:</small> </div>
-					<div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['Sex'];?></small></div>
-				</div>
-				<div class="form-group row">
-					<div class="col-sm-3"><small>Mobile Number:</small></div>
-					<div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['CountryCode'];?>-<?php echo $Member['MobileNumber'];?></small>&nbsp;&nbsp;
-						<?php if($Member['IsMobileVerified']==1){ ?> <img src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } else {?><img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } ?>
-					</div>
-				</div>
-				<?php if(strlen($Member['WhatsappNumber'])>0){ ?>
-				<div class="form-group row">
-					<div class="col-sm-3"><small>Whatsapp Number:</small></div>
-					<div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['WhatsappCountryCode'];?>-<?php echo $Member['WhatsappNumber'];?></small></div>
-				</div>
-				<?php } ?>
-				<div class="form-group row">
-					<div class="col-sm-3"><small>Email ID:</small></div>
-					<div class="col-sm-9"><small style="color:#737373;"><?php echo  $Member['EmailID'];?></small> &nbsp;&nbsp;
+                <div class="form-group row">
+                    <div class="col-sm-3"><small>Member Code:</small> </div>
+                    <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberCode'];?></small></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-3"><small>Member Name:</small> </div>
+                    <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberName'];?></small></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-3"><small>Date of Birth:</small> </div>
+                    <div class="col-sm-9"><small style="color:#737373;"><?php echo PutDate($Member['DateofBirth']);?></small></div>
+                </div>
+                <div class="form-group row">    
+                    <div class="col-sm-3"><small>Gender:</small> </div>
+                    <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['Sex'];?></small></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-3"><small>Mobile Number:</small></div>
+                    <div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['CountryCode'];?>-<?php echo $Member['MobileNumber'];?></small>&nbsp;&nbsp;
+                        <?php if($Member['IsMobileVerified']==1){ ?> <img src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } else {?><img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } ?>
+                    </div>
+                </div>
+                <?php if(strlen($Member['WhatsappNumber'])>0){ ?>
+                <div class="form-group row">
+                    <div class="col-sm-3"><small>Whatsapp Number:</small></div>
+                    <div class="col-sm-3"><small style="color:#737373;">+<?php echo $Member['WhatsappCountryCode'];?>-<?php echo $Member['WhatsappNumber'];?></small></div>
+                </div>
+                <?php } ?>
+                <div class="form-group row">
+                    <div class="col-sm-3"><small>Email ID:</small></div>
+                    <div class="col-sm-9"><small style="color:#737373;"><?php echo  $Member['EmailID'];?></small> &nbsp;&nbsp;
                         <?php if($Member['IsEmailVerified']==1){ ?> <img src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } else {?><img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png"><?php } ?>
-					</div>
-				</div>
-				                                                                                                       
-			</div>                                      
-		</div>    
-	</div> 
-</div>	
+                    </div>
+                </div>
+                                                                                                                       
+            </div>                                      
+        </div>    
+    </div> 
+</div>    
 
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
-			<div style="padding:15px !important;max-width:770px !important;">
-				<?php if(sizeof($response['data']['IDProof'])==0 && sizeof($response['data']['AddressProof'])==0 ) { ?>
-					<h4 class="card-title">Kyc</h4>
-					<span style="text-align:center">No documents Available</span>
-				<?php } else { ?>
-				<div class="form-group row"> 
-				  <div class="col-sm-6">
-					<h4 class="card-title">ID Proof</h4>  
-					  <?php foreach($response['data']['IDProof'] as $KycIDP) {?>
-						<form method="post" id="frmfrn_<?php echo $KycIDP['DocID'];?>" >
-						<input type="hidden" value="" name="txnPassword" id="txnPassword_<?php echo $KycIDP['DocID'];?>">
-						<input type="hidden" value="" name="IDApproveReaseon" id="IDApproveReaseon_<?php echo $KycIDP['DocID'];?>">
-						<input type="hidden" value="" name="IDRejectReaseon" id="IDRejectReaseon_<?php echo $KycIDP['DocID'];?>">
-						<input type="hidden" value="" name="IsApproved" id="IsApproved_<?php echo $KycIDP['DocID'];?>">
-						<input type="hidden" value="" name="IsRejected" id="IsRejected_<?php echo $KycIDP['DocID'];?>">
-						<input type="hidden" value="<?php echo $_GET['Code'];?>" name="MemberID" id="MemberID">
-						<input type="hidden" value="<?php echo $KycIDP['DocID'];?>" name="DocID" id="DocID">
-						</form>
-						 <div class="Documentview">
-							<img src="<?php echo AppUrl;?>uploads/members/<?php echo $Member['MemberCode'];?>/kyc/<?php echo $KycIDP['FileName'];?>" style="width: 200px;height:150px">
-						</div> 
-						<div class="form-group row">
-							<div class="col-sm-12"><small style="color:#737373;font-weight: 600;"><?php echo $KycIDP['FileType'];?></small></div>
-						</div>
-						<div class="form-group row">
-							<div class="col-sm-4"><small>Submitted</small></div>
-							<div class="col-sm-8"><small style="color:#737373;"><?php echo putDatetime($KycIDP['SubmittedOn']);?></small></div>
-						</div>
-						<?php if($KycIDP['IsVerified']=="1" && $KycIDP['IsRejected']=="0"){?>
-						<div class="form-group row">
-							<div class="col-sm-4"><small style="color: green;">Approved</small></div>
-							<div class="col-sm-8"><small style="color:#737373;">:<?php echo putDatetime($KycIDP['VerifiedOn']);?></small></div>
-						</div>
-						<?php }?>
-						<?php if($KycIDP['IsRejected']=="1"){?>
-						<div class="form-group row">
-							<div class="col-sm-4"><small style="color: red;">Rejected</small></div>
-							<div class="col-sm-8"><small style="color:#737373;">:<?php echo putDatetime($KycIDP['RejectedOn']);?></small></div>
-						</div>
-						<?php }?>
-						<?php if($KycIDP['IsVerified']=="0" && $KycIDP['IsRejected']=="0"){?>
-						<div class="form-group row">
-							<div class="col-sm-3"><a href="javascript:void(0)" onclick="showConfirmApproved('<?php echo $KycIDP['DocID'];?>')" class="btn btn-success" name="AddressProofApproved" style="font-family:roboto">Approve</a></div>
-							<div class="col-sm-6"><a href="javascript:void(0)" onclick="showConfirmRejected('<?php echo $KycIDP['DocID'];?>')" class="btn btn-danger" name="AddressProofRejected" style="font-family:roboto">Reject</a></div>
-						</div>  
-						<?php }?>
-					<?php }?>
-					
-				  </div>
-				  <div class="col-sm-6">
-					<h4 class="card-title">Address Proof</h4>  
-							<?php foreach($response['data']['AddressProof'] as $KycADP) { ?>
-							<form method="post" id="frmfrAd_<?php echo $KycADP['DocID'];?>" >
-							<input type="hidden" value="" name="txnPassword" id="txnPassword_<?php echo $KycADP['DocID'];?>">
-							<input type="hidden" value="" name="AddressApproveReaseon" id="AddressApproveReaseon_<?php echo $KycADP['DocID'];?>">
-							<input type="hidden" value="" name="AddressRejectReaseon" id="AddressRejectReaseon_<?php echo $KycADP['DocID'];?>">
-							<input type="hidden" value="" name="IsApproved" id="IsApproved_<?php echo $KycADP['DocID'];?>">
-							<input type="hidden" value="" name="IsRejected" id="IsRejected_<?php echo $KycADP['DocID'];?>">
-							<input type="hidden" value="<?php echo $_GET['Code'];?>" name="MemberID" id="MemberID">
-							<input type="hidden" value="<?php echo $KycADP['DocID'];?>" name="DocID" id="DocID">
-							</form>
-						 <div class="Documentview">
-							<img src="<?php echo AppUrl;?>uploads/members/<?php echo $Member['MemberCode'];?>/kyc/<?php echo $KycADP['FileName'];?>" style="width: 200px;height:150px">
-						</div>
-						<div class="form-group row">
-							<div class="col-sm-12"><small style="color:#737373;font-weight: 600;"><?php echo $KycADP['FileType'];?></small></div>
-						</div>
-						<div class="form-group row">
-							<div class="col-sm-4"><small>Submitted</small></div>
-							<div class="col-sm-8"><small style="color:#737373;">:<?php echo putDatetime($KycADP['SubmittedOn']);?></small></div>
-						</div>
-						<?php if($KycADP['IsVerified']=="1" && $KycADP['IsRejected']=="0"){?>
-						<div class="form-group row">
-							<div class="col-sm-4"><small style="color: green;">Approved On</small></div>
-							<div class="col-sm-8"><small style="color:#737373;">:<?php echo putDatetime($KycADP['VerifiedOn']);?></small></div>
-						</div>
-						<?php }?>
-						<?php if($KycADP['IsRejected']=="1"){?>
-						<div class="form-group row">
-							<div class="col-sm-4"><small style="color: red;">Rejected On</small></div>
-							<div class="col-sm-8"><small style="color:#737373;">:<?php echo putDatetime($KycADP['RejectedOn']);?></small></div>
-						</div>
-						<?php }?>
-						<?php if($KycADP['IsVerified']=="0" && $KycADP['IsRejected']=="0"){?>
-						<div class="form-group row">
-							<div class="col-sm-3"><a href="javascript:void(0)" onclick="showConfirmAddressProofApproved('<?php echo $KycADP['DocID'];?>')" class="btn btn-success" name="AddressProofApproved" style="font-family:roboto">Approve</a></div>
-							<div class="col-sm-6"><a href="javascript:void(0)" onclick="showConfirmAddressProofRejected('<?php echo $KycADP['DocID'];?>')" class="btn btn-danger" name="AddressProofRejected" style="font-family:roboto">Reject</a></div>
-						</div>
-						<?php }?>
-						 <?php }?>
-				  </div> 
-				</div>
-				<?php } ?>
-			</div>
-		</div> 
-	</div>
-</div>	
+            <div style="padding:15px !important;max-width:770px !important;">
+                <?php if(sizeof($response['data']['IDProof'])==0 && sizeof($response['data']['AddressProof'])==0 ) { ?>
+                    <h4 class="card-title">Kyc</h4>
+                    <span style="text-align:center">No documents Available</span>
+                <?php } else { ?>
+                <div class="form-group row"> 
+                  <div class="col-sm-6">
+                    <h4 class="card-title">ID Proof</h4>  
+                      <?php foreach($response['data']['IDProof'] as $KycIDP) {?>
+                        <form method="post" id="frmfrn_<?php echo $KycIDP['DocID'];?>" >
+                        <input type="hidden" value="" name="IDPtxnPassword" id="IDPtxnPassword_<?php echo $KycIDP['DocID'];?>">
+                        <input type="hidden" value="" name="IDApproveReaseon" id="IDApproveReaseon_<?php echo $KycIDP['DocID'];?>">
+                        <input type="hidden" value="" name="IDRejectReaseon" id="IDRejectReaseon_<?php echo $KycIDP['DocID'];?>">
+                        <input type="hidden" value="" name="IsApproved" id="IsApproved_<?php echo $KycIDP['DocID'];?>">
+                        <input type="hidden" value="" name="IsRejected" id="IsRejected_<?php echo $KycIDP['DocID'];?>">
+                        <input type="hidden" value="<?php echo $_GET['Code'];?>" name="MemberID" id="MemberID">
+                        <input type="hidden" value="<?php echo $KycIDP['DocID'];?>" name="DocID" id="DocID">
+                        </form>
+                         <div class="Documentview">
+                            <img src="<?php echo AppUrl;?>uploads/members/<?php echo $Member['MemberCode'];?>/kyc/<?php echo $KycIDP['FileName'];?>" style="width: 200px;height:150px;border: 2px solid #d9d8d8;">
+                        </div> 
+                        <div class="form-group row" style="margin-bottom: 2px;">
+                            <div class="col-sm-12"><small style="color:#737373;font-weight: 600;"><?php echo $KycIDP['FileType'];?></small></div>
+                        </div>
+                        <div class="form-group row"  style="margin-bottom: 2px;">
+                            <div class="col-sm-4"><small>Submitted On</small></div>
+                            <div class="col-sm-8"><small style="color:#737373;"><?php echo putDatetime($KycIDP['SubmittedOn']);?></small></div>
+                        </div>
+                        <?php if($KycIDP['IsVerified']=="1" && $KycIDP['IsRejected']=="0"){?>
+                        <div class="form-group row"  style="margin-bottom: 2px;">
+                            <div class="col-sm-4"><small style="color: green;">Verified On</small></div>
+                            <div class="col-sm-8"><small style="color:#737373;"><?php echo putDatetime($KycIDP['VerifiedOn']);?></small></div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4"><small style="color: green;">Verified By</small></div>
+                            <div class="col-sm-8"><small style="color:#737373;"><?php echo $KycIDP['VerifyByName'];?></small></div>
+                        </div>
+                        <?php }?>
+                        <?php if($KycIDP['IsRejected']=="1"){?>
+                        <div class="form-group row"  style="margin-bottom: 2px;">
+                            <div class="col-sm-4"><small style="color: red;">Rejected On</small></div>
+                            <div class="col-sm-8"><small style="color:#737373;"><?php echo putDatetime($KycIDP['RejectedOn']);?></small></div>
+                        </div>
+                        <div class="form-group row"  style="margin-bottom: 2px;">
+                            <div class="col-sm-4"><small style="color: red;">Reason</small></div>
+                            <div class="col-sm-8"><small style="color:#737373;"><?php echo $KycIDP['RejectedRemarks'];?></small></div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4"><small style="color: red;">Rejected By</small></div>
+                            <div class="col-sm-8"><small style="color:#737373;"><?php echo $KycIDP['VerifyByName'];?></small></div>
+                        </div>
+                        <?php }?>
+                        <?php if($KycIDP['IsVerified']=="0" && $KycIDP['IsRejected']=="0"){?>
+                        <div class="form-group row">
+                            <div class="col-sm-3"><a href="javascript:void(0)" onclick="showConfirmApproved('<?php echo $KycIDP['DocID'];?>')" class="btn btn-success" name="AddressProofApproved" style="font-family:roboto">Approve</a></div>
+                            <div class="col-sm-6"><a href="javascript:void(0)" onclick="showConfirmRejected('<?php echo $KycIDP['DocID'];?>')" class="btn btn-danger" name="AddressProofRejected" style="font-family:roboto">Reject</a></div>
+                        </div>  
+                        <?php }?>
+                    <?php }?>
+                    
+                  </div>
+                  <div class="col-sm-6">
+                    <h4 class="card-title">Address Proof</h4>  
+                            <?php foreach($response['data']['AddressProof'] as $KycADP) { ?>
+                            <form method="post" id="frmfrAd_<?php echo $KycADP['DocID'];?>" >
+                            <input type="hidden" value="" name="ADPtxnPassword" id="ADPtxnPassword_<?php echo $KycADP['DocID'];?>">
+                            <input type="hidden" value="" name="AddressApproveReaseon" id="AddressApproveReaseon_<?php echo $KycADP['DocID'];?>">
+                            <input type="hidden" value="" name="AddressRejectReaseon" id="AddressRejectReaseon_<?php echo $KycADP['DocID'];?>">
+                            <input type="hidden" value="" name="IsApproved" id="IsApproved_<?php echo $KycADP['DocID'];?>">
+                            <input type="hidden" value="" name="IsRejected" id="IsRejected_<?php echo $KycADP['DocID'];?>">
+                            <input type="hidden" value="<?php echo $_GET['Code'];?>" name="MemberID" id="MemberID">
+                            <input type="hidden" value="<?php echo $KycADP['DocID'];?>" name="DocID" id="DocID">
+                            </form>
+                         <div class="Documentview">
+                            <img src="<?php echo AppUrl;?>uploads/members/<?php echo $Member['MemberCode'];?>/kyc/<?php echo $KycADP['FileName'];?>" style="width: 200px;height:150px;border: 2px solid #d9d8d8;">
+                        </div>
+                        <div class="form-group row" style="margin-bottom: 2px;">
+                            <div class="col-sm-12"><small style="color:#737373;font-weight: 600;"><?php echo $KycADP['FileType'];?></small></div>
+                        </div>
+                        <div class="form-group row" style="margin-bottom: 2px;">
+                            <div class="col-sm-4"><small>Submitted On</small></div>
+                            <div class="col-sm-8"><small style="color:#737373;"><?php echo putDatetime($KycADP['SubmittedOn']);?></small></div>
+                        </div>
+                        <?php if($KycADP['IsVerified']=="1" && $KycADP['IsRejected']=="0"){?>
+                        <div class="form-group row" style="margin-bottom: 2px;">
+                            <div class="col-sm-4"><small style="color: green;">Verified On</small></div>
+                            <div class="col-sm-8"><small style="color:#737373;"><?php echo putDatetime($KycADP['VerifiedOn']);?></small></div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4"><small style="color: green;">Verified By</small></div>
+                            <div class="col-sm-8"><small style="color:#737373;"><?php echo $KycADP['VerifyByName'];?></small></div>
+                        </div>
+                        <?php }?>
+                        <?php if($KycADP['IsRejected']=="1"){?>
+                        <div class="form-group row" style="margin-bottom: 2px;">
+                            <div class="col-sm-4"><small style="color: red;" style="margin-bottom: 2px;">Rejected On</small></div>
+                            <div class="col-sm-8"><small style="color:#737373;"><?php echo putDatetime($KycADP['RejectedOn']);?></small></div>
+                        </div>
+                        <div class="form-group row" style="margin-bottom: 2px;">
+                            <div class="col-sm-4"><small style="color: red;" style="margin-bottom: 2px;">Reason</small></div>
+                            <div class="col-sm-8"><small style="color:#737373;"><?php echo $KycADP['RejectedRemarks'];?></small></div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4"><small style="color: red;">Rejected By</small></div>
+                            <div class="col-sm-8"><small style="color:#737373;"><?php echo $KycADP['VerifyByName'];?></small></div>
+                        </div>
+                        <?php }?>
+                        <?php if($KycADP['IsVerified']=="0" && $KycADP['IsRejected']=="0"){?>
+                        <div class="form-group row">
+                            <div class="col-sm-3"><a href="javascript:void(0)" onclick="showConfirmAddressProofApproved('<?php echo $KycADP['DocID'];?>')" class="btn btn-success" name="AddressProofApproved" style="font-family:roboto">Approve</a></div>
+                            <div class="col-sm-6"><a href="javascript:void(0)" onclick="showConfirmAddressProofRejected('<?php echo $KycADP['DocID'];?>')" class="btn btn-danger" name="AddressProofRejected" style="font-family:roboto">Reject</a></div>
+                        </div>
+                        <?php }?>
+                         <?php }?>
+                  </div> 
+                </div>
+                <?php } ?>
+            </div>
+        </div> 
+    </div>
+</div>    
  <div class="modal" id="ApproveNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
                 <div class="modal-content" id="Approve_body" style="height:235px">
@@ -174,7 +191,7 @@
                 </div>
             </div>
         </div>  
-	<div class="modal" id="PubplishNow" data-backdrop="static" >
+    <div class="modal" id="PubplishNow" data-backdrop="static" >
         <div class="modal-dialog" >
             <div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
         
@@ -183,6 +200,13 @@
     </div>
 </div>
 <div class="col-sm-3">
+<form method="post" id="frmfrn">
+    <input type="hidden" value="" name="txnPassword" id="txnPassword">
+    <input type="hidden" value="" name="NewPswd" id="NewPswd">
+    <input type="hidden" value="" name="ConfirmNewPswd" id="ConfirmNewPswd">
+    <input type="hidden" value="" name="ChnPswdFstLogin" id="ChnPswdFstLogin">
+    <input type="hidden" value="" name="DeletedRemarks" id="DeletedRemarks">
+    <input type="hidden" value="<?php echo $Member['MemberCode'];?>" name="MemberCode" id="MemberCode">
             <div class="col-sm-12 col-form-label">
                 Created On <br>
                 <?php echo putDateTime($Member['CreatedOn']);?><br><br> 
@@ -279,10 +303,9 @@
                     <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Popup Message</small></a>
                 <?php }   ?> 
             </div>
-            
+           </form> 
         </div>
-</div>	
-</form>
+</div>    
 <div class="col-12 grid-margin">
         <div class="card">
             <div class="card-body">
@@ -356,11 +379,11 @@
                                 <?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==0){ ?>
                                     <a href="<?php echo GetUrl("Profiles/ViewRequestProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                     <?php } ?>
-									<?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==1) {  ?>
+                                    <?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==1) {  ?>
                                     <a href="<?php echo GetUrl("Profiles/ViewPublishProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                     <?php }?>
-									<?php if($Profile['RequestToVerify']==0 && $Profile['IsApproved']==0) {  ?>
-										<a href="<?php echo GetUrl("Profiles/ViewDraftProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <?php if($Profile['RequestToVerify']==0 && $Profile['IsApproved']==0) {  ?>
+                                        <a href="<?php echo GetUrl("Profiles/ViewDraftProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                     <?php  }    ?>     
                             </div>
                         </div>  
@@ -620,110 +643,110 @@
                                             ?>
                                         <div class="profile_horizontal_row" id="div_<?php echo $Profile['ProfileCode']; ?>">
                                             <div class="form-group row">
-												<div class="col-sm-3" style="text-align:center;max-width: 182px;">
-													<div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-														<img src="<?php echo $P['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
-													</div>
-												<div class="col-sm-9">
-													<div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
-														<div class="form-group row">                                                                                     
-															<div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
-															<div class="col-sm-4">
-																<div style="text-align:right;">
-																<?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
-																	<span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
-																	<img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
-																<?php } else if ($Profile['isMutured']==1) {?>
-																	<img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
-																<?php } else{?>
-																	<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
-																<?php }?>
-																</div>
-															</div> 
-														</div>
-														<div class="form-group row">
-														   <div class="col-sm-7">
-																<div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
-														   </div>
-														   <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:35px;"></span></div> 
-														   <div class="col-sm-4" style="float:right;font-size: 12px;">
-																<?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
-																<?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?>
-																<br>
-																<br>
-															</div>
-														</div>
-													</div>
-													<div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
-														<div><?php echo $Profile['Height'];?></div>
-														<div><?php echo $Profile['Religion'];?></div>                                                                                      
-														<div><?php echo $Profile['Caste'];?></div>
-													</div>
-													<div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
-														<div><?php echo $Profile['MaritalStatus'];?></div>
-														<div><?php echo $Profile['OccupationType'];?></div>
-														<div><?php echo $Profile['AnnualIncome'];?></div>
-													</div>
-													<div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
-														<?php echo $Profile['AboutMe'];?>
-													</div>
-												</div>
-											</div>
+                                                <div class="col-sm-3" style="text-align:center;max-width: 182px;">
+                                                    <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
+                                                        <img src="<?php echo $P['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
+                                                    </div>
+                                                <div class="col-sm-9">
+                                                    <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
+                                                        <div class="form-group row">                                                                                     
+                                                            <div class="col-sm-8"> <?php echo $Profile['ProfileName'];?>&nbsp;&nbsp; (<?php echo $Profile['Age'];?> Yrs) </div>
+                                                            <div class="col-sm-4">
+                                                                <div style="text-align:right;">
+                                                                <?php  if ($Profile['isFavourited']==0) { ?>                                                                                                                    
+                                                                    <span style="font-size: 12px;cursor:ponter;color:#fff" id="span_<?php echo $Profile['ProfileCode']; ?>">&nbsp;&nbsp;&nbsp;</span>
+                                                                    <img onclick="AddtoFavourite('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>"  src="<?php echo SiteUrl?>assets/images/like_gray.png" src_a="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;float:right">  
+                                                                <?php } else if ($Profile['isMutured']==1) {?>
+                                                                    <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                                                                <?php } else{?>
+                                                                    <img onclick="removeFavourited('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
+                                                                <?php }?>
+                                                                </div>
+                                                            </div> 
+                                                        </div>
+                                                        <div class="form-group row">
+                                                           <div class="col-sm-7">
+                                                                <div style="line-height: 25px;color: #867c7c;font-size:14px"><?php echo $Profile['City'];?></div> 
+                                                           </div>
+                                                           <div class="col-sm-1"><span id="favourite_<?php echo $Profile['ProfileCode'];?>" ><img src="<?php echo SiteUrl?>assets/images/clock_icon.png" style="height:16px;width:16px;margin-left:35px;"></span></div> 
+                                                           <div class="col-sm-4" style="float:right;font-size: 12px;">
+                                                                <?php  echo "Published: ".time_elapsed_string($Profile['IsApprovedOn']); ?><br>
+                                                                <?php echo ($Profile['LastSeen']!=0) ? "My last seen: ".time_elapsed_string($Profile['LastSeen']) : ""; ?>
+                                                                <br>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                                        <div><?php echo $Profile['Height'];?></div>
+                                                        <div><?php echo $Profile['Religion'];?></div>                                                                                      
+                                                        <div><?php echo $Profile['Caste'];?></div>
+                                                    </div>
+                                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                                        <div><?php echo $Profile['MaritalStatus'];?></div>
+                                                        <div><?php echo $Profile['OccupationType'];?></div>
+                                                        <div><?php echo $Profile['AnnualIncome'];?></div>
+                                                    </div>
+                                                    <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
+                                                        <?php echo $Profile['AboutMe'];?>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div style="float:right;line-height: 1px;">
-												<a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;
-												<?php if ($Profile['IsDownloaded']==0) { ?>
-													<a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
-												<?php } else { ?>
-													Alredy Downloaded
-												<?php } ?>
-												&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=MyRecentViewed");?>">view</a>
-											</div>
+                                                <a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <?php if ($Profile['IsDownloaded']==0) { ?>
+                                                    <a href="javascript:void(0)" onclick="RequestToDownload('<?php echo $Profile['ProfileCode'];?>')">Download</a>
+                                                <?php } else { ?>
+                                                    Alredy Downloaded
+                                                <?php } ?>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("Matches/Search/ViewPlans/".$Profile['ProfileID'].".htm ");?>">view</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo GetUrl("ViewProfile/".$Profile['ProfileCode'].".htm?source=MyRecentViewed");?>">view</a>
+                                            </div>
                                             <div class="modal" id="Upgrades" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-												<div class="modal-dialog" style="width: 367px;">
-													<div class="modal-content" id="Upgrades_body" style="height:335px"></div>
-												</div>
-											</div>
+                                                <div class="modal-dialog" style="width: 367px;">
+                                                    <div class="modal-content" id="Upgrades_body" style="height:335px"></div>
+                                                </div>
+                                            </div>
                                             <div class="modal" id="OverAll" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-												<div class="modal-dialog" style="width: 367px;">
-													<div class="modal-content" id="OverAll_body" style="height:335px"></div>
-												</div>
-											</div>
+                                                <div class="modal-dialog" style="width: 367px;">
+                                                    <div class="modal-content" id="OverAll_body" style="height:335px"></div>
+                                                </div>
+                                            </div>
                                         </div>
-										<?php } } else { ?>
-										<div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
-											<img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
-											No profiles found at this time<br><br>
-										</div>     
-									  <?php } ?> 
+                                        <?php } } else { ?>
+                                        <div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+                                            <img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
+                                            No profiles found at this time<br><br>
+                                        </div>     
+                                      <?php } ?> 
                                 
-							</div>
+                            </div>
                             <div class="RecentlyWhoViewed" id="RecentlyWhoVieweddiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
                                 <h4>Recently Who Viewed</h4>
-									<div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
-										<img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
-										No profiles found at this time<br><br>
-									</div>
+                                    <div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+                                        <img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
+                                        No profiles found at this time<br><br>
+                                    </div>
                             </div>
                             <div class="Favorited" id="Favoriteddiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
                                 <h4>Favorited</h4>
-									<div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
-										<img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
-										No profiles found at this time<br><br>
-									</div>
+                                    <div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+                                        <img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
+                                        No profiles found at this time<br><br>
+                                    </div>
                             </div> 
                             <div class="WhoLiked" id="WhoLikeddiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
                                 <h4>Who Liked</h4>
-									<div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
-										<img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
-										No profiles found at this time<br><br>
-									</div>
+                                    <div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+                                        <img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
+                                        No profiles found at this time<br><br>
+                                    </div>
                             </div>
                             <div class="Mutual" id="Mutualdiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
                                 <h4>Mutual</h4>
-								<div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
-										<img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
-										No profiles found at this time<br><br>
-									</div>
+                                <div style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
+                                        <img src="<?php echo ImageUrl;?>receipt.svg" style="height:128px"><Br><Br>
+                                        No profiles found at this time<br><br>
+                                    </div>
                             </div>
                             <div class="LoginLogs" id="LoginLogsdiv" style="padding:40px;padding-bottom:100px;text-align:center;color:#aaa">
                                 <h4>Login Logs</h4>
@@ -1100,7 +1123,7 @@
  }
 
 function showConfirmApproved(DocID) {
-	$('#PubplishNow').modal('show'); 
+    $('#PubplishNow').modal('show'); 
       var content = '<div class="modal-header">'
                         + '<h4 class="modal-title">Confirmation for approve</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -1114,10 +1137,10 @@ function showConfirmApproved(DocID) {
                                 + '<div class="form-group row">'
                                     +'<div class="col-sm-12">Are you sure want to approve</div>'
                                 + '</div>'
-								+ 'Reason for Approved<br>'
-								+ '<textarea class="form-control" rows="2" cols="3" id="ApproveRemarks_IDProof"></textarea>'
-								+'<div class="col-sm-12" id="frmRemark_error" style="color:red;text-align:center"></div>'
-							+ '</div>'
+                                + 'Reason for Approved<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="ApproveRemarks_IDProof"></textarea>'
+                                +'<div class="col-sm-12" id="frmRemark_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
                         +  '</div>'                    
                     + '</div>' 
                     + '<div class="modal-footer">'
@@ -1128,48 +1151,49 @@ function showConfirmApproved(DocID) {
      
 }
 function GetTxnPswdfrApproveIDProof(DocID) {
-		if ($("#ApproveRemarks_IDProof").val().trim()=="") {
+        if ($("#ApproveRemarks_IDProof").val().trim()=="") {
              $("#frmRemark_error").html("Please enter reason");
              return false;
          }
-		$("#IDApproveReaseon_"+DocID).val($("#ApproveRemarks_IDProof").val());
-		$("#IsApproved_"+DocID).val('1');
-		$("#IsRejected_"+DocID).val('0');
-		var content =   '<div class="modal-header">'
-							+ '<h4 class="modal-title">Confirmation for approve</h4>'
-							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
-						+ '</div>'
-						+ '<div class="modal-body">'
-							+ '<div class="form-group">'
-									+ '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-							 + '</div>'
-							 + '<div class="form-group">'
-								+ '<div class="input-group">'
-									+ '<div class="col-sm-2"></div>'
-									+ '<div class="col-sm-8">'
-										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
-									+ '</div>'
-									+ '<div class="col-sm-2"></div>'
-									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
-								+ '</div>'
-							+ '</div>'
-						+ '</div>'
-						+ '<div class="modal-footer">'
-							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-							+ '<button type="button" onclick="AproveMemberIDProof(\''+DocID+'\')" class="btn btn-primary">Continue</button>'
-						+ '</div>';
-				$('#Publish_body').html(content);            
-	}
+        $("#IDApproveReaseon_"+DocID).val($("#ApproveRemarks_IDProof").val());
+        $("#IsApproved_"+DocID).val('1');
+        $("#IsRejected_"+DocID).val('0');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for approve</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="AproveMemberIDProof(\''+DocID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    }
 function AproveMemberIDProof(formid) {
  
 if ($("#TransactionPassword").val().trim()=="") {
-		 $("#frmTxnPass_error").html("Please enter transaction password");
-		 return false;
-	}
-	
-    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+         $("#frmTxnPass_error").html("Please enter transaction password");
+         return false;
+    }
+    
+    $("#IDPtxnPassword_"+formid).val($("#TransactionPassword").val());
         var param = $("#frmfrn_"+formid).serialize();
-        $('#Publish_body').html(preloading_withText("Activate ...","123"));
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
         $.post(getAppUrl() + "m=Admin&a=AproveMemberIDProof",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
@@ -1204,7 +1228,7 @@ if ($("#TransactionPassword").val().trim()=="") {
         });
     }
 function showConfirmRejected(DocID) {
-	$('#PubplishNow').modal('show'); 
+    $('#PubplishNow').modal('show'); 
       var content = '<div class="modal-header">'
                         + '<h4 class="modal-title">Confirmation for reject</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -1218,10 +1242,10 @@ function showConfirmRejected(DocID) {
                                 + '<div class="form-group row">'
                                     +'<div class="col-sm-12">Are you sure want to reject</div>'
                                 + '</div>'
-								+ 'Reason for Reject<br>'
-								+ '<textarea class="form-control" rows="2" cols="3" id="RejectRemarks_IDProof"></textarea>'
-								+'<div class="col-sm-12" id="frmRejRemark_error" style="color:red;text-align:center"></div>'
-							+ '</div>'
+                                + 'Reason for Reject<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="RejectRemarks_IDProof"></textarea>'
+                                +'<div class="col-sm-12" id="frmRejRemark_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
                         +  '</div>'                    
                     + '</div>' 
                     + '<div class="modal-footer">'
@@ -1232,48 +1256,49 @@ function showConfirmRejected(DocID) {
      
 }
 function GetTxnPswdfrRejectIDProof(DocID) {
-		if ($("#RejectRemarks_IDProof").val().trim()=="") {
+        if ($("#RejectRemarks_IDProof").val().trim()=="") {
              $("#frmRejRemark_error").html("Please enter reason");
              return false;
          }
-		$("#IDRejectReaseon_"+DocID).val($("#RejectRemarks_IDProof").val());
-		$("#IsApproved_"+DocID).val('0');
-		$("#IsRejected_"+DocID).val('1');
-		var content =   '<div class="modal-header">'
-							+ '<h4 class="modal-title">Confirmation for reject</h4>'
-							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
-						+ '</div>'
-						+ '<div class="modal-body">'
-							+ '<div class="form-group">'
-									+ '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-							 + '</div>'
-							 + '<div class="form-group">'
-								+ '<div class="input-group">'
-									+ '<div class="col-sm-2"></div>'
-									+ '<div class="col-sm-8">'
-										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
-									+ '</div>'
-									+ '<div class="col-sm-2"></div>'
-									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
-								+ '</div>'
-							+ '</div>'
-						+ '</div>'
-						+ '<div class="modal-footer">'
-							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-							+ '<button type="button" onclick="RejectMemberIDProof(\''+DocID+'\')" class="btn btn-primary">Continue</button>'
-						+ '</div>';
-				$('#Publish_body').html(content);            
-	}
+        $("#IDRejectReaseon_"+DocID).val($("#RejectRemarks_IDProof").val());
+        $("#IsApproved_"+DocID).val('0');
+        $("#IsRejected_"+DocID).val('1');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for reject</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="RejectMemberIDProof(\''+DocID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    }
 function RejectMemberIDProof(formid) {
  
 if ($("#TransactionPassword").val().trim()=="") {
-		 $("#frmTxnPass_error").html("Please enter transaction password");
-		 return false;
-	}
-	
-    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+         $("#frmTxnPass_error").html("Please enter transaction password");
+         return false;
+    }
+    
+    $("#IDPtxnPassword_"+formid).val($("#TransactionPassword").val());
         var param = $("#frmfrn_"+formid).serialize();
-        $('#Publish_body').html(preloading_withText("Activate ...","123"));
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
         $.post(getAppUrl() + "m=Admin&a=RejectMemberIDProof",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
@@ -1310,7 +1335,7 @@ if ($("#TransactionPassword").val().trim()=="") {
 
 
 function showConfirmAddressProofApproved(DocID) {
-	$('#PubplishNow').modal('show'); 
+    $('#PubplishNow').modal('show'); 
       var content = '<div class="modal-header">'
                         + '<h4 class="modal-title">Confirmation for approve</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -1324,10 +1349,10 @@ function showConfirmAddressProofApproved(DocID) {
                                 + '<div class="form-group row">'
                                     +'<div class="col-sm-12">Are you sure want to approve</div>'
                                 + '</div>'
-								+ 'Reason for Approved<br>'
-								+ '<textarea class="form-control" rows="2" cols="3" id="ApproveRemarks_AddressProof"></textarea>'
-								+'<div class="col-sm-12" id="frmRemark_error" style="color:red;text-align:center"></div>'
-							+ '</div>'
+                                + 'Reason for Approved<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="ApproveRemarks_AddressProof"></textarea>'
+                                +'<div class="col-sm-12" id="frmRemark_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
                         +  '</div>'                    
                     + '</div>' 
                     + '<div class="modal-footer">'
@@ -1338,48 +1363,49 @@ function showConfirmAddressProofApproved(DocID) {
      
 }
 function GetTxnPswdfrApproveAddressProof(DocID) {
-		if ($("#ApproveRemarks_AddressProof").val().trim()=="") {
+        if ($("#ApproveRemarks_AddressProof").val().trim()=="") {
              $("#frmRemark_error").html("Please enter reason");
              return false;
          }
-		$("#AddressApproveReaseon_"+DocID).val($("#ApproveRemarks_AddressProof").val());
-		$("#IsApproved_"+DocID).val('1');
-		$("#IsRejected_"+DocID).val('0');
-		var content =   '<div class="modal-header">'
-							+ '<h4 class="modal-title">Confirmation for approve</h4>'
-							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
-						+ '</div>'
-						+ '<div class="modal-body">'
-							+ '<div class="form-group">'
-									+ '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-							 + '</div>'
-							 + '<div class="form-group">'
-								+ '<div class="input-group">'
-									+ '<div class="col-sm-2"></div>'
-									+ '<div class="col-sm-8">'
-										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
-									+ '</div>'
-									+ '<div class="col-sm-2"></div>'
-									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
-								+ '</div>'
-							+ '</div>'
-						+ '</div>'
-						+ '<div class="modal-footer">'
-							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-							+ '<button type="button" onclick="AproveMemberAddressProof(\''+DocID+'\')" class="btn btn-primary">Continue</button>'
-						+ '</div>';
-				$('#Publish_body').html(content);            
-	}
+        $("#AddressApproveReaseon_"+DocID).val($("#ApproveRemarks_AddressProof").val());
+        $("#IsApproved_"+DocID).val('1');
+        $("#IsRejected_"+DocID).val('0');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for approve</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="AproveMemberAddressProof(\''+DocID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    }
 function AproveMemberAddressProof(formid) {
  
 if ($("#TransactionPassword").val().trim()=="") {
-		 $("#frmTxnPass_error").html("Please enter transaction password");
-		 return false;
-	}
-	
-    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+         $("#frmTxnPass_error").html("Please enter transaction password");
+         return false;
+    }
+    
+    $("#ADPtxnPassword_"+formid).val($("#TransactionPassword").val());
         var param = $("#frmfrAd_"+formid).serialize();
-        $('#Publish_body').html(preloading_withText("Activate ...","123"));
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
         $.post(getAppUrl() + "m=Admin&a=AproveMemberAddressProof",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
@@ -1415,24 +1441,24 @@ if ($("#TransactionPassword").val().trim()=="") {
     }
 
 function showConfirmAddressProofRejected(DocID) {
-	$('#PubplishNow').modal('show'); 
+    $('#PubplishNow').modal('show'); 
       var content = '<div class="modal-header">'
                         + '<h4 class="modal-title">Confirmation for reject</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
                     + '<div class="modal-body">'
                         + '<div class="form-group row" style="margin:0px;">'
-                            + '<div class="col-sm-4">'
+                          + '<div class="col-sm-4">'
                                 + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
                             + '</div>'
                             + '<div class="col-sm-8">'
                                 + '<div class="form-group row">'
                                     +'<div class="col-sm-12">Are you sure want to reject</div>'
                                 + '</div>'
-								+ 'Reason for Reject<br>'
-								+ '<textarea class="form-control" rows="2" cols="3" id="RejectRemarks_AddressProof"></textarea>'
-								+'<div class="col-sm-12" id="frmRejRemark_error" style="color:red;text-align:center"></div>'
-							+ '</div>'
+                                + 'Reason for Reject<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="RejectRemarks_AddressProof"></textarea>'
+                                +'<div class="col-sm-12" id="frmRejRemark_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
                         +  '</div>'                    
                     + '</div>' 
                     + '<div class="modal-footer">'
@@ -1443,48 +1469,49 @@ function showConfirmAddressProofRejected(DocID) {
      
 }
 function GetTxnPswdfrRejectAddressProof(DocID) {
-		if ($("#RejectRemarks_AddressProof").val().trim()=="") {
+        if ($("#RejectRemarks_AddressProof").val().trim()=="") {
              $("#frmRejRemark_error").html("Please enter reason");
              return false;
          }
-		$("#AddressRejectReaseon_"+DocID).val($("#RejectRemarks_AddressProof").val());
-		$("#IsApproved_"+DocID).val('0');
-		$("#IsRejected_"+DocID).val('1');
-		var content =   '<div class="modal-header">'
-							+ '<h4 class="modal-title">Confirmation for reject</h4>'
-							+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
-						+ '</div>'
-						+ '<div class="modal-body">'
-							+ '<div class="form-group">'
-									+ '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-							 + '</div>'
-							 + '<div class="form-group">'
-								+ '<div class="input-group">'
-									+ '<div class="col-sm-2"></div>'
-									+ '<div class="col-sm-8">'
-										+ '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
-									+ '</div>'
-									+ '<div class="col-sm-2"></div>'
-									+ '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
-								+ '</div>'
-							+ '</div>'
-						+ '</div>'
-						+ '<div class="modal-footer">'
-							+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-							+ '<button type="button" onclick="RejectMemberAddressProof(\''+DocID+'\')" class="btn btn-primary">Continue</button>'
-						+ '</div>';
-				$('#Publish_body').html(content);            
-	}
+        $("#AddressRejectReaseon_"+DocID).val($("#RejectRemarks_AddressProof").val());
+        $("#IsApproved_"+DocID).val('0');
+        $("#IsRejected_"+DocID).val('1');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for reject</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="RejectMemberAddressProof(\''+DocID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    }
 function RejectMemberAddressProof(formid) {
  
 if ($("#TransactionPassword").val().trim()=="") {
-		 $("#frmTxnPass_error").html("Please enter transaction password");
-		 return false;
-	}
-	
-    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+         $("#frmTxnPass_error").html("Please enter transaction password");
+         return false;
+    }
+    
+    $("#ADPtxnPassword_"+formid).val($("#TransactionPassword").val());
         var param = $("#frmfrAd_"+formid).serialize();
-        $('#Publish_body').html(preloading_withText("Activate ...","123"));
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
         $.post(getAppUrl() + "m=Admin&a=RejectMemberAddressProof",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
@@ -1519,11 +1546,6 @@ if ($("#TransactionPassword").val().trim()=="") {
         });
     }
 </script>                                                                                     
-<div class="col-sm-12 grid-margin" style="text-align: center; padding-top:5px;color:skyblue;">
-                        <a href="../ManageMember"><small style="font-weight:bold;text-decoration:underline">List of Members</small></a>&nbsp;|&nbsp;
-                        <a href="<?php echo GetUrl("Members/EditMember/".$_REQUEST['Code'].".htm");?>"><small style="font-weight:bold;text-decoration:underline">Edit Member</small></a>&nbsp;|&nbsp;
-                        <a href="<?php echo GetUrl("Members/BlockMember/".$_REQUEST['Code'].".htm"); ?>"><small style="font-weight:bold;text-decoration:underline">Block Member</small></a>&nbsp;|&nbsp;
-                        <a href="<?php echo GetUrl("Members/ResetPassword/".$_REQUEST['Code'].".htm"); ?>"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a>
-</div>         
+
 
   

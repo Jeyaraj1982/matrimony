@@ -225,7 +225,7 @@
 											<img src="'.AppPath.'assets/images/icon_change_password.png">
 										</div>
 										<div class="col-sm-8">
-											<span style="text-left:center;color:#ada9a9">The administartor requests to change your login password on your first signin.</span><br><br>
+											<span style="text-left:center;color:#ada9a9">The administartor requests to change your login password on your first login.</span><br><br>
 											<div class="row">
 												<div class="col-sm-8"><h6 style="color:#ada9a9">New Password<span style="color:red">*</span></h6></div>
 											</div>                             
@@ -517,7 +517,7 @@
             if ($franchiseedata[0]['IsMobileVerified']==1) {
                 return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your mobile number has been<br> verified.</h4>    <br>
                             <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';    
             } else {
@@ -562,7 +562,7 @@
             if ($franchiseedata[0]['IsMobileVerified']==1) {
                 return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your mobile number has been<br> verified.</h4>    <br>
                             <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';    
             } else {
@@ -649,7 +649,7 @@
             if ($franchiseedata[0]['IsMobileVerified']==1) {
                 return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your mobile number has been<br> verified.</h4>    <br>
                             <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';    
             } else {
@@ -662,7 +662,8 @@
                                                                                  "SMSTo" =>$franchiseedata[0]['MobileNumber'],
                                                                                  "SecurityCode" =>$otp,
                                                                                  "Type" =>"Franchisee Mobile Verificatiom",
-                                                                                 "Messagedon"=>date("Y-m-d h:i:s"))) ; 
+                                                                                 "Messagedon"=>date("Y-m-d h:i:s"),
+                                                                                 "RequestSentOn"=>date("Y-m-d h:i:s"))) ; 
                 }  else {
                     $securitycode = $reqID;
                 }
@@ -712,7 +713,7 @@
              if ($franchiseedata[0]['IsMobileVerified']==1) {
                  return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your mobile number has been<br> verified.</h4>    <br>
                             <a href="javascript:void(0)" onclick="FCheckVerification()" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';    
              } else {
@@ -725,7 +726,8 @@
                                                                                  "SMSTo" =>$franchiseedata[0]['MobileNumber'],
                                                                                  "SecurityCode" =>$otp,
                                                                                  "Type" =>"Franchisee Mobile Verificatiom",
-                                                                                 "Messagedon"=>date("Y-m-d h:i:s"))) ; 
+                                                                                 "Messagedon"=>date("Y-m-d h:i:s"),
+                                                                                 "RequestSentOn"=>date("Y-m-d h:i:s"))) ; 
                 }  else {
                     $securitycode = $reqID;
                 }
@@ -773,11 +775,11 @@
                                                              "ActivityType"   => 'MobileNumberVerified.',
                                                              "ActivityString" => 'Mobile Number Verified.',
                                                              "SqlQuery"       => base64_encode($sql),
-                                                             //"oldData"        => base64_encode(json_encode($oldData)),
+                                                             //"oldData"        => base64_encode(json_encode($oldData)),            
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
                 return '<div class="modal-body" style="text-align:center"><br><br>
                             <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your number has been<br> successfully verified.</h4>    <br>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your mobile number has been<br> verified.</h4>    <br>
                             <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
                          </div>';
             } else {
@@ -1141,17 +1143,32 @@
            
              global $mysql,$loginInfo;
              
+              $sql = "SELECT `_tbl_members`.MemberID AS MemberID,
+                            _tbl_members.MemberCode AS MemberCode,
+                            _tbl_members.MemberName AS MemberName,
+                            _tbl_members.Sex AS Gender,
+                            _tbl_members.IsDeleted AS IsDeleted,
+                            _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
+                            _tbl_franchisees.FranchiseName AS FranchiseeName,
+                            _tbl_members.CreatedBy AS CreatedBy,
+                            _tbl_members.CreatedOn AS CreatedOn,
+                            _tbl_members.IsActive AS IsActive
+                        FROM _tbl_members
+                        INNER JOIN _tbl_franchisees
+                        ON _tbl_members.ReferedBy=`_tbl_franchisees`.FranchiseeID where `_tbl_members`.`ReferedBy`='".$loginInfo[0]['FranchiseeID']."'";
+
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
-                return Response::returnSuccess("success",$mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."'"));    
+                return Response::returnSuccess("success",$mysql->select($sql));    
              }
+
              if (isset($_POST['Request']) && $_POST['Request']=="Active") {
-                return Response::returnSuccess("success",$mysql->select("select * from _tbl_members where IsActive='1' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"));    
+                 return Response::returnSuccess("success",$mysql->select($sql." and `_tbl_members`.`IsActive`='1' and `_tbl_members`.`IsDeleted`='0'"));    
              }
              if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
-                return Response::returnSuccess("success",$mysql->select("select * from _tbl_members where IsActive='0' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"));    
+                 return Response::returnSuccess("success",$mysql->select($sql." and `_tbl_members`.`IsActive`='0' and `_tbl_members`.`IsDeleted`='0'"));    
              }
-             if (isset($_POST['Request']) && $_POST['Request']=="Delete") {
-                return Response::returnSuccess("success",$mysql->select("select * from _tbl_members where IsDeleted='1' and ReferedBy='".$loginInfo[0]['FranchiseeID']."'"));    
+             if (isset($_POST['Request']) && $_POST['Request']=="Deleted") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and `_tbl_members`.`IsDeleted`='1'"));    
              }
          }
             
@@ -1181,19 +1198,54 @@
 					$MemberCode = $Member_session[0]['MemberCode'];
 				}
 			}	
-            $Member=$mysql->select(" SELECT 
-                                     _tbl_members.*,
+            $Members = $mysql->select("SELECT 
+                                     _tbl_members.MemberID AS MemberID,
+                                     _tbl_members.MemberCode AS MemberCode,
+                                     _tbl_members.MemberName AS MemberName,
+                                     _tbl_members.DateofBirth AS DateofBirth,
+                                     _tbl_members.Sex AS Sex,
+                                     _tbl_members.CountryCode AS CountryCode,
+                                     _tbl_members.MobileNumber AS MobileNumber,
+                                     _tbl_members.WhatsappCountryCode AS WhatsappCountryCode,
+                                     _tbl_members.WhatsappNumber AS WhatsappNumber,
+                                     _tbl_members.EmailID AS EmailID,
+                                     _tbl_members.MemberPassword AS MemberPassword,
+                                     _tbl_members.IsMobileVerified AS IsMobileVerified,
+                                     _tbl_members.IsEmailVerified AS IsEmailVerified,
+                                     _tbl_members.IsDeleted AS IsDeleted,
+                                     _tbl_members.DeletedOn AS DeletedOn,
+                                     _tbl_members.DeactivatedOn AS DeactivatedOn,
                                      _tbl_franchisees.FranchiseeCode AS FranchiseeCode,
                                      _tbl_franchisees.FranchiseName AS FranchiseName,
                                      _tbl_franchisees.FranchiseeID AS FranchiseeID,
-                                     _tbl_franchisees.IsActive AS FIsActive
+                                     _tbl_members.CreatedBy AS CreatedBy,
+                                     _tbl_members.CreatedOn AS CreatedOn,
+                                     _tbl_franchisees.IsActive AS FIsActive,
+                                     _tbl_members.IsActive AS IsActive
                                     FROM _tbl_members
                                     INNER JOIN _tbl_franchisees
-                                    ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.ReferedBy='".$loginInfo[0]['FranchiseeID']."' and _tbl_members.MemberCode='".$MemberCode."'");
-             $Member[0]['Country'] = CodeMaster::getData('RegisterAllowedCountries');
-             $Member[0]['Gender'] = CodeMaster::getData('SEX');
-             $Member[0]['SCode'] = $MemberCode;
-            return Response::returnSuccess("success",$Member[0]);
+                                    ON _tbl_members.ReferedBy=_tbl_franchisees.FranchiseeID where _tbl_members.MemberCode='".$MemberCode."'");
+        
+        $Documents = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$Members[0]['MemberID']."'");               
+        $IDProofs = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$Members[0]['MemberID']."' and DocumentType='Id Proof' order by `DocID` DESC ");               
+        $AddressProofs = $mysql->select("select * from `_tbl_member_documents` where MemberID='".$Members[0]['MemberID']."' and DocumentType='Address Proof' order by `DocID` DESC ");               
+        $CurrentPlan = $mysql->select("select * from `_tbl_profile_credits` where MemberCode='".$MemberCode."' order by `ProfileCreditID` DESC ");               
+        $Plan =  $mysql->select("SELECT *
+                                FROM _tbl_member_plan
+                                LEFT  JOIN _tbl_profile_credits  
+                                ON _tbl_member_plan.PlanCode=_tbl_profile_credits.MemberPlanCode where _tbl_profile_credits.MemberCode='".$MemberCode."'");    
+        $BoardMessage = $mysql->select("select * from `_tbl_board` where ToMemberCode='".$MemberCode."' and BoardID='".$_POST['BoardID']."'");
+        $IndividualSMS = $mysql->select("select * from `_tbl_send_individual_message` where MessageToMemberCode='".$MemberCode."' and ManualSendID='".$_POST['ManualSendID']."' and IsSms='1'");
+        $IndividualEmail = $mysql->select("select * from `_tbl_send_individual_message` where MessageToMemberCode='".$MemberCode."' and ManualSendID='".$_POST['ManualSendID']."' and IsEmail='1'");
+        return Response::returnSuccess("success"."select * from `_tbl_member_documents` where MemberID='".$Members[0]['MemberID']."'",array("MemberInfo"    => $Members[0],
+                                                                                                                                            "Countires"     =>CodeMaster::getData('RegisterAllowedCountries'),
+                                                                                                                                            "Gender"        =>CodeMaster::getData('SEX'),
+                                                                                                                                            "IDProof"       => $IDProofs,
+                                                                                                                                            "AddressProof"  => $AddressProofs,
+                                                                                                                                            "BoardMessage"  => $BoardMessage[0],
+                                                                                                                                            "IndividualSMS"  => $IndividualSMS[0],
+                                                                                                                                            "IndividualEmail"  => $IndividualEmail[0],
+                                                                                                                                            "Plan" => $Plan[0]));
         }
         function SearchMemberDetails() {
             global $mysql,$loginInfo;                                                                      
@@ -1341,10 +1393,9 @@
                                                          CountryCode='".$_POST['CountryCode']."',
                                                          MobileNumber='".$_POST['MobileNumber']."',
                                                          WhatsappCountryCode='".$_POST['WhatsappCountryCode']."',
-                                                         WhatsappNumber='".$_POST['WhatsappNumber']."',
-                                                    IsActive='".$_POST['Status']."' where  MemberID='".$Member[0]['MemberID']."'");
+                                                         WhatsappNumber='".$_POST['WhatsappNumber']."' where  MemberCode='".$_POST['MemberCode']."'");
       
-				$mysql->execute("update _tbl_member_edit set IsAllow='0' where MemberCode='".$Member[0]['MemberCode']."' and `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `FranchiseeStaffID`='".$loginInfo[0]['FranchiseeID']."'");
+				$mysql->execute("update _tbl_member_edit set IsAllow='0' where MemberCode='".$_POST['MemberCode']."' and `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `FranchiseeStaffID`='".$loginInfo[0]['FranchiseeID']."'");
       
       $Member = $mysql->select("select * from _tbl_members where ReferedBy='".$loginInfo[0]['FranchiseeID']."' and  MemberCode='".$_POST['MemberCode']."'");
             
@@ -1352,6 +1403,160 @@
                 return Response::returnSuccess("success",array());
                                                             
     } 
+    function MemberChnPswd() {
+        global $mysql,$loginInfo;
+          $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+            return Response::returnError("Invalid transaction password");   
+            }
+        $Member = $mysql->select("select * from `_tbl_members` where MemberCode='".$_POST['MemberCode']."'");
+            if(!(sizeof($Member)==1)){
+                return Response::returnError("Invalid Member information"); 
+            }
+        if($Member[0]['IsActive']==0){
+                return Response::returnError("Account is deactivated so Could not process"); 
+            }
+        if (isset($_POST['NewPswd'])) {
+                if (strlen(trim($_POST['NewPswd']))<6) {
+                   return Response::returnError("Please enter password more than 6 character "); 
+                }
+                if (strlen(trim($_POST['NewPswd']))!= strlen(trim($_POST['ConfirmNewPswd']))) {
+                   return Response::returnError("Password do not match"); 
+                }
+               
+               $mysql->execute("update _tbl_members set MemberPassword='".$_POST['NewPswd']."' ,ChangePasswordFstLogin='".(($_POST['ChnPswdFstLogin']=="on") ? '1' : '0')."' where `MemberID`='".$Member[0]['MemberID']."' and MemberCode='".$Member[0]['MemberCode']."'");
+                 
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberChangePassword'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#MemberPassword#",$_POST['ConfirmNewPswd'],$content);
+
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "MemberChangePassword",
+                                                "MemberID"      => $Member[0]['MemberID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($Member[0]['MobileNumber']," Dear ".$Member[0]['MemberName'].",Your Login Password has been changed successfully. Your New Login Password is ".$_POST['ConfirmNewPswd']."");   
+                 
+                 return Response::returnSuccess("Success",array());  
+            }
+        
+    }
+    function ResetMemberPassword(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+            return Response::returnError("Invalid transaction password");   
+            }
+        $Member = $mysql->select("select * from `_tbl_members` where MemberCode='".$_POST['MemberCode']."'");
+            if(!(sizeof($Member)==1)){
+                return Response::returnError("Invalid member information"); 
+            }
+        $ResetPasswordlink = md5(time().$Member[0]['MemberCode'].$Member[0]['MobileNumber'].$Member[0]['EmailID']);
+        $Link = DomainPath."ResetPassword.php?link=".$ResetPasswordlink;
+        $date = date_create(date("Y-m-d"));                    
+                $e = "3 days";                
+                date_add($date,date_interval_create_from_date_string($e));
+                $endingdate= date("Y-m-d",strtotime(date_format($date,"Y-m-d")));
+                $endingdate= date_format($date,"Y-m-d");
+         $mysql->insert("_tbl_member_reset_password",array("MemberID"       => $Member[0]['MemberID'],
+                                                           "MemberCode"     => $Member[0]['MemberCode'], 
+                                                           "ResetBy"        => "Franchisee", 
+                                                           "ResetByID"      => $loginInfo[0]['FranchiseeID'], 
+                                                           "ResetByName"    => $txnPwd[0]['PersonName'], 
+                                                           "SmsTo"          => $Member[0]['MobileNumber'], 
+                                                           "EmailTo"        => $Member[0]['EmailID'], 
+                                                           "ResetLink"      => $ResetPasswordlink, 
+                                                           "CreatedOn"      => date("Y-m-d H:i:s"),  
+                                                           "ExpiredOn"      => $endingdate));  
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberResetPassword'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#Link#",$Link,$content);
+                    
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "MemberResetPassword",
+                                                "MemberID"      => $Member[0]['MemberID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+       return Response::returnSuccess("Reset Password Successfully",array());
+    }
+    function ResetMemberMobileNumber(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+            return Response::returnError("Invalid transaction password");   
+            }
+        $Member = $mysql->select("select * from `_tbl_members` where MemberCode='".$_POST['MemberCode']."'");
+            if(!(sizeof($Member)==1)){
+                return Response::returnError("Invalid member information"); 
+            }
+        $ResetMobileNumberlink = md5(time().$Member[0]['MemberCode'].$Member[0]['MobileNumber'].$Member[0]['EmailID']);
+        $Link = DomainPath."ResetMobileNumber.php?link=".$ResetMobileNumberlink;
+        $date = date_create(date("Y-m-d"));                    
+                $e = "3 days";                
+                date_add($date,date_interval_create_from_date_string($e));
+                $endingdate= date("Y-m-d",strtotime(date_format($date,"Y-m-d")));
+                $endingdate= date_format($date,"Y-m-d");
+         $mysql->insert("_tbl_member_reset_mobilenumber",array("MemberID"       => $Member[0]['MemberID'],
+                                                               "MemberCode"     => $Member[0]['MemberCode'], 
+                                                               "ResetBy"        => "Franchisee", 
+                                                               "ResetByID"      => $loginInfo[0]['FranchiseeID'], 
+                                                               "ResetByName"    => $txnPwd[0]['PersonName'], 
+                                                               "SmsTo"          => $Member[0]['MobileNumber'], 
+                                                               "EmailTo"        => $Member[0]['EmailID'], 
+                                                               "ResetLink"      => $ResetMobileNumberlink, 
+                                                               "CreatedOn"      => date("Y-m-d H:i:s"),  
+                                                               "ExpiredOn"      => $endingdate));  
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberResetMobileNumber'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#Link#",$Link,$content);
+                    
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "MemberResetMobileNumber",
+                                                "MemberID"      => $Member[0]['MemberID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+        
+       return Response::returnSuccess("Reset Mobile Number Successfully",array());
+    }
+    function ResetMemberEmailID(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+            return Response::returnError("Invalid transaction password");   
+            }
+        $Member = $mysql->select("select * from `_tbl_members` where MemberCode='".$_POST['MemberCode']."'");
+            if(!(sizeof($Member)==1)){
+                return Response::returnError("Invalid member information"); 
+            }
+        $ResetEmailIDlink = md5(time().$Member[0]['MemberCode'].$Member[0]['MobileNumber'].$Member[0]['EmailID']);
+        $Link = DomainPath."ResetEmailID.php?link=".$ResetEmailIDlink;
+        $date = date_create(date("Y-m-d"));                    
+                $e = "3 days";                
+                date_add($date,date_interval_create_from_date_string($e));
+                $endingdate= date("Y-m-d",strtotime(date_format($date,"Y-m-d")));
+                $endingdate= date_format($date,"Y-m-d");
+              $mysql->insert("_tbl_member_reset_emailid",array("MemberID"       => $Member[0]['MemberID'],
+                                                               "MemberCode"     => $Member[0]['MemberCode'], 
+                                                               "ResetBy"        => "Franchisee", 
+                                                               "ResetByID"      => $loginInfo[0]['FranchiseeID'], 
+                                                               "ResetByName"    => $txnPwd[0]['PersonName'], 
+                                                               "SmsTo"          => $Member[0]['MobileNumber'], 
+                                                               "EmailTo"        => $Member[0]['EmailID'], 
+                                                               "ResetLink"      => $ResetEmailIDlink, 
+                                                               "CreatedOn"      => date("Y-m-d H:i:s"),  
+                                                               "ExpiredOn"      => $endingdate));  
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberResetEmailID'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#Link#",$Link,$content);
+                    
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "MemberResetEmailID",
+                                                "MemberID"      => $Member[0]['MemberID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+        
+       return Response::returnSuccess("Reset EmailID Successfully",array());
+    }
     function RefillWallet(){
            global $mysql,$loginInfo;    
               
@@ -4123,29 +4328,32 @@
              return Response::returnSuccess("success",array("WalletBalance" => number_format($this->getAvailableBalance(),2)));
          }
          
+          
          function GetMemberWalletAndProfileDetails() {
              
              global $mysql,$loginInfo;
+             
+             $Mem = $mysql->select("select * from _tbl_members where MemberCode='".$_POST['MCode']."'");
           
             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="WalletRequests") {
-                 $Requests = $mysql->select("select * from `_tbl_wallet_bankrequests` where `MemberID`='".$_POST['Code']."' and `IsMember`='1' order by `ReqID` DESC");
+                 $Requests = $mysql->select("select * from `_tbl_wallet_bankrequests` where `MemberID`='".$Mem[0]['MemberID']."' and `IsMember`='1' order by `ReqID` DESC");
              return Response::returnSuccess("success",$Requests);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="WalletTransactions") {
-                 $Requests = $mysql->select("select * from `_tbl_wallet_transactions` where `MemberID`='".$_POST['Code']."' and `IsMember`='1' order by `TxnID` DESC");
+                 $Requests = $mysql->select("select * from `_tbl_wallet_transactions` where `MemberID`='".$Mem[0]['MemberID']."' and `IsMember`='1' order by `TxnID` DESC");
              return Response::returnSuccess("success",$Requests);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Order") {
-                 $Requests = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$_POST['Code']."' order by `OrderID` DESC");
+                 $Requests = $mysql->select("select * from `_tbl_orders` where `OrderByMemberID`='".$Mem[0]['MemberID']."' order by `OrderID` DESC");
              return Response::returnSuccess("success",$Requests);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Invoice") {
-                 $Requests = $mysql->select("select * from `_tbl_invoices` where `MemberID`='".$_POST['Code']."' order by `InvoiceID` DESC");
+                 $Requests = $mysql->select("select * from `_tbl_invoices` where `MemberID`='".$Mem[0]['MemberID']."' order by `InvoiceID` DESC");
              return Response::returnSuccess("success",$Requests);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Recentlyviewed") {
                 
-                 $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$_POST['Code']."' order by LastSeenID DESC");
+                 $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterMemberID` = '".$Mem[0]['MemberID']."' order by LastSeenID DESC");
                      $profileCodes  = array();
                      foreach($RecentProfiles as $RecentProfile) {
                          if (!(in_array($RecentProfile['ProfileCode'], $profileCodes)))
@@ -4164,12 +4372,20 @@
              return Response::returnSuccess("success",$Profiles);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="LoginLogs") {
-                 $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$_POST['Code']."' ORDER BY `LoginID` DESC LIMIT 0,10");
+                 $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$Mem[0]['MemberID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
              return Response::returnSuccess("success",$LoginHistory);
              }
              if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="Activities") {
-                 $Activities = $mysql->select("select * from `_tbl_logs_activity` where `MemberID`='".$_POST['Code']."' ORDER BY `ActivityID` DESC LIMIT 0,5");
+                 $Activities = $mysql->select("select * from `_tbl_logs_activity` where `MemberID`='".$Mem[0]['MemberID']."' ORDER BY `ActivityID` DESC LIMIT 0,5");
              return Response::returnSuccess("success",$Activities);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="EmailLog") {
+                 $EmailLog = $mysql->select("select * from `_tbl_logs_email` where `MemberID`='".$Mem[0]['MemberID']."' ORDER BY `EmailLogID` DESC LIMIT 0,5");
+             return Response::returnSuccess("success",$EmailLog);
+             }
+             if (isset($_POST['DetailFor']) && $_POST['DetailFor']=="SMSLog") {
+                 $SMSLog = $mysql->select("select * from `_tbl_logs_mobilesms` where `MemberID`='".$Mem[0]['MemberID']."' ORDER BY `ReqID` DESC LIMIT 0,5");
+             return Response::returnSuccess("success",$SMSLog);
              }
          }
          function GetMemberOrderInvoiceReceiptDetails() {
