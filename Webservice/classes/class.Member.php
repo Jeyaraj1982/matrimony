@@ -4704,7 +4704,7 @@
                                                             
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has send interest request.");                                               
          }
-         
+                    
          public function DeleteOccupationAttachmentOnly() {
              
              global $mysql,$loginInfo;
@@ -5165,7 +5165,7 @@
                                                              "Invoice" =>$Invoice[0],
                                                              "Receipt" =>$Receipt[0]));
          }
-
+                
          public function CancelOrder() {
 
              global $mysql,$loginInfo;
@@ -5288,7 +5288,7 @@
                                                         "ViewedOn"          => date("Y-m-d H:i:s")));
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has remove shorlist.");      
           }
- 
+                
 	    public function SendOtpForEditSubmittedProfile($errormessage="",$otpdata="",$reqID="",$ProfileCode="") {
         global $mysql,$mail,$loginInfo;      
         
@@ -5406,7 +5406,7 @@
                  return $this->SendOtpForEditSubmittedProfile("<span style='color:red'>Invalid verification code.</span>",$_POST['EditOtp'],$_POST['reqId'],$_POST['ProfileCode']);
             } 
 	}
-	
+	            
 	    public function ResendSendOtpForSubmittedProfileProfileForEdit($errormessage="",$otpdata="",$reqID="",$ProfileCode="") {
         
 		global $mysql,$mail,$loginInfo;   
@@ -5543,47 +5543,88 @@
 
              return Response::returnSuccess("New Password saved successfully",$data[0]);  
          }
-    function CheckResetMobileNumberDetails() {
+    function CheckChangeMobileNumberDetails() {
         global $mysql,$loginInfo;
-         $Reset = $mysql->select("select * from `_tbl_member_reset_mobilenumber` where `ResetLink`='".$_POST['link']."'");
-         return Response::returnSuccess("Success".$_POST['link'],array("Reset" => $Reset));
+        
+         $Reset = $mysql->select("select * from `_tbl_member_reset_mobilenumber` where `ResetLink`='".$_POST['link']."' ");
+            if($Reset[0]['ExpiredOn'] < date("Y-m-d H:i:s")){
+               return Response::returnError("Your requested link has been expired"); 
+            }
+            elseif($Reset[0]['IsUsed']==1){
+               return Response::returnError("Your requested link has been used"); 
+            }
+            else {
+         return Response::returnSuccess("success");
+            }
+         
     }
-    public function ResetMobileNumberSave(){
+    public function ReqToChangeMobileNumber() {
 
-             global $mysql;
-             $data = $mysql->select("Select * from `_tbl_member_reset_mobilenumber` where `ResetLink`='".$_POST['link']."' ");
+             global $mysql;            
+             $data = $mysql->select("Select * from `_tbl_member_reset_mobilenumber` where `ResetLink`='".$_POST['link']."'");
+             $member = $mysql->select("Select * from `_tbl_members` where `MemberCode`='".$data[0]['MemberCode']."'");
+                if (sizeof($member)==0){
+                    return Response::returnError("Account not found");
+                }
+             
              $Ddata = $mysql->select("select * from `_tbl_members` where  `MobileNumber`='".$_POST['MobileNumber']."' and MemberID<>'".$data[0]['MemberID']."'");
              if (sizeof($Ddata)>0) {
-                return Response::returnError("Mobile Number Already Exists");
+                return Response::returnError("Email Address Already Exists");
              }
-             $sqlQry ="update _tbl_members set `MobileNumber`='".$_POST['MobileNumber']."',`IsMobileVerified`='0' where `MemberID`='".$data[0]['MemberID']."' and MemberCode='".$data[0]['MemberCode']."'";
-             $mysql->execute($sqlQry);
-             $mysql->execute("update `_tbl_member_reset_mobilenumber` set `IsUsed`='1',`UsedOn`='".date("Y-m-d H:i:s")."'  where `ResetLink`='".$_POST['link']."' ");
-               
-             $data = $mysql->select("select * from `_tbl_members` where  MemberID='".$data[0]['MemberID']."'");
              
+             $otp=rand(1000,9999);
+             $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
+                                                                          "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                          "EmailTo"       =>$member[0]['EmailID'],
+                                                                          "CountryCode"   =>$_POST['CountryCode'],
+                                                                          "SMSTo"         =>$_POST['MobileNumber'],
+                                                                          "SecurityCode"  =>$otp,
+                                                                          "Type"          =>"ChangeMobileNumberOtp",
+                                                                          "messagedon"    =>date("Y-m-d h:i:s"))) ;
+            MobileSMSController::sendSMS($_POST['MobileNumber']," Dear ".$member[0]['MemberName'].",".$otp."");
+            
+                return Response::returnSuccess("Sms sent successfully",array("reqID"=>$securitycode,"MobileNumber"=>$_POST['MobileNumber'],"CountryCode"=>$_POST['CountryCode']));
+         }
+         public function ReqToChangeMobileNumberSave() {
+
+         global $mysql;
+         
+         $data = $mysql->select("Select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqID']."' ");
+         $member = $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."' ");
+             if (sizeof($data)>0) {
+                 if ($data[0]['SecurityCode']==$_POST['scode']) {
+                    $sqlQry ="update _tbl_members set `CountryCode`='".$_POST['CountryCode']."',`MobileNumber`='".$_POST['MobileNumber']."',`IsMobileVerified`='1', `MobileVerifiedOn`='".date("Y-m-d H:i:s")."' where `MemberID`='".$member[0]['MemberID']."' and MemberCode='".$member[0]['MemberCode']."'";
+                    $mysql->execute($sqlQry);
+                    $mysql->execute("update `_tbl_member_reset_mobilenumber` set `IsUsed`='1',`UsedOn`='".date("Y-m-d H:i:s")."'  where `ResetLink`='".$_POST['link']."' ");
+           
                     $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberChangeMobileNumber'");
                     $content  = str_replace("#MemberName#",$data[0]['MemberName'],$mContent[0]['Content']);
 
-                     MailController::Send(array("MailTo"         => $data[0]['EmailID'],
+                     MailController::Send(array("MailTo"         => $member[0]['EmailID'],
                                                 "Category"       => "MemberChangeMobileNumber",
-                                                "MemberCode"      => $data[0]['MemberCode'],
+                                                "MemberCode"      => $member[0]['MemberCode'],
                                                 "Subject"        => $mContent[0]['Title'],
                                                 "Message"        => $content),$mailError);
-                     MobileSMSController::sendSMS($data[0]['MobileNumber']," Dear ".$data[0]['MemberName'].",Your Mobile Number has been changed successfully");  
-             
-             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $data[0]['MemberID'],
-                                                             "ActivityType"   => 'ResetMobileNumber.',
-                                                             "ActivityString" => 'Reset Mobile Number.',
-                                                             "SqlQuery"       => base64_encode($sqlQry),
-                                                             "ActivityDoneBy" => 'M',
-                                                             "ActivityDoneByCode" =>$data[0]['MemberCode'],
-                                                             "ActivityDoneByName" =>$data[0]['MemberName'],
-                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
+                     MobileSMSController::sendSMS($_POST['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Mobile Number has been changed successfully");  
+         
+         $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                         "ActivityType"   => 'ChangeMobileNumber.',
+                                                         "ActivityString" => 'Change Mobile Number.',
+                                                         "SqlQuery"       => base64_encode($sqlQry),
+                                                         "ActivityDoneBy" => 'M',
+                                                         "ActivityDoneByCode" =>$member[0]['MemberCode'],
+                                                         "ActivityDoneByName" =>$member[0]['MemberName'],
+                                                         "ActivityOn"     => date("Y-m-d H:i:s")));
 
-             return Response::returnSuccess("New Mobile Number saved successfully",$data[0]);  
-         }
-    function CheckResetEmailIDDetails() {
+         return Response::returnSuccess("New Mobile Number saved successfully",$data[0]);  
+                 } else {
+                     return  Response::returnError("Invalid Verification Code.");
+                 }
+                 
+     }
+     }
+    
+    function CheckChangeEmailIDDetails() {
         global $mysql;
         
          $Reset = $mysql->select("select * from `_tbl_member_reset_emailid` where `ResetLink`='".$_POST['link']."' ");
@@ -5598,7 +5639,7 @@
             }
          
     }
-    public function ResetEmailID() {
+    public function ReqToChangeEmail() {
 
              global $mysql,$mail;            
              $data = $mysql->select("Select * from `_tbl_member_reset_emailid` where `ResetLink`='".$_POST['link']."'");
@@ -5618,15 +5659,15 @@
                                                                           "EmailTo"       =>$_POST['EmailID'],
                                                                           "SMSTo"         =>$member[0]['MobileNumber'],
                                                                           "SecurityCode"  =>$otp,
-                                                                          "Type"          =>"ResetEmailIDOtp",
+                                                                          "Type"          =>"ChangeEmailIDOtp",
                                                                           "messagedon"    =>date("Y-m-d h:i:s"))) ;
 
-             $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberResetEmailIDVerificationCode'");
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberChangeEmailIDVerificationCode'");
              $content  = str_replace("#MemberName#",$data[0]['MemberName'],$mContent[0]['Content']);
              $content  = str_replace("#otp#",$otp,$content);
 
              MailController::Send(array("MailTo"   => $_POST['EmailID'],
-                                        "Category" => "MemberResetEmailIDVerificationCode",
+                                        "Category" => "MemberChangeEmailIDVerificationCode",
                                         "MemberID" => $data[0]['MemberID'],                 
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
@@ -5637,7 +5678,7 @@
                 return Response::returnSuccess("Email sent successfully",array("reqID"=>$securitycode,"email"=>$_POST['EmailID']));
              }
          }
-     public function ResetEmailIDSave() {
+     public function ReqToChangeEmailSave() {
 
          global $mysql;
          
@@ -5645,7 +5686,7 @@
          $member = $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."' ");
              if (sizeof($data)>0) {
                  if ($data[0]['SecurityCode']==$_POST['scode']) {
-                    $sqlQry ="update _tbl_members set `EmailID`='".$_POST['EmailID']."',`IsEmailVerified`='0' where `MemberID`='".$member[0]['MemberID']."' and MemberCode='".$member[0]['MemberCode']."'";
+                    $sqlQry ="update _tbl_members set `EmailID`='".$_POST['EmailID']."',`IsEmailVerified`='1',`EmailVerifiedOn`='".date("Y-m-d H:i:s")."' where `MemberID`='".$member[0]['MemberID']."' and MemberCode='".$member[0]['MemberCode']."'";
                     $mysql->execute($sqlQry);
                     $mysql->execute("update `_tbl_member_reset_emailid` set `IsUsed`='1',`UsedOn`='".date("Y-m-d H:i:s")."'  where `ResetLink`='".$_POST['link']."' ");
            
@@ -5660,8 +5701,8 @@
                      MobileSMSController::sendSMS($data[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Email ID has been changed successfully");  
          
          $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
-                                                         "ActivityType"   => 'ResetEmailID.',
-                                                         "ActivityString" => 'Reset EmailID.',
+                                                         "ActivityType"   => 'ChangeEmailID.',
+                                                         "ActivityString" => 'Change EmailID.',
                                                          "SqlQuery"       => base64_encode($sqlQry),
                                                          "ActivityDoneBy" => 'M',
                                                          "ActivityDoneByCode" =>$member[0]['MemberCode'],
@@ -5674,7 +5715,7 @@
                  }
                  
      }
-     }
+     }         
          public function SendOtpForPayNow($errormessage="",$otpdata="",$reqID="",$MemberID="") {
             global $mysql,$mail,$loginInfo;      
         
@@ -6076,6 +6117,25 @@
                  return Response::returnError("Invalid verification code.",array("securitycode"=>$otpInfo[0]['RequestID'],"EmailID"=>$otpInfo[0]['EmailTo']));
                 } 
         }
+        public function RequestAction() {
+
+             global $mysql,$mail;            
+
+             if (Validation::isEmail($_POST['FpUserName'])) {
+                $data = $mysql->select("Select * from `_tbl_members` where `EmailID`='".$_POST['FpUserName']."'");
+                if (sizeof($data)==0){
+                    return Response::returnError("Account not found");
+                }
+             } else {
+                $data = $mysql->select("Select * from `_tbl_members` where `MemberCode`='".$_POST['FpUserName']."'");    
+                if (sizeof($data)==0){
+                    return Response::returnError("Account not found");
+                }
+             }
+
+                return  Response::returnError("Error: unable to process your request.");
+               // return Response::returnSuccess("Email sent successfully",array("reqID"=>$securitycode,"email"=>$data[0]['EmailID']));
+         }
         
     
  }  
@@ -6092,10 +6152,10 @@
 //ChangeEmailFromVerificationScreen
 //ChangeEmailID    EmailVerificationForm    
 //EmailOTPVerification 
- //OverallSendOtp 
- //ViewProfileOTPVerification  
- //VerifyProfileforPublish  
- //SendOtpForProfileforPublish
+//OverallSendOtp 
+//ViewProfileOTPVerification  
+//VerifyProfileforPublish  
+//SendOtpForProfileforPublish
 //ResendSendOtpForProfileforPublish 
 //DeleteProfile 
 //DeleteAttach
@@ -6106,5 +6166,12 @@
 //RequestToshowUpgrades   
 //ResendMobileNumberVerificationForm  
 //HideLatestUpdates
+//DeleteOccupationAttachmentOnly, 
+//ResendSendOtpForPayNow, 
+//SendOtpForPayNow,
+//ResendSendOtpForSubmittedProfileProfileForEdit, 
+//SendOtpForEditSubmittedProfile, 
+//CancelOrder
+//6150
 ?>                                                            
   

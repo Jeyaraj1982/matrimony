@@ -3505,10 +3505,17 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              $d = $mysql->select("select (sum(Credits)-sum(Debits)) as bal from  _tbl_wallet_transactions where MemberID='".$memberid."'");
              return isset($d[0]['bal']) ? $d[0]['bal'] : 0;      
          }
-     function ApproveBankWalletRequest() {
+     function AproveMemberBankReq() {
 
              global $mysql,$loginInfo;
-             $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['Code']."'");
+             
+             $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+                if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                    return Response::returnError("Invalid transaction password");   
+                }
+            
+             $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['ReqID']."'");
+             $member = $mysql->select("select * from  `_tbl_members` where MemberID='".$Requests[0]['MemberID']."'");
              
            /* $member = $mysql->select("select * from  `_tbl_members` where MemberID='".$Requests[0]['MemberID']."'");
              
@@ -3524,31 +3531,55 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear '".$member[0]['MemberName']."' your wallet request has been approved");*/ 
             
                $id=$mysql->insert("_tbl_wallet_transactions",array("MemberID"         =>$Requests[0]['MemberID'],
-                                                                     "Particulars"      =>'Add To Wallet',                    
-                                                                     "Credits"          =>$Requests[0]['RefillAmount'],                    
-                                                                     "Debits"           =>"0", 
-                                                                     "AvailableBalance" =>$this->getAvailableBalance($Requests[0]['MemberID'])+$Requests[0]['RefillAmount'],                   
-                                                                     "RequestID"        =>$Requests[0]['RequestID'],                    
-                                                                     "TxnDate"          =>date("Y-m-d H:i:s"),
-                                                                     "IsMember"          =>"1")); 
+                                                                   "Particulars"      =>'Add To Wallet',                    
+                                                                   "Credits"          =>$Requests[0]['RefillAmount'],                    
+                                                                   "Debits"           =>"0", 
+                                                                   "AvailableBalance" =>$this->getAvailableBalance($Requests[0]['MemberID'])+$Requests[0]['RefillAmount'],                   
+                                                                   "RequestID"        =>$Requests[0]['RequestID'],                    
+                                                                   "TxnDate"          =>date("Y-m-d H:i:s"),
+                                                                   "IsMember"          =>"1")); 
               $updateSql = "update `_tbl_wallet_bankrequests` set `IsApproved` = '1',
                                                                   `ApprovedOn` ='".date("Y-m-d H:i:s")."', 
+                                                                  `ApprovedRemarks` = '".$_POST['ApproveReason']."',
                                                                   `IsRejected` = '0',
                                                                   `RejectedOn` ='".date("Y-m-d H:i:s")."' 
-                                                                   where `ReqID`='".$_POST['Code']."'";
+                                                                   where `ReqID`='".$_POST['ReqID']."'";
               $mysql->execute($updateSql);  
              if (sizeof($id)>0) {
-                 return Response::returnSuccess("success",array("sql"=>$mysql->qry));
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='ApprovedMemberBankWalletRequest'");
+                    $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+
+                    MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                                "Category" => "ApprovedMemberBankWalletRequest",
+                                                "MemberID" => $member[0]['MemberID'],
+                                                "Subject"  => $mContent[0]['Title'],
+                                                "Message"  => $content),$mailError);
+                    MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your bank wallet request has been approved"); 
+                      
+                   $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                                  "ActivityType"   => 'ApproveMemberBankWalletRequest.',
+                                                                  "ActivityString" => 'Approve Member Bank Wallet Request.',
+                                                                  "SqlQuery"       => base64_encode($sqlQry),
+                                                                  "ActivityDoneBy" => 'A',
+                                                                  "ActivityDoneByCode" =>$txnPwd[0]['AdminCode'],
+                                                                  "ActivityDoneByName" =>$txnPwd[0]['AdminName'],
+                                                                  "ActivityOn"     => date("Y-m-d H:i:s")));
+            
+                    return Response::returnSuccess("successfully Approved",array());
              } else{
                  return Response::returnError("Access denied. Please contact support");   
              }
          }
-         function RejectBankWalletRequest() {
+         function RejectMemberBankReq() {
 
              global $mysql,$loginInfo;
-             $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['Code']."'"); 
-             
-             $member = $mysql->select("select * from  `_tbl_members` where MemberID='".$Requests[0]['MemberID']."'");
+             $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+                if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                    return Response::returnError("Invalid transaction password");   
+                }
+            
+             $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['ReqID']."'");
+             $member = $mysql->select("select * from  `_tbl_members` where MemberID='".$Requests[0]['MemberID']."'"); 
              
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='RejectWalletRequest'");
              $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
@@ -3564,8 +3595,9 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
               $updateSql = "update `_tbl_wallet_bankrequests` set `IsApproved` = '0',
                                                                   `ApprovedOn` ='".date("Y-m-d H:i:s")."', 
                                                                   `IsRejected` = '1',
+                                                                  `RejectedRemarks` = '".$_POST['RejectReason']."',
                                                                   `RejectedOn` ='".date("Y-m-d H:i:s")."' 
-                                                                   where `ReqID`='".$_POST['Code']."'";
+                                                                   where `ReqID`='".$_POST['ReqID']."'";
               $mysql->execute($updateSql);  
                  return Response::returnSuccess("success",array("sql"=>$mysql->qry));
            
@@ -3573,7 +3605,11 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
          function ApproveFranchiseeBankWalletRequest() {
 
              global $mysql,$loginInfo;
-             $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['Code']."'"); 
+             $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+                if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                    return Response::returnError("Invalid transaction password");   
+                }
+             $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['ReqID']."'"); 
              
              $franchisee = $mysql->select("select * from  `_tbl_franchisees` where FranchiseeID='".$Requests[0]['FranchiseeID']."'");
              
@@ -3597,10 +3633,11 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                                                    "TxnDate"          =>date("Y-m-d H:i:s"),
                                                                    "IsMember"         =>"0")); 
               $updateSql = "update `_tbl_wallet_bankrequests` set `IsApproved` = '1',
+                                                                   `ApprovedRemarks` = '".$_POST['ApproveReason']."', 
                                                                   `ApprovedOn` ='".date("Y-m-d H:i:s")."', 
                                                                   `IsRejected` = '0',
                                                                   `RejectedOn` ='".date("Y-m-d H:i:s")."' 
-                                                                   where `ReqID`='".$_POST['Code']."'";
+                                                                   where `ReqID`='".$_POST['ReqID']."'";
               $mysql->execute($updateSql);  
              if (sizeof($id)>0) {
                  return Response::returnSuccess("success",array("sql"=>$mysql->qry));
@@ -3611,7 +3648,11 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
          function RejectFranchiseeBankWalletRequest() {
 
              global $mysql,$loginInfo;
-             $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['Code']."'"); 
+             $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+                if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                    return Response::returnError("Invalid transaction password");   
+                }
+             $Requests = $mysql->select("select * from  `_tbl_wallet_bankrequests` where ReqID='".$_POST['ReqID']."'"); 
              
               $franchisee = $mysql->select("select * from  `_tbl_franchisees` where FranchiseeID='".$Requests[0]['FranchiseeID']."'");
              
@@ -3629,8 +3670,9 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
               $updateSql = "update `_tbl_wallet_bankrequests` set `IsApproved` = '0',
                                                                   `ApprovedOn` ='".date("Y-m-d H:i:s")."', 
                                                                   `IsRejected` = '1',
+                                                                  `RejectedRemarks` = '".$_POST['RejectReason']."',
                                                                   `RejectedOn` ='".date("Y-m-d H:i:s")."' 
-                                                                   where `ReqID`='".$_POST['Code']."'";
+                                                                   where `ReqID`='".$_POST['ReqID']."'";
               $mysql->execute($updateSql);  
                  return Response::returnSuccess("success",array("sql"=>$mysql->qry));
            
@@ -7108,6 +7150,84 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                             "CreatedOn"       => date("Y-m-d H:i:s")));
        return Response::returnSuccess("Success",array());
     }
+    function ChangeMemberMobileNumber(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+            return Response::returnError("Invalid transaction password");   
+            }
+        $Member = $mysql->select("select * from `_tbl_members` where MemberCode='".$_POST['MemberCode']."'");
+            if(!(sizeof($Member)==1)){
+                return Response::returnError("Invalid member information"); 
+            }
+        $ResetMobileNumberlink = md5(time().$Member[0]['MemberCode'].$Member[0]['MobileNumber'].$Member[0]['EmailID']);
+        $Link = DomainPath."ChangeMobileNumber.php?link=".$ResetMobileNumberlink;
+        $date = date_create(date("Y-m-d"));                    
+                $e = "3 days";                
+                date_add($date,date_interval_create_from_date_string($e));
+                $endingdate= date("Y-m-d",strtotime(date_format($date,"Y-m-d")));
+                $endingdate= date_format($date,"Y-m-d");
+         $mysql->insert("_tbl_member_reset_mobilenumber",array("MemberID"       => $Member[0]['MemberID'],
+                                                               "MemberCode"     => $Member[0]['MemberCode'], 
+                                                               "ResetBy"        => "Admin", 
+                                                               "ResetByID"      => $loginInfo[0]['AdminID'], 
+                                                               "ResetByName"    => $txnPwd[0]['AdminName'], 
+                                                               "SmsTo"          => $Member[0]['MobileNumber'], 
+                                                               "EmailTo"        => $Member[0]['EmailID'], 
+                                                               "ResetLink"      => $ResetMobileNumberlink, 
+                                                               "CreatedOn"      => date("Y-m-d H:i:s"),  
+                                                               "ExpiredOn"      => $endingdate));  
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberChangeMobileNumberFromAdmin'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#Link#",$Link,$content);
+                    
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "MemberChangeMobileNumber",
+                                                "MemberID"      => $Member[0]['MemberID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+        
+       return Response::returnSuccess("Change Mobile Number Successfully",array());
+    }
+    function ChangeMemberEmailID(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+            return Response::returnError("Invalid transaction password");   
+            }
+        $Member = $mysql->select("select * from `_tbl_members` where MemberCode='".$_POST['MemberCode']."'");
+            if(!(sizeof($Member)==1)){
+                return Response::returnError("Invalid member information"); 
+            }
+        $ResetEmailIDlink = md5(time().$Member[0]['MemberCode'].$Member[0]['MobileNumber'].$Member[0]['EmailID']);
+        $Link = DomainPath."ChangeEmailID.php?link=".$ResetEmailIDlink;
+        $date = date_create(date("Y-m-d"));                    
+                $e = "3 days";                
+                date_add($date,date_interval_create_from_date_string($e));
+                $endingdate= date("Y-m-d",strtotime(date_format($date,"Y-m-d")));
+                $endingdate= date_format($date,"Y-m-d");
+              $mysql->insert("_tbl_member_reset_emailid",array("MemberID"       => $Member[0]['MemberID'],
+                                                               "MemberCode"     => $Member[0]['MemberCode'], 
+                                                               "ResetBy"        => "Admin", 
+                                                               "ResetByID"      => $loginInfo[0]['AdminID'], 
+                                                               "ResetByName"    => $txnPwd[0]['AdminName'], 
+                                                               "SmsTo"          => $Member[0]['MobileNumber'], 
+                                                               "EmailTo"        => $Member[0]['EmailID'], 
+                                                               "ResetLink"      => $ResetEmailIDlink, 
+                                                               "CreatedOn"      => date("Y-m-d H:i:s"),  
+                                                               "ExpiredOn"      => $endingdate));  
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberChangeEmailIDFromAdmin'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#Link#",$Link,$content);
+                    
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "MemberChangeEmailIDFromAdmin",
+                                                "MemberID"      => $Member[0]['MemberID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                                                                                                                     
+       return Response::returnSuccess("Change EmailID Successfully",array());
+    }
     function DATOnObservationModefrSumbitedProfile(){
         global $mysql,$loginInfo;
          $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
@@ -7247,6 +7367,501 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnSuccess("success",$mysql->select("select * From `_tbl_board` where ToMemberCode='".$_POST['Code']."'"));    
              }                                                                                                                                                                             
          }
+         function GetManageRequests() {
+           
+             global $mysql,$loginInfo;
+             
+              $sql = "select * from _tbl_franchisee_requests";
+
+              if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+                 return Response::returnSuccess("success",$mysql->select($sql." where IsDeactive='2'"));    
+             }
+              if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
+                 return Response::returnSuccess("success",$mysql->select($sql." where IsDeactive='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Delete") {
+                 return Response::returnSuccess("success",$mysql->select($sql." where IsDelete='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Restore") {
+                 return Response::returnSuccess("success",$mysql->select($sql." where IsDelete='2'"));    
+             }
+         }
+         function ViewDeactiveMemberRequest(){
+              global $mysql,$loginInfo;    
+               $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+               if(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword']))  {
+                     echo "<script>location.href='".AppPath."Members/ViewMemberDeactiveRequest/".$_POST['ReqID'].".html'</script>";
+                
+                } else {
+                    return Response::returnError("Invalid transaction password");
+                }
+         }
+         function ViewActiveMemberRequest(){
+              global $mysql,$loginInfo;    
+               $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+               if(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword']))  {
+                     echo "<script>location.href='".AppPath."Members/ViewMemberActiveRequest/".$_POST['ReqID'].".html'</script>";
+                
+                } else {
+                    return Response::returnError("Invalid transaction password");
+                }
+         }
+         function ViewRestoreMemberRequest(){
+              global $mysql,$loginInfo;    
+               $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+               if(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword']))  {
+                     echo "<script>location.href='".AppPath."Members/ViewMemberRestoreRequest/".$_POST['ReqID'].".html'</script>";
+                
+                } else {
+                    return Response::returnError("Invalid transaction password");
+                }
+         }
+         
+         function MemberRequestFromFranchiseeInfo() {        
+           global $mysql;    
+            $Request = $mysql->select("select * from _tbl_franchisee_requests where ReqID='".$_POST['Code']."'");
+            $Members = $mysql->select("select * from _tbl_members where MemberCode='".$Request[0]['MemberCode']."'");
+            $Franchisees = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$Request[0]['RequestByID']."'");
+            return Response::returnSuccess("success",array("Request"    => $Request[0],
+                                                            "Member"    => $Members[0],
+                                                            "Franchisee"    => $Franchisees[0]));
+    }
+    function AproveMemberDeactiveReq() {
+
+            global $mysql,$mail,$loginInfo; 
+                
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+            
+            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            
+            if($data[0]['IsVerified']==1) {
+                return Response::returnError("Request already approved");
+            }
+            
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+            
+            $mysql->execute("update _tbl_members set IsActive='0',DeactiveRequest='0',DeactivatedOn='".date("Y-m-d H:i:s")."' where MemberCode='".$member[0]['MemberCode']."'");
+            
+            $mysql->execute("update _tbl_franchisee_requests set IsVerified='1',
+                                                                 Remarks='".$_POST['ApproveReason']."',
+                                                                 VerifiedOn='".date("Y-m-d H:i:s")."',
+                                                                 IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
+                                                                 IsVerifiedByCode='".$txnPwd[0]['AdminCode']."' 
+                                                                 where  ReqID='".$data[0]['ReqID']."'");
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='DeactivateMember'");
+            $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+
+            MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "DeactivateMember",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+            MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your account has been deactivated"); 
+            
+                $mysql->insert("_tbl_franchisee_req_verification",array("ToFranchiseeID"    => $data[0]['RequestByID'],
+                                                                        "ToFranchiseeCode"  => $data[0]['RequestByCode'],
+                                                                        "Message"           => "Member (".$member[0]['MemberCode'].") account deactive request has been approved",
+                                                                        "VerifiedOn"        => date("Y-m-d H:i:s"),
+                                                                        "VerifiedByID"      => $txnPwd[0]['AdminID'],
+                                                                        "VerifiedByCode"    => $txnPwd[0]['AdminCode']));
+           
+           $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                         "ActivityType"   => 'ApproveMemberDeactiveRequestFromFranchisee.',
+                                                         "ActivityString" => 'Approve Member Deactive Request From Franchisee.',
+                                                         "SqlQuery"       => base64_encode($sqlQry),
+                                                         "ActivityDoneBy" => 'A',
+                                                         "ActivityDoneByCode" =>$txnPwd[0]['AdminCode'],
+                                                         "ActivityDoneByName" =>$txnPwd[0]['AdminName'],
+                                                         "ActivityOn"     => date("Y-m-d H:i:s")));
+    
+            return Response::returnSuccess("successfully Approved",array());
+            
+
+    }
+    function RejectMemberDeactiveReq() {
+
+            global $mysql,$mail,$loginInfo; 
+                
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+            
+            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            
+            if($data[0]['IsVerified']==1) {
+                return Response::returnError("Request already Proccesed");
+            }
+            
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+            
+            $mysql->execute("update _tbl_members set IsActive='1',DeactiveRequest='0' where MemberCode='".$member[0]['MemberCode']."'");
+            
+            $mysql->execute("update _tbl_franchisee_requests set IsVerified='2',
+                                                                 Remarks='".$_POST['RejectReason']."',
+                                                                 VerifiedOn='".date("Y-m-d H:i:s")."',
+                                                                 IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
+                                                                 IsVerifiedByCode='".$txnPwd[0]['AdminCode']."' 
+                                                                 where  ReqID='".$data[0]['ReqID']."'");
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='AdminRejectedMemberDeactiveRequestFromFranchisee'");
+            $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#FrCode#",$data[0]['RequestByCode'],$content);
+            MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "AdminRejectedMemberDeactiveRequestFromFranchisee",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+            MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your account deactivate request from franchisee(".$data[0]['RequestByCode'].") has been rejected."); 
+            
+                $mysql->insert("_tbl_franchisee_req_verification",array("ToFranchiseeID"    => $data[0]['RequestByID'],
+                                                                        "ToFranchiseeCode"  => $data[0]['RequestByCode'],
+                                                                        "Message"           => "Member (".$member[0]['MemberCode'].") account deactive request has been rejected",
+                                                                        "VerifiedOn"        => date("Y-m-d H:i:s"),
+                                                                        "VerifiedByID"      => $txnPwd[0]['AdminID'],
+                                                                        "VerifiedByCode"    => $txnPwd[0]['AdminCode']));
+                $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                         "ActivityType"   => 'RejectMemberDeactiveRequestFromFranchisee.',
+                                                         "ActivityString" => 'Reject Member Deactive Request From Franchisee.',
+                                                         "SqlQuery"       => base64_encode($sqlQry),
+                                                         "ActivityDoneBy" => 'A',
+                                                         "ActivityDoneByCode" =>$txnPwd[0]['AdminCode'],
+                                                         "ActivityDoneByName" =>$txnPwd[0]['AdminName'],
+                                                         "ActivityOn"     => date("Y-m-d H:i:s")));
+           
+            return Response::returnSuccess("successfully Rejected",array());
+    }
+    function AproveMemberActiveReq() {
+
+            global $mysql,$mail,$loginInfo; 
+                
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+            
+            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            
+            if($data[0]['IsVerified']==1) {
+                return Response::returnError("Request already approved");
+            }
+            
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+            
+            $mysql->execute("update _tbl_members set IsActive='1',DeactiveRequest='0' where MemberCode='".$member[0]['MemberCode']."'");
+            
+            $mysql->execute("update _tbl_franchisee_requests set IsVerified='1',
+                                                                 Remarks='".$_POST['ApproveReason']."',
+                                                                 VerifiedOn='".date("Y-m-d H:i:s")."',
+                                                                 IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
+                                                                 IsVerifiedByCode='".$txnPwd[0]['AdminCode']."' 
+                                                                 where  ReqID='".$data[0]['ReqID']."'");
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='ActivateMember'");
+            $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+
+            MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "ActivateMember",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+            MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your account has been activated"); 
+            
+                $mysql->insert("_tbl_franchisee_req_verification",array("ToFranchiseeID"    => $data[0]['RequestByID'],
+                                                                        "ToFranchiseeCode"  => $data[0]['RequestByCode'],
+                                                                        "Message"           => "Member (".$member[0]['MemberCode'].") account active request has been approved",
+                                                                        "VerifiedOn"        => date("Y-m-d H:i:s"),
+                                                                        "VerifiedByID"      => $txnPwd[0]['AdminID'],
+                                                                        "VerifiedByCode"    => $txnPwd[0]['AdminCode']));
+           
+           $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                         "ActivityType"   => 'ApproveMemberActiveRequestFromFranchisee.',
+                                                         "ActivityString" => 'Approve Member Active Request From Franchisee.',
+                                                         "SqlQuery"       => base64_encode($sqlQry),
+                                                         "ActivityDoneBy" => 'A',
+                                                         "ActivityDoneByCode" =>$txnPwd[0]['AdminCode'],
+                                                         "ActivityDoneByName" =>$txnPwd[0]['AdminName'],
+                                                         "ActivityOn"     => date("Y-m-d H:i:s")));
+    
+            return Response::returnSuccess("successfully Approved",array());
+            
+
+    }
+    
+    function RejectMemberActiveReq() {
+
+            global $mysql,$mail,$loginInfo; 
+                
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+            
+            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            
+            if($data[0]['IsVerified']==1) {
+                return Response::returnError("Request already Proccesed");
+            }
+            
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+            
+            $mysql->execute("update _tbl_members set DeactiveRequest='0' where MemberCode='".$member[0]['MemberCode']."'");
+            
+            $mysql->execute("update _tbl_franchisee_requests set IsVerified='2',
+                                                                 Remarks='".$_POST['RejectReason']."',
+                                                                 VerifiedOn='".date("Y-m-d H:i:s")."',
+                                                                 IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
+                                                                 IsVerifiedByCode='".$txnPwd[0]['AdminCode']."' 
+                                                                 where  ReqID='".$data[0]['ReqID']."'");
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='AdminRejectedMemberActiveRequestFromFranchisee'");
+            $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#FrCode#",$data[0]['RequestByCode'],$content);
+            MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "AdminRejectedMemberActiveRequestFromFranchisee",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+            MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your account active request from franchisee(".$data[0]['RequestByCode'].") has been rejected."); 
+            
+                $mysql->insert("_tbl_franchisee_req_verification",array("ToFranchiseeID"    => $data[0]['RequestByID'],
+                                                                        "ToFranchiseeCode"  => $data[0]['RequestByCode'],
+                                                                        "Message"           => "Member (".$member[0]['MemberCode'].") account active request has been rejected",
+                                                                        "VerifiedOn"        => date("Y-m-d H:i:s"),
+                                                                        "VerifiedByID"      => $txnPwd[0]['AdminID'],
+                                                                        "VerifiedByCode"    => $txnPwd[0]['AdminCode']));
+                $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                         "ActivityType"   => 'RejectMemberActiveRequestFromFranchisee.',
+                                                         "ActivityString" => 'Reject Member Active Request From Franchisee.',
+                                                         "SqlQuery"       => base64_encode($sqlQry),
+                                                         "ActivityDoneBy" => 'A',
+                                                         "ActivityDoneByCode" =>$txnPwd[0]['AdminCode'],
+                                                         "ActivityDoneByName" =>$txnPwd[0]['AdminName'],
+                                                         "ActivityOn"     => date("Y-m-d H:i:s")));
+           
+            return Response::returnSuccess("successfully Rejected",array());
+    }
+    function ViewDeleteMemberRequest(){
+              global $mysql,$loginInfo;    
+               $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+               if(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword']))  {
+                     echo "<script>location.href='".AppPath."Members/ViewMemberDeleteRequest/".$_POST['ReqID'].".html'</script>";
+                
+                } else {
+                    return Response::returnError("Invalid transaction password");
+                }
+         }
+    function AproveMemberDeleteReq() {
+
+            global $mysql,$mail,$loginInfo; 
+                
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+            
+            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            
+            if($data[0]['IsVerified']==1) {
+                return Response::returnError("Request already approved");
+            }
+            
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+            
+            $mysql->execute("update _tbl_members set IsDeleted='1',DeletedOn='".date("Y-m-d H:i:s")."',DeletedRemarks='".$_POST['ApproveReason']."',DeleteRequest='0' where MemberCode='".$member[0]['MemberCode']."'");
+            
+            $mysql->execute("update _tbl_franchisee_requests set IsVerified='1',
+                                                                 Remarks='".$_POST['ApproveReason']."',
+                                                                 VerifiedOn='".date("Y-m-d H:i:s")."',
+                                                                 IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
+                                                                 IsVerifiedByCode='".$txnPwd[0]['AdminCode']."' 
+                                                                 where  ReqID='".$data[0]['ReqID']."'");
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='DeleteMember'");
+            $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+
+            MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "DeleteMember",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+            MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your account has been deleted"); 
+            
+            $mysql->insert("_tbl_franchisee_req_verification",array("ToFranchiseeID"    => $data[0]['RequestByID'],
+                                                                        "ToFranchiseeCode"  => $data[0]['RequestByCode'],
+                                                                        "Message"           => "Member (".$member[0]['MemberCode'].") account delete request has been approved",
+                                                                        "VerifiedOn"        => date("Y-m-d H:i:s"),
+                                                                        "VerifiedByID"      => $txnPwd[0]['AdminID'],
+                                                                        "VerifiedByCode"    => $txnPwd[0]['AdminCode']));
+           
+           $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                         "ActivityType"   => 'ApproveMemberDeleteRequestFromFranchisee.',
+                                                         "ActivityString" => 'Approve Member Delete Request From Franchisee.',
+                                                         "SqlQuery"       => base64_encode($sqlQry),
+                                                         "ActivityDoneBy" => 'A',
+                                                         "ActivityDoneByCode" =>$txnPwd[0]['AdminCode'],
+                                                         "ActivityDoneByName" =>$txnPwd[0]['AdminName'],
+                                                         "ActivityOn"     => date("Y-m-d H:i:s")));
+            
+            return Response::returnSuccess("successfully Approved",array());
+    }
+    function RejectMemberDeleteReq() {
+
+            global $mysql,$mail,$loginInfo; 
+                
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+            
+            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            
+            if($data[0]['IsVerified']==1) {
+                return Response::returnError("Request already Proccesed");
+            }
+            
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+            
+            $mysql->execute("update _tbl_members set IsDeleted='0',DeleteRequest='0' where MemberCode='".$member[0]['MemberCode']."'");
+            
+            $mysql->execute("update _tbl_franchisee_requests set IsVerified='2',
+                                                                 Remarks='".$_POST['RejectReason']."',
+                                                                 VerifiedOn='".date("Y-m-d H:i:s")."',
+                                                                 IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
+                                                                 IsVerifiedByCode='".$txnPwd[0]['AdminCode']."' 
+                                                                 where  ReqID='".$data[0]['ReqID']."'");
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='AdminRejectedMemberDeleteRequestFromFranchisee'");
+            $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+            $content  = str_replace("#FrCode#",$data[0]['RequestByCode'],$content);
+            MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "AdminRejectedMemberDeleteRequestFromFranchisee",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+            MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your account delete request from franchisee(".$data[0]['RequestByCode'].") has been rejected."); 
+            
+                $mysql->insert("_tbl_franchisee_req_verification",array("ToFranchiseeID"    => $data[0]['RequestByID'],
+                                                                        "ToFranchiseeCode"  => $data[0]['RequestByCode'],
+                                                                        "Message"           => "Member (".$member[0]['MemberCode'].") account delete request has been rejected",
+                                                                        "VerifiedOn"        => date("Y-m-d H:i:s"),
+                                                                        "VerifiedByID"      => $txnPwd[0]['AdminID'],
+                                                                        "VerifiedByCode"    => $txnPwd[0]['AdminCode']));
+                $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                         "ActivityType"   => 'RejectMemberDeleteRequestFromFranchisee.',
+                                                         "ActivityString" => 'Reject Member Delete Request From Franchisee.',
+                                                         "SqlQuery"       => base64_encode($sqlQry),
+                                                         "ActivityDoneBy" => 'A',
+                                                         "ActivityDoneByCode" =>$txnPwd[0]['AdminCode'],
+                                                         "ActivityDoneByName" =>$txnPwd[0]['AdminName'],
+                                                         "ActivityOn"     => date("Y-m-d H:i:s")));
+           
+            return Response::returnSuccess("successfully Rejected",array());
+    }
+    function AproveMemberRestoreReq() {
+
+            global $mysql,$mail,$loginInfo; 
+                
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+            
+            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            
+            if($data[0]['IsVerified']==1) {
+                return Response::returnError("Request already approved");
+            }
+            
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+            
+            $mysql->execute("update _tbl_members set IsDeleted='0',DeleteRequest='0' where MemberCode='".$member[0]['MemberCode']."'");
+            
+            $mysql->execute("update _tbl_franchisee_requests set IsVerified='1',
+                                                                 Remarks='".$_POST['ApproveReason']."',
+                                                                 VerifiedOn='".date("Y-m-d H:i:s")."',
+                                                                 IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
+                                                                 IsVerifiedByCode='".$txnPwd[0]['AdminCode']."' 
+                                                                 where  ReqID='".$data[0]['ReqID']."'");
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='RestoreMember'");
+            $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+
+            MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "RestoreMember",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+            MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your account has been restore"); 
+            
+            $mysql->insert("_tbl_franchisee_req_verification",array("ToFranchiseeID"    => $data[0]['RequestByID'],
+                                                                        "ToFranchiseeCode"  => $data[0]['RequestByCode'],
+                                                                        "Message"           => "Member (".$member[0]['MemberCode'].") account restore request has been approved",
+                                                                        "VerifiedOn"        => date("Y-m-d H:i:s"),
+                                                                        "VerifiedByID"      => $txnPwd[0]['AdminID'],
+                                                                        "VerifiedByCode"    => $txnPwd[0]['AdminCode']));
+           
+           $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                         "ActivityType"   => 'ApproveMemberRestoreRequestFromFranchisee.',
+                                                         "ActivityString" => 'Approve Member Restore Request From Franchisee.',
+                                                         "SqlQuery"       => base64_encode($sqlQry),
+                                                         "ActivityDoneBy" => 'A',
+                                                         "ActivityDoneByCode" =>$txnPwd[0]['AdminCode'],
+                                                         "ActivityDoneByName" =>$txnPwd[0]['AdminName'],
+                                                         "ActivityOn"     => date("Y-m-d H:i:s")));
+            
+            return Response::returnSuccess("successfully Approved",array());
+    }
+    function RejectMemberRestoreReq() {
+
+            global $mysql,$mail,$loginInfo; 
+                
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+            
+            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            
+            if($data[0]['IsVerified']==1) {
+                return Response::returnError("Request already Proccesed");
+            }
+            
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
+            
+            $mysql->execute("update _tbl_members set IsDeleted='1',DeleteRequest='0',DeletedOn='".date("Y-m-d H:i:s")."',DeletedRemarks='".$_POST['RejectReason']."' where MemberCode='".$member[0]['MemberCode']."'");
+            
+            $mysql->execute("update _tbl_franchisee_requests set IsVerified='2',
+                                                                 Remarks='".$_POST['RejectReason']."',
+                                                                 VerifiedOn='".date("Y-m-d H:i:s")."',
+                                                                 IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
+                                                                 IsVerifiedByCode='".$txnPwd[0]['AdminCode']."' 
+                                                                 where  ReqID='".$data[0]['ReqID']."'");
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='AdminRejectedMemberRestoreRequestFromFranchisee'");
+            $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+            $content  = str_replace("#FrCode#",$data[0]['RequestByCode'],$content);
+            MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "AdminRejectedMemberRestoreRequestFromFranchisee",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+            MobileSMSController::sendSMS($member[0]['MobileNumber'],"Your account restore request from franchisee(".$data[0]['RequestByCode'].") has been rejected."); 
+            
+                $mysql->insert("_tbl_franchisee_req_verification",array("ToFranchiseeID"    => $data[0]['RequestByID'],
+                                                                        "ToFranchiseeCode"  => $data[0]['RequestByCode'],
+                                                                        "Message"           => "Member (".$member[0]['MemberCode'].") account restore request has been rejected",
+                                                                        "VerifiedOn"        => date("Y-m-d H:i:s"),
+                                                                        "VerifiedByID"      => $txnPwd[0]['AdminID'],
+                                                                        "VerifiedByCode"    => $txnPwd[0]['AdminCode']));
+                $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $member[0]['MemberID'],
+                                                         "ActivityType"   => 'RejectMemberRestoreRequestFromFranchisee.',
+                                                         "ActivityString" => 'Reject Member Restore Request From Franchisee.',
+                                                         "SqlQuery"       => base64_encode($sqlQry),
+                                                         "ActivityDoneBy" => 'A',
+                                                         "ActivityDoneByCode" =>$txnPwd[0]['AdminCode'],
+                                                         "ActivityDoneByName" =>$txnPwd[0]['AdminName'],
+                                                         "ActivityOn"     => date("Y-m-d H:i:s")));
+           
+            return Response::returnSuccess("successfully Rejected",array());
+    }
+
 }
 
 //2801
