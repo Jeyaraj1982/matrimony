@@ -218,19 +218,24 @@ function SubmitNewMember() {
                             <span class="errorstring" id="ErrWhatsappNumber"><?php echo isset($ErrWhatsappNumber)? $ErrWhatsappNumber : "";?></span>
                           </div>
                         </div>
-                       <div class="form-group row">
-                          <label for="LoginPassword" class="col-sm-3 col-form-label">Login Password<span id="star">*</span></label>
-                          <div class="col-sm-4">
-                            <input type="password" class="form-control" id="LoginPassword" name="LoginPassword" value="<?php echo (isset($_POST['LoginPassword']) ? $_POST['LoginPassword'] : "");?>" placeholder="Login Password">
-                            <span class="errorstring" id="ErrLoginPassword"><?php echo isset($ErrLoginPassword)? $ErrLoginPassword : "";?></span></div>
-                            <div class="col-sm-2" style="padding-top:5px;"><input type="checkbox" onclick="myFunction()">&nbsp;show</div>
-							<div class="col-sm-4" style="padding-top: 5px;">
-									<div class="custom-control custom-checkbox mb-3">
-										<input type="checkbox" class="custom-control-input" id="PasswordFstLogin" name="PasswordFstLogin">
-										<label class="custom-control-label" for="PasswordFstLogin" style="margin-top: 7px;">&nbsp;Change password on first login</label>
-									</div>
-								</div>
-						</div>
+                        <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Login Password</label>
+                                <div class="col-sm-5">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control pwd" id="LoginPassword" name="LoginPassword"   value="<?php echo (isset($_POST['LoginPassword']) ? $_POST['LoginPassword'] : "");?>"  placeholder="Login Password">
+                                        <span class="input-group-btn">
+                                            <button  onclick="showHidePwd('LoginPassword',$(this))" class="btn btn-default reveal" type="button" style="background: #eeeeee;"><i class="glyphicon glyphicon-eye-close"></i></button>
+                                        </span>          
+                                    </div>
+                                    <span class="errorstring" id="ErrLoginPassword"><?php echo isset($ErrLoginPassword)? $ErrLoginPassword : "";?></span>
+                                </div>
+                                <div class="col-sm-4" style="padding-top: 5px;">
+                                    <div class="custom-control custom-checkbox mb-3">
+                                        <input type="checkbox" class="custom-control-input" id="PasswordFstLogin" name="PasswordFstLogin">
+                                        <label class="custom-control-label" for="PasswordFstLogin" style="margin-top: 7px;">&nbsp;Change password on first login</label>
+                                    </div>
+                                </div>
+                            </div>
                           
                        <div class="form-group row">
                         <div class="col-sm-2">

@@ -153,7 +153,7 @@ if (isset($_POST['Btnupdate'])) {
     <input type="hidden" value="" name="PopupContentMessage" id="PopupContentMessage">
     <input type="hidden" value="<?php echo $Member['MemberCode'];?>" name="MemberCode" id="MemberCode">
     <?php
-         $disbaled = ( $Member['IsActive']==0 || $Member['IsDeleted']==1 ) ? true : false;
+         $disbaled = ( $Member['IsActive']==0 || $Member['IsDeleted']==1 || $Member['IsDeleted']==2 || $Member['IsActive']==2 ) ? true : false;
          $stars = (!($disbaled)) ? '<span id="star">*</span>' : ""; 
      ?>
 	<div class="row">
@@ -171,6 +171,14 @@ if (isset($_POST['Btnupdate'])) {
                             <div class="alert alert-warning">
                                 <strong>Warning!</strong>&nbsp;Member Status has deactivated So you can't edit the details
                             </div>
+                            <?php } if($Member['IsActive']==2) { ?>
+                            <div class="alert alert-warning">
+                                <strong>Warning!</strong>&nbsp;Member Status has request to deactivate So you can't edit the details
+                            </div>
+                            <?php } if($Member['IsDeleted']==2) {?>
+                            <div class="alert alert-warning">
+                                <strong>Warning!</strong>&nbsp;Member Status has request to delete So you can't edit the details
+                            </div> 
                             <?php } }?>
 							<div class="form-group row">
 								<div class="col-sm-3"><small>Member Code</small> </div>
@@ -432,26 +440,30 @@ if (isset($_POST['Btnupdate'])) {
                 <?php }   ?> 
             </div>
             <div class="col-sm-12 col-form-label">
-                <?php if($Member['IsDeleted']==1 ){   ?>
+                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
+                <?php if($Member['IsActive']==0) {  ?>
+                            <a href="javascript:void(0)" onclick="Member.ConfirmActiveMember()"><small style="font-weight:bold;text-decoration:underline">Active</small></a>                                         
+                           <?php } if($Member['IsActive']==1) {     ?>
+                              <a href="javascript:void(0)" onclick="Member.ConfirmDeactiveMember()"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a> 
+                        <?php } if($Member['IsActive']==2) {  ?>  
+                               <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Active</small></a>  
+                        <?php } } else { ?>
                     <?php if($Member['IsActive']==1) { ?>
                         <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Active</small></a>
                     <?php } else { ?>
                         <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Deactive</small></a>
-                    <?php }   ?>
-                <?php  } else {  
-                              if($Member['IsActive']==0) {  ?>
-                                    <a href="javascript:void(0)" onclick="Member.ConfirmActiveMember()"><small style="font-weight:bold;text-decoration:underline">Active</small></a>                                         
-                           <?php } else {     ?>
-                              <a href="javascript:void(0)" onclick="Member.ConfirmDeactiveMember()"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a> 
-                        <?php } 
-                       }?>
+                    <?php }  } ?>
             </div>
+            
             <div class="col-sm-12 col-form-label"> 
                     <?php if($Member['IsDeleted']==0) { ?>
                         <a href="javascript:void(0)" onclick="Member.ConfirmDeleteMember()"><small style="font-weight:bold;text-decoration:underline">Delete</small></a>                                   
                     <?php } else { ?>    
+                      <?php if($Member['IsDeleted']==2) { ?>
+                        <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Restore</small></a>  
+                       <?php } else { ?>                                 
                         <a href="javascript:void(0)" onclick="Member.ConfirmRestoreMember()"><small style="font-weight:bold;text-decoration:underline">Restore</small></a>                                   
-                    <?php } ?>
+                    <?php } } ?>
             </div>
             <div class="col-sm-12 col-form-label">
                 <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
@@ -486,6 +498,34 @@ if (isset($_POST['Btnupdate'])) {
                     <a href="javascript:void(0)" onclick="Member.ConfirmPopupMessage('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>')"><small style="font-weight:bold;text-decoration:underline">Popup Message</small></a>&nbsp;&nbsp;<a href="<?php echo GetUrl("Members/ListOfIndividualMessages/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">List</small></a>
                 <?php } else { ?> 
                     <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Popup Message</small></a>
+                <?php }   ?> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmChangeMobileNumber()"><small style="font-weight:bold;text-decoration:underline">Change Mobile Number</small></a>
+                <?php } else { ?> 
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Change Mobile Number</small></a>
+                <?php }   ?> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmChangeEmailID()"><small style="font-weight:bold;text-decoration:underline">Change Email ID</small></a>
+                <?php } else { ?> 
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Change Email ID</small></a>
+                <?php }   ?> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmDeleteMember()"><small style="font-weight:bold;text-decoration:underline">Delete Member</small></a>
+                <?php } else { ?> 
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Delete Member</small></a>
+                <?php }   ?> 
+            </div>
+            <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmBlockMember()"><small style="font-weight:bold;text-decoration:underline">Block Member</small></a>
+                <?php } else { ?> 
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Block Member</small></a>
                 <?php }   ?> 
             </div>
         </div>    

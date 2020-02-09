@@ -1913,10 +1913,10 @@ var Member = {
                            + '</div>';
             $('#'+mBox+'_body').html(content);
      },
-    ConfirmResetMobileNumber:function() {
+    ConfirmChangeMobileNumber:function() {
         $('#PubplishNow').modal('show'); 
             var content = '<div class="modal-header">'
-                                + '<h4 class="modal-title">Confirmation for reset mobile number</h4>'
+                                + '<h4 class="modal-title">Confirmation for change mobile number</h4>'
                                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                            + '</div>'
                            + '<div class="modal-body">'
@@ -1926,21 +1926,21 @@ var Member = {
                                     + '</div>'
                                      + '<div class="col-sm-8">'
                                         + '<div class="form-group row">'
-                                            +'<div class="col-sm-12">Are you sure want to reset mobile number</div>'
+                                            +'<div class="col-sm-12">Are you sure want to change mobile number</div>'
                                         + '</div>'
                                      + '</div>'
                                 + '</div>'
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordResetMemberMobileNumber()" style="font-family:roboto">Yes , Continue</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordChangeMemberMobileNumber()" style="font-family:roboto">Yes , Continue</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      },
-    GetTxnPasswordResetMemberMobileNumber:function() {
+    GetTxnPasswordChangeMemberMobileNumber:function() {
          
         var content = '<div class="modal-header">'
-                        + '<h4 class="modal-title">Confirmation for reset mobile number</h4>'
+                        + '<h4 class="modal-title">Confirmation for change mobile number</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
                     + '<div class="modal-body">'
@@ -1961,11 +1961,11 @@ var Member = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" onclick="Member.ResetMemberMobileNumber()" style="font-family:roboto">Continue</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.ChangeMemberMobileNumber()" style="font-family:roboto">Continue</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     },
-    ResetMemberMobileNumber:function() {
+    ChangeMemberMobileNumber:function() {
         if ($("#TransactionPassword").val().trim()=="") {
              $("#frmTxnPass_error").html("Please enter transaction password");
              return false;
@@ -1973,7 +1973,7 @@ var Member = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Loading ...","123"));
-        $.post(getAppUrl() + "m=Franchisee&a=ResetMemberMobileNumber",param,function(result) {
+        $.post(getAppUrl() + "m=Franchisee&a=ChangeMemberMobileNumber",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -1984,7 +1984,7 @@ var Member = {
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
                                     + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
-                                    + '<h3 style="text-align:center;">Reset Mobile Number Successfully</h3>'
+                                    + '<h3 style="text-align:center;">Change Mobile Number Successfully</h3>'
                                     + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
                                 +'</div>' 
                             +'</div>';
@@ -1993,7 +1993,7 @@ var Member = {
                 var data = obj.data; 
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-header">'
-                                    +'<h4 class="modal-title">Reset mobile number</h4>'
+                                    +'<h4 class="modal-title">Change mobile number</h4>'
                                     +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
                                 +'</div>'
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
@@ -2006,10 +2006,10 @@ var Member = {
             }
         });
     },
-    ConfirmResetEmailID:function() {
+    ConfirmChangeEmailID:function() {
         $('#PubplishNow').modal('show'); 
             var content = '<div class="modal-header">'
-                                + '<h4 class="modal-title">Confirmation for reset email id</h4>'
+                                + '<h4 class="modal-title">Confirmation for change email id</h4>'
                                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                            + '</div>'
                            + '<div class="modal-body">'
@@ -2019,21 +2019,21 @@ var Member = {
                                     + '</div>'
                                      + '<div class="col-sm-8">'
                                         + '<div class="form-group row">'
-                                            +'<div class="col-sm-12">Are you sure want to reset email id</div>'
+                                            +'<div class="col-sm-12">Are you sure want to change email id</div>'
                                         + '</div>'
                                      + '</div>'
                                 + '</div>'
                             +'</div>'
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordResetMemberEmailID()" style="font-family:roboto">Yes , Continue</button>'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordChangeMemberEmailID()" style="font-family:roboto">Yes , Continue</button>'
                            + '</div>';
             $('#Publish_body').html(content);
      },
-    GetTxnPasswordResetMemberEmailID:function() {
+    GetTxnPasswordChangeMemberEmailID:function() {
          
         var content = '<div class="modal-header">'
-                        + '<h4 class="modal-title">Confirmation for reset email id</h4>'
+                        + '<h4 class="modal-title">Confirmation for change email id</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
                     + '<div class="modal-body">'
@@ -2054,11 +2054,11 @@ var Member = {
                     + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" class="btn btn-primary" onclick="Member.ResetMemberEmailID()" style="font-family:roboto">Continue</button>'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.ChangeMemberEmailID()" style="font-family:roboto">Continue</button>'
                     + '</div>';
         $('#Publish_body').html(content);            
     },
-    ResetMemberEmailID:function() {
+    ChangeMemberEmailID:function() {
         if ($("#TransactionPassword").val().trim()=="") {
              $("#frmTxnPass_error").html("Please enter transaction password");
              return false;
@@ -2066,7 +2066,7 @@ var Member = {
     $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrn").serialize();
         $('#Publish_body').html(preloading_withText("Loading ...","123"));
-        $.post(getAppUrl() + "m=Franchisee&a=ResetMemberEmailID",param,function(result) {
+        $.post(getAppUrl() + "m=Franchisee&a=ChangeMemberEmailID",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -2077,7 +2077,7 @@ var Member = {
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
                                     + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
-                                    + '<h3 style="text-align:center;">Reset Email ID Successfully</h3>'
+                                    + '<h3 style="text-align:center;">Change Email ID Successfully</h3>'
                                     + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
                                 +'</div>' 
                             +'</div>';
@@ -2086,7 +2086,407 @@ var Member = {
                 var data = obj.data; 
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-header">'
-                                    +'<h4 class="modal-title">Reset email id</h4>'
+                                    +'<h4 class="modal-title">Change email id</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    ConfirmReqToDeactiveMember:function() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for deactive member</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                     + '<div class="col-sm-8">'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to deactivate</div>'
+                                        + '</div>'
+                                        + 'Reason for Deactive<br>'
+                                        + '<textarea class="form-control" rows="2" cols="3" id="DeactiveReason"></textarea>'
+                                        +'<div class="col-sm-12" id="frmDeactiveReason_error" style="color:red;text-align:center"></div>'
+                                     + '</div>'
+                                + '</div>'
+                            +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordReqToDeactiveMember()" style="font-family:roboto">Yes ,Continue</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPasswordReqToDeactiveMember:function() {
+         if ($("#DeactiveReason").val().trim()=="") {
+             $("#frmDeactiveReason_error").html("Please enter reason for deactive");
+             return false;
+         }
+        $("#DeactiveRemarks").val($("#DeactiveReason").val());
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for deactive member</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.ReqToDeactiveMember()" style="font-family:roboto">Yes ,Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    ReqToDeactiveMember:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Deactivate ...","123"));
+        $.post(getAppUrl() + "m=Franchisee&a=ReqToDeactiveMember",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Deactivate member</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    ConfirmReqToActiveMember:function() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for active member</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                     + '<div class="col-sm-8">'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to activate</div>'
+                                        + '</div>'
+                                        + 'Reason for Active<br>'
+                                        + '<textarea class="form-control" rows="2" cols="3" id="ActiveReason"></textarea>'
+                                        +'<div class="col-sm-12" id="frmActiveReason_error" style="color:red;text-align:center"></div>'
+                                     + '</div>'
+                                + '</div>'
+                            +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordReqToActiveMember()" style="font-family:roboto">Yes ,Continue</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPasswordReqToActiveMember:function() {
+         if ($("#ActiveReason").val().trim()=="") {
+             $("#frmActiveReason_error").html("Please enter reason for activate");
+             return false;
+         }
+        $("#ActiveRemarks").val($("#ActiveReason").val());
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for active member</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.ReqToActiveMember()" style="font-family:roboto">Yes ,Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    ReqToActiveMember:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Deactivate ...","123"));
+        $.post(getAppUrl() + "m=Franchisee&a=ReqToActiveMember",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">activate member</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    ConfirmReqToDeleteMember:function() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for delete member</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                     + '<div class="col-sm-8">'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to delete</div>'
+                                        + '</div>'
+                                        + 'Reason for Delete<br>'
+                                        + '<textarea class="form-control" rows="2" cols="3" id="DeleteReason"></textarea>'
+                                        +'<div class="col-sm-12" id="frmDeleteReason_error" style="color:red;text-align:center"></div>'
+                                     + '</div>'
+                                + '</div>'
+                            +'</div>' 
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-danger" onclick="Member.GetTxnPasswordReqToDeleteMember()" style="font-family:roboto">Yes ,Continue</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPasswordReqToDeleteMember:function() {                           
+         if ($("#DeleteReason").val().trim()=="") {
+             $("#frmDeleteReason_error").html("Please enter reason for delete");
+             return false;
+         }
+        $("#DeleteRemarks").val($("#DeleteReason").val());
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for delete member</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.ReqToDeleteMember()" style="font-family:roboto">Yes ,Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    ReqToDeleteMember:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Deactivate ...","123"));
+        $.post(getAppUrl() + "m=Franchisee&a=ReqToDeleteMember",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Delete member</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    ConfirmReqToRestoreMember:function() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for restore member</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                     + '<div class="col-sm-8">'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to delete</div>'
+                                        + '</div>'
+                                        + 'Reason for Restore<br>'
+                                        + '<textarea class="form-control" rows="2" cols="3" id="DeleteReason"></textarea>'
+                                        +'<div class="col-sm-12" id="frmDeleteReason_error" style="color:red;text-align:center"></div>'
+                                     + '</div>'
+                                + '</div>'
+                            +'</div>' 
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordReqToRestoreMember()" style="font-family:roboto">Yes ,Continue</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPasswordReqToRestoreMember:function() {                           
+         if ($("#DeleteReason").val().trim()=="") {
+             $("#frmDeleteReason_error").html("Please enter reason for delete");
+             return false;
+         }
+        $("#DeleteRemarks").val($("#DeleteReason").val());
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for restore member</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.ReqToRestoreMember()" style="font-family:roboto">Yes ,Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    ReqToRestoreMember:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Deactivate ...","123"));
+        $.post(getAppUrl() + "m=Franchisee&a=ReqToRestoreMember",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Restore member</h4>'
                                     +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
                                 +'</div>'
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'

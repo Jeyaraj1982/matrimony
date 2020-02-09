@@ -1,4 +1,9 @@
-<style>
+<?php 
+  if (isset($_POST['boardmsgbutton'])) {
+        //$response = $webservice->WelcomeMessage();
+        $response = $webservice->getData("Franchisee","BoardMessage",$_POST);
+    }
+?><style>
 #verifybtn{background: #0eb1db;;border:1px#32cbf3;box-shadow: 0px 9px 36px -10px rgba(156,154,156,0.64);}
 #verifybtn:hover{background:#149dc9;}
 input:focus{border:1px solid #ccc;}
@@ -167,7 +172,48 @@ $PostedProfilesCount = $response['data']['PostedProfiles'];
    <?php  
    if($fInfo['data']['WelcomeMsg']!=1) {?>
             $( document ).ready(function() {$("#FranchiseeWelcome").modal('show');});
-   <?php } ?>
+   <?php } else{ ?>
+   <?php if(sizeof($response['data']['Popup'])>0) { ?> 
+        $(document).ready(function(){
+            $("#FranchiseeBoard").modal('show');
+            $(".hide-modal").click(function(){
+                $("#FranchiseeBoard").modal('hide');
+            });                                                                                            
+        });
+       <?php } } ?>
 </script>
-
-
+      <div class="modal fade" id="FranchiseeBoard" role="dialog" data-backdrop="static" style="padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+        <div class="modal-dialog" >
+            <div class="modal-content" style="max-height: 500px;min-height: 500px;">
+                <form method="POST" id="frmBrd" action="">
+                <input type="hidden" name="ReqID" value="<?php echo $response['data']['Popup']['ReqID'];?>">
+                    <div class="modal-header">   
+                        <h4 class="modal-title">Latest Message</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>
+                    </div>
+                    <div class="modal-body" style="max-height:375px;min-height: 375px;overflow-y:scroll;">
+                            <p style="color:#959494"><?php echo $response['data']['Popup']['Message'];?></p>  <br>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="IhaveRead" name="check" onclick="IhaveReadFn();" value="1">
+                            <label class="custom-control-label" for="IhaveRead" style="font-weight:normal;margin-top:3px">&nbsp;I have Read</label>
+                        </div>&nbsp;&nbsp;
+                        <button type="submit" disabled="disabled" class="btn btn-primary" name="boardmsgbutton" id="boardmsgbutton">Continue</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+  <script>
+  function IhaveReadFn() {
+    
+    if($("#IhaveRead").prop("checked") == true){ 
+        $('#boardmsgbutton').removeAttr("Disabled");
+    }
+    
+    if($("#IhaveRead").prop("checked") == false){
+        $('#boardmsgbutton').attr("Disabled","Disabled");
+    }
+}
+  </script>

@@ -25,7 +25,13 @@
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
-    <form method="post" action="">
+    <form method="post" id="frmmBnk_<?php echo $BankRequest['ReqID'];?>"  >
+        <input type="hidden" value="" name="txnPassword" id="txnPassword_<?php echo $BankRequest['ReqID'];?>">
+        <input type="hidden" value="" name="ApproveReason" id="ApproveReason_<?php echo $BankRequest['ReqID'];?>">
+        <input type="hidden" value="" name="RejectReason" id="RejectReason_<?php echo $BankRequest['ReqID'];?>">  
+        <input type="hidden" value="" name="IsApproved" id="IsApproved_<?php echo $BankRequest['ReqID'];?>">
+        <input type="hidden" value="" name="IsRejected" id="IsRejected_<?php echo $BankRequest['ReqID'];?>">
+        <input type="hidden" value="<?php echo $BankRequest['ReqID'];?>" name="ReqID" >
         <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">View Bank Requests</h4></div>
          </div>
@@ -68,8 +74,8 @@
         <div class="form-group row">
             <div class="col-sm-12">
              <?php if($BankRequest['IsApproved']=="0" && $BankRequest['IsRejected']=="0"){ ?>
-                <button type="submit" name="Approve" id="Approve" class="btn btn-success" >Approve</button>&nbsp;&nbsp;
-                <button type="submit" name="Reject" id="Reject" class="btn btn-danger" >Reject</button>
+                <a href="javascript:void(0)" onclick="Franchisee.showConfirmApproveFranBankReq('<?php echo $BankRequest['ReqID'];?>')" class="btn btn-success" style="font-family:roboto">Approve</a>
+                &nbsp;&nbsp;<a href="javascript:void(0)" onclick="Franchisee.showConfirmRejectFranBankReq('<?php echo $BankRequest['ReqID'];?>')" class="btn btn-danger" style="font-family:roboto">Reject</a>
             <?php }?>
             <?php if($BankRequest['IsApproved']=="1" && $BankRequest['IsRejected']=="0"){ ?>
                  <label class=" col-form-label"><?php echo "Approved";?><br><?php echo $BankRequest['ApprovedOn'];?></label>
@@ -83,7 +89,13 @@
     </div>
   </div>
 </div>
-
+ <div class="modal" id="PubplishNow" data-backdrop="static" >
+        <div class="modal-dialog" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
+        
+            </div>
+        </div>
+    </div>
 
             
                

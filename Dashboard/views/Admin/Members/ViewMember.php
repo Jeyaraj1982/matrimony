@@ -19,7 +19,15 @@
                             <div class="alert alert-warning">
                                 <strong>Warning!</strong>&nbsp;Member Status has deactivated So you can't edit the details
                             </div>
-                            <?php } }?>
+                            <?php } if($Member['DeactiveRequest']==1) { ?>
+                            <div class="alert alert-warning">
+                                <strong>Warning!</strong>&nbsp;Member Status has request to deactivate So you can't edit the details
+                            </div>
+                            <?php } if($Member['DeleteRequest']==1) {?>
+                            <div class="alert alert-warning">
+                                <strong>Warning!</strong>&nbsp;Member Status has request to delete So you can't edit the details
+                            </div> 
+                            <?php } } ?>
                 <div class="form-group row">
                     <div class="col-sm-3"><small>Member Code:</small> </div>
                     <div class="col-sm-3"><small style="color:#737373;"><?php echo $Member['MemberCode'];?></small></div>
@@ -213,17 +221,21 @@
             </div>
             <div class="col-sm-12 col-form-label">
                 Franchisee <br>
-                <span class="<?php echo ($Member['FIsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo  $Member['FranchiseName'];?> (<?php echo  $Member['FranchiseeCode'];?>)<br><br> 
+                &nbsp;&nbsp;<?php echo  $Member['FranchiseName'];?> (<?php echo  $Member['FranchiseeCode'];?>)<br><br> 
             </div>
             <div class="col-sm-12 col-form-label">
-                <span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>
+               <span class="<?php if($Member['IsDeleted']==1){ echo "DeletedDot"; } else { if($Member['IsActive']==0) { echo "Deactivedot"; } else { echo "Activedot"; } }?>"></span>
                  &nbsp;&nbsp;&nbsp;
-                 <small style="color:#737373;">
-                    <?php if($Member['IsActive']==1){
-                      echo "Active";
-                    }else{
-                      echo "Deactive"."( ".PutDatetime($Member['DeactivatedOn'])." )";
-                    }?>
+                 <small style="color:#737373;"> 
+                 <?php if($Member['IsDeleted']==1){ 
+                           echo "Deleted";
+                       } else {  
+                           if($Member['IsActive']==0) {
+                             echo "Deactive"."( ".PutDatetime($Member['DeactivatedOn'])." )";
+                           } else {
+                              echo "Active";   
+                             } 
+                       }?>
                  </small>
             </div>
             <?php if($Member['IsDeleted']==1) { ?>
@@ -232,76 +244,84 @@
                 <?php echo putDateTime($Member['DeletedOn']);?>
                 </div>
             <?php } ?>
+            <?php if($Member['DeleteRequest']==1) { ?>
+                <div class="col-sm-12 col-form-label">
+                     Delete Request On <br>
+                <?php echo putDateTime($Member['DeleteRequestOn']);?>
+                </div>
+            <?php } ?>
+            <?php if($Member['DeactiveRequest']==1) { ?>
+                <div class="col-sm-12 col-form-label">
+                     Deactive Request On <br>
+                <?php echo putDateTime($Member['DeactiveRequestOn']);?>
+                </div>
+            <?php } ?>
             <div class="col-sm-12 col-form-label"><a href="../ManageMembers"><small style="font-weight:bold;text-decoration:underline">List of Members</small></a></div>
             <div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Members/EditMember/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">Edit Member</small></a></div>
             <div class="col-sm-12 col-form-label">
-                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmMemberChnPswd()"><small style="font-weight:bold;text-decoration:underline">Change Password</small></a>
-                <?php } else { ?> 
-                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Change Password</small></a>
-                <?php }   ?> 
-            </div>
-            <div class="col-sm-12 col-form-label">
-                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
+                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 && $Member['DeleteRequest']==0 && $Member['DeactiveRequest']==0) { ?>
                     <a href="javascript:void(0)" onclick="Member.ConfirmResetPassword()"><small style="font-weight:bold;text-decoration:underline">Reset Password</small></a>
                 <?php } else { ?> 
                     <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Reset Password</small></a>
                 <?php }   ?> 
             </div>
-            <div class="col-sm-12 col-form-label"><?php if($Member['IsActive']==1) { ?>
-                <a href="javascript:void(0)" onclick="Member.ConfirmDeactiveMember()"><small style="font-weight:bold;text-decoration:underline">Deactive</small></a>                                   
-                 <?php } else {    ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmActiveMember()"><small style="font-weight:bold;text-decoration:underline">Active</small></a>                                   
-                <?php } ?>
-            </div>
             <div class="col-sm-12 col-form-label">
-                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <?php if($Member['IsDeleted']==0) { ?>
-                        <a href="javascript:void(0)" onclick="Member.ConfirmDeleteMember()"><small style="font-weight:bold;text-decoration:underline">Delete</small></a>                                   
-                    <?php } else { ?>    
-                        <a href="javascript:void(0)" onclick="Member.ConfirmRestoreMember()"><small style="font-weight:bold;text-decoration:underline">Restore</small></a>                                   
-                    <?php } ?>
-                <?php } else { ?> 
-                    <?php if($Member['IsDeleted']==0) { ?>
-                        <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Delete</small></a>
-                     <?php } else { ?>
-                         <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Restore</small></a>
-                <?php } }  ?> 
-            </div>
-            <div class="col-sm-12 col-form-label">
-                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
+                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 && $Member['DeleteRequest']==0 && $Member['DeactiveRequest']==0) { ?>
                     <a href="javascript:void(0)" onclick=""><small style="font-weight:bold;text-decoration:underline">Profiles</small></a>
                 <?php } else { ?> 
                     <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Profiles</small></a>
                 <?php }   ?> 
             </div>
             <div class="col-sm-12 col-form-label">
-                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
+                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 && $Member['DeleteRequest']==0 && $Member['DeactiveRequest']==0) { ?>
                     <a href="javascript:void(0)" onclick="Member.ShowMemberCurrentPlan('<?php echo $Plan['PlanCode'];?>','<?php echo $Plan['PlanName'];?>','<?php echo $Plan['Decreation'];?>','<?php echo $Plan['Amount'];?>','<?php echo $Plan['FreeProfiles'];?>','<?php echo PutDateTime($Plan['StartingDate']);?>','<?php echo PutDateTime($Plan['EndingDate']);?>')"><small style="font-weight:bold;text-decoration:underline">Member Plan</small></a>
                 <?php } else { ?> 
                     <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Member Plan</small></a>
                 <?php }   ?> 
             </div>
             <div class="col-sm-12 col-form-label">
-                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmSendIndividualSmsToMember('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>','<?php echo $Member['MobileNumber'];?>')"><small style="font-weight:bold;text-decoration:underline">Send Individual Sms</small></a>&nbsp;&nbsp;<a href="<?php echo GetUrl("Members/ListOfIndividualSMS/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">List</small></a>
+                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 && $Member['DeleteRequest']==0 && $Member['DeactiveRequest']==0) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmChangeMobileNumber()"><small style="font-weight:bold;text-decoration:underline">Change Mobile Number</small></a>
                 <?php } else { ?> 
-                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Send Individual Sms</small></a>
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Change Mobile Number</small></a>
                 <?php }   ?> 
             </div>
             <div class="col-sm-12 col-form-label">
-                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmSendIndividualEmailToMember('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>','<?php echo $Member['EmailID'];?>')"><small style="font-weight:bold;text-decoration:underline">Send Individual Email</small></a>&nbsp;&nbsp;<a href="<?php echo GetUrl("Members/ListOfIndividualEmail/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">List</small></a>
+                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 && $Member['DeleteRequest']==0 && $Member['DeactiveRequest']==0) { ?>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmChangeEmailID()"><small style="font-weight:bold;text-decoration:underline">Change Email ID</small></a>
                 <?php } else { ?> 
-                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Send Individual Email</small></a>
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Change Email ID</small></a>
                 <?php }   ?> 
             </div>
             <div class="col-sm-12 col-form-label">
-                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmPopupMessage('<?php echo $Member['MemberCode'];?>','<?php echo $Member['MemberName'];?>')"><small style="font-weight:bold;text-decoration:underline">Popup Message</small></a>&nbsp;&nbsp;<a href="<?php echo GetUrl("Members/ListOfIndividualMessages/".$_REQUEST['Code'].".htm ");?>"><small style="font-weight:bold;text-decoration:underline">List</small></a>
-                <?php } else { ?> 
-                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Popup Message</small></a>
-                <?php }   ?> 
+            <?php if($Member['DeleteRequest']==0 && $Member['DeactiveRequest']==0) { ?>
+                    <?php  if($Member['IsDeleted']==0 ) {    ?>
+                        <a href="javascript:void(0)" onclick="Member.ConfirmReqToDeleteMember()"><small style="font-weight:bold;text-decoration:underline">Delete Member</small></a>
+                    <?php }else {  ?>  
+                        <a href="javascript:void(0)" onclick="Member.ConfirmRestoreMember()"><small style="font-weight:bold;text-decoration:underline">Restore Member</small></a>
+                    <?php } ?>
+                <?php  } else {    ?>
+                    <?php if($Member['IsDeleted']==1) { ?>
+                        <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Restore Member</small></a>
+                    <?php } else { ?>
+                        <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Delete Member</small></a>
+                    <?php }   ?>
+            <?php } ?>
+            </div>
+            <div class="col-sm-12 col-form-label">
+            <?php if($Member['IsDeleted']==0 && $Member['DeleteRequest']==0 && $Member['DeactiveRequest']==0) { ?>
+                    <?php  if($Member['IsActive']==1 ) {    ?>
+                        <a href="javascript:void(0)" onclick="Member.ConfirmReqToDeactiveMember()"><small style="font-weight:bold;text-decoration:underline">Deactive Member</small></a>
+                    <?php }else {  ?>  
+                        <a href="javascript:void(0)" onclick="Member.ConfirmReqToActiveMember()"><small style="font-weight:bold;text-decoration:underline">Active Member</small></a>
+                    <?php } ?>
+                <?php  } else {    ?>
+                    <?php if($Member['IsActive']==1) { ?>
+                        <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Deactive</small></a>
+                    <?php } else { ?>
+                        <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Active</small></a>
+                    <?php }   ?>
+            <?php } ?>
             </div>
            </form> 
         </div>

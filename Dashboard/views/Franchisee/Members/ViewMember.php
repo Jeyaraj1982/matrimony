@@ -170,14 +170,18 @@
                 <span class="<?php echo ($Member['FIsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;<?php echo  $Member['FranchiseName'];?> (<?php echo  $Member['FranchiseeCode'];?>)<br><br> 
             </div>
             <div class="col-sm-12 col-form-label">
-                <span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>
+                <span class="<?php if($Member['IsDeleted']==1){ echo "DeletedDot"; } else { if($Member['IsActive']==0) { echo "Deactivedot"; } else { echo "Activedot"; } }?>"></span>
                  &nbsp;&nbsp;&nbsp;
-                 <small style="color:#737373;">
-                    <?php if($Member['IsActive']==1){
-                      echo "Active";
-                    }else{
-                      echo "Deactive"."( ".PutDatetime($Member['DeactivatedOn'])." )";
-                    }?>
+                 <small style="color:#737373;"> 
+                 <?php if($Member['IsDeleted']==1){ 
+                           echo "Deleted";
+                       } else {  
+                           if($Member['IsActive']==0) {
+                             echo "Deactive"."( ".PutDatetime($Member['DeactivatedOn'])." )";
+                           } else {
+                              echo "Active";   
+                             } 
+                       }?>
                  </small>
             </div>
             <?php if($Member['IsDeleted']==1) { ?>
@@ -218,31 +222,50 @@
             </div>
             <div class="col-sm-12 col-form-label">
                 <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmResetMobileNumber()"><small style="font-weight:bold;text-decoration:underline">Reset Mobile Number</small></a>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmChangeMobileNumber()"><small style="font-weight:bold;text-decoration:underline">Change Mobile Number</small></a>
                 <?php } else { ?> 
-                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Reset Mobile Number</small></a>
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Change Mobile Number</small></a>
                 <?php }   ?> 
             </div>
             <div class="col-sm-12 col-form-label">
                 <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmResetEmailID()"><small style="font-weight:bold;text-decoration:underline">Reset Email ID</small></a>
+                    <a href="javascript:void(0)" onclick="Member.ConfirmChangeEmailID()"><small style="font-weight:bold;text-decoration:underline">Change Email ID</small></a>
                 <?php } else { ?> 
-                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Reset Email ID</small></a>
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Change Email ID</small></a>
+                <?php }   ?> 
+            </div>
+           <div class="col-sm-12 col-form-label">
+                <?php if($Member['IsActive']==1 || $Member['IsDeleted']==0 ) { ?>
+                    <?php if($Member['IsDeleted']==0) { ?>
+                   <a href="javascript:void(0)" onclick="Member.ConfirmReqToDeleteMember()"><small style="font-weight:bold;text-decoration:underline">Delete Member</small></a>                                   
+                <?php } else { ?>    
+                  <?php if($Member['IsDeleted']==2) { ?>
+                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Restore</small></a>  
+                   <?php } else { ?>                                 
+                    <a href="javascript:void(0)" onclick="Member.ConfirmRestoreMember()"><small style="font-weight:bold;text-decoration:underline">Restore</small></a>                                   
+                <?php } } ?>
                 <?php }   ?> 
             </div>
             <div class="col-sm-12 col-form-label">
-                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmDeleteMember()"><small style="font-weight:bold;text-decoration:underline">Delete Member</small></a>
-                <?php } else { ?> 
-                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Delete Member</small></a>
-                <?php }   ?> 
-            </div>
-            <div class="col-sm-12 col-form-label">
-                <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>
-                    <a href="javascript:void(0)" onclick="Member.ConfirmBlockMember()"><small style="font-weight:bold;text-decoration:underline">Block Member</small></a>
-                <?php } else { ?> 
-                    <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Block Member</small></a>
-                <?php }   ?> 
+                <?php  if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) {    ?>
+                    <?php if($Member['IsActive']==0) {  ?>
+                            <a href="javascript:void(0)" onclick="Member.ConfirmActiveMemberRequest()"><small style="font-weight:bold;text-decoration:underline">Active Member</small></a>
+                           <?php } if($Member['IsActive']==1) {     ?>
+                              <a href="javascript:void(0)" onclick="Member.ConfirmReqToDeactiveMember()"><small style="font-weight:bold;text-decoration:underline">Deactive Member</small></a>
+                        <?php } if($Member['IsActive']==2) {  ?>  
+                               <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Active</small></a>
+                        <?php } ?>
+                <?php  } else {    ?>
+                    <?php if($Member['IsActive']==1) { ?>
+                        <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Active</small></a>
+                    <?php } else { ?>
+                        <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Deactive</small></a>
+                    <?php }   ?>
+                    <?php if($Member['IsActive']==2) { ?>
+                            <a><small style="font-weight:bold;text-decoration:underline;color: #5555;">Active</small></a>
+                    <?php } ?>
+                          
+                   <?php } ?>
             </div>
         </div>
 </div>    

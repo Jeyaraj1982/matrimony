@@ -650,6 +650,214 @@ var Franchisee = {
                             return false;
                         }
                  },
+    showConfirmApproveFranBankReq:function(ReqID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for approve</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to approve</div>'
+                                + '</div>'
+                                + 'Reason for Approved<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="ApproveReason"></textarea>'
+                                +'<div class="col-sm-12" id="frmApproveReason_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Franchisee.GetTxnPswdfrApproveFranBankReq(\''+ReqID+'\')" style="font-family:roboto">Yes, I want to appove</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPswdfrApproveFranBankReq:function(ReqID) {
+        if ($("#ApproveReason").val().trim()=="") {
+             $("#frmApproveReason_error").html("Please enter reason");
+             return false;
+         }
+        $("#ApproveReason_"+ReqID).val($("#ApproveReason").val());
+        $("#IsApproved_"+ReqID).val('1');
+        $("#IsRejected_"+ReqID).val('0');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for approve</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="Franchisee.ApproveFranchiseeBankWalletRequest(\''+ReqID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    },
+    ApproveFranchiseeBankWalletRequest:function(formid) {
+ 
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+        }
+    
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmmBnk_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=ApproveFranchiseeBankWalletRequest",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Approve Bank Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    showConfirmRejectFranBankReq:function(ReqID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for reject</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to Reject</div>'
+                                + '</div>'
+                                + 'Reason for Reject<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="RejectReason"></textarea>'
+                                +'<div class="col-sm-12" id="frmRejectReason_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-danger" name="Create" class="btn btn-primary" onclick="Franchisee.GetTxnPswdfrRejectFranBankReq(\''+ReqID+'\')" style="font-family:roboto">Yes, I want to reject</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPswdfrRejectFranBankReq:function(ReqID) {
+        if ($("#RejectReason").val().trim()=="") {
+             $("#frmRejectReason_error").html("Please enter reason");
+             return false;
+         }
+        $("#RejectReason_"+ReqID).val($("#RejectReason").val());
+        $("#IsApproved_"+ReqID).val('0');
+        $("#IsRejected_"+ReqID).val('1');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for reject</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="Franchisee.RejectFranchiseeBankWalletRequest(\''+ReqID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    },
+    RejectFranchiseeBankWalletRequest:function(formid) {
+ 
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+        }
+    
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmmBnk_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=RejectFranchiseeBankWalletRequest",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Reject Bank Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }
      
 };
 
@@ -3597,7 +3805,1489 @@ if ($("#TransactionPassword").val().trim()=="") {
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
                            + '</div>';
             $('#'+mBox+'_body').html(content);
-     }
+     },
+    ConfirmChangeMobileNumber:function() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for change mobile number</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                     + '<div class="col-sm-8">'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to change mobile number</div>'
+                                        + '</div>'
+                                     + '</div>'
+                                + '</div>'
+                            +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordChangeMemberMobileNumber()" style="font-family:roboto">Yes , Continue</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPasswordChangeMemberMobileNumber:function() {
+         
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for change mobile number</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.ChangeMemberMobileNumber()" style="font-family:roboto">Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    ChangeMemberMobileNumber:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=ChangeMemberMobileNumber",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Change Mobile Number Successfully</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Change mobile number</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    ConfirmChangeEmailID:function() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for change email id</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                     + '<div class="col-sm-8">'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to change email id</div>'
+                                        + '</div>'
+                                     + '</div>'
+                                + '</div>'
+                            +'</div>'
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="Member.GetTxnPasswordChangeMemberEmailID()" style="font-family:roboto">Yes , Continue</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPasswordChangeMemberEmailID:function() {
+         
+        var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for change email id</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                            + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" onclick="Member.ChangeMemberEmailID()" style="font-family:roboto">Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    ChangeMemberEmailID:function() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=ChangeMemberEmailID",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Change Email ID Successfully</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Change email id</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    GetTxnPasswordViewDactiveRequest:function(ReqID) {
+        $('#PubplishNow').modal('show'); 
+    var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for view request</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="Member.ViewDeactiveMemberRequest(\''+ReqID+'\')" style="font-family:roboto">Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    ViewDeactiveMemberRequest:function(ReqID) {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword_"+ReqID).val($("#TransactionPassword").val());
+     
+     var param = $("#frmfrn_"+ReqID).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","95"));
+        $.post(API_URL + "m=Admin&a=ViewDeactiveMemberRequest",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                $('#Publish_body').html(result);
+                return ;
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">View Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    showConfirmApproveMemDeactiveReq:function(ReqID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for approve</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to approve</div>'
+                                + '</div>'
+                                + 'Reason for Approved<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="ApproveReason"></textarea>'
+                                +'<div class="col-sm-12" id="frmApproveReason_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPswdfrApproveMemDeactiveReq(\''+ReqID+'\')" style="font-family:roboto">Yes, I want to appove</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPswdfrApproveMemDeactiveReq:function(ReqID) {
+        if ($("#ApproveReason").val().trim()=="") {
+             $("#frmApproveReason_error").html("Please enter reason");
+             return false;
+         }
+        $("#ApproveReason_"+ReqID).val($("#ApproveReason").val());
+        $("#IsApproved_"+ReqID).val('1');
+        $("#IsRejected_"+ReqID).val('0');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for approve</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="Member.AproveMemberDeactiveReq(\''+ReqID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    },
+    AproveMemberDeactiveReq:function(formid) {
+ 
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+        }
+    
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=AproveMemberDeactiveReq",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Approve Deactive Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }, 
+    GetTxnPasswordViewActiveRequest:function(ReqID) {
+        $('#PubplishNow').modal('show'); 
+    var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for view request</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="Member.ViewActiveMemberRequest(\''+ReqID+'\')" style="font-family:roboto">Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    ViewActiveMemberRequest:function(ReqID) {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword_"+ReqID).val($("#TransactionPassword").val());
+     
+     var param = $("#frmfrn_"+ReqID).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","95"));
+        $.post(API_URL + "m=Admin&a=ViewActiveMemberRequest",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                $('#Publish_body').html(result);
+                return ;
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">View Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    showConfirmApproveMemActiveReq:function(ReqID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for approve</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to approve</div>'
+                                + '</div>'
+                                + 'Reason for Approved<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="ApproveReason"></textarea>'
+                                +'<div class="col-sm-12" id="frmApproveReason_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPswdfrApproveMemActiveReq(\''+ReqID+'\')" style="font-family:roboto">Yes, I want to appove</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPswdfrApproveMemActiveReq:function(ReqID) {
+        if ($("#ApproveReason").val().trim()=="") {
+             $("#frmApproveReason_error").html("Please enter reason");
+             return false;
+         }
+        $("#ApproveReason_"+ReqID).val($("#ApproveReason").val());
+        $("#IsApproved_"+ReqID).val('1');
+        $("#IsRejected_"+ReqID).val('0');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for approve</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="Member.AproveMemberActiveReq(\''+ReqID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    },
+    AproveMemberActiveReq:function(formid) {
+ 
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+        }
+    
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=AproveMemberActiveReq",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Approve Active Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    showConfirmRejectMemDeactiveReq:function(ReqID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for reject</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to reject</div>'
+                                + '</div>'
+                                + 'Reason for Reject<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="RejectReason"></textarea>'
+                                +'<div class="col-sm-12" id="frmRejectReason_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPswdfrRejectMemDeactiveReq(\''+ReqID+'\')" style="font-family:roboto">Yes, I want to appove</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     }, 
+    GetTxnPswdfrRejectMemDeactiveReq:function(ReqID) {
+        if ($("#RejectReason").val().trim()=="") {
+             $("#frmRejectReason_error").html("Please enter reason");
+             return false;
+         }
+        $("#RejectReason_"+ReqID).val($("#RejectReason").val());
+        $("#IsApproved_"+ReqID).val('0');
+        $("#IsRejected_"+ReqID).val('1');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for reject</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="Member.RejectMemberDeactiveReq(\''+ReqID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    },
+    RejectMemberDeactiveReq:function(formid) {
+ 
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+        }
+    
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=RejectMemberDeactiveReq",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Reject Deactive Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    showConfirmRejectMemActiveReq:function(ReqID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for reject</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to reject</div>'
+                                + '</div>'
+                                + 'Reason for Reject<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="RejectReason"></textarea>'
+                                +'<div class="col-sm-12" id="frmRejectReason_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPswdfrRejectMemActiveReq(\''+ReqID+'\')" style="font-family:roboto">Yes, I want to appove</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     }, 
+    GetTxnPswdfrRejectMemActiveReq:function(ReqID) {
+        if ($("#RejectReason").val().trim()=="") {
+             $("#frmRejectReason_error").html("Please enter reason");
+             return false;
+         }
+        $("#RejectReason_"+ReqID).val($("#RejectReason").val());
+        $("#IsApproved_"+ReqID).val('0');
+        $("#IsRejected_"+ReqID).val('1');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for reject</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="Member.RejectMemberActiveReq(\''+ReqID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    },
+    RejectMemberActiveReq:function(formid) {
+ 
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+        }
+    
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=RejectMemberActiveReq",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Reject Active Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },           
+    GetTxnPasswordViewDeleteRequest:function(ReqID) {
+        $('#PubplishNow').modal('show'); 
+    var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for view request</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="Member.ViewDeleteMemberRequest(\''+ReqID+'\')" style="font-family:roboto">Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    ViewDeleteMemberRequest:function(ReqID) {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword_"+ReqID).val($("#TransactionPassword").val());
+     
+     var param = $("#frmfrn_"+ReqID).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","95"));
+        $.post(API_URL + "m=Admin&a=ViewDeleteMemberRequest",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                $('#Publish_body').html(result);
+                return ;
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">View Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    showConfirmApproveMemDeleteReq:function(ReqID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for approve</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to approve</div>'
+                                + '</div>'
+                                + 'Reason for Approved<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="ApproveReason"></textarea>'
+                                +'<div class="col-sm-12" id="frmApproveReason_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPswdfrApproveMemDeleteReq(\''+ReqID+'\')" style="font-family:roboto">Yes, I want to appove</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPswdfrApproveMemDeleteReq:function(ReqID) {
+        if ($("#ApproveReason").val().trim()=="") {
+             $("#frmApproveReason_error").html("Please enter reason");
+             return false;
+         }
+        $("#ApproveReason_"+ReqID).val($("#ApproveReason").val());
+        $("#IsApproved_"+ReqID).val('1');
+        $("#IsRejected_"+ReqID).val('0');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for approve</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="Member.AproveMemberDeleteReq(\''+ReqID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    },
+    AproveMemberDeleteReq:function(formid) {
+ 
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+        }
+    
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=AproveMemberDeleteReq",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Approve Delete Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    showConfirmRejectMemDeleteReq:function(ReqID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for reject</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to reject</div>'
+                                + '</div>'
+                                + 'Reason for Reject<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="RejectReason"></textarea>'
+                                +'<div class="col-sm-12" id="frmRejectReason_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPswdfrRejectMemDeleteReq(\''+ReqID+'\')" style="font-family:roboto">Yes, I want to appove</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     },
+     GetTxnPswdfrRejectMemDeleteReq:function(ReqID) {
+        if ($("#RejectReason").val().trim()=="") {
+             $("#frmRejectReason_error").html("Please enter reason");
+             return false;
+         }
+        $("#RejectReason_"+ReqID).val($("#RejectReason").val());
+        $("#IsApproved_"+ReqID).val('0');
+        $("#IsRejected_"+ReqID).val('1');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for reject</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="Member.RejectMemberDeleteReq(\''+ReqID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    },
+    RejectMemberDeleteReq:function(formid) {
+ 
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+        }
+    
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=RejectMemberDeleteReq",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Reject Deactive Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    GetTxnPasswordViewRestoreRequest:function(ReqID) {
+        $('#PubplishNow').modal('show'); 
+    var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for view request</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                         + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="Member.ViewRestoreMemberRequest(\''+ReqID+'\')" style="font-family:roboto">Continue</button>'
+                    + '</div>';
+        $('#Publish_body').html(content);            
+    },
+    ViewRestoreMemberRequest:function(ReqID) {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword_"+ReqID).val($("#TransactionPassword").val());
+     
+     var param = $("#frmfrn_"+ReqID).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","95"));
+        $.post(API_URL + "m=Admin&a=ViewRestoreMemberRequest",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                $('#Publish_body').html(result);
+                return ;
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">View Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    showConfirmApproveMemRestoreReq:function(ReqID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for approve</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to approve</div>'
+                                + '</div>'
+                                + 'Reason for Approved<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="ApproveReason"></textarea>'
+                                +'<div class="col-sm-12" id="frmApproveReason_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPswdfrApproveMemRestoreReq(\''+ReqID+'\')" style="font-family:roboto">Yes, I want to appove</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPswdfrApproveMemRestoreReq:function(ReqID) {
+        if ($("#ApproveReason").val().trim()=="") {
+             $("#frmApproveReason_error").html("Please enter reason");
+             return false;
+         }
+        $("#ApproveReason_"+ReqID).val($("#ApproveReason").val());
+        $("#IsApproved_"+ReqID).val('1');
+        $("#IsRejected_"+ReqID).val('0');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for approve</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="Member.AproveMemberRestoreReq(\''+ReqID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    },
+    AproveMemberRestoreReq:function(formid) {
+ 
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+        }
+    
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=AproveMemberRestoreReq",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Approve Restore Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    showConfirmRejectMemRestoreReq:function(ReqID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for restore</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to restore</div>'
+                                + '</div>'
+                                + 'Reason for Reject<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="RejectReason"></textarea>'
+                                +'<div class="col-sm-12" id="frmRejectReason_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPswdfrRejectMemRestoreReq(\''+ReqID+'\')" style="font-family:roboto">Yes, I want to appove</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     },
+     GetTxnPswdfrRejectMemRestoreReq:function(ReqID) {
+        if ($("#RejectReason").val().trim()=="") {
+             $("#frmRejectReason_error").html("Please enter reason");
+             return false;
+         }
+        $("#RejectReason_"+ReqID).val($("#RejectReason").val());
+        $("#IsApproved_"+ReqID).val('0');
+        $("#IsRejected_"+ReqID).val('1');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for reject</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="Member.RejectMemberRestoreReq(\''+ReqID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    },
+    RejectMemberRestoreReq:function(formid) {
+ 
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+        }
+    
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmfrn_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=RejectMemberRestoreReq",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Reject Restore Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    showConfirmApproveMemBankReq:function(ReqID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for approve</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to approve</div>'
+                                + '</div>'
+                                + 'Reason for Approved<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="ApproveReason"></textarea>'
+                                +'<div class="col-sm-12" id="frmApproveReason_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Create" class="btn btn-primary" onclick="Member.GetTxnPswdfrApproveMemBankReq(\''+ReqID+'\')" style="font-family:roboto">Yes, I want to appove</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPswdfrApproveMemBankReq:function(ReqID) {
+        if ($("#ApproveReason").val().trim()=="") {
+             $("#frmApproveReason_error").html("Please enter reason");
+             return false;
+         }
+        $("#ApproveReason_"+ReqID).val($("#ApproveReason").val());
+        $("#IsApproved_"+ReqID).val('1');
+        $("#IsRejected_"+ReqID).val('0');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for approve</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="Member.AproveMemberBankReq(\''+ReqID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    },
+    AproveMemberBankReq:function(formid) {
+ 
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+        }
+    
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmmBnk_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=AproveMemberBankReq",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Approve Bank Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    },
+    showConfirmRejectMemBankReq:function(ReqID) {
+    $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for reject</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="'+AppUrl+'assets/images/icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to Reject</div>'
+                                + '</div>'
+                                + 'Reason for Reject<br>'
+                                + '<textarea class="form-control" rows="2" cols="3" id="RejectReason"></textarea>'
+                                +'<div class="col-sm-12" id="frmRejectReason_error" style="color:red;text-align:center"></div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-danger" name="Create" class="btn btn-primary" onclick="Member.GetTxnPswdfrRejectMemBankReq(\''+ReqID+'\')" style="font-family:roboto">Yes, I want to reject</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     },
+    GetTxnPswdfrRejectMemBankReq:function(ReqID) {
+        if ($("#RejectReason").val().trim()=="") {
+             $("#frmRejectReason_error").html("Please enter reason");
+             return false;
+         }
+        $("#RejectReason_"+ReqID).val($("#RejectReason").val());
+        $("#IsApproved_"+ReqID).val('0');
+        $("#IsRejected_"+ReqID).val('1');
+        var content =   '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for reject</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                        + '</div>'
+                        + '<div class="modal-body">'
+                            + '<div class="form-group" style="text-align:center">'
+                                + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                                + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                            + '</div>'
+                             + '<div class="form-group">'
+                                + '<div class="input-group">'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '</div>'
+                                    + '<div class="col-sm-2"></div>'
+                                    + '<div class="col-sm-12" id="frmTxnPass_error" style="color:red;text-align:center"></div>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="Member.RejectMemberBankReq(\''+ReqID+'\')" class="btn btn-primary">Continue</button>'
+                        + '</div>';
+                $('#Publish_body').html(content);            
+    },
+    RejectMemberBankReq:function(formid) {
+ 
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+        }
+    
+    $("#txnPassword_"+formid).val($("#TransactionPassword").val());
+        var param = $("#frmmBnk_"+formid).serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Admin&a=RejectMemberBankReq",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/icon_success_verification.png" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Reject Bank Request</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    } 
 	
 };
 

@@ -176,7 +176,13 @@ RewriteRule ^Staffs/LoginHistory/(.*)\.html$ ./index.php?Code=$1&p=Staffs/LoginH
 RewriteRule ^Members/EditMember/(.*)\.html$ ./index.php?Code=$1&p=Members/EditMember
 RewriteRule ^Members/ViewMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMember
 RewriteRule ^Members/BlockMember/(.*)\.html$ ./index.php?Code=$1&p=Members/BlockMember
-RewriteRule ^Members/ResetPassword/(.*)\.html$ ./index.php?Code=$1&p=Members/ResetPassword
+RewriteRule ^Members/ResetPassword/(.*)\.html$ ./index.php?Code=$1&p=Members/ResetPassword 
+RewriteRule ^Members/ViewMemberDeactiveRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberDeactiveRequest
+RewriteRule ^Members/ViewMemberActiveRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberActiveRequest 
+RewriteRule ^Members/ViewMemberDeleteRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberDeleteRequest
+RewriteRule ^Members/ViewMemberRestoreRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberRestoreRequest
+
+
 
 RewriteRule ^Members/Wallet/RefillWallet/(.*)\.html$ ./index.php?Code=$1&p=Members/Wallet/RefillWallet
 RewriteRule ^Staffs/Edit/(.*)\.html$ ./index.php?Code=$1&p=Staffs/Edit
