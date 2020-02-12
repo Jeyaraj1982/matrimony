@@ -51,124 +51,171 @@ legend {
     margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px;
 }
  </style>
-<div class="col-12 grid-margin">
-  <div class="card">                                                                                                               
-    <div class="card-body">
-        <div class="form-group row">
-            <label class="col-sm-10 col-form-label"></label>
-            <div class="col-sm-2">
-                <i class="menu-icon mdi mdi-printer" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Print</label> 
+<div class="row">
+    <div class="col-sm-9">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div style="max-width:770px !important;">
+                        <div class="form-group row">
+                            <label class="col-sm-10 col-form-label"></label>
+                            <div class="col-sm-2"><i class="menu-icon mdi mdi-printer" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Print</label></div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-10 col-form-label"></label>
+                            <div class="col-sm-2"><i class="menu-icon mdi mdi-download" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Download</label></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form-group row">
-            <label class="col-sm-10 col-form-label"></label>
-                <div class="col-sm-2">
-                    <i class="menu-icon mdi mdi-download" style="font-size: 26px;color: purple;"></i>&nbsp;&nbsp; <label>Download</label>   
-                </div>
-        </div>
-       
-  </div>
-</div>
-</div>
-<div class="col-12 grid-margin">                                                     
-    <div class="card">
-        <div class="card-body">
-         <div class="form-group row">
-            <div class="col-sm-6"><h4 class="card-title">Profile Information</h4></div>
-            <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','GeneralInformation')">Edit</a></div>
-         </div>
-         <div class="form-group row">
-                    <div class="col-sm-6"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','ProfilePhoto')">Edit</a></div>
-              </div>                                            
-              <div class="form-group row">
-                <div class="col-sm-5">
-                    <div style="border: 1px solid #e6e6e6;;padding: 0px;width: 318px;height: 378px;"> 
-                    <div class="form-group row">                                                       
-                        <div class="col-sm-12">
-                            <div class="photoview" style="float:left;width: 316px;height:280px">
-                                <img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 100%;width: 100%;">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div style="max-width:770px !important;">
+                         <div class="form-group row">
+                            <div class="col-sm-6"><h4 class="card-title">Profile Information</h4></div>
+                            <div class="col-sm-6" style="text-align:right"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','GeneralInformation')">Edit</a></div>
+                         </div>
+                         <div class="form-group row">
+                            <div class="col-sm-6"><a href="javascript:void(0)" onclick="showConfirmEdit('<?php echo $_GET['Code'];?>','ProfilePhoto')">Edit</a></div>
+                         </div>                                            
+                         <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div style="border: 1px solid #e6e6e6;;padding: 0px;width: 318px;height: 378px;"> 
+                                    <div class="form-group row">                                                       
+                                        <div class="col-sm-12">
+                                            <div class="photoview" style="float:left;width: 316px;height:280px">
+                                                <img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 100%;width: 100%;">
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div style="padding-left: 10px;padding-right: 10px;">
+                                      <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/nextarrow.jpg" style="width:30px"></div>
+                                        <div class="col-sm-10">
+                                        <?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
+                                            <div class="photoview" style="float: left;">
+                                                <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 62px;width: 44px;">
+                                            </div>
+                                        <?php }?>
+                                        </div>
+                                       <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/rightarrow.jpg" style="width:30px"></div>
+                                   </div>
+                             </div>
+                         </div>
+                         <div class="col-sm-6">
+                            <div class="form-group row">                                       
+                                <label class="col-sm-12 col-form-label" style="color: #1e1e1e;font-size: 17px;"><?php echo strlen(trim($ProfileInfo['ProfileName']))> 0 ? trim($ProfileInfo['ProfileName']) : "N/A "; ?>&nbsp;<?php if((strlen(trim($ProfileInfo['Age'])))>0){ echo "("." ".trim($ProfileInfo['Age'])." "."yrs".")";  }?>&nbsp;</label>
                             </div>
-                        </div> 
-                    </div>
-                    <div style="padding-left: 10px;padding-right: 10px;">
-                      <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/nextarrow.jpg" style="width:30px"></div>
-                        <div class="col-sm-10">
-                        <?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
-                            <div class="photoview" style="float: left;">
-                                <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 62px;width: 44px;">
+                            <div class="form-group row">                                       
+                                <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">(approximate)</span><?php }?></label>
                             </div>
-                        <?php }?>
-                        </div>
-                       <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/rightarrow.jpg" style="width:30px"></div>
-                  </div>
-                </div>
-                </div>
-                <div class="col-sm-7">
-                    <div class="form-group row">                                       
-                        <label class="col-sm-12 col-form-label" style="color: #1e1e1e;font-size: 17px;"><?php echo strlen(trim($ProfileInfo['ProfileName']))> 0 ? trim($ProfileInfo['ProfileName']) : "N/A "; ?>&nbsp;<?php if((strlen(trim($ProfileInfo['Age'])))>0){ echo "("." ".trim($ProfileInfo['Age'])." "."yrs".")";  }?>&nbsp;</label>
-                    </div>
-                    <div class="form-group row">                                       
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">(approximate)</span><?php }?></label>
-                    </div>
-                    <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['MaritalStatus']);?></label> 
-                    </div>
-                    <?php if($ProfileInfo['MaritalStatusCode']!= "MST001"){?>
-                        <?php if(trim($ProfileInfo['Children'])>0) {?>
                             <div class="form-group row">
-                                    <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if(trim($ProfileInfo['Children'])=="1") { echo "Child"; } else { echo "Children";} ?>&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Children']);?>&nbsp;&nbsp;
-                                        <?php if(trim($ProfileInfo['IsChildrenWithYou'])=="1") {
-                                            if(trim($ProfileInfo['Children'])=="1") { echo "( Child with me )"; } else { echo "( Children with me )";} 
-                                            } else { 
-                                            if(trim($ProfileInfo['Children'])=="1") { echo "( Child not with me )"; } else { echo "( Children not with me )";} 
-                                            }
-                                        ?> 
-                                    </label> 
+                                 <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['MaritalStatus']);?></label> 
                             </div>
-                        <?php } else {    ?>
-                        <div class="form-group row">
-                                    <label class="col-sm-12 col-form-label" style="color:#737373;">Children&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Children']);?></label>
+                            <?php if($ProfileInfo['MaritalStatusCode']!= "MST001"){?>
+                                <?php if(trim($ProfileInfo['Children'])>0) {?>
+                                    <div class="form-group row">
+                                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if(trim($ProfileInfo['Children'])=="1") { echo "Child"; } else { echo "Children";} ?>&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Children']);?>&nbsp;&nbsp;
+                                            <?php if(trim($ProfileInfo['IsChildrenWithYou'])=="1") {
+                                                if(trim($ProfileInfo['Children'])=="1") { echo "( Child with me )"; } else { echo "( Children with me )";} 
+                                                } else { 
+                                                if(trim($ProfileInfo['Children'])=="1") { echo "( Child not with me )"; } else { echo "( Children not with me )";} 
+                                                }
+                                            ?> 
+                                        </label> 
+                                    </div>
+                                <?php } else {    ?>
+                                    <div class="form-group row">
+                                        <label class="col-sm-12 col-form-label" style="color:#737373;">Children&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo trim($ProfileInfo['Children']);?></label>
+                                    </div>
+                                <?php } ?>
+                            <?php }?>
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label" style="color:#737373;">
+                                <?php if($ProfileInfo['ReligionCode']== "RN009"){?>
+                                    <?php echo trim($ProfileInfo['OtherReligion']);?>
+                                <?php } else { ?>
+                                     <?php echo trim($ProfileInfo['Religion']);?>  
+                                <?php } ?> 
+                                </label>
                             </div>
-                        <?php } ?>
-                    <?php }?>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;">
-                        <?php if($ProfileInfo['ReligionCode']== "RN009"){?>
-                            <?php echo trim($ProfileInfo['OtherReligion']);?>
-                        <?php } else { ?>
-                             <?php echo trim($ProfileInfo['Religion']);?>  
-                        <?php } ?> 
-                    </label>
+                           <div class="form-group row">
+                                <label class="col-sm-12 col-form-label" style="color:#737373;">
+                                <?php if($ProfileInfo['CasteCode']== "CSTN248"){?>
+                                    <?php echo trim($ProfileInfo['OtherCaste']);?>
+                                <?php } else { ?>
+                                     <?php echo trim($ProfileInfo['Caste']);?>  
+                                <?php } ?> 
+                                <?php if((strlen(trim($ProfileInfo['SubCaste'])))>0){   ?>&nbsp;&nbsp; , &nbsp;&nbsp;
+                                <?php      echo "Sub caste :" . trim($ProfileInfo['SubCaste']);    }   ?>
+                                </label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Community']);?></label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Nationality']);?></label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['MotherTongue']);?></label>
+                            </div>
+                             <div class="form-group row">
+                                <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['City'])))>0){ echo trim($ProfileInfo['City']);?>,&nbsp;&nbsp;<?php }?><?php if((strlen(trim($ProfileInfo['State'])))>0){ echo trim($ProfileInfo['State']);?>,&nbsp;&nbsp;<?php }?><?php echo trim($ProfileInfo['Country']);?></label>
+                            </div>
+                         </div>
                     </div>
-                   <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;">
-                        <?php if($ProfileInfo['CasteCode']== "CSTN248"){?>
-                            <?php echo trim($ProfileInfo['OtherCaste']);?>
-                        <?php } else { ?>
-                             <?php echo trim($ProfileInfo['Caste']);?>  
-                        <?php } ?> 
-                        <?php if((strlen(trim($ProfileInfo['SubCaste'])))>0){   ?>&nbsp;&nbsp; , &nbsp;&nbsp;
-                        <?php      echo "Sub caste :" . trim($ProfileInfo['SubCaste']);    }   ?>
-                    </label>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Community']);?></label>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['Nationality']);?></label>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['MotherTongue']);?></label>
-                    </div>
-                     <div class="form-group row">
-                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['City'])))>0){ echo trim($ProfileInfo['City']);?>,&nbsp;&nbsp;<?php }?><?php if((strlen(trim($ProfileInfo['State'])))>0){ echo trim($ProfileInfo['State']);?>,&nbsp;&nbsp;<?php }?><?php echo trim($ProfileInfo['Country']);?></label>
-                    </div>
-                  
-              </div>
-              </div>
-         </div>
+                </div>
+            </div>
+        </div>
+    </div>                                                                                      
+    <div class="col-sm-3">
+        <div class="col-sm-12 col-form-label">
+            <a href="<?php echo GetUrl("WhoFavorited/".$_GET['Code'].".htm");?>"><small style="font-weight:bold;text-decoration:underline">Who Liked (<?php echo $response['data']['WhoFavoritedCount'];?>)</small></a>
+        </div>
+        <div class="col-sm-12 col-form-label">
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Who Viewed (<?php echo $response['data']['RecentlyWhoViwedCount'];?>)</small></a>
+        </div>
+        <div class="col-sm-12 col-form-label">
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Recently Viewed (<?php echo $response['data']['MyRecentlyViewedCount'];?>)</small></a>
+        </div>
+        <div class="col-sm-12 col-form-label">                                                                                       
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Liked (<?php echo $response['data']['MyFavoritedCount'];?>)</small></a>
+        </div>
+        <div class="col-sm-12 col-form-label">
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Mutually Liked (<?php echo $response['data']['MutualCount'];?>)</small></a>
+        </div>
+        <div class="col-sm-12 col-form-label">
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Short Listed (<?php echo $response['data']['MyShortListedcount'];?>)</small></a>          
+        </div>
+        <div class="col-sm-12 col-form-label">
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Who Short Listed (<?php echo $response['data']['WhoShortListedcount'];?>)</small></a>
+        </div>
+        <div class="col-sm-12 col-form-label">
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Viewed Contacts (<?php echo $response['data']['MyDownloadCount'];?>)</small></a>
+        </div>
+        <div class="col-sm-12 col-form-label">
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Who Viewed My Contacts (<?php echo $response['data']['WhoDownloadMyProfileCount'];?>)</small></a>
+        </div>
+        <div class="col-sm-12 col-form-label">
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Delete / Restore</small></a>
+        </div>
+        <div class="col-sm-12 col-form-label">
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Publish / Unpublish Profile</small></a>
+        </div>
+        <div class="col-sm-12 col-form-label">
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Add To Landing Page Profile</small></a>
+        </div>
+        <div class="col-sm-12 col-form-label">
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Publish / Unpublish LandingPage Profile</small></a>
+        </div>
+        <div class="col-sm-12 col-form-label">
+            <a href="javascript:void(0)"><small style="font-weight:bold;text-decoration:underline">Edit Profile</small></a>
+        </div>
+    </div>
 </div>
-</div>
+    
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">

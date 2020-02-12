@@ -161,7 +161,7 @@
             
             $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");     
             $PartnersExpectations = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `ProfileID`='".$Profiles[0]['ProfileID']."'");
-            $Documents = $mysql->select("select concat('".AppPath."uploads/profiles/".$Profiles[0]['DraftProfileCode']."/kycdoc/',AttachFileName) as AttachFileName,DocumentType as DocumentType from `_tbl_profiles_verificationdocs` where `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
+            $Documents = $mysql->select("select concat('".AppPath."uploads/profiles/".$Profiles[0]['DraftProfileCode']."/kycdoc/',AttachFileName) as AttachFileName,DocumentType as DocumentType,IsVerified,IsApproved,ApprovedOn from `_tbl_profiles_verificationdocs` where `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0' and `Type`!='EducationDetails' and ProfileCode='".$ProfileCode."'");
             $Educationattachments = $mysql->select("select * from `_tbl_profiles_education_details` where `MemberID`='".$Profiles[0]['MemberID']."' and ProfileID='".$Profiles[0]['ProfileID']."'");            
             
             $ProfilePhotos = $mysql->select("select concat('".AppPath."uploads/profiles/".$Profiles[0]['DraftProfileCode']."/thumb/',ProfilePhoto) as ProfilePhoto  from `_tbl_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."' and `PriorityFirst`='0'");                                        
@@ -183,7 +183,7 @@
                 }
             } else {
                  $ProfileThumbnail = $ProfileThumb[0]['ProfilePhoto'];                                              
-            } 
+          } 
             
             if ($Profiles[0]['RequestToVerify']==0) {
                 $Position = "Drafted";
@@ -207,7 +207,7 @@
                             "LastSeen"             => (isset($lastseen[0]['LastSeen']) ? $lastseen[0]['LastSeen'] : 0),
                             "Members"              => $members[0],
                             "EducationAttachments" => $Educationattachments,
-                            "Documents"            => $Documents,
+                              "Documents"            => $Documents,
                             "PartnerExpectation"   => $PartnersExpectations[0],
                             "ProfilePhotos"        => $ProfilePhotos,  /*array*/
                             "ProfileThumb"         => $ProfileThumbnail);

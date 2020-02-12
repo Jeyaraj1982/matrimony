@@ -15,9 +15,9 @@
                         <div class="col-sm-6">
                         </div>
                         <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                            <a href="ManageProfile"><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                            <a href="Drafted"><small style="font-weight:bold;text-decoration:underline">Drafted</small></a>&nbsp;|&nbsp;
-                            <a href="Posted"><small style="font-weight:bold;text-decoration:underline">Posted</small></a>&nbsp;|&nbsp;
+                            <a href="ManageProfile"><small>All</small></a>&nbsp;|&nbsp;               
+                            <a href="Drafted"><small>Drafted</small></a>&nbsp;|&nbsp;
+                            <a href="Posted"><small>Posted</small></a>&nbsp;|&nbsp;
                             <a href="Published"><small style="font-weight:bold;text-decoration:underline">Published</small></a>
                         </div>
                     </div>
@@ -36,9 +36,9 @@
                         <div class="col-sm-6">
                         </div>
                         <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                            <a href="ManageProfile"><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                            <a href="Drafted"><small style="font-weight:bold;text-decoration:underline">Drafted</small></a>&nbsp;|&nbsp;
-                            <a href="Posted"><small style="font-weight:bold;text-decoration:underline">Posted</small></a>&nbsp;|&nbsp;
+                            <a href="ManageProfile"><small>All</small></a>&nbsp;|&nbsp;
+                            <a href="Drafted"><small>Drafted</small></a>&nbsp;|&nbsp;
+                            <a href="Posted"><small>Posted</small></a>&nbsp;|&nbsp;
                             <a href="Published"><small style="font-weight:bold;text-decoration:underline">Published</small></a>
                         </div>
                     </div>

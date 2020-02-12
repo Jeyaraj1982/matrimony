@@ -82,14 +82,7 @@
                             </div>
                             <br>
                         
-                                <div class="scrollmenu shadow">    
-                                    <a href="<?php echo GetUrl("ListOfProfile/".$Profile['ProfileCode'].".htm?source=RecentlyViewed");?>" class="<?php echo ($page=="RecentlyViewed") ? ' linkactive ':'';?>">My Recently Viewed( <?php echo $response['data']['statistics']['RecentlyViewedCount'];?> )</a>
-                                    <a href="<?php echo GetUrl("MyFavoritedProfiles/".$Profile['ProfileCode'].".htm?source=MyFavorited");?>" class="<?php echo ($page=="MyFavorited") ? ' linkactive ':'';?>">My Liked ( <?php echo $response['data']['statistics']['MyFavoritedCount'];?> )</a>
-                                    <a href="<?php echo GetUrl("RecentlyWhoViewed/".$Profile['ProfileCode'].".htm?source=RecentlyWhoViewed");?>" class="<?php echo ($page=="RecentlyWhoViewed") ? ' linkactive ':'';?>">Who Viewed My Profile( <?php echo $response['data']['statistics']['RecentlyWhoViwedCount'];?> )</a>
-                                    <a href="<?php echo GetUrl("WhoFavorited/".$Profile['ProfileCode'].".htm?source=WhoFavorited");?>" class="<?php echo ($page=="WhoFavorited") ? ' linkactive ':'';?>">Who Liked My Profile ( <?php echo $response['data']['statistics']['WhoFavoritedCount'];?> )</a>
-                                    <a href="<?php echo GetUrl("Mutual/".$Profile['ProfileCode'].".htm?source=Mutual");?>" class="<?php echo ($page=="Mutual") ? ' linkactive ':'';?>">Mutual ( <?php echo $response['data']['statistics']['MutualCount'];?> ) </a>
-                                </div>
-
+                            <?php include_once("ProfileDetailsTopMenu.php");?>
                                 <?php 
                         foreach($response['data']['results']   as $result) { 
                             $Profile = $result['ProfileInfo'];

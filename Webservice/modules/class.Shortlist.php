@@ -98,6 +98,19 @@
                 return $result;    
             }
          }
+         function MyShortlisted($ProfileCode,$command="Count") {
+             
+             global $mysql;
+             if ($command=="Count") {
+                 $result = $mysql->select("select count(*) as cnt from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and  `VisterProfileCode`='".$ProfileCode."'");       
+                 return (isset($result[0]['cnt'])) ? $result[0]['cnt'] : 0;    
+            }
+            
+            if ($command=="Listall") {
+                $result = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and `VisterProfileCode`='".$ProfileCode."'");       
+                return $result;    
+            }
+         }
          
      }
      

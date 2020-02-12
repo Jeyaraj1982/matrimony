@@ -2,7 +2,17 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-               <h4 class="card-title">Orders</h4>
+               <div class="form-group row">
+               <div class="col-sm-6">
+                <h4 class="card-title">Orders</h4>
+               </div>
+                <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
+                    <a href="ManageOrder"><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
+                    <a href=""><small style="font-weight:bold;">Paid</small></a>&nbsp;|&nbsp;
+                    <a href=""><small style="font-weight:bold;">Unpaid</small></a>&nbsp;|&nbsp;
+                    <a href=""><small style="font-weight:bold;">Cancelled</small></a>&nbsp;|&nbsp;
+                </div>
+            </div>
         <?php 
             $response = $webservice->getData("Admin","GetOrderInvoiceReceiptDetails",array("Request"=>"Order"));
             if (sizeof($response['data'])>0) {   ?>

@@ -24,17 +24,17 @@
                     <h4 class="card-title" style="margin-bottom: 5px;">Manage Profiles</h4>
                     <h4 class="card-title" style="margin-bottom: 0px;margin-top: 0px;font-weight: normal;font-size: 13px;">Posted Profiles</h4>
                     <div class="form-group row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-6">                                                            
                             <!--<button type="submit" class="btn btn-primary "><i class="mdi mdi-plus"></i>Create Profile</button>-->
                         </div>
                         <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                            <a href="ManageProfile"><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                            <a href="Drafted"><small style="font-weight:bold;text-decoration:underline">Drafted</small></a>&nbsp;|&nbsp;
+                            <a href="ManageProfile"><small>All</small></a>&nbsp;|&nbsp;
+                            <a href="Drafted"><small>Drafted</small></a>&nbsp;|&nbsp;
                             <a href="Posted"><small style="font-weight:bold;text-decoration:underline">Posted</small></a>&nbsp;|&nbsp;
-                            <a href="Published"><small style="font-weight:bold;text-decoration:underline">Published</small></a><!--&nbsp;|&nbsp;
+                            <a href="Published"><small>Published</small></a><!--&nbsp;|&nbsp;
                             <a href="Expired"><small style="font-weight:bold;text-decoration:underline">Expired</small></a>&nbsp;|&nbsp;
                             <a href="#"><small style="font-weight:bold;text-decoration:underline">Rejected</small></a>  -->
-                        </div>
+                        </div>              aa
                     </div>
                         <?php foreach($response['data'] as $Profile) { 
                        
@@ -53,10 +53,10 @@
                         <div class="col-sm-6">
                         </div>
                         <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                            <a href="ManageProfile"><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                            <a href="Drafted"><small style="font-weight:bold;text-decoration:underline">Drafted</small></a>&nbsp;|&nbsp;
+                            <a href="ManageProfile"><small>All</small></a>&nbsp;|&nbsp;
+                            <a href="Drafted"><small>Drafted</small></a>&nbsp;|&nbsp;
                             <a href="Posted"><small style="font-weight:bold;text-decoration:underline">Posted</small></a>&nbsp;|&nbsp;
-                            <a href="Published"><small style="font-weight:bold;text-decoration:underline">Published</small></a>
+                            <a href="Published"><small>Published</small></a>
                             <!-- &nbsp;|&nbsp;
                     <a href="Expired"><small style="font-weight:bold;text-decoration:underline">Expired</small></a>&nbsp;|&nbsp;
                     <a href="#"><small style="font-weight:bold;text-decoration:underline">Rejected</small></a>-->

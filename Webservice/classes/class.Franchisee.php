@@ -3047,7 +3047,7 @@
                                                             `Pincode`        = '".$_POST['Pincode']."',
                                                             `CommunicationDescription`        = '".$_POST['CommunicationDescription']."',
                                                             `LastUpdatedOn`     = '".date("Y-m-d H:i:s")."',
-                                                            `OtherLocation`  = '".$_POST['OtherLocation']."' where `ProfileCode`='".$_POST['ProfileCodeCode']."'";
+                                                            `OtherLocation`  = '".$_POST['OtherLocation']."' where `ProfileCode`='".$_POST['ProfileCode']."'";
              $mysql->execute($updateSql);  
              
              $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");
@@ -3749,12 +3749,79 @@
                  return Response::returnError("No profile found");
              }
          }
+         function GetWhoRecentlyViewedMyProfile($ProfileCode) {
+             
+            global $mysql;
+                                    
+            $result = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `ProfileCode` = '".$ProfileCode."' AND VisterMemberID>0 AND VisterProfileID>0  group by `VisterProfileCode`"); 
+            return $result;
+    }
+    function GetMyRecentlyViewedProfile($ProfileCode) {
+             
+            global $mysql;
+                                    
+            $result = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$ProfileCode."' AND MemberID>0 AND ProfileID>0  group by `ProfileCode`"); 
+            return $result;
+    }
+    function GetWhoFavoritedMyProfile($ProfileCode) {
+             
+            global $mysql;
+            $result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode`='".$ProfileCode."'");       
+            return $result;
+    }                                
+    function GetWhoMyFavoritedProfile($ProfileCode) {
+             
+            global $mysql;
+            $result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `VisterProfileCode`='".$ProfileCode."'");       
+            return $result;
+    }
+    function GetMutualProfilesCount($ProfileCode) {
+             
+            global $mysql;
+            $result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1' and `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$ProfileCode."')");       
+            return $result;
+    }
+    function GetMyDownloadCount($ProfileCode) {
+             
+            global $mysql;
+            $result = $mysql->select("select * from `_tbl_profile_download` where `ProfileCode` = '".$ProfileCode."'");       
+            return $result;
+    }
+    function GetWhoDownloadMyProfileCount($ProfileCode) {
+             
+            global $mysql;
+            $result = $mysql->select("select * from `_tbl_profile_download` where `PartnerProfileCode` = '".$ProfileCode."'");       
+            return $result;
+    }
+    function GetWhoShortListedMyProfile($ProfileCode) {
+             
+            global $mysql;
+            $result = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and  `ProfileCode`='".$ProfileCode."'");       
+            return $result;
+    }
          function GetPublishProfileInfo() {
                
                 global $mysql,$loginInfo;      
             
                $result =  Profiles::getProfileInfo($_POST['ProfileCode'],2);
                   if (sizeof($result)>0) {
+                     $result['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($_POST['ProfileCode']));
+                     $result['MyFavoritedCount']= sizeof($this->GetWhoMyFavoritedProfile($_POST['ProfileCode']));
+                     $result['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($_POST['ProfileCode']));
+                     $result['MyRecentlyViewedCount']= sizeof($this->GetMyRecentlyViewedProfile($_POST['ProfileCode']));
+                     $result['MutualCount']= sizeof($this->GetMutualProfilesCount($_POST['ProfileCode']));
+                     $result['WhoShortListedcount']= Shortlist::WhoShortlisted($_POST['ProfileCode']);
+                     $result['MyShortListedcount']= Shortlist::MyShortlisted($_POST['ProfileCode']);
+                     $result['MyDownloadCount']= sizeof($this->GetMyDownloadCount($_POST['ProfileCode']));
+                     $result['WhoDownloadMyProfileCount']= sizeof($this->GetWhoDownloadMyProfileCount($_POST['ProfileCode'])); 
+                     
+                     if ($_POST['request']=="WhoFavorited") {
+                        $reqProfiles = $this->GetWhoFavoritedMyProfile($_POST['ProfileCode']);
+                     }
+                     foreach($reqProfiles as $reqProfile) {
+                        $result['results'][]=Profiles::getProfileInfo($reqProfile['VisterProfileCode'],1,1);        
+                     }
+                     
                      return Response::returnSuccess("success",$result);
                  } else {
                      return Response::returnError("No profile found");
@@ -4207,13 +4274,13 @@
              global $mysql,$loginInfo; 
              $Profiles = array();
              
-             $Profiles["primarydata"] = Profiles::getProfileInfo($_POST['ProfileCode'],2);
+             $Profiles["primarydata"] = Profiles::getProfileInfo($_POST['Code'],2);
              $Profiles['results'] = array();
              $Profiles['statistics']=array();
              
              
              if ($_POST['request']=="MyRecentViews") {
-                $reqProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$_POST['ProfileCode']."' group by `ProfileID` ");
+                $reqProfiles = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$_POST['Code']."' group by `ProfileID` ");
              }
              
              if ($_POST['request']=="MyFavorited") {
@@ -4221,19 +4288,19 @@
              }
              
              if ($_POST['request']=="RecentlyWhoViewed") {
-                $reqProfiles = $mysql->select("select VisterProfileCode as ProfileCode from `_tbl_profiles_lastseen` where `ProfileCode` = '".$_POST['ProfileCode']."' group by `VisterProfileCode`");
+                $reqProfiles = $mysql->select("select VisterProfileCode as ProfileCodes from `_tbl_profiles_lastseen` where `ProfileCode` = '".$_POST['Code']."' group by `VisterProfileCode`");
              }
              if ($_POST['request']=="WhoFavorited") {
                                                  
-                $reqProfiles = $mysql->select("select VisterProfileCode as ProfileCode from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$_POST['ProfileCode']."' group by `ProfileID`");
+                $reqProfiles = $mysql->select("select VisterProfileCode as ProfileCodes from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$_POST['Code']."' group by `ProfileID`");
              }
              if ($_POST['request']=="Mutual") {
                                               
-                $reqProfiles = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and `VisterProfileCode` = '".$_POST['ProfileCode']."' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$_POST['ProfileCode']."' order by FavProfileID DESC)");
+                $reqProfiles = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and `VisterProfileCode` = '".$_POST['Code']."' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$_POST['ProfileCode']."' order by FavProfileID DESC)");
              }
              
              foreach($reqProfiles as $reqProfile) {
-                $Profiles['results'][]=Profiles::getProfileInfo($reqProfile['ProfileCode'],1,1);   
+                $Profiles['results'][]=Profiles::getProfileInfo($reqProfile['Code'],1,1);        
              } 
              
              $RecentlyViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$_POST['ProfileCode']."' group by `ProfileID` ");
@@ -4480,16 +4547,17 @@
 
              MailController::Send(array("MailTo"   => $Franchisee[0]['ContactEmail'],
                                         "Category" => "FranchiseeTransferAmountToMember",
-                                        "FranchiseeID" => $Franchisee[0]['FranchiseeID'],
+                                        "FranchiseeID" => $Franchisee[0]['FranchiseeID'],              
                                         "Subject"  => $mContent[0]['Title'],
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($Franchisee[0]['ContactNumber'],"Dear ".$Franchisee[0]['FranchiseName']." your transfer amount to ".$Member[0]['MemberName']."  has been transfered successfully");
                 
                $id=$mysql->insert("_tbl_wallet_transactions",array("FranchiseeID"     =>$loginInfo[0]['FranchiseeID'],
+                                                                   "MemberID"      =>$Member[0]['MemberID'],                    
                                                                    "MEMFRANCode"      =>$Member[0]['MemberCode'],                    
                                                                    "Particulars"      =>'Transfer to   '. $Member[0]['MemberCode'],                    
-                                                                   "Credits"          =>"0",                    
-                                                                   "Debits"           => $_POST['AmountToTransfer'], 
+                                                                   "Credits"          =>$_POST['AmountToTransfer'],                    
+                                                                   "Debits"           => "0", 
                                                                    "AvailableBalance" => $this->getAvailableBalance()+$_POST['AmountToTransfer'],                   
                                                                    "TxnDate"          =>date("Y-m-d H:i:s"),
                                                                    "IsMember"         =>"0"));  
@@ -5200,7 +5268,37 @@
     }
     
    /*end edit submit profile */  
-   
+    public function GetWhoFavouriteMyProfiles() {
+             
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+             $sql = "";
+             if (isset($_POST['requestfrom'])) {
+                 $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
+             } else {
+                $_POST['requestfrom']=0; 
+                $_POST['requestto']=5; 
+             }
+
+             $RecentProfiles = $mysql->select("select VisterProfileCode from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `ProfileCode` = '".$_POST['Code']."' order by FavProfileID DESC");
+             
+             $profileCodes  = array();
+             foreach($RecentProfiles as $RecentProfile) {
+                 if (!(in_array($RecentProfile['VisterProfileCode'], $profileCodes)))
+                  {
+                      $profileCodes[]=$RecentProfile['VisterProfileCode'];
+                 }                                                                           
+             }
+             if (sizeof($profileCodes)>0) {
+                for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
+                    if (isset($profileCodes[$i]))  {
+                        $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                    }
+                }
+             }
+                  
+             return Response::returnSuccess("success",$Profiles);
+         }
    
 			 
     }

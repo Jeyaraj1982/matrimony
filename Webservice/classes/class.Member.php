@@ -146,11 +146,6 @@
              if (!(strlen(trim($_POST['Email']))>0)) {
                 return Response::returnError("Please enter your email");
              }
-
-			if (!(strlen(trim($_POST['LoginPassword']))>0)) {
-                return Response::returnError("Please enter password");
-             }
-
              if (Configuration::IS_ALLOW_DUPLICATE_MOBILE==0) {
                  $data = $mysql->select("select * from `_tbl_members` where  `MobileNumber`='".$_POST['MobileNumber']."'");
                  if (sizeof($data)>0) {
@@ -184,6 +179,7 @@
                                                        "EmailID"        => $_POST['Email'],
                                                        "MemberPassword" => $_POST['LoginPassword'],
                                                        "CountryCode"    => $_POST['CountryCode'],
+                                                       "ChangePasswordFstLogin"      => 1,
                                                        "ReferedBy"      => 1,
                                                        "CreatedBy"      => "Member",
                                                        "CreatedOn"      => date("Y-m-d H:i:s"))); 

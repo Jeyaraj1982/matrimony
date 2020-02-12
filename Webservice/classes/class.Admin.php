@@ -2668,6 +2668,8 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
          } 
          function GetDashBoardItems(){
              global $mysql;
+             
+             $Plan= $mysql->select("select * from _tbl_member_plan where IsDefault='1'");
              $memberCount = $mysql->select("SELECT COUNT(MemberID) AS cnt FROM _tbl_members");
              $member =  $mysql->select("SELECT * FROM `_tbl_members` ORDER BY `MemberID` DESC LIMIT 3");
              $profilecount =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM _tbl_profiles");
@@ -2683,8 +2685,8 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              
              $MemberWalletRequestCount =  $mysql->select("SELECT COUNT(ReqID) AS cnt FROM _tbl_wallet_bankrequests where IsMember='1'"); 
              $FranchiseeWalletRequestCount =  $mysql->select("SELECT COUNT(ReqID) AS cnt FROM _tbl_wallet_bankrequests where IsMember='0'"); 
-             $FreeMemberCount =  $mysql->select("SELECT COUNT(ProfileCreditID) AS cnt FROM _tbl_profile_credits where MemberPlanCode='PLN0008'"); 
-             $PaidMemberCount =  $mysql->select("SELECT COUNT(ProfileCreditID) AS cnt FROM _tbl_profile_credits where MemberPlanCode!='PLN0008'"); 
+             $FreeMemberCount =  $mysql->select("SELECT COUNT(ProfileCreditID) AS cnt FROM _tbl_profile_credits where MemberPlanCode='".$Plan[0]['PlanCode']."'"); 
+             $PaidMemberCount =  $mysql->select("SELECT COUNT(ProfileCreditID) AS cnt FROM _tbl_profile_credits where MemberPlanCode!='".$Plan[0]['PlanCode']."'"); 
              $LandingPageProfileCount =  $mysql->select("SELECT COUNT(ProfileLandingID) AS cnt FROM _tbl_landingpage_profiles where Date(_tbl_landingpage_profiles.`DateTo`)>=Date('".date("Y-m-d")."') AND `IsShow`='1'"); 
              $FranchiseeCount =  $mysql->select("SELECT COUNT(FranchiseeID) AS cnt FROM _tbl_franchisees"); 
                 
@@ -2960,13 +2962,31 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
          }
     function GetPublishProfileInfo() {
                
-                global $mysql,$loginInfo;      
+                global $mysql,$loginInfo; 
+                $result = array();     
              $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$_POST['ProfileCode']."'");               
-            
-            
                $result =  Profiles::getProfileInformationforAdmin($Profiles[0]['ProfileCode']);
+               $result['WhoFavoritedCount']= sizeof($this->GetWhoFavoritedMyProfile($Profiles[0]['ProfileCode']));
+               $result['MyFavoritedCount']= sizeof($this->GetWhoMyFavoritedProfile($Profiles[0]['ProfileCode']));
+               $result['RecentlyWhoViwedCount']= sizeof($this->GetWhoRecentlyViewedMyProfile($Profiles[0]['ProfileCode']));
+               $result['MyRecentlyViewedCount']= sizeof($this->GetMyRecentlyViewedProfile($Profiles[0]['ProfileCode']));
+               $result['MutualCount']= sizeof($this->GetMutualProfilesCount($Profiles[0]['ProfileCode']));
+               $result['WhoShortListedcount']= Shortlist::WhoShortlisted($Profiles[0]['ProfileCode']);
+               $result['MyShortListedcount']= Shortlist::MyShortlisted($Profiles[0]['ProfileCode']);
+               $result['MyDownloadCount']= sizeof($this->GetMyDownloadCount($Profiles[0]['ProfileCode']));
+               $result['WhoDownloadMyProfileCount']= sizeof($this->GetWhoDownloadMyProfileCount($Profiles[0]['ProfileCode']));
+               
+               if ($_POST['request']=="RecentlyWhoViewed") {
+                    $reqProfiles = $this->GetWhoRecentlyViewedMyProfile($Profiles[0]['ProfileCode']);
+               }
+               if ($_POST['request']=="WhoFavorited") {
+                    $reqProfiles = $this->GetWhoFavoritedMyProfile($Profiles[0]['ProfileCode']);
+               }
+                     foreach($reqProfiles as $reqProfile) {
+                        $result['results'][]=Profiles::getProfileInfo($reqProfile['VisterProfileCode'],1,1);        
+                     }
                return Response::returnSuccess("success",$result);
-           }
+           }                                                            
            
     function GetSMSLogs() {    
 
@@ -3108,22 +3128,47 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             }
     }
 	function GetWhoRecentlyViewedMyProfile($ProfileCode) {
+             
+            global $mysql;
+                                    
+            $result = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `ProfileCode` = '".$ProfileCode."' AND VisterMemberID>0 AND VisterProfileID>0  group by `VisterProfileCode`"); 
+            return $result;
+    }
+    function GetMyRecentlyViewedProfile($ProfileCode) {
 			 
 			global $mysql;
                                     
-			$result = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$ProfileCode."' AND VisterMemberID>0 AND VisterProfileID>0  group by `VisterProfileCode`"); 
+			$result = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$ProfileCode."' AND MemberID>0 AND ProfileID>0  group by `ProfileCode`"); 
 			return $result;
 	}
 	function GetWhoFavoritedMyProfile($ProfileCode) {
+             
+            global $mysql;
+            $result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode`='".$ProfileCode."'");       
+            return $result;
+    }                                
+    function GetWhoMyFavoritedProfile($ProfileCode) {
 			 
 			global $mysql;
-			$result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode`='".$ProfileCode."'");       
+			$result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `VisterProfileCode`='".$ProfileCode."'");       
 			return $result;
 	}
 	function GetMutualProfilesCount($ProfileCode) {
+             
+            global $mysql;
+            $result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1' and `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$ProfileCode."')");       
+            return $result;
+    }
+    function GetMyDownloadCount($ProfileCode) {
+             
+            global $mysql;
+            $result = $mysql->select("select * from `_tbl_profile_download` where `ProfileCode` = '".$ProfileCode."'");       
+            return $result;
+    }
+    function GetWhoDownloadMyProfileCount($ProfileCode) {
 			 
 			global $mysql;
-			$result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1' and `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$ProfileCode."')");       
+			$result = $mysql->select("select * from `_tbl_profile_download` where `PartnerProfileCode` = '".$ProfileCode."'");       
 			return $result;
 	}
 	function GetWhoShortListedMyProfile($ProfileCode) {
@@ -3741,14 +3786,14 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($Franchisee[0]['ContactNumber'],"Dear ".$Franchisee[0]['FranchiseeName']." your received ".$_POST['AmountToTransfer']." from ".$Admin[0]['AdminName']."");
              
-               $mysql->insert("_tbl_wallet_transactions",array("FranchiseeID"     =>$_POST['Code'],
-                                                                   "MEMFRANCode"      =>$Franchisee[0]['FranchiseeCode'],                    
-                                                                   "Particulars"      =>'Transfer from Admin',                    
-                                                                   "Credits"          => $_POST['AmountToTransfer'],                    
-                                                                   "Debits"           => "0", 
-                                                                   "AvailableBalance" => $this->getFranchiseeAvailableBalance($_POST['Code'])+$_POST['AmountToTransfer'],                   
-                                                                   "TxnDate"          =>date("Y-m-d H:i:s"),
-                                                                   "IsMember"         =>"0"));
+                $mysql->insert("_tbl_wallet_transactions",array("FranchiseeID"     =>$Franchisee[0]['FranchiseeID'],
+                                                                "MEMFRANCode"      =>$Franchisee[0]['FranchiseeCode'],                    
+                                                                "Particulars"      =>'Transfer from Admin',                    
+                                                                "Credits"          => $_POST['AmountToTransfer'],                    
+                                                                "Debits"           => "0", 
+                                                                "AvailableBalance" => $this->getFranchiseeAvailableBalance($_POST['Code'])+$_POST['AmountToTransfer'],                   
+                                                                "TxnDate"          =>date("Y-m-d H:i:s"),
+                                                                "IsMember"         =>"0"));
             
           
              if (sizeof($id)>0) {
@@ -3767,6 +3812,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnSuccess("success",$mysql->select($sql."Where `FranchiseeID`='". $loginInfo[0]['FranchiseeStaffID']."' and `IsMember`='0' order by `TxnID` DESC"));    
              }
          }
+        
          function GetMemberProfileforView() {
 
              global $mysql,$loginInfo; 
@@ -3775,8 +3821,8 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="All") {  /* Profile => Manage Profile (All) */
                                                                                                 
-                 $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$_POST['Code']."' and  `RequestToVerify`='0' and IsApproved='0'");
-                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$_POST['Code']."' and  RequestToVerify='1'");
+                 $DraftProfiles     = $mysql->select("select * from `_tbl_draft_profiles` where `MemberCode`='".$_POST['Code']."' and  `RequestToVerify`='0' and IsApproved='0'");
+                 $PostProfiles      = $mysql->select("select * from `_tbl_draft_profiles` where `MemberCode`='".$_POST['Code']."' and  RequestToVerify='1'");
                  
                  if (sizeof($DraftProfiles)>0) {
                      
@@ -3790,7 +3836,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                      
                      if ($PostProfiles[0]['IsApproved']>0) {
                          
-                         $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where DraftProfileID='".$PostProfiles[0]['ProfileID']."' and  `MemberID` = '".$_POST['Code']."'");
+                         $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where DraftProfileID='".$PostProfiles[0]['ProfileID']."' and  `MemberCode` = '".$_POST['Code']."'");
                          foreach($PublishedProfiles as $PublishedProfile) {
                             $result = Profiles::getProfileInformation($PublishedProfile['ProfileCode']);
                             $result['mode']="Published";
@@ -3812,7 +3858,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Draft") {  /* Profile => Drafted */
                  
-                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$_POST['Code']."' and RequestToVerify='0'");
+                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberCode`='".$_POST['Code']."' and RequestToVerify='0'");
                  
                  if (sizeof($DraftProfiles)>0) {
                      foreach($DraftProfiles as $DraftProfile) {
@@ -3826,7 +3872,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              }
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Posted") {    /* Profile => Posted */
-                  $PostProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberID`='".$_POST['Code']."' and RequestToVerify='1' and IsApproved='0'");
+                  $PostProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `MemberCode`='".$_POST['Code']."' and RequestToVerify='1' and IsApproved='0'");
 
                   if (sizeof($PostProfiles)>0) {
                       foreach($PostProfiles as $PostProfile) {
@@ -3841,7 +3887,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {    /* Profile => Posted */
              
-                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$_POST['Code']."' and IsApproved='1' and RequestToVerify='1'");
+                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `MemberCode`='".$_POST['Code']."' and IsApproved='1' and RequestToVerify='1'");
                 if (sizeof($PublishedProfiles)>0) {
                     foreach($PublishedProfiles as $PublishedProfile) {
                         $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);

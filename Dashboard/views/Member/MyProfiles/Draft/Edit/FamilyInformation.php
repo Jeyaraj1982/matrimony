@@ -11,7 +11,6 @@
     $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
     $CountryCodes =$response['data']['ContactCountrycode'];
-
     include_once("settings_header.php");
 ?>
 <div class="col-sm-10 rightwidget">
@@ -243,8 +242,8 @@
                     <div class="col-sm-3" align="left" id="div_marriedSister">
                         <label class="col-form-label">Married</label>
                         <select class="form-control" id="marriedSister" name="marriedSister">
-                            <?php foreach($response['data']['NumberofMarriedSisters'] as $marriedSister) { ?>
-                            <option value="<?php echo $marriedSister['SoftCode'];?>" <?php echo (isset($_POST[ 'marriedSister'])) ? (($_POST[ 'marriedSister']==$marriedSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MarriedSister']==$marriedSister[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $marriedSister['CodeValue'];?> </option>
+                            <?php foreach($response['data']['NumberofMarriedSisters'] as $marriedSisters) { ?>
+                            <option value="<?php echo $marriedSisters['SoftCode'];?>" <?php echo (isset($_POST[ 'marriedSister'])) ? (($_POST[ 'marriedSister']==$marriedSisters[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'MarriedSister']==$marriedSisters[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $marriedSisters['CodeValue'];?> </option>
                             <?php } ?>                                                                                                              
                         </select>
                     </div>

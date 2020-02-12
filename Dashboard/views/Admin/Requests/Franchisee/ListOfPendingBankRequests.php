@@ -8,7 +8,7 @@ $response = $webservice->getData("Admin","FranchiseeBankRequests",array("Request
                 <div class="form-group row">
                <div class="col-sm-6">
                 <h4 class="card-title">Requests</h4>
-                <h4 class="card-title">Member Wallet Refill Requests</h4>
+                <h4 class="card-title">Franchisee Wallet Refill Requests</h4>
                </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                     <a href="ListOfFranchiseeAllBankRequests" ><small style="font-weight:bold;">All</small></a>&nbsp;|&nbsp;
