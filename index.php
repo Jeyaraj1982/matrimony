@@ -87,6 +87,9 @@
     include_once(web_path."classes/class.jsuccessstory.php");
     include_once(web_path."classes/class.jfaq.php");
  
+     $showTemplateHeader=true;  
+                          $showTemplateFooter=true;  
+                          
     if (isset($_GET['x'])) {
         
         if ($_GET['x']!="") {
@@ -100,6 +103,11 @@
                 } else {
                     $nPath = web_path."includes/user_pages/".$_GET['x'].".php";
                     $mPath = web_path."includes/user_pages/".$_GET['x'];
+                   
+                    if($_GET['x']=="login" || $_GET['x']=="register" || $_GET['x']=="password-changed" || $_GET['x']=="forget-password-save" || $_GET['x']=="forget-password-otp" || $_GET['x']=="forget-password"){   
+                          $showTemplateHeader=false;  
+                          $showTemplateFooter=false;  
+                        }
                          
                     if (file_exists($nPath)) {
                         $realPath=$nPath;    
@@ -108,7 +116,13 @@
                     
                     if (file_exists($mPath)) {
                         $realPath=$mPath;
-                        $_GET['x']="index.php";
+                       
+                            //   include_once($realPath); 
+                        //} else{
+                            $_GET['x']="index.php"; 
+                           
+                        //}
+                       
                     }
                 }
             } 

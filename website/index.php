@@ -6,7 +6,7 @@
     $itemname=$r['itemname'];
     $ogImage = $_SITEPATH.'assets/'.$config['thumb'].$r["filename"];
     $ogUrl = $_SITEPATH;
-
+    if ($showTemplateHeader && $showTemplateFooter) {
     include_once(web_path."includes/header.php");
 
     if (isset($pageContent) && sizeof($pageContent)>0) {
@@ -55,4 +55,8 @@
     echo "<br>";
 
     include_once(web_path."includes/footer.php");
+    } else {
+        
+          include_once($realPath); 
+    }
 ?>
