@@ -1,0 +1,11 @@
+<div class="scrollmenu shadow">  
+    <a href="<?php echo GetUrl("RecentlyWhoViewed/".$Profile['ProfileCode'].".htm?source=RecentlyWhoViewed");?>" class="<?php echo ($page=="RecentlyWhoViewed") ? ' linkactive ':'';?>">Who Viewed (<?php echo $response['data']['RecentlyWhoViwedCount'];?>)</a>  
+    <a href="<?php echo GetUrl("RecentlyViewed/".$Profile['ProfileCode'].".htm?source=RecentlyViewed");?>" class="<?php echo ($page=="RecentlyViewed") ? ' linkactive ':'';?>">Recently Viewed (<?php echo $response['data']['MyRecentlyViewedCount'];?>)</a>  
+    <a href="<?php echo GetUrl("MyFavoritedProfiles/".$Profile['ProfileCode'].".htm?source=MyFavorited");?>" class="<?php echo ($page=="MyFavorited") ? ' linkactive ':'';?>">Liked (<?php echo $response['data']['MyFavoritedCount'];?>)</a>
+    <a href="<?php echo GetUrl("WhoFavorited/".$Profile['ProfileCode'].".htm?source=WhoFavorited");?>" class="<?php echo ($page=="WhoFavorited") ? ' linkactive ':'';?>">Who Liked (<?php echo $response['data']['WhoFavoritedCount'];?>)</a>
+    <a href="<?php echo GetUrl("Mutual/".$Profile['ProfileCode'].".htm?source=Mutual");?>" class="<?php echo ($page=="Mutual") ? ' linkactive ':'';?>">Mutual Liked (<?php echo $response['data']['MutualCount'];?>) </a>
+    <a href="<?php echo GetUrl("MyShortListed/".$Profile['ProfileCode'].".htm?source=MyShortListed");?>" class="<?php echo ($page=="MyShortListed") ? ' linkactive ':'';?>">ShorListed (<?php echo $response['data']['MyShortListedcount'];?>) </a>
+    <a href="<?php echo GetUrl("WhoShortListed/".$Profile['ProfileCode'].".htm?source=whoShortListed");?>" class="<?php echo ($page=="WhoShortListed") ? ' linkactive ':'';?>">Who ShorListed (<?php echo $response['data']['WhoShortListedcount'];?>) </a>
+    <a href="<?php echo GetUrl("WhoShortListed/".$Profile['ProfileCode'].".htm?source=whoShortListed");?>" class="<?php echo ($page=="WhoShortListed") ? ' linkactive ':'';?>">Viewed Contacts (<?php echo $response['data']['WhoShortListedcount'];?>) </a>
+    <a href="<?php echo GetUrl("WhoShortListed/".$Profile['ProfileCode'].".htm?source=whoShortListed");?>" class="<?php echo ($page=="WhoShortListed") ? ' linkactive ':'';?>">Who Viewed Contacts (<?php echo $response['data']['WhoShortListedcount'];?>) </a>
+</div>
