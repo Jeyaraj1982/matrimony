@@ -96,7 +96,9 @@
                             "PAYPALCURRENCY"             => "select * from `_tbl_master_codemaster` Where `HardCode`='PAYPALCURRENCY'".$filter,
                             "TIMEZONE"             => "select * from `_tbl_master_codemaster` Where `HardCode`='TIMEZONE'".$filter,
                             "CURRENCY"             => "select * from `_tbl_master_codemaster` Where `HardCode`='CURRENCY'".$filter,
-                            "DOCTYPES"    		 => "select * from `_tbl_master_codemaster` Where `HardCode`='DOCTYPES'".$filter,
+                            "DOCTYPES"             => "select * from `_tbl_master_codemaster` Where `HardCode`='DOCTYPES'".$filter,
+                            "SERVICEREQUESTFOR"             => "select * from `_tbl_master_codemaster` Where `HardCode`='SERVICEREQUESTFOR'".$filter,
+                            "APPSETTINGS"    		 => "select * from `_tbl_master_codemaster` Where `HardCode`='APPSETTINGS'".$filter,
                             "RegisterAllowedCountries" => "select *, CONCAT(CodeValue,' (+',ParamA,')') as str FROM `_tbl_master_codemaster`  WHERE `HardCode`='CONTNAMES' and ParamE='1'");
               return $mysql->select($quries[$Request]);
         }

@@ -149,6 +149,9 @@
     if ($_GET['m']=="Matches") {
         include_once("classes/class.Matches.php");    
     }
+    if ($_GET['m']=="SupportDesk") {
+        include_once("classes/class.SupportDesk.php");    
+    }
     
     $mysql   = new MySqlDb($db[0],$db[1],$db[2],$db[3]);
     

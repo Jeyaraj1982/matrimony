@@ -9,4 +9,5 @@ define("DBNAME","j2jsoftw_matri_web");
 define("web_path","website/"); 
 define("webadmin_path","website/webadmin/");
 define("application_config_path","Dashboard/web_config.php");
+
 ?>

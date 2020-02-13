@@ -3434,6 +3434,76 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
         fclose($myfile);
         return Response::returnSuccess("Success");
     }
+    function GetMastersSettingsCode() {
+           global $mysql;                                                              
+           $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='XXX'");
+            return Response::returnSuccess("success",array("AppSettingsCode"   => SeqMaster::GetNextCode('APPSETTINGS'),
+                                                           "CodeMasterDatas"   => $data,
+                                                           "WebSettingsCode"   => SeqMaster::GetNextCode('WEBSETTINGS')));    
+    }                                                                          
+
+    function AddConfigurationSettings() {
+       global $mysql,$loginInfo; 
+       $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='APPSETTINGS' and CodeValue='".$_POST['String']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("String Already Exists");
+            }
+         $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"       => "APPSETTINGS",
+                                                             "SoftCode"      => $_POST['AppSettingsCode'],
+                                                             "CodeValue"      => $_POST['String'],
+                                                             "ParamB"          => $_POST['DataType'],
+                                                             "ParamA"          => $_POST['ParamA'],
+                                                             "ParamC"          => $_POST['ParamC'],
+                                                             "ParamD"          => $_POST['ParamD'],
+                                                             "ParamE"          => $_POST['ParamE']));
+         return Response::returnSuccess("Success");
+    }
+    function AddWebsiteSettings() {
+       global $mysql,$loginInfo; 
+       $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='WEBSETTINGS' and CodeValue='".$_POST['String']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("String Already Exists");
+            }
+         $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"       => "WEBSETTINGS",
+                                                             "SoftCode"      => $_POST['WebSettingsCode'],
+                                                             "CodeValue"      => $_POST['String'],
+                                                             "ParamB"          => $_POST['DataType'],
+                                                             "ParamA"          => $_POST['ParamA'],
+                                                             "ParamC"          => $_POST['ParamC'],
+                                                             "ParamD"          => $_POST['ParamD'],
+                                                             "ParamE"          => $_POST['ParamE']));
+         return Response::returnSuccess("Success");
+    }
+    function UpdateWebConfiguration() {
+        
+        global $mysql,$loginInfo;
+        foreach($_POST as $param => $value ) {
+            if (trim(substr($param,0,4))=="app_") {
+                
+                  $mysql->execute("update `_tbl_master_codemaster` set `ParamA`='".$value."' where `HardCode`='WEBSETTINGS' and `CodeValue`='".str_replace("app_","",$param)."'");           
+               
+            }
+        }
+        
+        $myfile = fopen("../Dashboard/includes/class.WebConfig.php", "w") or die("Unable to open file!");
+        $txt = "<?php
+        \n\tclass WebConfig {";
+        $data = $mysql->select("select * from _tbl_master_codemaster where `HardCode`='WEBSETTINGS'");
+        foreach($data as $d) {
+            if(strlen(trim($d['CodeValue']))>0) {
+                $txt.= "\n\t\t const ".$d['CodeValue']." = ";
+                if ($d['ParamB']=="string") {
+                    $txt .= "'".$d['ParamA']."';";
+                } else {
+                    $txt .= (strlen(trim($d['ParamA']))>0 ? $d['ParamA'] : 0) .";";
+                }
+            }
+        }
+        $txt .= "\n\t}\n?>";
+        fwrite($myfile,$txt);
+        fclose($myfile);
+        return Response::returnSuccess("Success");
+    }
 
     function GetAllowDuplicateDetails(){
         global $mysql,$loginInfo;
@@ -4638,6 +4708,11 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
               $Staffs = $mysql->select("select * from _tbl_admin where IsDeleted='0' and `IsAdmin`='0'");
                 return Response::returnSuccess("success",$Staffs);
         }
+        function GetManageSupportDeskUsers() {
+           global $mysql;    
+              $Users = $mysql->select("select * from _tbl_support_desk_user where IsDeleted='0'");
+                return Response::returnSuccess("success",$Users);
+        }
         function CreateAdminStaff() {
             
             global $mysql,$loginInfo;
@@ -4730,13 +4805,109 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
         global $mysql;
         $Staffs = $mysql->select("select * from _tbl_admin where AdminCode='".$_POST['Code']."'");
-		$LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `AdminID`='".$Staffs[0]['AdminID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
+        $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `AdminID`='".$Staffs[0]['AdminID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
         return Response::returnSuccess("success",array("Staffs"             => $Staffs,
                                                        "AdminStaffCode"     => SeqMaster::GetNextAdminStaffNumber(),
                                                        "Gender"             => CodeMaster::getData('SEX'),
                                                        "LastLogin"          => $LoginHistory,
                                                        "CountryName"        => CodeMaster::getData('RegisterAllowedCountries')));
 
+    }
+    function GetSupportDeskUserInfo(){
+        global $mysql;
+        $Users = $mysql->select("select * from _tbl_support_desk_user where UserCode='".$_POST['Code']."'");
+        $LoginHistory = $mysql->select("select * from `_tbl_logs_logins` where `SupportDeskUserID`='".$Users[0]['UserID']."' ORDER BY `LoginID` DESC LIMIT 0,10");
+        return Response::returnSuccess("success",array("SupportDeskUserCode" => SeqMaster::GetNextSupportDeskUserCode(),
+                                                       "Gender"              => CodeMaster::getData('SEX'),
+                                                       "CountryName"         => CodeMaster::getData('RegisterAllowedCountries'),
+                                                       "LastLogin"           => $LoginHistory,
+                                                       "Users"               => $Users));
+
+    }
+    function CreateSupportDeskUser() {
+            
+            global $mysql,$loginInfo;
+            
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+            
+            if (!(strlen(trim($_POST['UserCode']))>0)) {
+                return Response::returnError("Please enter user code");                                          
+            }
+            
+            if (!(strlen(trim($_POST['UserName']))>0)) {
+                return Response::returnError("Please enter user name");
+            }
+            if (!(strlen(trim($_POST['MobileNumber']))>0)) {
+                return Response::returnError("Please enter mobile number");
+            }       
+            
+            if (!(strlen(trim($_POST['EmailID']))>0)) {
+                return Response::returnError("Please enter email id");
+            }                        
+            if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0")) {
+                return Response::returnError("Please select gender");
+            }
+            
+            if (!(strlen(trim($_POST['LoginName']))>0)) {
+                return Response::returnError("Please enter login name");
+            }
+            
+            if (!(strlen(trim($_POST['LoginPassword']))>0)) {
+                return Response::returnError("Please enter login password");
+            }
+            
+            $data = $mysql->select("select * from  _tbl_support_desk_user where UserCode='".trim($_POST['UserCode'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("User Code Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_support_desk_user where MobileNumber='".trim($_POST['MobileNumber'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Mobile Number Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_support_desk_user where EmailID='".trim($_POST['EmailID'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Email ID Already Exists");
+            }
+            $data = $mysql->select("select * from  _tbl_support_desk_user where UserLogin='".trim($_POST['LoginName'])."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Login Name Already Exists");
+            }
+            
+            $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date'];
+            
+                  $id = $mysql->insert("_tbl_support_desk_user",array("UserCode"       => $_POST['UserCode'],   
+                                                                 "UserName"       => $_POST['UserName'], 
+                                                                 "DateofBirth"     => $dob,
+                                                                 "Sex"             => $_POST['Sex'],
+                                                                 "CountryCode"    => $_POST['CountryCode'],
+                                                                 "MobileNumber"    => $_POST['MobileNumber'],
+                                                                 "EmailID"         => $_POST['EmailID'],
+                                                                 "UserLogin"       => $_POST['LoginName'],
+                                                                 "UserPassword"   => $_POST['LoginPassword'],
+                                                                 "IsActive"        => "1",
+                                                                 "CreatedOn"       => date("Y-m-d H:i:s"), 
+                                                                 "ChangePasswordFstLogin"   => (($_POST['PasswordFstLogin']=="on") ? '1' : '0')));
+                                                                 $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='SupportDeskUsers'");
+              
+            if (sizeof($id)>0) {
+                $mContent = $mysql->select("select * from `mailcontent` where `Category`='SupportDeskUserCreate'");
+                     $content  = str_replace("#UserName#",$_POST['UserName'],$mContent[0]['Content']);
+                     $content  = str_replace("#UserLogin#",$_POST['LoginName'],$content);
+                     $content  = str_replace("#UserPassword#",$_POST['LoginPassword'],$content);
+
+                     MailController::Send(array("MailTo"   => $_POST['EmailID'],
+                                                "Category" => "SupportDeskUserCreate",
+                                                "SDUserID" => $id,
+                                                "Subject"  => $mContent[0]['Title'],
+                                                "Message"  => $content),$mailError);
+                    MobileSMSController::sendSMS($_POST['MobileNumber']," Dear ".$_POST['UserName'].",You have added as a user in support desk  <br> Your User ID is ".$_POST['UserCode']." ,Login Name is ".$_POST['LoginName']." and Login Password is ".$_POST['LoginPassword']." " );
+                return Response::returnSuccess("success",array("UserCode" => $_POST['UserCode']));
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
     }
 	function GetMyStaffInfo(){
 
@@ -4747,7 +4918,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
     }
         
-        function EditAdminStaff(){
+    function EditAdminStaff(){
               global $mysql,$loginInfo;
         
              $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
@@ -4787,6 +4958,47 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
 
               
                 return Response::returnSuccess("success",array("AdminCode"=>$_POST['StaffCode']));
+
+    }
+    function EditSupportDeskUser(){
+              global $mysql,$loginInfo;
+        
+             $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+                if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                    return Response::returnError("Invalid transaction password");   
+                }            
+            if (!(strlen(trim($_POST['MobileNumber']))>0)) {
+                return Response::returnError("Please enter mobile number");
+            }       
+            
+            if (!(strlen(trim($_POST['EmailID']))>0)) {
+                return Response::returnError("Please enter email id");
+            }                        
+            if ((strlen(trim($_POST['Sex']))==0 || $_POST['Sex']=="0")) {
+                return Response::returnError("Please select gender");
+            }
+            
+        $data = $mysql->select("select * from  _tbl_support_desk_user where MobileNumber='".trim($_POST['MobileNumber'])."' and UserCode<>'".$_POST['UserCode']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("Mobile Number Code Already Exists");
+        }
+        $data = $mysql->select("select * from  _tbl_support_desk_user where EmailID='".trim($_POST['EmailID'])."' and UserCode<>'".$_POST['UserCode']."'");
+        if (sizeof($data)>0) {
+            return Response::returnError("EmailID Already Exists");
+        }
+        
+        $dob = $_POST['year']."-".$_POST['month']."-".$_POST['date']; 
+    
+             $mysql->execute("update _tbl_support_desk_user set UserName='".$_POST['UserName']."', 
+                                                           DateofBirth='".$dob."',
+                                                           Sex='".$_POST['Sex']."',
+                                                           CountryCode                 ='".$_POST['CountryCode']."',
+                                                           MobileNumber='".$_POST['MobileNumber']."',
+                                                           EmailID='".$_POST['EmailID']."'
+                                                           where  UserCode='".$_POST['UserCode']."'");
+
+              
+                return Response::returnSuccess("success",array("UserCode"=>$_POST['UserCode']));
 
     }
 	function ViewPlanForCreateFranchisee() { 
@@ -7317,6 +7529,23 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
         
         return Response::returnSuccess("Success",$result);
     }
+    function GetWebConfigurationSettingsList() {
+        global $mysql,$loginInfo;
+        
+        $Config = $mysql->select("select * from  _tbl_master_codemaster where HardCode='WEBSETTINGS' and ParamE='1' ");
+        $result = array();
+        foreach($Config as $c) {
+            
+            if(strlen(trim($c['ParamC']))>0) {
+                  $mstr_data = $mysql->select("select * from _tbl_master_codemaster where HardCode='".$c['ParamC']."' order by CodeValue");
+                  $c['ParamC']=$mstr_data;
+            }
+            
+            $result[]=$c;
+        }                                 
+        
+        return Response::returnSuccess("Success",$result);
+    }
     function GetManageSequenceMaster() {
            global $mysql;    
              $sql = "SELECT * FROM _tbl_sequence";
@@ -7417,26 +7646,53 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
            
              global $mysql,$loginInfo;
              
-              $sql = "select * from _tbl_franchisee_requests";
+              $sql = "select * from _tbl_service_requests";
+
+              if (isset($_POST['Request']) && $_POST['Request']=="Open") {
+                 return Response::returnSuccess("success",$mysql->select($sql." where Status='1'"));    
+             }
+              if (isset($_POST['Request']) && $_POST['Request']=="InProccess") {
+                 return Response::returnSuccess("success",$mysql->select($sql." where Status='2'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Closed") {
+                 return Response::returnSuccess("success",$mysql->select($sql." where Status='3'"));    
+             }
+             
+         }
+         function GetManageRequestsFromMember() {
+           
+             global $mysql,$loginInfo;
+             
+              $sql = "select * from _tbl_service_requests where RequestBy='Member'";
 
               if (isset($_POST['Request']) && $_POST['Request']=="Active") {
-                 return Response::returnSuccess("success",$mysql->select($sql." where IsDeactive='2'"));    
+                 return Response::returnSuccess("success",$mysql->select($sql." and IsDeactive='2'"));    
              }
               if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
-                 return Response::returnSuccess("success",$mysql->select($sql." where IsDeactive='1'"));    
+                 return Response::returnSuccess("success",$mysql->select($sql." and IsDeactive='1'"));    
              }
              if (isset($_POST['Request']) && $_POST['Request']=="Delete") {
-                 return Response::returnSuccess("success",$mysql->select($sql." where IsDelete='1'"));    
+                 return Response::returnSuccess("success",$mysql->select($sql." and IsDelete='1'"));    
              }
              if (isset($_POST['Request']) && $_POST['Request']=="Restore") {
-                 return Response::returnSuccess("success",$mysql->select($sql." where IsDelete='2'"));    
+                 return Response::returnSuccess("success",$mysql->select($sql." and IsDelete='2'"));    
              }
          }
-         function ViewDeactiveMemberRequest(){
+         function ViewMemberRequest(){
               global $mysql,$loginInfo;    
                $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
                if(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword']))  {
-                     echo "<script>location.href='".AppPath."Members/ViewMemberDeactiveRequest/".$_POST['ReqID'].".html'</script>";
+                     echo "<script>location.href='".AppPath."Members/ViewMemberRequest/".$_POST['ReqID'].".html'</script>";
+                
+                } else {
+                    return Response::returnError("Invalid transaction password");
+                }
+         }
+         function ViewDeactiveMemberRequestFrMember(){
+              global $mysql,$loginInfo;    
+               $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+               if(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword']))  {
+                     echo "<script>location.href='".AppPath."Members/ViewMemberDeactiveRequestFrMember/".$_POST['ReqID'].".html'</script>";
                 
                 } else {
                     return Response::returnError("Invalid transaction password");
@@ -7452,6 +7708,16 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                     return Response::returnError("Invalid transaction password");
                 }
          }
+         function ViewActiveMemberRequestFrMember(){
+              global $mysql,$loginInfo;    
+               $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+               if(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword']))  {
+                     echo "<script>location.href='".AppPath."Members/ViewMemberActiveRequestFrMember/".$_POST['ReqID'].".html'</script>";
+                
+                } else {
+                    return Response::returnError("Invalid transaction password");
+                }
+         }
          function ViewRestoreMemberRequest(){
               global $mysql,$loginInfo;    
                $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
@@ -7462,15 +7728,62 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                     return Response::returnError("Invalid transaction password");
                 }
          }
+         function ViewRestoreMemberRequestFrMember(){
+              global $mysql,$loginInfo;    
+               $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+               if(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword']))  {
+                     echo "<script>location.href='".AppPath."Members/ViewMemberRestoreRequestFrMember/".$_POST['ReqID'].".html'</script>";
+                
+                } else {
+                    return Response::returnError("Invalid transaction password");
+                }
+         }
          
          function MemberRequestFromFranchiseeInfo() {        
            global $mysql;    
-            $Request = $mysql->select("select * from _tbl_franchisee_requests where ReqID='".$_POST['Code']."'");
+            $Request = $mysql->select("select * from _tbl_service_requests where ReqCode='".$_POST['Code']."'");
             $Members = $mysql->select("select * from _tbl_members where MemberCode='".$Request[0]['MemberCode']."'");
             $Franchisees = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$Request[0]['RequestByID']."'");
             return Response::returnSuccess("success",array("Request"    => $Request[0],
                                                             "Member"    => $Members[0],
                                                             "Franchisee"    => $Franchisees[0]));
+    }
+    function MemberRequestAddToInProccessMode(){
+        global $mysql,$loginInfo;
+        $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+        /*    if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }     */
+         
+         $data = $mysql->select("select * from `_tbl_service_requests` where `ReqCode`='".$_POST['Code']."'");
+         $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");
+        
+        $mysql->execute("update `_tbl_service_requests` set  `Status`           = '2',
+                                                            `ProccessedOn`      = '".date("Y-m-d H:i:s")."',
+                                                            `ProccessedByID`    ='".$loginInfo[0]['AdminID']."',
+                                                            `ProcessedByCode`  ='".$txnPwd[0]['AdminCode']."'
+                                                            where `ReqCode`='".$_POST['Code']."'"); 
+       
+        $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberRequestAddInProccess'");
+        $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+        $content  = str_replace("#ServiceRequestCode#",$_POST['Code'],$content);
+
+         MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                    "Category"       => "MemberRequestAddInProccess",       
+                                    "MemberID"       => $Member[0]['MemberID'],
+                                    "Subject"        => $mContent[0]['Title'],
+                                    "Message"        => $content),$mailError);
+         //MobileSMSController::sendSMS($Member[0]['MobileNumber']," Dear ".$Member[0]['MemberName'].",Your request (".$ReqCode.") active in proccess mode.");  
+                                                               
+        $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $Member[0]['MemberID'],
+                                                         "ActivityType"   => 'MemberRequestAddInProccess.',
+                                                         "ActivityString" => 'Member Request Add InProccess.',
+                                                         "SqlQuery"       => base64_encode($sqlQry),
+                                                         "ActivityDoneBy" => 'A',
+                                                         "ActivityDoneByCode" =>$txnPwd[0]['AdminCode'],
+                                                         "ActivityDoneByName" =>$txnPwd[0]['AdminName'],
+                                                         "ActivityOn"     => date("Y-m-d H:i:s")));            
+       return Response::returnSuccess("Success",array());
     }
     function AproveMemberDeactiveReq() {
 
@@ -7481,7 +7794,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnError("Invalid transaction password");   
             }
             
-            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            $data = $mysql->select("Select * from `_tbl_service_requests` where `ReqID`='".$_POST['ReqID']."'");   
             
             if($data[0]['IsVerified']==1) {
                 return Response::returnError("Request already approved");
@@ -7491,7 +7804,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             
             $mysql->execute("update _tbl_members set IsActive='0',DeactiveRequest='0',DeactivatedOn='".date("Y-m-d H:i:s")."' where MemberCode='".$member[0]['MemberCode']."'");
             
-            $mysql->execute("update _tbl_franchisee_requests set IsVerified='1',
+            $mysql->execute("update _tbl_service_requests set IsVerified='1',
                                                                  Remarks='".$_POST['ApproveReason']."',
                                                                  VerifiedOn='".date("Y-m-d H:i:s")."',
                                                                  IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
@@ -7536,7 +7849,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnError("Invalid transaction password");   
             }
             
-            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            $data = $mysql->select("Select * from `_tbl_service_requests` where `ReqID`='".$_POST['ReqID']."'");   
             
             if($data[0]['IsVerified']==1) {
                 return Response::returnError("Request already Proccesed");
@@ -7546,7 +7859,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             
             $mysql->execute("update _tbl_members set IsActive='1',DeactiveRequest='0' where MemberCode='".$member[0]['MemberCode']."'");
             
-            $mysql->execute("update _tbl_franchisee_requests set IsVerified='2',
+            $mysql->execute("update _tbl_service_requests set IsVerified='2',
                                                                  Remarks='".$_POST['RejectReason']."',
                                                                  VerifiedOn='".date("Y-m-d H:i:s")."',
                                                                  IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
@@ -7588,7 +7901,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnError("Invalid transaction password");   
             }
             
-            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            $data = $mysql->select("Select * from `_tbl_service_requests` where `ReqID`='".$_POST['ReqID']."'");   
             
             if($data[0]['IsVerified']==1) {
                 return Response::returnError("Request already approved");
@@ -7598,7 +7911,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             
             $mysql->execute("update _tbl_members set IsActive='1',DeactiveRequest='0' where MemberCode='".$member[0]['MemberCode']."'");
             
-            $mysql->execute("update _tbl_franchisee_requests set IsVerified='1',
+            $mysql->execute("update _tbl_service_requests set IsVerified='1',
                                                                  Remarks='".$_POST['ApproveReason']."',
                                                                  VerifiedOn='".date("Y-m-d H:i:s")."',
                                                                  IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
@@ -7644,7 +7957,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnError("Invalid transaction password");   
             }
             
-            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            $data = $mysql->select("Select * from `_tbl_service_requests` where `ReqID`='".$_POST['ReqID']."'");   
             
             if($data[0]['IsVerified']==1) {
                 return Response::returnError("Request already Proccesed");
@@ -7654,7 +7967,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             
             $mysql->execute("update _tbl_members set DeactiveRequest='0' where MemberCode='".$member[0]['MemberCode']."'");
             
-            $mysql->execute("update _tbl_franchisee_requests set IsVerified='2',
+            $mysql->execute("update _tbl_service_requests set IsVerified='2',
                                                                  Remarks='".$_POST['RejectReason']."',
                                                                  VerifiedOn='".date("Y-m-d H:i:s")."',
                                                                  IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
@@ -7706,7 +8019,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnError("Invalid transaction password");   
             }
             
-            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            $data = $mysql->select("Select * from `_tbl_service_requests` where `ReqID`='".$_POST['ReqID']."'");   
             
             if($data[0]['IsVerified']==1) {
                 return Response::returnError("Request already approved");
@@ -7716,7 +8029,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             
             $mysql->execute("update _tbl_members set IsDeleted='1',DeletedOn='".date("Y-m-d H:i:s")."',DeletedRemarks='".$_POST['ApproveReason']."',DeleteRequest='0' where MemberCode='".$member[0]['MemberCode']."'");
             
-            $mysql->execute("update _tbl_franchisee_requests set IsVerified='1',
+            $mysql->execute("update _tbl_service_requests set IsVerified='1',
                                                                  Remarks='".$_POST['ApproveReason']."',
                                                                  VerifiedOn='".date("Y-m-d H:i:s")."',
                                                                  IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
@@ -7759,7 +8072,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnError("Invalid transaction password");   
             }
             
-            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            $data = $mysql->select("Select * from `_tbl_service_requests` where `ReqID`='".$_POST['ReqID']."'");   
             
             if($data[0]['IsVerified']==1) {
                 return Response::returnError("Request already Proccesed");
@@ -7769,7 +8082,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             
             $mysql->execute("update _tbl_members set IsDeleted='0',DeleteRequest='0' where MemberCode='".$member[0]['MemberCode']."'");
             
-            $mysql->execute("update _tbl_franchisee_requests set IsVerified='2',
+            $mysql->execute("update _tbl_service_requests set IsVerified='2',
                                                                  Remarks='".$_POST['RejectReason']."',
                                                                  VerifiedOn='".date("Y-m-d H:i:s")."',
                                                                  IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
@@ -7811,7 +8124,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnError("Invalid transaction password");   
             }
             
-            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            $data = $mysql->select("Select * from `_tbl_service_requests` where `ReqID`='".$_POST['ReqID']."'");   
             
             if($data[0]['IsVerified']==1) {
                 return Response::returnError("Request already approved");
@@ -7821,7 +8134,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             
             $mysql->execute("update _tbl_members set IsDeleted='0',DeleteRequest='0' where MemberCode='".$member[0]['MemberCode']."'");
             
-            $mysql->execute("update _tbl_franchisee_requests set IsVerified='1',
+            $mysql->execute("update _tbl_service_requests set IsVerified='1',
                                                                  Remarks='".$_POST['ApproveReason']."',
                                                                  VerifiedOn='".date("Y-m-d H:i:s")."',
                                                                  IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
@@ -7864,7 +8177,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnError("Invalid transaction password");   
             }
             
-            $data = $mysql->select("Select * from `_tbl_franchisee_requests` where `ReqID`='".$_POST['ReqID']."'");   
+            $data = $mysql->select("Select * from `_tbl_service_requests` where `ReqID`='".$_POST['ReqID']."'");   
             
             if($data[0]['IsVerified']==1) {
                 return Response::returnError("Request already Proccesed");
@@ -7874,7 +8187,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             
             $mysql->execute("update _tbl_members set IsDeleted='1',DeleteRequest='0',DeletedOn='".date("Y-m-d H:i:s")."',DeletedRemarks='".$_POST['RejectReason']."' where MemberCode='".$member[0]['MemberCode']."'");
             
-            $mysql->execute("update _tbl_franchisee_requests set IsVerified='2',
+            $mysql->execute("update _tbl_service_requests set IsVerified='2',
                                                                  Remarks='".$_POST['RejectReason']."',
                                                                  VerifiedOn='".date("Y-m-d H:i:s")."',
                                                                  IsVerifiedByID='".$txnPwd[0]['AdminID']."', 
@@ -7906,6 +8219,165 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                                          "ActivityOn"     => date("Y-m-d H:i:s")));
            
             return Response::returnSuccess("successfully Rejected",array());
+    }
+    function DeactiveSupportDeskUser(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+        $User = $mysql->select("select * from `_tbl_support_desk_user` where UserCode='".$_POST['UserCode']."'");
+            if(!(sizeof($User)==1)){
+                return Response::returnError("Invalid user information"); 
+            }
+        if($User[0]['IsActive']==0){
+            return Response::returnError("User already deactivated"); 
+        }
+        $mysql->execute("update _tbl_support_desk_user set IsActive='0' where `UserID`='".$User[0]['UserID']."' and UserCode='".$_POST['UserCode']."'");
+        
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='DeactivateSupportDeskUser'");
+            $content  = str_replace("#UserName#",$User[0]['UserName'],$mContent[0]['Content']);
+            
+             MailController::Send(array("MailTo"         => $User[0]['EmailID'],
+                                        "Category"       => "DeactivateSupportDeskUser",
+                                        "SDUserID"       => $User[0]['UserID'],
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
+             MobileSMSController::sendSMS($User[0]['MobileNumber']," Dear ".$User[0]['Username'].",Your user account has been deactivated.");  
+        
+        return Response::returnSuccess("Deactivated Successfully",array());
+    }
+    function ActiveSupportDeskUser(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+        $User = $mysql->select("select * from `_tbl_support_desk_user` where UserCode='".$_POST['UserCode']."'");
+            if(!(sizeof($User)==1)){
+                return Response::returnError("Invalid user information"); 
+            }
+        if($User[0]['IsActive']==1){
+            return Response::returnError("User already activated"); 
+        }
+        $mysql->execute("update _tbl_support_desk_user set IsActive='1' where `UserID`='".$User[0]['UserID']."' and UserCode='".$_POST['UserCode']."'");
+        
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='ActivateSupportDeskUser'");
+            $content  = str_replace("#UserName#",$User[0]['UserName'],$mContent[0]['Content']);
+            
+             MailController::Send(array("MailTo"         => $User[0]['EmailID'],
+                                        "Category"       => "ActivateSupportDeskUser",
+                                        "SDUserID"       => $User[0]['UserID'],
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
+             MobileSMSController::sendSMS($User[0]['MobileNumber']," Dear ".$User[0]['Username'].",Your user account has been activated.");  
+        
+        return Response::returnSuccess("Activated Successfully",array());
+    }
+   function SupportDeskChnPswd() {
+        global $mysql,$loginInfo;
+          $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+        $User = $mysql->select("select * from `_tbl_support_desk_user` where UserCode='".$_POST['UserCode']."'");
+            if(!(sizeof($User)==1)){
+                return Response::returnError("Invalid user information"); 
+            }
+        if($User[0]['IsActive']==0){
+                return Response::returnError("Account is deactivated so Could not process"); 
+            }
+        if (isset($_POST['NewPswd'])) {
+                if (strlen(trim($_POST['NewPswd']))<6) {
+                   return Response::returnError("Please enter password more than 6 character "); 
+                }
+                if (strlen(trim($_POST['NewPswd']))!= strlen(trim($_POST['ConfirmNewPswd']))) {
+                   return Response::returnError("Password do not match"); 
+                }
+               
+               $mysql->execute("update _tbl_support_desk_user set UserPassword='".$_POST['NewPswd']."' where `UserID`='".$User[0]['UserID']."' and UserCode='".$_POST['UserCode']."'");
+               
+               $mContent = $mysql->select("select * from `mailcontent` where `Category`='SupportDeskUserChangePassword'");
+                    $content  = str_replace("#UserName#",$User[0]['UserName'],$mContent[0]['Content']);
+                    
+                     MailController::Send(array("MailTo"         => $User[0]['EmailID'],
+                                                "Category"       => "SupportDeskUserChangePassword",
+                                                "SDUserID"       => $User[0]['UserID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($User[0]['MobileNumber']," Dear ".$User[0]['UserName'].",Your Login Password has been changed successfully. Your New Login Password is ".$_POST['ConfirmNewPswd']."");  
+                
+               return Response::returnSuccess("Success",array());  
+            }
+    }
+    function ResetTxnPswdSupportDeskuser(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+        $User = $mysql->select("select * from `_tbl_support_desk_user` where UserCode='".$_POST['UserCode']."'");
+            if(!(sizeof($User)==1)){
+                return Response::returnError("Invalid user information"); 
+            }
+        if($User[0]['IsActive']==0){
+                return Response::returnError("Account is deactivated so Could not process"); 
+            }
+        $mysql->execute("update _tbl_support_desk_user set TransactionPassword='' where `UserID`='".$User[0]['UserID']."' and UserCode='".$_POST['UserCode']."'");
+            $mContent = $mysql->select("select * from `mailcontent` where `Category`='SupportDeskUserResetTxnPassword'");
+            $content  = str_replace("#UserName#",$User[0]['UserName'],$mContent[0]['Content']);
+            
+             MailController::Send(array("MailTo"         => $User[0]['EmailID'],
+                                        "Category"       => "SupportDeskUserResetTxnPassword",
+                                        "SDUserID"       => $User[0]['UserID'],
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
+             MobileSMSController::sendSMS($User[0]['MobileNumber']," Dear ".$User[0]['UserName'].",Your Transaction Password has been reset successfully.");  
+        
+        return Response::returnSuccess("success",array());
+    }
+    function DeleteSupportDeskUser(){
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+        $User = $mysql->select("select * from `_tbl_support_desk_user` where UserCode='".$_POST['UserCode']."'");
+            if(!(sizeof($User)==1)){
+                return Response::returnError("Invalid user information"); 
+            }
+        if($User[0]['IsActive']==0){
+                return Response::returnError("Account is deactivated so Could not process"); 
+            }
+        $mysql->execute("update _tbl_support_desk_user set IsDeleted='1' where `UserID`='".$User[0]['UserID']."' and UserCode='".$_POST['UserCode']."'");
+        
+        $mContent = $mysql->select("select * from `mailcontent` where `Category`='DeleteSupportDeskUser'");
+            $content  = str_replace("#UserName#",$User[0]['Username'],$mContent[0]['Content']);
+            
+             MailController::Send(array("MailTo"         => $User[0]['EmailID'],
+                                        "Category"       => "DeleteSupportDeskUser",
+                                        "SDUserID"       => $User[0]['UserID'],
+                                        "Subject"        => $mContent[0]['Title'],
+                                        "Message"        => $content),$mailError);
+             MobileSMSController::sendSMS($User[0]['MobileNumber']," Dear ".$User[0]['UserName'].",Your account has been deleted successfully.");  
+        
+        return Response::returnSuccess("success",array("UserCode"=>$_POST['UserCode']));
+    }
+    function SupportDeskUserChnPswdFstLogin() {
+        global $mysql,$loginInfo;
+         $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+        $User = $mysql->select("select * from `_tbl_support_desk_user` where UserCode='".$_POST['UserCode']."'");
+            if(!(sizeof($User)==1)){
+                return Response::returnError("Invalid user information"); 
+            }
+        if($User[0]['IsActive']==0){
+                return Response::returnError("Account is deactivated so Could not process"); 
+            }
+        $mysql->execute("update _tbl_support_desk_user set ChangePasswordFstLogin='0' where UserCode='".$_POST['UserCode']."'");
+        return Response::returnSuccess("Success",array());
     }
 
 }
