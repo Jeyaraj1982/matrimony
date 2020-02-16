@@ -1,47 +1,237 @@
-RewriteEngine On
-#RewriteRule ^inc/.*$ index.php
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_URI} !(\.gif|\.jpg|\.png\.js\.css)$ [NC]
-RewriteRule ^(.*)$ index.php?x=$1 [QSA,L]
+RewriteRule ^Settings/Masters/(.*)/Manage/Edit/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Settings/Masters/$1/Edit
+RewriteRule ^Settings/Masters/(.*)/Manage/View/(.*)\.html$ ./index.php?Fname=Edit&Module=$1&Code=$2&p=Settings/Masters/$1/View
 
-#RewriteCond %{HTTPS} !=on
-#RewriteCond %{HTTP_HOST} ^www\. [NC]
-#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R]
-#RewriteCond %{HTTP_HOST} !^www\. [NC]
-#RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R]
+RewriteRule ^Requests/Member/ViewPaypalRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Member/ViewPaypalRequests
+RewriteRule ^Profiles/ViewDraftProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewDraftProfile
+RewriteRule ^Profiles/ViewRequestProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewRequestProfile    
+RewriteRule ^Profiles/DATViewRequestProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/DATViewRequestProfile           
+RewriteRule ^Profiles/ViewPublishProfile/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/ViewPublishProfile
+RewriteRule ^ViewMemberProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewMemberProfile
 
-#<IfModule mime_module>
- #AddHandler application/x-httpd-alt-php56 .php .php5 .phtml
-#</IfModule>
+RewriteRule ^Profile/(.*)\.htm$ ./Profileview.php?Code=$1
+RewriteRule ^Invoice/(.*)\.htm$ ./Invoiceview.php?Code=$1
+RewriteRule ^Order/(.*)\.htm$ ./Orderview.php?Code=$1
+RewriteRule ^Receipt/(.*)\.htm$ ./ReceiptView.php?Code=$1
+RewriteRule ^Downloads/(.*)\.pdf$ ./downloadprofile.php?Code=$1
+RewriteRule ^DownloadInvoice/(.*)\.pdf$ ./downloadinvoice.php?Code=$1
+RewriteRule ^DownloadOrder/(.*)\.pdf$ ./downloadorder.php?Code=$1
+RewriteRule ^DownloadReceipt/(.*)\.pdf$ ./downloadreceipt.php?Code=$1
+                                                                                             
+RewriteRule ^FranchiseeInvoice/(.*)\.htm$ ./FranchiseeInvoiceview.php?Code=$1
+RewriteRule ^FranchiseeOrder/(.*)\.htm$ ./FranchiseeOrderview.php?Code=$1
+RewriteRule ^FranchiseeReceipt/(.*)\.htm$ ./FranchiseeReceiptView.php?Code=$1
+
+RewriteRule ^DownloadFranchiseeOrder/(.*)\.pdf$ ./downloadfranchiseeorder.php?Code=$1
+RewriteRule ^DownloadFranchiseeInvoice/(.*)\.pdf$ ./downloadfranchiseeinvoice.php?Code=$1
+RewriteRule ^DownloadFranchiseeReceipt/(.*)\.pdf$ ./downloadfranchiseereceipt.php?Code=$1
+
+RewriteRule ^AdminInvoiceView/(.*)\.htm$ ./AdminInvoiceView.php?Code=$1
+RewriteRule ^AdminOrder/(.*)\.htm$ ./AdminOrderview.php?Code=$1
+RewriteRule ^AdminReceipt/(.*)\.htm$ ./AdminReceiptView.php?Code=$1
+
+RewriteRule ^DownloadAdminOrder/(.*)\.pdf$ ./downloadadminorder.php?Code=$1
+RewriteRule ^DownloadAdminInvoice/(.*)\.pdf$ ./downloadadmininvoice.php?Code=$1
+RewriteRule ^DownloadAdminReceipt/(.*)\.pdf$ ./downloadadminreceipt.php?Code=$1
+
+RewriteRule ^ViewProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewProfile [QSA]
+RewriteRule ^MyContacts/ViewDownloadProfile(.*)\.htm$ ./index.php?Code=$1&p=MyContacts/ViewDownloadProfile [QSA]
+RewriteRule ^ListOfProfile/(.*)\.htm$ ./index.php?Code=$1&p=ListOfProfile [QSA]
+RewriteRule ^MyFavoritedProfiles/(.*)\.htm$ ./index.php?Code=$1&p=MyFavoritedProfiles [QSA]
+RewriteRule ^RecentlyWhoViewed/(.*)\.htm$ ./index.php?Code=$1&p=RecentlyWhoViewed [QSA]
+RewriteRule ^WhoFavorited/(.*)\.htm$ ./index.php?Code=$1&p=WhoFavorited [QSA]
+RewriteRule ^Mutual/(.*)\.htm$ ./index.php?Code=$1&p=Mutual [QSA]
+
+RewriteRule ^Profiles/RecentlyWhoViewed/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/RecentlyWhoViewed [QSA]
+RewriteRule ^Profiles/WhoFavorited/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/WhoFavorited [QSA]
+
+
+
+RewriteRule ^view/(.*)\.htm$ ./index.php?Code=$1&p=view         
+RewriteRule ^MyAccounts/ViewOrders/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewOrders
+RewriteRule ^MyAccounts/ViewInvoices/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewInvoices     
+RewriteRule ^MyAccounts/ViewReceipts/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewReceipts
+
+RewriteRule ^Accounts/ViewOrders/(.*)\.htm$ ./index.php?Code=$1&p=Accounts/ViewOrders
+RewriteRule ^Accounts/Invoice/ViewInvoices/(.*)\.htm$ ./index.php?Code=$1&p=Accounts/Invoice/ViewInvoices     
+RewriteRule ^Accounts/Receipt/ViewReceipts/(.*)\.htm$ ./index.php?Code=$1&p=Accounts/Receipt/ViewReceipts
+
+RewriteRule ^Members/ViewOrders/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewOrders
+RewriteRule ^Members/ViewInvoices/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewInvoices     
+RewriteRule ^Members/ViewReceipts/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewReceipts
+
+RewriteRule ^Matches/BasicSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/BasicSearchResult [QSA]
+RewriteRule ^Matches/AdvancedSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/AdvancedSearchResult [QSA]
+RewriteRule ^Matches/ProfileIDSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/ProfileIDSearchResult [QSA]
+
+RewriteRule ^Matches/Search/BasicSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/BasicSearchResult [QSA]
+RewriteRule ^Matches/Search/AdvancedSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/AdvancedSearchResult [QSA]
+RewriteRule ^Matches/Search/ProfileIDSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ProfileIDSearchResult [QSA]
+
+RewriteRule ^Matches/Search/WalletAmountTransferedSuccessfully/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/WalletAmountTransferedSuccessfully
+
+RewriteRule ^Members/Created/(.*)\.htm$ ./index.php?Code=$1&p=Members/Created
+RewriteRule ^CreateProfile/(.*)\.htm$ ./index.php?Code=$1&p=CreateProfile
+RewriteRule ^ViewMemberProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewMemberProfile           
+     
+RewriteRule ^Member/(.*)\/ViewDraftProfile/(.*)\.htm$ ./index.php?MCode=$1&p=ViewDraftProfile&Code=$2
+     
+RewriteRule ^ViewPostedProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewPostedProfile           
+RewriteRule ^ViewPublishedProfile/(.*)\.htm$ ./index.php?Code=$1&p=ViewPublishedProfile           
+RewriteRule ^ViewProfileforaddLandingPage/(.*)\.htm$ ./index.php?Code=$1&p=ViewProfileforaddLandingPage
+
+RewriteRule ^SequenceMaster/EditSequence/(.*)\.htm$ ./index.php?Code=$1&p=SequenceMaster/EditSequence
+RewriteRule ^SequenceMaster/ViewSequence/(.*)\.htm$ ./index.php?Code=$1&p=SequenceMaster/ViewSequence
+
+RewriteRule ^Matches/Search/ViewPlans/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ViewPlans
+RewriteRule ^Matches/Search/ChoosePaymentMode/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/ChoosePaymentMode
+RewriteRule ^Orders/(.*)\.htm$ ./index.php?Code=$1&p=Orders
+RewriteRule ^ChoosePaymentMode/(.*)\.htm$ ./index.php?Code=$1&p=ChoosePaymentMode
+RewriteRule ^Payments/Wallet/Collect/(.*)\.htm$ ./index.php?Code=$1&p=Payments/Wallet/Collect
+RewriteRule ^Matches/Search/BasicSearchResult/(.*)\.htm$ ./index.php?Code=$1&p=Matches/Search/BasicSearchResult
+
+RewriteRule ^Requests/Member/ViewBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Member/ViewBankRequests
+RewriteRule ^Requests/Franchisee/ViewBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=Requests/Franchisee/ViewBankRequests
+RewriteRule ^MyAccounts/ViewBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewBankRequests
+RewriteRule ^MyAccounts/ViewFranchiseeBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewFranchiseeBankRequests
+
+RewriteRule ^Member/(.*)\/ProfileEdit/GeneralInformation/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/GeneralInformation&Code=$2
+RewriteRule ^Member/(.*)\/ProfileEdit/EducationDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/EducationDetails&Code=$2
+RewriteRule ^Member/(.*)\/ProfileEdit/AddEducationalDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/AddEducationalDetails&Code=$2
+RewriteRule ^Member/(.*)\/ProfileEdit/AttachEducationDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/AttachEducationDetails&Code=$2 [QSA]
+RewriteRule ^Member/(.*)\/ProfileEdit/OccupationDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/OccupationDetails&Code=$2
+RewriteRule ^Member/(.*)\/ProfileEdit/FamilyInformation/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/FamilyInformation&Code=$2
+RewriteRule ^Member/(.*)\/ProfileEdit/PhysicalInformation/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/PhysicalInformation&Code=$2
+RewriteRule ^Member/(.*)\/ProfileEdit/DocumentAttachment/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/DocumentAttachment&Code=$2
+RewriteRule ^Member/(.*)\/ProfileEdit/CommunicationDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/CommunicationDetails&Code=$2
+RewriteRule ^Member/(.*)\/ProfileEdit/PartnersExpectation/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/PartnersExpectation&Code=$2
+RewriteRule ^Member/(.*)\/ProfileEdit/HoroscopeDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/HoroscopeDetails&Code=$2
+RewriteRule ^Member/(.*)\/ProfileEdit/ProfilePhoto/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/ProfilePhoto&Code=$2
+RewriteRule ^Member/(.*)\/ProfileEdit/ProfilePhotoCrop/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/ProfilePhotoCrop&Code=$2
+
+RewriteRule ^MyProfiles/Draft/Edit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/GeneralInformation
+RewriteRule ^MyProfiles/Draft/Edit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/EducationDetails
+RewriteRule ^MyProfiles/Draft/Edit/AddEducationalDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/AddEducationalDetails
+RewriteRule ^MyProfiles/Draft/Edit/AttachEducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/AttachEducationDetails [QSA]
+RewriteRule ^MyProfiles/Draft/Edit/OccupationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/OccupationDetails
+RewriteRule ^MyProfiles/Draft/Edit/FamilyInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/FamilyInformation
+RewriteRule ^MyProfiles/Draft/Edit/PhysicalInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/PhysicalInformation
+RewriteRule ^MyProfiles/Draft/Edit/DocumentAttachment/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/DocumentAttachment
+RewriteRule ^MyProfiles/Draft/Edit/CommunicationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/CommunicationDetails
+RewriteRule ^MyProfiles/Draft/Edit/PartnersExpectation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/PartnersExpectation
+RewriteRule ^MyProfiles/Draft/Edit/HoroscopeDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/HoroscopeDetails
+RewriteRule ^MyProfiles/Draft/Edit/ProfilePhoto/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/ProfilePhoto
+RewriteRule ^MyProfiles/Draft/Edit/ProfilePhotoCrop/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/ProfilePhotoCrop
+
+RewriteRule ^MyProfiles/Published/Edit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/GeneralInformation
+RewriteRule ^MyProfiles/Published/Edit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/EducationDetails
+RewriteRule ^MyProfiles/Published/Edit/AddEducationalDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/AddEducationalDetails
+RewriteRule ^MyProfiles/Published/Edit/OccupationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/OccupationDetails
+RewriteRule ^MyProfiles/Published/Edit/FamilyInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/FamilyInformation
+RewriteRule ^MyProfiles/Published/Edit/PhysicalInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/PhysicalInformation
+RewriteRule ^MyProfiles/Published/Edit/DocumentAttachment/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/DocumentAttachment
+RewriteRule ^MyProfiles/Published/Edit/CommunicationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/CommunicationDetails
+RewriteRule ^MyProfiles/Published/Edit/PartnersExpectation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/PartnersExpectation
+RewriteRule ^MyProfiles/Published/Edit/HoroscopeDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/HoroscopeDetails
+RewriteRule ^MyProfiles/Published/Edit/ProfilePhoto/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/ProfilePhoto
+
+RewriteRule ^MyProfiles/Draft/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/View
+RewriteRule ^MyProfiles/Posted/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Posted/View
+RewriteRule ^MyProfiles/Published/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/View
+RewriteRule ^MyAccounts/ViewBankRequest/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewBankRequest
+RewriteRule ^MyAccounts/ViewPaypalRequest/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewPaypalRequest
+RewriteRule ^MyProfiles/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/View
+RewriteRule ^Members/ViewMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewMember
+RewriteRule ^Members/EditMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/EditMember
+RewriteRule ^Members/ListOfIndividualSMS/(.*)\.htm$ ./index.php?Code=$1&p=Members/ListOfIndividualSMS 
+RewriteRule ^Members/ListOfIndividualEmail/(.*)\.htm$ ./index.php?Code=$1&p=Members/ListOfIndividualEmail
+RewriteRule ^Members/ListOfIndividualMessages/(.*)\.htm$ ./index.php?Code=$1&p=Members/ListOfIndividualMessages   
+RewriteRule ^Members/ViewIndividualMessages/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewIndividualMessages [QSA]
+RewriteRule ^Members/ViewIndividualSMS/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewIndividualSMS [QSA]
+RewriteRule ^Members/ViewIndividualEmail/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewIndividualEmail [QSA]
+
+RewriteRule ^Members/ResetPassword/(.*)\.htm$ ./index.php?Code=$1&p=Members/ResetPassword
+RewriteRule ^Members/BlockMember/(.*)\.htm$ ./index.php?Code=$1&p=Members/BlockMember
+RewriteRule ^Members/News/ViewNews/(.*)\.htm$ ./index.php?Code=$1&p=Members/News/ViewNews
+RewriteRule ^Members/News/EditNews/(.*)\.htm$ ./index.php?Code=$1&p=Members/News/EditNews
+RewriteRule ^Franchisees/News/View/(.*)\.htm$ ./index.php?Code=$1&p=Franchisees/News/View
+RewriteRule ^Franchisees/News/Edit/(.*)\.htm$ ./index.php?Code=$1&p=Franchisees/News/Edit
+RewriteRule ^Members/ViewFranchiseeInfo/(.*)\.htm$ ./index.php?Code=$1&p=Members/ViewFranchiseeInfo
+RewriteRule ^Settings/Email/Edit/(.*)\.htm$ ./index.php?Code=$1&p=Settings/Email/Edit
+RewriteRule ^Settings/Email/View/(.*)\.htm$ ./index.php?Code=$1&p=Settings/Email/View
+RewriteRule ^Settings/MobileSMS/Edit/(.*)\.htm$ ./index.php?Code=$1&p=Settings/MobileSMS/Edit
+RewriteRule ^Settings/MobileSMS/View/(.*)\.htm$ ./index.php?Code=$1&p=Settings/MobileSMS/View
+RewriteRule ^Settings/Bank/Edit/(.*)\.htm$ ./index.php?Code=$1&p=Settings/Bank/Edit
+RewriteRule ^Settings/Bank/View/(.*)\.htm$ ./index.php?Code=$1&p=Settings/Bank/View
+RewriteRule ^Settings/PayPal/Edit/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PayPal/Edit
+RewriteRule ^Settings/PayPal/View/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PayPal/View
+RewriteRule ^Franchisees/ResetPassword/Reset/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/ResetPassword/Reset
+
+RewriteRule ^Members/Plan/EditPlan/(.*)\.htm$ ./index.php?Code=$1&p=Members/Plan/EditPlan
+RewriteRule ^Members/Plan/View/(.*)\.htm$ ./index.php?Code=$1&p=Members/Plan/View
+
+RewriteRule ^Franchisees/Edit/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Edit
+RewriteRule ^Franchisees/View/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/View
+RewriteRule ^Franchisees/Report/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Report
+RewriteRule ^Franchisees/Wallet/RefillTransfer/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Wallet/RefillTransfer
+RewriteRule ^Franchisees/ResetPassword/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/ResetPassword
+RewriteRule ^Franchisees/BlockFranchisee/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/BlockFranchisee
+RewriteRule ^Members/ResetPassword/Reset/(.*)\.html$ ./index.php?Code=$1&p=Members/ResetPassword/Reset
+RewriteRule ^Staffs/LoginHistory/(.*)\.html$ ./index.php?Code=$1&p=Staffs/LoginHistory
+
+RewriteRule ^Members/EditMember/(.*)\.html$ ./index.php?Code=$1&p=Members/EditMember
+RewriteRule ^Members/ViewMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMember
+RewriteRule ^Members/BlockMember/(.*)\.html$ ./index.php?Code=$1&p=Members/BlockMember
+RewriteRule ^Members/ResetPassword/(.*)\.html$ ./index.php?Code=$1&p=Members/ResetPassword 
+
+RewriteRule ^Members/ViewMemberRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberRequest
+
+RewriteRule ^Members/ViewMemberDeactiveRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberDeactiveRequest
+RewriteRule ^Members/ViewMemberActiveRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberActiveRequest 
+RewriteRule ^Members/ViewMemberDeleteRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberDeleteRequest
+RewriteRule ^Members/ViewMemberRestoreRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberRestoreRequest
+RewriteRule ^Members/ViewMemberDeactiveRequestFrMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberDeactiveRequestFrMember
+RewriteRule ^Members/ViewMemberActiveRequestFrMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberActiveRequestFrMember 
+RewriteRule ^Members/ViewMemberDeleteRequestFrMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberDeleteRequestFrMember
+RewriteRule ^Members/ViewMemberRestoreRequestFrMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberRestoreRequestFrMember
+
+RewriteRule ^Support/Service/DeleteRequest/(.*)\.htm$ ./index.php?Code=$1&p=Support/Service/DeleteRequest
+
+RewriteRule ^Members/Wallet/RefillWallet/(.*)\.html$ ./index.php?Code=$1&p=Members/Wallet/RefillWallet
+RewriteRule ^Staffs/Edit/(.*)\.html$ ./index.php?Code=$1&p=Staffs/Edit
+RewriteRule ^Staffs/View/(.*)\.html$ ./index.php?Code=$1&p=Staffs/View
+RewriteRule ^SupportDesk/Edit/(.*)\.html$ ./index.php?Code=$1&p=SupportDesk/Edit
+RewriteRule ^SupportDesk/View/(.*)\.html$ ./index.php?Code=$1&p=SupportDesk/View
+
+RewriteRule ^Franchisees/Plan/Edit/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Plan/Edit
+RewriteRule ^Franchisees/Plan/View/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Plan/View
+
+RewriteRule ^Member/View/(.*)\.html$ ./index.php?Code=$1&p=Member/View
+RewriteRule ^Member/Edit/(.*)\.html$ ./index.php?Code=$1&p=Member/View
+
+RewriteRule ^MySettings/EditMemberInfo/(.*)\.html$ ./index.php?Code=$1&p=MySettings/EditMemberInfo
+RewriteRule ^MySettings/EditFranchiseeInfo/(.*)\.html$ ./index.php?Code=$1&p=MySettings/EditFranchiseeInfo
+
+RewriteRule ^Franchisees/FranchiseeStaffs/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FranchiseeStaffs
+RewriteRule ^Franchisees/ActiveFranchiseeStaffs/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/ActiveFranchiseeStaffs
+RewriteRule ^Franchisees/DeactiveFranchiseeStaffs/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/DeactiveFranchiseeStaffs
+
+RewriteRule ^Franchisees/FrStaffCreate/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FrStaffCreate 
+RewriteRule ^Franchisees/FrStaffEdit/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FrStaffEdit           
+RewriteRule ^Franchisees/FrStaffView/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FrStaffView
+RewriteRule ^Franchisees/FranchiseeMembers/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/FranchiseeMembers
+
+RewriteRule ^Settings/Template/EditTemplate/(.*)\.html$ ./index.php?Code=$1&p=Settings/Template/EditTemplate
+
+RewriteRule ^Members/KYC/ViewKyc/(.*)\.htm$ ./index.php?Code=$1&p=Members/KYC/ViewKyc
+RewriteRule ^Logs/ViewIndividualSMS/(.*)\.htm$ ./index.php?Code=$1&p=Logs/ViewIndividualSMS
+RewriteRule ^Logs/ViewIndividualEmail/(.*)\.htm$ ./index.php?Code=$1&p=Logs/ViewIndividualEmail
+RewriteRule ^Logs/ViewIndividualMessage/(.*)\.htm$ ./index.php?Code=$1&p=Logs/ViewIndividualMessage
+
+RewriteRule ^([a-zA-Z0-9-/+]+)([0-9]+)$ index.php?p=$1&pn=$2 [L]
+RewriteRule ^([a-zA-Z0-9-/+]+)$ index.php?p=$1 [L]
+RewriteRule ^([a-zA-Z0-9-/+]+)([a-zA-Z/]+)([0-9]+)$ index.php?p=/$1&t=$2&pn=$3/ [L]
+RewriteRule ^([a-zA-Z0-9-/+]+)([a-zA-Z/]+)([0-9]+)$ index.php?p=/$1&q=$2&pn=$3/ [L]
+
+
 
  
-
-# BEGIN cPanel-generated php ini directives, do not edit
-# Manual editing of this file may result in unexpected behavior.
-# To make changes to this file, use the cPanel MultiPHP INI Editor (Home >> Software >> MultiPHP INI Editor)
-# For more information, read our documentation (https://go.cpanel.net/EA4ModifyINI)
-<IfModule php7_module>
-   php_flag display_errors Off
-   php_value max_execution_time 30
-   php_value max_input_time 60
-   php_value max_input_vars 1000
-   php_value memory_limit 32M
-   php_value post_max_size 8M
-   php_value session.gc_maxlifetime 1440
-   php_value session.save_path "/var/cpanel/php/sessions/ea-php72"
-   php_value upload_max_filesize 2M
-   php_flag zlib.output_compression Off
-</IfModule>
-<IfModule lsapi_module>
-   php_flag display_errors Off
-   php_value max_execution_time 30
-   php_value max_input_time 60
-   php_value max_input_vars 1000
-   php_value memory_limit 32M
-   php_value post_max_size 8M
-   php_value session.gc_maxlifetime 1440
-   php_value session.save_path "/var/cpanel/php/sessions/ea-php72"
-   php_value upload_max_filesize 2M
-   php_flag zlib.output_compression Off
-</IfModule>
-# END cPanel-generated php ini directives, do not edit

@@ -329,11 +329,6 @@
 <div class="col-12 grid-margin">
         <div class="card">
             <div class="card-body">
-                <div class="form-group row">
-                    <div class="col-sm-6">
-                        <h4 class="card-title">Drafted</h4>
-                    </div>
-                </div>
                   <?php 
                          $response = $webservice->getData("Admin","GetMemberProfileforView",array("ProfileFrom"=>"All"));   
                          
@@ -342,6 +337,11 @@
                         <?php foreach($response['data']as $P) { 
                             $Profile = $P['ProfileInfo'];
                    ?>
+               <div class="form-group row">
+                    <div class="col-sm-6">
+                        <h4 class="card-title"><?php echo $P['Position'];?></h4>
+                    </div>
+                </div>    
                <div style="min-height: 200px;background:white;padding:20px" class="box-shaddow">
                 <div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">

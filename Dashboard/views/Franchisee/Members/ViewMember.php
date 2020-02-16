@@ -341,13 +341,13 @@
                             </div>
                            <div style="float:right;line-height: 1px;">
                                 <?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==0){ ?>
-                                    <a href="<?php echo GetUrl("Profiles/ViewRequestProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <a href="<?php echo GetUrl("ViewRequestProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                     <?php } ?>
                                     <?php if($Profile['RequestToVerify']==1 && $Profile['IsApproved']==1) {  ?>
-                                    <a href="<?php echo GetUrl("Profiles/ViewPublishProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                    <a href="<?php echo GetUrl("ViewPublishedProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                     <?php }?>
                                     <?php if($Profile['RequestToVerify']==0 && $Profile['IsApproved']==0) {  ?>
-                                        <a href="<?php echo GetUrl("Profiles/ViewDraftProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
+                                        <a href="<?php echo GetUrl("ViewDraftProfile/".$Profile['ProfileCode'].".htm ");?>">View</a>
                                     <?php  }    ?>     
                             </div>
                         </div>  

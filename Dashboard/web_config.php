@@ -1,8 +1,12 @@
 <?php
-    
+    include_once("Dashboard/includes/class.WebConfig.php");  
+if (file_exists("Dashboard/includes/class.WebConfig.php"))    {
+  //  echo "Done";
+} 
     define("SiteUrl","http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/");
     define("DomainUrl","http://www.matrimony.dev.j2jsoftwaresolutions.com/");
     define("SITE_TITLE","Matrimony") ;
+  
     $__Global = $_SERVER;
      
     class Webservice {

@@ -390,6 +390,43 @@ function getAppUrl() {
     </div>
       
       <?php } ?>
+      <?php if (UserRole=="SupportDesk") { ?>
+    <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+      <a class="navbar-brand brand-logo" href="<?php echo SiteUrl;?>" style="width:100%;height:100%;"><img src="<?php echo $config->logoPath?>" alt="logo" style="width:100%;height:100%;margin-top: 2px;"/></a>
+    </div>
+    <div class="navbar-menu-wrapper d-flex align-items-center">        
+        <ul class="navbar-nav navbar-nav-right">
+        <?php
+                     $FranchiseeWallet = $webservice->getData("Franchisee","GetFranchiseeWalletBalance");
+               ?>
+            <li class="nav-item dropdown d-none d-xl-inline-block" style="text-align: right;margin-right: 0px;">
+                    <img src="<?php echo ImagePath;?>wallet.svg" style="width:40px;color:white"/><br /><span class="profile-text" style="line-height:18px;">Rs.<?php echo $FranchiseeWallet['data']['WalletBalance'];?></span> 
+                </li>
+            <li class="nav-item dropdown d-none d-xl-inline-block">
+                     <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"></a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding-top: 10px;padding-bottom: 10px;">
+              <a href="<?php echo GetUrl("MyAccounts/RefillWallet");?>" class="dropdown-item">Wallet Update</a>
+              <a href="<?php echo GetUrl("MyAccounts/MyTransactions");?>" class="dropdown-item">Wallet Transaction</a>
+            </div>
+              </li>
+             <li class="nav-item dropdown d-none d-xl-inline-block">
+                <span class="profile-text" style="line-height:10px; ">   
+                <?php echo "<b>";echo $_Franchisee['PersonName'] ; echo "</b>";?></span><br> 
+                <span class="profile-text" style="line-height:10px;">
+                <?php echo ($_Franchisee['IsAdmin']==1) ? "<small>Franchisee Admin</small>"  : "Admin"; ?></span>
+             </li> 
+             <li class="nav-item dropdown d-none d-xl-inline-block">
+             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false"><img class="img-xs rounded-circle" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="Profile image"></a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown" style="padding-top: 10px;padding-bottom: 10px;">
+              <a href="<?php echo GetUrl("MyAccounts/MyWallet");?>" class="dropdown-item">My Accounts</a>
+              <a href="<?php echo GetUrl("MySettings/FranchiseeInfo");?>" class="dropdown-item">My Settings</a>
+              <a href="<?php echo SiteUrl;?>?action=logout&redirect=../index" class="dropdown-item">Log Out</a>
+            </div>
+          </li>
+          </ul>
+    </div>
+      
+      <?php } ?>
       <?php if (UserRole=="Admin") { ?>
 	 
     <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">

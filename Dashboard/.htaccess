@@ -41,6 +41,11 @@ RewriteRule ^RecentlyWhoViewed/(.*)\.htm$ ./index.php?Code=$1&p=RecentlyWhoViewe
 RewriteRule ^WhoFavorited/(.*)\.htm$ ./index.php?Code=$1&p=WhoFavorited [QSA]
 RewriteRule ^Mutual/(.*)\.htm$ ./index.php?Code=$1&p=Mutual [QSA]
 
+RewriteRule ^Profiles/RecentlyWhoViewed/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/RecentlyWhoViewed [QSA]
+RewriteRule ^Profiles/WhoFavorited/(.*)\.htm$ ./index.php?Code=$1&p=Profiles/WhoFavorited [QSA]
+
+
+
 RewriteRule ^view/(.*)\.htm$ ./index.php?Code=$1&p=view         
 RewriteRule ^MyAccounts/ViewOrders/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewOrders
 RewriteRule ^MyAccounts/ViewInvoices/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewInvoices     
@@ -177,16 +182,25 @@ RewriteRule ^Members/EditMember/(.*)\.html$ ./index.php?Code=$1&p=Members/EditMe
 RewriteRule ^Members/ViewMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMember
 RewriteRule ^Members/BlockMember/(.*)\.html$ ./index.php?Code=$1&p=Members/BlockMember
 RewriteRule ^Members/ResetPassword/(.*)\.html$ ./index.php?Code=$1&p=Members/ResetPassword 
+
+RewriteRule ^Members/ViewMemberRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberRequest
+
 RewriteRule ^Members/ViewMemberDeactiveRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberDeactiveRequest
 RewriteRule ^Members/ViewMemberActiveRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberActiveRequest 
 RewriteRule ^Members/ViewMemberDeleteRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberDeleteRequest
 RewriteRule ^Members/ViewMemberRestoreRequest/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberRestoreRequest
+RewriteRule ^Members/ViewMemberDeactiveRequestFrMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberDeactiveRequestFrMember
+RewriteRule ^Members/ViewMemberActiveRequestFrMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberActiveRequestFrMember 
+RewriteRule ^Members/ViewMemberDeleteRequestFrMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberDeleteRequestFrMember
+RewriteRule ^Members/ViewMemberRestoreRequestFrMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberRestoreRequestFrMember
 
 
 
 RewriteRule ^Members/Wallet/RefillWallet/(.*)\.html$ ./index.php?Code=$1&p=Members/Wallet/RefillWallet
 RewriteRule ^Staffs/Edit/(.*)\.html$ ./index.php?Code=$1&p=Staffs/Edit
 RewriteRule ^Staffs/View/(.*)\.html$ ./index.php?Code=$1&p=Staffs/View
+RewriteRule ^SupportDesk/Edit/(.*)\.html$ ./index.php?Code=$1&p=SupportDesk/Edit
+RewriteRule ^SupportDesk/View/(.*)\.html$ ./index.php?Code=$1&p=SupportDesk/View
 
 RewriteRule ^Franchisees/Plan/Edit/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Plan/Edit
 RewriteRule ^Franchisees/Plan/View/(.*)\.html$ ./index.php?Code=$1&p=Franchisees/Plan/View

@@ -99,7 +99,7 @@ legend {
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">(approximate)</span><?php }?></label>
                     </div>
                     <div class="form-group row">
-                         <label class="col-sm-3 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['MaritalStatus']);?></label> 
+                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo trim($ProfileInfo['MaritalStatus']);?></label> 
                     </div>
                     <?php if($ProfileInfo['MaritalStatusCode']!= "MST001"){?>
                         <?php if(trim($ProfileInfo['Children'])>0) {?>

@@ -21,6 +21,9 @@
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="ConfigurationSettings") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/ApplicationSettings/ConfigurationSettings");?>" class="Notification" style="text-decoration:none"><span>Configuration Settings</span></a>
                                         </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="WebsiteSettings") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/ApplicationSettings/WebsiteSettings");?>" class="Notification" style="text-decoration:none"><span>Website Settings</span></a>
+                                        </li>
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="GeneralSettings") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/ApplicationSettings/GeneralSettings");?>" class="Notification" style="text-decoration:none"><span>General Settings</span></a>
                                         </li>

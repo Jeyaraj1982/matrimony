@@ -641,7 +641,7 @@ function print_sister_counts() {
                 document.getElementById('youngerSister').appendChild(opt);
             }
             
-            var c = ['MS001','MS002','MS003','MS004','MS005','MS006','MS007','MS008','MS009','MS010'] ;
+            var c = ['MRS001','MRS002','MRS003','MRS004','MRS005','MRS006','MRS007','MRS008','MRS009','MRS010'] ;
             for (var i = 0; i<=nc.indexOf(n_brothers); i++){
                 var opt = document.createElement('option');
                 opt.value = c[i];
