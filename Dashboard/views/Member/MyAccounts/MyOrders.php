@@ -52,7 +52,7 @@
 </form>      
 <div class="modal" id="Cancel" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="model_body" style="height: 220px;">
+                <div class="modal-content" id="model_body" style="height: 300px;">
             
                 </div>
             </div>
@@ -76,15 +76,30 @@
                      +  '</div>';
         $('#model_body').html(content);
     }
- 
+
 function ConfirmDelete(OrderNumber) {
-        var param = $("#form_"+OrderNumber).serialize();
-        $('#model_body').html(preloader);
-        $.post(API_URL + "m=Member&a=CancelOrder", param, function(result2) {                                             
-            $('#model_body').html(result2);                                     
-          //  $('#Documentview_'+AttachmentID).hide();
-        }
-    );
+    var param = $("#form_"+OrderNumber).serialize();
+    $('#model_body').html(preloader);
+        $.post(getAppUrl() + "m=Member&a=CancelOrder", param, function(result) {
+            if (!(isJson(result))) {
+                $('#model_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                   var data = obj.data; 
+                   var content = '<div class="modal-header">'
+                            +'<h4 class="modal-title">Confirmation For Cancel</h4>'
+                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                        +'</div>'
+                        +'<div class="modal-body" style="text-align:center">'
+                            +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" style="height:100px;"></p>'
+                            +'<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h4>    <br>'
+                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                         +'</div>';
+                   $('#model_body').html(content);
+         }
+        });
 }
  </script>          
 <?php include_once("accounts_footer.php");?>                    

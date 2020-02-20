@@ -1,11 +1,11 @@
 <?php 
-    $page="ClosedTickets";
+    $page="InProccessTickets";
     include_once("service_request_to_menu.php");
 ?>
 <div class="col-lg-12 grid-margin stretch-card">
 	<div class="card">
 		<div class="card-body">
-			<h4 class="card-title">Closed Tickets</h4>
+			<h4 class="card-title">InProccess Tickets</h4>
 			<table id="myTable" class="table table-striped">
                   <thead>  
                     <tr> 
@@ -17,7 +17,7 @@
                     </tr>  
                 </thead>
                 <tbody> 
-                    <?php $response = $webservice->getData("Member","GetManageServiceRequests",array("Request"=>"Closed")); ?>  
+                    <?php $response = $webservice->getData("Member","GetManageServiceRequests",array("Request"=>"InProccess")); ?>  
                     <?php foreach($response['data'] as $Request) { ?>
                         <tr>
                             <?php
@@ -35,7 +35,7 @@
                                 echo $html->td($txt_a);
                             ?>
                             <td style="text-align:right">
-                                <a href="<?php echo GetUrl("Support/Service/ViewTickets". $Request['ReqID'].".htm");?>"><span>View</span></a>
+                                <a href="<?php echo GetUrl("Support/Service/ViewTickets/".$Request['ReqID'].".htm");?>"><span>View</span></a>
                             </td>
                             </tr>
                     <?php } ?>            

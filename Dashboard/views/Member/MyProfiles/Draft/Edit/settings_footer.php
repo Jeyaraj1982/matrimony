@@ -25,7 +25,7 @@
         
         <div class="modal" id="PubplishNow" data-backdrop="static" >
             <div class="modal-dialog" >
-                <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 400px;min-height: 400px;" >
             
                 </div>
             </div>
@@ -65,7 +65,7 @@ function showConfirmPublish(ProfileID) {
 									+'<h4 class="modal-title">Submit profile for verify</h4>'
 									+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
 								+'</div>'
-								+'<div class="modal-body">'
+								+'<div class="modal-body" style="max-height: 273px;min-height: 273px;">'
 									+'<div style="text-align:left"> Dear ,<br></div>'
 									+'<div style="text-align:left">You have selected to "Submit Profile", In this action, your details will send to our Document Authentication Team (DAT), the team will check your profile informaiton and approve. Once DAT approved your profile, it will publish immediately. So requested, please verify all given data before submit.<br><br>'
 									+'<div class="custom-control custom-checkbox">'
@@ -142,8 +142,8 @@ function agreeToPublish() {
 				var data = obj.data; 
 				var content = '<div  style="height: 300px;">'                                                                              
 								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
-									+ '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
-									+ '<h3 style="text-align:center;">Submission Successful</h3>'
+									+ '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/success_icon.png" width="100px"></p>'
+									+ '<h3 style="text-align:center;">Thank you for submitting your<br>documents!</h3>'
                                     + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
 									+ '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
 								+'</div>' 

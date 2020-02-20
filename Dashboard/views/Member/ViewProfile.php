@@ -49,6 +49,18 @@ legend {
                 "Mutual"=>"MyContacts/MutualProfiles",
                 "Mutual_string"=>"back to mutual profile",
                 
+                "MyDownloaded"=>"MyContacts/MyDownloaded",
+                "MyDownloaded_string"=>"back to viewed contacts",
+                
+                "WhoDownloaded"=>"MyContacts/WhoViewedMyContacts",
+                "WhoDownloaded_string"=>"back to viewed contacts",
+                
+                "MyShortListed"=>"MyContacts/ShortListProfiles",
+                "MyShortListed_string"=>"back to shortlisted profile",
+                
+                "WhoShortListed"=>"MyContacts/WhoShortListProfiles",
+                "WhoShortListed_string"=>"back to who shortlisted my profile",
+                
                 "BrowseMatches"=>"Matches/Browse/BrowseMatches",
                 "DashboardLatestUpdatesView"=>"../Dashboard",
                 "MyDownloaded"=>"MyContacts/MyDownloaded",

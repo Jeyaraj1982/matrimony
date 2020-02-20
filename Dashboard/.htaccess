@@ -194,7 +194,11 @@ RewriteRule ^Members/ViewMemberActiveRequestFrMember/(.*)\.html$ ./index.php?Cod
 RewriteRule ^Members/ViewMemberDeleteRequestFrMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberDeleteRequestFrMember
 RewriteRule ^Members/ViewMemberRestoreRequestFrMember/(.*)\.html$ ./index.php?Code=$1&p=Members/ViewMemberRestoreRequestFrMember
 
-
+RewriteRule ^Support/Service/DeleteRequest/(.*)\.htm$ ./index.php?Code=$1&p=Support/Service/DeleteRequest
+RewriteRule ^Support/Service/CreateNewSupportTicket/(.*)\.htm$ ./index.php?Code=$1&p=Support/Service/CreateNewSupportTicket 
+RewriteRule ^Support/Service/ViewOpenTickets/(.*)\.htm$ ./index.php?Code=$1&p=Support/Service/ViewOpenTickets
+RewriteRule ^Support/Service/ViewClosedTickets/(.*)\.htm$ ./index.php?Code=$1&p=Support/Service/ViewClosedTickets
+RewriteRule ^Support/Service/ViewInProccessTickets/(.*)\.htm$ ./index.php?Code=$1&p=Support/Service/ViewInProccessTickets
 
 RewriteRule ^Members/Wallet/RefillWallet/(.*)\.html$ ./index.php?Code=$1&p=Members/Wallet/RefillWallet
 RewriteRule ^Staffs/Edit/(.*)\.html$ ./index.php?Code=$1&p=Staffs/Edit

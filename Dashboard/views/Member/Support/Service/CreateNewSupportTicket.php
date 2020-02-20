@@ -4,11 +4,65 @@
 	//$response    = $webservice->getData("Member","GetSupportTeamDetails");
 	
 ?>
+<script>
+function CreateSupportticket()  {
+            
+            $('#ErrSubject').html("");
+            $('#ErrDescription').html("");
+             ErrorCount=0; 
+             IsNonEmpty("Subject","ErrSubject","Please Enter Subject");
+             IsNonEmpty("Description","ErrDescription","Please Enter Description");
+                      
+            return (ErrorCount==0) ? true : false;
+         
+       
+}
+</script>
+<?php if (isset($_POST['SubmitRequest'])) {
+        
+        $target_dir = "uploads/";
+        if (!is_dir('uploads/ServiceRequest/'.$_GET['Code'].'/Ticket')) {
+            mkdir('uploads/ServiceRequest/'.$_GET['Code'].'/Ticket', 0777, true);
+        }
+        
+        $err=0;
+        $_POST['File']= "";
+        $acceptable = array('image/jpeg','image/jpg','image/png');
+        if(($_FILES['File']['size'] >= 5000000)) {
+            $err++;
+            echo "File must be less than 5 megabytes.";
+        }
+        
+        if((!in_array($_FILES['File']['type'], $acceptable)) && (!empty($_FILES["File"]["type"]))) {
+            $err++;
+            echo "Invalid file type. Only JPG,PNG,JPEG types are accepted.";
+        }
+        $Tickets ="";
+        if (isset($_FILES["File"]["name"]) && strlen(trim($_FILES["File"]["name"]))>0 ) {
+            $Tickets = time().$_FILES["File"]["name"];  
+            if (!(move_uploaded_file($_FILES["File"]["tmp_name"], 'uploads/ServiceRequest/'.$_GET['Code'].'/Ticket/'. $Tickets))) {
+                $err++;
+                  $Tickets ="";
+                echo "Sorry, there was an error uploading your file.";
+            } 
+        }
+        
+        if ($err==0) {
+            $_POST['File']= $Tickets;
+            $res =$webservice->getData("Member","AddNewSupportTicket",$_POST);
+            if ($res['status']=="success") {                
+               echo $successmessage = $res['message'];   
+            } else {
+                $errormessage = $res['message']; 
+            }
+        } 
+    }
+    ?>
 <div class="col-lg-12 grid-margin stretch-card">
 	<div class="card">
 		<div class="card-body">
 			<h4 class="card-title">Create Support ticket</h4>
-			<form method="post" action="">
+			<form method="post" action="" enctype="multipart/form-data" onsubmit="return CreateSupportticket();">
 			<div class="form-group row">
 				<div class="col-sm-2">Team</div>
 				<div class="col-sm-6">
@@ -41,7 +95,7 @@
 			</div>
 			<div class="form-group row">
 				<div class="col-sm-2">Attachment</div>
-				<div class="col-sm-6"><input type="file" name="Attachment" id="Attachment"></div>
+				<div class="col-sm-6"><input type="file" name="File" id="File"></div>
 			</div>
 			<div class="form-group row">
 				<div class="col-sm-3"><button type="submit" name="SubmitRequest" id="SubmitRequest" class="btn btn-primary" style="font-family:roboto">Continue</button></div>

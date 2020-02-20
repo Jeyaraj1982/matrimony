@@ -1,14 +1,11 @@
 <?php
     if (isset($_POST['welcomebutton'])) {
-        //$response = $webservice->WelcomeMessage();
         $response = $webservice->getData("Member","WelcomeMessage");          
     }
     if (isset($_POST['boardmsgbutton'])) {
-        //$response = $webservice->WelcomeMessage();
 		$response = $webservice->getData("Member","BoardMessage",$_POST);
     }  
     $response = $webservice->getData("Member","GetMyProfiles",array("ProfileFrom"=>"All"));
-	//print_r($response);
 	$whoviewed = $webservice->getData("Member","GetRecentlyWhoViewedProfiles",array("requestfrom"=>"0","requestto"=>"3"));
     $WhoViewedYourProfile = $whoviewed['data'];       
 
@@ -19,7 +16,13 @@
     $MyRecentlyViewed = $myrecentviewed['data'];
 
     $myfavorited = $webservice->getData("Member","GetFavouritedProfiles",array("requestfrom"=>"0","requestto"=>"3"));
-    $MyFavouritedProfiles = $myfavorited['data']; 
+    $MyFavouritedProfiles = $myfavorited['data'];
+    
+    $WhoDownloaded = $webservice->getData("Member","GetWhoDownloadMyProfiles",array("requestfrom"=>"0","requestto"=>"3"));
+    $WhoDownloadMyProfiles = $WhoDownloaded['data'];
+    
+    $MyDownloaded = $webservice->getData("Member","GetMyDownloadMyProfiles",array("requestfrom"=>"0","requestto"=>"3"));
+    $MyDownloadedProfiles = $MyDownloaded['data']; 
 	
 	$myshortlisted = $webservice->getData("Member","GetShortListProfiles",array("requestfrom"=>"0","requestto"=>"3"));
     $MyShortlistedProfiles = $myshortlisted['data'];
@@ -156,7 +159,7 @@
          </div> 
          <div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="model_body" style="height: 220px;">
+                <div class="modal-content" id="model_body" style="height: 300px;">
                 </div>
             </div>
         </div>                                                
@@ -307,7 +310,7 @@
                         <div style="height:280px;overflow:hidden">
                             <?php
                                 foreach($WhoShortlistedProfiles as $Profile) {
-                                    echo dashboard_view_1($Profile);
+                                    echo dashboard_whoshortlisted_view_1($Profile);
                                 }
                             ?> 
                          </div> 
@@ -324,6 +327,32 @@
                 </div>
             </div>
         </div>
+        <Br>
+        <div>
+            <div class="member_dashboard_widget_title">Who viewed my contact</div>
+            <div class="card"  style="background:#dee9ea">
+                <div class="card-body member_dashboard_widget_container" id="slideshow">
+                    <?php if (sizeof($WhoDownloadMyProfiles)>0) { ?>                            
+                    <div style="height:280px;overflow:hidden">
+                        <?php
+                            foreach($WhoDownloadMyProfiles as $Profile) { 
+                                echo dashboard_whodownloaded_view_1($Profile);
+                            }
+                        ?> 
+                    </div> 
+                            <div style="clear:both;padding:3px;text-align:center;">
+                                        <a href="<?php echo SiteUrl;?>MyContacts/WhoViewedMyContacts">View All (<?php echo $DashboardCounts['data']['WhoDownloaded'];?>)</a>
+                            </div>
+                    <?php } else { ?>
+                    <div id="resCon_a002" class="resCon_a002" style="height:303px;overflow:hidden;width:552px;padding:10px;margin-top:0px !important">
+                            <div style="text-align:center;margin-top: 127px;">
+                                <h5 style="color: #aaa;font-weight: normal;line-height: 19px;">you don't have active profile to view recently who viewed contacts </h5>
+                            </div>                                                  
+                         </div>                                                        
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
     </div> 
     <div class="col-5 grid-margin" style="max-width: 35.667%;">
         <div>
@@ -334,7 +363,7 @@
                 <div>
                     <?php
                      foreach($MyShortlistedProfiles as $Profile) { 
-                       echo dashboard_view_2($Profile);
+                       echo dashboard_myshortlisted_view_2($Profile);
                     }?> 
                 </div>
                 <div style="clear:both;padding:3px;text-align:center;">
@@ -350,7 +379,32 @@
                 </div>
             </div>
         </div>
-         <br>            
+          <br>            
+        <div>
+            <div class="member_dashboard_widget_title">My viewed contacts</div>
+            <div class="card" style="background:#dee9ea;">
+                <div class="card-body" style="padding:10px !important;height: 480px;">
+                    <?php if (sizeof($MyDownloadedProfiles)>0) {  ?>
+                <div>
+                    <?php
+                     foreach($MyDownloadedProfiles as $Profile) { 
+                       echo dashboard_mydownloaded_view_2($Profile);
+                     }
+                    ?> 
+                </div>
+                <div style="clear:both;padding:3px;text-align:center;">
+                            <a href="<?php echo SiteUrl;?>MyContacts/MyDownloaded">View All (<?php echo $DashboardCounts['data']['MyDownloaded'];?>)</a>
+                         </div>
+                 <?php } else { ?>
+                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
+                        <div style="text-align:center;">
+                            <h5 style="margin-top: 197px;color: #aaa;font-weight: normal;line-height: 19px;">recently you didn't viwed any contacts </h5>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>            
     </div> 
 </div>
 <div class="row">
@@ -460,16 +514,31 @@ function IhaveReadFn() {
                      +  '</div>';
         $('#model_body').html(content);
     }
-        function ConfirmDelete(LatestID) {
-        
-        var param = $( "#form_"+LatestID).serialize();
+
+function ConfirmDelete(LatestID) {
+       var param = $( "#form_"+LatestID).serialize();
         $('#model_body').html(preloader);
-        $.post(API_URL + "m=Member&a=HideLatestUpdates", param, function(result2) {
-            $('#model_body').html(result2);
+        $.post(getAppUrl() + "m=Member&a=HideLatestUpdates", param, function(result) {
+            if (!(isJson(result))) {
+                $('#model_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                   var data = obj.data; 
+                   var content = '<div class="modal-header">'
+                            +'<h4 class="modal-title">Confirmation For Delete</h4>'
+                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                        +'</div>'
+                        +'<div class="modal-body" style="text-align:center">'
+                            +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" style="height:100px;"></p>'
+                            +'<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h4>    <br>'
+                            +'<a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                         +'</div>';
+                   $('#model_body').html(content);
             $('#UpdatesDiv_'+LatestID).hide();
-        }
-    );
-   
+         }
+        });
 }
     function HideDiv(divid) {
         $('#mutprofile_div_'+divid).hide(500);       

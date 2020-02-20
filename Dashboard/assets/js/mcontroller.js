@@ -130,7 +130,7 @@ function ResendEmailVerificationForm(frmid1) {
     $('#myModal').modal('show'); 
     $.post(getAppUrl() + "m=Member&a=ResendEmailVerificationForm", param,function(result2) { $('#Mobile_VerificationBody').html(result2); });
     //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ResendEmailVerificationForm",param));
-}
+}   
 
 function AddtoFavourite(ProfileCode,ImgId) {
     $('#img_'+ImgId).attr("onclick","javascript:void(0)");
@@ -1108,5 +1108,140 @@ function ResendOtpForChangeMobileNumber(frmid) {
             
     });
 }
-    
+/*function SendOtpForEditSubmittedProfile(frmid) {
+    var param = $("#"+frmid).serialize();
+    $('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
+        $.post(getAppUrl() + "m=Member&a=SendOtpForEditSubmittedProfile",param,function(result) {
+            
+             if (!(isJson(result))) {
+                $('#Edit_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.profilecode+'" name="ProfileCode">'
+                                + '<input type="hidden" value="'+data.FileName+'" name="FileName">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Profile Edit</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'<br>&amp;<br>'+data.MobileNumber+'</h4></p>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="EditOtp" maxlength="4" name="EditOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="SubmittedProfileforEditOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="DeletMemberOtp_error"></div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForSubmittedProfileProfileForEdit(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';
+                 $('#Edit_body').html(content);
+        }
+        });
+}  */
+function ResendSendOtpForSubmittedProfileProfileForEdit(frmid) {
+    var param = $("#"+frmid).serialize();
+    $('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
+        $.post(getAppUrl() + "m=Member&a=ResendSendOtpForSubmittedProfileProfileForEdit",param,function(result) {
+            
+             if (!(isJson(result))) {
+                $('#Edit_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.profilecode+'" name="ProfileCode">'
+                                + '<input type="hidden" value="'+data.FileName+'" name="FileName">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Profile Edit</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'<br>&amp;<br>'+data.MobileNumber+'</h4></p>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="EditOtp" maxlength="4" name="EditOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="SubmittedProfileforEditOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="DeletMemberOtp_error"></div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForSubmittedProfileProfileForEdit(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';
+                 $('#Edit_body').html(content);
+        }
+        });
+}   
+/*function ResendEmailVerificationForm(frmid1) {
+    var param = $("#"+frmid1).serialize();    
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+   // $('#myModal').modal('show'); 
+        $.post(getAppUrl() + "m=Member&a=ResendEmailVerificationForm",param,function(result) {
+            
+             if (!(isJson(result))) {
+                $('#Mobile_VerificationBody').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.loginId+'" name="loginId">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Please verify your email</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                         +'<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'</h4>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="EmailOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="Emailotp_error"></div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';
+                 $('#Mobile_VerificationBody').html(content);
+        }
+        });
+} */   
 //791

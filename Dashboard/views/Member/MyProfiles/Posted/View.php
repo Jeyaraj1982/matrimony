@@ -900,7 +900,7 @@ function SendOtpForEditSubmittedProfile(formid) {
 			 
 			}
 		});
-}
+} 
 function SubmittedProfileforEditOTPVerification(frmid) {
         var param = $( "#"+frmid).serialize();
         $('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
@@ -928,12 +928,13 @@ function SubmittedProfileforEditOTPVerification(frmid) {
             
     });
 }
-function ResendSendOtpForSubmittedProfileProfileForEdit(frmid) {
+/*function ResendSendOtpForSubmittedProfileProfileForEdit(frmid) {
      var param = $("#"+frmid).serialize();
       $('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
 	  
         $.post(API_URL + "m=Member&a=ResendSendOtpForSubmittedProfileProfileForEdit",param,function(result2) {$('#Edit_body').html(result2);});
-} 
+}*/ 
+
 </script>
  
             

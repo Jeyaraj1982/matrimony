@@ -10,6 +10,7 @@
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/RecentlyWhoViewed");?>" style="font-size:13px"><?php echo $lang['recently_who_viewed'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/RecentlyWhofavourited");?>" style="font-size:13px"><?php echo $lang['recently_who_liked'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MutualProfiles");?>" style="font-size:13px"><?php echo $lang['mutually_liked_profiles'];?></a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/WhoViewedMyContacts");?>" style="font-size:13px"><?php echo $lang['who_viewed_my_contacts'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/WhoShortListProfiles");?>" style="font-size:13px"><?php echo $lang['recently_who_shortlisted'];?></a></li>
               </ul>
             </div>

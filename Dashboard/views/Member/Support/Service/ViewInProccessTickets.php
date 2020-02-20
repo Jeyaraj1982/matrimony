@@ -1,7 +1,7 @@
 <?php 
-    $page="OpenTickets";
+    $page="InProccessTickets";
     include_once("service_request_to_menu.php");
-	$response    = $webservice->getData("Member","GetSupportTicketsDetails",array("Request"=>"Open"));
+	$response    = $webservice->getData("Member","GetSupportTicketsDetails",array("Request"=>"InProccess"));
 ?>
 <div class="col-lg-12 grid-margin stretch-card">
 	<div class="card">
@@ -25,7 +25,7 @@
 				<div class="col-sm-6"><img src="<?php echo AppUrl;?>uploads/ServiceRequest/<?php echo $Ticket[0]['MemberCode'];?>/Ticket/<?php echo $Ticket[0]['FileName'];?>" style="height:120px;"></div>
 			</div>
 			<div class="form-group row">
-				<div class="col-sm-3"><a href="<?php echo GetUrl("Support/Service/OpenTickets");?>">List of open tickets</div>
+				<div class="col-sm-3"><a href="<?php echo GetUrl("Support/Service/InProccessTickets");?>">List of inproccess tickets</div>
 			</div>
 			</form>
 		</div>

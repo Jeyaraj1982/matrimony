@@ -299,16 +299,31 @@ function submitprofile() {
 	function AddOccupationDetails() {
 		$( "#BtnSaveProfile" ).trigger( "click" );
 	}
-	
-    
-   function DeleteOccupationAttachmentOnly(ProfileID) {
-        var param = $("#Occupationform_"+ProfileID).serialize();
-        $('#Publish_body').html(preloading_withText("Deleting education details ...","95"));
-        $.post(API_URL + "m=Member&a=DeleteOccupationAttachmentOnly", param, function(result2) {                                             
-            $('#Publish_body').html(result2);                                     
-           $('#attachfilediv').hide();
-        }
-    );
+
+function DeleteOccupationAttachmentOnly(ProfileID) {
+       var param = $("#Occupationform_"+ProfileID).serialize();                       
+        $('#Publish_body').html(preloading_withText("Loading education details ...","95"));
+        $.post(getAppUrl() + "m=Member&a=DeleteOccupationAttachmentOnly", param, function(result) {
+            if (!(isJson(result))) {
+                $('#Publish_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                   var data = obj.data; 
+                   var content = '<div class="modal-header">'
+                            +'<h4 class="modal-title">Confirmation For Remove</h4>'
+                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                        +'</div>'
+                        +'<div class="modal-body" style="text-align:center">'
+                            +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" style="height:100px;"></p>'
+                            +'<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h4>    <br>'
+                            +'<a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                         +'</div>';
+                   $('#Publish_body').html(content);
+            $('#attachfilediv').hide();
+         }
+        });
 }  
 </script>  
 <?php include_once("settings_footer.php");?>                    

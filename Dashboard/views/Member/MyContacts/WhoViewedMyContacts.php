@@ -12,7 +12,7 @@
     }
 </style> 
 <?php
-    $response = $webservice->getData("Member","DownloadedProfiles",array());
+    $response = $webservice->getData("Member","WhoDownloadMyProfiles",array());
  
     $Profiles = $response['data']['Profiles']; 
     if (sizeof($Profiles)>0) {
@@ -20,7 +20,7 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Viewed Contacts</h4>
+                    <h4 class="card-title">Who Viewed My Contacts</h4>
                     <?php foreach($Profiles as $Profile) { 
                        // echo ListProfileShortInformation($Profile);
                         echo DisplayProfileShortInformation($Profile);
@@ -37,7 +37,7 @@
             <div class="card">
                 <div class="card-body" style="text-align:center;font-family:'Roboto'">
                     <img src="<?php echo ImageUrl;?>noprofile.svg" style="height:128px"><Br> 
-            No viewed contacts found at this time<br><br>
+            No who viewed my contact found at this time<br><br>
                 </div>
             </div>
         </div>

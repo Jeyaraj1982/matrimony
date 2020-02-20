@@ -15,6 +15,9 @@
                 <div class="collapse" id="managemembers">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="<?php  echo GetUrl("Members/ManageMembers");?>">Manage Members</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php  echo GetUrl("Members/ManageOnlineMembers");?>">Manage Online Members</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php  echo GetUrl("Members/ManageFreeMembers");?>">Manage Free Members</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php  echo GetUrl("Members/ManagePaidMembers");?>">Manage Paid Members</a></li>
                        <!-- <li class="nav-item"><a class="nav-link" href="<?php //echo GetUrl("Members/News/NewsandEvents");?>">News & Events</a></li> -->
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/Requests");?>">Request</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Members/SearchMember");?>">Search Member</a></li>
@@ -33,6 +36,8 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/AdminRequested");?>">Admin Requested</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Drafted");?>">Drafted</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Published");?>">Published</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/PublishedGroom");?>">Published Groom</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/PublishedBride");?>">Published Bride</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/UnPublished");?>">UnPublished</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Expired");?>">Expired</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Rejected");?>">Rejected</a></li>

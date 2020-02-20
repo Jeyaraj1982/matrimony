@@ -279,18 +279,34 @@ function showLearnMore() {
                      +  '</div>';
         $('#model_body').html(content);
     }
-    
-    function ConfirmDelete(AttachmentID) {
-        var param = $( "#form_"+AttachmentID).serialize();
-        $('#model_body').html(preloader);
-        $.post(API_URL + "m=Member&a=DeletDocumentAttachments", param, function(result2) {
-            $('#model_body').html(result2);
-            $('#photoview_'+AttachmentID).hide();
-            available--;
-            DisplayDocAttachForm();
-            $('#x').html( available + " out 2 photos");
-        }
-    );
+function ConfirmDelete(AttachmentID) {
+    var param = $("#form_"+AttachmentID).serialize();
+    $('#model_body').html(preloader);
+        $.post(getAppUrl() + "m=Member&a=DeletDocumentAttachments",param,function(result) {
+             if (!(isJson(result))) {
+                $('#model_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div class="modal-header">'
+                            +'<h4 class="modal-title">Confirmation For Remove</h4>'
+                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                        +'</div>'
+                        +'<div class="modal-body" style="text-align:center">'
+                            +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" style="height:100px;"></p>'
+                            +'<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h4>    <br>'
+                            +'<a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                         +'</div>';
+                 $('#model_body').html(content);
+              $('#photoview_'+AttachmentID).hide();
+                available--;
+                DisplayDocAttachForm();
+                $('#x').html( available + " out 2 photos");
+            }
+        });
 }
 
 function DisplayDocAttachForm() {
