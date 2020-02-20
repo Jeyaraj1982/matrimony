@@ -1456,7 +1456,7 @@
                 return Response::returnError("Invalid member information"); 
             }
         $ResetPasswordlink = md5(time().$Member[0]['MemberCode'].$Member[0]['MobileNumber'].$Member[0]['EmailID']);
-        $Link = DomainPath."ResetPassword.php?link=".$ResetPasswordlink;
+        $Link = DomainPath."ResetPassword?link=".$ResetPasswordlink;
         $date = date_create(date("Y-m-d"));                    
                 $e = "3 days";                
                 date_add($date,date_interval_create_from_date_string($e));
@@ -1575,7 +1575,7 @@
             return Response::returnError("Deactive Request already sent"); 
         }
         $mysql->execute("update _tbl_members set DeactiveRequest='1', DeactiveRequestOn='".date("Y-m-d H:i:s")."' where `MemberID`='".$Member[0]['MemberID']."' and MemberCode='".$Member[0]['MemberCode']."'");
-        $id =  $mysql->insert("_tbl_franchisee_requests",array("RequestByID"        => $txnPwd[0]['FranchiseeID'],
+        $id =  $mysql->insert("_tbl_service_requests",array("RequestByID"        => $txnPwd[0]['FranchiseeID'],
                                                                "RequestByCode"      => $txnPwd[0]['FrCode'], 
                                                                "RequestByStaffID"   => $txnPwd[0]['PersonID'], 
                                                                "RequestByStaffCode" => $txnPwd[0]['StaffCode'], 
@@ -1623,7 +1623,7 @@
             return Response::returnError("Active Request already sent"); 
         }
         $mysql->execute("update _tbl_members set DeactiveRequest='2', DeactiveRequestOn='".date("Y-m-d H:i:s")."' where `MemberID`='".$Member[0]['MemberID']."' and MemberCode='".$Member[0]['MemberCode']."'");
-        $id =  $mysql->insert("_tbl_franchisee_requests",array("RequestByID"        => $txnPwd[0]['FranchiseeID'],
+        $id =  $mysql->insert("_tbl_service_requests",array("RequestByID"        => $txnPwd[0]['FranchiseeID'],
                                                                "RequestByCode"      => $txnPwd[0]['FrCode'], 
                                                                "RequestByStaffID"   => $txnPwd[0]['PersonID'], 
                                                                "RequestByStaffCode" => $txnPwd[0]['StaffCode'], 
@@ -1671,7 +1671,7 @@
             return Response::returnError("Delete Request already sent"); 
         }
         $mysql->execute("update _tbl_members set DeleteRequest='1', DeleteRequestOn='".date("Y-m-d H:i:s")."' where `MemberID`='".$Member[0]['MemberID']."' and MemberCode='".$Member[0]['MemberCode']."'");
-        $id =  $mysql->insert("_tbl_franchisee_requests",array("RequestByID"        => $txnPwd[0]['FranchiseeID'],
+        $id =  $mysql->insert("_tbl_service_requests",array("RequestByID"        => $txnPwd[0]['FranchiseeID'],
                                                                "RequestByCode"      => $txnPwd[0]['FrCode'], 
                                                                "RequestByStaffID"   => $txnPwd[0]['PersonID'], 
                                                                "RequestByStaffCode" => $txnPwd[0]['StaffCode'], 
@@ -1719,7 +1719,7 @@
             return Response::returnError("Restore Request already sent"); 
         }
         $mysql->execute("update _tbl_members set DeleteRequest='2', DeleteRequestOn='".date("Y-m-d H:i:s")."' where `MemberID`='".$Member[0]['MemberID']."' and MemberCode='".$Member[0]['MemberCode']."'");
-        $id =  $mysql->insert("_tbl_franchisee_requests",array("RequestByID"        => $txnPwd[0]['FranchiseeID'],
+        $id =  $mysql->insert("_tbl_service_requests",array("RequestByID"        => $txnPwd[0]['FranchiseeID'],
                                                                "RequestByCode"      => $txnPwd[0]['FrCode'], 
                                                                "RequestByStaffID"   => $txnPwd[0]['PersonID'], 
                                                                "RequestByStaffCode" => $txnPwd[0]['StaffCode'], 
@@ -4536,7 +4536,7 @@
              $Member = $mysql->select("select * from `_tbl_members` where `MemberID`='".$_POST['MemberID']."'");
              $Franchisee = $mysql->select("select * from `_tbl_franchisees` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
              
-             if($this->getAvailableBalance() > $_POST['AmountToTransfer']) {
+             if($this->getAvailableBalance() < $_POST['AmountToTransfer']) {
                 return Response::returnError("You don't have sufficiant balance in your wallet."); 
              }
              
@@ -4556,9 +4556,9 @@
                                                                    "MemberID"      =>$Member[0]['MemberID'],                    
                                                                    "MEMFRANCode"      =>$Member[0]['MemberCode'],                    
                                                                    "Particulars"      =>'Transfer to   '. $Member[0]['MemberCode'],                    
-                                                                   "Credits"          =>$_POST['AmountToTransfer'],                    
-                                                                   "Debits"           => "0", 
-                                                                   "AvailableBalance" => $this->getAvailableBalance()+$_POST['AmountToTransfer'],                   
+                                                                   "Credits"          =>"0",                    
+                                                                   "Debits"           => $_POST['AmountToTransfer'], 
+                                                                   "AvailableBalance" => $this->getAvailableBalance()-$_POST['AmountToTransfer'],                   
                                                                    "TxnDate"          =>date("Y-m-d H:i:s"),
                                                                    "IsMember"         =>"0"));  
                                                                    

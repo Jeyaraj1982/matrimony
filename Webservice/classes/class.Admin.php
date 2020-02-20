@@ -2255,6 +2255,28 @@
                  return Response::returnSuccess("success",$mysql->select("SELECT t1.*,  COUNT(t2.MemberID) AS MemberCount FROM _tbl_franchisees AS t1
                                                                             LEFT OUTER JOIN _tbl_members AS t2 ON t1.FranchiseeID = t2.ReferedBy GROUP BY t1.FranchiseeID"));    
              }
+             if (isset($_POST['Request']) && $_POST['Request']=="OnlineMembers") {
+                 $Onlines=$mysql->select("SELECT MemberID FROM _tbl_logs_logins where FranchiseeID='0' and FranchiseeStaffID='0' and AdminID='0' and AdminStaffID='0' and date(LoginOn)=date('".date("Y-m-d")."')");
+                 foreach($Onlines as $Online){
+                    return Response::returnSuccess("success",$mysql->select($sql." where `_tbl_members`.`MemberID`='".$Online['MemberID']."'"));    
+                 }
+             }
+         }
+         function GetManageFreeMembers() {
+           global $mysql;    
+           $Plan= $mysql->select("select * from _tbl_member_plan where IsDefault='1'");
+             $sql = $mysql->select("SELECT * FROM _tbl_members
+                              LEFT  JOIN _tbl_profile_credits
+                              ON _tbl_members.MemberID=_tbl_profile_credits.MemberID where _tbl_profile_credits.MemberPlanCode='".$Plan[0]['PlanCode']."'");
+            return Response::returnSuccess("success",$sql);    
+         }
+         function GetManagePaidMembers() {
+           global $mysql;    
+           $Plan= $mysql->select("select * from _tbl_member_plan where IsDefault<>'1'");
+             $sql = $mysql->select("SELECT * FROM _tbl_members
+                              LEFT  JOIN _tbl_profile_credits
+                              ON _tbl_members.MemberID=_tbl_profile_credits.MemberID where _tbl_profile_credits.MemberPlanCode='".$Plan[0]['PlanCode']."'");
+            return Response::returnSuccess("success",$sql);    
          }    
 
          function GetMemberInfo() {
@@ -2956,6 +2978,12 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              if (isset($_POST['Request']) && $_POST['Request']=="Publish") {
                 return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_profiles.IsApproved='1' and _tbl_profiles.IsPublish='1'"));    
              }
+             if (isset($_POST['Request']) && $_POST['Request']=="PublishGroom") {
+                return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_profiles.IsApproved='1' and  _tbl_profiles.SexCode='SX001' and _tbl_profiles.IsPublish='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="PublishBride") {
+                return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_profiles.IsApproved='1' and  _tbl_profiles.SexCode='SX002' and _tbl_profiles.IsPublish='1'"));    
+             }
 			 if (isset($_POST['Request']) && $_POST['Request']=="UnPublish") {
                 return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_profiles.IsApproved='1' and _tbl_profiles.IsPublish='0'"));    
              }
@@ -3442,21 +3470,42 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                                                            "WebSettingsCode"   => SeqMaster::GetNextCode('WEBSETTINGS')));    
     }                                                                          
 
-    function AddConfigurationSettings() {
+  function AddConfigurationSettings() {
        global $mysql,$loginInfo; 
        $data = $mysql->select("select * from  _tbl_master_codemaster where HardCode='APPSETTINGS' and CodeValue='".$_POST['String']."'");
             if (sizeof($data)>0) {
                 return Response::returnError("String Already Exists");
             }
-         $id = $mysql->insert("_tbl_master_codemaster",array("HardCode"       => "APPSETTINGS",
-                                                             "SoftCode"      => $_POST['AppSettingsCode'],
-                                                             "CodeValue"      => $_POST['String'],
-                                                             "ParamB"          => $_POST['DataType'],
-                                                             "ParamA"          => $_POST['ParamA'],
-                                                             "ParamC"          => $_POST['ParamC'],
-                                                             "ParamD"          => $_POST['ParamD'],
-                                                             "ParamE"          => $_POST['ParamE']));
-         return Response::returnSuccess("Success");
+            
+       foreach($_POST as $param => $value ) {
+            if (trim(substr($param,0,4))=="app_") {
+                
+                switch(str_replace("app_","",$param)) {
+                    
+                    case "ParamA":  $tz = $mysql->select("select * from _tbl_master_codemaster where HardCode='".$value."'");
+                                          $mysql->insert("_tbl_master_codemaster",array("HardCode"        => "APPSETTINGS",
+                                                                                        "SoftCode"        => $_POST['AppSettingsCode'],
+                                                                                        "CodeValue"       => $_POST['String'],
+                                                                                        "CodeDescription" => $_POST['CodeDescription'],
+                                                                                        "ParamB"          => $_POST['DataType'],
+                                                                                        "ParamA"          => $tz[0]['CodeValue'],
+                                                                                        "ParamC"          => $value,
+                                                                                        "ParamD"          => $tz[0]['SoftCode'],
+                                                                                        "ParamE"          => $_POST['ParamE']));        
+                                            break;
+                   
+                    default:               $mysql->insert("_tbl_master_codemaster",array("HardCode"        => "APPSETTINGS",
+                                                                                         "SoftCode"        => $_POST['AppSettingsCode'],
+                                                                                         "CodeValue"       => $_POST['String'],
+                                                                                         "CodeDescription" => $_POST['CodeDescription'],
+                                                                                         "ParamB"          => $_POST['DataType'],
+                                                                                         "ParamA"          => $_POST['ParamA'],
+                                                                                         "ParamE"          => $_POST['ParamE']));
+                                            break;
+                }
+            }
+        }
+         return Response::returnSuccess("Success");                                                      
     }
     function AddWebsiteSettings() {
        global $mysql,$loginInfo; 
@@ -7297,7 +7346,7 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
             return Response::returnError("Member already restore"); 
         }     */
         $ResetPasswordlink = md5(time().$Member[0]['MemberCode'].$Member[0]['MobileNumber'].$Member[0]['EmailID']);
-        $Link = DomainPath."ResetPassword.php?link=".$ResetPasswordlink;
+        $Link = DomainPath."ResetPassword?link=".$ResetPasswordlink;
         $date = date_create(date("Y-m-d"));                    
                 $e = "3 days";                
                 date_add($date,date_interval_create_from_date_string($e));
@@ -8379,6 +8428,44 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
         $mysql->execute("update _tbl_support_desk_user set ChangePasswordFstLogin='0' where UserCode='".$_POST['UserCode']."'");
         return Response::returnSuccess("Success",array());
     }
+    function GetRecentMembersForDashboard() {    
+
+             global $mysql,$loginInfo;
+
+             $sql = $mysql->select("select * from `_tbl_members`  ORDER BY `MemberID` DESC LIMIT 0,3");
+             return Response::returnSuccess("success",$sql);    
+            
+         }
+    public function GetRecentDraftProfiles() {
+          global $mysql,$loginInfo; 
+             $Profiles = array();
+             $sql = "";
+           /*  if (isset($_POST['requestfrom'])) {
+                 $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
+             } else {
+                $_POST['requestfrom']=0; 
+                $_POST['requestto']=5; 
+             }*/
+
+             $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_draft_profiles` order by ProfileID DESC LIMIT 0,3");
+             $profileCodes  = array();
+             foreach($RecentProfiles as $RecentProfile) {
+                 if (!(in_array($RecentProfile['ProfileCode'], $profileCodes)))
+                 {
+                    $profileCodes[]=$RecentProfile['ProfileCode'];
+                 }
+             }
+             if (sizeof($profileCodes)>0) {
+                //for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
+                foreach($profileCodes as $profileCode) {
+                    if (strlen(trim($profileCode))>0)  {
+                        $Profiles[]=Profiles::getDraftProfileInformation($profileCode,1,1);     
+                    }
+                 } 
+             }
+                  
+             return Response::returnSuccess("success",$Profiles);
+         } 
 
 }
 

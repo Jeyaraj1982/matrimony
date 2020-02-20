@@ -38,7 +38,7 @@
                  }
                  if($settings[0]['ParamA']=="1"){
                      if(md5($data[0]['MemberPassword'])!=md5($_POST['Password'])) {              
-                        return Response::returnError("Invalid login details ");
+                        return Response::returnError("Invalid login details ");                                                
                      }
                  } else {
                      if ($data[0]['MemberPassword']!=$_POST['Password']) {              
@@ -252,7 +252,11 @@
                     return Response::returnError("Account not found");
                 }
              }
-
+             
+             $checkotp = $mysql->select("Select * from `_tbl_logs_email` where `MemberID`='".$data[0]['MemberID']."' and `EmaildFor`='MemberPasswordForget' and IsSuccess='1' and date(`EmailRequestedOn`)='".date("Y-m-d")."'");
+             if (sizeof($checkotp)>=3){
+                    return Response::returnError("You have reached your maximum limits");
+               } else {
              $otp=rand(1000,9999);
              $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      => $data[0]['MemberID'],
                                                                            "RequestSentOn" => date("Y-m-d H:i:s"),
@@ -277,7 +281,7 @@
                 return Response::returnSuccess("Email sent successfully",array("reqID"=>$securitycode,"email"=>$data[0]['EmailID']));
              }
          }
-
+         }
          public function forgotPasswordOTPvalidation() {
 
              global $mysql;                  
@@ -405,7 +409,6 @@
                                                             "IncomeRange"   => CodeMaster::getData('INCOMERANGE'),
                                                             "EmployedAs"    => CodeMaster::getData('OCCUPATIONS')));
          }
-
          public function CreateProfile() {
              
              global $mysql,$loginInfo;
@@ -1165,7 +1168,7 @@
 						  
                         foreach($PostProfiles as $PostProfile) {
                             $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode']);
-                            $result['mode']="Submitted";
+                            $result['mode']="Submitted to review";
                             $Profiles[]=$result;     
                         }
                      }
@@ -1230,6 +1233,20 @@
                                                 FROM _tbl_profiles
                                                 LEFT JOIN _tbl_profile_download
                                                 ON _tbl_profiles.ProfileCode = _tbl_profile_download.ProfileCode where _tbl_profile_download.MemberID='".$loginInfo[0]['MemberID']."'"); 
+                  $result = array();
+                  foreach($Profiles as $p) {
+                     $temp = Profiles::getProfileInfo($p['ProfileCode'],1,1);
+                      $result[]=$temp;
+                  }
+                return Response::returnSuccess("success",array("Profiles" => $result));
+     
+         }
+         public function WhoDownloadMyProfiles() {
+                global $mysql,$loginInfo;
+
+                $Profile = $mysql->select("select ProfileCode From _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+                
+                $Profiles = $mysql->select("SELECT ProfileCode FROM _tbl_profile_download WHERE PartnerProfileCode='".$Profile[0]['ProfileCode']."'"); 
                   $result = array();
                   foreach($Profiles as $p) {
                      $temp = Profiles::getProfileInfo($p['ProfileCode'],1,1);
@@ -1474,8 +1491,8 @@
 				if (strlen(trim($AboutMyself[0]['AboutMyFamily']))==0) {
 					return Response::returnError("You must enter about your family",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));
 				}
-				   
-				if ($reqID=="")      {
+                $checkotp = $mysql->select("Select * from `_tbl_logs_email` where `MemberID`='".$data[0]['MemberID']."' and `EmaildFor`='RequestToVerifyPublishProfile' and IsSuccess='1' and date(`EmailRequestedOn`)='".date("Y-m-d")."'");
+                if ($reqID=="")      {
 					$otp=rand(1000,9999);
 					$mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToVerifyPublishProfile'");
 					$content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
@@ -1499,7 +1516,13 @@
                                                                                       "SecurityCode"  =>$otp,
                                                                                       "Type"          =>"RequestToVerifyPublishProfile",
                                                                                       "messagedon"    =>date("Y-m-d h:i:s"))) ;
+                        
                         $formid = "frmPuplishOTPVerification_".rand(30,3000);
+                        if (sizeof($checkotp)>=3){  
+                            $resendotp="";
+                        }else {
+                           $resendotp= '<h5 style="color:#ada9a9"><a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Re-Send</a></h5>';
+                        }
                         $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
                                 return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
 											<form method="POST" id="'.$formid.'" name="'.$formid.'">
@@ -1508,51 +1531,62 @@
 													<input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
 													<button type="button" class="close" data-dismiss="modal">&times;</button>
 													<h4 class="modal-title">Submit profile for verify</h4> <br>
-													<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
+                                                        <div style="border:1px solid #dfdfdf;padding:20px 20px;">
+                                                             <div class="form-group row">
+                                                                <div class="col-sm-12"><input type="text"  class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                             </div>            
+                                                             <div class="form-group row">
+                                                                <div class="col-sm-12" style="text-align:center"><button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" style="width:100%">Verify</button></div>
+                                                             </div>
+                                                             <div class="col-sm-12" style="text-align:center">'.$errormessage.'</div>
+                                                        </div>  <br>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-12">We just sent your authentication code via email to '.$member[0]['EmailID'].' &amp; sms to '.$member[0]['MobileNumber'].' The code will expire at 9.00AM IST.</div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-12" style="color:blue">'.$resendotp.'</div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-12">If you had like to automatically verify devices in the future, consider enabling two-factor authentication on your account.</div>
+                                                        </div>
 												</div>
-												<div class="form-group">
-													<div class="input-group">
-														<div class="col-sm-12">
-															<div class="col-sm-3"></div>
-															<div class="col-sm-6">
-																<input type="text"  class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
-																<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
-															</div>
-															<div class="col-sm-3"></div>
-														</div>
-														<div class="col-sm-12" style="text-align:center">'.$error.'</div>
-													</div>
-												</div>
-												<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
 											</form>                                                                                                       
 										</div>'; 
 					}
 				} else {
 						$formid = "frmPuplishOTPVerification_".rand(30,3000);
+                         if (sizeof($checkotp)>=3){  
+                            $resendotp="";
+                        }else {
+                           $resendotp= '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>';
+                        }
 								return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
 									<form method="POST" id="'.$formid.'" name="'.$formid.'">
-										<div class="form-group">
-											<input type="hidden" value="'.$reqID.'" name="reqId">
-											<input type="hidden" value="'.$ProfileID.'" name="ProfileID">
-											<button type="button" class="close" data-dismiss="modal">&times;</button>
-											<h4 class="modal-title">Submit profile for verify</h4> <br>
-											<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
-										</div>
-										<div class="form-group">
-											<div class="input-group">
-												<div class="col-sm-12">
-													<div class="col-sm-3"></div>
-													<div class="col-sm-6">
-														<input type="text"  class="form-control" value="'.$otpdata.'" id="PublishOtp" maxlength="4" name="PublishOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
-														<button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
-													</div>
-													<div class="col-sm-3"></div>
-												</div>
-											</div>
-											<div class="col-sm-12" style="text-align:center">'.$errormessage.'</div>
-										</div>
-										<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
-									</form>                                                                                                       
+                                                <div class="form-group">
+                                                    <input type="hidden" value="'.$securitycode.'" name="reqId">
+                                                    <input type="hidden" value="'.$_POST['ProfileID'].'" name="ProfileID">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Submit profile for verify</h4> <br>
+                                                        <div style="border:1px solid #dfdfdf;padding:20px 20px;">
+                                                             <div class="form-group row">
+                                                                <div class="col-sm-12"><input type="text"  class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
+                                                             </div>            
+                                                             <div class="form-group row">
+                                                                <div class="col-sm-12" style="text-align:center"><button type="button" onclick="ProfilePublishOTPVerification(\''.$formid.'\')" class="btn btn-primary" style="width:100%">Verify</button></div>
+                                                             </div>
+                                                             <div class="col-sm-12" style="text-align:center">'.$errormessage.'</div>
+                                                        </div>  <br>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-12">We just sent your authentication code via email to '.$member[0]['EmailID'].' &amp; sms to '.$member[0]['MobileNumber'].' The code will expire at 9.00AM IST.</div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-12" style="color:blue">'.$resendotp.'</div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-12">If you had like to automatically verify devices in the future, consider enabling two-factor authentication on your account.</div>
+                                                        </div>
+                                                </div>
+                                            </form>                                                                                                       
 								</div>'; 
 				}
         }
@@ -1599,7 +1633,13 @@
 																"SqlQuery"       => base64_encode($updateSql),
 																//"oldData"      => base64_encode(json_encode($oldData)),
 																"ActivityOn"     => date("Y-m-d H:i:s")));
-				return Response::returnSuccess("Your profile has been submitted to verify.");
+                $mysql->insert("_tbl_latest_updates",array("MemberID"           => $member[0]['MemberID'],
+                                                           "ProfileID"          => $data[0]['ProfileID'],
+                                                           "ProfileCode"        => $data[0]['ProfileCode'],
+                                                           "ProfilePhoto"       => $ProfileThumbnail,
+                                                           "Subject"            => "your profile".$data[0]['ProfileCode']."has submitted to review",
+                                                           "ViewedOn"           => date("Y-m-d H:i:s")));
+				return Response::returnSuccess("We will review them and get back to you in 2 bussiness days.");
                 
             } else {
                  return $this->SendOtpForProfileforPublish("<span style='color:red'>Invalid verification code.</span>",$_POST['PublishOtp'],$_POST['reqId'],$_POST['ProfileID']);
@@ -1611,10 +1651,12 @@
 			
 			$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
 			$member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
-             
+            $checkotp = $mysql->select("Select * from `_tbl_logs_email` where `MemberID`='".$data[0]['MemberID']."' and `EmaildFor`='RequestToVerifyPublishProfile' and IsSuccess='1' and date(`EmailRequestedOn`)='".date("Y-m-d")."'");
+                 
 				$resend = $mysql->insert("_tbl_resend",array("MemberID" =>$member[0]['MemberID'],
 															 "Reason" 	=>"Resend Profile Publish Verfication Code",
 															 "ResendOn" =>date("Y-m-d h:i:s"))) ;
+                $checkotp = $mysql->select("Select * from `_tbl_logs_email` where `MemberID`='".$data[0]['MemberID']."' and `EmaildFor`='RequestToVerifyPublishProfile' and IsSuccess='1' and date(`EmailRequestedOn`)='".date("Y-m-d")."'");
 				if ($reqID=="") {
 					$otp=rand(1000,9999);
 
@@ -1641,7 +1683,13 @@
                                                                                      "Type"         =>"RequestToVerifyPublishProfile",
                                                                                      "messagedon"  	=>date("Y-m-d h:i:s"))) ;
                         $formid = "frmPuplishOTPVerification_".rand(30,3000);
-                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
+                        
+                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
+                        if (sizeof($checkotp)>=3){  
+                            $resendotp="";
+                        }else {
+                           $resendotp= '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>';
+                        }                                                         
                             return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
 										<form method="POST" id="'.$formid.'" name="'.$formid.'">
 											<div class="form-group">
@@ -1663,12 +1711,17 @@
 													<div class="col-sm-12">'.$error.'</div>
 												</div>
 											</div>
-											<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+											'.$resendotp.'
 										</form>                                                                                                       
 									</div>'; 
                     }
 			    } else {
 						$formid = "frmPuplishOTPVerification_".rand(30,3000);
+                        if (sizeof($checkotp)>=3){  
+                            $resendotp="";
+                        }else {
+                           $resendotp= '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>';
+                        }
 							return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
 										<form method="POST" id="'.$formid.'" name="'.$formid.'">
 											<div class="form-group">
@@ -1689,7 +1742,7 @@
 													<div class="col-sm-12">'.$errormessage.'</div>
 												</div>
 											</div>
-											<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
+											'.$resendotp.'
 										</form>                                                                                                       
 									</div>'; 
 				}
@@ -1937,16 +1990,7 @@
                                                              "SqlQuery"       => base64_encode($updateSql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-               return  '<div class="modal-header">
-                            <h4 class="modal-title">Confirmation For Remove</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
-                            <p style="text-align:center;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="height:100px;"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Record has been removed successfully</h4>    <br>
-                            <a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
-                         </div>';
-
+             return Response::returnSuccess("Record has been removed successfully");
          }
          
          public function DeleteEducationAttachmentOnly() {
@@ -1959,17 +2003,7 @@
              $mysql->execute($updateSql);
              $updateSql = "update `_tbl_draft_profile_education_attachments` set `FileName` = '' where `EducationAttachmentID`='".$_POST['AttachmentID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'";
              $mysql->execute($updateSql);  
-          
-               return  '<div class="modal-header">
-                            <h4 class="modal-title">Confirmation For Remove</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
-                            <p style="text-align:center;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="height:100px;"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Record has been removed successfully</h4>    <br>
-                            <a href="'.AppPath.'MyProfiles/Draft/Edit/EducationDetails/'.$ProfileCode.'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
-                         </div>';                             
-
+             return Response::returnSuccess("Record has been removed successfully");
          }
          
          public function GetDraftProfileInfo() {
@@ -2911,29 +2945,14 @@
              global $mysql,$loginInfo;
 
              $mysql->execute("update `_tbl_draft_profiles_verificationdocs` set `IsDelete`='1' where `AttachmentID`='".$_POST['AttachmentID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'");
-
-                 return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Confirmation For Delete</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Your selected document has been deleted successfully.</h5>
-                            <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';
-
+             return Response::returnSuccess("Your selected document has been deleted successfully");
          }
          
          public function DeletProfilePhoto() {
 
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_draft_profiles_photos` set `IsDelete`='1',`IsDeletedOn`='".date("Y-m-d H:i:s")."' where `ProfilePhotoID`='".$_POST['ProfilePhotoID']."' and `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'");
-                       return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Confirmation For Delete</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Your selected profile photo  has been deleted successfully.</h5>
-                            <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';
-
+             return Response::returnSuccess("Your selected profile photo  has been deleted successfully"); 
          }
          
          public function EditDraftHoroscopeDetails() {
@@ -3777,6 +3796,75 @@
               }
               return Response::returnSuccess("success",$Profiles);
          }
+         
+         public function GetWhoDownloadMyProfiles() {
+             
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+             $sql = "";
+             if (isset($_POST['requestfrom'])) {
+                 $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
+             } else {
+                $_POST['requestfrom']=0; 
+                $_POST['requestto']=5; 
+             }
+
+             $GProfile = $mysql->select("select ProfileCode From _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+                
+             $WhoDownloadProfiles = $mysql->select("SELECT ProfileCode FROM _tbl_profile_download WHERE PartnerProfileCode='".$GProfile[0]['ProfileCode']."' order by DownloadID DESC"); 
+             
+             $profileCodes  = array();
+             foreach($WhoDownloadProfiles as $WhoDownloadProfile) {
+                 if (!(in_array($WhoDownloadProfile['ProfileCode'], $profileCodes)))
+                  {
+                      $profileCodes[]=$WhoDownloadProfile['ProfileCode'];
+                 }                                                                           
+             }
+             if (sizeof($profileCodes)>0) {
+                for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
+                    if (isset($profileCodes[$i]))  {
+                        $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                    }
+                }
+             }
+                  
+             return Response::returnSuccess("success",$Profiles);
+         }
+         
+         public function GetMyDownloadMyProfiles() {
+             
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+             $sql = "";
+             if (isset($_POST['requestfrom'])) {
+                 $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
+             } else {
+                $_POST['requestfrom']=0; 
+                $_POST['requestto']=5; 
+             }
+
+             $GProfile = $mysql->select("select ProfileCode From _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'");
+                
+             $MyDownloadProfiles = $mysql->select("SELECT PartnerProfileCode FROM _tbl_profile_download WHERE ProfileCode='".$GProfile[0]['ProfileCode']."' order by DownloadID DESC"); 
+             
+             $profileCodes  = array();
+             foreach($MyDownloadProfiles as $MyDownloadProfile) {
+                 if (!(in_array($MyDownloadProfile['PartnerProfileCode'], $profileCodes)))
+                  {
+                      $profileCodes[]=$MyDownloadProfile['PartnerProfileCode'];
+                 }                                                                           
+             }
+             if (sizeof($profileCodes)>0) {
+                for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
+                    if (isset($profileCodes[$i]))  {
+                        $Profiles[]=Profiles::getProfileInfo($profileCodes[$i],1,1);     
+                    }
+                }
+             }
+                  
+             return Response::returnSuccess("success",$Profiles);
+         }
+         
          /* End Favourited Section */
                         
         
@@ -3900,7 +3988,7 @@
                                                                                      "EmailTo" =>$memberdata[0]['EmailID'],
                                                                                      "SecurityCode" =>$otp,
                                                                                      "Type" =>"EmailVerification",
-                                                                                     "messagedon"=>date("Y-m-d h:i:s"))) ;
+                                                                                     "messagedon"=>date("Y-m-d h:i:s"))) ;  
                         $formid = "frmMobileNoVerification_".rand(30,3000);
                         $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
                                 return '<div id="otpfrm">
@@ -3965,6 +4053,62 @@
                 }
             }                                                                                     
          }
+         
+         /* 
+         public function ResendEmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
+
+             if ($loginid=="") {                     
+                $loginid = $_GET['LoginID'];
+             }
+
+             global $mysql;
+             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
+
+             if (sizeof($login)==0) {
+                 return "Invalid request. Please login again.";
+             }
+             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
+             $resend = $mysql->insert("_tbl_resend",array("MemberID" =>$memberdata[0]['MemberID'],
+                                                          "Reason" =>"Resend Email ID Verfication Code",
+                                                          "ResendOn"=>date("Y-m-d h:i:s"))) ;
+
+             if ($memberdata[0]['IsEmailVerified']==1) {
+                 return '<div class="modal-header">
+                            <h4 class="modal-title">Email Verification</h4>
+                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="text-align:center">
+                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
+                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
+                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
+                         </div>';    
+             } else {
+
+                    $otp=rand(1111,9999);
+
+                     $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberEmailVerification'");
+                     $content  = str_replace("#MemberName#",$memberdata[0]['MemberName'],$mContent[0]['Content']);
+                     $content  = str_replace("#otp#",$otp,$content);
+
+                     MailController::Send(array("MailTo"   => $memberdata[0]['EmailID'],
+                                                "Category" => "NewMemberCreated",
+                                                "MemberID" => $memberdata[0]['MemberID'],
+                                                "Subject"  => $mContent[0]['Title'],
+                                                "Message"  => $content),$mailError);
+
+                      $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" =>$memberdata[0]['MemberID'],
+                                                                                     "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                                     "EmailTo" =>$memberdata[0]['EmailID'],
+                                                                                     "SecurityCode" =>$otp,
+                                                                                     "Type" =>"EmailVerification",
+                                                                                     "messagedon"=>date("Y-m-d h:i:s"))) ;
+                      return Response::returnSuccess("Verified.",array("securitycode"   =>$securitycode,
+                                                                       "EmailID"        =>$memberdata[0]['EmailID'],
+                                                                       "loginId"        =>$loginid));
+                       
+            }                                                                                     
+         } 
+         */
   
          public function GetLandingPageProfiles() {
              
@@ -4031,14 +4175,7 @@
 
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_latest_updates` set `IsHide`='1' where `LatestID`='".$_POST['LatestID']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");
-                       return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Confirmation For Delete</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Your Updates  has been deleted successfully.</h5>
-                            <h5 style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';
-
+             return Response::returnSuccess("Your Updates  has been deleted successfully."); 
          }
          
          public function GetAllLatestUpdates() {
@@ -4616,9 +4753,21 @@
 		 }
 		 
 		 public function GetMyShortListed($ProfileCode) {
+             
+            global $mysql;
+            $result = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and  `VisterProfileCode`='".$ProfileCode."'");       
+            return $result;
+         }
+         public function GetWhodownloadMyProfilesCount($ProfileCode) {
+             
+            global $mysql;            
+            $result = $mysql->select("select ProfileCode from `_tbl_profile_download` where `PartnerProfileCode`='".$ProfileCode."'");       
+            return $result;
+         }
+          public function GetMydownloadMyProfilesCount($ProfileCode) {
 			 
-			global $mysql;
-			$result = $mysql->select("select * from `_tbl_profiles_shortlists` where `IsVisible`='1' and `IsShortList` ='1' and  `VisterProfileCode`='".$ProfileCode."'");       
+			global $mysql;            
+			$result = $mysql->select("select PartnerProfileCode from `_tbl_profile_download` where `ProfileCode`='".$ProfileCode."'");       
 			return $result;
 		 }
 		
@@ -4638,14 +4787,18 @@
                                                                 "WhoFavorited"          => sizeof($this->GetWhoFavoritedMyProfile($myProfile[0]['ProfileCode'])), 
                                                                 "MyShortListed"         => sizeof($this->GetMyShortListed($myProfile[0]['ProfileCode'])),
                                                                 "WhoShortListed"        => Shortlist::WhoShortlisted($myProfile[0]['ProfileCode']),
-                                                                "Mutual"         		=> sizeof($this->GetMutualProfilesCount($myProfile[0]['ProfileCode']))
+                                                                "Mutual"                => sizeof($this->GetMutualProfilesCount($myProfile[0]['ProfileCode'])),
+                                                                "WhoDownloaded"         => sizeof($this->GetWhodownloadMyProfilesCount($myProfile[0]['ProfileCode'])),
+                                                                "MyDownloaded"         => sizeof($this->GetMydownloadMyProfilesCount($myProfile[0]['ProfileCode']))
                                                                 )); 
              } else {
                  return Response::returnSuccess("success",array("MyRecentlyViewedCount"  => 0, 
                                                                 "RecentlyWhoViewed"      => 0,
                                                                 "MyFavorited"            => 0,
                                                                 "WhoFavorited"           => 0,
-                                                                "Mutual"                 => 0));
+                                                                "Mutual"                 => 0,
+                                                                "WhoDownloaded"          => 0,
+                                                                "MyDownloaded"          => 0));
              }
          }
          
@@ -4705,14 +4858,7 @@
              
              global $mysql,$loginInfo;
              $mysql->execute("update `_tbl_draft_profiles` set `OccupationAttachFileName` = '' ,`OccupationAttachmentType` = '0' where `ProfileID`='".$_POST['ProfileID']."' and`ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");
-             return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Confirmation For Remove</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Attachment has been removed successfully.</h5>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'MyProfiles/Draft/Edit/OccupationDetails/'.$_POST['ProfileCode'].'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';                             
-
+             return Response::returnSuccess("Attachment has been removed successfully"); 
          }  
          
          public function ViewOrders() {
@@ -5165,15 +5311,8 @@
          public function CancelOrder() {
 
              global $mysql,$loginInfo;
-             $mysql->execute("update `_tbl_orders` set `IsCancelled`='1' where `OrderNumber`='".$_POST['OrderNumber']."' and `MemberID`='".$loginInfo[0]['MemberID']."'");
-                       return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Confirmation For Cancell</h4>
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" style="width:18%"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Your order  has been cancel successfully.</h5>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'MyAccounts/MyOrders" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';                            
-
+             $mysql->execute("update `_tbl_orders` set `IsCancelled`='1' where `OrderNumber`='".$_POST['OrderNumber']."'");
+             return Response::returnSuccess("Your order  has been cancel successfully");  
          }
          
          public function AddToShortList() {
@@ -5285,7 +5424,7 @@
              return Response::returnSuccess($Profiles[0]['ProfileCode']." has remove shorlist.");      
           }
                 
-	    public function SendOtpForEditSubmittedProfile($errormessage="",$otpdata="",$reqID="",$ProfileCode="") {
+     public function SendOtpForEditSubmittedProfile($errormessage="",$otpdata="",$reqID="",$ProfileCode="") {
         global $mysql,$mail,$loginInfo;      
         
         $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'"); 
@@ -5372,6 +5511,7 @@
                         </div>'; 
         }
     }
+    
 	
 	    public function SubmittedProfileforEditOTPVerification() {
         
@@ -5404,97 +5544,41 @@
 	}
 	            
 	    public function ResendSendOtpForSubmittedProfileProfileForEdit($errormessage="",$otpdata="",$reqID="",$ProfileCode="") {
+            global $mysql,$mail,$loginInfo;      
+            
+            $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'"); 
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
         
-		global $mysql,$mail,$loginInfo;   
-			
-		$data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'"); 
-		$member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
-        
-		$resend = $mysql->insert("_tbl_resend",array("MemberID" =>$member[0]['MemberID'],
-                                                     "Reason"   =>"Resend Edit For Submitted Profile Verfication Code",
-                                                     "ResendOn" =>date("Y-m-d h:i:s"))) ;
-		if ($reqID=="")      {
-            $otp=rand(1000,9999);
-			$mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToEditForSubmittedProfile'");
-            $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
-            $content  = str_replace("#otp#",$otp,$content);
+            $resend = $mysql->insert("_tbl_resend",array("MemberID" => $member[0]['MemberID'],
+                                                         "Reason"   => "Resend Edit For Submitted Profile Verfication Code",
+                                                         "ResendOn" => date("Y-m-d h:i:s"))) ;
+            
+               $otp=rand(1000,9999);
+                $mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToEditForSubmittedProfile'");
+                $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+                $content  = str_replace("#otp#",$otp,$content);
 
-            MailController::Send(array("MailTo"   => $member[0]['EmailID'],
-                                       "Category" => "RequestToEditForSubmittedProfile",
-                                       "MemberID" => $member[0]['MemberID'],
-                                       "Subject"  => $mContent[0]['Title'],
-                                       "Message"  => $content),$mailError);
-            MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']." Verification Security Code is ".$otp);
-                                                                                                                          
-            if($mailError){
-                return "Mailer Error: " . $mail->ErrorInfo.
-                    "Error. unable to process your request.";                                                               
-            } else {
+                MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                           "Category" => "RequestToEditForSubmittedProfile",
+                                           "MemberID" => $member[0]['MemberID'],
+                                           "Subject"  => $mContent[0]['Title'],
+                                           "Message"  => $content),$mailError);
+                MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']." Verification Security Code is ".$otp);
+                
                 $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
                                                                               "RequestSentOn" =>date("Y-m-d H:i:s"),
-                                                                              "EmailTo" 	  =>$member[0]['EmailID'],
-                                                                              "SMSTo" 		  =>$member[0]['MobileNumber'],
+                                                                              "EmailTo"       =>$member[0]['EmailID'],
+                                                                              "SMSTo"           =>$member[0]['MobileNumber'],
                                                                               "SecurityCode"  =>$otp,
                                                                               "Type"          =>"RequestToEditForSubmittedProfile",
                                                                               "messagedon"    =>date("Y-m-d h:i:s"))) ;
-                $formid = "frmEditForSubmittedProfileOTPVerification_".rand(30,3000);
-                $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
-                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
-							<form method="POST" id="'.$formid.'" name="'.$formid.'">
-								<div class="form-group">
-									<input type="hidden" value="'.$securitycode.'" name="reqId">
-									<input type="hidden" value="'.$_POST['ProfileCode'].'" name="ProfileCode">
-									<input type="hidden" value="'.$_POST['FileName'].'" name="FileName">
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-									<h4 class="modal-title">Profile Edit</h4> <br>
-									<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<div class="col-sm-12">
-											<div class="col-sm-3"></div>
-											<div class="col-sm-6">
-												<input type="text"  class="form-control" id="EditOtp" maxlength="4" name="EditOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"> 
-												<button type="button" onclick="SubmittedProfileforEditOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
-											</div>
-											<div class="col-sm-3"></div>
-										</div>
-										<div class="col-sm-12">'.$error.'</div>
-									</div>
-								</div>                                                                      
-								<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForSubmittedProfileProfileForEdit(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
-							</form>                                                                                                       
-                        </div>'; 
-            }
-        } else {
-            $formid = "frmEditForSubmittedProfileOTPVerification_".rand(30,3000);
-                return '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">
-							<form method="POST" id="'.$formid.'" name="'.$formid.'">
-								<div class="form-group">
-									<input type="hidden" value="'.$reqID.'" name="reqId">
-									<input type="hidden" value="'.$ProfileCode.'" name="ProfileCode">
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-									<h4 class="modal-title">Submit profile for verify</h4>
-									<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<div class="col-sm-12">
-											<div class="col-sm-3"></div>
-											<div class="col-sm-6">
-												<input type="text"  class="form-control" value="'.$otpdata.'" id="EditOtp" maxlength="4" name="EditOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">
-												<button type="button" onclick="SubmittedProfileforEditOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>
-											</div>
-										</div>
-										<div class="col-sm-12">'.$errormessage.'</div>
-									</div>
-								</div>
-								<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForSubmittedProfileProfileForEdit(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
-							</form>                                                                                                       
-                        </div>'; 
+                return Response::returnSuccess("Verified.",array("securitycode"   =>$securitycode,
+                                                                 "EmailID"        =>$member[0]['EmailID'],
+                                                                 "MobileNumber"        =>$member[0]['MobileNumber'],
+                                                                 "CountryCode"        =>$member[0]['CountryCode'],
+                                                                 "profilecode"    =>$_POST['ProfileCode'],
+                                                                 "FileName"       =>$_POST['FileName']));
         }
-
-    }
     function CheckResetPasswordDetails() {
         global $mysql,$loginInfo;
          $Reset = $mysql->select("select * from `_tbl_member_reset_password` where `ResetLink`='".$_POST['link']."'");
@@ -5520,12 +5604,11 @@
                
              $data = $mysql->select("select * from `_tbl_members` where  MemberID='".$data[0]['MemberID']."'");
              
-                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberChangePassword'");
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberResetChangePassword'");
                     $content  = str_replace("#MemberName#",$data[0]['MemberName'],$mContent[0]['Content']);
-                    $content  = str_replace("#MemberPassword#",$_POST['newpassword'],$content);
 
                      MailController::Send(array("MailTo"         => $data[0]['EmailID'],
-                                                "Category"       => "MemberChangePassword",
+                                                "Category"       => "MemberResetChangePassword",
                                                 "MemberCode"      => $data[0]['MemberCode'],
                                                 "Subject"        => $mContent[0]['Title'],
                                                 "Message"        => $content),$mailError);
@@ -5799,17 +5882,13 @@
                                             </form>                                                                                                       
                                          </div>'; 
                 }
-        }
-        public function ResendSendOtpForPayNow($errormessage="",$otpdata="",$reqID="",$MemberCode="") {
+        } 
+      /* public function SendOtpForPayNow($errormessage="",$otpdata="",$reqID="",$MemberID="") {
             global $mysql,$mail,$loginInfo;      
             
-            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
              
-                $resend = $mysql->insert("_tbl_resend",array("MemberID" =>$member[0]['MemberID'],
-                                                             "Reason"     =>"Resend Member Pay Now for Place Order",
-                                                             "ResendOn" =>date("Y-m-d h:i:s"))) ;
-                if ($reqID=="")      {
-                    $otp=rand(1000,9999);
+               $otp=rand(1000,9999);
                     $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberPayNowForPlaceOrder'");
                     $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
                     $content  = str_replace("#otp#",$otp,$content);
@@ -5820,76 +5899,55 @@
                                                "Subject"  => $mContent[0]['Title'],
                                                "Message"  => $content),$mailError);
                     MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']."Verification Security Code is ".$otp);
-
-                    if($mailError){
-                        return "Mailer Error: " . $mail->ErrorInfo.
-                        "Error. unable to process your request.";
-                    } else {
-                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
+                
+               $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
                                                                                       "RequestSentOn" =>date("Y-m-d H:i:s"),
                                                                                       "EmailTo"       =>$member[0]['EmailID'],
                                                                                       "SMSTo"         =>$member[0]['MobileNumber'],
                                                                                       "SecurityCode"  =>$otp,
                                                                                       "Type"          =>"MemberPayNowForPlaceOrder",
                                                                                       "messagedon"    =>date("Y-m-d h:i:s"))) ;
-                        $formid = "frmPayNowOTPVerification_".rand(30,3000);
-                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                                                          
-                                return '<div id="otpfrm">
-                                            <form method="POST" id="'.$formid.'" name="'.$formid.'">
-                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
-                                            <input type="hidden" value="'.$_POST['MemberCode'].'" name="MemberCode">
-                                            <input type="hidden" value="'.$_POST['OrderNumber'].'" name="OrderNumber">
-                                            <input type="hidden" name="PaymentMode" value="Wallet">   
-                                            <div class="modal-header">                                                             
-                                                <h4 class="modal-title">Confirmation for pay now</h4>
-                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <div class="col-sm-12"> 
-                                                        <div class="col-sm-3"></div> 
-                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="PayNowOtp" maxlength="4" name="PayNowOtp" style="width: 127%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                                        <div class="col-sm-2"><button type="button" onclick="PayNowOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
-                                                        <div class="col-sm-3"></div>
-                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error">'.$error.'</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForPayNow(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
-                                            </form>                                                                                                       
-                                         </div>'; 
-                    }
-                } else {
-                        $formid = "frmPayNowOTPVerification_".rand(30,3000);
-                                return '<div id="otpfrm">
-                                            <form method="POST" id="'.$formid.'" name="'.$formid.'">
-                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
-                                            <input type="hidden" value="'.$_POST['MemberCode'].'" name="MemberCode">
-                                            <input type="hidden" value="'.$_POST['OrderNumber'].'" name="OrderNumber">
-                                            <input type="hidden" name="PaymentMode" value="Wallet">   
-                                            <div class="modal-header">                                                             
-                                                <h4 class="modal-title">Confirmation for pay now</h4>
-                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <div class="col-sm-12"> 
-                                                        <div class="col-sm-3"></div> 
-                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="PayNowOtp" maxlength="4" name="PayNowOtp" style="width: 127%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                                        <div class="col-sm-2"><button type="button" onclick="PayNowOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
-                                                        <div class="col-sm-3"></div>
-                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error">'.$error.'</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForPayNow(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
-                                            </form>                                                                                                       
-                                         </div>';
-                }
+                return Response::returnSuccess("Verified.",array("securitycode"  =>$securitycode,
+                                                                 "MemberCode"    =>$_POST['MemberCode'],
+                                                                 "OrderNumber"   =>$_POST['OrderNumber'],
+                                                                 "EmailID"       =>$member[0]['EmailID'],
+                                                                 "MobileNumber"  =>$member[0]['MobileNumber'],
+                                                                 "Error"         =>$error));
+        }*/
+        
+        public function ResendSendOtpForPayNow($errormessage="",$otpdata="",$reqID="",$MemberCode="") {
+            global $mysql,$mail,$loginInfo;      
+            
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
+             
+                $resend = $mysql->insert("_tbl_resend",array("MemberID" =>$member[0]['MemberID'],
+                                                             "Reason"     =>"Resend Member Pay Now for Place Order",
+                                                             "ResendOn" =>date("Y-m-d h:i:s"))) ;
+            
+                $otp=rand(1000,9999);
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberPayNowForPlaceOrder'");
+                    $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#otp#",$otp,$content);
+
+                    MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                               "Category" => "MemberPayNowForPlaceOrder",
+                                               "MemberID" => $member[0]['MemberID'],
+                                               "Subject"  => $mContent[0]['Title'],
+                                               "Message"  => $content),$mailError);
+                    MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']."Verification Security Code is ".$otp);
+                
+                $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
+                                                                              "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                              "EmailTo"       =>$member[0]['EmailID'],
+                                                                              "SMSTo"         =>$member[0]['MobileNumber'],
+                                                                              "SecurityCode"  =>$otp,
+                                                                              "Type"          =>"MemberPayNowForPlaceOrder",
+                                                                              "messagedon"    =>date("Y-m-d h:i:s"))) ;
+                return Response::returnSuccess("Verified.",array("securitycode"   =>$securitycode,
+                                                                 "MemberCode"        =>$_POST['MemberCode'],
+                                                                 "OrderNumber"        =>$_POST['OrderNumber'],
+                                                                 "EmailID"        =>$member[0]['EmailID'],
+                                                                 "MobileNumber"    =>$member[0]['MobileNumber']));
         }
         public function PayNowOTPVerification() {
             global $mysql,$loginInfo ;
@@ -6113,6 +6171,12 @@
                  return Response::returnError("Invalid verification code.",array("securitycode"=>$otpInfo[0]['RequestID'],"EmailID"=>$otpInfo[0]['EmailTo']));
                 } 
         }
+        public function GetRequestFor() {
+            global $mysql,$mail,$loginInfo; 
+             $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+             return Response::returnSuccess("success",array("RequestFor"    => CodeMaster::getData('SERVICEREQUESTFOR'),
+                                                            "Member"        =>$member));
+         }
         public function RequestAction() {
 
              global $mysql,$mail;            
@@ -6128,17 +6192,423 @@
                     return Response::returnError("Account not found");
                 }
              }
+             $checkRequest = $mysql->select("Select * from `_tbl_service_requests` where RequestForCode='".$_POST['RequestFor']."' and MemberCode='".$data[0]['MemberCode']."' and (Status='1' or Status='2')");
+                if(sizeof($checkRequest)>0){
+                    return Response::returnError("Service request submitted failed. Reason: your previous request may not be closed");    
+                }
+                $RequestFor = CodeMaster::getData("SERVICEREQUESTFOR",$_POST['RequestFor']);
+             $otp=rand(1000,9999);
+             if($_POST['RequestFor']=="SRF0001"){
+                 $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      => $data[0]['MemberID'],
+                                                                               "RequestSentOn" => date("Y-m-d H:i:s"),
+                                                                               "SecurityCode"  => $otp,
+                                                                               "messagedon"    => date("Y-m-d h:i:s"), 
+                                                                               "EmailTo"       => $data[0]['EmailID'],
+                                                                               "Type"          => "RequestForActivateAccount")) ; 
 
+                 $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberActiveRequestVerificationCode'");
+                 $content  = str_replace("#MemberName#",$data[0]['MemberName'],$mContent[0]['Content']);
+                 $content  = str_replace("#otp#",$otp,$content);
+
+                 MailController::Send(array("MailTo"   => $data[0]['EmailID'],
+                                            "Category" => "MemberActiveRequestVerificationCode",
+                                            "MemberID" => $data[0]['MemberID'],                 
+                                            "Subject"  => $mContent[0]['Title'],
+                                            "Message"  => $content),$mailError);
+                 $id = $mysql->insert("_tbl_logs_activity",array("MemberID"           => $data[0]['MemberID'],
+                                                                 "ActivityType"       => 'Youraccountactiverequestverficationcodesent.',
+                                                                 "ActivityString"     => 'Your account active request verfication code sent.',
+                                                                 "ActivityDoneBy"     => 'M',
+                                                                 "ActivityDoneByCode" => $data[0]['MemberCode'],
+                                                                 "ActivityDoneByName" => $data[0]['MemberName'],
+                                                                 "SqlQuery"           => base64_encode($sqlQry),
+                                                                 "ActivityOn"         => date("Y-m-d H:i:s")));
+                 if($mailError){
                 return  Response::returnError("Error: unable to process your request.");
-               // return Response::returnSuccess("Email sent successfully",array("reqID"=>$securitycode,"email"=>$data[0]['EmailID']));
+             } else {
+                return Response::returnSuccess("Email sent successfully",array("reqID"      =>$securitycode,
+                                                                               "email"      =>$data[0]['EmailID'],
+                                                                               "MemberCode" =>$data[0]['MemberCode'],
+                                                                               "MemberName" =>$data[0]['MemberName'],
+                                                                               "Remarks"    =>$_POST['Remarks'],
+                                                                               "ReqFor"     =>$_POST['RequestFor'],
+                                                                               "RequestFor" =>$RequestFor[0]['CodeValue']));
+             }
+             }
+             if($_POST['RequestFor']=="SRF0004"){
+                 $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      => $data[0]['MemberID'],
+                                                                               "RequestSentOn" => date("Y-m-d H:i:s"),
+                                                                               "SecurityCode"  => $otp,
+                                                                               "messagedon"    => date("Y-m-d h:i:s"), 
+                                                                               "EmailTo"       => $data[0]['EmailID'],
+                                                                               "Type"          => "RequestForRestoreAccount")) ; 
+
+                 $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberRestoreRequestVerificationCode'");
+                 $content  = str_replace("#MemberName#",$data[0]['MemberName'],$mContent[0]['Content']);
+                 $content  = str_replace("#otp#",$otp,$content);
+
+                 MailController::Send(array("MailTo"   => $data[0]['EmailID'],
+                                            "Category" => "MemberRestoreRequestVerificationCode",
+                                            "MemberID" => $data[0]['MemberID'],                 
+                                            "Subject"  => $mContent[0]['Title'],
+                                            "Message"  => $content),$mailError);
+                 $id = $mysql->insert("_tbl_logs_activity",array("MemberID"           => $loginInfo[0]['MemberID'],
+                                                                 "ActivityType"       => 'Youraccountrestorerequestverficationcodesent.',
+                                                                 "ActivityString"     => 'Your account restore request verfication code sent.',
+                                                                 "ActivityDoneBy"     => 'M',
+                                                                 "ActivityDoneByCode" => $data[0]['MemberCode'],
+                                                                 "ActivityDoneByName" => $data[0]['MemberName'],
+                                                                 "SqlQuery"           => base64_encode($sqlQry),
+                                                                 "ActivityOn"         => date("Y-m-d H:i:s")));
+              if($mailError){
+                return  Response::returnError("Error: unable to process your request.");
+             } else {
+                return Response::returnSuccess("Email sent successfully",array("reqID"      =>$securitycode,
+                                                                               "email"      =>$data[0]['EmailID'],
+                                                                               "MemberCode" =>$data[0]['MemberCode'],
+                                                                               "MemberName" =>$data[0]['MemberName'],
+                                                                               "Remarks"    =>$_POST['Remarks'],
+                                                                               "ReqFor"     =>$_POST['RequestFor'],
+                                                                               "RequestFor" =>$RequestFor[0]['CodeValue']));
+             }   
+             }
+
          }
-        
-    
- }  
+         public function RequestOTPvalidation() {
+
+             global $mysql;                  
+             $data = $mysql->select("Select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqID']."' ");
+             $Member = $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."' ");
+             if (sizeof($data)>0) {
+                 if ($data[0]['SecurityCode']==$_POST['scode']) {
+                     $ReqCode=SeqMaster::GetNextServiceRequestCode();
+                       $RequestFor = CodeMaster::getData("SERVICEREQUESTFOR",$_POST['RequestFor']); 
+                    if($_POST['RequestFor']="SRF0001"){ 
+                        $id =  $mysql->insert("_tbl_service_requests",array("ReqCode"            => $ReqCode,
+                                                                           "RequestForCode"     => $_POST['RequestFor'],
+                                                                           "RequestFor"         => $RequestFor[0]['CodeValue'],
+                                                                           "RequestBy"          => "Member",
+                                                                           "RequestByID"        => $Member[0]['MemberID'], 
+                                                                           "RequestByCode"      => $Member[0]['MemberCode'], 
+                                                                           "MemberID"           => $Member[0]['MemberID'], 
+                                                                           "MemberCode"         => $Member[0]['MemberCode'], 
+                                                                           "MemberName"         => $Member[0]['MemberName'], 
+                                                                           "Subject"            => "Active My Account", 
+                                                                           "IsDeactive"         => "2", 
+                                                                           "DeactiveReason"     => $_POST['Remarks'], 
+                                                                           "DeactiveRequestOn"  => date("Y-m-d H:i:s"),
+                                                                           "RequestOn"          => date("Y-m-d H:i:s"),
+                                                                           "Status"             => "1")); 
+                    $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='ServiceRequest'");
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberActiveRequestFromMember'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#ServiceRequestCode#",$ReqCode,$content);
+
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "MemberActiveRequestFromMember",
+                                                "MemberID"       => $Member[0]['MemberID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($Member[0]['MobileNumber']," Dear ".$Member[0]['MemberName'].",Your account activate request (".$ReqCode.") has been Sent.");  
+                                                                           
+                    $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $Member[0]['MemberID'],
+                                                                     "ActivityType"   => 'MemberActiveRequestFromMember.',
+                                                                     "ActivityString" => 'Member Active Request From Member.',
+                                                                     "SqlQuery"       => base64_encode($sqlQry),
+                                                                     "ActivityDoneBy" => 'M',
+                                                                     "ActivityDoneByCode" =>$Member[0]['MemberCode'],
+                                                                     "ActivityDoneByName" =>$Member[0]['MemberName'],
+                                                                     "ActivityOn"     => date("Y-m-d H:i:s")));
+                   return Response::returnSuccess("Active Request Sent",array());
+                    }
+                    if($_POST['RequestFor']="SRF0004"){ 
+                        $id =  $mysql->insert("_tbl_service_requests",array("ReqCode"           => $ReqCode,
+                                                                           "RequestForCode"     => $_POST['RequestFor'],
+                                                                           "RequestFor"         => $RequestFor[0]['CodeValue'],
+                                                                           "RequestBy"          => "Member",
+                                                                           "RequestByID"        => $Member[0]['MemberID'], 
+                                                                           "RequestByCode"      => $Member[0]['MemberCode'], 
+                                                                           "MemberID"           => $Member[0]['MemberID'], 
+                                                                           "MemberCode"         => $Member[0]['MemberCode'], 
+                                                                           "MemberName"         => $Member[0]['MemberName'], 
+                                                                           "Subject"            => "Restore My Account", 
+                                                                           "IsDelete"           => "2", 
+                                                                           "DeleteReason"       => $_POST['Remarks'], 
+                                                                           "DeleteRequestOn"    => date("Y-m-d H:i:s"),
+                                                                           "RequestOn"          => date("Y-m-d H:i:s"),
+                                                                           "Status"             => "1")); 
+                    $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='ServiceRequest'");
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberRestoreRequestFromMember'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#ServiceRequestCode#",$ReqCode,$content);
+
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "MemberRestoreRequestFromMember",
+                                                "MemberID"       => $Member[0]['MemberID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($Member[0]['MobileNumber']," Dear ".$Member[0]['MemberName'].",Your account restore request (".$ReqCode.") has been Sent.");  
+                                                                           
+                    $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $Member[0]['MemberID'],
+                                                                     "ActivityType"   => 'MemberRestoreRequestFromMember.',
+                                                                     "ActivityString" => 'Member Restore Request From Member.',
+                                                                     "SqlQuery"       => base64_encode($sqlQry),
+                                                                     "ActivityDoneBy" => 'M',
+                                                                     "ActivityDoneByCode" =>$Member[0]['MemberCode'],
+                                                                     "ActivityDoneByName" =>$Member[0]['MemberName'],
+                                                                     "ActivityOn"     => date("Y-m-d H:i:s")));
+                   return Response::returnSuccess("Active Request Sent",array());
+                    }   
+                 } else {
+                    return Response::returnError("Invalid verification code"); 
+                 }
+             } else {
+                return Response::returnError("Invalid access");
+             }
+         }
+     function SendServiceRequest(){
+        global $mysql,$loginInfo;
+       
+        $Member = $mysql->select("select * from `_tbl_members` where MemberID='".$loginInfo[0]['MemberID']."'");
+            if(!(sizeof($Member)==1)){
+                return Response::returnError("Invalid member information"); 
+            } 
+        $checkRequest = $mysql->select("Select * from `_tbl_service_requests` where RequestForCode='".$_POST['ServiceRequest']."' and MemberCode='".$Member[0]['MemberCode']."' and (Status='1' or Status='2')");
+                if(sizeof($checkRequest)>0){
+                    return Response::returnError("Service request submitted failed. Reason: your previous request may not be closed");    
+                }
+        $ReqCode=SeqMaster::GetNextServiceRequestCode();
+           $RequestFor = CodeMaster::getData("SERVICEREQUESTFOR",$_POST['ServiceRequest']); 
+       if($_POST['ServiceRequest']=="SRF0002"){ 
+           $id =  $mysql->insert("_tbl_service_requests",array("ReqCode"            => $ReqCode,
+                                                               "RequestForCode"     => $_POST['ServiceRequest'],
+                                                               "RequestFor"         => $RequestFor[0]['CodeValue'],
+                                                               "RequestBy"          => "Member",
+                                                               "RequestByID"        => $Member[0]['MemberID'], 
+                                                               "RequestByCode"      => $Member[0]['MemberCode'], 
+                                                               "MemberID"           => $Member[0]['MemberID'], 
+                                                               "MemberCode"         => $Member[0]['MemberCode'], 
+                                                               "MemberName"         => $Member[0]['MemberName'], 
+                                                               "Subject"            => "Deactive My Account", 
+                                                               "IsDeactive"         => "2", 
+                                                               "DeactiveReason"     => $_POST['Remarks'], 
+                                                               "DeactiveRequestOn"  => date("Y-m-d H:i:s"),
+                                                               "RequestOn"          => date("Y-m-d H:i:s"),
+                                                               "Status"             => "1")); 
+           $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='ServiceRequest'"); 
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberDeactiveRequestFromMember'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#ServiceRequestCode#",$ReqCode,$content);
+
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "MemberDeactiveRequestFromMember",
+                                                "MemberID"       => $Member[0]['MemberID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($Member[0]['MobileNumber']," Dear ".$Member[0]['MemberName'].",Your account deactive request (".$ReqCode.") has been Sent.");  
+                                                                           
+                    $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $Member[0]['MemberID'],
+                                                                     "ActivityType"   => 'MemberDeactiveRequestFromMember.',
+                                                                     "ActivityString" => 'Member Deactive Request From Member.',
+                                                                     "SqlQuery"       => base64_encode($sqlQry),
+                                                                     "ActivityDoneBy" => 'M',
+                                                                     "ActivityDoneByCode" =>$Member[0]['MemberCode'],
+                                                                     "ActivityDoneByName" =>$Member[0]['MemberName'],
+                                                                     "ActivityOn"     => date("Y-m-d H:i:s")));
+            return Response::returnSuccess("Deactive Request Sent",array());
+       }
+       if($_POST['ServiceRequest']=="SRF0003"){ 
+           $id =  $mysql->insert("_tbl_service_requests",array("ReqCode"            => $ReqCode,
+                                                               "RequestForCode"     => $_POST['ServiceRequest'],
+                                                               "RequestFor"         => $RequestFor[0]['CodeValue'],
+                                                               "RequestBy"          => "Member",
+                                                               "RequestByID"        => $Member[0]['MemberID'], 
+                                                               "RequestByCode"      => $Member[0]['MemberCode'], 
+                                                               "MemberID"           => $Member[0]['MemberID'], 
+                                                               "MemberCode"         => $Member[0]['MemberCode'], 
+                                                               "MemberName"         => $Member[0]['MemberName'], 
+                                                               "Subject"            => "Delete My Account", 
+                                                               "IsDeactive"         => "2", 
+                                                               "DeactiveReason"     => $_POST['Remarks'], 
+                                                               "DeactiveRequestOn"  => date("Y-m-d H:i:s"),
+                                                               "RequestOn"          => date("Y-m-d H:i:s"),
+                                                               "Status"             => "1")); 
+           $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='ServiceRequest'");
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberDeleteRequestFromMember'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#ServiceRequestCode#",$ReqCode,$content);
+
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "MemberDeleteRequestFromMember",
+                                                "MemberID"       => $Member[0]['MemberID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($Member[0]['MobileNumber']," Dear ".$Member[0]['MemberName'].",Your account delete request (".$ReqCode.") has been Sent.");  
+                                                                           
+                    $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $Member[0]['MemberID'],
+                                                                     "ActivityType"   => 'MemberDeleteRequestFromMember.',
+                                                                     "ActivityString" => 'Member Delete Request From Member.',
+                                                                     "SqlQuery"       => base64_encode($sqlQry),
+                                                                     "ActivityDoneBy" => 'M',
+                                                                     "ActivityDoneByCode" =>$Member[0]['MemberCode'],
+                                                                     "ActivityDoneByName" =>$Member[0]['MemberName'],
+                                                                     "ActivityOn"     => date("Y-m-d H:i:s")));
+            return Response::returnSuccess("Delete Request Sent",array());
+       }
+     } 
+     public function SendOtpForDeleteMember($errormessage="",$otpdata="",$reqID="") {
+            global $mysql,$mail,$loginInfo;      
+            
+            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+            
+               $otp=rand(1000,9999);
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberRequestToDelete'");
+                    $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#otp#",$otp,$content);
+
+                    MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                               "Category" => "MemberRequestToDelete",                       
+                                               "MemberID" => $member[0]['MemberID'],
+                                               "Subject"  => $mContent[0]['Title'],
+                                               "Message"  => $content),$mailError);
+                $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
+                                                                              "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                              "EmailTo"       =>$member[0]['EmailID'],
+                                                                              "SecurityCode"  =>$otp,
+                                                                              "Type"          =>"MemberRequestToDelete",
+                                                                              "messagedon"    =>date("Y-m-d h:i:s"))) ;
+                return Response::returnSuccess("Verified.",array("securitycode"   =>$securitycode,
+                                                                 "RequestForCode" =>$_POST['RequestForCode'],
+                                                                 "EmailID"=>$member[0]['EmailID'],
+                                                                 "Comments"=>$_POST['Comments'],
+                                                                 "DeleteReason" => $_POST['DeleteReason']));
+        } 
+       public function DeleteMemberOTPVerification() {
+            global $mysql,$loginInfo ;
+             
+            $Member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
+            $otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
+             
+            if (strlen(trim($_POST['DeleteMemberOtp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['DeleteMemberOtp']))  {
+                 
+            $ReqCode=SeqMaster::GetNextServiceRequestCode();
+            
+           $RequestFor = CodeMaster::getData("SERVICEREQUESTFOR",$_POST['RequestForCode']); 
+                if($_POST['RequestForCode']=="SRF0003"){ 
+                   
+           $id =  $mysql->insert("_tbl_service_requests",array("ReqCode"            => $ReqCode,
+                                                               "RequestForCode"     => $_POST['RequestForCode'],
+                                                               "RequestFor"         => $RequestFor[0]['CodeValue'],
+                                                               "RequestBy"          => "Member",
+                                                               "RequestByID"        => $Member[0]['MemberID'], 
+                                                               "RequestByCode"      => $Member[0]['MemberCode'], 
+                                                               "MemberID"           => $Member[0]['MemberID'], 
+                                                               "MemberCode"         => $Member[0]['MemberCode'], 
+                                                               "MemberName"         => $Member[0]['MemberName'], 
+                                                               "Subject"            => "Delete My Account", 
+                                                               "IsDelete"           => "2", 
+                                                               "Remarks"            => $_POST['Comments'], 
+                                                               "DeleteReason"       => $_POST['DeleteReason'], 
+                                                               "DeleteRequestOn"    => date("Y-m-d H:i:s"),
+                                                               "RequestOn"          => date("Y-m-d H:i:s"),
+                                                               "Status"             => "1")); 
+           $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='ServiceRequest'"); 
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberDeleteRequestFromMember'");
+                    $content  = str_replace("#MemberName#",$Member[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#ServiceRequestCode#",$ReqCode,$content);
+
+                     MailController::Send(array("MailTo"         => $Member[0]['EmailID'],
+                                                "Category"       => "MemberDeleteRequestFromMember",
+                                                "MemberID"       => $Member[0]['MemberID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($Member[0]['MobileNumber']," Dear ".$Member[0]['MemberName'].",Your account delete request (".$ReqCode.") has been Sent.");  
+                                                                           
+                    $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $Member[0]['MemberID'],
+                                                                     "ActivityType"   => 'MemberDeleteRequestFromMember.',
+                                                                     "ActivityString" => 'Member Delete Request From Member.',
+                                                                     "SqlQuery"       => base64_encode($sqlQry),
+                                                                     "ActivityDoneBy" => 'M',
+                                                                     "ActivityDoneByCode" =>$Member[0]['MemberCode'],
+                                                                     "ActivityDoneByName" =>$Member[0]['MemberName'],
+                                                                     "ActivityOn"     => date("Y-m-d H:i:s")));
+            return Response::returnSuccess("Deactive Request Sent",array());
+                
+            }
+            } else {
+                 return Response::returnError("Invalid verification code.",array("securitycode"=>$otpInfo[0]['RequestID'],"EmailID"=>$otpInfo[0]['EmailTo']));
+                } 
+        }
+        public function AddNewSupportTicket() {
+             global $mysql,$loginInfo;
+            $ReqCode=SeqMaster::GetNextServiceRequestCode();
+            $Member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");                       
+            $id =  $mysql->insert("_tbl_service_requests",array("ReqCode"            => $ReqCode,
+                                                                "RequestBy"          => "Member",
+                                                                "RequestByID"        => $Member[0]['MemberID'], 
+                                                                "RequestByCode"      => $Member[0]['MemberCode'], 
+                                                                "MemberID"           => $Member[0]['MemberID'], 
+                                                                "MemberCode"         => $Member[0]['MemberCode'], 
+                                                                "MemberName"         => $Member[0]['MemberName'], 
+                                                                "Team"               => $_POST['Team'], 
+                                                                "Subject"            => $_POST['Subject'], 
+                                                                "Content"            => $_POST['Description'], 
+                                                                "FileName"           => $_POST['File'], 
+                                                                "RequestOn"          => date("Y-m-d H:i:s"),
+                                                                "Status"             => "1")); 
+            $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='ServiceRequest'");
+            unset($_POST);
+            return Response::returnSuccess("Ticket Created",array());
+         }
+        function GetManageServiceRequests() {
+           
+             global $mysql,$loginInfo;
+             
+              $sql = "select * from _tbl_service_requests";
+
+              if (isset($_POST['Request']) && $_POST['Request']=="Open") {
+                 return Response::returnSuccess("success",$mysql->select($sql." where Status='1'"));    
+             }
+              if (isset($_POST['Request']) && $_POST['Request']=="InProccess") {
+                 return Response::returnSuccess("success",$mysql->select($sql." where Status='2'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Closed") {
+                 return Response::returnSuccess("success",$mysql->select($sql." where Status='3'"));    
+             }
+             
+         }
+         function GetSupportTicketsDetails() {
+           
+             global $mysql,$loginInfo;
+              if (isset($_POST['Request']) && $_POST['Request']=="Open") {
+                $OpenTicket = $mysql->select("select * from _tbl_service_requests where ReqCode='".$_POST['Code']."' and Status='1'");
+                 return Response::returnSuccess("success",$OpenTicket);    
+             }
+              if (isset($_POST['Request']) && $_POST['Request']=="InProccess") {
+                 $OpenTicket = $mysql->select("select * from _tbl_service_requests where ReqCode='".$_POST['Code']."' and Status='2'");
+                 return Response::returnSuccess("success",$OpenTicket);     
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Closed") {
+                 $OpenTicket = $mysql->select("select * from _tbl_service_requests where ReqCode='".$_POST['Code']."' and Status='3'");
+                 return Response::returnSuccess("success",$OpenTicket);
+             }
+             
+         } 
+           
+       }
 //4084   5500
 
 // html 
-//ResendSendOtpForSubmittedProfileProfileForEdit
+//ResendSendOtpForSubmittedProfileProfileForEdit ---->finished
+//DeleteAttach -------->finished
+//DeleteEducationAttachmentOnly ---->finished  
+//DeletDocumentAttachments --> finished  
+//DeletProfilePhoto -->finished
+//HideLatestUpdates -->finished
+//DeleteOccupationAttachmentOnly,-->finished 
+//ResendSendOtpForPayNow,--->finished
+//CancelOrder -->finished
+
 //SendOtpForEditSubmittedProfile
 //ResendEmailVerificationForm
 //ChangeMobileNumberFromVerificationScreen  
@@ -6154,20 +6624,10 @@
 //SendOtpForProfileforPublish
 //ResendSendOtpForProfileforPublish 
 //DeleteProfile 
-//DeleteAttach
-//DeleteAttach  
-//DeleteEducationAttachmentOnly   
-//DeletDocumentAttachments  
-//DeletProfilePhoto   
 //RequestToshowUpgrades   
 //ResendMobileNumberVerificationForm  
-//HideLatestUpdates
-//DeleteOccupationAttachmentOnly, 
-//ResendSendOtpForPayNow, 
-//SendOtpForPayNow,
-//ResendSendOtpForSubmittedProfileProfileForEdit, 
-//SendOtpForEditSubmittedProfile, 
-//CancelOrder
+//SendOtpForPayNow, -->tried
+
 //6150
 ?>                                                            
   
