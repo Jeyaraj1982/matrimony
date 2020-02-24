@@ -748,7 +748,7 @@ legend {
 
  <div class="modal" id="PubplishNow" data-backdrop="static" >
             <div class="modal-dialog" >
-                <div class="modal-content" id="Publish_body"  style="max-height: 300px;min-height: 300px;" >
+                <div class="modal-content" id="Publish_body"  style="max-height: 400px;min-height: 400px;" >
             
                 </div>
             </div>

@@ -156,7 +156,38 @@ function SendOtpForPayNow(formid) {
             }
             var obj = JSON.parse(result);
             if (obj.status=="success") {
-                $('#Publish_body').html(result);
+                var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.MemberCode+'" name="MemberCode">'
+                                + '<input type="hidden" value="'+data.OrderNumber+'" name="OrderNumber">'
+                                +'<input type="hidden" name="PaymentMode" value="Wallet">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Confirmation for pay now</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'<br>&amp;<br>'+data.MobileNumber+'</h4></p>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="PayNowOtp" maxlength="4" name="PayNowOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="PayNowOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="PaynowOtp_error"></div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForPayNow(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';
+                 $('#Publish_body').html(content);
             } else {
                 var data = obj.data; 
                 var content = '<div  style="height: 300px;">'                                                                              
@@ -242,8 +273,39 @@ function PayNowOTPVerification(frmid) {
                                 +'</div>' 
                             +'</div>';
             $('#Publish_body').html(content);
-            
-             
+            } else {
+                var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.MemberCode+'" name="MemberCode">'
+                                + '<input type="hidden" value="'+data.OrderNumber+'" name="OrderNumber">'
+                                +'<input type="hidden" name="PaymentMode" value="Wallet">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Confirmation for pay now</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'<br>&amp;<br>'+data.MobileNumber+'</h4></p>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text" value="'+data.PayNowOtp+'"  class="form-control" id="PayNowOtp" maxlength="4" name="PayNowOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="PayNowOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="PaynowOtp_error">'+data.error+'</div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForPayNow(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';
+                 $('#Publish_body').html(content);
             }
             
     });

@@ -3,135 +3,705 @@ function restcall(url,param){
      $.post(getAppUrl() + url,param,function(response) {return response});
 }
 
-function ChangePasswordScreen(frmid1) {
+function ChangePasswordScreen(frmid1,error,NewPassword,ConfirmNewPassword) {
+     error = typeof error !== 'undefined' ? error : "";
+     NewPassword = typeof NewPassword !== 'undefined' ? NewPassword : "";
+     ConfirmNewPassword = typeof ConfirmNewPassword !== 'undefined' ? ConfirmNewPassword : "";
     var param = $( "#"+frmid1).serialize();
-    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","135px"));$('#myModal').modal('show');
-    $.post(getAppUrl() + "m=Member&a=ChangePasswordScreen",param,function(response) {$('#Mobile_VerificationBody').html(response);});  
-    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ChangePasswordScreen",param));
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+        $.post(getAppUrl() + "m=Member&a=ChangePasswordScreen","",function(result) {
+             if (!(isJson($.trim(result)))) {
+                $('#Mobile_VerificationBody').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse($.trim(result));
+            if (obj.status=="success") {
+                   var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                    +'<form method="post" id="'+randString+'" name="'+randString+'">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Change login password</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body" style="min-height: 261px;max-height: 261px;">'
+                                    +'<div class="form-group row">'
+                                        +'<div class="col-sm-4" style="text-align:center;padding-top: 15px;">'
+                                            +'<img src="'+AppUrl+'assets/images/icon_change_password.png">'
+                                        +'</div>'
+                                        +'<div class="col-sm-8">'
+                                            +'<span style="text-left:center;color:#ada9a9">The administartor requests to change your login password on your first signin.</span><br><br>'
+                                            +'<div class="row">'
+                                                +'<div class="col-sm-8"><h6 style="color:#ada9a9">New Password<span style="color:red">*</span></h6></div>'
+                                            +'</div>'                             
+                                            +'<div class="row">'
+                                                +'<div class="col-sm-11">'  
+                                                    +'<div class="input-group">'
+                                                        +'<input type="password" class="form-control" value="'+NewPassword+'" id="NewPassword"  name="NewPassword" maxlength="20" style="font-family:Roboto;" placeholder="New Password">'
+                                                        +'<span class="input-group-btn">'
+                                                            +'<button  onclick="showHidePwd(\'NewPassword\',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>'
+                                                        +'</span>'          
+                                                    +'</div>'
+                                                    +'<div id="frmNewPass_error" style="color:red;font-size:12px;">'+error+'</div>'
+                                                +'</div>'
+                                            +'</div>'
+                                            +'<div class="row">'
+                                                +'<div class="col-sm-8"><h6 style="color:#ada9a9">Confirm New Password<span style="color:red">*</span></h6></div>'
+                                            +'</div>'
+                                            +'<div class="row">'
+                                                +'<div class="col-sm-11">'
+                                                    +'<div class="input-group">'
+                                                        +'<input type="password" class="form-control" value="'+ConfirmNewPassword+'" id="ConfirmNewPassword"  name="ConfirmNewPassword"  maxlength="20" style="font-family:Roboto;" placeholder="Confirm New Password">'
+                                                        +'<span class="input-group-btn">'
+                                                            +'<button  onclick="showHidePwd(\'ConfirmNewPassword\',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>'
+                                                        +'</span>'          
+                                                    +'</div>'
+                                                    +'<div id="frmCfmNewPass_error" style="color:red;font-size:12px">&nbsp;</div>'
+                                                +'</div>'
+                                            +'</div>'
+                                        +'</div>'
+                                    +'</div>'
+                                +'</div>'
+                                    +'<div class="modal-footer">'
+                                        +'<a href="javascript:void(0)" onclick="Signout()">Sign out</a>&nbsp;&nbsp;'
+                                        +'<a href="javascript:void(0)" onclick="ChangeNewPassword(\''+randString+'\')" class="btn btn-primary">Change Password</a>&nbsp;&nbsp;'
+                                    +'</div>'
+                             + '</div>';
+                 $('#Mobile_VerificationBody').html(content);
+        }
+        else {
+          var content = '<div class="modal-header">'
+                            +'<h4 class="modal-title">Change login password</h4>'
+                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                        +'</div>'
+                        +'<div class="modal-body" style="text-align:center">'
+                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                            +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                         +'</div>';
+          $('#Mobile_VerificationBody').html(content);
+        }
+        });
 }
-
 function ChangeNewPassword(frmid1) {
     $("#frmNewPass_error").html("&nbsp;");
     $("#frmCfmNewPass_error").html("&nbsp;");
     ErrorCount =0;
     IsNonEmpty("NewPassword","frmNewPass_error","Please enter new password");
-	IsNonEmpty("NewPassword","frmCfmNewPass_error","Please enter confirm new password");
+    IsNonEmpty("NewPassword","frmCfmNewPass_error","Please enter confirm new password");
     if ($("#ConfirmNewPassword").val().trim() != $("#NewPassword").val().trim()) {
-	    $("#frmCfmNewPass_error").html("Passwords do not match");
-		ErrorCount++;
-	}
+        $("#frmCfmNewPass_error").html("Passwords do not match");
+        ErrorCount++;
+    }
     if(ErrorCount>0){ 
         return false;
     }
-    var param = $( "#"+frmid1).serialize();
+    var param = $( "#"+frmid1).serialize();                             
     $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-    $('#myModal').modal('show'); 
-    $.post(getAppUrl() + "m=Member&a=ChangeNewPassword",param,function(response) {$('#Mobile_VerificationBody').html(response);});
-    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ChangeNewPassword",param));
+    $.post(getAppUrl() + "m=Member&a=ChangeNewPassword",param,function(result2) {
+        if (!(isJson($.trim(result2)))) {
+                    $('#Mobile_VerificationBody').html(result2);
+                    return ;                                                                   
+                }
+                var obj = JSON.parse($.trim(result2));
+                 var data = obj.data; 
+                    if (obj.status=="success") { 
+                         var content = '<div class="modal-header">'
+                                            +'<h4 class="modal-title">Change login password</h4>'
+                                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                                        +'</div>'
+                                        +'<div class="modal-body" style="text-align:center">'
+                                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                                            +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                                         +'</div>';
+                          $('#Mobile_VerificationBody').html(content); 
+                        
+                    } else {
+                        var randString = "form_" + randomStrings(5);
+                        if(data.js == "ChangePasswordScreen"){
+                        ChangePasswordScreen(randString,data.error,data.NewPassword,data.ConfirmNewPassword);
+                        }
+                   }
+    });
 }
 
 function MobileNumberVerification() {
     $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-    $('#myModal').modal('show');
-    $.ajax({url: getAppUrl() + "m=Member&a=ChangeMobileNumberFromVerificationScreen", 
-            success: function(result){
-                $('#Mobile_VerificationBody').html(result); 
-                if ($("#verifydiv" ).length ) {
+        $.post(getAppUrl() + "m=Member&a=ChangeMobileNumberFromVerificationScreen","",function(result) {
+             if (!(isJson($.trim(result)))) {
+                $('#Mobile_VerificationBody').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse($.trim(result));
+            if (obj.status=="success") {
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Please verify mobile number</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body" style="max-height:400px;min-height:400px;">'
+                                         +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen.</p>'
+                                         +'<h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">+'+data.CountryCode+'&nbsp;'+data.MobileNumber+'&nbsp;&#65372;&nbsp;<a href="javascript:void(0)" onclick="ChangeMobileNumber()">Change</h4>'
+                                    + '</div>'
+                                    +'<div class="modal-footer">'
+                                        +'<a href="javascript:void(0)" onclick="Signout()">Sign out</a>&nbsp;&nbsp;'
+                                        +'<a href="javascript:void(0)" onclick="MobileNumberVerificationForm()" class="btn btn-primary">Continue to verify</a>&nbsp;&nbsp;'
+                                    +'</div>'
+                             + '</div>';
+                 $('#Mobile_VerificationBody').html(content);
+                 if ($("#verifydiv" ).length ) {
                     $("#verifydiv").hide(500);
                 }
-    }});
-}
-    
-function EmailVerification() {
-    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-    $('#myModal').modal('show');
-    $.ajax({url: getAppUrl() + "m=Member&a=ChangeEmailFromVerificationScreen", success: function(result){$('#Mobile_VerificationBody').html(result); }});
-    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ChangeEmailFromVerificationScreen",""));
+        }
+        else {
+          var content = '<div class="modal-header">'
+                            +'<h4 class="modal-title">Mobile Number Verification</h4>'
+                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                        +'</div>'
+                        +'<div class="modal-body" style="text-align:center">'
+                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                            +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                         +'</div>';
+          $('#Mobile_VerificationBody').html(content);
+        }
+        });
 } 
-    
+function ChangeMobileNumber(error,Mobilenumber) {
+    error = typeof error !== 'undefined' ? error : "";
+    Mobilenumber = typeof Mobilenumber !== 'undefined' ? Mobilenumber : "";
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+        $.post(getAppUrl() + "m=Member&a=ChangeMobileNumber","",function(result) {
+             if (!(isJson($.trim(result)))) {
+                $('#Mobile_VerificationBody').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse($.trim(result));
+           if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.loginId+'" name="loginId">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Change Mobile Number</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body" style="max-height:400px;min-height:400px;">'
+                                         +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;"><b>Caution!</b> You are going to change your primary Mobile Number. All further communication from us ill be delivered on this new Number.</p>'
+                                            +'<div class="form-group row" style="margin-bottom:0px">'
+                                                +'<div class="col-sm-2"></div>'
+                                                +'<label class="col-sm-10" style="color:#ada9a9;font-size: 14px;">Mobile Number</label>'
+                                             +'</div>'
+                                             +'<div class="form-group row">'
+                                                +'<div class="col-sm-2"></div>'
+                                                +'<div class="col-sm-4" style="margin-right:-15px">'
+                                                    +'<select class="selectpicker form-control" data-live-search="true" name="CountryCode" id="CountryCode" style="padding-top: 4px;padding-bottom: 4px;text-align: center;font-family: Roboto;height: 34px;"> '
+                                                        // foreach($countrycode as $CountryCode) {  
+                                                        +'<option value="'+data.ParamA+'">'+data.CountryStr+'</option>'
+                                                        //}
+                                                    +'</select>'
+                                                +'</div>'
+                                                +'<div class="col-sm-4">'                                                                                                                                                                                          
+                                                    +'<input type="text" class="form-control" value="'+Mobilenumber+'" id="new_mobile_number"  name="new_mobile_number"  maxlength="10" style="font-family:Roboto;"></div>'
+                                                +'</div>'
+                                                +'<div class="col-sm-12" id="errormsg">'+error+'</div>'
+                                            +'</div>'
+                                    +'</div>'
+                                    +'<div class="modal-footer">'
+                                    +'<a href="javascript:void(0)" onclick="CheckVerification()">back</a>&nbsp;&nbsp;'
+                                    +'<a href="javascript:void(0)" onclick="MobileNumberVerificationForm(\''+randString+'\')" class="btn btn-primary" style="font-family:roboto">Save and verify</a>'
+                                 +'</div>'
+                            +'</form>'                                                                                                       
+                        +'</div>';
+                 $('#Mobile_VerificationBody').html(content);
+        }
+        else {
+          var content = '<div class="modal-header">'
+                            +'<h4 class="modal-title">Mobile Number Verification</h4>'
+                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                        +'</div>'
+                        +'<div class="modal-body" style="text-align:center">'
+                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                            +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                         +'</div>';
+          $('#Mobile_VerificationBody').html(content);
+        }
+        });
+}
 function MobileNumberVerificationForm(frmid1) {
     var param = $( "#"+frmid1).serialize();
     $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-    $('#myModal').modal('show'); 
-    $.post(getAppUrl() + "m=Member&a=MobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
-    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=MobileNumberVerificationForm",param));
+    $.post(getAppUrl() + "m=Member&a=MobileNumberVerificationForm",param,function(result2) {
+        if (!(isJson($.trim(result2)))) {
+                    $('#Mobile_VerificationBody').html(result2);
+                    return ;                                                                   
+                }
+                var obj = JSON.parse($.trim(result2));
+                 var data = obj.data; 
+                    if (obj.status=="success") { 
+                        var randString = "form_" + randomStrings(5);
+                        var data = obj.data; 
+                        var content = '<div id="otpfrm" >'
+                                        + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                        + '<input type="hidden" value="'+data.callfrom+'" name="callfrom">'
+                                        + '<input type="hidden" value="'+data.loginId+'" name="loginId">'
+                                        + '<input type="hidden" value="'+data.reqId+'" name="reqId">'
+                                        +'<div class="modal-header">'
+                                            + '<h4 class="modal-title">Please verify your mobile number</h4>'
+                                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
+                                        +'</div>'
+                                        +'<div class="modal-body">'
+                                            +''+data.updatemsg+''
+                                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                            +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">Please enter the verification code which you have received on your mobile number ending with  +'+data.CountryCode+'&nbsp;'+data.MobileNumber+'</p>'
+                                            +'<div class="form-group">'
+                                                +'<div class="input-group">'
+                                                    +'<div class="col-sm-12">' 
+                                                        +'<div class="col-sm-3"></div>'
+                                                        +'<div class="col-sm-4"><input type="text" value="" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
+                                                        +'<div class="col-sm-2"><button type="button" onclick="MobileNumberOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>'
+                                                        +'<div class="col-sm-3"></div>'
+                                                        +'<div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error" >&nbsp;</div>'
+                                                    +'</div>'
+                                                +'</div>'
+                                            +'</div>'
+                                            +'<h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendMobileNumberVerificationForm(\''+randString+'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5>' 
+                                        +'</form>'                                                                                                       
+                                       +'</div>';
+                 $('#Mobile_VerificationBody').html(content);  
+                        
+                    } else {
+                        if(data.js == "ChangeMobileNumber"){
+                        ChangeMobileNumber(data.error,data.Mobilenumber);
+                    }else {
+                         var content = '<div class="modal-header">'
+                                            +'<h4 class="modal-title">Mobile Number Verification</h4>'
+                                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                                       +'</div>'
+                                       +'<div class="modal-body" style="text-align:center">'
+                                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                                            +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                                       +'</div>';
+                                       $('#Mobile_VerificationBody').html(content);
+                         }
+                   }
+    });
+}
+function MobileNumberOTPVerification(frmid) {
+         $("#frmMobileNoVerification_error").html("&nbsp;");
+         if ($("#mobile_otp_2").val().trim()=="") {
+             $("#frmMobileNoVerification_error").html("Please enter verification code");
+             return false;
+         }
+         var param = $( "#"+frmid).serialize();
+         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+         $.post( getAppUrl() + "m=Member&a=MobileNumberOTPVerification", param,function(result2) {
+          if (!(isJson($.trim(result2)))) {
+                    $('#Mobile_VerificationBody').html(result2);
+                    return ;                                                                   
+                }
+                var obj = JSON.parse($.trim(result2));
+                 var data = obj.data; 
+                    if (obj.status=="success") { 
+                       var content = '<div class="modal-header">'
+                                        +'<h4 class="modal-title">Mobile Number Verification</h4>'
+                                        +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                                     +'</div>'
+                                    +'<div class="modal-body" style="text-align:center">'
+                                        +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                                        +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                                        +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                                     +'</div>';
+                       $('#Mobile_VerificationBody').html(content);
+                    } else {
+                        var randString = "form_" + randomStrings(5);
+                        var content = '<div id="otpfrm" >'
+                                        + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                        + '<input type="hidden" value="'+data.callfrom+'" name="callfrom">'
+                                        + '<input type="hidden" value="'+data.loginId+'" name="loginId">'
+                                        + '<input type="hidden" value="'+data.reqId+'" name="reqId">'
+                                        +'<div class="modal-header">'
+                                            + '<h4 class="modal-title">Please verify your mobile number</h4>'
+                                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
+                                        +'</div>'
+                                        +'<div class="modal-body">'
+                                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                            +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">Please enter the verification code which you have received on your mobile number ending with  +'+data.CountryCode+'&nbsp;'+data.MobileNumber+'</p>'
+                                            +'<div class="form-group">'
+                                                +'<div class="input-group">'
+                                                    +'<div class="col-sm-12">' 
+                                                        +'<div class="col-sm-3"></div>'
+                                                        +'<div class="col-sm-4"><input type="text" value="'+data.MobileOtp+'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
+                                                        +'<div class="col-sm-2"><button type="button" onclick="MobileNumberOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>'
+                                                        +'<div class="col-sm-3"></div>'
+                                                        +'<div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error" >'+data.error+'&nbsp;</div>'
+                                                    +'</div>'
+                                                +'</div>'
+                                            +'</div>'
+                                            +'<h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendMobileNumberVerificationForm(\''+randString+'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5>' 
+                                        +'</form>'                                                                                                       
+                                       +'</div>';
+                 $('#Mobile_VerificationBody').html(content);  
+                    }
+         });
+    }
+function ResendMobileNumberVerificationForm(frmid1) {
+    var param = $( "#"+frmid1).serialize();
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $.post(getAppUrl() + "m=Member&a=ResendMobileNumberVerificationForm",param,function(result2) {
+        if (!(isJson($.trim(result2)))) {
+                    $('#Mobile_VerificationBody').html(result2);
+                    return ;                                                                   
+                }
+                var obj = JSON.parse($.trim(result2));
+                 var data = obj.data; 
+                    if (obj.status=="success") { 
+                        var randString = "form_" + randomStrings(5);
+                        var data = obj.data; 
+                        var content = '<div id="otpfrm" >'
+                                        + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                        + '<input type="hidden" value="'+data.callfrom+'" name="callfrom">'
+                                        + '<input type="hidden" value="'+data.loginId+'" name="loginId">'
+                                        + '<input type="hidden" value="'+data.reqId+'" name="reqId">'
+                                        +'<div class="modal-header">'
+                                            + '<h4 class="modal-title">Please verify your mobile number</h4>'
+                                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
+                                        +'</div>'
+                                        +'<div class="modal-body">'
+                                            +''+data.updatemsg+''
+                                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                            +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">Please enter the verification code which you have received on your mobile number ending with  +'+data.CountryCode+'&nbsp;'+data.MobileNumber+'</p>'
+                                            +'<div class="form-group">'
+                                                +'<div class="input-group">'
+                                                    +'<div class="col-sm-12">' 
+                                                        +'<div class="col-sm-3"></div>'
+                                                        +'<div class="col-sm-4"><input type="text" value="" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
+                                                        +'<div class="col-sm-2"><button type="button" onclick="MobileNumberOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>'
+                                                        +'<div class="col-sm-3"></div>'
+                                                        +'<div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error" >&nbsp;</div>'
+                                                    +'</div>'
+                                                +'</div>'
+                                            +'</div>'
+                                            +'<h5 style="text-align:center;color:#ada9a9">Did not receive the verification Code?<a onclick="ResendMobileNumberVerificationForm(\''+randString+'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5>' 
+                                        +'</form>'                                                                                                       
+                                       +'</div>';
+                 $('#Mobile_VerificationBody').html(content);  
+                        
+                    } else {
+                       var content = '<div class="modal-header">'
+                                            +'<h4 class="modal-title">Mobile Number Verification</h4>'
+                                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                                       +'</div>'
+                                       +'<div class="modal-body" style="text-align:center">'
+                                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                                            +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                                       +'</div>';
+                                       $('#Mobile_VerificationBody').html(content);
+                         }
+    });
 }
 
-function ChangeMobileNumber() {
+function EmailVerification() {
     $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-    $('#myModal').modal('show'); 
-    $.ajax({url: getAppUrl() + "m=Member&a=ChangeMobileNumber",success: function(result2){$('#Mobile_VerificationBody').html(result2);}});
-    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ChangeMobileNumber",""));
-} 
-    
+        $.post(getAppUrl() + "m=Member&a=ChangeEmailFromVerificationScreen","",function(result) {
+             if (!(isJson($.trim(result)))) {
+                $('#Mobile_VerificationBody').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse($.trim(result));
+            if (obj.status=="success") {
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Please verify your email</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body" style="max-height:400px;min-height:400px;">'
+                                         +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">In order to protect your account, we will send a verification code for verification that you will need to enter the next screen.</p>'
+                                         +'<h5 style="text-align:center;color:#ada9a9"><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'&nbsp;&#65372&nbsp;<a href="javascript:void(0)" onclick="ChangeEmailID()">Change</h4>'
+                                    + '</div>'
+                                    +'<div class="modal-footer">'
+                                        +'<a href="javascript:void(0)" onclick="EmailVerificationForm()" class="btn btn-primary">Continue to verify</a>&nbsp;&nbsp;'
+                                    +'</div>'
+                             + '</div>';
+                 $('#Mobile_VerificationBody').html(content);
+        }
+        else {
+          var content = '<div class="modal-header">'
+                            +'<h4 class="modal-title">Email Verification</h4>'
+                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                        +'</div>'
+                        +'<div class="modal-body" style="text-align:center">'
+                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                            +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                         +'</div>';
+          $('#Mobile_VerificationBody').html(content);
+        }
+        });
+}
+function ChangeEmailID(error,emailid) {
+    error = typeof error !== 'undefined' ? error : "";
+    emailid = typeof emailid !== 'undefined' ? emailid : "";
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+        $.post(getAppUrl() + "m=Member&a=ChangeEmailID","",function(result) {
+             if (!(isJson($.trim(result)))) {
+                $('#Mobile_VerificationBody').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse($.trim(result));
+           if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Change Email ID</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body" style="max-height:400px;min-height:400px;">'
+                                         +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;"><b>Caution!</b> You are going to change your primary Email ID. All further communication from us ill be delivered on this new Email ID.</p>'
+                                            +'<div class="form-group row" style="margin-bottom:0px">'
+                                                +'<div class="col-sm-2"></div>'
+                                                +'<label class="col-sm-10" style="color:#ada9a9;font-size: 14px;">Email ID</label>'
+                                                +'</div>'
+                                                +'<div class="form-group row">'
+                                                    +'<div class="col-sm-2"></div>'
+                                                    +'<div class="col-sm-8"><input type="text" value="'+emailid+'" id="new_email" name="new_email" class="form-control" style="font-family:Roboto;"></div>'
+                                                    +'<div class="col-sm-12" id="errormsg">'+error+'</div>'
+                                                +'</div>'
+                                    +'</div>'
+                                    +'<div class="modal-footer">'
+                                    +'<a href="javascript:void(0)" onclick="CheckVerification()">back</a>&nbsp;&nbsp;'
+                                    +'<a href="javascript:void(0)" onclick="EmailVerificationForm(\''+randString+'\')" class="btn btn-primary" style="font-family:roboto">Save and verify</a>'
+                                 +'</div>'
+                            +'</form>'                                                                                                       
+                        +'</div>';
+                 $('#Mobile_VerificationBody').html(content);
+        }
+        else {
+          var content = '<div class="modal-header">'
+                            +'<h4 class="modal-title">Email Verification</h4>'
+                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                        +'</div>'
+                        +'<div class="modal-body" style="text-align:center">'
+                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                            +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                         +'</div>';
+          $('#Mobile_VerificationBody').html(content);
+        }
+        });
+}
 function EmailVerificationForm(frmid1) {
     var param = $( "#"+frmid1).serialize();
     $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-    $('#myModal').modal('show'); 
-    $.post(getAppUrl() + "m=Member&a=EmailVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
-    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=EmailVerificationForm",param));
+    $.post(getAppUrl() + "m=Member&a=EmailVerificationForm",param,function(result2) {
+        if (!(isJson($.trim(result2)))) {
+                    $('#Mobile_VerificationBody').html(result2);
+                    return ;                                                                   
+                }
+                var obj = JSON.parse($.trim(result2));
+                 var data = obj.data; 
+                    if (obj.status=="success") { 
+                        var randString = "form_" + randomStrings(5);
+                        var data = obj.data; 
+                        var content = '<div id="otpfrm" >'
+                                        + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                        + '<input type="hidden" value="'+data.loginId+'" name="loginId">'
+                                        + '<input type="hidden" value="'+data.reqId+'" name="reqId">'
+                                        +'<div class="modal-header">'
+                                            + '<h4 class="modal-title">Please verify your email</h4>'
+                                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
+                                        +'</div>'
+                                        +'<div class="modal-body">'
+                                            +''+data.updatemsg+''
+                                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                            +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a verification code to<br>'+data.EmailID+'</p>'
+                                            +'<div class="form-group">'
+                                                +'<div class="input-group">'
+                                                    +'<div class="col-sm-12">' 
+                                                        +'<div class="col-sm-3"></div>'
+                                                        +'<div class="col-sm-4"><input type="text" value="" class="form-control" id="email_otp" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
+                                                        +'<div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>'
+                                                        +'<div class="col-sm-3"></div>'
+                                                        +'<div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error" >&nbsp;</div>'
+                                                    +'</div>'
+                                                +'</div>'
+                                            +'</div>'
+                                            +'<h5 style="text-align:center;color:#ada9a9;font-weight:normal">Didn\'t receive the verification code?<a onclick="ResendEmailVerificationForm(\''+randString+'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5>' 
+                                        +'</form>'                                                                                                       
+                                       +'</div>';
+                 $('#Mobile_VerificationBody').html(content);  
+                        
+                    } else {
+                        if(data.js == "ChangeEmailID"){
+                        ChangeEmailID(data.error,data.emailid);
+                    }else {
+                         var content = '<div class="modal-header">'
+                                            +'<h4 class="modal-title">Mobile Number Verification</h4>'
+                                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                                       +'</div>'
+                                       +'<div class="modal-body" style="text-align:center">'
+                                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                                            +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                                       +'</div>';
+                                       $('#Mobile_VerificationBody').html(content);
+                         }
+                   }
+    });
 }
-    
-function ChangeEmailID() {
+
+function EmailOTPVerification(frmid1) {
+         $("#frmMobileNoVerification_error").html("&nbsp;");
+            if ($("#email_otp").val().trim()=="") {
+                $("#frmMobileNoVerification_error").html("Please enter verification code");
+                return false;
+         }
+         var param = $( "#"+frmid1).serialize();
+         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+         $.post( getAppUrl() + "m=Member&a=EmailOTPVerification", param,function(result2) {
+          if (!(isJson($.trim(result2)))) {
+                    $('#Mobile_VerificationBody').html(result2);
+                    return ;                                                                   
+                }
+                var obj = JSON.parse($.trim(result2));
+                 var data = obj.data; 
+                    if (obj.status=="success") { 
+                       var content = '<div class="modal-header">'
+                                        +'<h4 class="modal-title">Email Verification</h4>'
+                                        +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                                     +'</div>'
+                                    +'<div class="modal-body" style="text-align:center">'
+                                        +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                                        +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                                        +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                                     +'</div>';
+                       $('#Mobile_VerificationBody').html(content);
+                    } else {
+                        var randString = "form_" + randomStrings(5);
+                        var content = '<div id="otpfrm" >'
+                                        + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                        + '<input type="hidden" value="'+data.loginId+'" name="loginId">'
+                                        + '<input type="hidden" value="'+data.reqId+'" name="reqId">'
+                                        +'<div class="modal-header">'
+                                            + '<h4 class="modal-title">Please verify your email</h4>'
+                                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
+                                        +'</div>'
+                                        +'<div class="modal-body">'
+                                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                            +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a verification code to<br>'+data.EmailID+'</p>'
+                                            +'<div class="form-group">'
+                                                +'<div class="input-group">'
+                                                    +'<div class="col-sm-12">' 
+                                                        +'<div class="col-sm-3"></div>'
+                                                        +'<div class="col-sm-4"><input type="text" value="'+data.emailotp+'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
+                                                        +'<div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>'
+                                                        +'<div class="col-sm-3"></div>'
+                                                        +'<div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error" >'+data.error+'</div>'
+                                                    +'</div>'
+                                                +'</div>'
+                                            +'</div>'
+                                            +'<h5 style="text-align:center;color:#ada9a9;font-weight:normal">Didn\'t receive the verification code?<a onclick="ResendEmailVerificationForm(\''+randString+'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5>' 
+                                        +'</form>'                                                                                                       
+                                       +'</div>';
+                 $('#Mobile_VerificationBody').html(content);  
+                    }
+         });
+    }
+
+ function ResendEmailVerificationForm(frmid1) {
+    var param = $("#"+frmid1).serialize();    
     $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-    $('#myModal').modal('show'); 
-    $.ajax({url: getAppUrl() + "m=Member&a=ChangeEmailID", success: function(result2){$('#Mobile_VerificationBody').html(result2);}});
-    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ChangeEmailID",""));
+        $.post(getAppUrl() + "m=Member&a=ResendEmailVerificationForm",param,function(result) {
+             if (!(isJson($.trim(result)))) {
+                $('#Mobile_VerificationBody').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse($.trim(result));
+            if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.loginId+'" name="loginId">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Please verify your email</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                         +'<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'</h4>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="EmailOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="frmMobileNoVerification_error"></div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9;font-weight:normal">Didn\'t receive the verification code?<a onclick="ResendEmailVerificationForm(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';
+                 $('#Mobile_VerificationBody').html(content);
+         } else {
+                       var content = '<div class="modal-header">'
+                                            +'<h4 class="modal-title">Email Verification</h4>'
+                                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                                       +'</div>'
+                                       +'<div class="modal-body" style="text-align:center">'
+                                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                                            +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                                       +'</div>';
+                                       $('#Mobile_VerificationBody').html(content);
+                         }
+        });
 } 
-    
 function CheckVerification() {
     $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
     $('#myModal').modal('show'); 
     $.ajax({url: getAppUrl() + "m=Member&a=CheckVerification", success: function(result2){
-						if(result2 ==1){
-						    location.href=AppUrl+"MyProfiles/CreateProfile";
-						}else {         
-						    $('#Mobile_VerificationBody').html(result2);
-						}  
-					}
-    });
-}
-
-function MobileNumberOTPVerification(frmid) {
-		 $("#frmMobileNoVerification_error").html("&nbsp;");
-		 if ($("#mobile_otp_2").val().trim()=="") {
-			 $("#frmMobileNoVerification_error").html("Please enter verification code");
-			 return false;
-		 }
-         var param = $( "#"+frmid).serialize();
-         $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-         $.post( getAppUrl() + "m=Member&a=MobileNumberOTPVerification", param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
-         //$('#Mobile_VerificationBody').html(restcall("m=Member&a=MobileNumberOTPVerification",param));
-    } 
-    
-function EmailOTPVerification(frmid1) {
-    $("#frmMobileNoVerification_error").html("&nbsp;");
-	if ($("#email_otp").val().trim()=="") {
-	    $("#frmMobileNoVerification_error").html("Please enter verification code");
-		return false;
-	}
-    var param = $( "#"+frmid1).serialize();
-    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-    $.post(getAppUrl() + "m=Member&a=EmailOTPVerification",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
-    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=EmailOTPVerification",param));
-}
-
-function ResendMobileNumberVerificationForm(frmid1) {
-    var param = $( "#"+frmid1).serialize();
-    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-    $('#myModal').modal('show'); 
-    post(getAppUrl() + "m=Member&a=ResendMobileNumberVerificationForm",param,function(result2) {$('#Mobile_VerificationBody').html(result2);});
-    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ResendMobileNumberVerificationForm",param));
-}
-
-function ResendEmailVerificationForm(frmid1) {
-    var param = $( "#"+frmid1).serialize();
-    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-    $('#myModal').modal('show'); 
-    $.post(getAppUrl() + "m=Member&a=ResendEmailVerificationForm", param,function(result2) { $('#Mobile_VerificationBody').html(result2); });
-    //$('#Mobile_VerificationBody').html(restcall("m=Member&a=ResendEmailVerificationForm",param));
-}   
-
+    if (!(isJson($.trim(result2)))) {
+                $('#Mobile_VerificationBody').html(result2);
+                return ;                                                                   
+            }
+            var obj = JSON.parse($.trim(result2));
+             var data = obj.data;                                          
+                        if(result2 ==1){
+                            location.href=AppUrl+"MyProfiles/CreateProfile";
+                        }else {    
+                            if(data.js == "MobileNumberVerification"){
+                                MobileNumberVerification();
+                            }
+                            if(data.js == "EmailVerification"){
+                                EmailVerification();
+                            }
+                            if(data.js == "ChangePasswordScreen"){
+                                ChangePasswordScreen();
+                            }   
+                        }  
+    }});
+} 
 function AddtoFavourite(ProfileCode,ImgId) {
     $('#img_'+ImgId).attr("onclick","javascript:void(0)");
     var grey = $('#img_'+ImgId).attr("src");
@@ -164,7 +734,7 @@ function AddToShortList(ProfileCode,ImgId) {
     var request = $.post(getAppUrl() + "m=Member&a=AddToShortList&ProfileCode="+ProfileCode,"",function(result) {
         var obj = JSON.parse(result);
         if (obj.status=="success") {
-            $('#img_'+ImgId).html("Shortlisted");
+            $('#img_'+ImgId).html('<a style="border:1px solid #37e34a;padding: 2px 5px;font-size: 12px;color:#fff;cursor:pointer !important;text-decoration:none;background:#37e34a">Shortlisted</a>');
             $('#img_'+ImgId).attr("onclick","RemoveFromShortList('"+ProfileCode+"','"+ImgId+"')");
             $.simplyToast(obj.message, 'info');
         } else {
@@ -180,18 +750,66 @@ function AddToShortList(ProfileCode,ImgId) {
 function RemoveFromShortList(ProfileCode,ImgId) {
     $('#img_'+ImgId).attr("onclick","javascript:void(0)");
     $.ajax({url: getAppUrl() + "m=Member&a=RemoveFromShortList&ProfileCode="+ProfileCode, success: function(result){
-            if (MyShortListedPage==1) {
-                $('#div_'+ProfileCode).hide(500);
-            }
-			$('#img_'+ImgId).html("Add To Shortlist");
+           // if (MyShortListedPage==1) {
+             //   $('#div_'+ProfileCode).hide(500);
+            //}
+            $('#img_'+ImgId).html('<a style="border:1px solid #37e34a;padding: 2px 5px;font-size: 12px;color:#fff;;cursor:pointer !important;text-decoration:none;background:#37e34a;">Add To Shortlist</a>');
             $('#img_'+ImgId).attr("onclick","AddToShortList('"+ProfileCode+"','"+ImgId+"')");
             $.simplyToast("Profile ID: "+ProfileCode+" has been removed from shortlist", 'warning');
     }});
 }
 
-function SendToInterest(ProfileCode,ImgId) {
+/*function SendToInterest(ProfileCode,ImgId) {
     $('#img_'+ImgId).attr("onclick","javascript:void(0)");
     $.ajax({url: getAppUrl() + "m=Member&a=SendToInterest",success: function(result2){}});
+} */
+function SendToInterest(ProfileCode,ImgId) {
+    $('#imgS_'+ImgId).attr("onclick","javascript:void(0)");
+    var request = $.post(getAppUrl() + "m=Member&a=SendToInterest&ProfileCode="+ProfileCode,"",function(result) {
+        var obj = JSON.parse(result);
+        if (obj.status=="success") {                                                                 
+            var data = obj.data;
+            $('#imgS_'+ImgId).html('<a style="border:1px solid #ff945f;padding: 2px 5px;font-size: 12px;color: #ff945f;cursor:pointer !important;text-decoration:none;background:#fff;">Sent Interest On '+data.SentOn+'</a>');
+          //  $('#img_'+ImgId).attr("onclick","RemoveFromShortList('"+ProfileCode+"','"+ImgId+"')");
+            $.simplyToast(obj.message, 'info');
+        } else {
+            $('#imgS_'+ImgId).attr("onclick","SendToInterest('"+ProfileCode+"','"+ImgId+"')");
+            $.simplyToast(obj.message, 'danger');
+        }
+    }).fail(function(xhr, status, error) {
+        $('#imgS_'+ImgId).attr("onclick","SendToInterest('"+ProfileCode+"','"+ImgId+"')");
+        $.simplyToast("Network unavailable" ,'danger');
+    }); 
+}
+ function ApproveInterest(ProfileCode,ImgId) {
+    $('#imgS_'+ImgId).attr("onclick","javascript:void(0)");
+    var request = $.post(getAppUrl() + "m=Member&a=ApproveInterest&ProfileCode="+ProfileCode,"",function(result) {
+        var obj = JSON.parse(result);
+        if (obj.status=="success") {
+           load();
+        } else {
+            $('#imgS_'+ImgId).attr("onclick","ApproveInterest('"+ProfileCode+"','"+ImgId+"')");
+            $.simplyToast(obj.message, 'danger');
+        }
+    }).fail(function(xhr, status, error) {
+        $('#imgS_'+ImgId).attr("onclick","ApproveInterest('"+ProfileCode+"','"+ImgId+"')");
+        $.simplyToast("Network unavailable" ,'danger');
+    }); 
+}
+function RejectInterest(ProfileCode,ImgId) {
+    $('#imgS_'+ImgId).attr("onclick","javascript:void(0)");
+    var request = $.post(getAppUrl() + "m=Member&a=RejectInterest&ProfileCode="+ProfileCode,"",function(result) {
+        var obj = JSON.parse(result);
+        if (obj.status=="success") {
+           load();
+        } else {
+            $('#imgS_'+ImgId).attr("onclick","RejectInterest('"+ProfileCode+"','"+ImgId+"')");
+            $.simplyToast(obj.message, 'danger');
+        }
+    }).fail(function(xhr, status, error) {
+        $('#imgS_'+ImgId).attr("onclick","RejectInterest('"+ProfileCode+"','"+ImgId+"')");
+        $.simplyToast("Network unavailable" ,'danger');
+    }); 
 }                                    
 
 var DraftProfile = {
@@ -244,7 +862,7 @@ var DraftProfile = {
                 document.getElementById("ErrNationality").innerHTML="Please select your nationality";
                 ErrorCount++; 
             }
-			if($("#MainEducation").val()==""){
+            if($("#MainEducation").val()==""){
                 document.getElementById("ErrMainEducation").innerHTML="Please enter your education";
                 ErrorCount++; 
             }
@@ -266,58 +884,58 @@ var DraftProfile = {
         },                                                                    
         showConfirmDeleteAttachmentEducationalInformation:function(AttachmentID,ProfileID,EducationDetails,EducationDegree,OtherEducationDegree,FileName){
             $('#PubplishNow').modal('show'); 
-		  var content = '<div >'
-							+'<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
-								+'<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
-								+'<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-								+'<div class="modal-header">'
-									+'<h4 class="modal-title">Confirmation For Remove</h4>'
-									+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
-								+'</div>'
-								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
-									+'<div style="text-align:left">Are you sure want to remove below records?<br><br></div>'
-									+'<table class="table table-bordered">'
-										+'<thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-top: 1px solid #ccc;"> '
-											+'<tr>'
-												+'<th>Education</th>'
-												+'<th>Education Details</th>'
-											+'</tr>'
-										+'</thead>'
-										+'<tbody> '
-											+'<tr>'                                                  
-												+'<td>'+EducationDetails+'</td>'
-												+'<td>'+EducationDegree +', '+OtherEducationDegree+'</td>'
-											+'</tr>'
-										+'</tbody>'
-									+'</table>'
-								+'</div>' 
-								+'<div class="modal-footer">'  
-									+'<button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteAttach(\''+AttachmentID+'\')" style="font-family:roboto">Yes, send request</button>&nbsp;&nbsp;&nbsp;'
-									+'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
-								+'</div>'
-							+'</form>'                                                                                                          
-						+'</div>';
-				$('#Publish_body').html(content);
+          var content = '<div >'
+                            +'<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
+                                +'<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
+                                +'<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Confirmation For Remove</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    +'<div style="text-align:left">Are you sure want to remove below records?<br><br></div>'
+                                    +'<table class="table table-bordered">'
+                                        +'<thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-top: 1px solid #ccc;"> '
+                                            +'<tr>'
+                                                +'<th>Education</th>'
+                                                +'<th>Education Details</th>'
+                                            +'</tr>'
+                                        +'</thead>'
+                                        +'<tbody> '
+                                            +'<tr>'                                                  
+                                                +'<td>'+EducationDetails+'</td>'
+                                                +'<td>'+EducationDegree +', '+OtherEducationDegree+'</td>'
+                                            +'</tr>'
+                                        +'</tbody>'
+                                    +'</table>'
+                                +'</div>' 
+                                +'<div class="modal-footer">'  
+                                    +'<button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteAttach(\''+AttachmentID+'\')" style="font-family:roboto">Yes, send request</button>&nbsp;&nbsp;&nbsp;'
+                                    +'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
+                                +'</div>'
+                            +'</form>'                                                                                                          
+                        +'</div>';
+                $('#Publish_body').html(content);
         },
         showAttachmentEducationInformation:function(AttachmentID,ProfileID,FileName){
              $('#PubplishNow').modal('show'); 
       var content = '<div>'
                         +'<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
-							+ '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
-							+ '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-							+'<div class="modal-header">'
-								+'<h4 class="modal-title">Confirmation For Remove</h4>'
-								+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
-							+'</div>'
-							+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
-								+'<div class="card-title" style="text-align:right;color:green;margin-bottom:0px">For Administrative Purpose Only</div>'
-								 +'<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileID+'/edudoc/'+FileName+'" style="height:120px;"></div> <br>'
-							+'</div>'
-							+'<div class="modal-footer">'  
-								+'<button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;&nbsp;'
-								+'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
-							+'</div>'
-						+'</form>'
+                            + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
+                            + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                            +'<div class="modal-header">'
+                                +'<h4 class="modal-title">Confirmation For Remove</h4>'
+                                +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                            +'</div>'
+                            +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                +'<div class="card-title" style="text-align:right;color:green;margin-bottom:0px">For Administrative Purpose Only</div>'
+                                 +'<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileID+'/edudoc/'+FileName+'" style="height:120px;"></div> <br>'
+                            +'</div>'
+                            +'<div class="modal-footer">'  
+                                +'<button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;&nbsp;'
+                                +'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
+                            +'</div>'
+                        +'</form>'
                     +'</div>';                                                                                                
             $('#Publish_body').html(content);
         },
@@ -336,22 +954,22 @@ var DraftProfile = {
         showAttachmentOccupation:function(ProfileCode,MemberID,ProfileID,FileName){
              $('#PubplishNow').modal('show'); 
       var content = '<div>'
-						+'<form method="post" id="Occupationform_'+ProfileCode+'" name="Occupationform_'+ProfileCode+'" > '
-							+ '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
-							+ '<input type="hidden" value="'+MemberID+'" name="MemberID">'
-							+ '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-							+'<div class="modal-header">'
-								+'<h4 class="modal-title">Confirmation For Remove</h4>'
-								+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
-							+'</div>'
-							+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
-								+'<div class="card-title" style="text-align:right;color:green;margin-bottom:0px">For Administrative Purpose Only</div>'
-								 +'<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileCode+'/occdoc/'+FileName+'" style="height:120px;"></div> <br>'
-							+'</div>'
-							+'<div class="modal-footer">'  
-								+'<button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteOccupationAttachmentOnly(\''+ProfileCode+'\')">Yes, remove</button>&nbsp;&nbsp;&nbsp;'
-								+'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
-							+'</div>'
+                        +'<form method="post" id="Occupationform_'+ProfileCode+'" name="Occupationform_'+ProfileCode+'" > '
+                            + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
+                            + '<input type="hidden" value="'+MemberID+'" name="MemberID">'
+                            + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                            +'<div class="modal-header">'
+                                +'<h4 class="modal-title">Confirmation For Remove</h4>'
+                                +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                            +'</div>'
+                            +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                +'<div class="card-title" style="text-align:right;color:green;margin-bottom:0px">For Administrative Purpose Only</div>'
+                                 +'<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileCode+'/occdoc/'+FileName+'" style="height:120px;"></div> <br>'
+                            +'</div>'
+                            +'<div class="modal-footer">'  
+                                +'<button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteOccupationAttachmentOnly(\''+ProfileCode+'\')">Yes, remove</button>&nbsp;&nbsp;&nbsp;'
+                                +'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
+                            +'</div>'
                     +'</div>';                                                                                                
             $('#Publish_body').html(content);
         },
@@ -1108,8 +1726,32 @@ function ResendOtpForChangeMobileNumber(frmid) {
             
     });
 }
-/*function SendOtpForEditSubmittedProfile(frmid) {
-    var param = $("#"+frmid).serialize();
+function showConfirmEdit(ProfileCode,FileName) {
+      $('#EditNow').modal('show'); 
+      var content = '<div>'
+                        +'<form method="post" id="frm_'+ProfileCode+'" name="frm_'+ProfileCode+'" action="">'
+                            +'<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
+                            +'<input type="hidden" value="'+FileName+'" name="FileName">'
+                            +'<div class="modal-header">'
+                                +'<h4 class="modal-title">Profile Edit</h4>'
+                                +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                            +'</div>'
+                            +'<div class="modal-body">'
+                                +'<div style="text-align:left"> Dear ,<br></div>'
+                              //  +'<div style="text-align:left">Are you sure want to edit this profile<br><br><br><br><br><br>'+'</div>'
+                                +'<div style="text-align:left">Your profile submitted to reviwe so you can\'t edit<br><br><br><br><br><br>'+'</div>'
+                            +'</div>' 
+                            +'<div class="modal-footer">'  
+                                //+'<button type="button" class="btn btn-primary" onclick="SendOtpForEditSubmittedProfile(\''+ProfileCode+'\')" style="font-family:roboto">Yes,continue</button>&nbsp;&nbsp;&nbsp;'
+                                +'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>&nbsp;&nbsp;&nbsp;'
+                                +'<button type="button" class="btn btn-primary" data-dismiss="modal" style="font-family:roboto">Yes,continue</button>'
+                            +'</div>'
+                        +'</form>'                                                                                                          
+                    +'</div>'
+            $('#Edit_body').html(content);
+}
+ function SendOtpForEditSubmittedProfile(frmid) {
+    var param = $("#frm_"+frmid).serialize();
     $('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
         $.post(getAppUrl() + "m=Member&a=SendOtpForEditSubmittedProfile",param,function(result) {
             
@@ -1152,7 +1794,7 @@ function ResendOtpForChangeMobileNumber(frmid) {
                  $('#Edit_body').html(content);
         }
         });
-}  */
+} 
 function ResendSendOtpForSubmittedProfileProfileForEdit(frmid) {
     var param = $("#"+frmid).serialize();
     $('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
@@ -1198,50 +1840,62 @@ function ResendSendOtpForSubmittedProfileProfileForEdit(frmid) {
         }
         });
 }   
-/*function ResendEmailVerificationForm(frmid1) {
-    var param = $("#"+frmid1).serialize();    
-    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
-   // $('#myModal').modal('show'); 
-        $.post(getAppUrl() + "m=Member&a=ResendEmailVerificationForm",param,function(result) {
-            
-             if (!(isJson(result))) {
-                $('#Mobile_VerificationBody').html(result);
-                return ;                                                                   
+function SubmittedProfileforEditOTPVerification(frmid) {
+        var param = $( "#"+frmid).serialize();
+        $('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
+        $.post( API_URL + "m=Member&a=SubmittedProfileforEditOTPVerification",param).done(function(result) {
+            if (!(isJson(result))) {
+                $('#Edit_body').html(result);
+                return ;
             }
             var obj = JSON.parse(result);
             if (obj.status=="success") {
-                 var randString = "form_" + randomStrings(5);
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Successfully Switched to Draft</h3>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'MyProfiles/Draft/Edit/'+data.FileName+'/'+data.ProfileCode+'.htm" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Edit_body').html(content);
+            } else {
+               var randString = "form_" + randomStrings(5);
                    var data = obj.data; 
                  var content = '<div id="otpfrm" >'
                                 + '<form method="POST" id="'+randString+'" name="'+randString+'">'
-                                + '<input type="hidden" value="'+data.loginId+'" name="loginId">'
                                 + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.profilecode+'" name="ProfileCode">'
+                                + '<input type="hidden" value="'+data.FileName+'" name="FileName">'
                                     +'<div class="modal-header">'
-                                        + '<h4 class="modal-title">Please verify your email</h4>'
+                                        + '<h4 class="modal-title">Profile Edit</h4>'
                                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                                     +'</div>'
                                     +'<div class="modal-body">'
-                                         +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
-                                         +'<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'</h4>'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'<br>&amp;<br>'+data.MobileNumber+'</h4></p>'
                                          + '<div class="form-group">'
                                             + '<div class="input-group">'
                                                 + '<div class="col-sm-12">'
                                                     + '<div class="col-sm-3"></div>'
                                                     + '<div class="col-sm-6">'
-                                                        + '<input type="text"  class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
-                                                        + '<button type="button" onclick="EmailOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                        + '<input type="text"  class="form-control" value="'+data.editotp+'" id="EditOtp" maxlength="4" name="EditOtp" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="SubmittedProfileforEditOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
                                                     + '</div>'
                                                     + '<div class="col-sm-3"></div>'
-                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="Emailotp_error"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="DeletMemberOtp_error">'+data.error+'</div>'
                                                 + '</div>'
                                             + '</div>'
                                         + '</div>'
                                     + '</div>'
-                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForSubmittedProfileProfileForEdit(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
                                 + '</form>'
                              + '</div>';
-                 $('#Mobile_VerificationBody').html(content);
-        }
-        });
-} */   
+                 $('#Edit_body').html(content); 
+            }
+            
+            
+    });
+}
+
 //791

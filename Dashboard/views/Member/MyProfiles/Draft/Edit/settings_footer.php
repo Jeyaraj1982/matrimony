@@ -106,7 +106,44 @@ function agreeToPublish() {
 			}
 			var obj = JSON.parse(result);
 			if (obj.status=="success") {
-				$('#Publish_body').html(result);
+				var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                   //alert(data.resend);
+                   if(data.resend>=3){
+                       var resedlink = '';
+                   } else {
+                    var resedlink = '<h5 style="color:#ada9a9"><a onclick="ResendSendOtpForProfileforPublish(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Re-Send</a></h5>';
+                   }
+                 var content = '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.ProfileID+'" name="ProfileID">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Submit profile for verify</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div style="border:1px solid #dfdfdf;padding:20px 20px;">'
+                                         +'<div class="form-group row">'
+                                            +'<div class="col-sm-12"><input type="text"  class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
+                                         +'</div>'            
+                                         +'<div class="form-group row">'
+                                            +'<div class="col-sm-12" style="text-align:center"><button type="button" onclick="ProfilePublishOTPVerification(\''+randString+'\')" class="btn btn-primary" style="width:100%">Verify</button></div>'
+                                         +'</div>'
+                                         +'<div class="col-sm-12" style="text-align:center">&nbsp;</div>'
+                                    +'</div>  <br>'
+                                    +'<div class="form-group row">'
+                                        +'<div class="col-sm-12">We just sent your authentication code via email to '+data.EmailID+' &amp; sms to '+data.MobileNumber+' The code will expire at 9.00AM IST.</div>'
+                                    +'</div>'
+                                    +'<div class="form-group row">'
+                                        +'<div class="col-sm-12" style="color:blue">'+resedlink+'</div>'
+                                    +'</div>'
+                                    +'<div class="form-group row">'
+                                        +'<div class="col-sm-12">If you had like to automatically verify devices in the future, consider enabling two-factor authentication on your account.</div>'
+                                    +'</div>'
+                                +'</div>'
+                           +' </form>'                                                                                                       
+                        +'</div>';
+                 $('#Publish_body').html(content);
 			} else {
 				var data = obj.data; 
 				var content = '<div  style="height: 300px;">'                                                                              
@@ -138,7 +175,7 @@ function agreeToPublish() {
 				return ;
 			}
 			var obj = JSON.parse(result);
-			if (obj.status=="success") {
+			if (obj.status=="success") {   
 				var data = obj.data; 
 				var content = '<div  style="height: 300px;">'                                                                              
 								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
@@ -149,22 +186,101 @@ function agreeToPublish() {
 								+'</div>' 
 							+'</div>';
             $('#Publish_body').html(content);
-			
-			 
-			}
+			}else {
+                var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                    if(data.resend>=3){
+                       var resedlink = '';
+                   } else {
+                    var resedlink = '<h5 style="color:#ada9a9"><a onclick="ResendSendOtpForProfileforPublish(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Re-Send</a></h5>';
+                   }
+                 var content = '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.ProfileID+'" name="ProfileID">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Submit profile for verify</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div style="border:1px solid #dfdfdf;padding:20px 20px;">'
+                                         +'<div class="form-group row">'
+                                            +'<div class="col-sm-12"><input type="text" value="'+data.PublishOtp+'" class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
+                                         +'</div>'            
+                                         +'<div class="form-group row">'
+                                            +'<div class="col-sm-12" style="text-align:center"><button type="button" onclick="ProfilePublishOTPVerification(\''+randString+'\')" class="btn btn-primary" style="width:100%">Verify</button></div>'
+                                         +'</div>'
+                                         +'<div class="col-sm-12" style="text-align:center">'+data.error+'</div>'
+                                    +'</div>  <br>'
+                                    +'<div class="form-group row">'
+                                        +'<div class="col-sm-12">We just sent your authentication code via email to '+data.EmailID+' &amp; sms to '+data.MobileNumber+' The code will expire at 9.00AM IST.</div>'
+                                    +'</div>'
+                                    +'<div class="form-group row">'
+                                        +'<div class="col-sm-12" style="color:blue">'+resedlink+'</div>'
+                                    +'</div>'
+                                    +'<div class="form-group row">'
+                                        +'<div class="col-sm-12">If you had like to automatically verify devices in the future, consider enabling two-factor authentication on your account.</div>'
+                                    +'</div>'
+                                +'</div>'
+                           +' </form>'                                                                                                       
+                        +'</div>';
+                 $('#Publish_body').html(content);
+            }
+            
             
     });
-}
-	
-	
-    
-function ResendSendOtpForProfileforPublish(frmid) {
-     var param = $("#"+frmid).serialize();
-    $('#Publish_body').html(preloading_withText("Submitting profile ...","95"));
-	
-        $.post(getAppUrl() + "m=Member&a=ResendSendOtpForProfileforPublish",param,function(result2) {$('#Publish_body').html(result2);});
-}
+}                           
 
+function ResendSendOtpForProfileforPublish(frmid) {
+    var param = $("#"+frmid).serialize();
+    $('#Publish_body').html(preloading_withText("Submitting profile ...","95"));
+        $.post(getAppUrl() + "m=Member&a=ResendSendOtpForProfileforPublish",param,function(result) {
+            
+             if (!(isJson(result))) {
+                $('#Publish_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                    if(data.resend>=3){
+                       var resedlink = '';
+                   } else {
+                    var resedlink = '<h5 style="color:#ada9a9"><a onclick="ResendSendOtpForProfileforPublish(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Re-Send</a></h5>';
+                   }
+                 var content = '<div id="otpfrm" style="width:100%;padding:20px;height:100%;">'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.ProfileID+'" name="ProfileID">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Submit profile for verify</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div style="border:1px solid #dfdfdf;padding:20px 20px;">'
+                                         +'<div class="form-group row">'
+                                            +'<div class="col-sm-12"><input type="text" class="form-control" id="PublishOtp" maxlength="4" name="PublishOtp" style="font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
+                                         +'</div>'            
+                                         +'<div class="form-group row">'
+                                            +'<div class="col-sm-12" style="text-align:center"><button type="button" onclick="ProfilePublishOTPVerification(\''+randString+'\')" class="btn btn-primary" style="width:100%">Verify</button></div>'
+                                         +'</div>'
+                                         +'<div class="col-sm-12" style="text-align:center">&nbsp;</div>'
+                                    +'</div>  <br>'
+                                    +'<div class="form-group row">'
+                                        +'<div class="col-sm-12">We just sent your authentication code via email to '+data.EmailID+' &amp; sms to '+data.MobileNumber+' The code will expire at 9.00AM IST.</div>'
+                                    +'</div>'
+                                    +'<div class="form-group row">'
+                                        +'<div class="col-sm-12" style="color:blue">'+resedlink+'</div>'
+                                    +'</div>'
+                                    +'<div class="form-group row">'
+                                        +'<div class="col-sm-12">If you had like to automatically verify devices in the future, consider enabling two-factor authentication on your account.</div>'
+                                    +'</div>'
+                                +'</div>'
+                           +' </form>'                                                                                                       
+                        +'</div>';
+                 $('#Publish_body').html(content);
+        }
+        });
+}
 function showConfirmDelete(ProfileID) {
       $('#DeleteNow').modal('show'); 
       var content = '<div>'
@@ -214,7 +330,35 @@ function SendOtpForProfileDelete(formid) {
 			}
 			var obj = JSON.parse(result);
 			if (obj.status=="success") {
-				$('#Delete_body').html(result);
+                var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm">'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.ProfileID+'" name="ProfileID">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Delete Profile</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                        +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                        +'<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9;font-size: 15px;">'+data.EmailID+' & '+data.MobileNumber+'</h4>'
+                                        +'<div class="form-group">'
+                                            +'<div class="input-group">'
+                                                +'<div class="col-sm-12">'
+                                                    +'<div class="col-sm-3"></div>'
+                                                    +'<div class="col-sm-4"><input type="text"  class="form-control" id="DeleteOtp" maxlength="4" name="DeleteOtp" style="width: 126%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
+                                                    +'<div class="col-sm-2"><button type="button" onclick="ProfileDeleteOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>'
+                                                    +'<div class="col-sm-3"></div>'
+                                                +'</div>'                                                            
+                                                +'<div class="col-sm-12" style="text-align:center;color:red" id="Error_delete_otp"></div>'
+                                            +'</div>'
+                                        +'</div>'
+                                    +'</div>'
+                                    +'<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileDelete(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> '
+                                +'</form>'                                                                                                       
+                            +'</div>';
+				$('#Delete_body').html(content);
 			} else {
 				var data = obj.data; 
 				var content = '<div  style="height: 300px;">'                                                                              
@@ -260,18 +404,98 @@ function ProfileDeleteOTPVerification(frmid) {
 								+'</div>' 
 							+'</div>';
             $('#Delete_body').html(content);
-			
-			 
-			}
+			} else {
+                var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm">'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.ProfileID+'" name="ProfileID">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Delete Profile</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                        +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                        +'<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9;font-size: 15px;">'+data.EmailID+' & '+data.MobileNumber+'</h4>'
+                                        +'<div class="form-group">'
+                                            +'<div class="input-group">'
+                                                +'<div class="col-sm-12">'
+                                                    +'<div class="col-sm-3"></div>'
+                                                    +'<div class="col-sm-4"><input type="text" value="'+data.DeleteOtp+'" class="form-control" id="DeleteOtp" maxlength="4" name="DeleteOtp" style="width: 126%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
+                                                    +'<div class="col-sm-2"><button type="button" onclick="ProfileDeleteOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>'
+                                                    +'<div class="col-sm-3"></div>'
+                                                +'</div>'                                                            
+                                                +'<div class="col-sm-12" style="text-align:center;color:red" id="Error_delete_otp">'+data.error+'</div>'
+                                            +'</div>'
+                                        +'</div>'
+                                    +'</div>'
+                                    +'<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileDelete(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> '
+                                +'</form>'                                                                                                       
+                            +'</div>';
+                $('#Delete_body').html(content);
+            }
             
     });
 }
 function ResendSendOtpForProfileDelete(frmid) {
-
-     var param = $("#frmfrDelete_"+frmid).serialize();
+   var param = $("#frmfrDelete_"+frmid).serialize();
     $('#Delete_body').html(preloading_withText("Deleting profile ...","199"));
-	
-        $.post(getAppUrl() + "m=Member&a=ResendSendOtpForProfileDelete",param,function(result2) {$('#Delete_body').html(result2);});
+        $.post(getAppUrl() + "m=Member&a=ResendSendOtpForProfileDelete",param,function(result) {
+            
+            if (!(isJson(result))) {
+                $('#Delete_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm">'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.ProfileID+'" name="ProfileID">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Delete Profile</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                        +'<p style="text-align:center;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
+                                        +'<h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9;font-size: 15px;">'+data.EmailID+' & '+data.MobileNumber+'</h4>'
+                                        +'<div class="form-group">'
+                                            +'<div class="input-group">'
+                                                +'<div class="col-sm-12">'
+                                                    +'<div class="col-sm-3"></div>'
+                                                    +'<div class="col-sm-4"><input type="text"  class="form-control" id="DeleteOtp" maxlength="4" name="DeleteOtp" style="width: 126%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
+                                                    +'<div class="col-sm-2"><button type="button" onclick="ProfileDeleteOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>'
+                                                    +'<div class="col-sm-3"></div>'
+                                                +'</div>'                                                            
+                                                +'<div class="col-sm-12" style="text-align:center;color:red" id="Error_delete_otp"></div>'
+                                            +'</div>'
+                                        +'</div>'
+                                    +'</div>'
+                                    +'<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForProfileDelete(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> '
+                                +'</form>'                                                                                                       
+                            +'</div>';
+                $('#Delete_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Delete profile</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
+                                +'</div>' 
+                                +'<div class="modal-footer">'  
+                                    +'<a class="btn btn-primary"  href="'+AppUrl+'MyProfiles/Draft/Edit/'+data.EditPage+'/'+data.ProfileCode+'.htm" style="cursor:pointer">continue</a>'
+                                +'</div>'
+                            +'</div>';
+            $('#Delete_body').html(content);
+        }
+        });
 }
 
 </script>

@@ -65,13 +65,56 @@
 
 
 function RequestToshowUpgrades(PProfileID) {
-        
         $('#Upgrades_body').html(preloader);
         $('#Upgrades').modal('show'); 
+        var html_design="";
         $.ajax({
-            url: API_URL + "m=Member&a=RequestToshowUpgrades&ProfileID="+PProfileID, 
+            url: getAppUrl() + "m=Member&a=RequestToshowUpgrades&PProfileID="+PProfileID, 
             success: function(result){
-               $('#Upgrades_body').html(result); 
+                var obj = JSON.parse(result); 
+                if (obj.status=="success") {
+                    var objdata =obj.data;
+                    if (parseInt(objdata.balancecredits)>0) {
+                        html_design = '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">'
+                                        + '<form method="post" id="frm_'+PProfileID+'" name="frm_'+PProfileID+'" action="" >'
+                                        +'<input type="hidden" value="'+PProfileID+'" name="PProfileCode">'
+                                        + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                        + '<div align="center" style="padding-top: 33px;">'
+                                            + '<table>'
+                                                + '<tr>'
+                                                    + '<td>Your Total Credits &nbsp;&nbsp;'+objdata.BalCr+'</td>'
+                                                + '</tr>'
+                                                + '<tr>'
+                                                    + '<td>Used Credits &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+objdata.BalDr+'</td>'
+                                                + '</tr>'
+                                                + '<tr>'
+                                                    + '<td>Balance Credits &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+objdata.BalCr+'</td>'
+                                                + '</tr>'
+                                            + '</table>'
+                                            + '<br>'
+                                            + '<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>'
+                                        + '</div>'
+                                        + '<br>'
+                                        + '</form>'
+                                    + '</div>'
+                    } else {
+                        html_design = '<div id="otpfrm" style="width:100%;padding:13px;height:100%;">'
+                                        + '<form method="post" id="frm_'+PProfileID+'" name="frm_'+PProfileID+'" action="" >' 
+                                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                                            + '<h4 class="modal-title">Download Profile</h4>'
+                                            + '<input type="hidden" value="'+PProfileID+'" name="PProfileCode">'
+                                            + '<div style="text-align:center">'
+                                                + 'No credits found please upgrade<br><br>'
+                                                + '<a href="'+AppUrl+'Matches/Search/ViewPlans/'+PProfileID+'.htm " class="btn btn-primary" name="Continue">Upgrade Membership</a>&nbsp;'
+                                                + '<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>'
+                                            + '</div><br>'
+                                        + '</form>'
+                                    + '</div>';
+                }
+                } else {
+                   html_design = obj.message; 
+                }
+               $('#Upgrades_body').html(html_design); 
             }});
     }
     
@@ -129,22 +172,147 @@ function RequestToshowUpgrades(PProfileID) {
                $('#OverAll_body').html(html_design); 
             }});
     }
- //ReqToDownloadOTP 
+ 
 function OverallSendOTP(formid) {
-        
-        var param = $("#frm_"+formid).serialize();
-        $('#OverAll_body').html(preloader);
-        $.post(API_URL + "m=Member&a=OverallSendOtp",param,function(result2) {$('#OverAll_body').html(result2);});
-    }
+    var param = $("#frm_"+formid).serialize();
+    $('#OverAll_body').html(preloading_withText("Loading ...","95"));
+        $.post(getAppUrl() + "m=Member&a=OverallSendOtp",param,function(result) {
+            
+             if (!(isJson(result))) {
+                $('#OverAll_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.PProfileCode+'" name="PProfileCode">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">OTP</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'<br>&amp;<br>'+data.MobileNumber+'</h4></p>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="otpcheck" maxlength="4" name="otpcheck" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="ViewProfileOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="DeletMemberOtp_error"></div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendOverallSendOtp(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';
+                 $('#OverAll_body').html(content);
+        }
+        });
+}
+
 function ViewProfileOTPVerification(frmid) {
-         var param = $( "#"+frmid).serialize();
-         $('#OverAll_body').html(preloader);
-                    $.post( API_URL + "m=Member&a=ViewProfileOTPVerification", 
-                            param,
-                            function(result2) {
-                                $('#OverAll_body').html(result2);   
-                            }
-                    );
-              
-    } 
+        var param = $( "#"+frmid).serialize();
+        $('#OverAll_body').html(preloading_withText("Loading ...","95"));
+        $.post( API_URL + "m=Member&a=ViewProfileOTPVerification",param).done(function(result) {
+            if (!(isJson(result))) {
+                $('#OverAll_body').html(result);
+                return ;
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+            $('#OverAll_body').html(content);
+            } else {
+               var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.PProfileCode+'" name="PProfileCode">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">OTP</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'<br>&amp;<br>'+data.MobileNumber+'</h4></p>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text" value="'+data.otpcheck+'"  class="form-control" id="otpcheck" maxlength="4" name="otpcheck" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="ViewProfileOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="DeletMemberOtp_error">'+data.error+'</div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendOverallSendOtp(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';
+                 $('#OverAll_body').html(content);
+            }
+    });
+}
+function ResendOverallSendOtp(frmid) {
+    var param = $("#"+frmid).serialize();
+    $('#OverAll_body').html(preloading_withText("Loading ...","95"));
+        $.post(getAppUrl() + "m=Member&a=ResendOverallSendOtp",param,function(result) {
+            
+             if (!(isJson(result))) {
+                $('#OverAll_body').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse(result);
+            if (obj.status=="success") {
+                 var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                + '<form method="POST" id="'+randString+'" name="'+randString+'">'
+                                + '<input type="hidden" value="'+data.securitycode+'" name="reqId">'
+                                + '<input type="hidden" value="'+data.PProfileCode+'" name="PProfileCode">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">OTP</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body">'
+                                         +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'+data.EmailID+'<br>&amp;<br>'+data.MobileNumber+'</h4></p>'
+                                         + '<div class="form-group">'
+                                            + '<div class="input-group">'
+                                                + '<div class="col-sm-12">'
+                                                    + '<div class="col-sm-3"></div>'
+                                                    + '<div class="col-sm-6">'
+                                                        + '<input type="text"  class="form-control" id="otpcheck" maxlength="4" name="otpcheck" style="width:50%;width: 67%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;">'
+                                                        + '<button type="button" onclick="ViewProfileOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
+                                                    + '</div>'
+                                                    + '<div class="col-sm-3"></div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="DeletMemberOtp_error"></div>'
+                                                + '</div>'
+                                            + '</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendOverallSendOtp(\''+randString+'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5>' 
+                                + '</form>'
+                             + '</div>';
+                 $('#OverAll_body').html(content);
+        }
+        });
+}
 </script>

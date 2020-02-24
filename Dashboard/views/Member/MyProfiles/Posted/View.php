@@ -60,8 +60,24 @@ legend {
     margin-bottom: 0px;font-size: 12px;border-bottom: none;padding-left: 6px;
 }
  </style>                                                         
-                                                           
-
+ <script>
+ function myFunction() {
+            var x = document.getElementById("verifydiv");
+            if (!(x.style.display === "none")) {
+                $('#verifydiv').hide(1000);
+            }
+        }
+ </script>                                                          
+<div class="row" id="verifydiv">
+        <div class="col-sm-12 grid-margin stretch-card">
+            <div class="card card-statistics" style="border-radius: 5px;">
+                <div class="card-body" style="border-radius: 5px;background: #fffdc4;border: 1px solid #ccc;padding: 12px;">
+                    <div class="col-sm-6"><span style="color:#666;font-size:13px;">Your profile submitted to review</span></div>
+                    <a href="javascript:void(0)" onclick="myFunction()" class="close" style="outline:none" >&times;</a>
+                </div>
+            </div>
+        </div>
+    </div> 
 <div class="col-12 grid-margin">                                                     
     <div class="card">
         <div class="card-body">
@@ -167,7 +183,7 @@ legend {
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['City'])))>0){ echo trim($ProfileInfo['City']);?>,&nbsp;&nbsp;<?php }?><?php if((strlen(trim($ProfileInfo['State'])))>0){ echo trim($ProfileInfo['State']);?>,&nbsp;&nbsp;<?php }?><?php echo trim($ProfileInfo['Country']);?></label>
                     </div>
               </div>
-              <div class="col-sm-2">
+              <!--<div class="col-sm-2">
                 Summary
                 <?php foreach($DATSummarys as $DATSummary) {?>
                     <div class="form-group row">
@@ -178,7 +194,7 @@ legend {
                     </div>
                     <hr>
                 <?php } ?>
-              </div>
+              </div> -->
               </div>
          </div>
 </div>
@@ -853,90 +869,7 @@ legend {
                 </div>
             </div>
         </div>
-<script>
 
-
-function showConfirmEdit(ProfileCode,FileName) {
-      $('#EditNow').modal('show'); 
-      var content = '<div>'
-						+'<form method="post" id="frm_'+ProfileCode+'" name="frm_'+ProfileCode+'" action="">'
-							+'<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
-							+'<input type="hidden" value="'+FileName+'" name="FileName">'
-							+'<div class="modal-header">'
-								+'<h4 class="modal-title">Profile Edit</h4>'
-								+'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
-							+'</div>'
-							+'<div class="modal-body">'
-								+'<div style="text-align:left"> Dear ,<br></div>'
-								+'<div style="text-align:left">Are you sure want to edit this profile<br><br><br><br><br><br>'+'</div>'
-							+'</div>' 
-							+'<div class="modal-footer">'  
-								+'<button type="button" class="btn btn-primary" onclick="SendOtpForEditSubmittedProfile(\''+ProfileCode+'\')" style="font-family:roboto">Yes,continue</button>&nbsp;&nbsp;&nbsp;'
-								+'<a data-dismiss="modal" style="color:#1d8fb9;cursor:pointer">No, i will do later</a>'
-							+'</div>'
-						+'</form>'                                                                                                          
-					+'</div>'
-			$('#Edit_body').html(content);
-}
- 
-function SendOtpForEditSubmittedProfile(formid) {
-    var param = $("#frm_"+formid).serialize();
-	$('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
-	
-		$.post(API_URL + "m=Member&a=SendOtpForEditSubmittedProfile",param,function(result) {
-			
-			if (!(isJson(result))) {
-				$('#Edit_body').html(result);
-				return ;
-			}
-			var obj = JSON.parse(result);
-			if (obj.status=="success") {
-				$('#Edit_body').html(result);
-			} else {
-				var data = obj.data; 
-				var content = '';
-            $('#Edit_body').html(content);
-			
-			 
-			}
-		});
-} 
-function SubmittedProfileforEditOTPVerification(frmid) {
-        var param = $( "#"+frmid).serialize();
-        $('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
-        $.post( API_URL + "m=Member&a=SubmittedProfileforEditOTPVerification",param).done(function(result) {
-			if (!(isJson(result))) {
-				$('#Edit_body').html(result);
-				return ;
-			}
-			var obj = JSON.parse(result);
-			if (obj.status=="success") {
-				
-				var data = obj.data; 
-				var content = '<div  style="height: 300px;">'                                                                              
-								+'<div class="modal-body" style="min-height:175px;max-height:175px;">'
-									+ '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
-									+ '<h3 style="text-align:center;">Successfully Switched to Draft</h3>'
-                                    + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
-									+ '<p style="text-align:center;"><a href="'+AppUrl+'MyProfiles/Draft/Edit/'+data.FileName+'/'+data.ProfileCode+'.htm" style="cursor:pointer">Continue</a></p>'
-								+'</div>' 
-							+'</div>';
-            $('#Edit_body').html(content);
-			
-			 
-			}
-            
-    });
-}
-/*function ResendSendOtpForSubmittedProfileProfileForEdit(frmid) {
-     var param = $("#"+frmid).serialize();
-      $('#Edit_body').html(preloading_withText("Submitting profile ...","95"));
-	  
-        $.post(API_URL + "m=Member&a=ResendSendOtpForSubmittedProfileProfileForEdit",param,function(result2) {$('#Edit_body').html(result2);});
-}*/ 
-
-</script>
- 
             
 
  
