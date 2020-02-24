@@ -133,6 +133,7 @@
     include_once("controller/ResponseController.php");
     include_once("classes/class.Profiles.php");
     include_once("modules/class.Shortlist.php");               
+    include_once("modules/class.Interest.php");               
     include_once("modules/class.MailContent.php");               
      
     if ($_GET['m']=="Admin") {
@@ -183,6 +184,11 @@
          global $mysql;     
          $StateNames =  $mysql->select("select SoftCode as stcode,CodeValue as stname from `_tbl_master_codemaster` Where `HardCode`='STATNAMES' and `ParamA`='".$_GET['CountryCode']."' and `IsActive`='1' order by CodeValue");
          return $StateNames;
+    }
+     function getMasterDatas() {
+         global $mysql;     
+         $Masters =  $mysql->select("select SoftCode as stcode,CodeValue as stname from `_tbl_master_codemaster` Where `HardCode`='".$_GET['DataTypeCode']."' and `IsActive`='1' order by CodeValue");
+         return $Masters;
     }  
     
      function getDistrictNames() {

@@ -145,7 +145,19 @@
              
              return Response::returnSuccess("success",$result);
          }
-         
+         function GetWhoMyFavoritedProfile($ProfileCode) {
+             
+            global $mysql;
+            $result = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `VisterProfileCode`='".$ProfileCode."'");       
+            return $result;
+            }
+            function GetMyRecentlyViewedProfile($ProfileCode) {
+             
+            global $mysql;
+                                    
+            $result = $mysql->select("select ProfileCode from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$ProfileCode."' AND MemberID>0 AND ProfileID>0  group by `ProfileCode`"); 
+            return $result;
+    }
          function MatchedMyExpectation() {
              
              global $mysql,$loginInfo;
@@ -171,6 +183,9 @@
              $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX001")."'");
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
+               // $result['MyFavoritedCount']= sizeof($this->GetWhoMyFavoritedProfile($p['ProfileCode']));
+               // $result['MyRecentlyViewedCount']= sizeof($this->GetMyRecentlyViewedProfile($p['ProfileCode']));
+               // $result['MyShortListedcount']= Shortlist::MyShortlisted($p['ProfileCode']);
              }
              
              return Response::returnSuccess("success",$result);
@@ -178,7 +193,7 @@
          
          function MatchesNearByMe() {
              global $mysql,$loginInfo;
-                                                                                 
+                                                                                                                                
              $result = array();
              
              $checkverification = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'");
