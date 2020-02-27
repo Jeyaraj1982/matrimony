@@ -23,7 +23,8 @@
             }
 
             $mysql->execute("update _tbl_logs_email set EmailAPIID='".$emailSettings[0]['ApiID']."', APIRequestedOn='".date("Y-m-d H:i:s")."' where EmailLogID='".$reqID."'");
-
+             $emailHeaderFooter = $mysql->select("select * from `_tbl_appmaster` where `FormType`='EmailForm' ORDER BY FormTemplateID DESC LIMIT 0,1");
+           $content= $emailHeaderFooter[0]['HeaderContent']."<div style='border:1px solid yellow;max-width:720px;padding:20px 40px'>". $param['Message'] ."</div>".$emailHeaderFooter[0]['FooterContent'];
             $mail->isSMTP(); 
             $mail->SMTPDebug = 0;
             $mail->Host = $emailSettings[0]["HostName"];
@@ -35,7 +36,7 @@
             $mail->Subject    = $param['Subject'];
             $mail->setFrom($emailSettings[0]["SendersName"].".".$emailSettings[0]["SMTPUserName"], $emailSettings[0]["SendersName"]);
             $mail->addAddress($param['MailTo'],"");
-            $mail->msgHTML($param['Message']);
+            $mail->msgHTML($content);
             $mailError = $mail->ErrorInfo;
              
             if(!$mail->send()){

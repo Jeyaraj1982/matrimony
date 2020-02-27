@@ -18,7 +18,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left"> 
-                      <i class="mdi mdi-cube text-danger icon-lg"></i>
+                      <!--<i class="mdi mdi-cube text-danger icon-lg"></i>-->
                     </div>
                     <?php foreach($response['data']['MemberCount'] as $member) { ?>
                     <div class="float-right">
@@ -45,7 +45,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-receipt text-warning icon-lg"></i>
+                      <!--<i class="mdi mdi-receipt text-warning icon-lg"></i>-->
                     </div>
                     <?php foreach($response['data']['ProfileCount'] as $profile) { ?>
                     <div class="float-right">
@@ -72,7 +72,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                      <!--<i class="mdi mdi-account-location text-info icon-lg"></i>-->
                     </div>
                     <?php foreach($response['data']['ProfileVerification'] as $profv) { ?>
                     <div class="float-right">
@@ -94,7 +94,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-poll-box text-success icon-lg"></i>
+                      <!--<i class="mdi mdi-poll-box text-success icon-lg"></i>-->
                     </div>
                     <?php //foreach($response['data']['Document'] as $doc) { ?>
                     <div class="float-right">
@@ -119,7 +119,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                      <!--<i class="mdi mdi-account-location text-info icon-lg"></i>-->
                     </div>
                     <div class="float-right">
                       <p class="mb-0 text-right">Groom</p>
@@ -145,7 +145,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                      <!--<i class="mdi mdi-account-location text-info icon-lg"></i> -->
                     </div>
                     <div class="float-right">
                       <p class="mb-0 text-right">Bride</p>
@@ -171,7 +171,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                     <!-- <i class="mdi mdi-account-location text-info icon-lg"></i>-->
                     </div>
                     <div class="float-right">
                       <p class="mb-0 text-right">Online Members</p>
@@ -197,7 +197,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                      <!--<i class="mdi mdi-account-location text-info icon-lg"></i>-->
                     </div>
                     <div class="float-right">
                       <p class="mb-0 text-right">Free Members</p>
@@ -225,7 +225,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                      <!--<i class="mdi mdi-account-location text-info icon-lg"></i>-->
                     </div>
                     <div class="float-right">
                       <p class="mb-0 text-right">Landing Page Profiles</p>
@@ -251,7 +251,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                      <!--<i class="mdi mdi-account-location text-info icon-lg"></i>-->
                     </div>
                     <div class="float-right">
                       <p class="mb-0 text-right">Franchisee</p>
@@ -277,7 +277,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                      <!--<i class="mdi mdi-account-location text-info icon-lg"></i>-->
                     </div>
                     <div class="float-right">
                       <p class="mb-0 text-right"></p>
@@ -301,7 +301,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                      <!--<i class="mdi mdi-account-location text-info icon-lg"></i>-->
                     </div>
                     <div class="float-right">
                       <p class="mb-0 text-right"></p>
@@ -334,7 +334,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                  <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                      <!--<i class="mdi mdi-account-location text-info icon-lg"></i>-->
                     </div>
                     <div class="float-right">
                       <p class="mb-0 text-right">Paid Members</p>
@@ -357,7 +357,7 @@
                 <div class="card-body" style="padding: 0.88rem 0.81rem;">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-poll-box text-success icon-lg"></i>
+                      <!--<i class="mdi mdi-poll-box text-success icon-lg"></i>-->
                     </div>
                     <div class="float-right">
                       <p class="mb-0 text-right">Document Verification (Member)</p>
@@ -383,7 +383,7 @@
                 <div class="card-body">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-cube text-danger icon-lg"></i>
+                      <!--<i class="mdi mdi-cube text-danger icon-lg"></i>-->
                     </div>
                     <?php foreach($response['data']['OrderCount'] as $order) { ?>     
                     <div class="float-right">
@@ -405,7 +405,7 @@
                 <div class="card-body">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-receipt text-warning icon-lg"></i>
+                      <!--<i class="mdi mdi-receipt text-warning icon-lg"></i>-->
                     </div>
                      <?php foreach($response['data']['InvoiceCount'] as $invoice) { ?>     
                     <div class="float-right">
@@ -427,7 +427,7 @@
                 <div class="card-body">
                   <div class="clearfix">                                                                       
                     <div class="float-left">
-                      <i class="mdi mdi-poll-box text-success icon-lg"></i>
+                      <!--<i class="mdi mdi-poll-box text-success icon-lg"></i>-->
                     </div>
                     <?php foreach($response['data']['FranchiseeWalletRequestCount'] as $FranchiseeReqCount) { ?>     
                     <div class="float-right">
@@ -448,7 +448,7 @@
                 <div class="card-body">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-cube text-danger icon-lg"></i>
+                      <!--<i class="mdi mdi-cube text-danger icon-lg"></i>-->
                     </div>
                     <?php foreach($response['data']['MemberWalletRequestCount'] as $MemberReqCount) { ?>     
                     <div class="float-right">
@@ -501,38 +501,30 @@
           </div>-->
           <div>
             <div class="member_dashboard_widget_title">Recent Members</div>
-                <div class="card" style="background:#dee9ea;width:521px">
-                    <div class="card-body" style="padding:10px !important;height: 480px;">
+                <div class="card" style="background:#dee9ea;">
+                    <div class="card-body" style="padding:10px !important;">
                     <?php $Members = $webservice->getData("Admin","GetRecentMembersForDashboard");   
                             $RecentMembers = $Members['data'];   ?>
                     <?php if (sizeof($RecentMembers)>0) {  ?>
                         <div>
                         <?php  foreach($RecentMembers as $RecentMember) { ?>
                             <div class="col-sm-12" id="resCon_a001">
-                                <div style="text-align:right;">
-                                    <span style="color:#333333 !important;font-size: 12px;font-weight:Bold;color:#777;float: left"><?php echo $RecentMember['MemberCode'];?></span>
-                                </div> <br>
-                                <div class="col-sm-2" style="margin-left:-15px">
-                                    <div>
-                                        <img class="img-sm rounded-circle mb-4 mb-md-0" src="<?php echo SiteUrl?>assets/images/userimage.jpg" alt="profile image">
-                                    </div>
-                                </div>
                                 <div class="col-sm-10">
-                                    <div style="margin-top:-17px;margin-left: 73px;"><?php echo $RecentMember['MemberName'];?></div>
-                                    <div style="height: 30px">
-                                        <span style="color:#999 !important;margin-left: 73px;"><?php echo $RecentMember['Sex'];?></span> <br>
-                                        <span style="margin-left: 73px;"><button class="btn btn-success" style="padding: 0px 4px;font-size: 12px;background: #b3d285;border: #b3d285;"><?php echo $RecentMember['CreatedBy'];?></button> </span>
+                                    <div style="text-align:right;">
+                                        <span style="color:#333333 !important;font-size: 12px;font-weight:Bold;color:#777;float: left"><?php echo $RecentMember['MemberCode'];?></span>
                                     </div><br>
+                                    <div><a href="<?php echo GetUrl("Members/ViewMember/".$RecentMember['MemberCode'].".html");?>"><?php echo $RecentMember['MemberName'];?></a></div>
                                     <div class="form-group row">
-                                        <div class="col-sm-6"> 
-                                            <a href="<?php echo GetUrl("Members/ViewMember/".$RecentMember['MemberCode'].".html");?>" class="viewbutton" id="dashviewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;margin-left:73px">View</a> <br><br />
+                                        <div class="col-sm-6">
+                                            <span style="color:#999 !important;"><?php echo $RecentMember['Sex'];?></span> <br>
+                                            <span><button class="btn btn-success" style="padding: 0px 4px;font-size: 12px;background: #b3d285;border: #b3d285;"><?php echo $RecentMember['CreatedBy'];?></button> </span>
                                         </div>
                                         <div class="col-sm-6" style="height: 20px;float:right;margin-right: -33px;line-height:12px;font-size: 11px;text-align: right">
                                             <span style="color:#999 !important;">
-                                                Created on&nbsp;<?php echo time_elapsed_string($RecentMember['CreatedOn']);?>
+                                                <br>Created on&nbsp;<?php echo time_elapsed_string($RecentMember['CreatedOn']);?>
                                             </span>
                                         </div>
-                                    </div>
+                                     </div>
                                 </div>
                             </div>
                         <?php    }  ?> 
@@ -555,7 +547,7 @@
               <div>
             <div class="member_dashboard_widget_title">Recent Draft Profiles</div>
             <div class="card" style="background:#dee9ea;">
-                <div class="card-body" style="padding:10px !important;height: 480px;">
+                <div class="card-body" style="padding:10px !important;">
                    <?php $DProfile = $webservice->getData("Admin","GetRecentDraftProfiles");  
                             $RecentProfiles = $DProfile['data'];   ?>
                     <?php if (sizeof($RecentProfiles)>0) {  ?>
@@ -569,7 +561,7 @@
                                 <div class="enlarge">
                                     <div>
                                         <img src="<?php echo $Profiles['ProfileThumb'];?>" style="border-radius: 50%;width: 100px;border: 1px solid #ddd !important;height: 100px;padding: 5px;background: #fff;" alt="" />
-                                        <span><img src="<?php echo $Profiles['ProfileThumb'];?>" alt="" /><br /><?php echo $Profile['ProfileName'];?></span>
+                                        <span><img src="<?php echo $Profiles['ProfileThumb'];?>" alt="" /><br /><a href="<?php echo GetUrl("Profiles/ViewDraftProfile/".$Profile['ProfileCode'].".htm");?>"><?php echo $Profile['ProfileName'];?></a></span>
                                     </div>
                                 </div>
                             </div>
@@ -579,7 +571,6 @@
                                     <span style="color:#999 !important;margin-left: 73px;"><?php echo $Profile['Age'];?>&nbsp;yrs</span><br>
                                     <span style="color:#999 !important;margin-left: 73px;"><?php echo $Profile['City'];?></span>
                                 </div> <br>
-                                <a href="<?php echo GetUrl("Profiles/ViewDraftProfile/".$Profile['ProfileCode'].".htm");?>" class="viewbutton" id="dashviewbutton" style="padding: 3px 27px;border-radius: 25px;border-top: 1px solid #83c25d;border-bottom: 1px solid #00c1ff;margin-left:73px">View</a> <br><br />
                                     <div style="height: 20px;float:right;margin-right: -33px;line-height:12px;font-size: 11px;text-align: right"><span style="color:#999 !important;">
                                         <?php if ($Profile['CreatedOn']!=0) { ?> 
                                             My last visited&nbsp;<?php echo time_elapsed_string($Profile['CreatedOn']);?>
@@ -588,6 +579,9 @@
                             </div> <br>
                         </div>
                     </div>
+                        
+                        
+                    
                    <?php  }   ?> 
                 </div>
                 <div style="clear:both;padding:3px;text-align:center;">
@@ -611,7 +605,7 @@
                 <div class="card-body">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-cube text-danger icon-lg"></i>
+                      <!--<i class="mdi mdi-cube text-danger icon-lg"></i>-->
                     </div>
                     <?php foreach($response['data']['OrderCount'] as $order) { ?>     
                     <div class="float-right">
@@ -633,7 +627,7 @@
                 <div class="card-body">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-receipt text-warning icon-lg"></i>
+                      <!--<i class="mdi mdi-receipt text-warning icon-lg"></i>-->
                     </div>
                      <?php foreach($response['data']['InvoiceCount'] as $invoice) { ?>     
                     <div class="float-right">
@@ -655,7 +649,7 @@
                 <div class="card-body">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-poll-box text-success icon-lg"></i>
+                      <!--<i class="mdi mdi-poll-box text-success icon-lg"></i>-->
                     </div>
                     <?php foreach($response['data']['PaypalCount'] as $paypal) { ?>  
                     <div class="float-right">
@@ -676,7 +670,7 @@
                 <div class="card-body">
                   <div class="clearfix">
                     <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
+                      <!--<i class="mdi mdi-account-location text-info icon-lg"></i>-->
                     </div>
                     <div class="float-right">
                       <p class="mb-0 text-right">Profile Verification</p>

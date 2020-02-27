@@ -27,9 +27,26 @@ include_once("topmenu.php");
                     ?>
                         <?php foreach($response['data']['Member'] as $Member) {    ?>
                         <tr>
-                        <td><span class="<?php if($Member['IsActive']==1 && $Member['IsDeleted']==0){ echo 'Activedot'; } if($Member['IsActive']==0 && $Member['IsDeleted']==0){ echo 'Deactivedot'; } if($Member['IsDeleted']==1){ echo 'DeletedDot'; }?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberCode'];?></td>
-                        <td><?php echo $Member['MemberName'];?></td>
-                        <td><?php echo  putDateTime($Member['CreatedOn']);?></td>
+                       <?php
+                                $txt_a = "";
+                                if ($Member['IsDeleted']==1) {
+                                    $txt_a = '<span title="Member: Deleted" data-toggle="tooltip" class="DeletedDot"></span>'; 
+                                } elseif ($Member['IsActive']==1) {
+                                    $txt_a = '<span title="Member: Active" data-toggle="tooltip"class="Activedot"></span>'; 
+                                } elseif ($Member['IsActive']==0){
+                                    $txt_a = '<span title="Member: Deactivated" data-toggle="tooltip" class="Deactivedot"></span>'; 
+                                }
+                                
+                                if ($Member['Gender']=="Male") {
+                                    $txt_a .= '&nbsp;<i class="fa fa-male" data-toggle="tooltip" title="Gender: Male" aria-hidden="true"></i>';
+                                } else {
+                                    $txt_a .= '&nbsp;<i class="fa fa-female" data-toggle="tooltip" title="Gender: Female" aria-hidden="true"></i>';
+                                }
+                                $txt_a .= '&nbsp;&nbsp;&nbsp;'.$Member['MemberCode'];
+                                echo $html->td($txt_a);
+                                echo $html->td($Member['MemberName']);
+                                echo $html->td(putDateTime($Member['CreatedOn']));
+                            ?>
                         <td style="text-align:right"><a href="<?php echo GetUrl("Members/EditMember/". $Member['MemberCode'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;&nbsp;
                         <a href="<?php echo GetUrl("Members/ViewMember/". $Member['MemberCode'].".htm"); ?>"><span>View</span></a></td>
                         </tr>
@@ -46,9 +63,12 @@ include_once("topmenu.php");
     </div>
 </div>
 </form>
-  <script>
+ <script>
 $(document).ready(function(){
     $('#myTable').dataTable();
+    $('[data-toggle="tooltip"]').tooltip({ container: 'body' }); 
+    $('#myTable_filter input').addClass('form-control'); 
+    $('#myTable_length select').addClass('form-control'); 
     setTimeout("DataTableStyleUpdate()",500);
 });
 </script>    

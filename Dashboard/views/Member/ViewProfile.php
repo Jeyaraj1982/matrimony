@@ -15,7 +15,11 @@
  #doctable > tbody > tr > td{width: 75px;height: 33px;text-align: left;}
  #doctable {border-top: 2px solid #ddd;}
  .form-group {margin-bottom: 0px;}
- .photoview {float: right;margin:5px;}
+ .photoview {
+    margin-right:4px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
     fieldset {
   display: block;
   margin-left: 2px;
@@ -99,9 +103,20 @@ legend {
             
         <?php } ?>
         <br><br>
-         <a href="<?php echo GetUrl("Profile/".$_GET['Code'].".htm");?>" data-toggle="tooltip" title="Print profile information" target="_blank"><i class="menu-icon mdi mdi-printer" style="font-size: 15px;color: purple;"></i><label style="background:none;cursor:pointer">Print</label></a> 
-         <a href="<?php echo GetUrl("Download/".$_GET['Code'].".pdf");?>" data-toggle="tooltip" title="Download profile information" target="_blank"><i class="menu-icon mdi mdi-download" style="font-size: 15px;color: purple;"></i><label style="background:none;cursor:pointer">Download</label></a>   
-               
+        <form method="post" id="frmfrn">
+        <input type="hidden" value="" name="ReportReason" id="ReportReason">
+        <input type="hidden" value="<?php echo $_GET['Code'];?>" name="ProfileCode" id="ProfileCode">
+        <?php  if(sizeof($ProfileInfo['isShowPermission'])==0){ ?>
+         <a href="<?php echo GetUrl("Profile/".$_GET['Code'].".htm");?>" data-toggle="tooltip" title="Print profile information" target="_blank"><i class="menu-icon mdi mdi-printer" style="font-size: 15px;color: purple;"></i><label style="background:none;cursor:pointer">Print</label></a>&nbsp; 
+         <a href="<?php echo GetUrl("Download/".$_GET['Code'].".pdf");?>" data-toggle="tooltip" title="Download profile information" target="_blank"><i class="menu-icon mdi mdi-download" style="font-size: 15px;color: purple;"></i><label style="background:none;cursor:pointer">Download</label></a>&nbsp;    
+        <?php } ?>
+        <?php  if(sizeof($ProfileInfo['isReport'])==0){ ?>
+         <a href="javascript:void(0)" onclick="GetReportResonForAbuse()" data-toggle="tooltip" title="Report abuse"><i class="menu-icon mdi mdi-flag-outline" style="font-size: 15px;color: purple;"></i><label style="background:none;cursor:pointer">Report</label></a>&nbsp; 
+       <?php } ?>
+       <?php  if(sizeof($ProfileInfo['isHidePermission'])==0){ ?>
+         <a href="javascript:void(0)" onclick="ConfirmHideMyProfile()" data-toggle="tooltip" title="Hide Profile"><label style="background:none;cursor:pointer">Hide</label></a>&nbsp; 
+       <?php } ?>
+       </form>        
             </div>
         </div>
   </div>
@@ -120,62 +135,19 @@ legend {
                             </div>
                         </div> 
                     </div>
-                    <div style="padding-left:3px;padding-right: 10px;margin-top:7px">
-                     <!-- <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/nextarrow.jpg" style="width:30px"></div>
-                        <div class="col-sm-10" style="padding-left:8px;padding-right:5px;">
+                    <div style="padding-left: 10px;padding-right: 10px;">
+                      <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/nextarrow.jpg" style="width:30px"></div>
+                        <div class="col-sm-10">
                         <?php foreach($response['data']['ProfilePhotos'] as $ProfileP) {?>
-                            <div class="photoview" style="float: left;">
-                                <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 62px;width: 44px;">
+                            <div class="photoview" style="float: left;text-align:center;">
+                                <img src="<?php echo $ProfileP['ProfilePhoto'];?>" style="height: 62px;width: 44px;"><br>
                             </div>
                         <?php }?>
                         </div>
-                       <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/rightarrow.jpg" style="width:30px"></div>-->
-                       <div>
-    <div class="form-group row">
-        <div class="col-md-3" style="margin-top: 20px;margin-bottom: 10px;">
-            <div class="controls pull-right hidden-xs">
-                <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-groom" data-slide="prev"></a>
-                <a class="right fa fa-chevron-right btn btn-primary" href="#carousel-groom" data-slide="next"></a>
-            </div>
-        </div>
-    </div>
-    <div id="carousel-groom" class="carousel slide hidden-xs" data-ride="carousel">
-        <div class="carousel-inner ">
-            <?php
-                foreach($response['data']['ProfilePhotos'] as $p) { 
-                    if ($i==1) {
-                        if ($j==1) {
-                            echo '<div class="item active"><div class="row">';
-                        } else { 
-                            echo '<div class="item"><div class="row">';
-                        }
-                    }
-                    ?>        
-                          <div class="col-sm-4">
-                            <div class="col-item">
-                                <div class="photo">
-                                   <img src="<?php echo $p['ProfilePhoto'];?>" class="img-responsive" alt="a">
-                                </div>
-                            </div>
-                        </div>
-                    <?php 
-                    if ($i==3) { 
-                         echo '</div></div>';
-                        $i=1;
-                    } else {
-                        $i++;
-                    }
-                    $j++;
-                } 
-            ?>
-        </div>
-    </div>
- </div>
+                       <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/rightarrow.jpg" style="width:30px"></div>
                   </div>
+                   
                 </div>
-                  
-                                   
-                
                 </div>
                 <div class="col-sm-7">
                     
@@ -270,6 +242,7 @@ legend {
          </div>
 </div>
 </div>
+<?php  if(sizeof($ProfileInfo['isShowPermission'])==0){ ?>
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
@@ -521,7 +494,7 @@ legend {
         </div>
     </div>
   </div>
-  <div class="col-12 grid-margin">
+<div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
         <div class="form-group row">
@@ -694,8 +667,8 @@ legend {
         </div>
     </div>
   </div>
-  <?php } else{ ?>
-  <div class="col-12 grid-margin">
+<?php } else{ ?>
+<div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
         <div class="form-group row">
@@ -714,8 +687,8 @@ legend {
          </div>
     </div>
   </div>   
-  <?php } ?>                                                                                                            
-  <div class="col-12 grid-margin">
+<?php } ?>                                                                                                            
+<div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
     <div class="form-group row">
@@ -826,8 +799,8 @@ legend {
         </div>
     </div>
   </div>
-  <?php } else{?>
-  <div class="col-12 grid-margin">
+<?php } else{?>
+<div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
         <div class="form-group row">
@@ -846,7 +819,7 @@ legend {
     </div>
   </div> 
   <?php } ?>
-  <?php } else { ?>
+  <?php }  else { ?>
   <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
@@ -872,171 +845,19 @@ legend {
     </div>
   </div>
   <?php } ?>
+  <?php } else { ?>
+  <div class="col-12 grid-margin">                                                     
+    <div class="card">
+        <div class="card-body">
+              <div class="form-group row">
+                <span>Your not authenticated to view this profile</span>
+              </div>
+        </div>
+    </div>
+  </div>
+  <?php } ?>
 </div>
- <div style="width:400px">
- <?php if($_GET['source']=="MyRecentViewed"){?>
-<div class="member_dashboard_widget_title">My Recently Viewed</div>
-            <div class="card"  style="background:#dee9ea;">
-                <div class="card-body" style="padding:10px !important;">
-                <?php 
-                    $myrecentviewed = $webservice->getData("Member","GetRecentlyViewedProfiles",array("requestfrom"=>"0","requestto"=>"10"));
-                    $MyRecentlyViewed = $myrecentviewed['data'];
-                 ?>
-                    <?php if (sizeof($MyRecentlyViewed)>0) { ?>
-                <div>
-                    <?php
-                     foreach($MyRecentlyViewed as $Profile) { 
-                         if ($Profile['ProfileInfo']['ProfileCode']!=$_GET['Code']) {
-                            echo dashboard_view_2($Profile);      
-                         }
-                    }?> 
-                </div>
-                <?php if (sizeof($MyRecentlyViewed)>=4) { ?>
-                <div style="clear:both;padding:3px;text-align:center;">
-                            <a href="<?php echo SiteUrl;?>MyContacts/MyRecentViewed">View All</a>
-                         </div>
-                <?php } ?>
-                 <?php } else { ?>
-                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
-                        <div style="text-align:center;">
-                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
-                        </div>
-                    </div>
-                    <?php } ?>
-                </div>
-            </div>
-<?php }?>
-
-<?php if($_GET['source']=="RecentlyWhoViewed"){?>
-<div class="member_dashboard_widget_title">Who viewed your profile</div>
-            <div class="card"  style="background:#dee9ea;">
-                <div class="card-body" style="padding:10px !important;">
-                <?php 
-                    $whoviewed = $webservice->getData("Member","GetRecentlyWhoViewedProfiles",array("requestfrom"=>"0","requestto"=>"10"));
-                    $WhoViewedYourProfile = $whoviewed['data']; 
-                 ?>
-                    <?php if (sizeof($WhoViewedYourProfile)>0) { ?>
-                <div>
-                    <?php
-                     foreach($WhoViewedYourProfile as $Profile) { 
-                         if ($Profile['ProfileInfo']['ProfileCode']!=$_GET['Code']) {
-                            echo dashboard_view_2($Profile);      
-                         }
-                    }?> 
-                </div>
-                <?php if (sizeof($WhoViewedYourProfile)>=4) { ?>
-                <div style="clear:both;padding:3px;text-align:center;">
-                            <a href="<?php echo SiteUrl;?>RecentlyWhofavourited/RecentlyWhoViewed">View All</a>
-                         </div>
-                <?php } ?>
-                 <?php } else { ?>
-                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
-                        <div style="text-align:center;">
-                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
-                        </div>
-                    </div>
-                    <?php } ?>
-                </div>
-            </div>
-<?php }?>
-
-<?php if($_GET['source']=="MyFavorited"){?>
-<div class="member_dashboard_widget_title">My Favourited</div>
-            <div class="card"  style="background:#dee9ea;">
-                <div class="card-body" style="padding:10px !important;">
-                <?php 
-                    $myfavorited = $webservice->getData("Member","GetFavouritedProfiles",array("requestfrom"=>"0","requestto"=>"10"));
-                    $MyFavouritedProfiles = $myfavorited['data'];
-                 ?>
-                    <?php if (sizeof($MyFavouritedProfiles)>0) { ?>
-                <div>
-                    <?php
-                     foreach($MyFavouritedProfiles as $Profile) { 
-                         if ($Profile['ProfileInfo']['ProfileCode']!=$_GET['Code']) {
-                            echo dashboard_view_2($Profile);      
-                         }
-                    }?> 
-                </div>
-                <?php if (sizeof($MyFavouritedProfiles)>=4) { ?>
-                <div style="clear:both;padding:3px;text-align:center;">
-                             <a href="<?php echo SiteUrl;?>MyContacts/MyFavorited">View All</a>
-                         </div>
-                <?php } ?>
-                 <?php } else { ?>
-                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
-                        <div style="text-align:center;">
-                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
-                        </div>
-                    </div>
-                    <?php } ?>
-                </div>
-            </div>
-<?php }?>
-<?php if($_GET['source']=="RecentlyWhoFavorited"){?>
-<div class="member_dashboard_widget_title">Who favorited your profile</div>
-            <div class="card"  style="background:#dee9ea;">
-                <div class="card-body" style="padding:10px !important;">
-                <?php 
-                    $whofavorited = $webservice->getData("Member","GetWhoFavouriteMyProfiles",array("requestfrom"=>"0","requestto"=>"10"));
-                    $WhoFavoritedYourProfiles = $whofavorited['data']; 
-                 ?>
-                    <?php if (sizeof($WhoFavoritedYourProfiles)>0) { ?>
-                <div>
-                    <?php
-                     foreach($WhoFavoritedYourProfiles as $Profile) { 
-                         if ($Profile['ProfileInfo']['ProfileCode']!=$_GET['Code']) {
-                            echo dashboard_view_2($Profile);      
-                         }
-                    }?> 
-                </div>
-                <?php if (sizeof($WhoFavoritedYourProfiles)>=4) { ?>
-                <div style="clear:both;padding:3px;text-align:center;">
-                             <a href="<?php echo SiteUrl;?>RecentlyWhofavourited/MutualProfiles">View All</a>
-                         </div>
-                <?php } ?>
-                 <?php } else { ?>
-                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
-                        <div style="text-align:center;">
-                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
-                        </div>
-                    </div>
-                    <?php } ?>
-                </div>
-            </div>
-<?php }?>
-<?php if($_GET['source']=="Mutual"){?>
-<div class="member_dashboard_widget_title">Mutual Profile</div>
-            <div class="card"  style="background:#dee9ea;">
-                <div class="card-body" style="padding:10px !important;">
-                <?php 
-                    $mutualprofile = $webservice->getData("Member","GetMutualProfiles",array("requestfrom"=>"0","requestto"=>"10"));
-                    $MutualProfiles = $mutualprofile['data']; 
-                 ?>
-                    <?php if (sizeof($MutualProfiles)>0) { ?>
-                <div>
-                    <?php
-                     foreach($MutualProfiles as $Profile) { 
-                         if ($Profile['ProfileInfo']['ProfileCode']!=$_GET['Code']) {
-                            echo dashboard_view_2($Profile);      
-                         }
-                    }?> 
-                </div>
-                <?php if (sizeof($MutualProfiles)>=4) { ?>
-                <div style="clear:both;padding:3px;text-align:center;">
-                            <a href="<?php echo SiteUrl;?>MyContacts/MutualProfiles">View All</a>
-                         </div>
-                <?php } ?>
-                 <?php } else { ?>
-                    <div class="col-sm-12" id="resCon_a001" style="background:white;height: 443px;">
-                        <div style="text-align:center;">
-                            <h5 style="margin-top: 197px;color: #aaa;">No Profiles Found </h5>
-                        </div>
-                    </div>
-                    <?php } ?>
-                </div>
-            </div>
-<?php }?>
-</div>
+ 
   <div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
             <div class="modal-dialog">
                 <div class="modal-content" id="DeleteNow_body" style="height:260px">
@@ -1051,6 +872,13 @@ legend {
                                     </div>
                                 </div>
                             </div>
+                            <div class="modal" id="PubplishNow" data-backdrop="static" >
+        <div class="modal-dialog" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
+        
+            </div>
+        </div>
+    </div>
 <script>
 function ViewAttchment(AttachmentID,ProfileID,FileName) {
       $('#DeleteNow').modal('show'); 
@@ -1062,8 +890,132 @@ function ViewAttchment(AttachmentID,ProfileID,FileName) {
                         + '</div>'
                     +  '</div>';                                                                                                
             $('#DeleteNow_body').html(content);
-}                                                  
+}             
+function GetReportResonForAbuse() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Report</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                     + '<div class="col-sm-8">'
+                                        + 'Report Reason<br>'
+                                        + '<textarea class="form-control" rows="2" cols="3" id="ReportReasonFrAbuse"></textarea>'
+                                        +'<div class="col-sm-12" id="frmReportReason_error" style="color:red;text-align:center"></div>'
+                                     + '</div>'
+                                + '</div>'
+                            +'</div>' 
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="SentReportForAbuse()" style="font-family:roboto">Yes ,Continue</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     } 
+function SentReportForAbuse() {                           
+     if ($("#ReportReasonFrAbuse").val().trim()=="") {
+         $("#frmReportReason_error").html("Please enter reason for report");
+         return false;
+     }
+    $("#ReportReason").val($("#ReportReasonFrAbuse").val());   
+    var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Member&a=SentReportForAbuse",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Report</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }
+    function ConfirmHideMyProfile() {
+        $('#PubplishNow').modal('show'); 
+            var content = '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for hide profile</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                           + '</div>'
+                           + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="'+ImgUrl+'icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8">'
+                                        + '<div style="text-align:left">Are you sure want to hide?<br><br></div>'
+                                    + '</div>'
+                                + '</div>'
+                            +'</div>' 
+                           + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" onclick="HideMyProfileDetails()" style="font-family:roboto">Yes ,Continue</button>'
+                           + '</div>';
+            $('#Publish_body').html(content);
+     }    
+    function HideMyProfileDetails() {                           
+    var param = $("#frmfrn").serialize();
+        $('#Publish_body').html(preloading_withText("Loading ...","123"));
+        $.post(getAppUrl() + "m=Member&a=HideMyProfileDetails",param,function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            if (obj.status == "success") {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'
+                                    + '<p style="text-align:center;"><a href="javascript:void(0)" onclick="location.href=location.href" style="cursor:pointer">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Hide Profile</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+    }                              
 </script>
+
 <?php } else {  
    echo HtmlDesign::InformationNotFound($response['message']);
   } ?>
@@ -1073,136 +1025,4 @@ function ViewAttchment(AttachmentID,ProfileID,FileName) {
   $('[data-toggle="tooltip"]').tooltip()
 })
   </script>
-
-
-					      <div>
-    <div class="form-group row" style="width:100%">
-        <div class="col-md-9" style="text-align:center;color:blue;">
-            <h2>Featured Brides</h2>
-        </div>
-        <div class="col-md-3" style="margin-top: 20px;margin-bottom: 10px;">
-            <div class="controls pull-right hidden-xs">
-                <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-bride" data-slide="prev"></a>
-                <a class="right fa fa-chevron-right btn btn-primary" href="#carousel-bride" data-slide="next"></a>
-            </div>
-        </div>
-    </div>
-    <div id="carousel-bride" class="carousel slide hidden-xs " data-ride="carousel">
-        <div class="carousel-inner ">
-            <div class="item"><div class="row">        
-                          <div class="col-sm-4">
-                            <div class="col-item">
-                                <div class="photo">
-                                    <img src="http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/uploads/157165936239321949-passbild-eines-lachenden-geschäftsfrau-türkisch.jpg" class="img-responsive" alt="a">
-                                </div>
-                                <div class="info">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h5>
-                                                sakthi</h5>
-                                            <h5 class="price-text-color">
-                                                20</h5>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                        </div>
-                            
-                          <div class="col-sm-4">
-                            <div class="col-item">
-                                <div class="photo">
-                                    <img src="http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/uploads/1571654885swfse-Copy(5).jpg" class="img-responsive" alt="a">
-                                </div>
-                                <div class="info">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h5>
-                                                Menaha</h5>
-                                            <h5 class="price-text-color">
-                                                22</h5>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                        </div>
-                            
-                          <div class="col-sm-4">
-                            <div class="col-item">
-                                <div class="photo">
-                                    <img src="http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/uploads/1570769018index3333.jpg" class="img-responsive" alt="a">
-                                </div>
-                                <div class="info">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h5>
-                                                Subbulekshmi</h5>
-                                            <h5 class="price-text-color">
-                                                24</h5>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div></div><div class="item active"><div class="row">        
-                          <div class="col-sm-4">
-                            <div class="col-item">
-                                <div class="photo">
-                                    <img src="http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/uploads/1571806914gettyimages-926874118-612x612.jpg" class="img-responsive" alt="a">
-                                </div>
-                                <div class="info">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h5>
-                                                Sumithra</h5>
-                                            <h5 class="price-text-color">
-                                                21</h5>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                        </div>
-                            
-                          <div class="col-sm-4">
-                            <div class="col-item">
-                                <div class="photo">
-                                    <img src="http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/uploads/1571827203Passport-Size-Photo.jpg" class="img-responsive" alt="a">
-                                </div>
-                                <div class="info">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h5>
-                                                Nabisha</h5>
-                                            <h5 class="price-text-color">
-                                                25</h5>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                        </div>
-                            
-                          <div class="col-sm-4">
-                            <div class="col-item">
-                                <div class="photo">
-                                    <img src="http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/uploads/1571827802531_AM-395.jpg" class="img-responsive" alt="a">
-                                </div>
-                                <div class="info">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h5>
-                                                Subbulekshmi</h5>
-                                            <h5 class="price-text-color">
-                                                22</h5>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div></div>        </div>
-    </div>
-  </div>  				
+          

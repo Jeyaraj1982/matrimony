@@ -1,6 +1,8 @@
 <?php
    include_once("../config.php");
     include_once("config_client.php");
+    include_once("includes/class.BusinessConfig.php");
+    include_once("includes/class.WebConfig.php");
     $__Global = $_SERVER;
 
     class Franchisee  {

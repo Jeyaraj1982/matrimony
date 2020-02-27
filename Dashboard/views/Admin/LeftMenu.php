@@ -45,6 +45,7 @@
 						<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("FeaturedGrooms");?>">Feature Grooms</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("FeaturedBrides");?>">Feature Brides</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("SearchMemberProfile");?>">Add To Feature</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/AbusedProfiles");?>">Abused Profiles</a></li>
 				   </ul>
                 </div>                                                                
             </li>                                                      
@@ -165,6 +166,7 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/OrderHeaderFooter");?>">Templates</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/PaymentGateway/ManagePayu");?>">Payment Gateway</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/ApplicationSettings/ConfigurationSettings");?>">Application Settings</a></li>
+                       
                         
                     </ul>                                                                                          
                 </div>
@@ -181,6 +183,7 @@
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/Backup");?>">Backup</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/TextOnImage");?>">Text On Image</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/LogoOnImage");?>">Logo On Image</a></li>
+                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/BusinessSettings/BusinessSettings");?>">Business Settings</a></li>
                     </ul>
                 </div>
             </li>

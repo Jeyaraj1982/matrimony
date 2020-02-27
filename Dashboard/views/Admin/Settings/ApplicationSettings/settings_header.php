@@ -30,6 +30,9 @@
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="NormalSettings") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/ApplicationSettings/NormalSettings");?>" class="Notification" style="text-decoration:none"><span>Normal Settings</span></a>
                                         </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="BusinessSettings") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/ApplicationSettings/BusinessSettings");?>" class="Notification" style="text-decoration:none"><span>Business Settings</span></a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

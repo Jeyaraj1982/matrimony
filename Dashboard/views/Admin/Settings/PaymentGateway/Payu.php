@@ -21,9 +21,6 @@ $(document).ready(function () {
    $("#FailureUrl").blur(function () {
         IsNonEmpty("FailureUrl","ErrFailureUrl","Please Enter Failure Url");
    });
-  // $("#PayuRemarks").blur(function () {
-   //     IsNonEmpty("PayuRemarks","ErrPayuRemarks","Please Enter Remarks");
-   //});
 });       
 function SubmitPayu() {
                          $('#ErrPayBi2Name').html("");
@@ -52,8 +49,54 @@ function SubmitPayu() {
                  
 }
 </script>
+<?php
+                if (isset($_POST['CreatePayu'])) {
+                    
+                    $target_dir = "uploads/";
+                    if (!is_dir('uploads/Payu')) {
+                        mkdir('uploads/Payu', 0777, true);
+                    }
+                    $err=0;
+                    $acceptable = array('image/jpeg','image/jpg','image/png');
+                    
+                    if (isset($_FILES['File']['name']) && strlen(trim($_FILES['File']['name']))>0) {
+                        
+                        if(($_FILES['File']['size'] >= 5000000)) {
+                            $err++;
+                            echo "Please upload file. File must be less than 5 megabytes.";
+                        }
+                            
+                        if((!in_array($_FILES['File']['type'], $acceptable)) && (!empty($_FILES["File"]["type"]))) {
+                            $err++;
+                            echo "Invalid file type. Only JPG,PNG,JPEG types are accepted.";
+                        }
+                        
+                        $PayuAttachments = time().$_FILES["File"]["name"];
+                        if (!(move_uploaded_file($_FILES["File"]["tmp_name"],'uploads/Payu/'. $PayuAttachments))) {
+                            $err++;
+                            echo "Sorry, there was an error uploading your file.";
+                        } else {
+                            $_POST['File']= $PayuAttachments;
+                        }
+                        
+                    }
+                     
+                 
+                    
+                    if ($err==0) {
+                        
+                        $res =$webservice->getData("Admin","CreatePayu",$_POST);   
+                       if ($res['status']=="success") { ?>
+                             <script> $(document).ready(function() {   $.simplyToast("Success", 'info'); });  </script> 
+                       <?php  } else { ?>
+                            <script> $(document).ready(function() {   $.simplyToast("failed", 'danger'); });  </script>
+                       <?php }
+                    }
+                }
+              
+            ?>
 <div class="col-sm-10 rightwidget">
-<form method="post" id="frmfrPaymentGateway">
+<form method="post" id="frmfrPaymentGateway" enctype="multipart/form-data">
     <input type="hidden" value="" name="txnPassword" id="txnPassword">
     <input type="hidden" value="VT0001" name="PayuSoftCode" id="PayuSoftCode">
     <input type="hidden" value="Payu" name="PayuCodeValue" id="PayuCodeValue">
@@ -68,7 +111,7 @@ function SubmitPayu() {
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Payu Biz Logo<span id="star">*</span></label>
                           <div class="col-sm-9">
-                            <input type="file" id="PayBi2Logo" name="PayBi2Logo">
+                            <input type="file" id="File" name="File">
                             <span class="errorstring" id="ErrPayBi2Logo"><?php echo isset($ErrPayBi2Logo)? $ErrPayBi2Logo : "";?></span>
                           </div>
                         </div>
@@ -135,10 +178,10 @@ function SubmitPayu() {
 		<div class="form-group row" >
 			<div class="col-sm-12" style="text-align:right">
 				&nbsp;<a href="javascript:void(0)" class="btn btn-default" style="padding:7px 20px" onclick="AppSettings.ConfirmGotoBackFromCreatePayu()">Cancel</a>&nbsp;
-				<a href="javascript:void(0)" onclick="PaymentGateway.ConfirmCreatePayu()" class="btn btn-primary">Create</a>
+				<a href="javascript:void(0)" onclick="PaymentGateway.ConfirmCreatePayu()" class="btn btn-primary" name="CreatePayu">Create</a>
 			</div>
 		</div>
-    
+        <!--href="javascript:void(0)" onclick="PaymentGateway.ConfirmCreatePayu()" -->
 </form>
 <div class="modal" id="PubplishNow" data-backdrop="static" >
 		<div class="modal-dialog" >

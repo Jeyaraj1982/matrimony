@@ -372,6 +372,7 @@
 				$PEVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Pe_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
                 $CDVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Cd_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
 				$DATSummary = $mysql->select("select * from _tbl_profiles_activity where `MemberCode` ='".$members[0]['MemberCode']."' and `MemberID`='".$Profiles[0]['MemberID']."' and `DraftProfileID`='".$Profiles[0]['ProfileID']."' and `DraftProfileCode`='".$Profiles[0]['ProfileCode']."' order by ProfileActivityID DESC");
+                $plan = $mysql->select("select * from `_tbl_profile_credits` where `MemberID`='".$loginInfo[0]['MemberID']."' ORDER BY ProfileCreditID DESC LIMIT 0,1");  
             } else {   
                 $Profiles = $mysql->select("select * from `_tbl_draft_profiles` where ProfileCode='".$ProfileCode."'");               
                  $members = $mysql->select("select * from `_tbl_members` where `MemberCode`='".$Profiles[0]['MemberCode']."'");   
@@ -390,6 +391,7 @@
 				$PEVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Pe_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
 				$CDVerification = $mysql->select("select * from _tbl_profile_verification where `ProfileVerificationID` ='".$Profiles[0]['Verify_Cd_Desc']."' and `ProfileID`='".$Profiles[0]['ProfileID']."' and `MemberID`='".$Profiles[0]['MemberID']."'");
                 $DATSummary = $mysql->select("select * from _tbl_profiles_activity where `MemberCode` ='".$members[0]['MemberCode']."' and `MemberID`='".$Profiles[0]['MemberID']."' and `DraftProfileID`='".$Profiles[0]['ProfileID']."' and `DraftProfileCode`='".$Profiles[0]['ProfileCode']."' order by ProfileActivityID DESC");
+                $plan = $mysql->select("select * from `_tbl_profile_credits` where `MemberID`='".$members[0]['MemberID']."' ORDER BY ProfileCreditID DESC LIMIT 0,1");
             }
             
             if (sizeof($Profiles)==0) {
@@ -444,6 +446,7 @@
                             "EducationAttachments" => $Educationattachments,
                             "Documents"            => $Documents,
                             "Members"              => $members[0],
+                            "Plan"              => $plan,
 							"ProfileThumbDetails"  => $ProfileThumbnailDetails,  
                             "PartnerExpectation"   => isset($PartnersExpectations[0]) ? $PartnersExpectations[0] : array(),
                             "ProfilePhotos"        => $ProfilePhotos,  /*array*/
@@ -457,7 +460,7 @@
             
             global $mysql,$loginInfo;
             
-            $lastseen    = array();
+            $lastseen    = array();                                                                         
             $isFavourite = array();
             $isMutured   = array();  
 			$IsDownload  = array();
@@ -474,6 +477,12 @@
                 $isShortList = $mysql->select("select ViewedOn from `_tbl_profiles_shortlists` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' and `IsShortlist`='1' and `IsVisible`='1' order by ShortListProfileID desc limit 0,1");
                 $isSendInterest = $mysql->select("select * from `_tbl_profiles_interests` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' and `IsInterest`='1' and `IsVisible`='1' order by InterestProfileID desc limit 0,1");
                 $isMutured = $mysql->select("select ViewedOn from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and VisterProfileCode='".$Profiles[0]['ProfileCode']."' and `VisterProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'    and `MemberID` = '".$loginInfo[0]['MemberID']."' order by FavProfileID DESC)");
+                $isReport = $mysql->select("select * from _tbl_abuse_reports where `ReportByID` ='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");
+                $isHidePermission = $mysql->select("select * from _tbl_profile_view_permissions where `MemberID` ='".$loginInfo[0]['MemberID']."' and HideFromProfileCode='".$ProfileCode."'");
+                $isShowPermission = $mysql->select("select * from _tbl_profile_view_permissions where `HideFromID` ='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");
+                $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
+                $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
+                $plan = $mysql->select("select * from `_tbl_profile_credits` where `MemberID`='".$loginInfo[0]['MemberID']."' ORDER BY ProfileCreditID DESC LIMIT 0,1");  
             } else {   
                 $Profiles = $mysql->select("select * from `_tbl_profiles` where ProfileCode='".$ProfileCode."'");               
                 $PartnersExpectations = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `ProfileCode`='".$ProfileCode."'");
@@ -481,9 +490,12 @@
                 $Educationattachments = $mysql->select("select * from `_tbl_profiles_education_details` where  ProfileCode='".$ProfileCode."' and `IsDeleted`='0'");            
                 $ProfileThumb = $mysql->select("select IsApproved, concat('".AppPath."uploads/profiles/".$Profiles[0]['DraftProfileCode']."/thumb/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$ProfileCode."' and `IsDelete`='0' and `PriorityFirst`='1'");
                 $ProfilePhotos = isset($Profiles[0]['ProfileID']) ? $mysql->select("select concat('".AppPath."uploads/profiles/".$Profiles[0]['DraftProfileCode']."/thumb/',ProfilePhoto) as ProfilePhoto  from `_tbl_profiles_photos` where  `ProfileID`='".$Profiles[0]['ProfileID']."' and `IsDelete`='0' and `PriorityFirst`='0'") : array();                                        
-              
+                $isReport = $mysql->select("select * from _tbl_abuse_reports where `ReportByID` ='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");
+                $isHidePermission = $mysql->select("select * from _tbl_profile_view_permissions where `MemberID` ='".$loginInfo[0]['MemberID']."' and HideFromProfileCode='".$ProfileCode."'");
+                $isShowPermission = $mysql->select("select * from _tbl_profile_view_permissions where `HideFromID` ='".$loginInfo[0]['MemberID']."' and ProfileCode='".$ProfileCode."'");
                $IsDownload = $mysql->select("select * from `_tbl_profile_download` where `MemberID`='".$loginInfo[0]['MemberID']."' and `PartnerProfileCode`='".$ProfileCode."'"); 
-              
+                $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$Profiles[0]['MemberID']."'");
+                $plan = $mysql->select("select * from `_tbl_profile_credits` where `MemberID`='".$Profiles[0]['MemberID']."' ORDER BY ProfileCreditID DESC LIMIT 0,1");
                 if ($myrecentviewed==1) {
                     if (isset($Profiles[0]['ProfileID']) && isset($loginInfo[0]['MemberID'])) {
                         $lastseen = $mysql->select("select ViewedOn from `_tbl_profiles_lastseen` where ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."' order by LastSeenID desc limit 0,1");
@@ -502,7 +514,6 @@
                 }
                 $LastLogin = isset($Profiles[0]['ProfileID'])  ? $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$Profiles[0]['MemberID']."' ORDER BY `LoginID` DESC") : array();
             }
-            $members = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
             
             if (sizeof($ProfilePhotos)<4) {
                 for($i=sizeof($ProfilePhotos);$i<4;$i++) {
@@ -533,6 +544,9 @@
             $Profiles[0]['isShortList'] = (isset($isShortList[0]['ViewedOn']) ? $isShortList[0]['ViewedOn'] : 0);
             $Profiles[0]['isSendInterest'] = (isset($isSendInterest[0]) ? $isSendInterest[0] : 0);
             $Profiles[0]['isWhoSendInterest'] = (isset($isWhoSendInterest[0]) ? $isWhoSendInterest[0] : 0);
+            $Profiles[0]['isReport'] = (isset($isReport) ? $isReport : 0);
+            $Profiles[0]['isHidePermission'] = (isset($isHidePermission) ? $isHidePermission : 0);
+            $Profiles[0]['isShowPermission'] = (isset($isShowPermission) ? $isShowPermission : 0);
             $Profiles[0]['isFavouriteds'] = (isset($isWhoFavourite[0]['ViewedOn']) ?  1 : 0);
             $Profiles[0]['isWhoShortList'] = (isset($isWhoShortList[0]['ViewedOn']) ?  1 : 0);
             $Profiles[0]['isMutured']    = (isset($isMutured[0]['ViewedOn']) ? 1 : 0);
@@ -546,7 +560,7 @@
                             "Documents"            => $Documents,
                             "PartnerExpectation"   => isset($PartnersExpectations[0]) ? $PartnersExpectations[0] : array(),
                             "ProfilePhotos"        => $ProfilePhotos,  
-                            
+                            "Plan"                 => $plan,
                             "ProfileThumb"         => $ProfileThumbnail);
             return  $result;
         }

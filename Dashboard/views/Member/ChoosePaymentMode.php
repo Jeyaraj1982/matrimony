@@ -268,7 +268,7 @@ function PayNowOTPVerification(frmid) {
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
                                     + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
-                                    + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">' +obj.message+'</h5>'
                                     + '<p style="text-align:center;"><a href="'+AppUrl+'" style="cursor:pointer">Continue</a></p>'
                                 +'</div>' 
                             +'</div>';
@@ -297,7 +297,7 @@ function PayNowOTPVerification(frmid) {
                                                         + '<button type="button" onclick="PayNowOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
                                                     + '</div>'
                                                     + '<div class="col-sm-3"></div>'
-                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="PaynowOtp_error">'+data.error+'</div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="PaynowOtp_error">'+obj.message+'</div>'
                                                 + '</div>'
                                             + '</div>'
                                         + '</div>'

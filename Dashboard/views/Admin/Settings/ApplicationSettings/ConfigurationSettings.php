@@ -48,7 +48,7 @@ if (isset($_POST['savparam'])) {
                                     </select>
                                 <?php } ?>
                                  <?php if($Config['ParamB']=="integer") {?>
-                                    <input tyep="text" name="app_<?php echo $Config['CodeValue'];?>" style="width:150px;text-align:right;border:1px solid #888;" value="<?php echo $Config['ParamA'];?>">
+                                    <input type="text" name="app_<?php echo $Config['CodeValue'];?>" style="width:150px;text-align:right;border:1px solid #888;" value="<?php echo $Config['ParamA'];?>">
                                 <?php } ?>
                                 <?php if($Config['ParamB']=="string") {?>
                                     <?php if(sizeof($Config['ParamC'])>0) {  ?>
@@ -58,7 +58,7 @@ if (isset($_POST['savparam'])) {
                                             <?php } ?>
                                         </select>
                                     <?php } else { ?>
-                                    <input tyep="text" name="app_<?php echo $Config['CodeValue'];?>" style="width:150px;border:1px solid #888;" value="<?php echo $Config['ParamA'];?>">
+                                    <input type="text" name="app_<?php echo $Config['CodeValue'];?>" style="width:150px;border:1px solid #888;" value="<?php echo $Config['ParamA'];?>">
                                     <?php } ?>
                                 <?php } ?>
                             </td>    

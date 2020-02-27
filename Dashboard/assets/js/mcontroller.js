@@ -2,6 +2,128 @@ var response="";
 function restcall(url,param){
      $.post(getAppUrl() + url,param,function(response) {return response});
 }
+function SavePasswordScreen(frmid1,error,NewPassword,ConfirmNewPassword) {
+     error = typeof error !== 'undefined' ? error : "";
+     NewPassword = typeof NewPassword !== 'undefined' ? NewPassword : "";
+     ConfirmNewPassword = typeof ConfirmNewPassword !== 'undefined' ? ConfirmNewPassword : "";
+    var param = $( "#"+frmid1).serialize();
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+        $.post(getAppUrl() + "m=Member&a=SavePasswordScreen","",function(result) {
+             if (!(isJson($.trim(result)))) {
+                $('#Mobile_VerificationBody').html(result);
+                return ;                                                                   
+            }
+            var obj = JSON.parse($.trim(result));
+            if (obj.status=="success") {
+                   var randString = "form_" + randomStrings(5);
+                   var data = obj.data; 
+                 var content = '<div id="otpfrm" >'
+                                    +'<form method="post" id="'+randString+'" name="'+randString+'">'
+                                    +'<div class="modal-header">'
+                                        + '<h4 class="modal-title">Save login password</h4>'
+                                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
+                                    +'</div>'
+                                    +'<div class="modal-body" style="min-height: 261px;max-height: 261px;">'
+                                    +'<div class="form-group row">'
+                                        +'<div class="col-sm-4" style="text-align:center;padding-top: 15px;">'
+                                            +'<img src="'+AppUrl+'assets/images/icon_change_password.png">'
+                                        +'</div>'
+                                        +'<div class="col-sm-8">'
+                                            +'<span style="text-left:center;color:#ada9a9">The administartor requests to save your login password on your first signin.</span><br><br>'
+                                            +'<div class="row">'
+                                                +'<div class="col-sm-8"><h6 style="color:#ada9a9">New Password<span style="color:red">*</span></h6></div>'
+                                            +'</div>'                             
+                                            +'<div class="row">'
+                                                +'<div class="col-sm-11">'  
+                                                    +'<div class="input-group">'
+                                                        +'<input type="password" class="form-control" value="'+NewPassword+'" id="NewPassword"  name="NewPassword" maxlength="20" style="font-family:Roboto;" placeholder="New Password">'
+                                                        +'<span class="input-group-btn">'
+                                                            +'<button  onclick="showHidePwd(\'NewPassword\',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>'
+                                                        +'</span>'          
+                                                    +'</div>'
+                                                    +'<div id="frmNewPass_error" style="color:red;font-size:12px;">'+error+'</div>'
+                                                +'</div>'
+                                            +'</div>'
+                                            +'<div class="row">'
+                                                +'<div class="col-sm-8"><h6 style="color:#ada9a9">Confirm New Password<span style="color:red">*</span></h6></div>'
+                                            +'</div>'
+                                            +'<div class="row">'
+                                                +'<div class="col-sm-11">'
+                                                    +'<div class="input-group">'
+                                                        +'<input type="password" class="form-control" value="'+ConfirmNewPassword+'" id="ConfirmNewPassword"  name="ConfirmNewPassword"  maxlength="20" style="font-family:Roboto;" placeholder="Confirm New Password">'
+                                                        +'<span class="input-group-btn">'
+                                                            +'<button  onclick="showHidePwd(\'ConfirmNewPassword\',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>'
+                                                        +'</span>'          
+                                                    +'</div>'
+                                                    +'<div id="frmCfmNewPass_error" style="color:red;font-size:12px">&nbsp;</div>'
+                                                +'</div>'
+                                            +'</div>'
+                                        +'</div>'
+                                    +'</div>'
+                                +'</div>'
+                                    +'<div class="modal-footer">'
+                                        +'<a href="javascript:void(0)" onclick="Signout()">Sign out</a>&nbsp;&nbsp;'
+                                        +'<a href="javascript:void(0)" onclick="SaveNewPassword(\''+randString+'\')" class="btn btn-primary">Save Password</a>&nbsp;&nbsp;'
+                                    +'</div>'
+                             + '</div>';
+                 $('#Mobile_VerificationBody').html(content);
+        }
+        else {
+          var content = '<div class="modal-header">'
+                            +'<h4 class="modal-title">Save login password</h4>'
+                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                        +'</div>'
+                        +'<div class="modal-body" style="text-align:center">'
+                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                            +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                         +'</div>';
+          $('#Mobile_VerificationBody').html(content);
+        }
+        });
+}
+function SaveNewPassword(frmid1) {
+    $("#frmNewPass_error").html("&nbsp;");
+    $("#frmCfmNewPass_error").html("&nbsp;");
+    ErrorCount =0;
+    IsNonEmpty("NewPassword","frmNewPass_error","Please enter new password");
+    IsNonEmpty("NewPassword","frmCfmNewPass_error","Please enter confirm new password");
+    if ($("#ConfirmNewPassword").val().trim() != $("#NewPassword").val().trim()) {
+        $("#frmCfmNewPass_error").html("Passwords do not match");
+        ErrorCount++;
+    }
+    if(ErrorCount>0){ 
+        return false;
+    }
+    var param = $( "#"+frmid1).serialize();                             
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $.post(getAppUrl() + "m=Member&a=SaveNewPassword",param,function(result2) {
+        if (!(isJson($.trim(result2)))) {
+                    $('#Mobile_VerificationBody').html(result2);
+                    return ;                                                                   
+                }
+                var obj = JSON.parse($.trim(result2));
+                 var data = obj.data; 
+                    if (obj.status=="success") { 
+                         var content = '<div class="modal-header">'
+                                            +'<h4 class="modal-title">Save login password</h4>'
+                                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
+                                        +'</div>'
+                                        +'<div class="modal-body" style="text-align:center">'
+                                            +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
+                                            +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
+                                            +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
+                                         +'</div>';
+                          $('#Mobile_VerificationBody').html(content); 
+                        
+                    } else {
+                        var randString = "form_" + randomStrings(5);
+                        if(data.js == "SavePasswordScreen"){
+                        ChangePasswordScreen(randString,obj.message,data.NewPassword,data.ConfirmNewPassword);
+                        }
+                   }
+    });
+}
 
 function ChangePasswordScreen(frmid1,error,NewPassword,ConfirmNewPassword) {
      error = typeof error !== 'undefined' ? error : "";
@@ -120,7 +242,7 @@ function ChangeNewPassword(frmid1) {
                     } else {
                         var randString = "form_" + randomStrings(5);
                         if(data.js == "ChangePasswordScreen"){
-                        ChangePasswordScreen(randString,data.error,data.NewPassword,data.ConfirmNewPassword);
+                        ChangePasswordScreen(randString,obj.message,data.NewPassword,data.ConfirmNewPassword);
                         }
                    }
     });
@@ -248,6 +370,7 @@ function MobileNumberVerificationForm(frmid1) {
                     if (obj.status=="success") { 
                         var randString = "form_" + randomStrings(5);
                         var data = obj.data; 
+                            var updatemsg = (data.updatemsg.length > 0) ? '<div class="successmessage">'+data.updatemsg+'</div>' : '' ;
                         var content = '<div id="otpfrm" >'
                                         + '<form method="POST" id="'+randString+'" name="'+randString+'">'
                                         + '<input type="hidden" value="'+data.callfrom+'" name="callfrom">'
@@ -258,7 +381,7 @@ function MobileNumberVerificationForm(frmid1) {
                                             + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
                                         +'</div>'
                                         +'<div class="modal-body">'
-                                            +''+data.updatemsg+''
+                                            +updatemsg
                                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
                                             +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">Please enter the verification code which you have received on your mobile number ending with  +'+data.CountryCode+'&nbsp;'+data.MobileNumber+'</p>'
                                             +'<div class="form-group">'
@@ -279,7 +402,7 @@ function MobileNumberVerificationForm(frmid1) {
                         
                     } else {
                         if(data.js == "ChangeMobileNumber"){
-                        ChangeMobileNumber(data.error,data.Mobilenumber);
+                        ChangeMobileNumber(obj.message,data.Mobilenumber);
                     }else {
                          var content = '<div class="modal-header">'
                                             +'<h4 class="modal-title">Mobile Number Verification</h4>'
@@ -342,7 +465,7 @@ function MobileNumberOTPVerification(frmid) {
                                                         +'<div class="col-sm-4"><input type="text" value="'+data.MobileOtp+'" class="form-control" id="mobile_otp_2" maxlength="4" name="mobile_otp_2" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
                                                         +'<div class="col-sm-2"><button type="button" onclick="MobileNumberOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>'
                                                         +'<div class="col-sm-3"></div>'
-                                                        +'<div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error" >'+data.error+'&nbsp;</div>'
+                                                        +'<div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error" >'+obj.message+'&nbsp;</div>'
                                                     +'</div>'
                                                 +'</div>'
                                             +'</div>'
@@ -514,6 +637,7 @@ function EmailVerificationForm(frmid1) {
                 }
                 var obj = JSON.parse($.trim(result2));
                  var data = obj.data; 
+                  var updatemsg = (data.updatemsg.length > 0) ? '<div class="successmessage">'+data.updatemsg+'</div>' : '' ;
                     if (obj.status=="success") { 
                         var randString = "form_" + randomStrings(5);
                         var data = obj.data; 
@@ -526,7 +650,7 @@ function EmailVerificationForm(frmid1) {
                                             + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"></button>'
                                         +'</div>'
                                         +'<div class="modal-body">'
-                                            +''+data.updatemsg+''
+                                            +updatemsg
                                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/email_verification.png"></p>'
                                             +'<p style="text-align:center;color:#ada9a9;padding:10px;font-size: 14px;">We have sent a verification code to<br>'+data.EmailID+'</p>'
                                             +'<div class="form-group">'
@@ -547,7 +671,7 @@ function EmailVerificationForm(frmid1) {
                         
                     } else {
                         if(data.js == "ChangeEmailID"){
-                        ChangeEmailID(data.error,data.emailid);
+                        ChangeEmailID(obj.message,data.emailid);
                     }else {
                          var content = '<div class="modal-header">'
                                             +'<h4 class="modal-title">Mobile Number Verification</h4>'
@@ -610,7 +734,7 @@ function EmailOTPVerification(frmid1) {
                                                         +'<div class="col-sm-4"><input type="text" value="'+data.emailotp+'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>'
                                                         +'<div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>'
                                                         +'<div class="col-sm-3"></div>'
-                                                        +'<div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error" >'+data.error+'</div>'
+                                                        +'<div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error" >'+obj.message+'</div>'
                                                     +'</div>'
                                                 +'</div>'
                                             +'</div>'
@@ -677,10 +801,11 @@ function EmailOTPVerification(frmid1) {
                          }
         });
 } 
-function CheckVerification() {
+function CheckVerification(f) { 
+    f = typeof f !== 'undefined' ? f : "";
     $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
     $('#myModal').modal('show'); 
-    $.ajax({url: getAppUrl() + "m=Member&a=CheckVerification", success: function(result2){
+    $.ajax({url: getAppUrl() + "m=Member&a=CheckVerification&f="+f, success: function(result2){
     if (!(isJson($.trim(result2)))) {
                 $('#Mobile_VerificationBody').html(result2);
                 return ;                                                                   
@@ -698,6 +823,9 @@ function CheckVerification() {
                             }
                             if(data.js == "ChangePasswordScreen"){
                                 ChangePasswordScreen();
+                            }
+                            if(data.js == "SavePasswordScreen"){
+                                SavePasswordScreen();
                             }   
                         }  
     }});
@@ -770,7 +898,6 @@ function SendToInterest(ProfileCode,ImgId) {
         if (obj.status=="success") {                                                                 
             var data = obj.data;
             $('#imgS_'+ImgId).html('<a style="border:1px solid #ff945f;padding: 2px 5px;font-size: 12px;color: #ff945f;cursor:pointer !important;text-decoration:none;background:#fff;">Sent Interest On '+data.SentOn+'</a>');
-          //  $('#img_'+ImgId).attr("onclick","RemoveFromShortList('"+ProfileCode+"','"+ImgId+"')");
             $.simplyToast(obj.message, 'info');
         } else {
             $('#imgS_'+ImgId).attr("onclick","SendToInterest('"+ProfileCode+"','"+ImgId+"')");
@@ -780,6 +907,15 @@ function SendToInterest(ProfileCode,ImgId) {
         $('#imgS_'+ImgId).attr("onclick","SendToInterest('"+ProfileCode+"','"+ImgId+"')");
         $.simplyToast("Network unavailable" ,'danger');
     }); 
+}
+function RemoveInterest(ProfileCode,ImgId) {
+    $('#imgS_'+ImgId).attr("onclick","javascript:void(0)");
+    $.ajax({url: getAppUrl() + "m=Member&a=RemoveSentInterest&ProfileCode="+ProfileCode, success: function(result){
+           $('#imgD_'+ImgId).parent().css({"background": "none", "border": "2px solid red"});
+            $('#imgC_'+ImgId).html('<a style="border:none;font-size: 10px;padding:0px;color: green;cursor:pointer !important;text-decoration:none">Your interest has been cancelled.Sent interest option will enable after 6 days');  
+            $('#imgD_'+ImgId).hide();
+            $.simplyToast("Profile ID: "+ProfileCode+" has been removed from interest", 'warning');
+    }});
 }
  function ApproveInterest(ProfileCode,ImgId) {
     $('#imgS_'+ImgId).attr("onclick","javascript:void(0)");
@@ -1855,7 +1991,7 @@ function SubmittedProfileforEditOTPVerification(frmid) {
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
                                     + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
                                     + '<h3 style="text-align:center;">Successfully Switched to Draft</h3>'
-                                    + '<h5 style="text-align:center;color:#ada9a9">' + obj.message+'</h5>'
+                                    + '<h5 style="text-align:center;color:#ada9a9">' +obj.message+'</h5>'
                                     + '<p style="text-align:center;"><a href="'+AppUrl+'MyProfiles/Draft/Edit/'+data.FileName+'/'+data.ProfileCode+'.htm" style="cursor:pointer">Continue</a></p>'
                                 +'</div>' 
                             +'</div>';
@@ -1883,7 +2019,7 @@ function SubmittedProfileforEditOTPVerification(frmid) {
                                                         + '<button type="button" onclick="SubmittedProfileforEditOTPVerification(\''+randString+'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button>'
                                                     + '</div>'
                                                     + '<div class="col-sm-3"></div>'
-                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="DeletMemberOtp_error">'+data.error+'</div>'
+                                                     + '<div class="col-sm-12" style="color:red;text-align:center" id="DeletMemberOtp_error">'+obj.message+'</div>'
                                                 + '</div>'
                                             + '</div>'
                                         + '</div>'

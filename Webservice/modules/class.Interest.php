@@ -40,7 +40,7 @@
                                                         "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
                                                         "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
                                                         "ProfilePhoto"       => $ProfileThumbnail,
-                                                        "Subject"            => "has short list your profile",
+                                                        "Subject"            => "has sent interest your profile",
                                                         "ViewedOn"           => date("Y-m-d H:i:s")));
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='AddSentInterest'");
              $content  = str_replace("#MemberName#",$visitormember[0]['MemberName'],$mContent[0]['Content']);

@@ -7438,7 +7438,7 @@ var PaymentGateway = {
              $("#frmTxnPass_error").html("Please enter transaction password");
              return false;
          }    
-        $("#txnPassword").val($("#TransactionPassword").val());
+        $("#txnPassword").val($("#TransactionPassword").val());   
 		var param = $("#frmfrPaymentGateway").serialize();
         $('#Publish_body').html(preloading_withText("Loading ...","123"));
         $.post(getAppUrl() + "m=Admin&a=CreatePayu",param,function(result) {

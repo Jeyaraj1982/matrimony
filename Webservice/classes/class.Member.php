@@ -225,6 +225,7 @@
             $Verifylink = md5(time().$MemberCode.$_POST['Email']);
             $Link = DomainPath."login?email=".$Verifylink;    
              $data = $mysql->select("select * from `_tbl_members` where `MemberID`='".$id."'");
+             
              $mContent = $mysql->select("select * from `mailcontent` where `Category`='NewMemberCreated'");
              $content  = str_replace("#MemberName#",$_POST['Name'],$mContent[0]['Content']);
              $content  = str_replace("#MemberID#",$MemberCode,$content);
@@ -485,6 +486,16 @@
                                                                  "SqlQuery"       => base64_encode($sqlQry),
                                                                  "oldData"        => base64_encode(json_encode($oldData)),
                                                                  "ActivityOn"     => date("Y-m-d H:i:s"))); 
+                 $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberChangePassword'");
+                    $content  = str_replace("#MemberName#",$getpassword[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#MemberPassword#",$_POST['ConfirmNewPassword'],$content);
+
+                     MailController::Send(array("MailTo"         => $getpassword[0]['EmailID'],
+                                                "Category"       => "MemberChangePassword",
+                                                "MemberID"       => $getpassword[0]['MemberID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($getpassword[0]['MobileNumber']," Dear ".$getpassword[0]['MemberName'].",Your Login Password has been changed successfully. Your New Login Password is ".$_POST['ConfirmNewPassword']."");  
                  return Response::returnSuccess("Password Changed Successfully",array());
              }
          }
@@ -516,9 +527,13 @@
 
              global $mysql,$loginInfo;
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
-           
-           if ($memberdata[0]['ChangePasswordFstLogin']==1) {
-                return $this->ChangePasswordScreen("",$loginInfo[0]["MemberID"],"","");
+             
+             if ($memberdata[0]['ChangePasswordFstLogin']==1) {
+                if($_GET['f']==1){  
+                    return $this->SavePasswordScreen("",$loginInfo[0]["MemberID"],"","");                    
+                }else {
+                    return $this->ChangePasswordScreen("",$loginInfo[0]["MemberID"],"","");
+                }
              }
              
              if ($memberdata[0]['IsMobileVerified']==0) {
@@ -531,115 +546,51 @@
              return true;
             // return "<script>location.href='".AppPath."MyProfiles/CreateProfile';</script>";
          }
-
-         /*function ChangePasswordScreen($error="",$loginid="",$npswd="",$cnpswd="",$reqID="") {
+         
+        function SavePasswordScreen($error="",$loginid="",$npswd="",$cnpswd="",$reqID="") {
            
            global $mysql,$loginInfo;
             
             if (sizeof($loginInfo)==0) {
                 return "Invalid request. Please login again.";
-            }   
+            }                                               
             
             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
-            if ($memberdata[0]['ChangePasswordFstLogin']==0) {
-                return '<div class="modal-body" style="text-align:center"><br><br>
-                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your password has been<br>saved successfully.</h4>    <br>
-                            <a href="'.AppPath.'" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
-                         </div>';    
-            } else {
-                $formid = "frmChnPass_".rand(30,3000);
-                return '<div id="otpfrm">
-                            <form method="POST" id="'.$formid.'">
-                               <div class="modal-header">
-                                    <h4 class="modal-title">Change login password</h4>
-                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
-                                </div>
-                                <div class="modal-body" style="min-height: 261px;max-height: 261px;">
-                                    <div class="form-group row">
-                                        <div class="col-sm-4" style="text-align:center;padding-top: 15px;">
-                                            <img src="'.AppPath.'assets/images/icon_change_password.png">
-                                        </div>
-                                        <div class="col-sm-8">
-                                            <span style="text-left:center;color:#ada9a9">The administartor requests to change your login password on your first signin.</span><br><br>
-                                            <div class="row">
-                                                <div class="col-sm-8"><h6 style="color:#ada9a9">New Password<span style="color:red">*</span></h6></div>
-                                            </div>                             
-                                            <div class="row">
-                                                <div class="col-sm-11">  
-                                                    <div class="input-group">
-                                                        <input type="password" class="form-control" value="'.$npswd.'" id="NewPassword"  name="NewPassword" maxlength="20" style="font-family:Roboto;" placeholder="New Password">
-                                                        <span class="input-group-btn">
-                                                            <button  onclick="showHidePwd(\''.NewPassword.'\',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
-                                                        </span>          
-                                                    </div>
-                                                    <div id="frmNewPass_error" style="color:red;font-size:12px;">'.$error.'</div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm-8"><h6 style="color:#ada9a9">Confirm New Password<span style="color:red">*</span></h6></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm-11">
-                                                    <div class="input-group">
-                                                        <input type="password" class="form-control" value="'.$cnpswd.'" id="ConfirmNewPassword"  name="ConfirmNewPassword"  maxlength="20" style="font-family:Roboto;" placeholder="Confirm New Password">
-                                                        <span class="input-group-btn">
-                                                            <button  onclick="showHidePwd(\''.ConfirmNewPassword.'\',$(this))" class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-close"></i></button>
-                                                        </span>          
-                                                    </div>
-                                                    <div id="frmCfmNewPass_error" style="color:red;font-size:12px">'.$error.'</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                   <a href="javascript:void(0)" onclick="Signout()">Sign out</a>&nbsp;&nbsp;
-                                    <a href="javascript:void(0)" onclick="ChangeNewPassword(\''.$formid.'\')" class="btn btn-primary" >Change Password</a>&nbsp;&nbsp;
-                                </div>
-                             </div>
-                            </form>                                                                                                       
-                        </div>
-                        <script>
-                            $(document).ready(function () {
-                                $("#NewPassword").blur(function () {
-                                    if(IsNonEmpty("NewPassword","frmNewPass_error","Please enter new password")){
-                                        IsAlphaNumeric("NewPassword","frmNewPass_error","Please enter alpha numerics characters only");
-                                    }
-                                });
-                                $("#ConfirmNewPassword").blur(function () {
-                                    if(IsNonEmpty("ConfirmNewPassword","frmCfmNewPass_error","Please enter confirm new password")){
-                                        IsAlphaNumeric("ConfirmNewPassword","frmCfmNewPass_error","Please enter alpha numerics characters only");
-                                    }
-                                });
-                            });
-                            document.getElementById(\'NewPassword\').onkeydown = function(event) {
-                               var k;
-                               if(event.keyCode)
-                               {
-                                   k = event.keyCode;
-                                   if(k == 13)
-                                   {                            
-                                      
-                                         document.getElementById(\'ConfirmNewPassword\').focus();
-                                   }
-                                }
-                            }
-                            document.getElementById(\'ConfirmNewPassword\').onkeydown = function(event) {
-                               var k;
-                               if(event.keyCode)
-                               {
-                                   k = event.keyCode;
-                                   if(k == 13)
-                                   {                            
-                                      
-                                         ChangeNewPassword(\''.$formid.'\');
-                                   }
-                                }
-                            }
-                        </script>'; 
-            }   
-        } */
+                                                                                                                                
+             return Response::returnSuccess("Success.",array("js"=> "SavePasswordScreen"));
+        }
+        function SaveNewPassword($error="",$loginid="",$npswd="",$cnpswd="",$reqID="") {
+           global $mysql,$loginInfo;
+            if (sizeof($loginInfo)==0) {
+                return "Invalid request. Please login again.";
+            } 
+            $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+            if (isset($_POST['NewPassword'])) {
+                if (strlen(trim($_POST['NewPassword']))<6) {
+                   return Response::returnError("Invalid new password.",array("js" =>"SavePasswordScreen","NewPassword"=>$_POST['NewPassword'],"ConfirmNewPassword"=>$_POST['ConfirmNewPassword']));
+                }
+                if (strlen(trim($_POST['NewPassword']))!= strlen(trim($_POST['ConfirmNewPassword']))) {
+                   return Response::returnError("Do not match password.",array("js" =>"SavePasswordScreen","NewPassword"=>$_POST['NewPassword'],"ConfirmNewPassword"=>$_POST['ConfirmNewPassword']));
+                }
+               
+                $update = "update _tbl_members set MemberPassword='".$_POST['NewPassword']."' ,ChangePasswordFstLogin='0' where MemberID='".$loginInfo[0]['MemberID']."'";
+                $mysql->execute($update);
+                
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberSavePassword'");
+                    $content  = str_replace("#MemberName#",$memberdata[0]['MemberName'],$mContent[0]['Content']);
+                    $content  = str_replace("#MemberPassword#",$_POST['NewPassword'],$content);
+
+                     MailController::Send(array("MailTo"         => $memberdata[0]['EmailID'],
+                                                "Category"       => "MemberSavePassword",
+                                                "MemberCode"      => $memberdata[0]['MemberCode'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($memberdata[0]['MobileNumber']," Dear ".$memberdata[0]['MemberName'].",Your login password saved. Your login password is ".$_POST['NewPassword']."");  
+               return Response::returnSuccess("Your password saved"); 
+            }
+                                                                                                                                    
+            } 
+
         function ChangePasswordScreen($error="",$loginid="",$npswd="",$cnpswd="",$reqID="") {
            
            global $mysql,$loginInfo;
@@ -655,7 +606,7 @@
              } else {
                  return Response::returnSuccess("Success.",array("js"           => "ChangePasswordScreen"));
              }
-            }   
+            }
         function ChangeNewPassword($error="",$loginid="",$npswd="",$cnpswd="",$reqID="") {
            global $mysql,$loginInfo;
             if (sizeof($loginInfo)==0) {
@@ -664,12 +615,10 @@
             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
             if (isset($_POST['NewPassword'])) {
                 if (strlen(trim($_POST['NewPassword']))<6) {
-                   //return $this->ChangePasswordScreen("Invalid new password.",$_POST['loginId'],$_POST['NewPassword'],$_POST['reqId']);
-                   return Response::returnError("Success.",array("js" =>"ChangePasswordScreen","error" => "<span style='color:red';>Invalid new password</span>","NewPassword"=>$_POST['NewPassword'],"ConfirmNewPassword"=>$_POST['ConfirmNewPassword']));
+                   return Response::returnError("Invalid new password.",array("js" =>"ChangePasswordScreen","NewPassword"=>$_POST['NewPassword'],"ConfirmNewPassword"=>$_POST['ConfirmNewPassword']));
                 }
                 if (strlen(trim($_POST['NewPassword']))!= strlen(trim($_POST['ConfirmNewPassword']))) {
-                   //return $this->ChangePasswordScreen("Do not match password.",$_POST['loginId'],$_POST['NewPassword'],$_POST['ConfirmNewPassword'],$_POST['reqId']);
-                   return Response::returnError("Success.",array("js" =>"ChangePasswordScreen","error" => "<span style='color:red';>Do not match password</span>","NewPassword"=>$_POST['NewPassword'],"ConfirmNewPassword"=>$_POST['ConfirmNewPassword']));
+                   return Response::returnError("Do not match password.",array("js" =>"ChangePasswordScreen","NewPassword"=>$_POST['NewPassword'],"ConfirmNewPassword"=>$_POST['ConfirmNewPassword']));
                 }
                
                 $update = "update _tbl_members set MemberPassword='".$_POST['NewPassword']."' ,ChangePasswordFstLogin='0' where MemberID='".$loginInfo[0]['MemberID']."'";
@@ -726,20 +675,18 @@
              if (isset($_POST['new_mobile_number'])) {
                   $countrycode=CodeMaster::getData('RegisterAllowedCountries');
                  if (strlen(trim($_POST['new_mobile_number']))==0) {     
-                     return Response::returnError("Success.",array("js" =>"ChangeMobileNumber","error" => "<span style='color:red';>Please enter mobile number</span>"));
-                    // return $this->ChangeMobileNumber("<span style='color:red';>Please enter mobile number</span>.",$_POST['loginId'],$_POST['new_mobile_number'],$_POST['reqId']);
+                     return Response::returnError("Please enter mobile number",array("js" =>"ChangeMobileNumber"));
                  }
                  if (!($_POST['new_mobile_number']>6000000000 && $_POST['new_mobile_number']<9999999999)) {
-                     return Response::returnError("Success.",array("js" =>"ChangeMobileNumber",
-                                                                   "error" => "<span style='color:red';>Invalid mobile number</span>","Mobilenumber" => trim($_POST['new_mobile_number'])));
+                     return Response::returnError("Invalid mobile number",array("js" =>"ChangeMobileNumber","Mobilenumber" => trim($_POST['new_mobile_number'])));
                  }
                  if (strlen(trim($_POST['new_mobile_number']))!=10) {
-                     return Response::returnError("Success.",array("js" =>"ChangeMobileNumber","error" => "<span style='color:red';>Invalid mobile number</span>","Mobilenumber" => trim($_POST['new_mobile_number'])));
+                     return Response::returnError("Invalid mobile number",array("js" =>"ChangeMobileNumber","Mobilenumber" => trim($_POST['new_mobile_number'])));
                  }
 
                  $duplicate = $mysql->select("select * from `_tbl_members` where `MobileNumber`='".$_POST['new_mobile_number']."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
                  if (sizeof($duplicate)>0) {
-                     return Response::returnError("Success.",array("js"  =>"ChangeMobileNumber","error" => "<span style='color:red';>Mobile Number already in use</span>","Mobilenumber" =>trim($_POST['new_mobile_number'])));
+                     return Response::returnError("Mobile number already in use",array("js"  =>"ChangeMobileNumber","Mobilenumber" =>trim($_POST['new_mobile_number'])));
                  }
                  $sql="update `_tbl_members` set `MobileNumber`='".$_POST['new_mobile_number']."' , `CountryCode`='".$_POST['CountryCode']."' where `MemberID`='".$loginInfo[0]['MemberID']."'" ;
                  $mysql->execute($sql);
@@ -761,7 +708,7 @@
                                                              "SqlQuery"       => base64_encode($sql),            
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                 $updatemsg = "<div class='successmessage'>Your new mobile number has been updated.</div>";
+                 $updatemsg = "Your new mobile number has been updated";
              }
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
              if ($memberdata[0]['IsMobileVerified']==1) {
@@ -802,13 +749,12 @@
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
                  return Response::returnSuccess("Your mobile number verified.");
                  } else {
-                     return Response::returnError("Success.",array("error" => "<span style='color:red';>Invalid verification code</span>",
-                                                                   "callfrom"      => $_GET['callfrom'],
-                                                                   "loginId"       => $loginid,
-                                                                   "reqId"         => $_POST['reqId'],
-                                                                   "MobileOtp"     => trim($_POST['mobile_otp_2']),
-                                                                   "CountryCode"   => $memberdata[0]['CountryCode'],
-                                                                   "MobileNumber"  => J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber'])));
+                     return Response::returnError("Invalid verification code.",array("callfrom"      => $_GET['callfrom'],
+                                                                                     "loginId"       => $loginid,
+                                                                                     "reqId"         => $_POST['reqId'],
+                                                                                     "MobileOtp"     => trim($_POST['mobile_otp_2']),
+                                                                                     "CountryCode"   => $memberdata[0]['CountryCode'],
+                                                                                     "MobileNumber"  => J2JApplication::hideMobileNumberWithCharacters($memberdata[0]['MobileNumber'])));
                  }
          }
          public function ResendMobileNumberVerificationForm($error="",$loginid="",$scode="",$reqID="") {
@@ -876,11 +822,11 @@
 
              if (isset($_POST['new_email'])) {
                  if (strlen(trim($_POST['new_email']))==0) {
-                     return Response::returnError("Success.",array("js" =>"ChangeEmailID","error" => "<span style='color:red';>Please enter valid email id</span>","emailid" => $_POST['new_email']));
+                     return Response::returnError("Please enter valid email id",array("js" =>"ChangeEmailID","emailid" => $_POST['new_email']));
                  }
                  $duplicate = $mysql->select("select * from _tbl_members where EmailID='".$_POST['new_email']."' and MemberID <>'".$loginInfo[0]['MemberID']."'");
                  if (sizeof($duplicate)>0) {
-                     return Response::returnError("Success.",array("js" =>"ChangeEmailID","error" => "<span style='color:red';>Email already in use</span>","emailid" => $_POST['new_email']));
+                     return Response::returnError("Email already in use",array("js" =>"ChangeEmailID","emailid" => $_POST['new_email']));
                  }
                  $sql="update `_tbl_members` set `EmailID`='".$_POST['new_email']."' where `MemberID`='".$loginInfo[0]['MemberID']."'";
                  $mysql->execute($sql);
@@ -903,7 +849,7 @@
                                                              "SqlQuery"       => base64_encode($sql),
                                                              //"oldData"        => base64_encode(json_encode($oldData)),
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
-                 $updatemsg = "<div class='successmessage'>Your new email address has been updated.</div>";
+                 $updatemsg = "Your new email address has been updated";
              }
 
              $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
@@ -930,7 +876,7 @@
                                                                                      "messagedon"=>date("Y-m-d h:i:s"))) ;
                         return Response::returnSuccess("Success.",array("loginId"       => $loginid,
                                                                         "reqId"         => $securitycode,
-                                                                        "EmailID"   => $memberdata[0]['EmailID'],
+                                                                        "EmailID"       => $memberdata[0]['EmailID'],
                                                                         "updatemsg"     => (($updatemsg!="") ? $updatemsg : "")));
                           }
          }
@@ -950,11 +896,10 @@
                                                              "ActivityOn"     => date("Y-m-d H:i:s")));
                   return Response::returnSuccess("Your email verified.");
                  } else {
-                     return Response::returnError("Success.",array("error" => "<span style='color:red';>Invalid verification code</span>",
-                                                                   "loginId"       => $loginid,
-                                                                   "reqId"         => $_POST['reqId'],
-                                                                   "emailotp"      => trim($_POST['email_otp']),
-                                                                   "EmailID"       => $memberdata[0]['EmailID']));
+                     return Response::returnError("Invalid verification code",array("loginId"       => $loginid,
+                                                                                    "reqId"         => $_POST['reqId'],
+                                                                                    "emailotp"      => trim($_POST['email_otp']),
+                                                                                    "EmailID"       => $memberdata[0]['EmailID']));
                  }
          }
          public function ResendEmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
@@ -1044,7 +989,7 @@
                           
                         foreach($PostProfiles as $PostProfile) {
                             $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode']);
-                            $result['mode']="Submitted to review";
+                            $result['mode']="Processing to review";
                             $Profiles[]=$result;     
                         }
                      }
@@ -1258,37 +1203,13 @@
                                                                           "DownLoadOn" =>date("Y-m-d H:i:s"))) ;  
                 return Response::returnSuccess("Success.");
             } else {
-                return Response::returnError("Verified.",array("securitycode"    => $_POST['reqId'],
-                                                                "error"          => "<span style='color:red'>Invalid verification code.</span>",
-                                                                "otpcheck"        => $_POST['otpcheck'],
-                                                                "PProfileCode"   => $_POST['PProfileCode'],
-                                                                "MobileNumber"   => $member[0]['MobileNumber'],
-                                                                "EmailID"        => $member[0]['EmailID']));
+                return Response::returnError("Invalid verification code.",array("securitycode"    => $_POST['reqId'],
+                                                                                "otpcheck"        => $_POST['otpcheck'],
+                                                                                "PProfileCode"   => $_POST['PProfileCode'],
+                                                                                "MobileNumber"   => $member[0]['MobileNumber'],
+                                                                                "EmailID"        => $member[0]['EmailID']));
                 }
          }
-
-         public function VerifyProfileforPublish() {                          
-
-             global $mysql,$loginInfo;
-
-             $updateSql = "update `_tbl_draft_profiles` set  `RequestToVerify`      = '1',
-                                                            `RequestVerifyOn`      = '".date("Y-m-d H:i:s")."'
-                                                             where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileID`='".$_POST['ProfileID']."'";
-             $mysql->execute($updateSql);  
-             $id = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $loginInfo[0]['MemberID'],
-                                                             "ActivityType"   => 'RequestToVerifyPublishProfile.',
-                                                             "ActivityString" => 'Request To Verify PublishProfile.',
-                                                             "SqlQuery"       => base64_encode($updateSql),
-                                                             //"oldData"        => base64_encode(json_encode($oldData)),
-                                                             "ActivityOn"     => date("Y-m-d H:i:s")));
-                 return  $updateSql.'<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <p style="text-align:center"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg" width="10%"><p>
-                            <h5 style="text-align:center;color:#ada9a9">Your profile publish request has been submitted.</h5>
-                            <h5 style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer"  >Yes</a> <h5>
-                       </div>';
-
-         }
-          
          /* Submit Profile */ 
          public function SendOtpForProfileforPublish($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
             global $mysql,$mail,$loginInfo;      
@@ -1427,13 +1348,12 @@
                         }else {
                            $resendotp= '<h5 style="color:#ada9a9"><a onclick="ResendSendOtpForProfileforPublish(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Re-Send</a></h5>';
                         }
-                        return Response::returnError("Success.",array("securitycode"   => $_POST['reqId'],
-                                                                        "error"          => "<span style='color:red'>Invalid verification code.</span>",
-                                                                        "resend"         => sizeof($checkotp),
-                                                                        "PublishOtp"         => $_POST['PublishOtp'],
-                                                                        "ProfileID"      => $_POST['ProfileID'],
-                                                                        "EmailID"        => $member[0]['EmailID'],
-                                                                        "MobileNumber"   => $member[0]['MobileNumber']));
+                        return Response::returnError("Invalid verification code",array("securitycode"   => $_POST['reqId'],
+                                                                                       "resend"         => sizeof($checkotp),
+                                                                                       "PublishOtp"     => $_POST['PublishOtp'],
+                                                                                       "ProfileID"      => $_POST['ProfileID'],
+                                                                                       "EmailID"        => $member[0]['EmailID'],
+                                                                                       "MobileNumber"   => $member[0]['MobileNumber']));
                 } 
         }
         
@@ -1505,7 +1425,7 @@
                                                                                       "Type"          =>"RequestToDeleteDraftProfile",
                                                                                       "messagedon"    =>date("Y-m-d h:i:s"))) ;
                     return Response::returnSuccess("success",array("securitycode" => $securitycode,
-                                                                   "ProfileID"    => $_POST['ProfileID'],
+                                                                   "ProfileCode"    => $_POST['ProfileCode'],
                                                                    "EmailID"      => $member[0]['EmailID'],
                                                                    "MobileNumber" => $member[0]['MobileNumber']));
                       
@@ -1514,7 +1434,7 @@
          public function ProfileDeleteOTPVerification() {
             global $mysql,$loginInfo ;
              
-            $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+            $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'"); 
             $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");   
             $otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
             
@@ -1527,7 +1447,7 @@
                 $mysql->execute("update `_tbl_draft_profiles` set  `IsDelete`      = '1',
                                                                     `DeletedRemarks` ='".$_POST['DeleteRemarks_DraftProfile']."',
                                                                 `DeletedOn`      = '".date("Y-m-d H:i:s")."'
-                                                                 where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileID']."'");
+                                                                 where  `MemberID`='".$loginInfo[0]['MemberID']."' and `ProfileCode`='".$_POST['ProfileCode']."'");
                 
                 
                 $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberDeleteDraftProfile'");
@@ -1550,20 +1470,18 @@
                 return Response::returnSuccess("Your profile has been deleted.");
                 
             } else {
-                 return Response::returnError("success",array("error"         => "<span style='color:red'>Invalid verification code.</span>",
-                                                                "securitycode" => $_POST['reqId'],
-                                                                "ProfileID"    => $_POST['ProfileID'],
-                                                                "DeleteOtp"      => $_POST['DeleteOtp'],
-                                                                "EmailID"      => $member[0]['EmailID'],
-                                                                "MobileNumber" => $member[0]['MobileNumber']));
-                // return $this->SendOtpForProfileDelete("<span style='color:red'>Invalid verification code.</span>",$_POST['DeleteOtp'],$_POST['reqId'],$_POST['ProfileID']);
+                 return Response::returnError("Invalid verification code",array("securitycode" => $_POST['reqId'],
+                                                                                "ProfileCode"    => $_POST['ProfileCode'],
+                                                                                "DeleteOtp"      => $_POST['DeleteOtp'],
+                                                                                "EmailID"      => $member[0]['EmailID'],
+                                                                                "MobileNumber" => $member[0]['MobileNumber']));
                 } 
         }
         
         public function ResendSendOtpForProfileDelete($errormessage="",$otpdata="",$reqID="",$ProfileID="") {
             global $mysql,$mail,$loginInfo;      
             
-            $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
+            $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'"); 
             $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");  
              
                 $resend = $mysql->insert("_tbl_resend",array("MemberID" =>$member[0]['MemberID'],
@@ -1589,8 +1507,8 @@
                                                                                      "SecurityCode" =>$otp,
                                                                                      "Type"         =>"RequestToDeleteDraftProfile",
                                                                                      "messagedon"      =>date("Y-m-d h:i:s"))) ;   
-                        return Response::returnSuccess("success",array("securitycode" => $_POST['reqId'],
-                                                                     "ProfileID"    => $_POST['ProfileID'],
+                        return Response::returnSuccess("success",array("securitycode" => $securitycode,
+                                                                     "ProfileCode"    => $_POST['ProfileCode'],
                                                                      "DeleteOtp"    => $_POST['DeleteOtp'],
                                                                      "EmailID"      => $member[0]['EmailID'],
                                                                      "MobileNumber" => $member[0]['MobileNumber']));
@@ -2694,15 +2612,7 @@
                                         "Message"  => $content),$mailError);
              MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Account has been Deleted.");  
              $mysql->execute("update `_tbl_members` set `IsDeleted`='1', `DeletedOn`='".date("Y-m-d H:i:s")."'  where  `MemberID`='".$loginInfo[0]['MemberID']."'");
-             //_draft
-             //_profile
              return Response::returnSuccess("successfully",array());
-             return  '<div style="background:white;width:100%;padding:20px;height:100%;">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Confirmation For Delete Member</h4>
-                            <h5 style="text-align:center;color:#ada9a9">Your account was deleted successfully.</h5>
-                            <h5 style="text-align:center;"><a href="'.AppPath.'?action=logout&redirect=../index" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a> <h5>
-                       </div>';
          }
        
          public function SaveBankRequest() {
@@ -3600,123 +3510,6 @@
          
          /* End Favourited Section */
   
-         /*public function ResendEmailVerificationForm($error="",$loginid="",$scode="",$reqID="") {
-
-             if ($loginid=="") {                     
-                $loginid = $_GET['LoginID'];
-             }
-
-             global $mysql;
-             $login = $mysql->select("Select * from `_tbl_logs_logins` where `LoginID`='".$loginid."'");
-
-             if (sizeof($login)==0) {
-                 return "Invalid request. Please login again.";
-             }
-             $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");
-             $resend = $mysql->insert("_tbl_resend",array("MemberID" =>$memberdata[0]['MemberID'],
-                                                          "Reason" =>"Resend Email ID Verfication Code",
-                                                          "ResendOn"=>date("Y-m-d h:i:s"))) ;
-
-             if ($memberdata[0]['IsEmailVerified']==1) {
-                 return '<div class="modal-header">
-                            <h4 class="modal-title">Email Verification</h4>
-                            <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                        </div>
-                        <div class="modal-body" style="text-align:center">
-                            <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/verifiedtickicon.jpg"></p>
-                            <h5 style="text-align:center;color:#ada9a9">Greate! Your email has been<br> successfully verified.</h4>    <br>
-                            <a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>
-                         </div>';    
-             } else {
-
-                 if ($error=="") {
-                     $otp=rand(1111,9999);
-
-                     $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberEmailVerification'");
-                     $content  = str_replace("#MemberName#",$memberdata[0]['MemberName'],$mContent[0]['Content']);
-                     $content  = str_replace("#otp#",$otp,$content);
-
-                     MailController::Send(array("MailTo"   => $memberdata[0]['EmailID'],
-                                                "Category" => "NewMemberCreated",
-                                                "MemberID" => $memberdata[0]['MemberID'],
-                                                "Subject"  => $mContent[0]['Title'],
-                                                "Message"  => $content),$mailError);
-
-                     if($mailError){
-                        return "Mailer Error: " . $mail->ErrorInfo.
-                        "Error. unable to process your request.";
-                     } else {
-                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID" =>$memberdata[0]['MemberID'],
-                                                                                     "RequestSentOn" =>date("Y-m-d H:i:s"),
-                                                                                     "EmailTo" =>$memberdata[0]['EmailID'],
-                                                                                     "SecurityCode" =>$otp,
-                                                                                     "Type" =>"EmailVerification",
-                                                                                     "messagedon"=>date("Y-m-d h:i:s"))) ;  
-                        $formid = "frmMobileNoVerification_".rand(30,3000);
-                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
-                                return '<div id="otpfrm">
-                                            <form method="POST" id="'.$formid.'">
-                                            <input type="hidden" value="'.$loginid.'" name="loginId">
-                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Please verify your email</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                                                </div>
-                                                 <div class="modal-body">
-                                                    <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
-                                                    <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
-                                                    <div class="form-group">
-                                                        <div class="input-group">
-                                                            <div class="col-sm-12">
-                                                                <div class="col-sm-3"></div>
-                                                                <div class="col-sm-4"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                                                <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
-                                                                <div class="col-sm-3"></div>
-                                                            </div>
-                                                            <div class="col-sm-12"  style="text-align:center;">'.$error.'</div>
-                                                        </div>
-                                                    </div>
-                                                 </div>
-                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
-                                        </form>                                                                                                       
-                                    </div>'; 
-                          }
-
-                 }  else {
-                    $securitycode = $reqID;
-
-                    $formid = "frmMobileNoVerification_".rand(30,3000);
-                 $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$login[0]['MemberID']."'");                                                          
-                                return '<div id="otpfrm">
-                                            <form method="POST" id="'.$formid.'">
-                                            <input type="hidden" value="'.$loginid.'" name="loginId">
-                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Please verify your email</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>
-                                                </div>
-                                                 <div class="modal-body">
-                                                    <p style="text-align:center;padding: 20px;"><img src="'.AppPath.'assets/images/email_verification.png"></p>
-                                                    <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br><h4 style="text-align:center;color:#ada9a9">'.$memberdata[0]['EmailID'].'</h4>
-                                                    <div class="form-group">
-                                                        <div class="input-group">
-                                                            <div class="col-sm-12">
-                                                                <div class="col-sm-3"></div>
-                                                                <div class="col-sm-4"><input type="text" value="'.$_POST['email_otp'].'" class="form-control" id="email_otp" maxlength="4" name="email_otp" style="width:50%;width: 117%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                                                <div class="col-sm-2"><button type="button" onclick="EmailOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
-                                                                <div class="col-sm-3"></div>
-                                                            </div>
-                                                            <div class="col-sm-12"  style="text-align:center;">'.$error.'</div>
-                                                        </div>
-                                                    </div>
-                                                 </div>
-                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendEmailVerificationForm(\''.$formid.'\')" style="cursor:pointer;color:#1694b5">&nbsp;Resend</a><h5> 
-                                        </form>                                                                                                       
-                                    </div>'; 
-                }
-            }                                                                                     
-         }   */
-  
          public function GetLandingPageProfiles() {
              
              global $mysql;
@@ -3829,12 +3622,13 @@
           global $mysql,$loginInfo;
                                                                                  
              $result = array();
-             
             if($_POST['ProfileFrom']=="HomePage"){
-             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX001")."' order by `ProfileID` DESC  LIMIT 18");
+             //$Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX001")."' order by `ProfileID` DESC  LIMIT 18");
+             $Profiles = $mysql->select("select * from _tbl_profiles order by `ProfileID` DESC  LIMIT 18");
             }
             if($_POST['ProfileFrom']=="ListPage"){
-             $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX001")."' order by `ProfileID` DESC  LIMIT 10");
+            // $Profiles = $mysql->select("select * from _tbl_profiles where `SexCode`='".(($myprofile[0]['SexCode']=="SX001") ? "SX002" : "SX001")."' order by `ProfileID` DESC  LIMIT 10");
+             $Profiles = $mysql->select("select * from _tbl_profiles order by `ProfileID` DESC  LIMIT 10");
             }
              foreach($Profiles as $p) {
                 $result[]=Profiles::getProfileInfo($p['ProfileCode'],1); 
@@ -4918,7 +4712,94 @@
              } else {
                 return Response::returnError($error);  
              }
-         }                                                                                                           
+         }      
+         public function RemoveSentInterest() {
+             
+             global $mysql,$loginInfo;
+             
+             $Profiles = $mysql->select("select MemberID,ProfileID,ProfileCode,SexCode from `_tbl_profiles` where ProfileCode='".$_GET['ProfileCode']."'"); 
+             if (sizeof($Profiles)==0) {
+                return Response::returnError("Couldn't able to remove from interest, please contact support team"); 
+             }
+             $member = $mysql->select("select * from _tbl_members where MemberID ='".$Profiles[0]['MemberID']."'"); 
+             $visitorsDetails =$mysql->select("select ProfileID,ProfileCode from `_tbl_profiles` where MemberID='".$loginInfo[0]['MemberID']."'"); 
+             $ProfileThumb = $mysql->select("select concat('".AppPath."uploads/profiles/".$visitorsDetails[0]['DraftProfileCode']."/thumb/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$visitorsDetails[0]['ProfileCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");
+             if (sizeof($ProfileThumb)==0) {
+                 if ($Profiles[0]['SexCode']=="SX002"){
+                     $ProfileThumbnail = AppPath."assets/images/noprofile_female.png";
+                 } else { 
+                     $ProfileThumbnail = AppPath."assets/images/noprofile_male.png";
+                 }
+             } else {
+                 $ProfileThumbnail = getDataURI($ProfileThumb[0]['ProfilePhoto']); 
+             }
+             $mysql->execute("update `_tbl_profiles_interests` set `IsVisible`='0' where `IsInterest`='1' and  ProfileID='".$Profiles[0]['ProfileID']."' and VisterMemberID='".$loginInfo[0]['MemberID']."'");
+          
+             $FirstTime = $mysql->select("select * from `_tbl_profiles_interests` where `VisterMemberID`='".$loginInfo[0]['MemberID']."'");
+             if(sizeof($FirstTime)==0){
+             
+             $FirstTimeProfileRemoveInterest = $mysql->select("select * from `_tbl_general_settings` where  `Settings`='FirstTimeProfileRemoveSentInterest'");
+             
+             if($FirstTimeProfileRemoveInterest[0]['Email']=="1"){
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RemoveSentInterestProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "RemoveSentInterestProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'], 
+                                        "Message"  => $content),$mailError);
+             }
+             if($FirstTimeProfileRemoveInterest[0]['SMS']=="1"){
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has remove from interest. Your Profile ID is ".$Profiles[0]['ProfileCode']);
+             }
+             }
+          
+          
+             $EveryTimeProfileRemoveSentInterest = $mysql->select("select * from `_tbl_general_settings` where  `Settings`='EveryTimeProfileRemoveSentInterest'");
+             
+             if($EveryTimeProfileRemoveSentInterest[0]['Email']=="1"){
+             
+             $mContent = $mysql->select("select * from `mailcontent` where `Category`='RemoveSentInterestProfile'");
+             $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
+             $content  = str_replace("#ProfileCode#",$Profiles[0]['ProfileCode'],$content);
+             $content  = str_replace("#PersonName#",$Profiles[0]['PersonName'],$content);
+
+             MailController::Send(array("MailTo"   => $member[0]['EmailID'],
+                                        "Category" => "RemoveSentInterestProfile",
+                                        "MemberID" => $member[0]['MemberID'],
+                                        "Subject"  => $mContent[0]['Title'],
+                                        "Message"  => $content),$mailError);
+             }
+             if($EveryTimeProfileRemoveShortList[0]['SMS']=="1"){
+             MobileSMSController::sendSMS($member[0]['MobileNumber']," Dear ".$member[0]['MemberName'].",Your Profile (".$Profiles[0]['PersonName'].") has remove from interest. Your Profile ID is ".$Profiles[0]['ProfileCode']);
+             }
+          
+             $id = $mysql->insert("_tbl_profiles_interests",array("MemberID"            => $Profiles[0]['MemberID'],
+                                                                   "ProfileID"          => $Profiles[0]['ProfileID'],
+                                                                   "ProfileCode"        => $Profiles[0]['ProfileCode'],
+                                                                   "VisterMemberID"     => $loginInfo[0]['MemberID'],
+                                                                   "VisterProfileID"    => $visitorsDetails[0]['ProfileID'],
+                                                                   "VisterProfileCode"  => $visitorsDetails[0]['ProfileCode'],
+                                                                   "ViewedOn"           => date("Y-m-d H:i:s"),
+                                                                   "IsInterest"         => "0",
+                                                                   "IsVisible"          => "0",
+                                                                   "IsInterestOn"       => date("Y-m-d H:i:s")));
+                                                                   
+             $mysql->insert("_tbl_latest_updates",array("MemberID"          => $Profiles[0]['MemberID'],
+                                                        "ProfileID"         => $Profiles[0]['ProfileID'],
+                                                        "ProfileCode"       => $Profiles[0]['ProfileCode'],
+                                                        "VisterMemberID"    => $loginInfo[0]['MemberID'],
+                                                        "VisterProfileID"   => $visitorsDetails[0]['ProfileID'],
+                                                        "VisterProfileCode" => $visitorsDetails[0]['ProfileCode'],
+                                                        "ProfilePhoto"      => $ProfileThumbnail,
+                                                        "Subject"           => "has remove interest your profile.",
+                                                        "ViewedOn"          => date("Y-m-d H:i:s")));
+             return Response::returnSuccess($Profiles[0]['ProfileCode']." has remove interest.");      
+          }                                                                                                     
          public function ApproveInterest() {
              
              global $mysql,$loginInfo;    
@@ -5106,14 +4987,12 @@
                                                                 "ActivityOn"     => date("Y-m-d H:i:s")));
                 return Response::returnSuccess("Your submitted profile has been changed to draft profile.",array("FileName"=>$_POST['FileName'],"ProfileCode"=>$_POST['ProfileCode']));
             } else {
-                // return $this->SendOtpForEditSubmittedProfile("<span style='color:red'>Invalid verification code.</span>",$_POST['EditOtp'],$_POST['reqId'],$_POST['ProfileCode']);
-                return Response::returnError("Verified.",array("securitycode"   => $_POST['reqId'],
-                                                                "error"          => "<span style='color:red'>Invalid verification code.</span>",
-                                                                "editotp"        => $_POST['EditOtp'],
-                                                                "profilecode"    => $_POST['ProfileCode'],
-                                                                "FileName"       => $_POST['FileName'],
-                                                                "EmailID"        => $member[0]['EmailID'],
-                                                                "MobileNumber"   => $member[0]['MobileNumber']));
+                return Response::returnError("Invalid verification code.",array("securitycode"   => $_POST['reqId'],
+                                                                                "editotp"        => $_POST['EditOtp'],
+                                                                                "profilecode"    => $_POST['ProfileCode'],
+                                                                                "FileName"       => $_POST['FileName'],
+                                                                                "EmailID"        => $member[0]['EmailID'],
+                                                                                "MobileNumber"   => $member[0]['MobileNumber']));
                 }
     }
                 
@@ -5369,94 +5248,7 @@
                  
      }
      }         
-       /*  public function SendOtpForPayNow($errormessage="",$otpdata="",$reqID="",$MemberID="") {
-            global $mysql,$mail,$loginInfo;      
-        
-            $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'");
-           
-                if ($reqID=="")      {
-                    $otp=rand(1000,9999);
-                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='MemberPayNowForPlaceOrder'");
-                    $content  = str_replace("#MemberName#",$member[0]['MemberName'],$mContent[0]['Content']);
-                    $content  = str_replace("#otp#",$otp,$content);
-
-                    MailController::Send(array("MailTo"   => $member[0]['EmailID'],
-                                               "Category" => "MemberPayNowForPlaceOrder",
-                                               "MemberID" => $member[0]['MemberID'],
-                                               "Subject"  => $mContent[0]['Title'],
-                                               "Message"  => $content),$mailError);
-                    MobileSMSController::sendSMS($member[0]['MobileNumber'],"Dear ".$member[0]['MemberName']."Verification Security Code is ".$otp);
-
-                    if($mailError){
-                        return "Mailer Error: " . $mail->ErrorInfo.
-                        "Error. unable to process your request.";
-                    } else {
-                        $securitycode = $mysql->insert("_tbl_verification_code",array("MemberID"      =>$member[0]['MemberID'],
-                                                                                      "RequestSentOn" =>date("Y-m-d H:i:s"),
-                                                                                      "EmailTo"       =>$member[0]['EmailID'],
-                                                                                      "SMSTo"         =>$member[0]['MobileNumber'],
-                                                                                      "SecurityCode"  =>$otp,
-                                                                                      "Type"          =>"MemberPayNowForPlaceOrder",
-                                                                                      "messagedon"    =>date("Y-m-d h:i:s"))) ;
-                        $formid = "frmPayNowOTPVerification_".rand(30,3000);
-                        $memberdata = $mysql->select("select * from `_tbl_members` where `MemberID`='".$loginInfo[0]['MemberID']."'"); 
-                                return '<div id="otpfrm">
-                                            <form method="POST" id="'.$formid.'" name="'.$formid.'">
-                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
-                                            <input type="hidden" value="'.$_POST['MemberCode'].'" name="MemberCode">
-                                            <input type="hidden" value="'.$_POST['OrderNumber'].'" name="OrderNumber">
-                                            <input type="hidden" name="PaymentMode" value="Wallet">   
-                                            <div class="modal-header">                                                             
-                                                <h4 class="modal-title">Confirmation for pay now</h4>
-                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <div class="col-sm-12"> 
-                                                        <div class="col-sm-3"></div> 
-                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="PayNowOtp" maxlength="4" name="PayNowOtp" style="width: 127%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                                        <div class="col-sm-2"><button type="button" onclick="PayNowOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
-                                                        <div class="col-sm-3"></div>
-                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error">'.$error.'</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForPayNow(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
-                                            </form>                                                                                                       
-                                         </div>'; 
-                    }
-                } else {
-                        $formid = "frmPayNowOTPVerification_".rand(30,3000);
-                                return '<div id="otpfrm">
-                                            <form method="POST" id="'.$formid.'" name="'.$formid.'">
-                                            <input type="hidden" value="'.$securitycode.'" name="reqId">
-                                            <input type="hidden" value="'.$_POST['MemberCode'].'" name="MemberCode">
-                                            <input type="hidden" value="'.$_POST['OrderNumber'].'" name="OrderNumber">
-                                            <input type="hidden" name="PaymentMode" value="Wallet">   
-                                            <div class="modal-header">                                                             
-                                                <h4 class="modal-title">Confirmation for pay now</h4>
-                                                <button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h5 style="text-align:center;color:#ada9a9">We have sent a 4 digit verification code to<br></h5><h4 style="text-align:center;color:#ada9a9">'.$member[0]['EmailID'].'<br>&amp;<br>'.$member[0]['MobileNumber'].'</h4>
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <div class="col-sm-12"> 
-                                                        <div class="col-sm-3"></div> 
-                                                        <div class="col-sm-4"><input type="text"  class="form-control" id="PayNowOtp" maxlength="4" name="PayNowOtp" style="width: 127%;font-weight: bold;font-size: 22px;text-align: center;letter-spacing: 10px;font-family:Roboto;"></div>
-                                                        <div class="col-sm-2"><button type="button" onclick="PayNowOTPVerification(\''.$formid.'\')" class="btn btn-primary" name="btnVerify" id="verifybtn">Verify</button></div>
-                                                        <div class="col-sm-3"></div>
-                                                        <div class="col-sm-12" style="text-align:center;color:red" id="frmMobileNoVerification_error">'.$error.'</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <h5 style="text-align:center;color:#ada9a9">Did not receive the verification code?<a onclick="ResendSendOtpForPayNow(\''.$formid.'\')" style="cursor: pointer;color: #1694b5;">&nbsp;Resend</a></h5> 
-                                            </form>                                                                                                       
-                                         </div>'; 
-                }
-        }   */
+      
        public function SendOtpForPayNow($errormessage="",$otpdata="",$reqID="",$MemberID="") {
             global $mysql,$mail,$loginInfo;      
             
@@ -5551,14 +5343,12 @@
                 return Response::returnSuccess("Paid Successfully.");
                 
             } else {
-                return Response::returnError("Verified.",array("securitycode"  =>$_POST['reqId'],
-                                                                 "MemberCode"    =>$_POST['MemberCode'],
-                                                                 "OrderNumber"   =>$_POST['OrderNumber'],
-                                                                 "error"         =>"<span style='color:red'>Invalid verification code.</span>",
-                                                                 "PayNowOtp"       =>$_POST['PayNowOtp'],
-                                                                 "EmailID"       =>$member[0]['EmailID'],
-                                                                 "MobileNumber"  =>$member[0]['MobileNumber']));
-                 return $this->SendOtpForPayNow("<span style='color:red'>Invalid verification code.</span>",$_POST['PayNow'],$_POST['reqId'],$_POST['MemberCode']);
+                return Response::returnError("Invalid verification code.",array("securitycode"  =>$_POST['reqId'],
+                                                                                "MemberCode"    =>$_POST['MemberCode'],
+                                                                                "OrderNumber"   =>$_POST['OrderNumber'],
+                                                                                "PayNowOtp"     =>$_POST['PayNowOtp'],
+                                                                                "EmailID"       =>$member[0]['EmailID'],
+                                                                                "MobileNumber"  =>$member[0]['MobileNumber']));
                 } 
         }
         
@@ -6172,8 +5962,47 @@
                  $OpenTicket = $mysql->select("select * from _tbl_service_requests where ReqCode='".$_POST['Code']."' and Status='3'");
                  return Response::returnSuccess("success",$OpenTicket);
              }
-                                                                
-         } 
+         }
+       function SentReportForAbuse(){
+        global $mysql,$loginInfo;
+        $RProfile = $mysql->select("select * from `_tbl_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");
+        $RMember = $mysql->select("select * from `_tbl_members` where `MemberCode`='".$RProfile[0]['MemberCode']."'");
+        $member = $mysql->select("select * from `_tbl_members` where MemberID='".$loginInfo[0]['MemberID']."'");
+            if(!(sizeof($RProfile)==1)){
+                return Response::returnError("Invalid member information"); 
+            } 
+        
+              $id =  $mysql->insert("_tbl_abuse_reports",array("ReportByID"         => $member[0]['MemberID'],
+                                                               "ReportByCode"       => $member[0]['MemberCode'], 
+                                                               "MemberID"           => $RMember[0]['MemberID'], 
+                                                               "MemberCode"         => $RMember[0]['MemberCode'], 
+                                                               "ProfileID"          => $RProfile[0]['ProfileID'], 
+                                                               "ProfileCode"        => $RProfile[0]['ProfileCode'], 
+                                                               "ReportReason"       => $_POST['ReportReason'], 
+                                                               "ReportOn"           => date("Y-m-d H:i:s")));
+       return Response::returnSuccess("Report Sent",array());
+    }
+    function HideMyProfileDetails(){
+        global $mysql,$loginInfo;
+        $RProfile = $mysql->select("select * from `_tbl_profiles` where `ProfileCode`='".$_POST['ProfileCode']."'");
+        $RMember = $mysql->select("select * from `_tbl_members` where `MemberCode`='".$RProfile[0]['MemberCode']."'");
+        $member = $mysql->select("select * from `_tbl_members` where MemberID='".$loginInfo[0]['MemberID']."'");
+        $Profile = $mysql->select("select * from `_tbl_profiles` where MemberCode='".$member[0]['MemberCode']."'");
+            if(!(sizeof($RProfile)==1)){
+                return Response::returnError("Invalid member information"); 
+            } 
+        
+              $id =  $mysql->insert("_tbl_profile_view_permissions",array("HideFromID"          => $RMember[0]['MemberID'],
+                                                                          "HideFromCode"        => $RMember[0]['MemberCode'], 
+                                                                          "HideFromProfileID"   => $RProfile[0]['ProfileID'], 
+                                                                          "HideFromProfileCode" => $RProfile[0]['ProfileCode'], 
+                                                                          "MemberID"            => $member[0]['MemberID'], 
+                                                                          "MemberCode"          => $member[0]['MemberCode'], 
+                                                                          "ProfileID"           => $Profile[0]['ProfileID'], 
+                                                                          "ProfileCode"         => $Profile[0]['ProfileCode'], 
+                                                                          "HideOn"              => date("Y-m-d H:i:s")));
+       return Response::returnSuccess("Hide Successfully",array());
+    } 
            
        }
 //4084   5500

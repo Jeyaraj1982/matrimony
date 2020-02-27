@@ -216,9 +216,9 @@ function getAppUrl() {
         <script src="<?php echo SiteUrl?>assets/js/mcontroller.js?rand=<?php echo rand(3000,3300000);?>"></script>
       <?php }
             if($MInfo['data']['ChangePasswordFstLogin']==1 || $MInfo['data']['IsMobileVerified']==0 || $MInfo['data']['IsEmailVerified']==0){
-            ?>
-            <script>
-                $( document ).ready(function() {CheckVerification();});
+            ?>      
+            <script>                                             // isset($_GET['f']) ? $_GET['f'] : 0; 
+                $( document ).ready(function() {CheckVerification('<?php echo $_GET['f'];?>');});
                 </script>
             <?php 
               exit;
@@ -439,7 +439,7 @@ function getAppUrl() {
       <?php if (UserRole=="Admin") { ?>
      
     <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-      <a class="navbar-brand brand-logo" href="<?php echo SiteUrl;?>" style="width:100%;height:100%;"><img src="<?php echo $config->logoPath?>" alt="logo" style="width:100%;height:100%;margin-top: 2px;"/></a>
+      <a class="navbar-brand brand-logo" href="<?php echo SiteUrl;?>" style="width:100%;height:100%;"><img src="<?php echo SiteUrl;?>assets/logo/<?php echo BusinessConfig::COMPANY_LOGO ?>" alt="logo" style="width:100%;height:100%;margin-top: 2px;"/></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center">        
         <ul class="navbar-nav navbar-nav-right">
@@ -460,7 +460,7 @@ function getAppUrl() {
                 </li>
               </ul>
       </div>
-      <?php } ?>
+      <?php } ?>                                                                       
   </nav>
     <div class="container-fluid page-body-wrapper">
     <?php include_once("views/".UserRole."/LeftMenu.php"); ?>
@@ -636,6 +636,7 @@ function getAppUrl() {
          
         
             <div class="form-group row">
+            
                             <div class="col-sm-12" style="text-align:center">
                                <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
                         <img src="<?php echo $ProfileInformation['ProfileThumb'];?>" style="height: 200px;background:#fff;padding:6px">
@@ -648,7 +649,7 @@ function getAppUrl() {
                              <div class="col-sm-12" style="text-align:center;color: #514444cc;">
                                <?php if($ProfileInformation['mode']=="Published"){?>
                                     <?php echo $ProfileInformation['mode'];?>&nbsp;(<?php echo putDate($Profile['IsApprovedOn']);?>)
-                               <?php }else { echo $ProfileInformation['mode']; }?>
+                               <?php }else { echo "<p class='Submitteddetail'>".$ProfileInformation['mode']."</p>"; }?>
                             </div>                                                                                              
                         </div>
                         <div style="float:right;line-height: 1px;">
@@ -812,22 +813,23 @@ function getAppUrl() {
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-sm-5">
+                                <div class="col-sm-6">
                                     <?php  if ($Profile['isSendInterest']['IsInterest']==0) { ?>                                                                                                                    
                                         <a href="javascript:void(0)" onclick="SendToInterest('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="imgS_<?php echo $rnd; ?>" style="font-size: 12px;border:1px solid #ff945f;padding: 2px 5px;background: #ff945f;color: #fff;cursor:pointer !important;text-decoration:none">Sent Interest</a>
-                                    <?php } else { ?>
+                                    <?php } else { ?>    
                                         <?php  if ($Profile['isSendInterest']['IsApproved']==0 && $Profile['isSendInterest']['Isrejected']==0) { ?>
-                                            <a id="imgS_<?php echo $rnd; ?>" style="border:1px solid #ff945f;font-size: 12px;padding: 2px 5px;color: #ff945f;cursor:pointer !important;text-decoration:none">Sent Interest On <?php echo $Profile['isSendInterest']['IsInterestOn'];?></a>
-                                        <?php }?>
+                                            <span><a id="imgD_<?php echo $rnd; ?>" style="border:1px solid #ff945f;font-size: 12px;padding: 2px 5px;color: #ff945f;cursor:pointer !important;text-decoration:none">Sent Interest On <?php echo $Profile['isSendInterest']['IsInterestOn'];?></a></span>
+                                            <a href="javascript:void(0)" onclick="RemoveInterest('<?php echo $Profile['ProfileCode'];?>','<?php echo $rnd;?>')" id="imgC_<?php echo $rnd; ?>" style="font-size: 12px;border:1px solid #ff945f;padding: 2px 5px;background: #ff945f;color: #fff;cursor:pointer !important;text-decoration:none">Cancel Interest</a>
+                                        <?php } ?> 
                                         <?php  if ($Profile['isSendInterest']['IsApproved']==1 && $Profile['isSendInterest']['Isrejected']==0) { ?>
-                                            <a id="imgS_<?php echo $rnd; ?>" style="border:1px solid #ff945f;font-size: 12px;padding: 2px 5px;color: green;cursor:pointer !important;text-decoration:none"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;Approved</a>
+                                            <a id="imgS_<?php echo $rnd; ?>" style="font-size: 10px;padding: 2px 5px;color: green;cursor:pointer !important;text-decoration:none"><i class="fa fa-check" aria-hidden="true" style="font-size:10px"></i>&nbsp;Accepted your interest</a>
                                         <?php }?> 
                                         <?php  if ($Profile['isSendInterest']['IsApproved']==0 && $Profile['isSendInterest']['Isrejected']==1) { ?>
-                                            <a id="imgS_<?php echo $rnd; ?>" style="border:1px solid #ff945f;font-size: 12px;padding: 2px 5px;color: red;cursor:pointer !important;text-decoration:none"><i class="fa fa-cross" aria-hidden="true"></i>&nbsp;Rejected</a>
+                                            <a id="imgS_<?php echo $rnd; ?>" style="font-size: 10px;padding: 2px 5px;color: red;cursor:pointer !important;text-decoration:none"><i class="fa fa-cross" aria-hidden="true"  style="font-size:10px"></i>&nbsp;Rejected your interest</a>
                                         <?php }?> 
                                     <?php }?> 
                                 </div>
-                                <div class="col-sm-7" style="text-align:right;">
+                                <div class="col-sm-6" style="text-align:right;">
                                 <!--<a href="javascript:void(0)" onclick="RequestToshowUpgrades('<?php //echo $Profile['ProfileID'];?>')">View2</a>&nbsp;&nbsp;&nbsp;&nbsp;  -->
                                  <?php if(sizeof($IsDownload)>0) {?>
                                     <span style="color: #867c7c;color: #867c7c;">Viewed Contact On : <?php echo putDateTime($IsDownload[0]['DownloadOn']);?></span>
