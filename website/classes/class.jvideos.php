@@ -1,4 +1,4 @@
-<?php
+<?php     
     class JVideos{
         
         function getVideos($videoid=0) {
@@ -6,7 +6,7 @@
             return ($videoid==0) ? $mysql->select("select * from _jvideo"): $mysql->select("select * from _jvideo where videoid=".$videoid);
         }
       
-        function addVideos($param){
+        public static function addVideos($param){
             global $mysql; 
             return $mysql->insert("_jvideo",array("videotitle"=> $param['videotitle'],"videodescription" =>$param['videodescription'],"videourl"=>$param['videourl'],"postedon"=>date("Y-m-d H:i:s"),"lastmodified"=>date("Y-m-d H:i:s"))); 
         }

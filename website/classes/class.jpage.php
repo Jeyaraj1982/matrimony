@@ -30,13 +30,12 @@
             return $mysql->insert("_jpages",array("pagetitle"=> $param['pagetitle'],"pagedescription" => $param['pagedescription'],"pagetype"=> $param['pagetype'],"filepath"=> $param['filename'],"postedon" => date("Y-m-d H:i:s"),"lastmodified"=> date("Y-m-d H:i:s"),"eventtime"=> ($param['pagetype']=='E') ? $param['eventtime'] : 'Null',"ispublish"=> $param['ispublish'],"ishomepage"=>$param['ishomepage'],"keywords"=>$param['keywords'],"description"=>$param['description'],"pagefilename"=>$pagefilename)); 
                }
        
-        function updatePage($param,$pageid){
+        public static function updatePage($param,$pageid=""){
             global $mysql;
 
             if ($param['ishomepage']==1) {
                 $mysql->execute("update _jpages set ishomepage=0 where pagetype='P'");
             }
-       
             $pagefilename = String2FileName($param['pagetitle']);
             
             $param['pagetitle'] = str_replace("'","\'",$param['pagetitle']);    
@@ -48,7 +47,6 @@
             $param['pagedescription'] = str_replace('$','\$',$param['pagedescription']);   
             
             $sql = (isset($param['filename'])) ? ", filepath='".$param['filename']."' " : "";
-            
             return $mysql->execute("update _jpages set pagefilename='".$pagefilename."', pagetitle='".$param['pagetitle']."',pagedescription='".$param['pagedescription']."',ispublish='".$param['ispublish']."',ishomepage='".$param['ishomepage']."',keywords='".$param['keywords']."',description='".$param['description']."',lastmodified='".date("Y-m-d H:i:s")."'".$sql." where pageid='".$param['pageid']."'");
         }
        
