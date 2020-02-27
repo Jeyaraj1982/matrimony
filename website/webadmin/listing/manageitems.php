@@ -1,6 +1,4 @@
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<script src="./../../assets/js/jquery-1.7.2.js"></script>
-<link rel="stylesheet" href="./../../assets/css/demo.css">
+<?php include_once(__DIR__."/../header.php"); ?>
 <style>
 .mytr:hover{background:#c4e9f2;cursor:pointer}
   .title_Bar {background:url(../images/blue/titlebackground.png);padding:5px;color:#6db2bc;font-family:'Trebuchet MS';font-size:13px !important;font-weight: bold;padding:11px !important;}   
@@ -25,7 +23,7 @@
             <td width="50" style="padding:10px;"></td>
         </tr>
 <?php 
-    include_once("../../config.php");
+   
         if (!(CommonController::isLogin())){
         echo CommonController::printError("Login Session Expired. Please Login Again");
         exit;

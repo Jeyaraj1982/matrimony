@@ -208,7 +208,7 @@
         </div>
          -->
                 
-     <!--<h3>Listing</h3>
+     <h3>Listing</h3>
         <div>
           <div class="content" style="padding-left:20px;line-height:15px;margin-top:5px">
             <img src="<?php echo BaseUrl;?>assets/images/arrow_rightq.gif" align="absmiddle">&nbsp;<a class="leftMenu" href="listing/addcategory.php" target="rpanel">Add Category</a> <br>
@@ -222,7 +222,7 @@
             <img src="<?php echo BaseUrl;?>assets/images/arrow_rightq.gif" align="absmiddle">&nbsp;<a class="leftMenu" href="listing/manageitems.php" target="rpanel">Manage Items</a><br>
         </div>
         </div>
-        
+       <!-- 
      <h3>Product</h3>
         <div>
           <div class="content" style="padding-left:20px;line-height:15px;margin-top:5px">

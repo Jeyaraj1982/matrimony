@@ -469,7 +469,7 @@
                $returnString = "This Category name is already exists";
                return -1; 
            }
-            $returnString = "Category saved successfully";
+           $returnString = "Category saved successfully";
            return $mysql->insert("_jitemcategory",array("categoryname"=>$categoryname)); 
        }
        
@@ -503,11 +503,17 @@
        }
        
        
-        function getItem($itemid){ 
+        function getItem($itemid=0){ 
            global $mysql;
-           return ($itemid==0) ?  $mysql->select("select * from _jlisting as list, _jitemcategory as lcategory where lcategory.categoryid=list.categoryid") : 
+           return ($itemid==0) ?  $mysql->select("select * from _jlisting left join _jitemcategory on _jitemcategory.categoryid=_jlisting.categoryid") : 
                                      $mysql->select("select * from _jlisting  as list, _jitemcategory as lcategory where lcategory.categoryid=list.categoryid and list.itemid='".$itemid."'");   
        }  
+       
+       function getItemByCategory($categoryid=0){ 
+           global $mysql;
+           return  $mysql->select("select * from _jlisting left join _jitemcategory on _jitemcategory.categoryid=_jlisting.categoryid where _jlisting.categoryid='".$categoryid."'");
+                                     
+       }
        
        function getItemByTitle($itemtitle){ 
            global $mysql;
@@ -552,6 +558,7 @@
                                                    "shortdescription"   => $param['shortdescription'],
                                                    "itemfilename"       => String2FileName($itemname),
                                                    "itemprice"          => $param['itemprice'],
+                                                   "ContactNumbers"          => $param['ContactNumbers'],
                                                    "ispublished"        => $param['ispublished'],
                                                    "postedon"           => date("Y-m-d H:i:s"))); 
        }
