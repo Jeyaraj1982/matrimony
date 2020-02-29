@@ -36,11 +36,15 @@
         <meta itemprop="og:description" content="<?php echo $description;?>" />
         
          
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   
+  
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   
   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> 
+  
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> 
         <!--<script src="http://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
         <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js" type="text/javascript"></script>      -->
@@ -62,7 +66,15 @@
 		color:red;
 		font-size:12px;
 	}
+    
 </style>
+<style>
+  /* Make the image fully responsive */
+  .carousel-inner img {
+      width: 100%;
+      height: 100%;
+  }
+  </style>
 		<script>
 		function showHidePwd(pwd,btn) {
     
@@ -243,7 +255,7 @@ $(document).ready(function(){
      
     
             .subMenu {
-                height:<?php echo JFrame::getAppSetting('menu_height');?>px;
+               /* height:<?php echo JFrame::getAppSetting('menu_height');?>px;*/
                 clear:both;
                
                  <?php if (JFrame::getAppSetting('menu_background_image_color_noneed')==0) { ?> 
@@ -334,8 +346,8 @@ $(document).ready(function(){
       height: 100%;
   }
   </style>
-   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'> 
-   <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+   
+   
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 
 
@@ -386,50 +398,50 @@ $(document).ready(function(){
     <?php } ?>   
           
           
-                                                
-          
-        <table class="container" align="center" cellpadding="0" cellspacing="0" style="min-width:1024px; border:0px solid #3A3A3A">
-        
-         <?php if (JFrame::getAppSetting("showheader")==1) { ?> 
-            <tr>
-              <!--   <td colspan="2">                                                                                                                                                                    
-               <?php if (JFrame::getAppSetting("headernoimagenocolor")==0) { ?> 
-                    <div style="padding-right:<?php echo JFrame::getAppSetting('header_logo_padding_right');?>px;padding-left:<?php echo JFrame::getAppSetting('header_logo_padding_left');?>px;padding-top:<?php echo JFrame::getAppSetting('header_logo_padding_top');?>px;padding-bottom:<?php echo JFrame::getAppSetting('header_logo_padding_bottom');?>px;overflow:hidden;height:<?php echo JFrame::getAppSetting('headerheight');?>px;clear:both;background:url('assets/<?php echo $config['thumb'].JFrame::getAppSetting('headerbgimg');?>');background-repeat:<?php echo JFrame::getAppSetting('header_background_repeat');?>;background-color:#<?php echo JFrame::getAppSetting('headerbgcolor');?>;">
-                <?php } else { ?>
-                    <div style="padding-right:<?php echo JFrame::getAppSetting('header_logo_padding_right');?>px;padding-left:<?php echo JFrame::getAppSetting('header_logo_padding_left');?>px;padding-top:<?php echo JFrame::getAppSetting('header_logo_padding_top');?>px;padding-bottom:<?php echo JFrame::getAppSetting('header_logo_padding_bottom');?>px;overflow:hidden;clear:both;height:<?php echo JFrame::getAppSetting('headerheight');?>px">
-                <?php } ?>
-                   <a href="<?php echo JFrame::getAppSetting('siteurl');?>/index.php"><img src='<?php echo BaseUrl;?>assets/<?php echo $config['thumb'].JFrame::getAppSetting('logo');?>' style="height:80px;" ></a>
-                   </div>
-                </td>-->
-                                                                                                                                        
-                                                                                                                                                                                   
-               <?php if (JFrame::getAppSetting("headernoimagenocolor")==0) { ?> 
-                    <td colspan="2" style="padding-right:<?php echo JFrame::getAppSetting('header_logo_padding_right');?>px;padding-left:<?php echo JFrame::getAppSetting('header_logo_padding_left');?>px;padding-top:<?php echo JFrame::getAppSetting('header_logo_padding_top');?>px;padding-bottom:<?php echo JFrame::getAppSetting('header_logo_padding_bottom');?>px;overflow:hidden;height:<?php echo JFrame::getAppSetting('headerheight');?>px;clear:both;background:url('assets/<?php echo $config['thumb'].JFrame::getAppSetting('headerbgimg');?>');background-repeat:<?php echo JFrame::getAppSetting('header_background_repeat');?>;background-color:#<?php echo JFrame::getAppSetting('headerbgcolor');?>;">
-                <?php } else { ?>
-                    <td colspan="2" style="padding-right:<?php echo JFrame::getAppSetting('header_logo_padding_right');?>px;padding-left:<?php echo JFrame::getAppSetting('header_logo_padding_left');?>px;padding-top:<?php echo JFrame::getAppSetting('header_logo_padding_top');?>px;padding-bottom:<?php echo JFrame::getAppSetting('header_logo_padding_bottom');?>px;overflow:hidden;clear:both;height:<?php echo JFrame::getAppSetting('headerheight');?>px">
-                <?php } ?>
-                   
-                            
-                
-                <div class="">
-            <div class="col-sm-6">
-                <div>
-                    <a href="<?php echo JFrame::getAppSetting('siteurl');?>/index.php"><img src='<?php echo BaseUrl;?>/<?php echo $config['thumb'].JFrame::getAppSetting('logo');?>' style="height:80px;" ></a>
+<div class="container">
+    <?php if (JFrame::getAppSetting("showheader")==1) { ?> 
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">     
+                <div class="col-sm-6">
+                    <div>
+                      <!--  <a href="<?php echo JFrame::getAppSetting('siteurl');?>/index.php">   -->
+                        
+                        <div style="font-weight:bold;color:#222;font-size:30px;padding:20px 0px;line-height:25px;">
+                        nanjilproperties<br />
+                        <span style="font-weight:normal;font-size:12px;color:#999">The Best Property Mart in Kanyakumari District</span>
+                        </div>
+                        <!--<img src='<?php echo BaseUrl;?>/<?php echo $config['thumb'].JFrame::getAppSetting('logo');?>' style="height:80px;" alt="" >-->
+                        
+                        <!--</a>-->
+                    </div>
+                </div>
+                <div class="col-sm-6" style="text-align:right;">
+                    <a href="<?php echo JFrame::getAppSetting('siteurl');?>/login" class="btn btn-danger" style="margin-top: 12px;padding-bottom: 7px;">Login</a>&nbsp;
+                    <a href="<?php echo JFrame::getAppSetting('siteurl');?>/register" class="btn btn-success" style="margin-top: 12px;padding-bottom: 7px;">Register Now</a> 
                 </div>
             </div>
-            <div class="col-sm-6" style="text-align:right;">
-                <a href="<?php echo JFrame::getAppSetting('siteurl');?>/login" class="btn btn-danger" style="margin-top: 12px;padding-bottom: 7px;">Login</a>&nbsp;
-                <a href="<?php echo JFrame::getAppSetting('siteurl');?>/register" class="btn btn-success" style="margin-top: 12px;padding-bottom: 7px;">Register Now</a> 
-            </div>
         </div>
-                </td>
-            </tr>
-         <?php } ?>   
-            <tr>
-                <td>
-                <div id="subMenu" class="subMenu">
-                    <a class="sub_Menu <?php echo $_SERVER['REQUEST_URI']=='/' ? 'sub_Menu_active' : '';?>" href='<?php echo JFrame::getAppSetting('siteurl');?>'>Home</a>
-                    <?php foreach(MenuItems::getHeaderMenuItems() as $m) { ?>
+    </div>
+    <?php } ?> 
+   
+   
+ 
+    <div class="row" style="height:60px">
+        <div class="col-sm-12">
+        
+        
+       <nav class="navbar navbar-expand-lg navbar-light bg-light subMenu" style="padding:0px;background-color:#<?php echo JFrame::getAppSetting('menubgcolor');?> !important;">
+  <!--<a class="navbar-brand" href="#">Navbar</a>-->
+    <button class="navbar-toggler subMenu" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="float: right;">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+  <div class="collapse navbar-collapse subMenu" id="navbarNav">
+    <ul class="navbar-nav subMenu">
+      <li class="nav-item">
+        <a class="sub_Menu <?php echo $_SERVER['REQUEST_URI']=='/' ? 'sub_Menu_active' : '';?>" style="width: 100%" href='<?php echo JFrame::getAppSetting('siteurl');?>'>Home</a>
+      </li>
+      <?php foreach(MenuItems::getHeaderMenuItems() as $m) { ?>
                     <?php 
                         $target  = ($m['target']>0) ? " target='_blank' " : "";
                         
@@ -460,26 +472,59 @@ $(document).ready(function(){
                                                  break;
                         }
                         ?>
-                        <a class="sub_Menu  <?php echo $_SERVER['REQUEST_URI']=="/".$m['pagefilename'] ? 'sub_Menu_active' : '';?>" href='<?php echo $pageurl;?>' <?php echo $target; ?> ><?php echo $m['menuname'];?></a>
+                         <li class="nav-item">
+        <a class="sub_Menu  <?php echo $_SERVER['REQUEST_URI']=="/".$m['pagefilename'] ? 'sub_Menu_active' : '';?>" style="width: 100%"  href='<?php echo $pageurl;?>' <?php echo $target; ?> ><?php echo $m['menuname'];?></a>
+      </li>
+                        
                     <?php } ?>
-                    </div>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>
-               
-                    <table cellpadding="0" cellspacing="0" width="100%">
-                        <tr>
-                            <?php
-                                if (JFrame::getAppSetting('layout')==2) {
-                                    include_once(DOCPATH.web_path."/includes/side.php");
-                                }
-                            ?>
-                            <?php
-                                $style="";
-                                if ($browse || $enquiry) {
-                                $style="";
-                                }
-                            ?>
-                            <td valign="top" style="background:#fff;<?php echo $style; ?>">
+       
+    </ul>
+  </div>
+</nav>
+             
+        </div>
+    </div>
+                                                            
+ <div id="demo" class="carousel slide" data-ride="carousel" style="margin-bottom:50px;;">
+
+  <!-- Indicators -->
+  <ul class="carousel-indicators">
+    <li data-target="#demo" data-slide-to="0" class="active"></li>
+    <li data-target="#demo" data-slide-to="1"></li>
+    <li data-target="#demo" data-slide-to="2"></li>
+  </ul>
+  
+  <!-- The slideshow -->
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fspecials-images.forbesimg.com%2Fdam%2Fimageserve%2F556528705%2F960x0.jpg%3Ffit%3Dscale" alt="Los Angeles" style="height:400px;width:100%;border-radius:5px">
+      <div class="carousel-caption d-none d-md-block">
+    <h5 style="font-size:40px;font-family:arial;">Welcome to Nanjil Properties</h5>
+    <p>We are a premier real estate service provider in kanyakumari district.
+    We are providing online real estate advertisement & dealing with consumer services .
+    <br />     <br /><br />
+    <button type="button" class="btn btn-success btn-lg">Post Your requirement</button>
+    <button type="button" class="btn btn-outline-success btn-lg">Browser property</button>
+    </p>
+    
+  </div>
+    </div>
+    <div class="carousel-item">
+      <img src="https://blog.hubspot.com/hubfs/Sales_Blog/real-estate-business-compressor.jpg" alt="Chicago"  style="height:400px;width:100%;border-radius:5px">
+    </div>
+    <div class="carousel-item">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFXHIKxYGs2C1yWMrbzGM7FMKzkrTFtNEaxTzs0xxbflyxcrSXhA&s" alt="New York" style="height:400px;width:100%;border-radius:5px">
+    </div>
+  </div>
+  
+  <!-- Left and right controls -->
+  <a class="carousel-control-prev" href="#demo" data-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </a>
+  <a class="carousel-control-next" href="#demo" data-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </a>
+</div>
+
+        
+  

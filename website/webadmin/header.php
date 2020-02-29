@@ -1,7 +1,9 @@
 <?php
     include_once("../../config.php");
+    
 ?>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+ <meta charset="UTF-8">
 <?php 
     if (!(CommonController::isLogin())){
         echo CommonController::printError("Login Session Expired. Please Login Again");

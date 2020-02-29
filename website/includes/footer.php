@@ -1,32 +1,6 @@
-                <?php 
-            if(isset($layout) && $layout==0) {
-                
-            }
-            else{
-                
-            
-        ?>
-            </div>
-                
-
-                            
-                                <?php
-                                if (JFrame::getAppSetting('layout')==1) {
-                                    echo '<div class="col-sm-3">';
-                                    include_once("includes/side.php");
-                                    echo '</div>';
-                                }
-                                ?>
-                               
-                                 </div>
-</div>
- <?php }?>
-     </td>
-                </tr>
-                </table>
-                </td>
-                </tr>
-                </table>
+              
+        
+     </div>
 <footer class="footer" style="padding:15px 0px !important;padding-bottom:0px !important;background-color:#222222;color: #999999;">
     <div class="footer_top">
         <div class="container" style="padding-top: 40px;padding-bottom: 40px;">
