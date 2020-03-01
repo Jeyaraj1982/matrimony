@@ -7,7 +7,7 @@ function SavePasswordScreen(frmid1,error,NewPassword,ConfirmNewPassword) {
      NewPassword = typeof NewPassword !== 'undefined' ? NewPassword : "";
      ConfirmNewPassword = typeof ConfirmNewPassword !== 'undefined' ? ConfirmNewPassword : "";
     var param = $( "#"+frmid1).serialize();
-    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","142"));
         $.post(getAppUrl() + "m=Member&a=SavePasswordScreen","",function(result) {
              if (!(isJson($.trim(result)))) {
                 $('#Mobile_VerificationBody').html(result);
@@ -69,11 +69,7 @@ function SavePasswordScreen(frmid1,error,NewPassword,ConfirmNewPassword) {
                  $('#Mobile_VerificationBody').html(content);
         }
         else {
-          var content = '<div class="modal-header">'
-                            +'<h4 class="modal-title">Save login password</h4>'
-                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                        +'</div>'
-                        +'<div class="modal-body" style="text-align:center">'
+          var content = '<div class="modal-body" style="text-align:center">'
                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                             +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                             +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -96,7 +92,7 @@ function SaveNewPassword(frmid1) {
         return false;
     }
     var param = $( "#"+frmid1).serialize();                             
-    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","142"));
     $.post(getAppUrl() + "m=Member&a=SaveNewPassword",param,function(result2) {
         if (!(isJson($.trim(result2)))) {
                     $('#Mobile_VerificationBody').html(result2);
@@ -105,11 +101,7 @@ function SaveNewPassword(frmid1) {
                 var obj = JSON.parse($.trim(result2));
                  var data = obj.data; 
                     if (obj.status=="success") { 
-                         var content = '<div class="modal-header">'
-                                            +'<h4 class="modal-title">Save login password</h4>'
-                                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                                        +'</div>'
-                                        +'<div class="modal-body" style="text-align:center">'
+                         var content = '<div class="modal-body" style="text-align:center">'
                                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                                             +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                                             +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -130,7 +122,7 @@ function ChangePasswordScreen(frmid1,error,NewPassword,ConfirmNewPassword) {
      NewPassword = typeof NewPassword !== 'undefined' ? NewPassword : "";
      ConfirmNewPassword = typeof ConfirmNewPassword !== 'undefined' ? ConfirmNewPassword : "";
     var param = $( "#"+frmid1).serialize();
-    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","142"));
         $.post(getAppUrl() + "m=Member&a=ChangePasswordScreen","",function(result) {
              if (!(isJson($.trim(result)))) {
                 $('#Mobile_VerificationBody').html(result);
@@ -192,11 +184,7 @@ function ChangePasswordScreen(frmid1,error,NewPassword,ConfirmNewPassword) {
                  $('#Mobile_VerificationBody').html(content);
         }
         else {
-          var content = '<div class="modal-header">'
-                            +'<h4 class="modal-title">Change login password</h4>'
-                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                        +'</div>'
-                        +'<div class="modal-body" style="text-align:center">'
+          var content = '<div class="modal-body" style="text-align:center">'
                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                             +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                             +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -219,7 +207,7 @@ function ChangeNewPassword(frmid1) {
         return false;
     }
     var param = $( "#"+frmid1).serialize();                             
-    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","200"));
+    $('#Mobile_VerificationBody').html(preloading_withText("Loading ...","142"));
     $.post(getAppUrl() + "m=Member&a=ChangeNewPassword",param,function(result2) {
         if (!(isJson($.trim(result2)))) {
                     $('#Mobile_VerificationBody').html(result2);
@@ -228,11 +216,7 @@ function ChangeNewPassword(frmid1) {
                 var obj = JSON.parse($.trim(result2));
                  var data = obj.data; 
                     if (obj.status=="success") { 
-                         var content = '<div class="modal-header">'
-                                            +'<h4 class="modal-title">Change login password</h4>'
-                                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                                        +'</div>'
-                                        +'<div class="modal-body" style="text-align:center">'
+                         var content = '<div class="modal-body" style="text-align:center">'
                                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                                             +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                                             +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -279,11 +263,7 @@ function MobileNumberVerification() {
                 }
         }
         else {
-          var content = '<div class="modal-header">'
-                            +'<h4 class="modal-title">Mobile Number Verification</h4>'
-                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                        +'</div>'
-                        +'<div class="modal-body" style="text-align:center">'
+          var content = '<div class="modal-body" style="text-align:center">'
                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                             +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                             +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -344,11 +324,7 @@ function ChangeMobileNumber(error,Mobilenumber) {
                  $('#Mobile_VerificationBody').html(content);
         }
         else {
-          var content = '<div class="modal-header">'
-                            +'<h4 class="modal-title">Mobile Number Verification</h4>'
-                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                        +'</div>'
-                        +'<div class="modal-body" style="text-align:center">'
+          var content = '<div class="modal-body" style="text-align:center">'
                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                             +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                             +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -404,11 +380,7 @@ function MobileNumberVerificationForm(frmid1) {
                         if(data.js == "ChangeMobileNumber"){
                         ChangeMobileNumber(obj.message,data.Mobilenumber);
                     }else {
-                         var content = '<div class="modal-header">'
-                                            +'<h4 class="modal-title">Mobile Number Verification</h4>'
-                                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                                       +'</div>'
-                                       +'<div class="modal-body" style="text-align:center">'
+                         var content = '<div class="modal-body" style="text-align:center">'
                                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                                             +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                                             +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -434,11 +406,7 @@ function MobileNumberOTPVerification(frmid) {
                 var obj = JSON.parse($.trim(result2));
                  var data = obj.data; 
                     if (obj.status=="success") { 
-                       var content = '<div class="modal-header">'
-                                        +'<h4 class="modal-title">Mobile Number Verification</h4>'
-                                        +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                                     +'</div>'
-                                    +'<div class="modal-body" style="text-align:center">'
+                       var content = '<div class="modal-body" style="text-align:center">'
                                         +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                                         +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                                         +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -519,11 +487,7 @@ function ResendMobileNumberVerificationForm(frmid1) {
                  $('#Mobile_VerificationBody').html(content);  
                         
                     } else {
-                       var content = '<div class="modal-header">'
-                                            +'<h4 class="modal-title">Mobile Number Verification</h4>'
-                                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                                       +'</div>'
-                                       +'<div class="modal-body" style="text-align:center">'
+                       var content = '<div class="modal-body" style="text-align:center">'
                                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                                             +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                                             +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -560,11 +524,7 @@ function EmailVerification() {
                  $('#Mobile_VerificationBody').html(content);
         }
         else {
-          var content = '<div class="modal-header">'
-                            +'<h4 class="modal-title">Email Verification</h4>'
-                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                        +'</div>'
-                        +'<div class="modal-body" style="text-align:center">'
+          var content = '<div class="modal-body" style="text-align:center">'
                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                             +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                             +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -614,11 +574,7 @@ function ChangeEmailID(error,emailid) {
                  $('#Mobile_VerificationBody').html(content);
         }
         else {
-          var content = '<div class="modal-header">'
-                            +'<h4 class="modal-title">Email Verification</h4>'
-                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                        +'</div>'
-                        +'<div class="modal-body" style="text-align:center">'
+          var content = '<div class="modal-body" style="text-align:center">'
                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                             +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                             +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -673,11 +629,7 @@ function EmailVerificationForm(frmid1) {
                         if(data.js == "ChangeEmailID"){
                         ChangeEmailID(obj.message,data.emailid);
                     }else {
-                         var content = '<div class="modal-header">'
-                                            +'<h4 class="modal-title">Mobile Number Verification</h4>'
-                                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                                       +'</div>'
-                                       +'<div class="modal-body" style="text-align:center">'
+                         var content = '<div class="modal-body" style="text-align:center">'
                                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                                             +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                                             +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -704,11 +656,7 @@ function EmailOTPVerification(frmid1) {
                 var obj = JSON.parse($.trim(result2));
                  var data = obj.data; 
                     if (obj.status=="success") { 
-                       var content = '<div class="modal-header">'
-                                        +'<h4 class="modal-title">Email Verification</h4>'
-                                        +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                                     +'</div>'
-                                    +'<div class="modal-body" style="text-align:center">'
+                       var content = '<div class="modal-body" style="text-align:center">'
                                         +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                                         +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                                         +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'
@@ -788,11 +736,7 @@ function EmailOTPVerification(frmid1) {
                              + '</div>';
                  $('#Mobile_VerificationBody').html(content);
          } else {
-                       var content = '<div class="modal-header">'
-                                            +'<h4 class="modal-title">Email Verification</h4>'
-                                            +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;"></button>'
-                                       +'</div>'
-                                       +'<div class="modal-body" style="text-align:center">'
+                       var content = '<div class="modal-body" style="text-align:center">'
                                             +'<p style="text-align:center;padding: 20px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg"></p>'
                                             +'<h5 style="text-align:center;color:#ada9a9">'+obj.message+'</h4>    <br>'
                                             +'<a href="javascript:void(0)" onclick="location.href=location.href" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a>'

@@ -9,10 +9,10 @@
                 <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("MyProfiles/ManageProfile");?>"><?php echo $lang['manage_profile'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/RecentlyWhoViewed");?>" style="font-size:13px"><?php echo $lang['recently_who_viewed'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/RecentlyWhofavourited");?>" style="font-size:13px"><?php echo $lang['recently_who_liked'];?></a></li>
-                <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MutualProfiles");?>" style="font-size:13px"><?php echo $lang['mutually_liked_profiles'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/WhoViewedMyContacts");?>" style="font-size:13px"><?php echo $lang['who_viewed_my_contacts'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/WhoShortListProfiles");?>" style="font-size:13px"><?php echo $lang['recently_who_shortlisted'];?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/WhoSentInterestProfiles");?>" style="font-size:13px"><?php echo $lang['recently_who_sent_interest'];?></a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("MyContacts/MutualProfiles");?>" style="font-size:13px"><?php echo $lang['mutually_liked_profiles'];?></a></li>
               </ul>
             </div>
         </li>
@@ -55,7 +55,7 @@
             <div class="collapse" id="support">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Support/Service/ServiceRequest");?>"><?php echo $lang['service_requests'];?></a></li>
-                <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Support/Resolution/ResolutionCenter");?>"><?php echo $lang['resolution_center'];?></a></li>
+               <!-- <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Support/Resolution/ResolutionCenter");?>"><?php echo $lang['resolution_center'];?></a></li>-->
               </ul>
             </div>
         </li>

@@ -448,18 +448,28 @@
     <div class="modal fade" id="MemberWelcome" role="dialog" data-backdrop="static" style="padding-top:200px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
         <div class="modal-dialog" style="width:367px">
             <div class="modal-content">
-                <div class="modal-body">
-                    <form method="POST" action="" >
-                        <div style="padding:10px;">
-                            <h3 style="text-align:left;margin-top:0px">Welcome <?php echo "<b style='color:red'>";echo $_Member['MemberName'] ; echo "</b>";?></h3>
-                        </div>
-                        <div style="padding:10px;overflow: auto;"><?php echo $_Member['WelcomeMessage'] ?></div>
-                        <div style="text-align:center;"><input type="submit" class="btn btn-primary" name="welcomebutton" value="Continue"/></div>
-                    </form>
-                </div>
+            <form method="POST" action="" >
+                 <div class="modal-header">   
+                        <h4 class="modal-title">Welcome <?php echo "<b style='color:red'>";echo $_Member['MemberName'] ; echo "</b>";?></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>
+                 </div> 
+                 <div class="modal-body" style="max-height:175px;min-height: 175px;overflow-y:scroll;">
+                    <p><?php echo $_Member['WelcomeMessage'] ?></p>
+                 </div>
+                 <div class="modal-footer">
+                        <a href="javascript:void(0);" onclick="ReadWelcomeMessage()" class="btn btn-primary" name="welcomebutton" >Continuw</a>
+                 </div>
+            </form>
             </div>
         </div>
     </div>
+    <script>
+        function ReadWelcomeMessage() {
+         $.ajax({url: getAppUrl() + "m=Member&a=WelcomeMessage", success: function(result){
+                    $('#MemberWelcome').hide();
+    }});
+}
+    </script>
     <?php } ?>
     <div class="modal fade" id="MemberBoard" role="dialog" data-backdrop="static" style="padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
         <div class="modal-dialog" >

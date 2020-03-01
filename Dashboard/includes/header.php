@@ -634,7 +634,15 @@ function getAppUrl() {
                 
         ?>
          
-        
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+        placement : 'top',
+        trigger : 'hover'
+    });
+});
+// title="Popover title"
+</script>
             <div class="form-group row">
             
                             <div class="col-sm-12" style="text-align:center">
@@ -649,8 +657,10 @@ function getAppUrl() {
                              <div class="col-sm-12" style="text-align:center;color: #514444cc;">
                                <?php if($ProfileInformation['mode']=="Published"){?>
                                     <?php echo $ProfileInformation['mode'];?>&nbsp;(<?php echo putDate($Profile['IsApprovedOn']);?>)
-                               <?php }else { echo "<p class='Submitteddetail'>".$ProfileInformation['mode']."</p>"; }?>
-                            </div>                                                                                              
+                               <?php }else { ?>
+                                    <p class="bs-example"><?php echo $ProfileInformation['mode'];?>&nbsp;<span data-toggle="popover" data-content="We're taking a bit more time to rewiew your profile. This usually takes a few days, but can occasionally take more."><i class="fa fa-question-circle" aria-hidden="true"></i></span></p>
+                               <?php }?>
+                                                                                                                             
                         </div>
                         <div style="float:right;line-height: 1px;">
                                 <?php if($ProfileInformation['mode']=="Draft") { ?>
