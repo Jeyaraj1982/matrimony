@@ -1,8 +1,8 @@
 <?php
-    define("ImagePath","http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/assets/images/");
-    define("AppPath","http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/");
-    define("WebPath","http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/");
-    define("DomainPath","http://www.matrimony.dev.j2jsoftwaresolutions.com/");
+    define("ImagePath","https://www.nammamarriage.com/Dashboard/assets/images/");
+    define("AppPath","https://www.nammamarriage.com/Dashboard/");
+    define("WebPath","https://www.nammamarriage.com/Dashboard/");
+    define("DomainPath","https://www.nammamarriage.com/");
     define("AdminFranchise",1);
-    $db=array("localhost","j2jsoftw_developer","Welcome@82","j2jsoftw_matri_app");   
-?> 
+    $db=array("localhost","nammamar_user","mysqlPwd@123","nammamar_matri");   
+?>  
