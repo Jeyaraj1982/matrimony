@@ -130,6 +130,7 @@
                                                   "EmailID"                  => $_POST['EmailID'],
                                                   "CreatedOn"                => date("Y-m-d H:i:s"),
                                                   "ReferedBy"                => $loginInfo[0]['FranchiseeID'],
+                                                  "ReferedByCode"              => $txnPwd[0]['FrCode'],
                                                   "CreatedBy"                => "Franchisee",
 												  "ChangePasswordFstLogin"   => (($_POST['PasswordFstLogin']=="on") ? '1' : '0'),
                                                   "MemberPassword"           => $_POST['LoginPassword']));
@@ -1155,7 +1156,9 @@
                             _tbl_members.IsActive AS IsActive
                         FROM _tbl_members
                         INNER JOIN _tbl_franchisees
-                        ON _tbl_members.ReferedBy=`_tbl_franchisees`.FranchiseeID where `_tbl_members`.`ReferedBy`='".$loginInfo[0]['FranchiseeID']."'";
+                        ON _tbl_members.ReferedBy=`_tbl_franchisees`.FranchiseeID where `_tbl_members`.`ReferedBy`='".$loginInfo[0]['FranchiseeID']."'";  
+                        
+                        
 
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql));    
@@ -2429,6 +2432,12 @@
          function EditDraftOccupationDetails() {
              
              global $mysql,$loginInfo;
+             if ($_POST['EmployedAs']=="O002") {
+                 $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+                    if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                        return Response::returnError("Invalid transaction password");   
+                    }
+             }
              $EmployedAs       = CodeMaster::getData("OCCUPATIONS",$_POST["EmployedAs"]) ;
              $OccupationType   = CodeMaster::getData("Occupation",$_POST["OccupationType"]) ;
              $TypeofOccupation = CodeMaster::getData("TYPEOFOCCUPATIONS",$_POST["TypeofOccupation"]) ;
@@ -3123,11 +3132,20 @@
              
              if (isset($_POST['ProfilePhoto'])) {
                  if(sizeof($photos)<5){
+                     if(sizeof($photos)==0) {
+                        $mysql->insert("_tbl_draft_profiles_photos",array("ProfileID"    => $ProfileInfo[0]['ProfileID'],
+                                                                       "ProfileCode"  => $ProfileInfo[0]['ProfileCode'],
+                                                                       "MemberID"     => $ProfileInfo[0]['MemberID'],
+                                                                       "ProfilePhoto" => $_POST['ProfilePhoto'],   
+                                                                       "PriorityFirst" => 1,   
+                                                                       "UpdateOn"     => date("Y-m-d H:i:s")));     
+                     } else {
                      $mysql->insert("_tbl_draft_profiles_photos",array("ProfileID"    => $ProfileInfo[0]['ProfileID'],
                                                                        "ProfileCode"  => $ProfileInfo[0]['ProfileCode'],
                                                                        "MemberID"     => $ProfileInfo[0]['MemberID'],
                                                                        "ProfilePhoto" => $_POST['ProfilePhoto'],   
                                                                        "UpdateOn"     => date("Y-m-d H:i:s")));     
+                     }
                  } else { 
                      return Response::returnError("Only 5 phots allowed",$photos);
                  }
@@ -3330,6 +3348,11 @@
 
              global $mysql,$loginInfo;
 
+             $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+             
              if ((strlen(trim($_POST['ProfileFor']))==0 || $_POST['ProfileFor']=="0" )) {
                 return Response::returnError("Please select ProfileFor",array("param"=>"ProfileFor"));
              }
@@ -4027,7 +4050,7 @@
 
              global $mysql,$loginInfo;
 
-             $sql = "SELECT * From `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `PersonID`!='".$loginInfo[0]['FranchiseeStaffID']."' and `IsDeleted`='0'";
+             $sql = "SELECT * From `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `IsDeleted`='0'";
 
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql));    
@@ -4054,12 +4077,154 @@
              $Member = $mysql->select("select count(*) as cnt from `_tbl_members` where `ReferedBy`='".$loginInfo[0]['FranchiseeStaffID']."'");      
              $DraftedProfiles = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `RequestToVerify`='0' and `IsApproved`='0' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."'");      
              $PostedProfiles = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `RequestToVerify`='1' and `IsApproved`='0' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."'");      
+             $PublishedProfiles = $mysql->select("select count(*) as cnt from `_tbl_profiles` where `RequestToVerify`='1' and `IsApproved`='1' and `IsPublish`='1' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."'");      
+             $MaleProfileCount =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM `_tbl_draft_profiles` where SexCode='SX001' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' ORDER BY `ProfileID` DESC");
+             $FemaleProfileCount =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM `_tbl_draft_profiles` where SexCode='SX002' and `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' ORDER BY `ProfileID` DESC");
+             $OnlineMembercount =  $mysql->select("SELECT COUNT(LoginID) AS cnt FROM _tbl_logs_logins where FranchiseeID='0' and FranchiseeStaffID='0' and AdminID='0' and AdminStaffID='0' and date(LoginOn)=date('".date("Y-m-d")."')");
+             $Plan= $mysql->select("select * from _tbl_member_plan where IsDefault='1'");
+             $FreeMemberCount =  $mysql->select("SELECT COUNT(ProfileCreditID) AS cnt FROM _tbl_profile_credits where MemberPlanCode='".$Plan[0]['PlanCode']."'"); 
+             $LandingPageProfileCount =  $mysql->select("SELECT COUNT(ProfileLandingID) AS cnt FROM _tbl_landingpage_profiles where Date(_tbl_landingpage_profiles.`DateTo`)>=Date('".date("Y-m-d")."') AND `IsShow`='1'"); 
+             $FranchiseeStaffCount =  $mysql->select("SELECT COUNT(PersonID) AS cnt FROM _tbl_franchisees_staffs");
+             $PaidMemberCount =  $mysql->select("SELECT COUNT(ProfileCreditID) AS cnt FROM _tbl_profile_credits where MemberPlanCode!='".$Plan[0]['PlanCode']."'");
+             $documentverification =  $mysql->select("SELECT COUNT(DocID) AS cnt FROM _tbl_member_documents");
+             $ordercount =  $mysql->select("SELECT COUNT(OrderID) AS cnt FROM _tbl_orders");
+             $invoicecount =  $mysql->select("SELECT COUNT(InvoiceID) AS cnt FROM _tbl_invoices");
+             $MemberWalletRequestCount =  $mysql->select("SELECT COUNT(ReqID) AS cnt FROM _tbl_wallet_bankrequests where IsMember='1'"); 
+             $FranchiseeWalletRequestCount =  $mysql->select("SELECT COUNT(ReqID) AS cnt FROM _tbl_wallet_bankrequests where IsMember='0'"); 
              $Popup =$mysql->select("select * from `_tbl_franchisee_req_verification` where `ToFranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `IsRead`='0' order by `ReqID` limit 0,1"); 
-             return Response::returnSuccess("success",array("Member"           =>$Member[0],
-                                                            "DraftedProfiles"  =>$DraftedProfiles[0],
-                                                            "PostedProfiles"   =>$PostedProfiles[0],
-                                                            "Popup"   =>$Popup[0]));
+             
+             return Response::returnSuccess("success",array("Member"                   =>$Member[0],
+                                                            "DraftedProfiles"          =>$DraftedProfiles[0],
+                                                            "PostedProfiles"           =>$PostedProfiles[0],
+                                                            "PublishedProfiles"        =>$PublishedProfiles[0],
+                                                            "MaleProfileCount"         =>$MaleProfileCount[0],
+                                                            "FemaleProfileCount"       =>$FemaleProfileCount[0],
+                                                            "OnlineMembercount"        =>$OnlineMembercount[0],
+                                                            "FreeMemberCount"          =>$FreeMemberCount[0],
+                                                            "LandingPageProfileCount"  =>$LandingPageProfileCount[0],
+                                                            "FranchiseeStaffCount"     =>$FranchiseeStaffCount[0],
+                                                            "PaidMemberCount"          =>$PaidMemberCount[0],
+                                                            "documentverification"     =>$documentverification[0],
+                                                            "ordercount"               =>$ordercount[0],
+                                                            "invoicecount"             =>$invoicecount[0],
+                                                            "MemberWalletRequestCount" =>$MemberWalletRequestCount[0],
+                                                            "FranchiseeWalletRequestCount" =>$FranchiseeWalletRequestCount[0],
+                                                            "Popup"                    =>$Popup[0]));
          }
+         function GetRecentMembersForDashboard() {    
+             global $mysql,$loginInfo;
+             $sql = $mysql->select("select * from `_tbl_members` where  `ReferedBy`='".$loginInfo[0]['FranchiseeStaffID']."' ORDER BY `MemberID` DESC LIMIT 0,3");
+             return Response::returnSuccess("success",$sql);    
+         }
+         public function GetRecentDraftProfiles() {
+          global $mysql,$loginInfo; 
+             $Profiles = array();
+             $sql = "";
+           /*  if (isset($_POST['requestfrom'])) {
+                 $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
+             } else {
+                $_POST['requestfrom']=0; 
+                $_POST['requestto']=5; 
+             }*/
+
+             $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' order by ProfileID DESC LIMIT 0,3");
+             $profileCodes  = array();
+             foreach($RecentProfiles as $RecentProfile) {
+                 if (!(in_array($RecentProfile['ProfileCode'], $profileCodes)))
+                 {
+                    $profileCodes[]=$RecentProfile['ProfileCode'];
+                 }
+             }
+             if (sizeof($profileCodes)>0) {
+                //for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
+                foreach($profileCodes as $profileCode) {
+                    if (strlen(trim($profileCode))>0)  {
+                        $Profiles[]=Profiles::getDraftProfileInformation($profileCode,1,1);     
+                    }
+                 } 
+             }
+                  
+             return Response::returnSuccess("success",$Profiles);
+         }
+         public function GetRecentPublishedProfiles() {
+          global $mysql,$loginInfo; 
+             $Profiles = array();
+             $sql = "";
+           /*  if (isset($_POST['requestfrom'])) {
+                 $sql = " limit ".$_POST['requestfrom'].",". $_POST['requestto'];
+             } else {
+                $_POST['requestfrom']=0; 
+                $_POST['requestto']=5; 
+             }*/
+
+             $RecentProfiles = $mysql->select("select ProfileCode from `_tbl_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' order by ProfileID DESC LIMIT 0,3");
+             $profileCodes  = array();
+             foreach($RecentProfiles as $RecentProfile) {
+                 if (!(in_array($RecentProfile['ProfileCode'], $profileCodes)))
+                 {
+                    $profileCodes[]=$RecentProfile['ProfileCode'];
+                 }
+             }
+             if (sizeof($profileCodes)>0) {
+                //for($i=$_POST['requestfrom'];$i<$_POST['requestto'];$i++) { 
+                foreach($profileCodes as $profileCode) {
+                    if (strlen(trim($profileCode))>0)  {
+                        $Profiles[]=Profiles::getDraftProfileInformation($profileCode,1,1);     
+                    }
+                 } 
+             }
+                  
+             return Response::returnSuccess("success",$Profiles);
+         }
+         function GetRecentProfilesForDashboard() {
+
+             global $mysql,$loginInfo; 
+             $Profiles = array();
+             $Position = "";   
+           
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Draft") {  /* Profile => Drafted */
+                 
+                 $DraftProfiles     = $mysql->select("select ProfileCode from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='0' and IsApproved='0' order by ProfileID DESC LIMIT 0,3");
+                 
+                 if (sizeof($DraftProfiles)>0) {
+                     foreach($DraftProfiles as $DraftProfile) {
+                        $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
+                        $result['mode']="Draft";
+                        $Profiles[]=$result;   
+                     }
+                 }
+                 
+                 return Response::returnSuccess("success",$Profiles);
+             }
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Posted") {    /* Profile => Posted */
+                 $PostProfiles      = $mysql->select("select ProfileCode from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='0' and IsApproved='0' order by ProfileID DESC LIMIT 0,3");
+
+                  if (sizeof($PostProfiles)>0) {
+                      foreach($PostProfiles as $PostProfile) {
+                        $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode'],2);
+                        $result['mode']="Posted";
+                        $Profiles[]=$result;  
+                     }
+                 }
+                 
+                return Response::returnSuccess("success",$Profiles);
+             }
+
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {    /* Profile => Posted */
+             
+                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and IsApproved='1' and RequestToVerify='1'");
+                if (sizeof($PublishedProfiles)>0) {
+                    foreach($PublishedProfiles as $PublishedProfile) {
+                        $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);
+                        $result['mode']="Published"; 
+                        $Profiles[]=$result; 
+                        
+                     }                                                                          
+                }
+                return Response::returnSuccess("success",$Profiles);
+             }
+         } 
          public function BoardMessage() {
              global $mysql,$loginInfo;
              $welcome=$mysql->execute("update `_tbl_franchisee_req_verification` set `IsRead`='1',`ReadOn`='".date("Y-m-d H:i:s")."' where `ToFranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `ReqID`='".$_POST['ReqID']."'");
@@ -5299,6 +5464,145 @@
                   
              return Response::returnSuccess("success",$Profiles);
          }
+         public function GetRequestFor() {
+            global $mysql,$mail,$loginInfo; 
+             $Franchisee= $mysql->select("Select * from `_tbl_franchisees_staffs` where `PersonID`='".$loginInfo[0]['FranchiseeStaffID']."'");
+             return Response::returnSuccess("success",array("RequestFor"    => CodeMaster::getData('SERVICEREQUESTFOR'),
+                                                            "Franchisee"        =>$Franchisee));
+         }
+         public function AddNewSupportTicket() {
+            global $mysql,$loginInfo;
+            $ReqCode=SeqMaster::GetNextServiceRequestCode();
+            $Franchisee= $mysql->select("Select * from `_tbl_franchisees_staffs` where `PersonID`='".$loginInfo[0]['FranchiseeStaffID']."'");                      
+            $id =  $mysql->insert("_tbl_service_requests",array("ReqCode"            => $ReqCode,
+                                                                "RequestBy"          => "Franchisee",
+                                                                "RequestByID"        => $Franchisee[0]['PersonID'], 
+                                                                "RequestByCode"      => $Franchisee[0]['StaffCode'], 
+                                                                "Team"               => $_POST['Team'], 
+                                                                "Subject"            => $_POST['Subject'], 
+                                                                "Content"            => $_POST['Description'], 
+                                                                "FileName"           => $_POST['File'], 
+                                                                "RequestOn"          => date("Y-m-d H:i:s"),
+                                                                "Status"             => "1")); 
+            $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='ServiceRequest'");
+            return Response::returnSuccess("Ticket Created",array());
+         }
+         function GetManageServiceRequests() {
+           
+             global $mysql,$loginInfo;
+             
+              $sql = "select * from _tbl_service_requests where RequestByID='".$loginInfo[0]['FranchiseeStaffID']."'";
+
+              if (isset($_POST['Request']) && $_POST['Request']=="Open") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and Status='1'"));    
+             }
+              if (isset($_POST['Request']) && $_POST['Request']=="InProccess") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and Status='2'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Closed") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and Status='3'"));    
+             }
+             
+         }
+         function GetSupportTicketsDetails() {
+           
+             global $mysql,$loginInfo;
+              if (isset($_POST['Request']) && $_POST['Request']=="Open") {
+                $OpenTicket = $mysql->select("select * from _tbl_service_requests where ReqCode='".$_POST['Code']."' and Status='1'");
+                 return Response::returnSuccess("success",$OpenTicket);    
+             }
+              if (isset($_POST['Request']) && $_POST['Request']=="InProccess") {
+                 $OpenTicket = $mysql->select("select * from _tbl_service_requests where ReqCode='".$_POST['Code']."' and Status='2'");
+                 return Response::returnSuccess("success",$OpenTicket);     
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Closed") {
+                 $OpenTicket = $mysql->select("select * from _tbl_service_requests where ReqCode='".$_POST['Code']."' and Status='3'");
+                 return Response::returnSuccess("success",$OpenTicket);
+             }
+         }
+         public function GetFranchiseeDeleteReason() {
+             return Response::returnSuccess("success",array("DeleteReason"        => CodeMaster::getData("DELETEREASON")));
+         }
+         public function SendOtpForDeleteFranchisee($errormessage="",$otpdata="",$reqID="") {
+            global $mysql,$mail,$loginInfo;      
+            
+            $franchisee= $mysql->select("Select * from `_tbl_franchisees_staffs` where `PersonID`='".$loginInfo[0]['FranchiseeStaffID']."'");
+            
+               $otp=rand(1000,9999);
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeRequestToDelete'");
+                    $content  = str_replace("#PersonName#",$franchisee[0]['PersonName'],$mContent[0]['Content']);
+                    $content  = str_replace("#otp#",$otp,$content);
+
+                    MailController::Send(array("MailTo"   => $franchisee[0]['EmailID'],
+                                               "Category" => "FranchiseeRequestToDelete",                       
+                                               "Franchisee" => $franchisee[0]['FranchiseeID'],
+                                               "Subject"  => $mContent[0]['Title'],
+                                               "Message"  => $content),$mailError);
+                $securitycode = $mysql->insert("_tbl_verification_code",array("FranchiseeID"      =>$franchisee[0]['FranchiseeID'],
+                                                                              "RequestSentOn" =>date("Y-m-d H:i:s"),
+                                                                              "EmailTo"       =>$franchisee[0]['EmailID'],
+                                                                              "SecurityCode"  =>$otp,
+                                                                              "Type"          =>"FranchiseeRequestToDelete",
+                                                                              "messagedon"    =>date("Y-m-d h:i:s"))) ;
+                return Response::returnSuccess("Verified.",array("securitycode"   =>$securitycode,
+                                                                 "RequestForCode" =>$_POST['RequestForCode'],
+                                                                 "EmailID"=>$franchisee[0]['EmailID'],
+                                                                 "Comments"=>$_POST['Comments'],
+                                                                 "DeleteReason" => $_POST['DeleteReason']));
+        }
+        public function DeleteFranchiseeOTPVerification() {
+            global $mysql,$loginInfo ;
+             
+            $franchisee= $mysql->select("Select * from `_tbl_franchisees_staffs` where `PersonID`='".$loginInfo[0]['FranchiseeStaffID']."'");   
+            $otpInfo = $mysql->select("select * from `_tbl_verification_code` where `RequestID`='".$_POST['reqId']."'");
+             
+            if (strlen(trim($_POST['DeleteMemberOtp']))==4 && ($otpInfo[0]['SecurityCode']==$_POST['DeleteMemberOtp']))  {
+                 
+            $ReqCode=SeqMaster::GetNextServiceRequestCode();
+            
+           $RequestFor = CodeMaster::getData("SERVICEREQUESTFOR",$_POST['RequestForCode']); 
+                if($_POST['RequestForCode']=="SRF0003"){ 
+                   
+           $id =  $mysql->insert("_tbl_service_requests",array("ReqCode"            => $ReqCode,
+                                                               "RequestForCode"     => $_POST['RequestForCode'],
+                                                               "RequestFor"         => $RequestFor[0]['CodeValue'],
+                                                               "RequestBy"          => "Franchisee",
+                                                               "RequestByID"        => $franchisee[0]['PersonID'], 
+                                                               "RequestByCode"      => $franchisee[0]['StaffCode'], 
+                                                               "Subject"            => "Delete My Account", 
+                                                               "IsDelete"           => "2", 
+                                                               "Remarks"            => $_POST['Comments'], 
+                                                               "DeleteReason"       => $_POST['DeleteReason'], 
+                                                               "DeleteRequestOn"    => date("Y-m-d H:i:s"),
+                                                               "RequestOn"          => date("Y-m-d H:i:s"),
+                                                               "Status"             => "1")); 
+           $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='ServiceRequest'"); 
+                    $mContent = $mysql->select("select * from `mailcontent` where `Category`='FranchiseeDeleteRequestFromfranchisee'");
+                    $content  = str_replace("#PersonName#",$franchisee[0]['PersonName'],$mContent[0]['Content']);
+                    $content  = str_replace("#ServiceRequestCode#",$ReqCode,$content);
+
+                     MailController::Send(array("MailTo"         => $franchisee[0]['EmailID'],
+                                                "Category"       => "FranchiseeDeleteRequestFromfranchisee",
+                                                "FranchiseeID"       => $franchisee[0]['PersonID'],
+                                                "Subject"        => $mContent[0]['Title'],
+                                                "Message"        => $content),$mailError);
+                     MobileSMSController::sendSMS($franchisee[0]['MobileNumber']," Dear ".$franchisee[0]['PersonName'].",Your account delete request (".$ReqCode.") has been Sent.");  
+                                                                           
+                    $id = $mysql->insert("_tbl_logs_activity",array("FranchiseeID"       => $franchisee[0]['FranchiseeID'],
+                                                                     "ActivityType"   => 'FranchiseeDeleteRequestFromfranchisee.',
+                                                                     "ActivityString" => 'Franchisee Delete Request From franchisee.',
+                                                                     "SqlQuery"       => base64_encode($sqlQry),
+                                                                     "ActivityDoneBy" => 'F',
+                                                                     "ActivityDoneByCode" =>$franchisee[0]['StaffCode'],
+                                                                     "ActivityDoneByName" =>$franchisee[0]['PersonName'],
+                                                                     "ActivityOn"     => date("Y-m-d H:i:s")));
+            return Response::returnSuccess("Deactive Request Sent",array());
+                
+            }
+            } else {
+                 return Response::returnError("Invalid verification code.",array("securitycode"=>$otpInfo[0]['RequestID'],"EmailID"=>$otpInfo[0]['EmailTo']));
+                } 
+        }
    
 			 
     }

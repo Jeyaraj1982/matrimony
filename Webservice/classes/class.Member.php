@@ -185,6 +185,7 @@
                                                        "CountryCode"    => $_POST['CountryCode'],
                                                        "ChangePasswordFstLogin"      => 1,
                                                        "ReferedBy"      => 1,
+                                                       "ReferedByCode"      => "FR0023",
                                                        "CreatedBy"      => "Member",
                                                        "CreatedOn"      => date("Y-m-d H:i:s"))); 
              $Aid = $mysql->insert("_tbl_logs_activity",array("MemberID"       => $id,
