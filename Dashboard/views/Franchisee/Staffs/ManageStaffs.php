@@ -7,12 +7,12 @@
                 <div class="form-group row">
                 <div class="col-sm-6">
                 <button type="submit" class="btn btn-primary "><i class="mdi mdi-plus"></i>Create Staff</button>
-                <button type="submit" class="btn btn-success dropdown-toggle"  data-toggle="dropdown">Export</button>
+                <!--<button type="submit" class="btn btn-success dropdown-toggle"  data-toggle="dropdown">Export</button>
                 <ul class="dropdown-menu">
                     <li><a href="#">To Excel</a></li>
                     <li><a href="#">To Pdf</a></li>
                     <li><a href="#">To Htm</a></li>
-                </ul>
+                </ul>-->
                 </div>
                 <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                     <a href="ManageStaffs" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;

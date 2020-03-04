@@ -52,7 +52,7 @@
                 <div class="form-group row">
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
-                        <img src="<?php echo $P['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
+                        <img src="<?php echo $P['ProfileThumb'];?>" style="width:150px;border:1px solid #ccc;background:#fff;padding:6px">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;"><?php echo $P['Position'];?></div>    
                     </div>
                     <div class="col-sm-9">

@@ -73,11 +73,17 @@
                     ?> 
                     <?php foreach($response['data'] as $Member)  { ?>
                         <tr>
-                            <td><span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Member['MemberCode'];?></td>
+                            <td>
+                                <span class="<?php echo ($Member['IsActive']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;
+                                <?php if ($Member['Gender']=="Male") {
+                                    echo '&nbsp;<i class="fa fa-male" data-toggle="tooltip" title="Gender: Male" aria-hidden="true"></i>';
+                                 } else {
+                                      echo '&nbsp;<i class="fa fa-female" data-toggle="tooltip" title="Gender: Female" aria-hidden="true"></i>';
+                                 }?>&nbsp;&nbsp;<?php echo $Member['MemberCode'];?></td>
                             <td><?php echo $Member['MemberName'];?></td>
                             <td>[<?php echo $Member['FranchiseeCode'];?>]&nbsp;<?php echo $Member['FranchiseeName'];?></td>
                             <td>+<?php echo trim($Member['CountryCode']);?>-<?php echo $Member['MobileNumber'];?></td>
-                            <td><a href="<?php echo GetUrl("Members/ViewMember/". $Member['MemberID'].".html");?>"><span>View</span></a></td>
+                            <td><a href="<?php echo GetUrl("Members/ViewMember/". $Member['MemberCode'].".html");?>"><span>View</span></a></td>
                         </tr>                               
                     <?php }} ?>            
                     </tbody>                        
@@ -92,5 +98,8 @@
         $('#myTable').dataTable();
         setTimeout("DataTableStyleUpdate()",500);                                                                                       
     });
+    $('[data-toggle="tooltip"]').tooltip({ container: 'body' }); 
+    $('#myTable_filter input').addClass('form-control'); 
+    $('#myTable_length select').addClass('form-control');
 </script>
 <?php }?>

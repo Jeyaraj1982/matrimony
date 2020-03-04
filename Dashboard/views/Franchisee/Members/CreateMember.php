@@ -177,7 +177,7 @@ function SubmitNewMember() {
                                 <div class="col-sm-3">
                                     <select class="selectpicker form-control" data-live-search="true" id="Sex"  name="Sex">
                                             <?php foreach($fInfo['data']['Gender'] as $Sex) { ?>
-                                            <option value="<?php echo $Sex['SofCode'];?>" <?php echo ($_POST['Sex']==$Sex['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
+                                            <option value="<?php echo $Sex['SoftCode'];?>" <?php echo ($_POST['Sex']==$Sex['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
                                             <?php } ?>
                                     </select>
                                 </div>

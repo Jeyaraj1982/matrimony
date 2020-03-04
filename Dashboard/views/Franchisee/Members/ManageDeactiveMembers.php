@@ -6,18 +6,18 @@
                 <div class="form-group row">
                     <div class="col-sm-6">
                        <a href="<?php echo GetUrl("Members/CreateMember");?>" class="btn btn-primary "><i class="mdi mdi-plus"></i>Create Member</a>
-                        <button type="submit" class="btn btn-success dropdown-toggle"  data-toggle="dropdown">Export</button>
+                        <!--<button type="submit" class="btn btn-success dropdown-toggle"  data-toggle="dropdown">Export</button>
                         <ul class="dropdown-menu">
                             <li><a href="#">To Excel</a></li>
                             <li><a href="#">To Pdf</a></li>
                             <li><a href="#">To Htm</a></li>
-                        </ul>
+                        </ul>-->
                     </div>
                     <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                         <a href="ManageMembers" ><small>All</small></a>&nbsp;|&nbsp;
                         <a href="ManageActiveMembers"><small>Active</small></a>&nbsp;|&nbsp;
                         <a href="ManageDeactiveMembers" style="font-weight:bold;text-decoration:underline"><small>Deactive</small></a>&nbsp;|&nbsp;
-                        <a href="ManageDeletedMembers"><small>Deleted</small></a>
+                        <!--<a href="ManageDeletedMembers"><small>Deleted</small></a>-->
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -26,7 +26,7 @@
                         <tr> 
                             <th>Member Code</th>
                             <th>Member Name</th>
-                            <th>Created By</th>
+                            <th>Created By Staff Name</th>
                             <th style="width:100px;">Created</th>
                             <th style="width:50px;"></th>                          
                         </tr>  
@@ -61,7 +61,7 @@
                                             $txt_a .= '&nbsp;&nbsp;&nbsp;'.$Member['MemberCode'];
                                             echo $html->td($txt_a);
                                             echo $html->td($Member['MemberName']);
-                                            echo $html->td($html->span($Member['CreatedBy'],array("class"=>"btn btn-primary","style"=>"padding: 0px 4px;font-size: 12px;background: #b3d285;border: #b3d285;")));
+                                            echo $html->td($Member['FranchiseeName']);
                                             echo $html->td(putDateTime($Member['CreatedOn']));
                                         ?>
                                         <td style="text-align:right">

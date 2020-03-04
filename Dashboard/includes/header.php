@@ -364,7 +364,7 @@ function getAppUrl() {
       <?php } ?>
    <?php if (UserRole=="Franchisee") { ?>
     <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-      <a class="navbar-brand brand-logo" href="<?php echo SiteUrl;?>" style="width:100%;height:100%;"><img src="<?php echo $config->logoPath?>" alt="logo" style="width:100%;height:100%;margin-top: 2px;"/></a>
+      <a class="navbar-brand brand-logo" href="<?php echo SiteUrl;?>" style="width:100%;height:100%;"><img src="<?php echo SiteUrl;?>assets/logo/<?php echo BusinessConfig::COMPANY_LOGO ?>" alt="logo" style="width:100%;height:100%;margin-top: 2px;"/></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center">        
         <ul class="navbar-nav navbar-nav-right">

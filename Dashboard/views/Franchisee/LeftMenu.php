@@ -29,7 +29,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("Members/ResetPassword/SearchMember");?>">Reset Password</a>
                         </li>
-                        <li class="nav-item">
+                        <!--<li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("Members/ManageOrders");?>">Manage Orders</a>
                         </li>
                         <li class="nav-item">
@@ -37,7 +37,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("Members/ManageReceipts");?>">Manage Receipts</a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div> 
             </li>
@@ -56,7 +56,7 @@
                             <a class="nav-link" href="<?php echo GetUrl("DraftedProfiles");?>">Drafted Profile</a>
                         </li> 
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("PostedProfiles");?>">Posted Profile</a>
+                            <a class="nav-link" href="<?php echo GetUrl("PostedProfiles");?>">Submitted to Review</a>
                         </li> 
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("PublishedProfiles");?>">Published Profile</a>
@@ -123,12 +123,13 @@
                 </a>
                 <div class="collapse" id="requests">
                     <ul class="nav flex-column sub-menu">
-                        <li class="nav-item">
+                       <!-- <li class="nav-item">
                             <a class="nav-link" href="">New Request</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="">View Requests</a>
-                        </li>
+                        </li>-->
+                        <li class="nav-item"><a class="nav-link" style="font-size:13px" href="<?php echo GetUrl("Support/Service/ServiceRequest");?>">Service Request</a></li>
                     </ul>
                 </div>
             </li>

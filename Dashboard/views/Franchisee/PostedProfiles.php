@@ -4,7 +4,7 @@
             <div class="card-body">
                 <div class="form-group row">
                         <div class="col-sm-6">
-                        <h4 class="card-title">Posted</h4>
+                        <h4 class="card-title">Submitted to Review</h4>
                         </div>
                         <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
                             <a href="DraftedProfiles"><small>Drafted</small></a>&nbsp;|&nbsp;

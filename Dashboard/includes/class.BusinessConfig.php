@@ -1,7 +1,7 @@
 <?php
         
 	class BusinessConfig {
-		 const COMPANY_LOGO = '1582787509m1.jpg';
+		 const COMPANY_LOGO = '1583296992IMG-20170819-WA0066.jpg';
 		 const ADDRESS_LINE1 = 'Nagercoil';
 		 const ADDRESS_LINE2 = 'Kanyakumari';
 		 const ADDRESS_LINE3 = 'Tamilnadu';

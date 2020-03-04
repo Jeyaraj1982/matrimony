@@ -106,6 +106,7 @@
 </style>
 <form method="post" action="" name="form1" id="form1" >
 	<input type="hidden" value='<?php echo $_GET['Code'];?>' name="MemberCode">
+    <input type="hidden" value="" name="txnPassword" id="txnPassword">
     <div class="col-12 grid-margin">
         <div class="card">
             <div class="card-body">
@@ -181,7 +182,7 @@
                     <div class="col-sm-6">
                         <div class="custom-control custom-checkbox mb-3">
                             <input type="checkbox" class="custom-control-input" id="check" name="check">
-                            <label class="custom-control-label" for="check">&nbsp;I agree the terms of conditions</label>
+                            <label class="custom-control-label" for="check">&nbsp;<a href="<?php echo WebConfig::SIGN_UP_TERMS_URL ?>">I agree the terms of conditions</a></label>
                     <Br><span class="errorstring" id="Errcheck"></span>
                         </div>
                     </div>
@@ -252,7 +253,7 @@
                             + '</div>' 
                             + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="BtnSaveProfile" class="btn btn-primary" onclick="CreateProfile()" style="font-family:roboto">Create Profile</button>'
+                                + '<button type="button" class="btn btn-primary" name="BtnSaveProfile" class="btn btn-primary" onclick="GetTxnPasswordCreatProfile()" style="font-family:roboto">Create Profile</button>'
                             + '</div>';                                                                                               
             $('#Create_body').html(content);
         } else {
@@ -260,8 +261,41 @@
         }
     }
     
-    function CreateProfile() {
+    function GetTxnPasswordCreatProfile () {
         
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for create profile</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                        + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                        + '</div>'
+                      + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="CreateProfile()" class="btn btn-primary" >Create Profile</button>'
+                        + '</div>';
+        $('#Create_body').html(content);            
+    }
+    
+    function CreateProfile() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+        $("#txnPassword").val($("#TransactionPassword").val());
         var param = $( "#form1").serialize();   
         $('#Create_body').html(preloading_withText("Creating profile ...","95"));
         $.post(API_URL + "m=Franchisee&a=CreateProfile",param,function(result2) {
@@ -276,6 +310,18 @@
                                     + '<a href="'+AppUrl+'Member/'+data.MCode+'/ProfileEdit/GeneralInformation/'+data.Code+'.htm?msg=1" class="btn btn-primary" style="font-family:roboto">Continue</a>'
                                   + '</div>' 
                     $('#Create_body').html(content);  
+            } else {
+                var data = obj.data; 
+                var content = '<div class="modal-header">'
+                                    +'<h4 class="modal-title">Create Profile</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>';
+            $('#Create_body').html(content);
             }
         });
     }
