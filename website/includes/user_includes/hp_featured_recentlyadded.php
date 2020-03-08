@@ -1,106 +1,74 @@
 <?php
-        $response = $webservice->getData("Member","GetAllRecentlyAdded",array("ProfileFrom"=>"HomePage")); 
-		
-        if ((sizeof($response['data'])%6)==1) {
-            $s = sizeof ($response['data']);
-            $response['data'][$s]=$response['data'][0];
-            $response['data'][($s+1)]=$response['data'][0];
-            $response['data'][($s+2)]=$response['data'][0];
-            $response['data'][($s+3)]=$response['data'][0];
-            $response['data'][($s+4)]=$response['data'][0];
-        }
-        if ((sizeof($response['data'])%3)==2) {
-            $s = sizeof ($response['data']);
-            $response['data'][$s]=$response['data'][0];
-             $response['data'][($s+1)]=$response['data'][0];
-            $response['data'][($s+2)]=$response['data'][0];
-            $response['data'][($s+3)]=$response['data'][0];
-        }
-         if ((sizeof($response['data'])%3)==3) {
-            $s = sizeof ($response['data']);
-            $response['data'][$s]=$response['data'][0];
-             $response['data'][($s+1)]=$response['data'][0];
-            $response['data'][($s+2)]=$response['data'][0];
-        }
-         if ((sizeof($response['data'])%3)==4) {
-            $s = sizeof ($response['data']);
-            $response['data'][$s]=$response['data'][0];
-             $response['data'][($s+1)]=$response['data'][0];
-        }
-          if ((sizeof($response['data'])%3)==5) { 
-            $s = sizeof ($response['data']);
-            $response['data'][$s]=$response['data'][0];
-        }
-        $i=1;
-        $j=1;
+$response = $webservice->getData("Member","GetAllRecentlyAdded",array("ProfileFrom"=>"HomePage")); 
+    $i=1;
+    $j=1;
+    $c=1;
 ?>
- <div >
-    <div class="form-group row">
-        <div class="col-md-9">
-            <h4 style="margin-top: 24px;">Recently Added Profiles</h4>
-        </div>
-		<?php if(sizeof($response['data'])>6){ ?>
-        <div class="col-md-3" style="margin-top: 20px;margin-bottom: 10px;">
-            <div class="controls pull-right hidden-xs">
-                <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-recent" data-slide="prev"></a>
-                <a class="right fa fa-chevron-right btn btn-primary" href="#carousel-recent" data-slide="next"></a>
-            </div>
-        </div>
-		<?php } ?>
-    </div>
-    <div id="carousel-recent" class="carousel slide hidden-xs " data-ride="carousel">
-        <div class="carousel-inner ">
-            <?php
+   <div class="form-control row" style="border:none;;">
+    <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
+      <div class="controls-top"  style="line-height:3">
+        <span style="float:left;font-size:16px;font-weight:bold;">Recently Added</span>  
+        <span style="float:right">
+        <a href="<?php echo JFrame::getAppSetting('siteurl')."/ListofRecentlyAddedProfiles";?>">View All</a>&nbsp;&nbsp;
+        <a class="btn-floating" href="#multi-item-example" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+        <a class="btn-floating" href="#multi-item-example" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+        </span>
+        
+      </div>
+      <ol class="carousel-indicators">
+        <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+        <li data-target="#multi-item-example" data-slide-to="1"></li>
+        <li data-target="#multi-item-example" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner" role="listbox">
+         <?php
                 foreach($response['data'] as $p) { 
+                   
                     $Profile=$p['ProfileInfo'];
                     if ($i==1) {
                         if ($j==1) {
-                            echo '<div class="item active"><div class="row">';
+                            echo ' <div class="carousel-item active">  <div class="row">';
                         } else { 
-                            echo '<div class="item"><div class="row">';
+                            echo ' <div class="carousel-item">  <div class="row">';
                         }
                     }
-                    ?>        
-                          <div class="col-sm-2">
-                            <div class="col-item">
-                                <div class="photo">
-                                    <img src="<?php echo $p['ProfileThumb'];?>" class="img-responsive" alt="a"  style="width:150px;height:150px;border:1px solid #e0dede">
-                                </div>
-                                <div class="info">
-                                    <div class="row">
-                                        <div class="col-md-12" style="text-align:center">
-											<span style="color:#f03caa;font-weight: bold;">
-												[ <?php echo $Profile['ProfileCode'];?> ]
-											</span><br>
-											<span>
-												<span style="font-weight: bold;"><!--<?php echo $Profile['ProfileName'];?>&nbsp;-->( <?php echo $Profile['Age'];?>&nbsp;yrs ) </span><br>
-												<span style="font-size:12px;"><?php if($Profile['Religion']=="Others"){ echo $Profile['OtherReligion']; } else { echo $Profile['Religion']; } ?>&nbsp;-&nbsp;
-                                                <?php if($Profile['Caste']=="Others"){ echo $Profile['OtherCaste']; } else { echo $Profile['Caste']; } ?><br>
-                                                <?php  echo $Profile['State'].", ".$Profile['Country'];   ?></span><br><br>
-                                                <a href="Profile.php?Code=<?php echo $Profile['ProfileCode'];?>" class="btn btn-success btn-sm">View Profile</a>
-											</span>
-										</div>
-                                    </div>
-                                    <div class="clearfix">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php 
-                    if ($i==6) { 
-                         echo '</div></div>';
-                        $i=1;
-                    } else {
-                        $i++;
-                    }
-                    $j++;
+         ?>  
+         <div class="col">
+            <div class="card mb-2">
+                <img class="card-img-top" src="<?php echo $p['ProfileThumb'];?>" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title" style="font-size:15px;"> <?php echo $Profile['ProfileCode'];?> (<?php echo $Profile['Age'];?>&nbsp;yrs)</h5>
+                    <p class="card-text">
+                        <span style="font-size:12px;"><?php if($Profile['Religion']=="Others"){ echo $Profile['OtherReligion']; } else { echo $Profile['Religion']; } ?>&nbsp;-&nbsp;
+                        <?php if($Profile['Caste']=="Others"){ echo $Profile['OtherCaste']; } else { echo $Profile['Caste']; } ?>
+                        <!--<?php  echo $Profile['State'].", ".$Profile['Country'];   ?></span><br><br>-->
+                    </p>
+                    <a href="Profile.php?Code=<?php echo $Profile['ProfileCode'];?>" class="btn btn-warning  btn-sm">View Profile</a>
+                </div>
+            </div>
+         </div>
+         <?php
+            if ($i==5) {
+                echo '</div></div>';
+                $i=1;
+            } else {
+                $i++;
+            }
+            $j++;
                 } 
-            ?>
-        </div>
-		<hr style="border-top: 1px solid white;;margin-bottom:0px">
-		<div style="text-align:right;;padding:5px;">
-			<a href="<?php echo JFrame::getAppSetting('siteurl')."/ListofRecentlyAddedProfiles";?>">View All Recently Added Profiles</a>
-		</div>
+                
+                
+                
+                 
+                
+         ?>
+        <!--/.First slide-->
+             </div>
+      <!--/.Slides-->
     </div>
- </div>
- 
+    <!--/.Carousel Wrapper-->
+  </div>
+  <hr style="border-top: 1px solid white;;margin-bottom:0px">
+    <div style="text-align:right;;padding:5px;">
+    
+  </div>

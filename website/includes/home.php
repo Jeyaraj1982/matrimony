@@ -1,36 +1,23 @@
-<table style="width:100%;">
-<tr>
-                <td>
-            <?php 
-                          
-                if (JFrame::getAppSetting('showslider')==1) { 
-                    include (web_path."/includes/hp_slider.php"); 
-                }
-            ?>
-            </td>
-            </tr>
-            <tr>
-                <td>
-               
-                    <table style="width:100%;">
-                        <tr>
-                            <td colspan="3"><br /></td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:top;width:45%;background:#f1f1f1;padding-left:15px;padding-right:15px"><?php include_once(web_path."includes/user_includes/hp_featured_grooms.php");?></td>
-                            <td></td>
-                            <td style="vertical-align:top;width:45%;background:#f1f1f1;padding-left:15px;padding-right:15px"><?php include_once(web_path."includes/user_includes/hp_featured_brides.php");?></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><br /></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="background:#f1f1f1;;padding-left:15px;padding-right:15px"><?php include_once(web_path."includes/user_includes/hp_featured_recentlyadded.php");?></td>                        
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-</table>
+ 
+<div class="row">
+<?php include (web_path."/includes/hp_slider.php"); ?>
+</div>
+</div>
+                                                                     
+<div class="row">
+    <div class="col-6" style="padding-right:0px;">
+        <?php include_once(web_path."includes/user_includes/hp_featured_brides.php");?>    
+    </div>
+    <div class="col-6"  style="padding-right:0px;" >
+        <?php include_once(web_path."includes/user_includes/hp_featured_grooms.php");?>    
+    </div>
+</div>
+ <div class="row">
+    
+        <?php // include_once(web_path."includes/user_includes/hp_featured_recentlyadded.php");?>
+  
+</div>
+ 
 <?php
     $home = $mysql->select("select * from _jpages where ishomepage=1");
  
@@ -43,11 +30,11 @@
     }
     echo $pageContent[0]['pagedescription'];
     echo "</div>";
-    
+                                                     
     }
     
 ?>
-       <table style="width:100%;" cellpadding="0" cellspacing="0">
+       <table style="width:100%;display: none;" cellpadding="0" cellspacing="0">
             <tr>
                 <?php if ( (JFrame::getAppSetting('isenablephoto')) || (JFrame::getAppSetting('isenablevideo')) )  {?>
                     <td valign="top">

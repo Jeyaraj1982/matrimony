@@ -49,15 +49,11 @@
         <!--<script src="http://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
         <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js" type="text/javascript"></script>      -->
         <script src="<?php echo BaseUrl;?>assets/lib/jquery.mousewheel-3.0.6.pack.js" type="text/javascript"></script>
-        <script src="<?php echo BaseUrl;?>assets/source/jquery.fancybox.pack.js?v=2.1.5" type="text/javascript"></script>
-        <script src="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-buttons.js?v=1.0.5" type="text/javascript"></script>
-        <script src="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-media.js?v=1.0.6" type="text/javascript"></script>
-        <script src="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7" type="text/javascript"></script>   
         <script src="<?php echo BaseUrl;?>assets/js/app.js" type="text/javascript"></script>   
         
-        <link href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
-        <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+        <link href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
         <link href="<?php echo BaseUrl;?>assets/source/jquery.fancybox.css?v=2.1.5" type="text/css"   media="screen" rel="stylesheet"/>
         <link href="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-buttons.css?v=1.0.5"   media="screen" rel="stylesheet"/>
         <link href="<?php echo BaseUrl;?>assets/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7"  media="screen" rel="stylesheet"/>
@@ -117,7 +113,7 @@ function postToTWTTR(placement, url, title, shareObject) {
                              ',top=' + top +
                              ',left=' + left, twitterVia = 'dt_next';
 
-    var articleSharingUrl = 'http://twitter.com/intent/tweet?text=' + encodeURIComponent(' ' + url + '');
+    var articleSharingUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(' ' + url + '');
     var shareObjectSharingUrl = getSharingUrl(shareObject);
     var sharingUrl = shareObjectSharingUrl || articleSharingUrl;
     var newwindow = window.open(sharingUrl, "", opts);
@@ -150,7 +146,7 @@ function postToFB(placement, url, shareObject) {
                              ',top=' + top +
                              ',left=' + left;
 
-    var sharingUrl = getSharingUrl(shareObject) || ("http://www.facebook.com/sharer/sharer.php?u=" + url);
+    var sharingUrl = getSharingUrl(shareObject) || ("https://www.facebook.com/sharer/sharer.php?u=" + url);
 
     var newwindow = window.open(sharingUrl, "", opts);
 
@@ -396,42 +392,25 @@ $(document).ready(function(){
     <?php } else { ?> 
         <body style="background:url('<?php echo BaseUrl;?><?php echo $config['thumb'].JFrame::getAppSetting('backgroundimage');?>') <?php echo JFrame::getAppSetting('sitebgposition');?> ;background-color:#<?php echo JFrame::getAppSetting('backgroundcolor');?>;margin:0px;">
     <?php } ?>   
+                         
           
-          
-<div class="container">
+<div class="container" >
     <?php if (JFrame::getAppSetting("showheader")==1) { ?> 
     <div class="row">
-        <div class="col-sm-12">
-            <div class="row">     
-                <div class="col-sm-6">
-                    <div>
-                      <!--  <a href="<?php echo JFrame::getAppSetting('siteurl');?>/index.php">   -->
-                        
-                        <div style="font-weight:bold;color:#222;font-size:30px;padding:20px 0px;line-height:25px;">
-                        nanjilproperties<br />
-                        <span style="font-weight:normal;font-size:12px;color:#999">The Best Property Mart in Kanyakumari District</span>
-                        </div>
-                        <!--<img src='<?php echo BaseUrl;?>/<?php echo $config['thumb'].JFrame::getAppSetting('logo');?>' style="height:80px;" alt="" >-->
-                        
-                        <!--</a>-->
-                    </div>
-                </div>
-                <div class="col-sm-6" style="text-align:right;">
-                    <a href="<?php echo JFrame::getAppSetting('siteurl');?>/login" class="btn btn-danger" style="margin-top: 12px;padding-bottom: 7px;">Login</a>&nbsp;
-                    <a href="<?php echo JFrame::getAppSetting('siteurl');?>/register" class="btn btn-success" style="margin-top: 12px;padding-bottom: 7px;">Register Now</a> 
-                </div>
-            </div>
+        <div class="col-sm-6">
+            <a href="<?php echo JFrame::getAppSetting('siteurl');?>/index.php">
+                <img src='<?php echo BaseUrl;?>/<?php echo $config['thumb'].JFrame::getAppSetting('logo');?>' style="height:70px;" alt="" >
+            </a>
+        </div>
+        <div class="col-sm-6" style="text-align:right;">
+            <a href="<?php echo JFrame::getAppSetting('siteurl');?>/login" class="btn btn-danger" style="margin-top: 12px;padding-bottom: 7px;">Login</a>&nbsp;
+            <a href="<?php echo JFrame::getAppSetting('siteurl');?>/register" class="btn btn-success" style="margin-top: 12px;padding-bottom: 7px;">Register Now</a> 
         </div>
     </div>
-    <?php } ?> 
-   
-   
- 
-    <div class="row" style="height:60px">
-        <div class="col-sm-12">
-        
-        
-       <nav class="navbar navbar-expand-lg navbar-light bg-light subMenu" style="padding:0px;background-color:#<?php echo JFrame::getAppSetting('menubgcolor');?> !important;">
+    <?php } ?>           
+    <div class="row">
+       
+       <nav class="navbar navbar-expand-lg navbar-light bg-light subMenu" style="width:100%;padding:0px;background-color:#<?php echo JFrame::getAppSetting('menubgcolor');?> !important;">
   <!--<a class="navbar-brand" href="#">Navbar</a>-->
     <button class="navbar-toggler subMenu" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="float: right;">
         <span class="navbar-toggler-icon"></span>
@@ -482,49 +461,13 @@ $(document).ready(function(){
   </div>
 </nav>
              
-        </div>
+       
     </div>
-                                                            
- <div id="demo" class="carousel slide" data-ride="carousel" style="margin-bottom:50px;;">
-
-  <!-- Indicators -->
-  <ul class="carousel-indicators">
-    <li data-target="#demo" data-slide-to="0" class="active"></li>
-    <li data-target="#demo" data-slide-to="1"></li>
-    <li data-target="#demo" data-slide-to="2"></li>
-  </ul>
-  
-  <!-- The slideshow -->
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fspecials-images.forbesimg.com%2Fdam%2Fimageserve%2F556528705%2F960x0.jpg%3Ffit%3Dscale" alt="Los Angeles" style="height:400px;width:100%;border-radius:5px">
-      <div class="carousel-caption d-none d-md-block">
-    <h5 style="font-size:40px;font-family:arial;">Welcome to Nanjil Properties</h5>
-    <p>We are a premier real estate service provider in kanyakumari district.
-    We are providing online real estate advertisement & dealing with consumer services .
-    <br />     <br /><br />
-    <button type="button" class="btn btn-success btn-lg">Post Your requirement</button>
-    <button type="button" class="btn btn-outline-success btn-lg">Browser property</button>
-    </p>
-    
-  </div>
-    </div>
-    <div class="carousel-item">
-      <img src="https://blog.hubspot.com/hubfs/Sales_Blog/real-estate-business-compressor.jpg" alt="Chicago"  style="height:400px;width:100%;border-radius:5px">
-    </div>
-    <div class="carousel-item">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFXHIKxYGs2C1yWMrbzGM7FMKzkrTFtNEaxTzs0xxbflyxcrSXhA&s" alt="New York" style="height:400px;width:100%;border-radius:5px">
-    </div>
-  </div>
-  
-  <!-- Left and right controls -->
-  <a class="carousel-control-prev" href="#demo" data-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </a>
-  <a class="carousel-control-next" href="#demo" data-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </a>
 </div>
+<div class="container" style="background:#fff">
+
+                                                            
+ 
 
         
   

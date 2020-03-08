@@ -161,8 +161,8 @@ text-align: left;
                 <tr>
                     <th>Qualification</th>
                     <th>Education Degree</th>
-                    <th>Main Education</th>
-                    <th>Remarks</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -177,8 +177,8 @@ text-align: left;
                              <?php echo trim($Document['EducationDegree']);?>  
                         <?php } ?> 
                     </td>
-                    <td style="text-align:left"><?php echo $Document['MainEducation'];?></td>
-                    <td style="text-align:left"><?php echo $Document['EducationDescription'];?></td>
+                    <td style="text-align:left"><?php //echo $Document['MainEducation'];?></td>
+                    <td style="text-align:left"><?php //echo $Document['EducationDescription'];?></td>
                 </tr>
                 <?php } 
             
@@ -199,11 +199,22 @@ text-align: left;
   <div class="card">
     <div class="card-body">
     <h4 class="card-title">Occupation Details</h4>
+     
      <div class="form-group row">
+                <div class="col-sm-12" style="text-align: center;">
+                    <img src="website/assets/images/lockimage.png">
+                </div>
+                <div class="col-sm-12" style="text-align: center;">
+                    <a href="login" class="btn btn-success">Login to view full details</a><br><br> 
+                </div>
+            </div>
+            
+     <!--<div class="form-group row">
             <label class="col-sm-3 col-form-label">Employed as</label>                 
             <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['EmployedAs']))> 0 ? trim($ProfileInfo['EmployedAs']) : "N/A "; ?></label>
-        </div>
-        <?php if($ProfileInfo['EmployedAsCode']=="O001"){ ?>
+        </div> -->
+        <?php //if($ProfileInfo['EmployedAsCode']=="O001"){ ?>
+        <?php if(false) { ?>
         <div class="form-group row">
             <label  class="col-sm-3 col-form-label">Occupation type</label>              
             <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['TypeofOccupation']))> 0 ? trim($ProfileInfo['TypeofOccupation']) : "N/A "; ?></label>
@@ -326,7 +337,7 @@ text-align: left;
                     <img src="website/assets/images/lockimage.png">
                 </div>
                 <div class="col-sm-12" style="text-align: center;">
-                    <a href="login.php" class="btn btn-success">Login to view full details</a><br><br> 
+                    <a href="login" class="btn btn-success">Login to view full details</a><br><br> 
                 </div>
             </div>
          </div>
@@ -417,7 +428,7 @@ text-align: left;
                     <img src="website/assets/images/lockimage.png">
                 </div>
                 <div class="col-sm-12" style="text-align: center;">
-                    <a href="login.php" class="btn btn-success">Login to view full details</a><br><br> 
+                    <a href="login" class="btn btn-success">Login to view full details</a><br><br> 
                 </div>
             </div>
          </div>
@@ -539,7 +550,7 @@ text-align: left;
                     <img src="website/assets/images/lockimage.png">
                 </div>
                 <div class="col-sm-12" style="text-align: center;">
-                    <a href="login.php" class="btn btn-success">Login to view full details</a><br><br> 
+                    <a href="login" class="btn btn-success">Login to view full details</a><br><br> 
                 </div>
             </div>
          </div>
@@ -552,7 +563,7 @@ text-align: left;
   <div class="card">
     <div class="card-body">
     <h4 class="card-title">Partner's Expectation</h4>
-        <div class="form-group row">
+       <!-- <div class="form-group row">
             <label class="col-sm-3 col-form-label">Age </label>
             <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeFrom'];?> &nbsp;&nbsp;to&nbsp;&nbsp;<?php echo $PartnerExpectation['AgeTo'];?></label>
         </div>
@@ -579,7 +590,15 @@ text-align: left;
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Employed As</label>
             <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo $PartnerExpectation['EmployedAs'];?></label>
-        </div>
+        </div> -->
+        <div class="form-group row">
+                <div class="col-sm-12" style="text-align: center;">
+                    <img src="website/assets/images/lockimage.png">
+                </div>
+                <div class="col-sm-12" style="text-align: center;">
+                    <a href="login" class="btn btn-success">Login to view full details</a><br><br> 
+                </div>
+            </div>
         
     </div>
   </div>
@@ -684,14 +703,14 @@ text-align: left;
                     <img src="website/assets/images/lockimage.png">
                 </div>
                 <div class="col-sm-12" style="text-align: center;">
-                    <a href="login.php" class="btn btn-success">Login to view full details</a><br><br> 
+                    <a href="login" class="btn btn-success">Login to view full details</a><br><br> 
                 </div>
             </div>
          </div>
     </div>
   </div>
  </div>   <br><br>
- 
+                                          
             
                
                             </div>
