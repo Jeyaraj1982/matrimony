@@ -1,10 +1,10 @@
 <?php
     if (isset($_POST['btnVerifyCode'])) {
         include_once(application_config_path);
-        $response = $webservice->getData("Member","forgotPasswordOTPvalidation",$_POST);
+        $response = $webservice->getData("Member","RequestOTPvalidation",$_POST);
         if ($response['status']=="success") {
         ?>
-        <form action="forget-password-save" id="reqFrm" method="post">
+        <form action="Request-Sent" id="reqFrm" method="post">
             <input type="hidden" value="<?php echo $response['data']['reqID'];?>" name="reqID">
             <input type="hidden" value="<?php echo $response['data']['email'];?>" name="reqEmail">
         </form>
@@ -14,14 +14,6 @@
             $errormessage = $response['message']; 
         }  
     }    
-    
-    $resend = "";
-    if (isset($_POST['reqEmail'])) {
-        $resend = $_POST['reqEmail'];
-    } elseif (isset($response['data']['email'])) {
-        $resend = $response['data']['email'];
-    }
-     
     $isShowSlider = false;
     $layout=0;
     //include_once("includes/header.php");
@@ -66,7 +58,7 @@
         }
       });
    });
-function MemberForgetPswdOtp() {
+function MemberRequestOtp() {
         $('#Errscode').html("");
         $("#scode").removeClass("is-invalid"); 
         ErrorCount=0;
@@ -81,16 +73,9 @@ function MemberForgetPswdOtp() {
          return  (ErrorCount==0) ? true : false;
     }    
 </script>
-<script type="text/javascript">
-        window.onbeforeunload = function () {
-            var inputs = document.getElementsByTagName("button");
-            for (var i = 0; i < inputs.length; i++) {
-                if (inputs[i].type == "button" || inputs[i].type == "submit") {
-                    inputs[i].disabled = true;
-                }
-            }
-        };
-    </script>
+<style>
+
+</style>
     <div class="app-content content">
         <div class="content-overlay"></div>
             <div class="content-wrapper">
@@ -109,45 +94,28 @@ function MemberForgetPswdOtp() {
                                                 </div>
                                                 <div class="card-content">
                                                     <div class="card-body">
-                                                       <?php
-                                                           if ($resend=="")  {
-                                                           ?>
-                                                           <div class="card-header pb-1">
-                                                                <div class="card-title">
-                                                                    <h4 class="text-center mb-2">Forgot Password?</h4>
-                                                                </div>
-                                                           </div>  
-                                                           <div class="text-muted text-center mb-2">
-                                                                <small>Somthing went to wrong, please click to <a href="forget-password">forget password</a></small>
-                                                           </div>  <br><br><br><br><br>
-                                                            <?php        
-                                                           }   else {
-                                                        ?>
+                                                        <div class="form-group mb-2">
+                                                           <div class="text-muted text-left mb-2"><small>
+                                                                Member Code :<?php echo $_POST['MemberCode'];?><br>
+                                                                Member Name :<?php echo $_POST['MemberName'];?><br>
+                                                                Request for :<?php echo $_POST['RequestFor'];?><br>
+                                                           </small></div>
+                                                        </div>                                                                                 
                                                         <div class="text-muted text-center mb-2">
                                                             <small>We have sent a verification code to your registered email. Please check your email and  enter the verification code</small>
                                                         </div>
-                                                        <form action="" method="post" id="formid" onsubmit="return MemberForgetPswdOtp();">
-                                                            <input type="hidden"  value="<?php echo $_POST['reqEmail'];?>" name="reqEmail">
-                                                            <input type="hidden"  value="<?php echo $_POST['reqID'];?>" name="reqID">
+                                                        <form action="" method="post" onsubmit="return MemberRequestOtp();">
+                                                            <input type="hidden" value="<?php echo $_POST['reqEmail'];?>" name="reqEmail">
+                                                            <input type="hidden" value="<?php echo $_POST['reqID'];?>" name="reqID">
+                                                            <input type="hidden" value="<?php echo $_POST['ReqFor'];?>" name="ReqFor">   
+                                                            <input type="hidden" value="<?php echo $_POST['Remarks'];?>" name="Remarks">
                                                             <div class="form-group mb-2">
                                                                 <input type="text" class="form-control <?php echo isset($errormessage) ? 'is-invalid' : '';?>"  name="scode" id="scode" placeholder="Verification code here ..." value="<?php echo isset($_POST['scode']) ? $_POST['scode'] : '';?>"/>
                                                                 <span class="invalid-feedback" id="Errscode"><?php echo $errormessage;?></span>
                                                             </div>
                                                             <button type="submit" name="btnVerifyCode" class="btn btn-primary glow position-relative w-100">Verify code<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
                                                         </form><br>
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-6"><a href="index"><small class="text-muted">I will do later</small></a></div>
-                                                            <div class="col-sm-6" style="text-align: right;"><small class="text-muted"><a onclick="ResendForgetPasswordOtp()" style="cursor:pointer;">Resend</a></small>
-                                                          
-                                                                    <form action="forget-password" id="reqFrm" method="post">
-                                                                        <input type="hidden" value="<?php echo $resend;?>" name="FpUserName">
-                                                                        <button type="submit" hidden="hidden" name="btnResetPassword" id="btnResetPassword" class="btn btn-primary glow position-relative w-100">Continue<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
-                                                                    </form>
-                                                            </div>
-                                                        </div>
-                                                        <?php
-                                                           }
-                                                        ?>
+                                                        <div class="text-center mb-2"><a href="index"><small class="text-muted">I will do later</small></a></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -165,7 +133,7 @@ function MemberForgetPswdOtp() {
         </div>
     <!-- END: Content-->
 
-    
+
     <!-- BEGIN: Vendor JS-->
     <script src="<?php echo BaseUrl;?>assets/vendors/js/vendors.min.js"></script>
     <script src="<?php echo BaseUrl;?>assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.min.js"></script>
@@ -188,11 +156,7 @@ function MemberForgetPswdOtp() {
 
     <!-- BEGIN: Page JS-->
     <!-- END: Page JS-->
-    <script>
-        function ResendForgetPasswordOtp() {
-            $( "#btnResetPassword" ).trigger( "click" );
-        }
-    </script>
+
   </body>
   <!-- END: Body-->
 </html>

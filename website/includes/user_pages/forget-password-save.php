@@ -114,9 +114,16 @@ function MemberChangePassword() {
          return  (ErrorCount==0) ? true : false;
     }    
 </script>
-<style>
-
-</style>
+<script type="text/javascript">
+        window.onbeforeunload = function () {
+            var inputs = document.getElementsByTagName("button");
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].type == "button" || inputs[i].type == "submit") {
+                    inputs[i].disabled = true;
+                }
+            }
+        };
+    </script>
     <div class="app-content content">
         <div class="content-overlay"></div>
             <div class="content-wrapper">

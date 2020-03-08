@@ -44,6 +44,14 @@
   </head>
   <body class="vertical-layout vertical-menu-modern 1-column  navbar-sticky footer-static bg-full-screen-image  blank-page blank-page" data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
   <script>
+  function FacebookSignup() {
+            location.href = 'lib/services/signup/fb3/fblogin.php';
+    }
+
+  
+    function GoogleSignup() {
+        window.open('lib/services/signup/google/googlelogin.php', "_self");
+    }
   $(document).ready(function () {
       $("#UserName").blur(function () {
         var IsUserName= IsNonEmpty("UserName","ErrUserName","Please Enter Member ID / Registered Email"); 
@@ -87,9 +95,16 @@
         return  (ErrorCount==0) ? true : false;
     }    
 </script>
-<style>
-
-</style>
+<script type="text/javascript">
+        window.onbeforeunload = function () {
+            var inputs = document.getElementsByTagName("button");
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].type == "button" || inputs[i].type == "submit") {
+                    inputs[i].disabled = true;
+                }
+            }
+        };
+    </script>
     <div class="app-content content">
         <div class="content-overlay"></div>
             <div class="content-wrapper">
@@ -110,20 +125,23 @@
                                                 <div class="card-content">
                                                     <div class="card-body">
                                                         <div class="d-flex flex-md-row flex-column justify-content-around">
-                                                            <a href="#"
-                                                                class="btn btn-social btn-google btn-block font-small-3 mr-md-1 mb-md-0 mb-1">
-                                                                <i class="bx bxl-google font-medium-3"></i><span
-                                                                    class="pl-50 d-block text-center">Google</span></a>
-                                                            <a href="#" class="btn btn-social btn-block mt-0 btn-facebook font-small-3">
-                                                                <i class="bx bxl-facebook-square font-medium-3"></i><span
-                                                                    class="pl-50 d-block text-center">Facebook</span></a>
+                                                        <?php if(WebConfig::GOOGLE_SIGN_IN_REQUIRED == 1) { ?>                                          
+                                                            <a href="javascript:GoogleSignup()" class="btn btn-social btn-google btn-block font-small-3  mb-md-0 mb-1 <?php echo (WebConfig::FACEBOOK_SIGN_IN_REQUIRED == 1) ? "mr-md-1 " : ""; ?>">
+                                                                <i class="bx bxl-google font-medium-3"></i><span class="pl-50 d-block text-center">Google</span></a>
+                                                        <?php } if (WebConfig::FACEBOOK_SIGN_IN_REQUIRED == 1) {?>
+                                                            <a href="javascript:FacebookSignup()" class="btn btn-social btn-block mt-0 btn-facebook font-small-3">
+                                                                <i class="bx bxl-facebook-square font-medium-3"></i><span class="pl-50 d-block text-center">Facebook</span></a>
+                                                        <?php } ?>
                                                         </div>
+                                                        <?php if(WebConfig::GOOGLE_SIGN_IN_REQUIRED == 1 || WebConfig::FACEBOOK_SIGN_IN_REQUIRED == 1) { ?>
                                                         <div class="divider">
                                                             <div class="divider-text text-uppercase text-muted"><small>or login with
                                                                     email</small>
                                                             </div>
                                                         </div>
-                                                        <form action="" method="post" onsubmit="return MemberLogin();">
+                                                        <?php } ?>
+                                                        <form action="" method="post" onsubmit="return MemberLogin();">     
+                                                        <input type="hidden" value="<?php echo isset($_GET['email']) ? $_GET['email'] : "";?>" name="email">
                                                             <div class="form-group mb-50">
                                                                 <label class="text-bold-600" for="UserName">Member ID / Registered Email</label>
                                                                 <input type="text" class="form-control <?php echo isset($loginError) ? 'is-invalid' : '';?>" id="UserName" name="UserName" placeholder="Member ID / Registered Email" value="<?php echo isset($_POST['UserName']) ? $_POST['UserName'] : '';?>">
@@ -144,7 +162,7 @@
                                                                 <div class="text-right"><a href="forget-password" class="card-link"><small>Forgot Password?</small></a></div>
                                                             </div>
                                                             
-                                                            <button type="submit" class="btn btn-primary glow w-100 position-relative" name="login">Login<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                                                            <button type="submit" class="btn btn-primary glow w-100 position-relative" name="login">Sign in<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
                                                         </form >
                                                         <hr>
                                                         <div  class="text-center"><small class="mr-25">Don't have an account?</small><a href="register"><small>Sign up</small></a></div>

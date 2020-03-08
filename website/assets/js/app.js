@@ -158,7 +158,7 @@
                 }
 
                 function IsEmail(ElemID,ResultDiv,Message) {
-                    if (/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/.test($("#"+ElemID).val())) {
+                    if (/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/.test($("#"+ElemID).val().toLowerCase())) {
                         return true;       
                     } else {
                         ErrorCount++;

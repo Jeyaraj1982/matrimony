@@ -1,3 +1,4 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <?php
     if (isset($_POST['btnResetPassword'])) {
                 include_once(application_config_path);
@@ -12,13 +13,19 @@
                 <?php
                     }
                     else{
+                        if($response['message']=="Account not found"){   ?>
+                            <script>
+                            $(document).ready(function () {
+                                $('#AccountNotFoundModal').modal('show');
+                            });
+                            </script>
+                        <?php    }
                         $errormessage = $response['message']; 
                     } 
             }   
     
     $isShowSlider = false;
     $layout=0;
-    //include_once("includes/header.php");
 ?>                                                          
 
   <!DOCTYPE html>
@@ -46,7 +53,7 @@
     <link rel="stylesheet" type="text/css" href="<?php echo BaseUrl;?>assets/css/pages/authentication.css">
     <link rel="stylesheet" type="text/css" href="<?php echo BaseUrl;?>/assets/css/style.css">
     <script src="<?php echo BaseUrl;?>assets/js/app.js" type="text/javascript"></script> 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
   </head>
   <body class="vertical-layout vertical-menu-modern 1-column  navbar-sticky footer-static bg-full-screen-image  blank-page blank-page" data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
   <script>
@@ -75,9 +82,16 @@ function MemberForgetPswd() {
          return  (ErrorCount==0) ? true : false;
     }    
 </script>
-<style>
-
-</style>
+<script type="text/javascript">
+        window.onbeforeunload = function () {
+            var inputs = document.getElementsByTagName("button");
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].type == "button" || inputs[i].type == "submit") {
+                    inputs[i].disabled = true;
+                }
+            }
+        };
+    </script>
     <div class="app-content content">
         <div class="content-overlay"></div>
             <div class="content-wrapper">
@@ -105,7 +119,7 @@ function MemberForgetPswd() {
                                                                 <span class="invalid-feedback" id="ErrFpUserName"><?php echo $errormessage;?></span>
                                                             </div>
                                                             
-                                                            <button type="submit" name="btnResetPassword" class="btn btn-primary glow position-relative w-100">CONTINUE<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                                                            <button type="submit" name="btnResetPassword" class="btn btn-primary glow position-relative w-100">Continue<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
                                                         </form>     <br>
                                                         <div class="text-center mb-2"><a href="login"><small class="text-muted">I remembered my password</small></a></div>
                                                     </div>
@@ -123,9 +137,7 @@ function MemberForgetPswd() {
                     </div><!-- login page ends -->
                 </div>
         </div>
-    <!-- END: Content-->
-
-
+    <!-- END: Content-->         
     <!-- BEGIN: Vendor JS-->
     <script src="<?php echo BaseUrl;?>assets/vendors/js/vendors.min.js"></script>
     <script src="<?php echo BaseUrl;?>assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.min.js"></script>
@@ -150,6 +162,31 @@ function MemberForgetPswd() {
     <!-- END: Page JS-->
 
   </body>
+  <style>
+    #notnow{
+        color: #666;
+    }
+    #notnow:hover{
+        color: #719DF0 ;
+    }
+    </style>
+  <div class="modal fade" id="AccountNotFoundModal" role="dialog" data-backdrop="static" style="padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
+        <div class="modal-dialog" >
+            <div class="modal-content" style="max-height: 500px;min-height: 500px;">
+                   <div class="modal-body" style="min-height:175px;max-height:175px;">
+                    <p style="text-align:center;margin-top: 40px;"><img src="<?php echo BaseUrl;?>assets/images/success_icon.png" width="100px">
+                    <h4 style="text-align:center;">Account not fount</h4> <br><br>
+                    <form action="register">
+                        <p style="text-align:center;">
+                            <button type="submit" class="btn btn-primary glow position-relative">Create Account&nbsp;&nbsp;<i id="icon-arrow" class="bx bx-right-arrow-alt" style="top: 3px;"></i></button>    
+                        </p>    
+                    </form>
+                      <br>
+                    <div class="text-center" ><small class="mr-25"><a id="notnow" data-dismiss="modal" style="cursor:pointer" >Not now</a></small></div>
+                   </div>
+            </div>
+        </div>
+     </div>
   <!-- END: Body-->
 </html>
 <?php //include_once("includes/footer.php");?>
