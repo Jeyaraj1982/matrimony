@@ -27,7 +27,7 @@
      $DATSummarys = $response['data']['DATSummary'];
 ?>
 <script>
-$(window).on("beforeunload", function() { return confirm("Do you really want to close?"); });
+//$(window).on("beforeunload", function() { return confirm("Do you really want to close?"); });
 </script>
  <style>
  .table-bordered > tbody > tr > td{
