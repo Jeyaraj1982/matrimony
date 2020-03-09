@@ -162,7 +162,9 @@
                 case 'header_logo_padding_bottom'  : $keyvalue = 131;break;
                 case 'header_background_repeat'  : $keyvalue = 132;break;
                 
+                
                 case 'currencysymbol'  : $keyvalue = 133;break;
+                case 'copyright_text'  : $keyvalue = 134;break;
                
                 
                 
