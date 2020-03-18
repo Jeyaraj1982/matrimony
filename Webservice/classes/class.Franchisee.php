@@ -1163,15 +1163,50 @@
              if (isset($_POST['Request']) && $_POST['Request']=="All") {
                 return Response::returnSuccess("success",$mysql->select($sql));    
              }
-
+             if (isset($_POST['Request']) && $_POST['Request']=="AllBride") {
+                return Response::returnSuccess("success",$mysql->select($sql." and `_tbl_members`.`SexCode`='SX002'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="AllGroom") {
+                return Response::returnSuccess("success",$mysql->select($sql." and `_tbl_members`.`SexCode`='SX001'"));    
+             }
              if (isset($_POST['Request']) && $_POST['Request']=="Active") {
                  return Response::returnSuccess("success",$mysql->select($sql." and `_tbl_members`.`IsActive`='1' and `_tbl_members`.`IsDeleted`='0'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="ActiveBride") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and `_tbl_members`.`SexCode`='SX002' and `_tbl_members`.`IsActive`='1' and `_tbl_members`.`IsDeleted`='0'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="ActiveGroom") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and `_tbl_members`.`SexCode`='SX001' and `_tbl_members`.`IsActive`='1' and `_tbl_members`.`IsDeleted`='0'"));    
              }
              if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
                  return Response::returnSuccess("success",$mysql->select($sql." and `_tbl_members`.`IsActive`='0' and `_tbl_members`.`IsDeleted`='0'"));    
              }
+             if (isset($_POST['Request']) && $_POST['Request']=="DeactiveBride") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and `_tbl_members`.`SexCode`='SX002' and `_tbl_members`.`IsActive`='0' and `_tbl_members`.`IsDeleted`='0'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="DeactiveGroom") {
+                 return Response::returnSuccess("success",$mysql->select($sql." and `_tbl_members`.`SexCode`='SX001' and `_tbl_members`.`IsActive`='0' and `_tbl_members`.`IsDeleted`='0'"));    
+             }
              if (isset($_POST['Request']) && $_POST['Request']=="Deleted") {
                  return Response::returnSuccess("success",$mysql->select($sql." and `_tbl_members`.`IsDeleted`='1'"));    
+             }
+         }
+         function MembersCount() {
+             global $mysql,$loginInfo;
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+                 $GroomCount = $mysql->select("select count(*) as cnt from `_tbl_members` where `ReferedBy`='".$loginInfo[0]['FranchiseeStaffID']."' and SexCode='SX001' and `IsDeleted`='0'"); 
+                 $BrideCount = $mysql->select("select count(*) as cnt from `_tbl_members` where `ReferedBy`='".$loginInfo[0]['FranchiseeStaffID']."' and SexCode='SX002' and `IsDeleted`='0'"); 
+                return Response::returnSuccess("success",array("Groom" => $GroomCount[0],"Bride" => $BrideCount[0]));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Active") {
+                 $GroomCount = $mysql->select("select count(*) as cnt from `_tbl_members` where `ReferedBy`='".$loginInfo[0]['FranchiseeStaffID']."' and SexCode='SX001' and `IsActive`='1' and `IsDeleted`='0'"); 
+                 $BrideCount = $mysql->select("select count(*) as cnt from `_tbl_members` where `ReferedBy`='".$loginInfo[0]['FranchiseeStaffID']."' and SexCode='SX002' and `IsActive`='1' and `IsDeleted`='0'"); 
+                return Response::returnSuccess("success",array("Groom" => $GroomCount[0],"Bride" => $BrideCount[0]));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Deactive") {
+                 $GroomCount = $mysql->select("select count(*) as cnt from `_tbl_members` where `ReferedBy`='".$loginInfo[0]['FranchiseeStaffID']."' and SexCode='SX001' and `IsActive`='0' and `IsDeleted`='0'"); 
+                 $BrideCount = $mysql->select("select count(*) as cnt from `_tbl_members` where `ReferedBy`='".$loginInfo[0]['FranchiseeStaffID']."' and SexCode='SX002' and `IsActive`='0' and `IsDeleted`='0'"); 
+                return Response::returnSuccess("success",array("Groom" => $GroomCount[0],"Bride" => $BrideCount[0]));    
              }
          }
             
@@ -2257,6 +2292,246 @@
                         }
                    
               } 
+              
+              $totalFields = 60;
+              $completedFields = 0;
+              $temp = array();
+              if (strlen($Profiles[0]['MaritalStatusCode'])!=0) {
+                  $completedFields++;   
+                  $temp[]="MaritalStatusCode";
+              }  
+                if (strlen($Profiles[0]['MotherTongueCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="MotherTongueCode";
+              }  
+              
+               if (strlen($Profiles[0]['ReligionCode'])!=0) {
+                  $completedFields++;
+                   $temp[]="ReligionCode";
+              }  
+              
+                if (strlen($Profiles[0]['CasteCode'])!=0) {
+                  $completedFields++;
+                    $temp[]="CasteCode";
+              }  
+              
+                if (strlen($Profiles[0]['CommunityCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="CommunityCode";
+              } 
+              
+               if (strlen($Profiles[0]['mainEducation'])!=0) {
+                  $completedFields++;
+                  $temp[]="mainEducation";
+              }
+                                       
+              if (strlen($Profiles[0]['EmployedAsCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="EmployedAsCode";
+              }
+              
+              if (strlen($Profiles[0]['FathersName'])!=0) {
+                  $completedFields++;
+                  $temp[]="FathersName";
+              }
+              if (strlen($Profiles[0]['MothersName'])!=0) {
+                  $completedFields++;
+                   $temp[]="MothersName";
+              }
+              if (strlen($Profiles[0]['FamilyLocation1'])!=0) {
+                  $completedFields++;
+                   $temp[]="FamilyLocation1";
+              }
+              if (strlen($Profiles[0]['Ancestral'])!=0) {
+                  $completedFields++;
+                  $temp[]="Ancestral";
+              }
+              if (strlen($Profiles[0]['FamilyTypeCode'])!=0) {
+                  $completedFields++;
+                   $temp[]="FamilyTypeCode";
+              }
+              if (strlen($Profiles[0]['FamilyValueCode'])!=0) {
+                  $completedFields++;
+                   $temp[]="FamilyValueCode";
+              }
+              if (strlen($Profiles[0]['FamilyAffluenceCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="FamilyAffluenceCode";
+              }
+              if (strlen($Profiles[0]['NumberofBrothersCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="NumberofBrothersCode";        
+              }
+              if (strlen($Profiles[0]['NumberofSistersCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="NumberofSistersCode";
+              }
+              if (strlen($Profiles[0]['PhysicallyImpairedCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="PhysicallyImpairedCode";
+              }
+              if (strlen($Profiles[0]['VisuallyImpairedCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="VisuallyImpairedCode";
+              }
+              if (strlen($Profiles[0]['VissionImpairedCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="VissionImpairedCode";
+              }
+              if (strlen($Profiles[0]['SpeechImpairedCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="VissionImpairedCode"; 
+              }
+              if (strlen($Profiles[0]['HeightCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="HeightCode"; 
+              }
+              if (strlen($Profiles[0]['WeightCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="WeightCode";
+              }
+              if (strlen($Profiles[0]['BloodGroupCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="BloodGroupCode";
+              }
+              if (strlen($Profiles[0]['ComplexationCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="ComplexationCode";
+              }
+              if (strlen($Profiles[0]['BodyTypeCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="BodyTypeCode";
+              }
+              if (strlen($Profiles[0]['DietCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="DietCode";
+              }
+              if (strlen($Profiles[0]['SmokingHabitCode'])!=0) {
+                  $completedFields++;
+                  $temp[]="SmokingHabitCode";
+              }
+              if (strlen($Profiles[0]['DrinkingHabitCode'])!=0) {
+                  $completedFields++;
+                   $temp[]="DrinkingHabitCode";
+              }
+              if (strlen($Profiles[0]['ContactPersonName'])!=0) {
+                  $completedFields++;
+                   $temp[]="ContactPersonName";
+              }
+              if (strlen($Profiles[0]['Relation'])>1) {
+                  $completedFields++;
+                  $temp[]="Relation";
+              }
+              if (strlen($Profiles[0]['PrimaryPriority'])>1) {
+                  $completedFields++;
+                  $temp[]="PrimaryPriority";
+              }
+              if (strlen($Profiles[0]['EmailID'])!=0) { 
+                  $completedFields++;
+                  $temp[]="EmailID";
+              }
+              if (strlen($Profiles[0]['MobileNumber'])!=0) {
+                  $completedFields++;
+                  $temp[]="MobileNumber";
+              }
+              if (strlen($Profiles[0]['AddressLine1'])!=0) {
+                  $completedFields++;
+                  $temp[]="AddressLine1";
+              } 
+              if (strlen($Profiles[0]['City'])!=0) {
+                  $completedFields++;
+                  $temp[]="City";
+              }
+              if (strlen($Profiles[0]['Pincode'])!=0) {
+                  $completedFields++;
+                  $temp[]="Pincode";
+              } 
+              if (strlen($Profiles[0]['CountryCode'])>1) {
+                  $completedFields++;
+                  $temp[]="CountryCode";
+              }
+              if (strlen($Profiles[0]['StateCode'])>1) {
+                  $completedFields++;
+                  $temp[]="StateCode";
+              }
+              if (strlen($Profiles[0]['DistrictCode'])>1) {
+                  $completedFields++;
+                  $temp[]="DistrictCode";
+              }
+              if (strlen($Profiles[0]['TimeOfBirth'])>1) {
+                  $completedFields++;
+                  $temp[]="TimeOfBirth";
+              }
+              if (strlen($Profiles[0]['PlaceOfBirth'])>1) {
+                  $completedFields++;
+                  $temp[]="PlaceOfBirth";
+              } 
+              if (strlen($Profiles[0]['StarNameCode'])>1) {
+                  $completedFields++;
+                  $temp[]="StarNameCode";
+              } 
+              if (strlen($Profiles[0]['RasiNameCode'])>1) {
+                  $completedFields++;
+                  $temp[]="RasiNameCode";
+              }
+              if (strlen($Profiles[0]['LakanamCode'])>1) {
+                  $completedFields++;
+                  $temp[]="LakanamCode";
+              } 
+              if (strlen($Profiles[0]['ChevvaiDhoshamCode'])>1) {
+                  $completedFields++;
+                  $temp[]="ChevvaiDhoshamCode";
+              } 
+              if (strlen($Documents[0]['DocumentType'])>1) {
+                  $completedFields++;
+                  $temp[]="DocumentType";
+              }
+              
+              $ProfilePhotoAddCount =      $mysql->select("select concat('".AppPath."uploads/',ProfilePhoto) as ProfilePhoto  from `_tbl_draft_profiles_photos` where `ProfileCode`='".$_POST['ProfileCode']."' and `MemberID`='".$Profiles[0]['MemberID']."' and `IsDelete`='0'");                                        
+              if (sizeof($ProfilePhotoAddCount)>0) {
+                  $completedFields++;
+                  $temp[]="ProfilePhoto";
+              }
+              if (strlen($PartnersExpectations[0]['MaritalStatusCode'])>1) {
+                  $completedFields++;
+                  $temp[]="MaritalStatusCode";
+              }
+               if (strlen($PartnersExpectations[0]['ReligionCode'])>1) {
+                  $completedFields++;
+                  $temp[]="ReligionCode";
+              }
+               if (strlen($PartnersExpectations[0]['CasteCode'])>1) {
+                  $completedFields++;
+                  $temp[]="CasteCode";
+              } 
+              if (strlen($PartnersExpectations[0]['EducationCode'])>1) {
+                  $completedFields++;
+                  $temp[]="EducationCode";
+              }
+              if (strlen($PartnersExpectations[0]['AnnualIncomeCode'])>1) {
+                  $completedFields++;
+                  $temp[]="AnnualIncomeCode";
+              }
+              if (strlen($PartnersExpectations[0]['EmployedAsCode'])>1) {
+                  $completedFields++;
+                  $temp[]="EmployedAsCode";
+              }
+              if (strlen($PartnersExpectations[0]['RasiNameCode'])>1) {
+                  $completedFields++;
+                  $temp[]="RasiNameCode";
+              }
+              if (strlen($PartnersExpectations[0]['StarNameCode'])>1) {
+                  $completedFields++;
+                  $temp[]="StarNameCode";
+              }
+              if (strlen($PartnersExpectations[0]['ChevvaiDhoshamCode'])>1) {
+                  $completedFields++;
+                  $temp[]="ChevvaiDhoshamCode";
+              } 
+              
+              
+              $ratio = ($completedFields/$totalFields)*100;
+              $Profiles[0]['Progress']=array("Total"=>$totalFields,"Completed"=>$completedFields,"ratio"=>$ratio,"t"=>$temp,"sql"=>sizeof($ProfilePhotoAddCount));
              
              return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
                                                             "ProfilePhotos"          => $ProfilePhoto,
@@ -2306,6 +2581,7 @@
                                                             "Lakanam"                => CodeMaster::getActiveData('LAKANAM'),
                                                             "StarName"               => CodeMaster::getActiveData('STARNAMES'),
                                                             "AllCountryName"        => CodeMaster::getActiveData('CONTNAMES'),
+                                                            "DistrictName"        => CodeMaster::getActiveData('DistrictName'),
                                                             "Education"              => CodeMaster::getActiveData('EDUCATETITLES'),
                                                             "ParentsAlive"              => CodeMaster::getActiveData('PARENTSALIVE'),
                                                             "ChevvaiDhosham"              => CodeMaster::getActiveData('CHEVVAIDHOSHAM'),
@@ -3046,6 +3322,7 @@
              
              $Country = CodeMaster::getData("CONTNAMES",$_POST['Country']);
              $State   = CodeMaster::getData("STATNAMES",$_POST['StateName']);
+             $District   = CodeMaster::getData("DistrictName",$_POST['District']);
              
              $updateSql = "update `_tbl_draft_profiles` set `ContactPersonName`        = '".$_POST['ContactPersonName']."',
                                                             `Relation`        = '".$_POST['Relation']."',
@@ -3060,6 +3337,8 @@
                                                             `AddressLine3`   = '".$_POST['AddressLine3']."',
                                                             `CountryCode`    = '".$_POST['Country']."',
                                                             `Country`        = '".$Country[0]['CodeValue']."',
+                                                            `DistrictCode`    = '".$_POST['District']."',
+                                                            `District`        = '".$District[0]['CodeValue']."',
                                                             `StateCode`      = '".$_POST['StateName']."',
                                                             `State`          = '".$State[0]['CodeValue']."',
                                                             `City`           = '".$_POST['City']."',
@@ -3492,14 +3771,163 @@
             $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'");
             $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
                 
+             /*   if($data[0]['MaritalStatus']==""){
+                    return Response::returnError("You must Provide Your Marital Status.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"GeneralInformation"));    
+                } 
+                if($data[0]['MotherTongue']==""){
+                    return Response::returnError("You must Provide Your Mother Tongue.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"GeneralInformation"));    
+                }
+                if($data[0]['Religion']==""){
+                    return Response::returnError("You must Provide Your Religion.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"GeneralInformation"));    
+                }
+                if($data[0]['Caste']==""){
+                    return Response::returnError("You must Provide Your Caste.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"GeneralInformation"));    
+                }
+                if($data[0]['Community']==""){
+                    return Response::returnError("You must Provide Your Community.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"GeneralInformation"));    
+                }
+                if($data[0]['Nationality']==""){
+                    return Response::returnError("You must Provide Your Nationality.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"GeneralInformation"));    
+                }
+                if($data[0]['mainEducation']==""){
+                    return Response::returnError("You must Provide Your Education.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"GeneralInformation"));    
+                }
+                
                 $EducationDetails =$mysql->select("Select * from `_tbl_draft_profiles_education_details` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
                     if (sizeof($EducationDetails)==0) {
                         return Response::returnError("You must Provide Your Education Details.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"EducationDetails"));
-                    }
+                    } 
+                
+                if($data[0]['EmployedAs']==""){
+                    return Response::returnError("You must Provide Your EmployedAs.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"OccupationDetails"));    
+                } 
+                if($data[0]['EmployedAsCode']=="O001"){
+                   if($data[0]['TypeofOccupation']==""){ 
+                        return Response::returnError("You must Provide Your Occupation Type.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"OccupationDetails"));    
+                   }
+                   if($data[0]['OccupationType']==""){ 
+                        return Response::returnError("You must Provide Your Occupation.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"OccupationDetails"));    
+                   }
+                   if($data[0]['AnnualIncome']==""){ 
+                        return Response::returnError("You must Provide Your Annual Income.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"OccupationDetails"));    
+                   }
+                   if($data[0]['WorkedCountry']==""){ 
+                        return Response::returnError("You must Provide Your Working Country.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"OccupationDetails"));    
+                   }
+                   if($data[0]['WorkedCountry']==""){ 
+                        return Response::returnError("You must Provide Your Working Country.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"OccupationDetails"));    
+                   }
+                   if($data[0]['WorkedCityName']==""){ 
+                        return Response::returnError("You must Provide Your Working City Name.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"OccupationDetails"));    
+                   }
+                }
+                if($data[0]['FathersName']==""){ 
+                    return Response::returnError("You must Provide Your Fathers Name.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));    
+                }
+                if($data[0]['MothersName']==""){ 
+                    return Response::returnError("You must Provide Your Mothers Name.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));    
+                }
+                if($data[0]['FamilyLocation1']==""){ 
+                    return Response::returnError("You must Provide Your Family Location.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));    
+                }
+                if($data[0]['Ancestral']==""){ 
+                    return Response::returnError("You must Provide Your Ancestral.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));    
+                }
+                if($data[0]['FamilyType']==""){ 
+                    return Response::returnError("You must Provide Your Family Type.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));    
+                }
+                if($data[0]['FamilyAffluence']=""){ 
+                    return Response::returnError("You must Provide Your Family Affluence.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));    
+                }
+                if($data[0]['FamilyValue']==""){ 
+                    return Response::returnError("You must Provide Your Family Value.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));    
+                }
+                if($data[0]['NumberofBrothers']==""){ 
+                    return Response::returnError("You must Provide Your Number of Brothers.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));    
+                }
+                if($data[0]['NumberofSisters']==""){ 
+                    return Response::returnError("You must Provide Your Number of Sisters.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));    
+                } 
+                if($data[0]['PhysicallyImpaired']==""){ 
+                    return Response::returnError("You must Provide Your Physically Impaired.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                }
+                if($data[0]['PhysicallyImpairedCode']=="PI002"){ 
+                  if($data[0]['PhysicallyImpaireddescription']==""){ 
+                    return Response::returnError("You must Provide Your Physically Impaired Description.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                  }
+                } 
+                if($data[0]['VisuallyImpaired']==""){ 
+                    return Response::returnError("You must Provide Your Visually Impaired.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                }           
+                
+                if($data[0]['VisionImpaired']==""){ 
+                    return Response::returnError("You must Provide Your Vision Impaired.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                }
+                
+                if($data[0]['SpeechImpaired']==""){ 
+                    return Response::returnError("You must Provide Your Speech Impaired.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                }
+                if($data[0]['Height']==""){ 
+                    return Response::returnError("You must Provide Your Height.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                }
+                if($data[0]['Weight']==""){ 
+                    return Response::returnError("You must Provide Your Weight.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                }   */
+                if($data[0]['BloodGroup']==""){ 
+                    return Response::returnError("You must Provide Your BloodGroup.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                }
+                if($data[0]['Complexation']==""){ 
+                    return Response::returnError("You must Provide Your Complexation.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                }
+                if($data[0]['BodyType']==""){ 
+                    return Response::returnError("You must Provide Your Body Type.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                }
+                if($data[0]['Diet']==""){ 
+                    return Response::returnError("You must Provide Your Diet.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                }
+                if($data[0]['SmokingHabit']==""){ 
+                    return Response::returnError("You must Provide Your Smoking Habit.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                }
+                if($data[0]['DrinkingHabit']==""){ 
+                    return Response::returnError("You must Provide Your Drinking Habit.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
+                }
                 $Documents =$mysql->select("Select * from `_tbl_draft_profiles_verificationdocs` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
                     if (sizeof($Documents)==0) {
                         return Response::returnError("You must upload Documents Details.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"DocumentAttachment"));
                     }
+                if($data[0]['ContactPersonName']==""){ 
+                    return Response::returnError("You must Provide Your Contact Person Name.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"CommunicationDetails"));    
+                } 
+                if($data[0]['Relation']==""){ 
+                    return Response::returnError("You must Provide Your Contact Relation.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"CommunicationDetails"));    
+                } 
+                if($data[0]['PrimaryPriority']==""){ 
+                    return Response::returnError("You must Provide Your Primary Priority.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"CommunicationDetails"));    
+                }
+                if($data[0]['EmailID']==""){ 
+                    return Response::returnError("You must Provide Your Email ID.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"CommunicationDetails"));    
+                }
+                if($data[0]['MobileNumber']==""){ 
+                    return Response::returnError("You must Provide Your Mobile Number.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"CommunicationDetails"));    
+                }
+                if($data[0]['AddressLine1']==""){ 
+                    return Response::returnError("You must Provide Your AddressLine1.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"CommunicationDetails"));    
+                }
+                if($data[0]['City']==""){ 
+                    return Response::returnError("You must Provide Your City.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"CommunicationDetails"));    
+                } 
+                if($data[0]['Pincode']==""){ 
+                    return Response::returnError("You must Provide Your Pincode.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"CommunicationDetails"));    
+                }
+                if($data[0]['Country']==""){ 
+                    return Response::returnError("You must Provide Your Country.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"CommunicationDetails"));    
+                }
+                if($data[0]['State']==""){ 
+                    return Response::returnError("You must Provide Your State.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"CommunicationDetails"));    
+                }
+                if($data[0]['District']==""){ 
+                    return Response::returnError("You must Provide Your District.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"CommunicationDetails"));    
+                }
                 $ProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
                     if (sizeof($ProfilePhoto)==0) {
                         return Response::returnError("You must upload Profile photo.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"ProfilePhoto"));
@@ -3507,6 +3935,24 @@
                 $DefaultProfilePhoto =$mysql->select("Select * from `_tbl_draft_profiles_photos` where `PriorityFirst`='1' and `IsDelete`='0' and `ProfileCode`='".$_POST['ProfileID']."'"); 
                     if (sizeof($DefaultProfilePhoto)==0) {
                         return Response::returnError("You must Select Default Profile photo.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"ProfilePhoto"));    
+                }
+                if($data[0]['TimeOfBirth']==""){ 
+                    return Response::returnError("You must Provide Your Time Of Birth.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"HoroscopeDetails"));    
+                }
+                if($data[0]['PlaceOfBirth']==""){ 
+                    return Response::returnError("You must Provide Your Place Of Birth.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"HoroscopeDetails"));    
+                }
+                if($data[0]['StarName']==""){ 
+                    return Response::returnError("You must Provide Your Star Name.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"HoroscopeDetails"));    
+                }
+                if($data[0]['RasiName']==""){ 
+                    return Response::returnError("You must Provide Your Rasi Name.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"HoroscopeDetails"));    
+                }
+                if($data[0]['Lakanam']==""){ 
+                    return Response::returnError("You must Provide Your Lakanam.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"HoroscopeDetails"));    
+                }
+                if($data[0]['ChevvaiDhosham']==""){ 
+                    return Response::returnError("You must Provide Your Chevvai Dhosham.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"HoroscopeDetails"));    
                 }
                 $AboutMyself =$mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'"); 
                     if (strlen(trim($AboutMyself[0]['AboutMe']))==0) {
@@ -3540,7 +3986,7 @@
                         return Response::returnError("You must enter about your family.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"FamilyInformation"));    
                     }
             
-                if ($reqID=="")      {
+                  if ($reqID=="")      {
                     $otp=rand(1000,9999);
 
                     $mContent = $mysql->select("select * from `mailcontent` where `Category`='RequestToVerifyPublishMemberProfile'");
@@ -5629,3 +6075,4 @@
     }
 //2747    
 ?> 
+   

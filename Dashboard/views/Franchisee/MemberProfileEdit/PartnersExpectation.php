@@ -1,4 +1,3 @@
- 
 <?php
     $page="PartnersExpectation";
     if (isset($_POST['BtnSaveProfile'])) {
@@ -26,9 +25,9 @@
     
     include_once("settings_header.php");
 ?>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 <link href='<?php echo SiteUrl?>assets/css/BsMultiSelect.css' rel='stylesheet' type='text/css'>
 <script src="<?php echo SiteUrl?>assets/js/BsMultiSelect.js" type='text/javascript'></script>
 <style>
@@ -42,13 +41,121 @@
 function submitexpectation() {
        $('#Errage').html("");
        $('#Errtoage').html("");
+       $('#ErrMaritalStatus').html("");
+       $('#ErrReligion').html("");
+       $('#ErrCaste').html("");
+       $('#ErrEducation').html("");
+       $('#ErrEmployedAs').html("");
+       $('#ErrIncomeRange').html("");
+       $('#ErrRasiName').html("");
+       $('#ErrStarName').html("");
+       $('#ErrChevvaiDhosham').html("");
        
         ErrorCount=0;
         
-       if(($("#age").val() > $("#toage").val())){
-                ErrorCount++;
-                document.getElementById("Errtoage").innerHTML="Please select greater than from age"; 
-            }
+   //    if(($("#age").val() > $("#toage").val())){
+             //   ErrorCount++;
+             //   document.getElementById("Errtoage").innerHTML="Please select greater than from age"; 
+         //   }
+
+           if ($("#_MaritalStatus :selected").length==0) {
+                            document.getElementById("ErrMaritalStatus").innerHTML="Please select marital status"; 
+                             ErrorCount++;
+           } else {
+                var selected=[];
+                $('#_MaritalStatus :selected').each(function(){
+                    //selected[$(this).val()]=$(this).text();
+                    selected.push($(this).val());
+                });
+                $('#MaritalStatus').val(selected.join(","));
+           }
+           
+           
+           if ($("#_Religion :selected").length==0) {
+                            document.getElementById("ErrReligion").innerHTML="Please select religion"; 
+                             ErrorCount++;
+           } else {
+                var selected=[];
+                $('#_Religion :selected').each(function(){
+                    //selected[$(this).val()]=$(this).text();
+                    selected.push($(this).val());
+                });
+                $('#Religion').val(selected.join(","));
+           }
+           
+           if ($("#_Caste :selected").length==0) {
+                            document.getElementById("ErrCaste").innerHTML="Please select caste"; 
+                             ErrorCount++;
+           } else {
+                var selected=[];
+                $('#_Caste :selected').each(function(){
+                    //selected[$(this).val()]=$(this).text();
+                    selected.push($(this).val());
+                });
+                $('#Caste').val(selected.join(","));
+           }
+           
+           if ($("#_Education :selected").length==0) {
+                            document.getElementById("ErrEducation").innerHTML="Please select education"; 
+                             ErrorCount++;
+           }  else {
+                var selected=[];
+                $('#_Education :selected').each(function(){
+                    //selected[$(this).val()]=$(this).text();
+                    selected.push($(this).val());
+                });
+                $('#Education').val(selected.join(","));
+           }
+           
+           if ($("#_EmployedAs :selected").length==0) {
+                            document.getElementById("ErrEmployedAs").innerHTML="Please select employed as"; 
+                             ErrorCount++;
+           }  else {
+                var selected=[];
+                $('#_EmployedAs :selected').each(function(){
+                    //selected[$(this).val()]=$(this).text();
+                    selected.push($(this).val());
+                });
+                $('#EmployedAs').val(selected.join(","));
+           }
+           if ($("#_IncomeRange :selected").length==0) {
+                            document.getElementById("ErrIncomeRange").innerHTML="Please select annual income"; 
+                             ErrorCount++;
+           }  else {
+                var selected=[];
+                $('#_IncomeRange :selected').each(function(){
+                    //selected[$(this).val()]=$(this).text();
+                    selected.push($(this).val());
+                });
+                $('#IncomeRange').val(selected.join(","));
+           }
+           if ($("#_RasiName :selected").length==0) {
+                            document.getElementById("ErrRasiName").innerHTML="Please select rasi name"; 
+                             ErrorCount++;
+           } else {
+                var selected=[];
+                $('#_RasiName :selected').each(function(){
+                    //selected[$(this).val()]=$(this).text();
+                    selected.push($(this).val());
+                });
+                $('#RasiName').val(selected.join(","));
+           }
+           if ($("#_StarName :selected").length==0) {
+                            document.getElementById("ErrStarName").innerHTML="Please select star name"; 
+                             ErrorCount++;
+           } else {
+                var selected=[];
+                $('#_StarName :selected').each(function(){
+                    //selected[$(this).val()]=$(this).text();
+                    selected.push($(this).val());
+                });
+                $('#StarName').val(selected.join(","));
+           }
+           if ($("#ChevvaiDhosham :selected").length==0) {
+                            document.getElementById("ErrChevvaiDhosham").innerHTML="Please select chevvai dhosham"; 
+                             ErrorCount++;
+           }
+        
         if (ErrorCount==0) {
                             return true;
                         } else{
@@ -57,7 +164,16 @@ function submitexpectation() {
     
 }
 </script>
-    <form method="post" action=""  id="frmPE" onsubmit="return submitexpectation();">
+    <form method="post" action=""  id="frmPE" name="frmPE">
+    <input type="hidden" value="" name="MaritalStatus" id="MaritalStatus">
+    <input type="hidden" value="" name="Religion" id="Religion">
+    <input type="hidden" value="" name="Caste" id="Caste">
+    <input type="hidden" value="" name="Education" id="Education">
+    <input type="hidden" value="" name="EmployedAs" id="EmployedAs">
+    <input type="hidden" value="" name="IncomeRange" id="IncomeRange">
+    <input type="hidden" value="" name="RasiName" id="RasiName">
+    <input type="hidden" value="" name="StarName" id="StarName">
+    
             <input type="hidden" value="" name="txnPassword" id="txnPassword">
             <input type="hidden" value="<?php echo $_GET['Code'];?>" name="Code" id="Code">
         <h4 class="card-title">Partner's Expectations</h4>
@@ -84,7 +200,7 @@ function submitexpectation() {
             <label for="MaritalStatus" class="col-sm-2 col-form-label">Marital status<span id="star">*</span></label>
             <div class="col-sm-10" align="left">
                 <?php $sel_maritalstatus = isset($_POST['MaritalStatus']) ? explode(",",$_POST['MaritalStatus']) : explode(",",$ProfileInfo[ 'MaritalStatusCode']); ?>
-                <select class="form-control" id="MaritalStatus" name="MaritalStatus[]" style="display: none;" multiple="multiple"> 
+                <select class="form-control" id="_MaritalStatus" style="display: none;" multiple="multiple"> 
                     <?php foreach($response['data']['MaritalStatus'] as $MaritalStatus) { ?>
                     <?php
                         $selected = "";
@@ -96,18 +212,19 @@ function submitexpectation() {
                             if (in_array($MaritalStatus['SoftCode'], $sel_maritalstatus))  {
                                  $selected = " selected='selected' ";
                             } 
-                        }
+                        }                          
                     ?>
                     <option value="<?php echo $MaritalStatus['SoftCode'];?>" <?php echo $selected; ?>  ><?php echo $MaritalStatus['CodeValue'];?></option>
                     <?php } ?>
                 </select>
+                <span class="errorstring" id="ErrMaritalStatus"><?php echo isset($ErrMaritalStatus)? $ErrMaritalStatus : "";?></span>
             </div>
         </div>
         <div class="form-group row">
             <label for="Religion" class="col-sm-2 col-form-label">Religion<span id="star">*</span></label>
             <div class="col-sm-10" align="left">
                 <?php $sel_religionnames = isset($_POST['Religion']) ? explode(",",$_POST['Religion']) : explode(",",$ProfileInfo[ 'ReligionCode']); ?>
-                <select class="form-control"  id="Religion" name="Religion[]" style="display:none;" multiple="multiple">
+                <select class="form-control"  id="_Religion" style="display:none;" multiple="multiple">
                     <!--<option value="All">All</option>-->
                     <?php foreach($response['data']['Religion'] as $Religion) { ?>
                     <?php
@@ -126,13 +243,15 @@ function submitexpectation() {
                     <option value="<?php echo $Religion['SoftCode'];?>" <?php echo $selected; ?>  ><?php echo $Religion['CodeValue'];?></option>
                     <?php } } ?>
                 </select>
+                <span class="errorstring" id="ErrReligion"></span>
+                
             </div>
         </div>
         <div class="form-group row">
             <label for="Caste" class="col-sm-2 col-form-label">Caste<span id="star">*</span></label>
             <div class="col-sm-10">
                 <?php $sel_castename = isset($_POST['Caste']) ? explode(",",$_POST['Caste']) : explode(",",$ProfileInfo[ 'CasteCode']); ?>
-                <select class="form-control" id="Caste" name="Caste[]" multiple="multiple" style="display: none;">
+                <select class="form-control" id="_Caste" multiple="multiple" style="display: none;">
                     <!--<option value="All">All</option>-->
                     <?php foreach($response['data']['Caste'] as $Caste) { ?>
                     <?php
@@ -151,13 +270,14 @@ function submitexpectation() {
                     <option value="<?php echo $Caste['SoftCode'];?>"  <?php echo $selected; ?>   ><?php echo $Caste['CodeValue'];?></option>
                     <?php } } ?>
                 </select>
+                <span class="errorstring" id="ErrCaste"></span>
             </div>
         </div>
         <div class="form-group row">
             <label for="Education" class="col-sm-2 col-form-label">Education<span id="star">*</span></label>
             <div class="col-sm-10">
                 <?php $sel_educations = isset($_POST['EmployedAs']) ? explode(",",$_POST['Education']) : explode(",",$ProfileInfo[ 'EducationCode']); ?>
-                <select class="form-control" id="Education" name="Education[]" multiple="multiple" style="display: none;">
+                <select class="form-control" id="_Education"  multiple="multiple" style="display: none;">
                     <?php foreach($response['data']['Education'] as $Education) { ?>
                     <?php
                         $selected = "";
@@ -173,13 +293,14 @@ function submitexpectation() {
                     ?>
                     <option value="<?php echo $Education['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $Education['CodeValue'];?><?php } ?></option>
                 </select>
+                <span class="errorstring" id="ErrEducation"></span>
             </div>
         </div>
         <div class="form-group row">
             <label for="EmployedAs" class="col-sm-2 col-form-label">Employed as<span id="star">*</span></label>
             <div class="col-sm-10">
                 <?php $sel_employeedas = isset($_POST['EmployedAs']) ? explode(",",$_POST['EmployedAs']) : explode(",",$ProfileInfo[ 'EmployedAsCode']); ?>
-                <select  id="EmployedAs" name="EmployedAs[]" multiple="multiple" style="display: none;">
+                <select  id="_EmployedAs"  multiple="multiple" style="display: none;">
                     <?php foreach($response['data']['EmployedAs'] as $EmployedAs) { ?>
                     <?php
                         $selected = "";
@@ -197,13 +318,14 @@ function submitexpectation() {
                     <option value="<?php echo $EmployedAs['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $EmployedAs['CodeValue'];?></option>
                     <?php } } ?>
                 </select>
+                <span class="errorstring" id="ErrEmployedAs"></span>
             </div>
         </div>
         <div class="form-group row">
             <label for="IncomeRange" class="col-sm-2 col-form-label">Annual income<span id="star">*</span></label>
             <div class="col-sm-10">
                 <?php $sel_incomeranges = isset($_POST['IncomeRange']) ? explode(",",$_POST['IncomeRange']) : explode(",",$ProfileInfo[ 'AnnualIncomeCode']); ?>
-                <select class="form-control" id="IncomeRange" name="IncomeRange[]" multiple="multiple"  style="display: none;">
+                <select class="form-control" id="_IncomeRange" multiple="multiple"  style="display: none;">
                     <?php foreach($response['data']['IncomeRange'] as $IncomeRange) { ?>
                     <?php
                         $selected = "";
@@ -220,6 +342,7 @@ function submitexpectation() {
                     <option value="<?php echo $IncomeRange['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $IncomeRange['CodeValue'];?></option>
                     <?php } ?>
                 </select>
+                <span class="errorstring" id="ErrIncomeRange"></span>
             </div>
         </div>
         <div class="form-group row">
@@ -227,7 +350,7 @@ function submitexpectation() {
             <div class="col-sm-10">
                 <?php $sel_rasinames = isset($_POST['RasiName']) ? explode(",",$_POST['RasiName']) : explode(",",$ProfileInfo[ 'RasiNameCode']); 
                 ?>
-                <select class="form-control" id="RasiName" name="RasiName[]" multiple="multiple"  style="display: none;">
+                <select class="form-control" id="_RasiName" multiple="multiple"  style="display: none;">
                     <?php foreach($response['data']['RasiName'] as $RasiName) { ?>
                     <?php
                         $selected = "";
@@ -244,13 +367,14 @@ function submitexpectation() {
                     <option value="<?php echo $RasiName['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $RasiName['CodeValue'];?></option>
                     <?php } ?>
                 </select>
+                <span class="errorstring" id="ErrRasiName"></span>
             </div>
         </div>
         <div class="form-group row">
             <label for="StarName" class="col-sm-2 col-form-label">Star name<span id="star">*</span></label>
             <div class="col-sm-10">
                 <?php $sel_starnames = isset($_POST['StarName']) ? explode(",",$_POST['StarName']) : explode(",",$ProfileInfo[ 'StarNameCode']); ?>
-                <select class="form-control" id="StarName" name="StarName[]" multiple="multiple"  style="display: none;">
+                <select class="form-control" id="_StarName"   multiple="multiple"  style="display: none;">
                     <?php foreach($response['data']['StarName'] as $StarName) { ?>
                     <?php
                         $selected = "";
@@ -267,6 +391,7 @@ function submitexpectation() {
                     <option value="<?php echo $StarName['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $StarName['CodeValue'];?></option>
                     <?php } ?>
                 </select>
+                <span class="errorstring" id="ErrStarName"></span>
             </div>
         </div>
         <div class="form-group row">
@@ -279,6 +404,7 @@ function submitexpectation() {
                             <?php echo $ChevvaiDhosham['CodeValue'];?> </option>
                                 <?php } } ?>
                 </select>
+                <span class="errorstring" id="ErrChevvaiDhosham"></span>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom: 0px;">
@@ -322,16 +448,17 @@ function submitexpectation() {
             });
         });
     
-        $("#IncomeRange").dashboardCodeBsMultiSelect();
-        $("#Caste").dashboardCodeBsMultiSelect();
-        $("#EmployedAs").dashboardCodeBsMultiSelect();
-        $("#Education").dashboardCodeBsMultiSelect();
-        $("#Religion").dashboardCodeBsMultiSelect();
-        $("#MaritalStatus").dashboardCodeBsMultiSelect();
-        $("#RasiName").dashboardCodeBsMultiSelect();
-        $("#StarName").dashboardCodeBsMultiSelect();   
+        $("#_IncomeRange").dashboardCodeBsMultiSelect();
+        $("#_Caste").dashboardCodeBsMultiSelect();
+        $("#_EmployedAs").dashboardCodeBsMultiSelect();
+        $("#_Education").dashboardCodeBsMultiSelect();
+        $("#_Religion").dashboardCodeBsMultiSelect();
+        $("#_MaritalStatus").dashboardCodeBsMultiSelect();
+        $("#_RasiName").dashboardCodeBsMultiSelect();
+        $("#_StarName").dashboardCodeBsMultiSelect();   
         
 function ConfirmUpdatePEInfo() {
+    if(submitexpectation()) {
       $('#PubplishNow').modal('show'); 
       var content = '<div class="modal-header">'
                         + '<h4 class="modal-title">Confirmation for edit partners expectation</h4>'
@@ -354,6 +481,9 @@ function ConfirmUpdatePEInfo() {
                         + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="GetTxnPswd()" style="font-family:roboto">Update</button>'
                     + '</div>';
             $('#Publish_body').html(content);
+      } else {
+         return false;
+    }
 }
 function GetTxnPswd() {
             var content =  '<div class="modal-header">'
@@ -390,9 +520,10 @@ function EditDraftPartnersExpectation() {
     $("#txnPassword").val($("#TransactionPassword").val());
     var param = $("#frmPE").serialize();
     $('#Publish_body').html(preloading_withText("Updating partners expectation ...","95"));
+    
         $.post(API_URL + "m=Franchisee&a=AddPartnersExpectaion",param,function(result) {
-            
-              if (!(isJson(result.trim()))) {
+             
+             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
             }  
@@ -425,6 +556,7 @@ function EditDraftPartnersExpectation() {
                             +'</div>';
             $('#Publish_body').html(content);
             }
+            
         });
 }        
     </script>                                                     
