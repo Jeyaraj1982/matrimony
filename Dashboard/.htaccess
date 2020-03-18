@@ -97,8 +97,8 @@ RewriteRule ^MyAccounts/ViewBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=MyAcco
 RewriteRule ^MyAccounts/ViewFranchiseeBankRequests/(.*)\.htm$ ./index.php?Code=$1&p=MyAccounts/ViewFranchiseeBankRequests
 
 RewriteRule ^Member/(.*)\/ProfileEdit/GeneralInformation/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/GeneralInformation&Code=$2
-RewriteRule ^Member/(.*)\/ProfileEdit/EducationDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/EducationDetails&Code=$2
-RewriteRule ^Member/(.*)\/ProfileEdit/AddEducationalDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/AddEducationalDetails&Code=$2
+RewriteRule ^Member/(.*)\/ProfileEdit/EducationDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/EducationDetails&Code=$2 [QSA]
+RewriteRule ^Member/(.*)\/ProfileEdit/AddEducationalDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/AddEducationalDetails&Code=$2 [QSA]
 RewriteRule ^Member/(.*)\/ProfileEdit/AttachEducationDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/AttachEducationDetails&Code=$2 [QSA]
 RewriteRule ^Member/(.*)\/ProfileEdit/OccupationDetails/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/OccupationDetails&Code=$2
 RewriteRule ^Member/(.*)\/ProfileEdit/FamilyInformation/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/FamilyInformation&Code=$2
@@ -111,8 +111,8 @@ RewriteRule ^Member/(.*)\/ProfileEdit/ProfilePhoto/(.*)\.htm$ ./index.php?MCode=
 RewriteRule ^Member/(.*)\/ProfileEdit/ProfilePhotoCrop/(.*)\.htm$ ./index.php?MCode=$1&p=MemberProfileEdit/ProfilePhotoCrop&Code=$2
 
 RewriteRule ^MyProfiles/Draft/Edit/GeneralInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/GeneralInformation
-RewriteRule ^MyProfiles/Draft/Edit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/EducationDetails
-RewriteRule ^MyProfiles/Draft/Edit/AddEducationalDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/AddEducationalDetails
+RewriteRule ^MyProfiles/Draft/Edit/EducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/EducationDetails [QSA]
+RewriteRule ^MyProfiles/Draft/Edit/AddEducationalDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/AddEducationalDetails [QSA]
 RewriteRule ^MyProfiles/Draft/Edit/AttachEducationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/AttachEducationDetails [QSA]
 RewriteRule ^MyProfiles/Draft/Edit/OccupationDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/OccupationDetails
 RewriteRule ^MyProfiles/Draft/Edit/FamilyInformation/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/Edit/FamilyInformation

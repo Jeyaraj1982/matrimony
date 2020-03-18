@@ -18,7 +18,7 @@
         <?php if (sizeof($response['data'])>0) { ?>
         <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-top: 1px solid #ccc;">
             <tr>
-                <th>Education</th>
+                <th>Education <?php print_r($_GET['msg']);?></th>
                 <th>Education Details</th>
                 <th>Attachments</th>
                 <th></th>
@@ -73,89 +73,233 @@
         
     </div>  
     
-        
-                                                                                                                                                                                                          
-        <div class="modal" id="DeleteNow" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-            <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="DeleteNow_body" style="height:285px">
-            
-                </div>
-            </div>
-        </div>
-
+     <div class="modal" id="DeleteNow" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" id="DeleteNow_body" style="max-width:500px;min-height:300px;overflow:hidden"></div>
+    </div>
+</div>   
+ <form method="post" id="form_AttachmentID" name="form_AttachmentID">
+        <input type="hidden" value="" name="txnPassword" id="txnPassword">
+        <input type="hidden" value="" name="AttachmentID" id="AttachmentID">
+        <input type="hidden" value="<?php echo $_GET['Code'];?>" name="ProfileID" id="ProfileID">
+ </form>
 <script>
 function showConfirmDeleteAttach(AttachmentID,ProfileID,EducationDetails,EducationDegree,OtherEducationDegree) {
        $('#DeleteNow').modal('show'); 
-      var content = '<div class="Publish_body" style="padding:20px">'
-                    +   '<div  style="height: 315px;">'
-                        + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
-                        + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
-                        + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                        + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                        + '<h4 class="modal-title">Confirmation For Remove</h4> <br>'
-                        + '<div>Are you sure want to remove below records?  <br><br>'
-                        + '<table class="table table-bordered">'
-                           + '<thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-top: 1px solid #ccc;"> '
-                            +'<tr>'
-                                +'<th>Education</th>'
-                                +'<th>Education Details</th>'
-                            +'</tr>'
-                           +'</thead>'
-                           + '<tbody> '
-                            +'<tr>'                                                  
-                                +'<td>'+EducationDetails+'</td>'
-                                  +'<td>'+EducationDegree +', '+OtherEducationDegree+'</td>'
-                            +'</tr>'
-                           +'</tbody>'
-                           +'</table>'
-                        +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteAttach(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;'
-                        +  '<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
-                       +  '</div><br>'
-                    +  '</form>'
-                +  '</div>'
-            +  '</div>';                                                                                                
-            $('#DeleteNow_body').html(content);
+             var content ='<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation For remove</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                            + '</div>'
+                            + '<div class="modal-body">'
+                                + '<div>Are you sure want to remove below records?  <br><br>'
+                                    + '<table class="table table-bordered">'
+                                       + '<thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-top: 1px solid #ccc;"> '
+                                        +'<tr>'
+                                            +'<th>Education</th>'
+                                            +'<th>Education Details</th>'
+                                        +'</tr>'
+                                       +'</thead>'
+                                       + '<tbody> '
+                                        +'<tr>'                                                  
+                                            +'<td>'+EducationDetails+'</td>'
+                                              +'<td>'+EducationDegree +', '+OtherEducationDegree+'</td>'
+                                        +'</tr>'
+                                       +'</tbody>'
+                                       +'</table>'                  
+                                + '</div>' 
+                            + '</div>' 
+                            + '<input type="hidden" value="'+AttachmentID+'" name="Attachmentid" id="Attachmentid">'
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Delete"  onclick="GetTxnPswd(\''+AttachmentID+'\')">Yes</button>'
+                            + '</div>';
+        $('#DeleteNow_body').html(content);
 }
- function DeleteAttach(AttachmentID) {
-        
-        var param = $("#form_"+AttachmentID).serialize();
-        $('#DeleteNow_body').html(preloader);
-        $.post(API_URL + "m=Franchisee&a=DeleteAttach", param, function(result2) {
-            $('#DeleteNow_body').html(result2);
-            $('#Documentview_'+AttachmentID).hide();
-        }
-    );
-                    
-      
-        //$.ajax({url: API_URL + "m=Member&a=DeletDocumentAttachments",success: function(result2){$('#model_body').html(result2);}});
+function GetTxnPswd(AttachmentID) {
+    $("#AttachmentID").val($("#Attachmentid").val());
+             var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation For remove</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                        + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                        + '</div>'
+                      + '</div>'
+                      + '<input type="hidden" value="'+AttachmentID+'" name="Attachmentid" id="Attachmentid">'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="DeleteAttach(\''+AttachmentID+'\')" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#DeleteNow_body').html(content);              
 }
 
-function ViewAttchment(AttachmentID,ProfileID,FileName) {
-      $('#DeleteNow').modal('show'); 
-      var content = '<div class="Publish_body" style="padding:20px">'
-                        +'<div  style="height: 315px;">'
-                         + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
-                         + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
-                         + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                            + '<h4 class="modal-title">Confirmation For Remove</h4>'
-                              + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
-                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileID+'/edudoc/'+FileName+'" style="height:120px;"></div> <br>'
-                              +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')">Yes, remove</button>&nbsp;&nbsp;'
-                              +  '<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
-                        + '</div>'
-                        + '</div>'
-                    +  '</div>';                                                                                                
+function DeleteAttach(AttachmentID) {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+    $("#AttachmentID").val($("#Attachmentid").val());
+        var param = $( "#form_AttachmentID").serialize();
+        $('#DeleteNow_body').html(preloading_withText("Deleting ...","95"));
+        $.post(API_URL + "m=Franchisee&a=DeleteAttach", param, function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#DeleteNow_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            
+            if (obj.status == "success") {
+               
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'             
+                                    + '<p style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#DeleteNow_body').html(content);
+                $('#Documentview_'+AttachmentID).hide();
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Confirmation For remove</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
             $('#DeleteNow_body').html(content);
-} 
-function DeleteEducationAttachmentOnly(AttachmentID) {
-        var param = $("#form_"+AttachmentID).serialize();
-        $('#DeleteNow_body').html(preloader);
-        $.post(API_URL + "m=Franchisee&a=DeleteEducationAttachmentOnly", param, function(result2) {                                             
-            $('#DeleteNow_body').html(result2);                                     
-          //  $('#Documentview_'+AttachmentID).hide();
+            }
         }
     );
-}                                                        
-</script>       
+}
+function ViewAttchment(AttachmentID,ProfileID,FileName) {
+      $('#DeleteNow').modal('show'); 
+       var content ='<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation For remove</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                            + '</div>'
+                            + '<div class="modal-body">'
+                                + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
+                                + '<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileID+'/edudoc/'+FileName+'" style="height:120px;"></div> <br>' 
+                            + '</div>' 
+                            + '<input type="hidden" value="'+AttachmentID+'" name="Attachmentid" id="Attachmentid">'
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Delete"  onclick="GetTxnPswdFrDeleteDocOnly(\''+AttachmentID+'\')">Yes, remove</button>'
+                            + '</div>';                                                                                               
+            $('#DeleteNow_body').html(content);
+} 
+function GetTxnPswdFrDeleteDocOnly(AttachmentID) {
+    $("#AttachmentID").val($("#Attachmentid").val());
+             var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation For remove</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                        + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                        + '</div>'
+                      + '</div>'
+                      + '<input type="hidden" value="'+AttachmentID+'" name="Attachmentid" id="Attachmentid">'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="DeleteEducationAttachmentOnly(\''+AttachmentID+'\')" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#DeleteNow_body').html(content);              
+}
+
+function DeleteEducationAttachmentOnly(AttachmentID) {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+    $("#AttachmentID").val($("#Attachmentid").val());
+        var param = $( "#form_AttachmentID").serialize();
+        $('#DeleteNow_body').html(preloading_withText("Deleting ...","95"));
+        $.post(API_URL + "m=Franchisee&a=DeleteEducationAttachmentOnly", param, function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#DeleteNow_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            
+            if (obj.status == "success") {
+               
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'             
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Member/'+data.MemberCode+'/ProfileEdit/EducationDetails/'+data.ProfileCode+'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#DeleteNow_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Confirmation For remove</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#DeleteNow_body').html(content);
+            }
+        }
+    );
+}  
+<?php if($_GET['msg']=="success") { ?>
+        setTimeout(function(){
+            $('#responsemodal').modal("show");
+        },1000);
+    <?php }    ?>                                                     
+</script>    
+<div class="modal" id="responsemodal" data-backdrop="static">
+  <div class="modal-dialog">
+        <div class="modal-content" style="max-width:500px;min-height:300px;overflow:hidden">
+            <div class="modal-body" id="response_message" style="min-height:175px;max-height:175px;">
+                <p style="text-align:center;margin-top: 40px;"><img src="<?php echo ImageUrl;?>verifiedtickicon.jpg" width="100px"></p>
+                    <h3 style="text-align:center;">Updated</h3>             
+                    <h4 style="text-align:center;">Education Details</h4>             
+                    <p style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer;color:#489bae">Continue</a></p>
+            </div> 
+        </div>
+  </div>
+</div>
+   
 <?php include_once("settings_footer.php");?>                                  

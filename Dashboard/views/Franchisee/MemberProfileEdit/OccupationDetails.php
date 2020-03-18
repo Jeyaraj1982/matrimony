@@ -105,6 +105,7 @@ function submitprofile() {
     
     
 }
+
 $(document).ready(function() {
     var text_max = 250;
     var text_length = $('#OccupationDetails').val().length;
@@ -117,10 +118,12 @@ $(document).ready(function() {
         $('#textarea_feedback').html(text_length + ' characters typed');
     });
 });
+
 </script>
 <div class="col-sm-10 rightwidget">
 <form method="post" action="" name="form1" id="form1" enctype="multipart/form-data" onsubmit="return submitprofile();">
 <input type="hidden" value="" name="txnPassword" id="txnPassword">
+<input type="hidden" value="<?php echo $ProfileInfo['MemberID'];?>" name="MemberID" id="MemberID">
 <input type="hidden" value='<?php echo $_GET['Code'];?>' name="Code">
     <h4 class="card-title">Occupation Details</h4>
     <div class="form-group row">
@@ -223,7 +226,7 @@ $(document).ready(function() {
     </div>
     </div>
      <div class="form-group row" style="margin-bottom:0px;">
-        <label for="Details" class="col-sm-12 col-form-label">Additional information<span id="star">*</span></label>
+        <label for="Details" class="col-sm-12 col-form-label">Additional information</label>
         </div>
      <div class="form-group row">
         <div class="col-sm-12">                                                                           
@@ -231,16 +234,15 @@ $(document).ready(function() {
             <label class="col-form-label" style="padding-top:0px;">Max 250 characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></label>
         </div>
     </div>
-   <div class="form-group row" style="margin-bottom:0px;">
-            <div class="col-sm-12"><span id="server_message_error"><?php echo $errormessage ;?></span><span id="server_message_success"><?php echo $successmessage;?></span></div>
-        </div>
-    <div class="form-group row" style="margin-bottom:0px;">
-        <div class="col-sm-6">
+   
+    <div class="form-group row" style="margin-bottom:0px;">                      
+        <div class="col-sm-6">                                                                                        
             <div id="Savebutton">
                 <a href="javascript:void(0)" onclick="ConfirmSaveOccupation()" class="btn btn-primary" style="font-family:roboto">Save</a>
             </div>
             <div id="Savebutton0">
-                <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save </button>
+                <a href="javascript:void(0)" onclick="ConfirmSaveOccupationDetails()" class="btn btn-primary mr-2" style="font-family:roboto">Save </a>
+                <input type="submit" name="BtnSaveProfile" id="BtnSaveProfile" style="display: none;">
             </div>
             <br>
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
@@ -263,34 +265,92 @@ $(document).ready(function() {
 <script>
 function showAttachmentOccupation(ProfileCode,MemberID,ProfileID,FileName){
              $('#DeleteNow').modal('show'); 
-      var content = '<div class="Publish_body" style="padding:20px">'
-                        +'<div  style="height: 315px;">'
-                         + '<form method="post" id="Occupationfrform_'+ProfileCode+'" name="Occupationfrform_'+ProfileCode+'" > '
-                         + '<input type="hidden" value="'+ProfileCode+'" name="ProfileCode">'
-                         + '<input type="hidden" value="'+MemberID+'" name="MemberID">'
-                         + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                            + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                            + '<h4 class="modal-title">Confirmation For Remove</h4>'
-                              + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
-                             + '<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileCode+'/occdoc/'+FileName+'" style="height:120px;"></div> <br>'
-                               +  '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="DeleteOccupationAttachmentOnly(\''+ProfileCode+'\')">Yes, remove</button>&nbsp;&nbsp;'
-                        +  '<a data-dismiss="modal" style="cursor:pointer;color:#0599ae">No</a></div>'
-                        +'</form>'
-                        + '</div>'
-                        + '</div>'
-                    +  '</div>';                                                                                                
+              var content ='<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation For remove</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                            + '</div>'
+                            + '<div class="modal-body">'
+                                + '<div class="card-title" style="text-align:right;color:green;">For Administrative Purpose Only</div>'
+                                + '<div style="text-align:center"><img src="'+AppUrl+'uploads/profiles/'+ProfileCode+'/occdoc/'+FileName+'" style="height:120px;"></div> <br>' 
+                            + '</div>' 
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Delete"  onclick="GetTxnPswdFrOccDocOnly(\''+ProfileCode+'\')">Yes, remove</button>'
+                            + '</div>';                                                                                    
             $('#DeleteNow_body').html(content);
         }
-        function DeleteOccupationAttachmentOnly(ProfileCode) {
-        var param = $("#Occupationfrform_"+ProfileCode).serialize();
-        $('#DeleteNow_body').html(preloader);
-        $.post(API_URL + "m=Franchisee&a=DeleteOccupationAttachmentOnly", param, function(result2) {                                             
-            $('#DeleteNow_body').html(result2);                                     
-           $('#attachfilediv').hide();
+function GetTxnPswdFrOccDocOnly(ProfileCode) {
+             var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation For remove</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                        + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                        + '</div>'
+                      + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="DeleteOccupationAttachmentOnly(\''+ProfileCode+'\')" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#DeleteNow_body').html(content);              
+}
+function DeleteOccupationAttachmentOnly(ProfileCode) {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+        var param = $( "#form1").serialize();
+        $('#DeleteNow_body').html(preloading_withText("Deleting ...","95"));
+        $.post(API_URL + "m=Franchisee&a=DeleteOccupationAttachmentOnly", param, function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#DeleteNow_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            
+            if (obj.status == "success") {
+               
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'             
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Member/'+data.MemberCode+'/ProfileEdit/OccupationDetails/'+data.ProfileCode+'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#DeleteNow_body').html(content);
+                 $('#attachfilediv').hide();
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Confirmation For remove</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#DeleteNow_body').html(content);
+            }
         }
-        );
-        }  
-        
+    );
+}
         function addOtherWorkingDetails() {
             if ($('#EmployedAs').val()=="O001") {
                 $('#Working_additionalinfo').show();
@@ -314,8 +374,8 @@ function showAttachmentOccupation(ProfileCode,MemberID,ProfileID,FileName){
         addOtherWorkingDetails();
         
         function ConfirmSaveOccupation(){
+            if (submitprofile()) {
             $('#DeleteNow').modal('show'); 
-            
             var content =   '<div class="modal-header">'
                                 + '<h4 class="modal-title">Confirmation for save occupation</h4>'
                                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
@@ -337,6 +397,9 @@ function showAttachmentOccupation(ProfileCode,MemberID,ProfileID,FileName){
                                 + '<button type="button" class="btn btn-primary" name="BtnSaveProfile" class="btn btn-primary" onclick="GetTxnPasswordSaveOccupation()" style="font-family:roboto">Continue</button>'
                             + '</div>';                                                                                               
             $('#DeleteNow_body').html(content);
+            } else {
+            return false;
+        }
     }
     
     function GetTxnPasswordSaveOccupation () {
@@ -402,5 +465,106 @@ function showAttachmentOccupation(ProfileCode,MemberID,ProfileID,FileName){
             }
         });
     }
+    function ConfirmSaveOccupationDetails(){
+            if (submitprofile()) {
+            $('#DeleteNow').modal('show'); 
+            var content =   '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for save occupation</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                            + '</div>'
+                            + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to save this information?</div>'
+                                        + '</div>'                                                     
+                                    + '</div>'
+                                +  '</div>'                    
+                            + '</div>' 
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="BtnSaveProfile" class="btn btn-primary" onclick="GetTxnPasswordSaveOccupationDetails()" style="font-family:roboto">Continue</button>'
+                            + '</div>';                                                                                               
+            $('#DeleteNow_body').html(content);
+            } else {
+            return false;
+        }
+    }
+    
+    function GetTxnPasswordSaveOccupationDetails () {
+        
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for save occupation</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                        + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                        + '</div>'
+                      + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="SaveOccupationDetails()" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#DeleteNow_body').html(content);            
+    }
+    
+    function SaveOccupationDetails() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+        $("#txnPassword").val($("#TransactionPassword").val());
+        $( "#BtnSaveProfile" ).trigger( "click");
+        
+    }
+    <?php if (isset($errormessage) && strlen($errormessage)>0) { ?>
+        setTimeout(function(){
+            $('#responsemodal').modal("show");
+        },1000);
+    <?php }    ?>
+    <?php if (isset($successmessage) && strlen($successmessage)>0) { ?>
+        setTimeout(function(){
+            $('#responsemodal').modal("show");
+        },1000);
+    <?php }    ?>
+    
 </script>
+<!-- Modal -->
+
+<div class="modal" id="responsemodal" data-backdrop="static">
+  <div class="modal-dialog">
+        <div class="modal-content" style="max-width:500px;min-height:300px;overflow:hidden">
+            <?php if (isset($errormessage) && strlen($errormessage)>0) { ?>
+                <div class="modal-body" id="response_message" style="min-height:175px;max-height:175px;">'
+                    <p style="text-align:center;margin-top: 40px;"><img src="<?php echo ImageUrl;?>exclamationmark.jpg" width="10%"></p>
+                    <h3 style="text-align:center;"><?php echo $errormessage;?></h3>             
+                    <p style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer;color:#489bae">Continue</a></p>
+                </div>
+            <?php } ?>
+            <?php if (isset($successmessage) && strlen($successmessage)>0) { ?>
+                <div class="modal-body" id="response_message" style="min-height:175px;max-height:175px;">
+                    <p style="text-align:center;margin-top: 40px;"><img src="<?php echo ImageUrl;?>verifiedtickicon.jpg" width="100px"></p>
+                    <h3 style="text-align:center;">Updated</h3>             
+                    <h4 style="text-align:center;">Occupation Details</h4>             
+                    <p style="text-align:center;"><a href="../FamilyInformation/<?php echo $_GET['Code'].".htm";?>" style="cursor:pointer;color:#489bae">Continue</a></p>
+                </div> 
+            <?php } ?>
+      </div>
+  </div>
+</div>
 <?php include_once("settings_footer.php");?>                    

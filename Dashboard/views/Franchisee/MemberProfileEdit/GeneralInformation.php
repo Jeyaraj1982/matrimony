@@ -224,7 +224,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="SubCaste" class="col-sm-2 col-form-label">Sub caste<span id="star">*</span></label>
+                    <label for="SubCaste" class="col-sm-2 col-form-label">Sub caste</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" name="SubCaste" id="SubCaste" maxlength="50" value="<?php echo (isset($_POST['SubCaste']) ? $_POST['SubCaste'] : $ProfileInfo['SubCaste']);?>" placeholder="Sub Caste">
                     </div>
@@ -284,6 +284,11 @@
                 </div>
             </form>
         </div>
+         <div class="modal" id="PubplishNow" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" id="Publish_body" style="max-width:500px;min-height:300px;overflow:hidden"></div>
+    </div>
+</div>
 <script>
  function ConfirmUpdateGInfo() {
     if(submitprofile()) {
@@ -316,34 +321,40 @@
      }
 }
 function GetTxnPswd() {
-		var content ='<div class="modal-header">'
-                        + '<h4 class="modal-title">Confirmation for edit general information</h4>'
-                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
-                    + '</div>'
-                    + '<div class="modal-body">'
+            var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for edit general information</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
                         + '<div class="form-group">'
-                                + '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-                         + '</div>'
-                         + '<div class="form-group">'
                             + '<div class="input-group">'
                                 + '<div class="col-sm-2"></div>'
                                 + '<div class="col-sm-8">'
                                     + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
                                 + '</div>'
                                 + '<div class="col-sm-2"></div>'
                             + '</div>'
                         + '</div>'
-                    + '</div>'
-					+ '<div class="modal-footer">'
-						+ '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-						+ '<button type="button" onclick="EditDraftGeneralInformation()" class="btn btn-primary">Update</button>'
-					+ '</div>';
-            $('#Publish_body').html(content);            
+                      + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="EditDraftGeneralInformation()" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);             
 }
 function EditDraftGeneralInformation() {
+    if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
     $("#txnPassword").val($("#TransactionPassword").val());
     var param = $("#frmGI").serialize();
-    $('#Publish_body').html(preloading_withText("Submitting Profile ...","95"));
+    $('#Publish_body').html(preloading_withText("Updating general information ...","95"));
         $.post(API_URL + "m=Franchisee&a=EditDraftGeneralInformation",param,function(result) {
             
             if (!(isJson(result.trim()))) {
@@ -360,7 +371,8 @@ function EditDraftGeneralInformation() {
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
                                     + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
                                     + '<h3 style="text-align:center;">Updated</h3>'             
-                                    + '<p style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer">Continue</a></p>'
+                                    + '<h4 style="text-align:center;">General Information</h4>'             
+                                    + '<p style="text-align:center;"><a href="../EducationDetails/'+data.Code+'.htm" style="cursor:pointer;color:#489bae">Continue</a></p>'
                                 +'</div>' 
                             +'</div>';
                 $('#Publish_body').html(content);

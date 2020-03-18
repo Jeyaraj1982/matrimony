@@ -133,12 +133,11 @@ function submitUpload() {
                  No Profile Photos Found                                                                                                                       
         </div>
    <?php }  else {       ?>
-    <?php
-        foreach($res['data'] as $d) { ?> 
+    <?php foreach($res['data'] as $d) { ?> 
         <?php if($d['PriorityFirst']==0) {?>
         <div id="photoview_<?php echo $d['ProfilePhotoID'];?>" class="photoview">
             <div style="text-align:right;height:22px;">
-                <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
+                <a href="javascript:void(0)" onclick="showConfirmDeleteProfilePhoto('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
             </div>
             <div><img src="<?php echo AppUrl;?>uploads/profiles/<?php echo $d['ProfileCode'];?>/thumb/<?php echo $d['ProfilePhoto'];?>" style="height:120px;"></div>
             <div>
@@ -153,7 +152,7 @@ function submitUpload() {
         <?php } else {   ?>
             <div id="photoview_<?php echo $d['ProfilePhotoID'];?>" class="photoview">
             <div style="text-align:right;height:22px;">
-                <a href="javascript:void(0)" onclick="showConfirmDelete('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
+                <a href="javascript:void(0)" onclick="showConfirmDeleteProfilePhoto('<?php  echo $d['ProfilePhotoID'];?>','<?php echo $_GET['Code'];?>')" name="Delete" style="font-family:roboto"><button type="button" class="close" >&times;</button></a>    
             </div>
             <div><img src="<?php echo AppUrl;?>uploads/profiles/<?php echo $d['ProfileCode'];?>/thumb/<?php echo $d['ProfilePhoto'];?>" style="height:120px;"></div>
             <div>
@@ -172,6 +171,11 @@ function submitUpload() {
          
          
     </div>
+    <form method="post" id="form_ProfilePhotoID" name="form_ProfilePhotoID" >
+        <input type="hidden" value="" name="txnPassword" id="txnPassword">
+        <input type="hidden" value="" name="ProfilePhotoID" id="ProfilePhotoID">
+        <input type="hidden" value="<?php echo $_GET['Code'];?>" name="ProfileID">
+    </form>
     <br>
     <div class="form-group row">
         <div class="col-sm-6"></div>
@@ -210,14 +214,11 @@ function showLearnMore() {
             $('#LearnMore_body').html(content);
 }
 </script>
-<div class="modal" id="Delete" role="dialog" data-backdrop="static" style="padding-top:177px;padding-right:0px;background:rgba(9, 9, 9, 0.13) none repeat scroll 0% 0%;">
-            <div class="modal-dialog" style="width: 367px;">
-                <div class="modal-content" id="model_body" style="height: 220px;">
-            
-                </div>
-            </div>
-        </div>
-        
+  <div class="modal" id="Delete" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" id="model_body" style="max-width:500px;min-height:300px;overflow:hidden"></div>
+    </div>
+</div>      
         <script>
          var available = "<?php echo sizeof($res['data']);?>";
          
@@ -231,7 +232,7 @@ function showLearnMore() {
             });
               $('#priority_'+ProfilePhotoID).css({'background':'green','color':'White'});
                 $.ajax({
-                url: API_URL + "m=Franchisee&a=ProfilePhotoBringToFront&ProfilePhotoID="+ProfilePhotoID, 
+                url: API_URL + "m=Franchisee&a=ProfilePhotoBringToFront&ProfilePhotoID="+ProfilePhotoID+"&ProfileID="+ProfileID, 
                 success: function(result){
                     //$.simplyToast("Profile photo ID: "+ProfileID+" has been set as Front", 'info');
                     $.simplyToast("Selected profile photo has been set to default photo"  , 'info');
@@ -239,37 +240,111 @@ function showLearnMore() {
           }
          
  
-    function showConfirmDelete(ProfilePhotoID,ProfileID) {                                           
+    function showConfirmDeleteProfilePhoto(ProfilePhotoID,ProfileID) {                                           
         $('#Delete').modal('show'); 
-        var content = '<div class="modal-body" style="padding:20px">'
-                        + '<div  style="height: 315px;">'
-                            + '<form method="post" id="form_'+ProfilePhotoID+'" name="form_'+ProfilePhotoID+'" > '
-                                + '<input type="hidden" value="'+ProfilePhotoID+'" name="ProfilePhotoID">'
-                                + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                                  + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                                   + '<h4 class="modal-title">Confirm delete Profile photo</h4><br>'
-                                + '<div style="text-align:center">Are you sure want to Delete?  <br><br>'
-                                    + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+ProfilePhotoID+'\')">Yes</button>&nbsp;&nbsp;'
-                                    + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button>'
-                                + '</div>'
-                            + '</form>'
-                        + '</div>'
-                     +  '</div>';
+        var content ='<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation For remove</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                            + '</div>'
+                            + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to Delete?</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                +  '</div>'                 
+                            + '</div>' 
+                            + '<input type="hidden" value="'+ProfilePhotoID+'" name="ProfilePhotoiD" id="ProfilePhotoiD">'
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Delete"  onclick="GetTxnPswd(\''+ProfilePhotoID+'\')">Yes</button>'
+                            + '</div>';
         $('#model_body').html(content);
     }
-    
-    function ConfirmDelete(ProfilePhotoID) {
-        
-        var param = $( "#form_"+ProfilePhotoID).serialize();
-        $('#model_body').html(preloader);
-        $.post(API_URL + "m=Franchisee&a=DeletProfilePhoto", param, function(result2) {
-            $('#model_body').html(result2);
-            $('#photoview_'+ProfilePhotoID).hide();
-            available--;
-            DisplayAddProfilePhotoForm();
-            $('#x').html( available + " out 5 photos");
-        }                             
+    function GetTxnPswd(ProfilePhotoID) {
+           $("#ProfilePhotoID").val($("#ProfilePhotoiD").val());
+             var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation For remove</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                        + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                        + '</div>'
+                      + '</div>'
+                      + '<input type="hidden" value="'+ProfilePhotoID+'" name="ProfilePhotoiD" id="ProfilePhotoiD">'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="ConfirmDeleteProfilePhoto(\''+ProfilePhotoID+'\')" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#model_body').html(content);              
+}
+function ConfirmDeleteProfilePhoto(ProfilePhotoID) {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+    $("#txnPassword").val($("#TransactionPassword").val());
+    $("#ProfilePhotoID").val($("#ProfilePhotoiD").val());
+        var param = $( "#form_ProfilePhotoID").serialize();
+        $('#model_body').html(preloading_withText("Deleting ...","95"));
+        $.post(API_URL + "m=Franchisee&a=DeletProfilePhoto", param, function(result) {
+            if (!(isJson(result.trim()))) {
+                $('#model_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            
+            if (obj.status == "success") {
+               
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'             
+                                    + '<p style="text-align:center;"><a data-dismiss="modal" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#model_body').html(content);
+                $('#photoview_'+ProfilePhotoID).hide();
+                available--;
+                DisplayAddProfilePhotoForm();
+                $('#x').html( available + " out 5 photos");
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Confirmation For remove</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#model_body').html(content);
+            }
+        }
     );
+                    
+      
+        //$.ajax({url: API_URL + "m=Member&a=DeletDocumentAttachments",success: function(result2){$('#model_body').html(result2);}});
 }
 function changeColor(id)
 {

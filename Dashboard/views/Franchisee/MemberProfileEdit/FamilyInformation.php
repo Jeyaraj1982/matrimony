@@ -105,8 +105,11 @@ $(document).ready(function() {
                 <input type="text" class="form-control" id="FatherName" name="FatherName" maxlength="50" value="<?php echo (isset($_POST['FatherName']) ? $_POST['FatherName'] : $ProfileInfo['FathersName']);?>" placeholder="Father's Name">
                 <span class="errorstring" id="ErrFatherName"><?php echo isset($ErrFatherName)? $ErrFatherName : "";?></span>
             </div>
-            <div class="col-sm-2">
-                <input type="checkbox" onclick="verifiyFatherPassedaway()" name="FathersAlive" id="FathersAlive" <?php echo (isset($_POST[ 'FathersAlive'])) ? (($_POST[ 'FathersAlive']=="on") ? " Checked='Checked' " : "") : (($ProfileInfo['FathersAlive']=="1") ? " Checked='Checked' " : "");?>>&nbsp;<label for="FathersAlive">Passed away</label>  
+            <div class="col-sm-2"> 
+                <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" onclick="verifiyFatherPassedaway()" class="custom-control-input" name="FathersAlive" id="FathersAlive" <?php echo (isset($_POST[ 'FathersAlive'])) ? (($_POST[ 'FathersAlive']=="on") ? " Checked='Checked' " : "") : (($ProfileInfo['FathersAlive']=="1") ? " Checked='Checked' " : "");?>>
+                    <label class="custom-control-label" for="FathersAlive">&nbsp;Passed away</label>
+                </div>
             </div>
         </div>
         <div class="form-group row" id="FatherAlive_row_1" >
@@ -156,7 +159,10 @@ $(document).ready(function() {
                 <span class="errorstring" id="ErrMotherName"><?php echo isset($ErrMotherName)? $ErrMotherName : "";?></span>
             </div>
             <div class="col-sm-2">
-                <input type="checkbox" onclick="verifiyMotherPassedaway()"  name="MothersAlive" id="MothersAlive" <?php echo (isset($_POST[ 'MothersAlive'])) ? (($_POST[ 'MothersAlive']=="on") ? " Checked='Checked' " : "") : (($ProfileInfo['MothersAlive']=="1") ? " Checked='Checked' " : "");?>>&nbsp;<label for="MothersAlive">Passed away</label>  
+                <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" onclick="verifiyMotherPassedaway()" class="custom-control-input" name="MothersAlive" id="MothersAlive" <?php echo (isset($_POST[ 'MothersAlive'])) ? (($_POST[ 'MothersAlive']=="on") ? " Checked='Checked' " : "") : (($ProfileInfo['MothersAlive']=="1") ? " Checked='Checked' " : "");?>>
+                    <label class="custom-control-label" for="MothersAlive">&nbsp;Passed away</label>
+                </div>
             </div>
         </div>
         <div class="form-group row" id="MotherAlive_row_1" >
@@ -331,7 +337,7 @@ $(document).ready(function() {
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px">
-            <label for="AboutMe" class="col-sm-4 col-form-label">About my family<span id="star">*</span></label>
+            <label for="AboutMe" class="col-sm-4 col-form-label">About my family</label>
         </div>
         <div class="form-group row">
             <div class="col-sm-12">                                                        
@@ -354,6 +360,11 @@ $(document).ready(function() {
         </div>
         </div>
     </form>
+</div>
+ <div class="modal" id="PubplishNow" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" id="Publish_body" style="max-width:500px;min-height:300px;overflow:hidden"></div>
+    </div>
 </div>
 <script>
 function ConfirmUpdateFInfo() {
@@ -387,34 +398,40 @@ function ConfirmUpdateFInfo() {
      }
 }
 function GetTxnPswd() {
-        var content ='<div class="modal-header">'
-                        + '<h4 class="modal-title">Confirmation for edit family information</h4>'
-                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
-                    + '</div>'
-                    + '<div class="modal-body">'
+            var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for edit family information</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
                         + '<div class="form-group">'
-                                + '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-                         + '</div>'
-                         + '<div class="form-group">'
                             + '<div class="input-group">'
                                 + '<div class="col-sm-2"></div>'
                                 + '<div class="col-sm-8">'
                                     + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
                                 + '</div>'
                                 + '<div class="col-sm-2"></div>'
                             + '</div>'
                         + '</div>'
-                    + '</div>'
-                    + '<div class="modal-footer">'
-                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                        + '<button type="button" onclick="EditDraftFamilyInformation()" class="btn btn-primary">Update</button>'
-                    + '</div>';
-            $('#Publish_body').html(content);            
+                      + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="EditDraftFamilyInformation()" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);       
 }
 function EditDraftFamilyInformation() {
+     if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
     $("#txnPassword").val($("#TransactionPassword").val());
     var param = $("#frmFI").serialize();
-    $('#Publish_body').html(preloading_withText("Submitting Profile ...","95"));
+    $('#Publish_body').html(preloading_withText("Updating family information ...","95"));
         $.post(API_URL + "m=Franchisee&a=EditDraftFamilyInformation",param,function(result) {
             
             if (!(isJson(result.trim()))) {
@@ -430,12 +447,12 @@ function EditDraftFamilyInformation() {
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
                                     + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
                                     + '<h3 style="text-align:center;">Updated</h3>'             
-                                    + '<p style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer">Continue</a></p>'
+                                    + '<h4 style="text-align:center;">Family Information</h4>'             
+                                    + '<p style="text-align:center;"><a href="../PhysicalInformation/'+data.Code+'.htm" style="cursor:pointer;color:#489bae">Continue</a></p>'
                                 +'</div>' 
                             +'</div>';
                 $('#Publish_body').html(content);
             } else {
-                alert(obj);
                 var data = obj.data; 
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-header">'

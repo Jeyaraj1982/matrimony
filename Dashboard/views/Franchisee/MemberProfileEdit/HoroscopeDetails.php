@@ -6,6 +6,50 @@
     $ProfileInfo          = $response['data']['ProfileInfo'];
     
 ?>
+<?php
+                if (isset($_POST['BtnSaveProfile'])) {
+                    $target_dir = "uploads/";
+                    if (!is_dir('uploads/profiles/'.$_GET['Code'].'/horosdoc')) {
+                        mkdir('uploads/profiles/'.$_GET['Code'].'/horosdoc', 0777, true);
+                    }
+                    $err=0;
+                    $acceptable = array('image/jpeg','image/jpg','image/png');
+                    
+                    if (isset($_FILES['File']['name']) && strlen(trim($_FILES['File']['name']))>0) {
+                        
+                        if(($_FILES['File']['size'] >= 5000000)) {
+                            $err++;
+                            $errormessage = "Please upload file. File must be less than 5 megabytes.";
+                        }
+                            
+                        if((!in_array($_FILES['File']['type'], $acceptable)) && (!empty($_FILES["File"]["type"]))) {
+                            $err++;
+                            $errormessage = "Invalid file type. Only JPG,PNG,JPEG types are accepted.";
+                        }
+                       
+                        $HoroscopeAttachments = time().$_FILES["File"]["name"];
+                        if (!(move_uploaded_file($_FILES["File"]["tmp_name"],'uploads/profiles/'.$_GET['Code'].'/horosdoc/' . $HoroscopeAttachments))) {
+                            $err++;
+                            $errormessage = "Sorry, there was an error uploading your file.";
+                        } else {
+                            $_POST['File']= $HoroscopeAttachments;
+                        }
+                        
+                    }
+                    if ($err==0) {
+                       
+                        $res =$webservice->getData("Franchisee","EditDraftHoroscopeDetails",$_POST);   
+                       if ($res['status']=="success") {
+                             $successmessage = $res['message']; 
+                        } else {
+                            $errormessage = $res['message']; 
+                        }
+                        $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
+                        $ProfileInfo = $response['data']['ProfileInfo'];
+                    }
+                }
+              
+            ?>
     <?php include_once("settings_header.php");?>
     <script>
 $(document).ready(function() {
@@ -22,9 +66,10 @@ $(document).ready(function() {
 });
 </script>
      <div class="col-sm-10 rightwidget">
-    <form method="post" action="" id="frmHD">
+    <form method="post" action="" id="frmHD" enctype="multipart/form-data">
             <input type="hidden" value="" name="txnPassword" id="txnPassword">
             <input type="hidden" value="<?php echo $_GET['Code'];?>" name="ProfileCode" id="ProfileCode">
+            <input type="hidden" value="<?php echo $ProfileInfo['MemberID'];?>" name="MemberID" id="MemberID">
         <h4 class="card-title">Horoscope Details</h4>
         <div class="form-group row">
                 <label for="Time Of Birth" class="col-sm-2 col-form-label">Time Of Birth<span id="star">*</span></label>
@@ -117,7 +162,16 @@ $(document).ready(function() {
                                 Max 250 characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span>
                             </div>
                         </div>
-                        
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Attachment</label>
+                            <div class="col-sm-4">
+                                <?php if($ProfileInfo['HosroscopeAttachFileName']==""){  ?>
+                                    <input type="File" id="File" name="File" Placeholder="File">
+                                <?php }  else {  ?>  
+                                    <div id="attachfilediv">Attached<br><a href="javascript:void(0)" onclick="showAttachmentHoroscope('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['HoroscopeAttachFileName'];?>')"><img src="<?php echo AppUrl ;?>assets/images/document_delete.png" style="width:16px;height:16px">&nbsp;Remove</a></div><br><input type="File" id="File" name="File" Placeholder="File">
+                           <?php }?>
+                           </div>
+                        </div>
                         <div class="form-group row">
                             <div class="col-sm-6">
                                 <table class="table table-bordered">
@@ -179,7 +233,8 @@ $(document).ready(function() {
         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-6">
-                               <a href="javascript:void(0)" onclick="ConfirmUpdateHDnfo()" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</a>
+                            <a href="javascript:void(0)" onclick="ConfirmUpdateHDnfo()" class="btn btn-primary mr-2" style="font-family:roboto">Save </a>
+                            <input type="submit" name="BtnSaveProfile" id="BtnSaveProfile" style="display: none;">
                                 <br>
                                 <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
                             </div>
@@ -193,12 +248,15 @@ $(document).ready(function() {
                         </div>
                         
                     </div>
+                    <div class="modal" id="PubplishNow" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" id="Publish_body" style="max-width:500px;min-height:300px;overflow:hidden"></div>
+    </div>
+</div>
                     <script>
     function ConfirmUpdateHDnfo() {
      $('#PubplishNow').modal('show'); 
-      var content = ''
-                    +''
-                    +'<div class="modal-header">'
+      var content = '<div class="modal-header">'
                         + '<h4 class="modal-title">Confirmation for edit horoscope details</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
@@ -226,20 +284,22 @@ function GetTxnPswd() {
                         + '<h4 class="modal-title">Confirmation for edit horoscope details</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                     + '</div>'
-                    + '<div class="modal-body">'
+                     + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
                         + '<div class="form-group">'
-                                + '<h4 style="text-align:center;color:#ada9a9">Please Enter Your Transaction Password</h4>'
-                         + '</div>'
-                         + '<div class="form-group">'
                             + '<div class="input-group">'
                                 + '<div class="col-sm-2"></div>'
                                 + '<div class="col-sm-8">'
                                     + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
                                 + '</div>'
                                 + '<div class="col-sm-2"></div>'
                             + '</div>'
                         + '</div>'
-                    + '</div>'
+                      + '</div>'
                     + '<div class="modal-footer">'
                         + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
                         + '<button type="button" onclick="EditDraftHoroscopeDetails()" class="btn btn-primary">Update</button>'
@@ -247,11 +307,79 @@ function GetTxnPswd() {
             $('#Publish_body').html(content);            
 }
 function EditDraftHoroscopeDetails() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+        $("#txnPassword").val($("#TransactionPassword").val());
+        $( "#BtnSaveProfile" ).trigger( "click");
+        
+    }
+
+<?php if (isset($errormessage) && strlen($errormessage)>0) { ?>
+        setTimeout(function(){
+            $('#responsemodal').modal("show");
+        },1000);
+    <?php }    ?>
+    <?php if (isset($successmessage) && strlen($successmessage)>0) { ?>
+        setTimeout(function(){
+            $('#responsemodal').modal("show");
+        },1000);
+    <?php }    ?>
+    
+function showAttachmentHoroscope(ProfileCode){
+             $('#PubplishNow').modal('show'); 
+              var content ='<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation For remove</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                            + '</div>'
+                            + '<div class="modal-body">'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want to remove?</div>'
+                                + '</div>'
+                            + '</div>' 
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Delete"  onclick="GetTxnPswdFrHorosDocOnly(\''+ProfileCode+'\')">Yes, remove</button>'
+                            + '</div>';                                                                                    
+            $('#Publish_body').html(content);
+        }
+function GetTxnPswdFrHorosDocOnly(ProfileCode) {
+             var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation For remove</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                        + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                        + '</div>'
+                      + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="DeleteHoroscopeAttachmentOnly(\''+ProfileCode+'\')" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#Publish_body').html(content);              
+}
+function DeleteHoroscopeAttachmentOnly(ProfileCode) {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
     $("#txnPassword").val($("#TransactionPassword").val());
-    var param = $("#frmHD").serialize();
-    $('#Publish_body').html(preloading_withText("Submitting Profile ...","95"));
-        $.post(API_URL + "m=Franchisee&a=EditDraftHoroscopeDetails",param,function(result) {
-            
+        var param = $( "#frmHD").serialize();
+        $('#Publish_body').html(preloading_withText("Deleting ...","95"));
+        $.post(API_URL + "m=Franchisee&a=DeleteHoroscopeAttachmentOnly", param, function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -264,17 +392,17 @@ function EditDraftHoroscopeDetails() {
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
                                     + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
-                                    + '<h3 style="text-align:center;">Updated</h3>'             
-                                    + '<p style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer">Continue</a></p>'
+                                    + '<h3 style="text-align:center;">'+ obj.message+'</h3>'             
+                                    + '<p style="text-align:center;"><a href="'+AppUrl+'Member/'+data.MemberCode+'/ProfileEdit/HoroscopeDetails/'+data.ProfileCode+'.htm" class="btn btn-primary" style="cursor:pointer;color:white">Continue</a></p>'
                                 +'</div>' 
                             +'</div>';
                 $('#Publish_body').html(content);
+                 $('#attachfilediv').hide();
             } else {
-                alert(obj);
                 var data = obj.data; 
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-header">'
-                                    +'<h4 class="modal-title">Edit horoscope details</h4>'
+                                    +'<h4 class="modal-title">Confirmation For remove</h4>'
                                     +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
                                 +'</div>'
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
@@ -285,7 +413,29 @@ function EditDraftHoroscopeDetails() {
                             +'</div>';
             $('#Publish_body').html(content);
             }
-        });
+        }
+    );
 }
 </script>
+<div class="modal" id="responsemodal" data-backdrop="static">
+  <div class="modal-dialog">
+        <div class="modal-content" style="max-width:500px;min-height:300px;overflow:hidden">
+            <?php if (isset($errormessage) && strlen($errormessage)>0) { ?>
+                <div class="modal-body" id="response_message" style="min-height:175px;max-height:175px;">'
+                    <p style="text-align:center;margin-top: 40px;"><img src="<?php echo ImageUrl;?>exclamationmark.jpg" width="10%"></p>
+                    <h3 style="text-align:center;"><?php echo $errormessage;?></h3>             
+                    <p style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer;color:#489bae">Continue</a></p>
+                </div>
+            <?php } ?>
+            <?php if (isset($successmessage) && strlen($successmessage)>0) { ?>
+                <div class="modal-body" id="response_message" style="min-height:175px;max-height:175px;">
+                    <p style="text-align:center;margin-top: 40px;"><img src="<?php echo ImageUrl;?>verifiedtickicon.jpg" width="100px"></p>
+                    <h3 style="text-align:center;">Updated</h3>             
+                    <h4 style="text-align:center;">Horoscope Details</h4>             
+                    <p style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer;color:#489bae">Continue</a></p>
+                </div> 
+            <?php } ?>
+      </div>
+  </div>
+</div>
 <?php include_once("settings_footer.php");?>                    

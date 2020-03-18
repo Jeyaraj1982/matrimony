@@ -18,7 +18,7 @@
     ?>
     <div style="text-align: right" id="">
         <a href="<?php echo GetUrl("Member/".$_GET['MCode']."/ViewDraftProfile/".$_GET['Code'].".htm ");?>"  class="btn btn-primary" name="Preview" style="font-family:roboto">Preview Profile</a>&nbsp;
-        <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Submit Profile</a>
+        <a href="javascript:void(0)" onclick="showConfirmPublish('<?php echo $_GET['Code'];?>')" class="btn btn-success" name="Publish" style="font-family:roboto">Submit Review</a>
 		<a href="javascript:void(0)" onclick="showConfirmDelete('<?php echo $_GET['Code'];?>')" class="btn btn-danger" name="Delete" style="font-family:roboto">Delete Profile</a>
 	 </div>    
         

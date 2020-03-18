@@ -49,7 +49,7 @@
                        /* echo  ($res['status']=="success") ? $dashboard->showSuccessMsg($res['message'])
                                                            : $dashboard->showErrorMsg($res['message']);   */
                         if ($res['status']=="success") {                
-                             echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm'</script>";   
+                             echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm?msg=success'</script>";   
                         } else {
                            $errormessage = $res['message']; 
                         }
@@ -97,6 +97,8 @@ function submitEducation()  {
 </script>
 <div class="col-sm-10 rightwidget">
     <form method="post" action="" name="form1" id="form1" onsubmit="return submitEducation()" enctype="multipart/form-data">
+    <input type="hidden" value="" name="txnPassword" id="txnPassword">
+    <input type="hidden" value='<?php echo $_GET['Code'];?>' name="Code">
                      <h4 class="card-title">Education Details</h4>
                         <div class="form-group row">
                            <label class="col-sm-2 col-form-label">Education<span id="star">*</span></label> 
@@ -139,18 +141,19 @@ function submitEducation()  {
                             <div class="col-sm-10"><input type="File" id="File" name="File" Placeholder="File"><span class="errorstring" id="ErrFile"></span></div>
                         </div>
                         <div class="form-group row" style="margin-bottom:0px;">
-                            <div class="col-sm-12"><span id="server_message_error"><?php echo $errormessage ;?></span><span id="server_message_success"><?php echo $successmessage;?></span></div>
-                        </div>
-                        <div class="form-group row" style="margin-bottom:0px;">
                             <div class="col-sm-12" style="text-align:left">
-                                <button type="submit" name="BtnSave" id="BtnSave"  class="btn btn-primary mr-2" style="font-family:roboto">Save Education Details</button>&nbsp;&nbsp;
-                <a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">back</a>
+                                <a href="javascript:void(0)" onclick="ConfirmSaveEducationDetails()" class="btn btn-primary mr-2" style="font-family:roboto">Save Education Details </a>
+                                <input type="submit" name="BtnSave" id="BtnSave" style="display: none;">
                             </div>
                         </div>
                 </form>
-                
-
 </div>
+  <div class="modal" id="DeleteNow" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" id="DeleteNow_body" style="max-width:500px;min-height:300px;overflow:hidden"></div>
+    </div>
+</div>
+
 <script>
 $(document).ready(function() {
     var text_max = 50;
@@ -170,7 +173,98 @@ function addOtherEducationDetails () {
             }
         }
         addOtherEducationDetails();
-
+function ConfirmSaveEducationDetails(){
+            if (submitEducation()) {
+            $('#DeleteNow').modal('show'); 
+            var content =   '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for save education details</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                            + '</div>'
+                            + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to save this information?</div>'
+                                        + '</div>'                                                     
+                                    + '</div>'
+                                +  '</div>'                    
+                            + '</div>' 
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="BtnSaveProfile" class="btn btn-primary" onclick="GetTxnPasswordSaveEducationDetails()" style="font-family:roboto">Continue</button>'
+                            + '</div>';                                                                                               
+            $('#DeleteNow_body').html(content);
+            } else {
+            return false;
+        }
+    }
+    
+    function GetTxnPasswordSaveEducationDetails () {
+        
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for save education details</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                        + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                        + '</div>'
+                      + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="SaveEducationDetails()" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#DeleteNow_body').html(content);            
+    }
+    
+    function SaveEducationDetails() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+        $("#txnPassword").val($("#TransactionPassword").val());
+        $( "#BtnSave" ).trigger( "click");
+        
+    }
+    <?php if (isset($errormessage) && strlen($errormessage)>0) { ?>
+        setTimeout(function(){
+            $('#responsemodal').modal("show");
+        },1000);
+    <?php }    ?>
+    
 </script>
+<div class="modal" id="responsemodal" data-backdrop="static">
+  <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Save education details</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body" id="response_message" style="min-height:175px;max-height:175px;">   
+            <?php if (isset($errormessage) && strlen($errormessage)>0) { ?>
+                <p style="text-align:center;margin-top: 40px;"><img src="<?php echo ImageUrl;?>exclamationmark.jpg" width="10%"><p>
+                <h5 style="text-align:center;color:#ada9a9"><?php echo $errormessage;?></h5><br><br>
+            <?php } ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Continue</button>
+            </div>
+      </div>
+  </div>
+</div>
 <?php include_once("settings_footer.php");?>      
              
