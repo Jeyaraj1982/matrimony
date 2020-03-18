@@ -13,9 +13,9 @@
     </div>
 </div>
  <div class="row">
-    
-        <?php // include_once(web_path."includes/user_includes/hp_featured_recentlyadded.php");?>
-  
+    <div class="col-12">
+        <?php  include_once(web_path."includes/user_includes/hp_featured_recentlyadded.php");?>
+    </div>
 </div>
  
 <?php

@@ -3,15 +3,15 @@ $response = $webservice->getData("Member","GetFeatureBride",array("ProfileFrom"=
     $i=1;
     $j=1;
     $c=1;
-?>
+?>                                         
    <div class="form-control row" style="border:none;height:auto">
     <div id="multi-item-example-b" class="carousel slide carousel-multi-item" data-ride="carousel">
-      <div class="controls-top"  style="line-height:3">
-        <span style="float:left;font-size:16px;font-weight:bold;">Featured Brides</span>  
+      <div class="controls-top"  style="border-bottom: 3px solid #BD181F;height: 27px;">
+        <span style="float:left;font-size:13px;background: #BD181F;padding: 3px 20px;color: #fff;font-weight: bold;">Featured Brides</span>  
         <span style="float:right">
-          <a href="<?php echo JFrame::getAppSetting('siteurl')."/ListofFeaturedBrides";?>">View All</a>&nbsp;&nbsp;
-        <a class="btn-floating" href="#multi-item-example-b" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
-        <a class="btn-floating" href="#multi-item-example-b" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+          <a href="<?php echo JFrame::getAppSetting('siteurl')."/ListofFeaturedBrides";?>" style="font-size:12px;">View All</a>&nbsp;&nbsp;
+        <a class="btn-floating" href="#multi-item-example-b" data-slide="prev" style="font-size:12px;"><i class="fa fa-chevron-left"></i></a>
+        <a class="btn-floating" href="#multi-item-example-b" data-slide="next" style="font-size:12px;"><i class="fa fa-chevron-right"></i></a>
         </span>
       </div>
       <ol class="carousel-indicators">

@@ -1,6 +1,9 @@
      </div>
+     </div>
+
+</div>
 <footer class="footer" style="padding:15px 0px !important;padding-bottom:0px !important;background-color:#111;color: #999999;">
-    <div class="footer_top" style="max-width:1140px;margin:0px auto">
+    <div class="footer_top" style="max-width:1080px;margin:0px auto">
         <div class="row">
                 <div class="col-sm-3">
                     <!--<div class="footer_widget">-->
@@ -56,7 +59,7 @@
         </div>
     </div>
 </footer> 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" type="text/javascript"></script>
 </body>
 </html>
  

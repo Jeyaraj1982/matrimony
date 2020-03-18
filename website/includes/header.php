@@ -383,7 +383,15 @@ $(document).ready(function(){
   color: white;
 }
 
+.mobilemenu {
+    display: block;
+}
 
+@media all and (max-width: 768px){
+.mobilemenu {
+    display: none;
+}
+}
 </style>
 
     </head> 
@@ -394,7 +402,7 @@ $(document).ready(function(){
     <?php } ?>   
                          
           
-<div class="container" >
+<div class="container" style="max-width:1080px" >
     <?php if (JFrame::getAppSetting("showheader")==1) { ?> 
     <div class="row">
         <div class="col-sm-6">
@@ -402,7 +410,7 @@ $(document).ready(function(){
                 <img src='<?php echo BaseUrl;?>/<?php echo $config['thumb'].JFrame::getAppSetting('logo');?>' style="height:70px;" alt="" >
             </a>
         </div>
-        <div class="col-sm-6" style="text-align:right;">
+        <div class="col-sm-6 mobilemenu" style="text-align:right;">
             <a href="<?php echo JFrame::getAppSetting('siteurl');?>/login" class="btn btn-danger" style="margin-top: 12px;padding-bottom: 7px;">Login</a>&nbsp;
             <a href="<?php echo JFrame::getAppSetting('siteurl');?>/register" class="btn btn-success" style="margin-top: 12px;padding-bottom: 7px;">Register Now</a> 
         </div>
@@ -412,9 +420,13 @@ $(document).ready(function(){
        
        <nav class="navbar navbar-expand-lg navbar-light bg-light subMenu" style="width:100%;padding:0px;background-color:#<?php echo JFrame::getAppSetting('menubgcolor');?> !important;">
   <!--<a class="navbar-brand" href="#">Navbar</a>-->
-    <button class="navbar-toggler subMenu" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="float: right;">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <div style="font-size:12px" class="navbar-toggler subMenu"   style="float: right;">
+        <span style="cursor: pointer" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon" style="color:#fff !important"></span></span>
+        <a href="login" class="btn btn-danger" style="margin-left:10px;padding:2px 10px;font-size:12px;">Login</a>
+        <a href="register" class="btn btn-success"  style="margin-left:10px;padding:2px 10px;font-size:12px;" >Register</a>    
+    </div>
+    
+    
   <div class="collapse navbar-collapse subMenu" id="navbarNav">
     <ul class="navbar-nav subMenu">
       <li class="nav-item">
@@ -464,7 +476,7 @@ $(document).ready(function(){
        
     </div>
 </div>
-<div class="container" style="background:#fff">
+<div class="container" style="background:#fff;max-width:1080px">
 
                                                             
  
