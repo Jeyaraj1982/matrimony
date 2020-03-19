@@ -17,8 +17,8 @@
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("Members/CreateMember");?>">Create Member</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("Members/ManageMembers");?>">Manage My Members</a>
+                        <li class="nav-item">         
+                            <a class="nav-link" href="<?php  echo GetUrl("Members/ManageMembers?Filter=All&Gender=All");?>">Manage My Members</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("Members/SearchMember");?>">Search Member</a>

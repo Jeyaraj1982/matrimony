@@ -171,7 +171,7 @@ $(document).ready(function() {
             <span class="errorstring" id="ErrOtherOccupation"><?php echo isset($ErrOtherOccupation)? $ErrOtherOccupation : "";?></span></div>
     </div> 
     <div class="form-group row">
-        <label for="OccupationDescription" class="col-sm-2 col-form-label">Description<span id="star">*</span></label>
+        <label for="OccupationDescription" class="col-sm-2 col-form-label">Description</label>
         <div class="col-sm-10">                                                                           
             <input type="text" class="form-control" maxlength="50" name="OccupationDescription" id="OccupationDescription" placeholder="Occupation description" value="<?php echo (isset($_POST['OccupationDescription']) ? $_POST['OccupationDescription'] : $ProfileInfo['OccupationDescription']);?>">
         </div>

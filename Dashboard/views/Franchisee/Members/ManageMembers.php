@@ -14,10 +14,17 @@
                         </ul>-->
                     </div>
                     <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                        <a href="ManageMembers" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
-                        <a href="ManageActiveMembers"><small>Active</small></a>&nbsp;|&nbsp;
-                        <a href="ManageDeactiveMembers"><small>Deactive</small></a>&nbsp;|&nbsp;
+                        <a href="<?php  echo GetUrl("Members/ManageMembers?Filter=All&Gender=All");?>" ><small style="font-weight:bold;text-decoration:underline">All</small></a>&nbsp;|&nbsp;
+                        <a href="<?php  echo GetUrl("Members/ManageActiveMembers?Filter=Active&Gender=All");?>"><small>Active</small></a>&nbsp;|&nbsp;
+                        <a href="<?php  echo GetUrl("Members/ManageDeactiveMembers?Filter=Deactive&Gender=All");?>"><small>Deactive</small></a>
                         <!--<a href="ManageDeletedMembers"><small>Deleted</small></a>-->
+                    </div>
+                </div>
+                <?php $res = $webservice->getData("Franchisee","MembersCount",array("Request"=>"All")); ?>
+                <div class="form-group row">
+                    <div class="col-sm-6" style="padding-top:5px;">
+                        <a href="<?php  echo GetUrl("Members/ManageMembers?Filter=All&Gender=Bride");?>"><?php if($_GET['Gender']=="Bride") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Brides (<?php echo $res['data']['Bride']['cnt'];?>)</small></a>&nbsp;|&nbsp;
+                        <a href="<?php  echo GetUrl("Members/ManageMembers?Filter=All&Gender=Groom");?>"><?php if($_GET['Gender']=="Groom") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Grooms (<?php echo $res['data']['Groom']['cnt'];?>)</small></a>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -31,9 +38,20 @@
                             <th style="width:50px;"></th>                          
                         </tr>  
                     </thead>
-                     <tbody>  
-                     <?php 
-                         $response = $webservice->getData("Franchisee","GetMyMembers",array("Request"=>"All"));
+                     <tbody>
+                       
+                     <?php
+                           if($_GET['Filter']=="All"){ 
+                            if( $_GET['Gender']=="All"){
+                                $response = $webservice->getData("Franchisee","GetMyMembers",array("Request"=>"All"));
+                            }
+                            if( $_GET['Gender']=="Bride"){
+                               $response = $webservice->getData("Franchisee","GetMyMembers",array("Request"=>"AllBride")); 
+                            }
+                            if( $_GET['Gender']=="Groom"){
+                               $response = $webservice->getData("Franchisee","GetMyMembers",array("Request"=>"AllGroom")); 
+                            }
+                        }
                          if (sizeof($response['data'])>0) {
                     ?>
                         <?php foreach($response['data'] as $Member) { ?>

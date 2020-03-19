@@ -46,7 +46,7 @@
                 </div>
                 <p class="text-muted mt-3 mb-0">
                     <p class="float-left">                                                                               
-                        <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php echo GetUrl("Members/ManageMembers");?>">View</a>
+                        <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i><a href="<?php  echo GetUrl("Members/ManageMembers?Filter=All&Gender=All");?>">View</a>
                     </p>
                     <p class="float-right"> 
                         Banned : 0

@@ -48,7 +48,7 @@ function submitUpload() {
         }
 </script>
 <form method="post" onsubmit="return submitUpload()" name="form1" id="form1" action="" enctype="multipart/form-data">
-   <input type="hidden" value="" name="txnPassword" id="txnPassword">
+    <input type="hidden" value="" name="txnPassword" id="txnPassword">
     <input type="hidden" value='<?php echo $_GET['Code'];?>' name="Code">
     <h4 class="card-title">Document Attachments
     <span style="float:right;color:green">For administrator purpose only</span><br><span style="float:right;color:grey;font-size:12px">Not show to members or others</span></h4>

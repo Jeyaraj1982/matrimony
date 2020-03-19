@@ -2,8 +2,7 @@
     $page="HoroscopeDetails";
  
     
-    $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
-    $ProfileInfo          = $response['data']['ProfileInfo'];
+   
     
 ?>
 <?php
@@ -50,7 +49,10 @@
                 }
               
             ?>
-    <?php include_once("settings_header.php");?>
+    <?php include_once("settings_header.php");
+                                  $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
+    $ProfileInfo          = $response['data']['ProfileInfo'];
+    ?>
     <script>
 $(document).ready(function() {
     var text_max = 250;
@@ -122,7 +124,7 @@ $(document).ready(function() {
                                 <?php echo $StarName['CodeValue'];?>  </option>
                                     <?php } ?>
                     </select>
-                    </div>
+                    </div>                            
             </div>
                         <div class="form-group row">
                             <label for="MaritalStatus" class="col-sm-2 col-form-label">Rasi Name<span id="star">*</span></label>
@@ -148,6 +150,7 @@ $(document).ready(function() {
                             <label for="Caste" class="col-sm-2 col-form-label" style="padding-right:0px">Chevvai Dhosham<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="selectpicker form-control" data-live-search="true" id="ChevvaiDhosham" name="ChevvaiDhosham">
+                                <option value="0">Choose</option>
                                     <?php foreach($response['data']['ChevvaiDhosham'] as $ChevvaiDhosham) { ?>
                                         <option value="<?php echo $ChevvaiDhosham['SoftCode'];?>" <?php echo (isset($_POST[ 'ChevvaiDhosham'])) ? (($_POST[ 'ChevvaiDhosham']==$ChevvaiDhosham[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo['ChevvaiDhosham']==$ChevvaiDhosham[ 'CodeValue']) ? " selected='selected' " : "");?>>
                                             <?php echo $ChevvaiDhosham['CodeValue'];?> </option>

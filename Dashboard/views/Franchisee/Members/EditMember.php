@@ -430,7 +430,7 @@ if (isset($_POST['Btnupdate'])) {
                 <?php echo putDateTime($Member['DeactiveRequestOn']);?>
                 </div>
             <?php } ?>
-            <div class="col-sm-12 col-form-label"><a href="../ManageMembers"><small style="font-weight:bold;text-decoration:underline">List of Members</small></a></div>
+            <div class="col-sm-12 col-form-label"><a href="<?php  echo GetUrl("Members/ManageMembers?Filter=All&Gender=All");?>"><small style="font-weight:bold;text-decoration:underline">List of Members</small></a></div>
             <div class="col-sm-12 col-form-label"><a href="<?php echo GetUrl("Members/ViewMember/".$_REQUEST['Code'].".html");?>"><small style="font-weight:bold;text-decoration:underline">View Member</small></a></div>
             <!--<div class="col-sm-12 col-form-label">
                 <?php if($Member['IsActive']==1 && $Member['IsDeleted']==0 ) { ?>

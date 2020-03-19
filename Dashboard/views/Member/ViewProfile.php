@@ -7,6 +7,7 @@
     $Member = $response['data']['Members'];
     $EducationAttachment = $response['data']['EducationAttachments'];
     $PartnerExpectation = $response['data']['PartnerExpectation'];
+    $OurExpectation = $response['data']['OurExpectation'];
      if ($response['status']=="success") {
 
 ?>
@@ -150,7 +151,7 @@ legend {
                 </div>
                 </div>
                 <div class="col-sm-7">
-                    
+                   <div style="height:290px"> 
                     <div class="form-group row">                                       
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['Height'])))>0){ echo trim($ProfileInfo['Height']);?>&nbsp;&nbsp;<span style="color: #ccc;">(approximate)</span><?php }?></label>
                     </div>
@@ -207,7 +208,29 @@ legend {
                      <div class="form-group row">
                         <label class="col-sm-12 col-form-label" style="color:#737373;"><?php if((strlen(trim($ProfileInfo['City'])))>0){ echo trim($ProfileInfo['City']);?>,&nbsp;&nbsp;<?php }?><?php if((strlen(trim($ProfileInfo['State'])))>0){ echo trim($ProfileInfo['State']);?>,&nbsp;&nbsp;<?php }?><?php echo trim($ProfileInfo['Country']);?></label>
                     </div>
-                  
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;">Education&nbsp;&nbsp;:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['mainEducation']))> 0 ? trim($ProfileInfo['mainEducation']) : "N/A "; ?></label>
+                    </div>
+                </div> 
+                <?php  if(sizeof($ProfileInfo['isShowPermission'])==0){ ?>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <fieldset>
+                            <legend style="width:132px;"><?php if ( trim($ProfileInfo['ProfileFor'])=="Myself") { echo "About Myself"; }?>
+                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother"){ echo "About My Brother"; }?>
+                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister"){ echo "About My Sister"; }?>
+                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter"){ echo "About My Daughter"; }?>
+                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Son"){ echo "About My Son"; }?>
+                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister In Law"){ echo "About My Sister In Law"; }?>
+                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother In Law"){ echo "About My Brother In Law"; }?>
+                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Son In Law"){ echo "About My Son In Law"; }?>
+                                <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter In Law"){ echo "About My Daughter In Law"; }?>
+                            </legend>
+                            <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($ProfileInfo['AboutMe']); ?></div>
+                        </fieldset>
+                    </div>
+                </div>
+                <?php } ?>
               </div>
               <div class="col-sm-12">
                   <div class="form-group row">
@@ -222,7 +245,7 @@ legend {
                                                 <img onclick="removeFavourited('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $rnd;?>')" id="img_<?php echo $rnd; ?>" src="<?php echo SiteUrl?>assets/images/like_red.png" src_a="<?php echo SiteUrl?>assets/images/like_gray.png" style="cursor:pointer !important;">
                                             <?php }?>
                         </div>  
-                   <div style="height: 20px;margin-right: -33px;line-height:12px;font-size: 11px;"><span style="color:#999 !important;">
+                   <div style="margin-right: -33px;line-height:12px;font-size: 11px;"><span style="color:#999 !important;">
                             <?php if ($ProfileInfo['LastLogin']!=0) { ?> 
                             My last Login&nbsp;<?php echo time_elapsed_string($ProfileInfo['LastLogin']); } ?><br>
                             <?php if ($ProfileInfo['LastSeen']!=0) { ?> 
@@ -232,10 +255,35 @@ legend {
                             <?php } ?>
                              <br />
                              <?php if($ProfileInfo['isMutured']==1) {?>
-                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<?php echo $ProfileInfo['Sex']=="Male" ? "He " : "She "; ?>liked on <?php echo time_elapsed_string($ProfileInfo['MuturedOn']);?>
+                                <img src="<?php echo SiteUrl?>assets/images/favhearticon.png" style="cursor:pointer !important;">&nbsp;&nbsp;<?php echo $ProfileInfo['Sex']=="Male" ? "He " : "She "; ?>liked on <?php echo time_elapsed_string($ProfileInfo['MuturedOn']);?>  <br>
+                             <?php }?>
+                             <?php if ($ProfileInfo['isFavourited']>0) { ?> 
+                                <img src="<?php echo SiteUrl?>assets/images/like_red.png" style="cursor:pointer !important;">&nbsp;&nbsp;My liked on <?php echo time_elapsed_string($ProfileInfo['isFavourited']);?><br>
+                             <?php }?>
+                             <?php if($ProfileInfo['isWhoShortList']==1) {?>
+                                <?php echo $ProfileInfo['Sex']=="Male" ? "He " : "She "; ?>shortlist on <?php echo time_elapsed_string($ProfileInfo['isWhoShortListOn']);?>  <br>
+                             <?php }?>
+                             <?php if($ProfileInfo['isShortList']>0) {?>
+                                My shortlist on <?php echo time_elapsed_string($ProfileInfo['isShortList']);?>  <br>
                              <?php }?>
                             </span></div> 
                    </div>
+                   <div class="col-sm-6" style="text-align: right;">
+                    <?php  if ($ProfileInfo['isSendInterest']['IsInterest']==0) { ?>                                                                                                                    
+                        <a href="javascript:void(0)" onclick="SendToInterest('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $rnd;?>')" id="imgS_<?php echo $rnd; ?>" style="font-size: 12px;border:1px solid #ff945f;padding: 2px 5px;background: #ff945f;color: #fff;cursor:pointer !important;text-decoration:none">Sent Interest</a>
+                    <?php } else { ?>    
+                        <?php  if ($ProfileInfo['isSendInterest']['IsApproved']==0 && $ProfileInfo['isSendInterest']['Isrejected']==0) { ?>
+                            <span><a id="imgD_<?php echo $rnd; ?>" style="border:1px solid #ff945f;font-size: 12px;padding: 2px 5px;color: #ff945f;cursor:pointer !important;text-decoration:none">Sent Interest On <?php echo $ProfileInfo['isSendInterest']['IsInterestOn'];?></a></span>
+                            <a href="javascript:void(0)" onclick="RemoveInterest('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $rnd;?>')" id="imgC_<?php echo $rnd; ?>" style="font-size: 12px;border:1px solid #ff945f;padding: 2px 5px;background: #ff945f;color: #fff;cursor:pointer !important;text-decoration:none">Cancel Interest</a>
+                        <?php } ?> 
+                        <?php  if ($ProfileInfo['isSendInterest']['IsApproved']==1 && $ProfileInfo['isSendInterest']['Isrejected']==0) { ?>
+                            <a id="imgS_<?php echo $rnd; ?>" style="font-size: 10px;padding: 2px 5px;color: green;cursor:pointer !important;text-decoration:none"><i class="fa fa-check" aria-hidden="true" style="font-size:10px"></i>&nbsp;Accepted your interest</a>
+                        <?php }?> 
+                        <?php  if ($ProfileInfo['isSendInterest']['IsApproved']==0 && $ProfileInfo['isSendInterest']['Isrejected']==1) { ?>
+                            <a id="imgS_<?php echo $rnd; ?>" style="font-size: 10px;padding: 2px 5px;color: red;cursor:pointer !important;text-decoration:none"><i class="fa fa-cross" aria-hidden="true"  style="font-size:10px"></i>&nbsp;Rejected your interest</a>
+                        <?php }?> 
+                    <?php }?> 
+                </div>
                     </div> 
               </div>
               </div>
@@ -243,47 +291,18 @@ legend {
 </div>
 </div>
 <?php  if(sizeof($ProfileInfo['isShowPermission'])==0){ ?>
-<div class="col-12 grid-margin">
-  <div class="card">
-    <div class="card-body">
-     <div class="form-group row">
-            <div class="col-sm-6"><h4 class="card-title">
-            <?php if ( trim($ProfileInfo['ProfileFor'])=="Myself") { echo "About Myself"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother"){ echo "About My Brother"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister"){ echo "About My Sister"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter"){ echo "About My Daughter"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Son"){ echo "About My Son"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Sister In Law"){ echo "About My Sister In Law"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Brother In Law"){ echo "About My Brother In Law"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Son In Law"){ echo "About My Son In Law"; }?>
-            <?php if ((trim($ProfileInfo['ProfileFor']))=="Daughter In Law"){ echo "About My Daughter In Law"; }?>
-             </h4></div>
-            
-         </div>
-         <table>           
-           <?php echo trim($ProfileInfo['AboutMe']);?>
-        </table>
-    </div>
-  </div>
-</div>
  <?php if($Member['IsMobileVerified']==1 && $Member['IsEmailVerified']==1){?>
 <div class="col-12 grid-margin">
   <div class="card">
     <div class="card-body">
      <div class="form-group row">
             <div class="col-sm-6"><h4 class="card-title">Education Details</h4></div>
-            
          </div>
-		 <div class="form-group row">
-            <label  class="col-sm-2 col-form-label">Education</label>              
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['mainEducation']))> 0 ? trim($ProfileInfo['mainEducation']) : "N/A "; ?></label>
-        </div>
          <table class="table table-bordered" id="doctable">           
             <thead style="background: #f1f1f1;border-left: 1px solid #ccc;border-right: 1px solid #ccc;">
                 <tr>
                      <th>Education</th>
                     <th>Education details</th>
-                    <th>Attachments</th>
                 </tr>
             </thead>
             <tbody>
@@ -297,12 +316,8 @@ legend {
                         <?php } else { ?>
                              <?php echo trim($Document['EducationDegree']);?>  
                         <?php } ?> 
-                        <br><?php echo $Document['EducationDescription']; ?></td>
-					<td>   
-                        <?php if($Document['FileName']>0){ ?>
-                            <?php echo $Document['IsVerified']== 1 ? "Attachment Verifiled" : "Attached "; ?> <br>
-                            <a href="javascript:void(0)" onclick="DraftProfile.showAttachmentEducationInformationForView('<?php  echo $Document['AttachmentID'];?>','<?php echo $_GET['Code'];?>','<?php  echo $Document['FileName'];?>')">View</a>
-                        <?php } else { echo "Not Attach"; }?></td>
+                        <br><?php echo $Document['EducationDescription']; ?><br>
+                        <?php echo $Document['IsVerified']== 1 ? "Verifiled" : "Verifiled "; ?></td>
                 </tr>
                 <?php } 
             } else {?>
@@ -356,8 +371,7 @@ legend {
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Attachment</label>                      
             <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;
-                <?php if($ProfileInfo['OccupationAttachFileName']==""){ echo "Not Attach";} else{ echo "Attached";?> &nbsp;&nbsp;
-                (<a href="javascript:void(0)" onclick="DraftProfile.showAttachmentOccupationForView('<?php echo $ProfileInfo['ProfileCode'];?>','<?php echo $ProfileInfo['MemberID'];?>','<?php echo $ProfileInfo['ProfileID'];?>','<?php echo $ProfileInfo['OccupationAttachFileName'];?>')">View</a>) <?php }?>
+                <?php if($ProfileInfo['OccupationAttachFileName']==""){ echo "Verifiled";} else{ echo "Verifiled";?> <?php }?>
             </label>
         </div>
         <?php }?>
@@ -386,10 +400,12 @@ legend {
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['FathersName']))> 0 ? trim($ProfileInfo['FathersName']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersAlive'])))>0){?><?php if($ProfileInfo['FathersAlive']=="1") { echo "(Passed away)" ;}?><?php } ?></label>
         </div>
         <?php if($ProfileInfo['FathersAlive']=="0"){?>
+        <?php if(sizeof($IsDownload)>0){?>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Father's contact</label>            
             <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['FathersContact'])))>0){?><?php echo "+"; echo $ProfileInfo['FathersContactCountryCode'];?>-<?php echo $ProfileInfo['FathersContact'];?><?php  } else{ echo "N/A";}?></label>
         </div>
+        <?php } ?>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Father's occupation</label>         
             <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;  
@@ -410,10 +426,12 @@ legend {
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($ProfileInfo['MothersName']))> 0 ? trim($ProfileInfo['MothersName']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['MothersAlive'])))>0){?><?php if($ProfileInfo['MothersAlive']=="1"){ echo "(Passed away)" ;}?><?php } ?> </label>
          </div>
          <?php if($ProfileInfo['MothersAlive']=="0"){?>
+         <?php if(sizeof($IsDownload)>0){?>
          <div class="form-group row">
             <label class="col-sm-3 col-form-label">Mother's contact</label>           
              <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php if((strlen(trim($ProfileInfo['MothersContact'])))>0){?><?php echo "+"; echo $ProfileInfo['MothersContactCountryCode'];?>-<?php echo $ProfileInfo['MothersContact'];?><?php  } else{ echo "N/A";}?></label>
          </div>
+         <?php } ?>
         <div class="form-group row">
              <label class="col-sm-3 col-form-label">Mother's occupation</label>         
               <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;  
@@ -578,6 +596,249 @@ legend {
     </div>
   </div>
 </div>
+<div class="col-12 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <div class="col-sm-6"><h4 class="card-title">My Expectations</h4></div>
+                     </div>
+                     <div class="form-group row">                                                       
+                        <div class="col-sm-12">
+                            <div style="width: 100px;height:100px;border: 1px solid #666;padding: 3px;border-radius: 50%;">
+                                <img src="<?php echo $response['data']['MyProfileThumb'];?>" style="height: 100%;width: 100%;border-radius: 50%;">
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="form-group row">                                                                                                                                                                                             
+                        <label class="col-sm-4 col-form-label">Age </label>                       
+                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($OurExpectation['AgeFrom']))> 0 ? trim($PartnerExpectation['AgeFrom']) : "N/A "; ?>&nbsp;&nbsp;to&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['AgeTo']))> 0 ? trim($PartnerExpectation['AgeTo']) : "N/A "; ?></label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Marital status</label>               
+                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($OurExpectation['MaritalStatus']))> 0 ? trim($PartnerExpectation['MaritalStatus']) : "N/A "; ?></label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Religion</label>                     
+                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($OurExpectation['Religion']))> 0 ? trim($PartnerExpectation['Religion']) : "N/A "; ?></label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Caste</label>                        
+                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($OurExpectation['Caste']))> 0 ? trim($OurExpectation['Caste']) : "N/A "; ?></label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Education</label>                   
+                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($OurExpectation['Education']))> 0 ? trim($OurExpectation['Education']) : "N/A "; ?></label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Employed as</label>                 
+                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($OurExpectation['EmployedAs']))> 0 ? trim($OurExpectation['EmployedAs']) : "N/A "; ?></label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Income range</label>                
+                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($OurExpectation['AnnualIncome']))> 0 ? trim($OurExpectation['AnnualIncome']) : "N/A "; ?></label>
+                    </div>
+                     <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Rasi name</label>                
+                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($OurExpectation['RasiName']))> 0 ? trim($OurExpectation['RasiName']) : "N/A "; ?></label>
+                    </div>
+                     <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Star name</label>                
+                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($OurExpectation['StarName']))> 0 ? trim($OurExpectation['StarName']) : "N/A "; ?></label>
+                    </div>
+                     <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Chevvai dhosham</label>                
+                        <label class="col-sm-8 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($OurExpectation['ChevvaiDhosham']))> 0 ? trim($OurExpectation['ChevvaiDhosham']) : "N/A "; ?></label>
+                    </div>
+                     <?php if(strlen(trim($OurExpectation['Details']))> 0){ ?>
+                     <div class="form-group row">
+                        <div class="col-sm-12">
+                            <fieldset>
+                                <legend style="width: 132px;">Additional information</legend>
+                                <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($OurExpectation['Details']); ?></div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <?php }?>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <div class="col-sm-6"><h4 class="card-title">Partner's Expectations</h4></div>
+                     </div>
+                     <div class="form-group row">                                                       
+                        <div class="col-sm-12">
+                            <div style="width: 100px;height:100px;border: 1px solid #666;padding: 3px;border-radius: 50%;">
+                                <img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 100%;width: 100%;border-radius: 50%;">
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="form-group row">                                                                                                                                                                                             
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo strlen(trim($PartnerExpectation['AgeFrom']))> 0 ? trim($PartnerExpectation['AgeFrom']) : "N/A "; ?>&nbsp;&nbsp;to&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['AgeTo']))> 0 ? trim($PartnerExpectation['AgeTo']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;
+                        
+                        <?php 
+                        $PartnerExpectation['Age']=array();
+                        for($i=$PartnerExpectation['AgeFrom'];$i<=$PartnerExpectation['AgeTo'];$i++) {
+                            $PartnerExpectation['Age'][]=$i;
+                        }   
+                         $OurExpectation['Age']=array();
+                        for($i=$OurExpectation['AgeFrom'];$i<=$OurExpectation['AgeTo'];$i++) {
+                            $OurExpectation['Age'][]=$i;
+                        }  
+                        
+                        
+                        $_age = 0;
+                              
+                               foreach($OurExpectation['Age'] as $t) {
+                                   if (in_array($t,$PartnerExpectation['Age'])) {
+                                       $_age++;
+                                   }
+                               }
+                               echo $_age==0 ? "Not match" :"Matched";
+                        ?>
+                        </label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo strlen(trim($PartnerExpectation['MaritalStatus']))> 0 ? trim($PartnerExpectation['MaritalStatus']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;
+                            <?php
+                               $_maritalstats = 0;
+                               $p_maritalstatus=explode(",",$PartnerExpectation['MaritalStatus']);
+                               foreach(explode(",",$OurExpectation['MaritalStatus']) as $t) {
+                                   if (in_array($t,$p_maritalstatus)) {
+                                       $_maritalstats++;
+                                   }
+                               }
+                               echo $_maritalstats==0 ? "Not match" :"Matched";
+                            ?>
+                        </label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo strlen(trim($PartnerExpectation['Religion']))> 0 ? trim($PartnerExpectation['Religion']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;
+                            <?php
+                               $_religion = 0;
+                               $p_religion=explode(",",$PartnerExpectation['Religion']);
+                               foreach(explode(",",$OurExpectation['Religion']) as $t) {
+                                   if (in_array($t,$p_religion)) {
+                                       $_religion++;
+                                   }
+                               }
+                               echo $_religion==0 ? "Not match" :"Matched";
+                            ?>
+                        </label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo strlen(trim($PartnerExpectation['Caste']))> 0 ? trim($PartnerExpectation['Caste']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;
+                            <?php
+                               $_Caste = 0;
+                               $p_Caste=explode(",",$PartnerExpectation['Caste']);
+                               foreach(explode(",",$OurExpectation['Caste']) as $t) {
+                                   if (in_array($t,$p_Caste)) {
+                                       $_Caste++;
+                                   }
+                               }
+                               echo $_Caste==0 ? "Not match" :"Matched";
+                            ?>
+                        </label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo strlen(trim($PartnerExpectation['Education']))> 0 ? trim($PartnerExpectation['Education']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;
+                            <?php
+                               $_Education = 0;
+                               $p_Education=explode(",",$PartnerExpectation['Education']);
+                               foreach(explode(",",$OurExpectation['Education']) as $t) {
+                                   if (in_array($t,$p_Education)) {
+                                       $_Education++;
+                                   }
+                               }
+                               echo $_Education==0 ? "Not match" :"Matched";
+                            ?>
+                        </label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo strlen(trim($PartnerExpectation['EmployedAs']))> 0 ? trim($PartnerExpectation['EmployedAs']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;
+                            <?php
+                               $_EmployedAs = 0;
+                               $p_EmployedAs=explode(",",$PartnerExpectation['EmployedAs']);
+                               foreach(explode(",",$OurExpectation['EmployedAs']) as $t) {
+                                   if (in_array($t,$p_EmployedAs)) {
+                                       $_EmployedAs++;
+                                   }
+                               }
+                               echo $_EmployedAs==0 ? "Not match" :"Matched";
+                            ?>
+                        </label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo strlen(trim($PartnerExpectation['AnnualIncome']))> 0 ? trim($PartnerExpectation['AnnualIncome']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;
+                            <?php
+                               $_AnnualIncome = 0;
+                               $p_AnnualIncome=explode(",",$PartnerExpectation['AnnualIncome']);
+                               foreach(explode(",",$OurExpectation['AnnualIncome']) as $t) {
+                                   if (in_array($t,$p_AnnualIncome)) {
+                                       $_AnnualIncome++;
+                                   }
+                               }
+                               echo $_AnnualIncome==0 ? "Not match" :"Matched";
+                            ?>
+                        </label>
+                    </div>
+                     <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo strlen(trim($PartnerExpectation['RasiName']))> 0 ? trim($PartnerExpectation['RasiName']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;
+                            <?php
+                               $_RasiName = 0;
+                               $p_RasiName=explode(",",$PartnerExpectation['RasiName']);
+                               foreach(explode(",",$OurExpectation['RasiName']) as $t) {
+                                   if (in_array($t,$p_RasiName)) {
+                                       $_RasiName++;
+                                   }
+                               }
+                               echo $_RasiName==0 ? "Not match" :"Matched";
+                            ?>
+                        </label>
+                    </div>
+                     <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo strlen(trim($PartnerExpectation['StarName']))> 0 ? trim($PartnerExpectation['StarName']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;
+                            <?php
+                               $_StarName = 0;
+                               $p_StarName=explode(",",$PartnerExpectation['StarName']);
+                               foreach(explode(",",$OurExpectation['StarName']) as $t) {
+                                   if (in_array($t,$p_StarName)) {
+                                       $_StarName++;
+                                   }
+                               }
+                               echo $_StarName==0 ? "Not match" :"Matched";
+                            ?>
+                        </label>                                                        
+                    </div>
+                     <div class="form-group row">
+                        <label class="col-sm-12 col-form-label" style="color:#737373;"><?php echo strlen(trim($PartnerExpectation['ChevvaiDhosham']))> 0 ? trim($PartnerExpectation['ChevvaiDhosham']) : "N/A "; ?>&nbsp;&nbsp;&nbsp;
+                            <?php
+                               $_ChevvaiDhosham = 0;
+                               $p_ChevvaiDhosham=explode(",",$PartnerExpectation['ChevvaiDhosham']);
+                               foreach(explode(",",$OurExpectation['ChevvaiDhosham']) as $t) {
+                                   if (in_array($t,$p_ChevvaiDhosham)) {
+                                       $_ChevvaiDhosham++;
+                                   }
+                               }
+                               echo $_ChevvaiDhosham==0 ? "Not match" :"Matched";
+                            ?>
+                        </label>
+                    </div>
+                     <?php if(strlen(trim($PartnerExpectation['Details']))> 0){ ?>
+                     <div class="form-group row">
+                        <div class="col-sm-12">
+                            <fieldset>
+                                <legend style="width: 132px;">Additional information</legend>
+                                <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($PartnerExpectation['Details']); ?></div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <?php }?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <?php if(sizeof($IsDownload)>0){?>
 <div class="col-12 grid-margin">
   <div class="card">
@@ -592,9 +853,9 @@ legend {
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Time Of Birth</label>               
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php // echo strlen(trim($ProfileInfo['TimeOfBirth']))> 0 ? trim($ProfileInfo['TimeOfBirth']) : "N/A "; ?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php  echo strlen(trim($ProfileInfo['TimeOfBirth']))> 0 ? trim($ProfileInfo['TimeOfBirth']) : "N/A "; ?></label>
             <label class="col-sm-2 col-form-label">Place Of Birth</label>               
-            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php // echo strlen(trim($ProfileInfo['PlaceOfBirth']))> 0 ? trim($ProfileInfo['PlaceOfBirth']) : "N/A "; ?></label>
+            <label class="col-sm-3 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php  echo strlen(trim($ProfileInfo['PlaceOfBirth']))> 0 ? trim($ProfileInfo['PlaceOfBirth']) : "N/A "; ?></label>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Star Name</label>                   
@@ -687,66 +948,7 @@ legend {
          </div>
     </div>
   </div>   
-<?php } ?>                                                                                                            
-<div class="col-12 grid-margin">
-  <div class="card">
-    <div class="card-body">
-    <div class="form-group row">
-            <div class="col-sm-6"><h4 class="card-title">Partner's Expectations</h4></div>
-         </div>
-        <div class="form-group row">                                                                                                                                                                                             
-            <label class="col-sm-3 col-form-label">Age </label>                       
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['AgeFrom']))> 0 ? trim($PartnerExpectation['AgeFrom']) : "N/A "; ?>&nbsp;&nbsp;to&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['AgeTo']))> 0 ? trim($PartnerExpectation['AgeTo']) : "N/A "; ?></label>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Marital status</label>               
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['MaritalStatus']))> 0 ? trim($PartnerExpectation['MaritalStatus']) : "N/A "; ?></label>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Religion</label>                     
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['Religion']))> 0 ? trim($PartnerExpectation['Religion']) : "N/A "; ?></label>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Caste</label>                        
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['Caste']))> 0 ? trim($PartnerExpectation['Caste']) : "N/A "; ?></label>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Education</label>                   
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['Education']))> 0 ? trim($PartnerExpectation['Education']) : "N/A "; ?></label>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Employed as</label>                 
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['EmployedAs']))> 0 ? trim($PartnerExpectation['EmployedAs']) : "N/A "; ?></label>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Income range</label>                
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['AnnualIncome']))> 0 ? trim($PartnerExpectation['AnnualIncome']) : "N/A "; ?></label>
-        </div>
-         <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Rasi name</label>                
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['RasiName']))> 0 ? trim($PartnerExpectation['RasiName']) : "N/A "; ?></label>
-        </div>
-         <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Star name</label>                
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['StarName']))> 0 ? trim($PartnerExpectation['StarName']) : "N/A "; ?></label>
-        </div>
-         <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Chevvai dhosham</label>                
-            <label class="col-sm-9 col-form-label" style="color:#737373;">:&nbsp;&nbsp;<?php echo strlen(trim($PartnerExpectation['ChevvaiDhosham']))> 0 ? trim($PartnerExpectation['ChevvaiDhosham']) : "N/A "; ?></label>
-        </div>
-         <?php if(strlen(trim($PartnerExpectation['Details']))> 0){ ?>
-         <div class="form-group row">
-            <div class="col-sm-12">
-                <fieldset>
-                    <legend style="width: 132px;">Additional information</legend>
-                    <div style="color:#737373;">&nbsp;&nbsp;<?php echo trim($PartnerExpectation['Details']); ?></div>
-                </fieldset>
-            </div>
-        </div>
-        <?php }?>
-    </div>
-  </div>
-</div>
+<?php } ?> 
 <?php if(sizeof($IsDownload)>0){?>
 <div class="col-12 grid-margin">
   <div class="card">

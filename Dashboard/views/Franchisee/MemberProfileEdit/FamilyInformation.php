@@ -70,6 +70,14 @@ function submitprofile() {
             if($("#FamilyValue").val()=="0"){
                 ErrorCount++;
                 document.getElementById("ErrFamilyValue").innerHTML="Please select family value"; 
+            }
+            if($("#NumberofBrother").val()=="Choose"){
+                ErrorCount++;
+                document.getElementById("ErrNumberofBrother").innerHTML="Please select number of brother"; 
+            }
+            if($("#NumberofSisters").val()=="Choose"){
+                ErrorCount++;
+                document.getElementById("ErrNumberofSisters").innerHTML="Please select number of sister"; 
             }  
             
         if (ErrorCount==0) {
@@ -265,6 +273,7 @@ $(document).ready(function() {
                     <div class="col-sm-3">
                        <label class="col-form-label">Total</label><br>
                         <select class=" form-control" id="NumberofBrother" onchange="print_brother_counts()" name="NumberofBrother">
+                            <option value="Choose">Choose</option>
                             <?php foreach($response['data']['NumberofBrother'] as $NumberofBrother) { ?>
                             <option value="<?php echo $NumberofBrother['SoftCode'];?>" <?php echo (isset($_POST[ 'NumberofBrother'])) ? (($_POST[ 'NumberofBrother']==$NumberofBrother[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'NumberofBrothers']==$NumberofBrother[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $NumberofBrother['CodeValue'];?></option>
                             <?php } ?>
@@ -295,6 +304,7 @@ $(document).ready(function() {
                         </select>
                     </div>
                 </div>
+                <span class="errorstring" id="ErrNumberofBrother"><?php echo isset($ErrNumberofBrother)? $ErrNumberofBrother : "";?>
             </div>  
         </div>
         <div class="form-group row" style="margin-bottom: 0px;">
@@ -304,6 +314,7 @@ $(document).ready(function() {
                     <div class="col-sm-3" align="left">
                        <label class="col-form-label">Total</label><br>
                         <select class="form-control" id="NumberofSisters" onchange="print_sister_counts()" name="NumberofSisters">
+                            <option value="Choose">Choose</option>
                             <?php foreach($response['data']['NumberofSisters'] as $NumberofSister) { ?>
                             <option value="<?php echo $NumberofSister['SoftCode'];?>" <?php echo (isset($_POST[ 'NumberofSisters'])) ? (($_POST[ 'NumberofSisters']==$NumberofSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'NumberofSisters']==$NumberofSister[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $NumberofSister['CodeValue'];?>  </option>
                             <?php } ?>
@@ -334,6 +345,7 @@ $(document).ready(function() {
                         </select>
                     </div>
                 </div>
+                <span class="errorstring" id="ErrNumberofSisters"><?php echo isset($ErrNumberofSisters)? $ErrNumberofSisters : "";?>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px">
@@ -538,7 +550,7 @@ function verifiyFatherPassedaway() {
     function print_brother_counts() {
         var n_brothers = $('#NumberofBrother').val();
         
-        if (n_brothers=='NOB001') {
+        if (n_brothers=='NOB001' || n_brothers=='Choose') {
             $('#div_elder').hide();
             $('#div_younger').hide();
             $('#div_married').hide();
@@ -601,7 +613,7 @@ function verifiyFatherPassedaway() {
         
         var n_brothers = $('#NumberofSisters').val();
         
-        if (n_brothers=='NS001') {
+        if (n_brothers=='NS001'  || n_brothers=='Choose') {
             $('#div_elderSister').hide();
             $('#div_youngerSister').hide();
             $('#div_marriedSister').hide();

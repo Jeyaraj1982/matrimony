@@ -128,11 +128,15 @@ b==="api")return a(this).data("Jcrop");a(this).data("Jcrop").setOptions(b)}else 
 <div class="jc_coords">
 <form action="<?php echo SiteUrl;?>Member/<?php echo $_GET['MCode'];?>/ProfileEdit/ProfilePhoto/<?php echo $_GET['Code'];?>.htm" method="post" onsubmit="return checkCoords();">
     <input type="hidden" id="file" name="file" value="<?php echo $profilephoto;?>" />
+    <input type="hidden" value="" name="txnPassword" id="txnPassword">
+    <input type="hidden" value='<?php echo $_GET['Code'];?>' name="Code">
     <input type="hidden" id="x" name="x" value="" />
     <input type="hidden" id="y" name="y" value="" />
     <input type="hidden" id="w" name="w" value="" />
     <input type="hidden" id="h" name="h" value="" />
-    <input type="submit" name="btnCrop" value="Crop Image and Save" class="btn btn-primary mr-2" />
+    <a href="javascript:void(0)" onclick="ConfirmAttachProfilePhoto()" class="btn btn-primary mr-2" style="font-family:roboto">Crop Image and Save </a>
+            <input type="submit" name="btnCrop" id="btnCrop" style="display: none;">
+   <!-- <input type="submit" name="btnCrop" value="Crop Image and Save" class="btn btn-primary mr-2" />-->
    
 </form>
 </div>
@@ -145,6 +149,74 @@ b==="api")return a(this).data("Jcrop");a(this).data("Jcrop").setOptions(b)}else 
                 } 
             ?>    
             </div>
+<div class="modal" id="Delete" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" id="model_body" style="max-width:500px;min-height:300px;overflow:hidden"></div>
+    </div>
+</div>
+<script>
+function ConfirmAttachProfilePhoto(){
+            $('#Delete').modal('show'); 
+            var content =   '<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation for save profile photo</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                            + '</div>'
+                            + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to save this information?</div>'
+                                        + '</div>'                                                     
+                                    + '</div>'
+                                +  '</div>'                    
+                            + '</div>' 
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="BtnSaveProfile" class="btn btn-primary" onclick="GetTxnPasswordSaveProfilePhoto()" style="font-family:roboto">Continue</button>'
+                            + '</div>';                                                                                               
+            $('#model_body').html(content);
+    }
+    function GetTxnPasswordSaveProfilePhoto () {
+        
+        var content =  '<div class="modal-header">'
+                            + '<h4 class="modal-title">Confirmation for save profile photo</h4>'
+                            + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                      + '</div>'
+                      + '<div class="modal-body">'
+                        + '<div class="form-group" style="text-align:center">'
+                            + '<img src="'+ImgUrl+'icons/transaction_password.png" width="128px">' 
+                            + '<h4 style="text-align:center;color:#ada9a9;margin-bottom: -13px;">Please Enter Your Transaction Password</h4>'
+                        + '</div>'
+                        + '<div class="form-group">'
+                            + '<div class="input-group">'
+                                + '<div class="col-sm-2"></div>'
+                                + '<div class="col-sm-8">'
+                                    + '<input type="password"  class="form-control" id="TransactionPassword" name="TransactionPassword" style="font-weight: normal;font-size: 13px;text-align: center;letter-spacing: 5px;font-family:Roboto;">'
+                                    + '<div id="frmTxnPass_error" style="color:red;text-align:center"><br></div>'
+                                + '</div>'
+                                + '<div class="col-sm-2"></div>'
+                            + '</div>'
+                        + '</div>'
+                      + '</div>'
+                        + '<div class="modal-footer">'
+                            + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                            + '<button type="button" onclick="SaveProfilePhoto()" class="btn btn-primary" >Continue</button>'
+                        + '</div>';
+        $('#model_body').html(content);            
+    }
+    function SaveProfilePhoto() {
+        if ($("#TransactionPassword").val().trim()=="") {
+             $("#frmTxnPass_error").html("Please enter transaction password");
+             return false;
+         }
+        $("#txnPassword").val($("#TransactionPassword").val());
+        $( "#btnCrop" ).trigger( "click");
+        
+    }
+</script>
 <?php include_once("settings_footer.php");?>                    
 
  

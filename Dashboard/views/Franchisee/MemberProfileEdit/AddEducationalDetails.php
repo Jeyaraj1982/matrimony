@@ -59,6 +59,7 @@
             ?>
    <?php                 
             $response = $webservice->getData("Franchisee","GetViewAttachments",(array("ProfileCode"=>$_GET['Code'])));
+            print_r($response['data']['EducationDetail']);
 $Education=$response['data']['Attachments'];
              ?>
 <?php include_once("settings_header.php");?>

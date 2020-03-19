@@ -261,7 +261,7 @@
                     </div>
                 </div>
                 <div class="form-group row" style="margin-bottom:0px;">
-                    <label for="AboutMe" class="col-sm-12 col-form-label" id="Aboutlabel"><span id="star">*</span></label>
+                    <label for="AboutMe" class="col-sm-12 col-form-label" id="Aboutlabel"></label>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-12">
@@ -455,31 +455,31 @@ function EditDraftGeneralInformation() {
 
             function changeAboutLable() {
                 if ($('#ProfileFor').val() == "Myself") {
-                    $('#Aboutlabel').html("About me<span style='color:red'>*</span>");
+                    $('#Aboutlabel').html("About me");
                 }
                 if ($('#ProfileFor').val() == "Brother") {
-                    $('#Aboutlabel').html("About my brother<span style='color:red'>*</span>");
+                    $('#Aboutlabel').html("About my brother");
                 }
                 if ($('#ProfileFor').val() == "Sister") {
-                    $('#Aboutlabel').html("About my sister<span style='color:red'>*</span>");
+                    $('#Aboutlabel').html("About my sister");
                 }
                 if ($('#ProfileFor').val() == "Daughter") {
-                    $('#Aboutlabel').html("About my daughter<span style='color:red'>*</span>");
+                    $('#Aboutlabel').html("About my daughter");
                 }
                 if ($('#ProfileFor').val() == "Son") {
-                    $('#Aboutlabel').html("About my son<span style='color:red'>*</span>");
+                    $('#Aboutlabel').html("About my son");
                 }
                 if ($('#ProfileFor').val() == "Sister In Law") {
-                    $('#Aboutlabel').html("About my sister in law<span style='color:red'>*</span>");
+                    $('#Aboutlabel').html("About my sister in law");
                 }
                 if ($('#ProfileFor').val() == "Brother In Law") {
-                    $('#Aboutlabel').html("About my brother in law<span style='color:red'>*</span>");
+                    $('#Aboutlabel').html("About my brother in law");
                 }
                 if ($('#ProfileFor').val() == "Son In Law") {
-                    $('#Aboutlabel').html("About my son in law<span style='color:red'>*</span>");
+                    $('#Aboutlabel').html("About my son in law");
                 }
                 if ($('#ProfileFor').val() == "Daughter In Law") {
-                    $('#Aboutlabel').html("About my daughter in law<span style='color:red'>*</span>");
+                    $('#Aboutlabel').html("About my daughter in law");
                 }
             }
             setTimeout(function() {

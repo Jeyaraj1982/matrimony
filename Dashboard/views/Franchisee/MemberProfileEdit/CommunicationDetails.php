@@ -38,6 +38,7 @@ function submitprofile() {
                          $('#ErrCity').html("");
                          $('#ErrStateName').html("");
                          $('#ErrCountry').html("");
+                         $('#ErrDistrict').html("");
                          $('#ErrPincode').html("");
                          
                          ErrorCount=0;
@@ -69,6 +70,10 @@ function submitprofile() {
                          
                          if($("#StateName").val()=="0"){
                             document.getElementById("ErrStateName").innerHTML="Please select your State Name"; 
+                             ErrorCount++;
+                         }
+                         if($("#District").val()=="0"){
+                            document.getElementById("ErrDistrict").innerHTML="Please select your District"; 
                              ErrorCount++;
                          }
                          if($("#Country").val()=="0"){
@@ -159,7 +164,7 @@ $(document).ready(function() {
                 <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
             </div>
             
-            <label for="WhatsappNumber" class="col-sm-1 col-form-label" style="margin-left:63px;padding-left:0px;padding-right:0px" >Whatsapp<span id="star">*</span></label>
+            <label for="WhatsappNumber" class="col-sm-1 col-form-label" style="margin-left:63px;padding-left:0px;padding-right:0px" >Whatsapp</label>
             <div class="col-sm-4">
             <div class="col-sm-5"  style="padding-right:0px">
                 <select name="WhatsappCountryCode" class="selectpicker form-control" data-live-search="true" id="WhatsappCountryCode"> 
@@ -198,13 +203,6 @@ $(document).ready(function() {
             </div>
         </div>
         <div class="form-group row">
-            <label for="Pincode" class="col-sm-2 col-form-label">Pin/Zip code<span id="star">*</span></label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="Pincode" name="Pincode" maxlength="10" value="<?php echo (isset($_POST['Pincode']) ? $_POST['Pincode'] : $ProfileInfo['Pincode']);?>" placeholder="Pincode">
-                <span class="errorstring" id="ErrPincode"><?php echo isset($ErrPincode)? $ErrPincode : "";?></span>
-            </div>
-        </div>
-        <div class="form-group row">
             <label for="City" class="col-sm-2 col-form-label">City name<span id="star">*</span></label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="City" name="City" maxlength="50" Placeholder="City Name" value="<?php echo (isset($_POST['City']) ? $_POST['City'] : $ProfileInfo['City']);?>">
@@ -213,6 +211,24 @@ $(document).ready(function() {
             <label for="OtherLocation" class="col-sm-2 col-form-label">Landmark</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="OtherLocation" maxlength="50" name="OtherLocation" Placeholder="Landmark" value="<?php echo (isset($_POST['OtherLocation']) ? $_POST['OtherLocation'] : $ProfileInfo['OtherLocation']);?>">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Pincode" class="col-sm-2 col-form-label">Pin/Zip code<span id="star">*</span></label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="Pincode" name="Pincode" maxlength="10" value="<?php echo (isset($_POST['Pincode']) ? $_POST['Pincode'] : $ProfileInfo['Pincode']);?>" placeholder="Pincode">
+                <span class="errorstring" id="ErrPincode"><?php echo isset($ErrPincode)? $ErrPincode : "";?></span>
+            </div>
+            <label for="Country" class="col-sm-2 col-form-label">District<span id="star">*</span></label>
+            <div class="col-sm-4">
+                <select class="selectpicker form-control" data-live-search="true" id="District" name="District">
+                    <option value="0">Choose District</option>
+                    <?php foreach($response['data']['DistrictName'] as $District) { ?>
+                        <option value="<?php echo $District['SoftCode'];?>" <?php echo (isset($_POST[ 'District'])) ? (($_POST[ 'District']==$District[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'District']==$District['CodeValue']) ? " selected='selected' " : "");?>>
+                            <?php echo $District['CodeValue'];?>  </option>
+                                <?php } ?>
+                </select>
+                <span class="errorstring" id="ErrDistrict"><?php echo isset($ErrDistrict)? $ErrDistrict : "";?></span>
             </div>
         </div>
         <div class="form-group row">
@@ -301,9 +317,9 @@ $(document).ready(function() {
                         + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="GetTxnPswd()" style="font-family:roboto">Update</button>'
                     + '</div>';
             $('#Publish_body').html(content);
-     } else {
-            return false;
-     }
+    } else {
+         return false;
+    }
 }
 function GetTxnPswd() {
              var content =  '<div class="modal-header">'

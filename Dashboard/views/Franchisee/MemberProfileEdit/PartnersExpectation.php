@@ -1,29 +1,8 @@
 <?php
     $page="PartnersExpectation";
-    if (isset($_POST['BtnSaveProfile'])) {
-        
-        $_POST['Code']=$_GET['Code'];
-        $_POST['MaritalStatus'] = implode(",",$_POST['MaritalStatus']);
-        $_POST['Religion']      = implode(",",$_POST['Religion']);
-        $_POST['Caste']         = implode(",",$_POST['Caste']);
-        $_POST['Education']     = implode(",",$_POST['Education']);
-        $_POST['IncomeRange']   = implode(",",$_POST['IncomeRange']);
-        $_POST['EmployedAs']    = implode(",",$_POST['EmployedAs']);
-        $_POST['RasiName']      = implode(",",$_POST['RasiName']);
-        $_POST['StarName']      = implode(",",$_POST['StarName']);
-        
-        $response = $webservice->getData("Franchisee","AddPartnersExpectaion",$_POST);
-        if ($response['status']=="success") {  ?>
-         <script> $(document).ready(function() {   $.simplyToast("Success", 'info'); });  </script>
-      <?php  } else {              ?>
-           <script> $(document).ready(function() {   $.simplyToast("failed", 'danger'); });  </script>
-     <?php   }
-    }
-    
-    $response = $webservice->getData("Franchisee","GetPartnersExpectaionInformation",array("ProfileCode"=>$_GET['Code']));
-    $ProfileInfo          = $response['data']['ProfileInfo'];
-    
     include_once("settings_header.php");
+      $response = $webservice->getData("Franchisee","GetPartnersExpectaionInformation",array("ProfileCode"=>$_GET['Code']));
+    $ProfileInfo          = $response['data']['ProfileInfo'];
 ?>
 <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>-->
@@ -151,10 +130,11 @@ function submitexpectation() {
                 });
                 $('#StarName').val(selected.join(","));
            }
-           if ($("#ChevvaiDhosham :selected").length==0) {
-                            document.getElementById("ErrChevvaiDhosham").innerHTML="Please select chevvai dhosham"; 
-                             ErrorCount++;
-           }
+          
+           if($("#ChevvaiDhosham").val()=="0"){
+                ErrorCount++;
+                document.getElementById("ErrChevvaiDhosham").innerHTML="Please select chevvai dhosham"; 
+            }
         
         if (ErrorCount==0) {
                             return true;
@@ -164,6 +144,7 @@ function submitexpectation() {
     
 }
 </script>
+
     <form method="post" action=""  id="frmPE" name="frmPE">
     <input type="hidden" value="" name="MaritalStatus" id="MaritalStatus">
     <input type="hidden" value="" name="Religion" id="Religion">
@@ -276,22 +257,26 @@ function submitexpectation() {
         <div class="form-group row">
             <label for="Education" class="col-sm-2 col-form-label">Education<span id="star">*</span></label>
             <div class="col-sm-10">
-                <?php $sel_educations = isset($_POST['EmployedAs']) ? explode(",",$_POST['Education']) : explode(",",$ProfileInfo[ 'EducationCode']); ?>
+                <?php 
+                
+                
+                
+                $sel_educations = isset($_POST['Education']) ? explode(",",$_POST['Education']) : explode(",",$ProfileInfo['EducationCode']); 
+              
+                ?>
                 <select class="form-control" id="_Education"  multiple="multiple" style="display: none;">
                     <?php foreach($response['data']['Education'] as $Education) { ?>
                     <?php
                         $selected = "";
-                        if (isset($_POST['Education'])) {
-                            if (in_array($Education['SoftCode'], $sel_educations)) {
-                                $selected = " selected='selected' ";
-                            }
-                        } else {
+                      
                             if (in_array($Education['SoftCode'], $sel_educations))  {
                                  $selected = " selected='selected' ";
                             } 
-                        }
+                        
                     ?>
-                    <option value="<?php echo $Education['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $Education['CodeValue'];?><?php } ?></option>
+                    <option value="<?php echo $Education['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $Education['CodeValue'];?>
+                    
+                    <?php } ?></option>
                 </select>
                 <span class="errorstring" id="ErrEducation"></span>
             </div>
@@ -299,20 +284,16 @@ function submitexpectation() {
         <div class="form-group row">
             <label for="EmployedAs" class="col-sm-2 col-form-label">Employed as<span id="star">*</span></label>
             <div class="col-sm-10">
-                <?php $sel_employeedas = isset($_POST['EmployedAs']) ? explode(",",$_POST['EmployedAs']) : explode(",",$ProfileInfo[ 'EmployedAsCode']); ?>
+                <?php $sel_employeedas = isset($_POST['EmployedAs']) ? explode(",",$_POST['EmployedAs']) : explode(",",$ProfileInfo['EmployedAsCode']); ?>
                 <select  id="_EmployedAs"  multiple="multiple" style="display: none;">
                     <?php foreach($response['data']['EmployedAs'] as $EmployedAs) { ?>
                     <?php
                         $selected = "";
-                        if (isset($_POST['EmployedAs'])) {
-                            if (in_array($EmployedAs['SoftCode'], $sel_employeedas)) {
-                                $selected = " selected='selected' ";
-                            }
-                        } else {
+                        
                             if (in_array($EmployedAs['SoftCode'], $sel_employeedas))  {
                                  $selected = " selected='selected' ";
                             } 
-                        }
+                         
                     ?>
                     <?php  if($EmployedAs['SoftCode']!= "OT112"){     ?>
                     <option value="<?php echo $EmployedAs['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $EmployedAs['CodeValue'];?></option>
@@ -364,7 +345,9 @@ function submitexpectation() {
                             } 
                         }
                     ?>
-                    <option value="<?php echo $RasiName['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $RasiName['CodeValue'];?></option>
+                    <?php  if($RasiName['SoftCode']!= "MS012"){     ?>
+                        <option value="<?php echo $RasiName['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $RasiName['CodeValue'];?></option>
+                    <?php } ?>
                     <?php } ?>
                 </select>
                 <span class="errorstring" id="ErrRasiName"></span>
@@ -388,7 +371,9 @@ function submitexpectation() {
                             } 
                         }
                     ?>
+                    <?php  if($StarName['SoftCode']!= "STRN007"){     ?>
                     <option value="<?php echo $StarName['SoftCode'];?>" <?php echo $selected; ?> ><?php echo $StarName['CodeValue'];?></option>
+                    <?php } ?>
                     <?php } ?>
                 </select>
                 <span class="errorstring" id="ErrStarName"></span>
@@ -398,6 +383,7 @@ function submitexpectation() {
             <label for="Caste" class="col-sm-2 col-form-label" style="padding-right:0px">Chevvai dhosham<span id="star">*</span></label>
             <div class="col-sm-4">
                 <select class="form-control" data-live-search="true" id="ChevvaiDhosham" name="ChevvaiDhosham">
+                <option value="0">Choose</option>
                     <?php foreach($response['data']['ChevvaiDhosham'] as $ChevvaiDhosham) { ?>
                     <?php  if($ChevvaiDhosham['SoftCode']!= "CD003"){     ?>
                         <option value="<?php echo $ChevvaiDhosham['SoftCode'];?>" <?php echo (isset($_POST[ 'ChevvaiDhosham'])) ? (($_POST[ 'ChevvaiDhosham']==$ChevvaiDhosham[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo['ChevvaiDhosham']==$ChevvaiDhosham[ 'CodeValue']) ? " selected='selected' " : "");?>>

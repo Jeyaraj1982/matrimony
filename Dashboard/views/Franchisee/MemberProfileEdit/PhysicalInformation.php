@@ -78,7 +78,7 @@ function submitprofile() {
                              ErrorCount++;
                          }
                          if($("#SmookingHabit").val()=="0"){
-                            document.getElementById("ErrSmookingHabit").innerHTML="Please select Smooking Habit"; 
+                            document.getElementById("ErrSmookingHabit").innerHTML="Please select Smoking Habit"; 
                              ErrorCount++;
                          }
                          if($("#DrinkingHabit").val()=="0"){
@@ -141,6 +141,7 @@ $(document).ready(function() {
         <label for="PhysicallyImpaired" class="col-sm-3 col-form-label">Physically impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="PhysicallyImpaired" name="PhysicallyImpaired" onchange="getAdditionalPhysicalInfo()">
+                <option value="0">Choose </option>
                 <?php foreach($response['data']['PhysicallyImpaired'] as $PhysicallyImpaired) { ?>
                     <option value="<?php echo $PhysicallyImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'PhysicallyImpaired'])) ? (($_POST[ 'PhysicallyImpaired']==$PhysicallyImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'PhysicallyImpaired']==$PhysicallyImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $PhysicallyImpaired['CodeValue'];?></option>
                 <?php } ?>
@@ -156,6 +157,7 @@ $(document).ready(function() {
         <label for="VisuallyImpaired" class="col-sm-3 col-form-label">Visually impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="VisuallyImpaired" name="VisuallyImpaired" onchange="getAdditionalVisualInfo()">
+                <option value="0">Choose </option>
                 <?php foreach($response['data']['VisuallyImpaired'] as $VisuallyImpaired) { ?>
                     <option value="<?php echo $VisuallyImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'VisuallyImpaired'])) ? (($_POST[ 'VisuallyImpaired']==$VisuallyImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'VisuallyImpaired']==$VisuallyImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $VisuallyImpaired['CodeValue'];?>      </option>
@@ -172,6 +174,7 @@ $(document).ready(function() {
         <label for="VissionImpaired" class="col-sm-3 col-form-label">Vision impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="VissionImpaired"  name="VissionImpaired" onchange="getAdditionalVissionInfo()">
+                <option value="0">Choose </option>
                 <?php foreach($response['data']['VissionImpaired'] as $VissionImpaired) { ?>
                     <option value="<?php echo $VissionImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'VissionImpaired'])) ? (($_POST[ 'VissionImpaired']==$VissionImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'VissionImpaired']==$VissionImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $VissionImpaired['CodeValue'];?>      </option>
@@ -188,6 +191,7 @@ $(document).ready(function() {
         <label for="SpeechImpaired" class="col-sm-3 col-form-label">Speech impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="SpeechImpaired" name="SpeechImpaired" onchange="getAdditionalSpeechInfo()">
+                <option value="0">Choose </option>
                 <?php foreach($response['data']['SpeechImpaired'] as $SpeechImpaired) { ?>
                     <option value="<?php echo $SpeechImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'SpeechImpaired'])) ? (($_POST[ 'SpeechImpaired']==$SpeechImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'SpeechImpaired']==$SpeechImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $SpeechImpaired['CodeValue'];?>    </option>
@@ -276,6 +280,7 @@ $(document).ready(function() {
         <label for="SmookingHabit" class="col-sm-3 col-form-label">Smoking habit<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="SmookingHabit" name="SmookingHabit">
+                <option value="0">Choose</option>
                 <?php foreach($response['data']['SmookingHabit'] as $SmookingHabit) { ?>
                     <option value="<?php echo $SmookingHabit['SoftCode'];?>" <?php echo (isset($_POST[ 'SmookingHabit'])) ? (($_POST[ 'SmookingHabit']==$SmookingHabit[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'SmokingHabit']==$SmookingHabit[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $SmookingHabit['CodeValue'];?>  </option>
@@ -286,6 +291,7 @@ $(document).ready(function() {
         <label for="DrinkingHabit" class="col-sm-3 col-form-label">Drinking habit<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="DrinkingHabit" name="DrinkingHabit">
+                <option value="0">Choose</option>
                 <?php foreach($response['data']['DrinkingHabit'] as $DrinkingHabit) { ?>
                     <option value="<?php echo $DrinkingHabit['SoftCode'];?>" <?php echo (isset($_POST[ 'DrinkingHabit'])) ? (($_POST[ 'DrinkingHabit']==$DrinkingHabit[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'DrinkingHabit']==$DrinkingHabit[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $DrinkingHabit['CodeValue'];?> </option>
@@ -349,7 +355,7 @@ $(document).ready(function() {
                     + '</div>';
             $('#Publish_body').html(content);
      } else {
-            return false;
+           return false;
      }
 }
 function GetTxnPswd() {

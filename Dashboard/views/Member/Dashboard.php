@@ -457,7 +457,7 @@
                     <p><?php echo $_Member['WelcomeMessage'] ?></p>
                  </div>
                  <div class="modal-footer">
-                        <a href="javascript:void(0);" onclick="ReadWelcomeMessage()" class="btn btn-primary" name="welcomebutton" >Continuw</a>
+                        <a href="javascript:void(0);" onclick="ReadWelcomeMessage()" class="btn btn-primary" name="welcomebutton" >Continue</a>
                  </div>
             </form>
             </div>

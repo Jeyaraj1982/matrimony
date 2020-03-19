@@ -182,7 +182,7 @@
                     <div class="col-sm-6">
                         <div class="custom-control custom-checkbox mb-3">
                             <input type="checkbox" class="custom-control-input" id="check" name="check">
-                            <label class="custom-control-label" for="check">&nbsp;<a href="<?php echo WebConfig::SIGN_UP_TERMS_URL ?>">I agree the terms of conditions</a></label>
+                            <label class="custom-control-label" for="check">&nbsp;I agree the <a href="<?php echo WebConfig::SIGN_UP_TERMS_URL ?>">terms of conditions</a></label>
                     <Br><span class="errorstring" id="Errcheck"></span>
                         </div>
                     </div>
