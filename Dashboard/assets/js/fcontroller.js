@@ -1340,7 +1340,7 @@ var Member = {
 	$("#txnPassword_"+MemberCode).val($("#TransactionPassword").val());
      
 	 var param = $("#frmfrn_"+MemberCode).serialize();
-        $('#Publish_body').html(preloading_withText("Updating Member ...","95"));
+        $('#Publish_body').html(preloading_withText("Fetching information ...","95"));
         $.post(API_URL + "m=Franchisee&a=ViewMemberEditScreen",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
@@ -1526,7 +1526,7 @@ var Member = {
 	$("#txnPassword_"+MemberCode).val($("#TransactionPassword").val());
      
 	 var param = $("#frmfrn_"+MemberCode).serialize();
-        $('#Publish_body').html(preloading_withText("Updating Member ...","95"));
+        $('#Publish_body').html(preloading_withText("Fetching information ...","95"));
         $.post(API_URL + "m=Franchisee&a=ViewMemberScreen",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);

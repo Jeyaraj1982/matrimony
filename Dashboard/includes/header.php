@@ -30,8 +30,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>-->
 
-        <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
-        <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
         
         <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>     -->
         <script src="<?php echo SiteUrl?>assets/bootstrap/3.3.2/js/bootstrap.min.js" type="text/javascript"></script> 
@@ -43,7 +43,7 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'> 
         <link href='<?php echo SiteUrl?>assets/simpletoast/simply-toast.css' rel='stylesheet' type='text/css'>
         
-    <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.js"></script>    
+    <script type="text/javascript" src="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.js"></script>    
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
         <style>                                                                                                           
@@ -138,9 +138,9 @@
             
             function preloading_withText(txt,paddingTop) {
                 if (txt!="") {
-                return "<div style='text-align:center;padding-top:"+paddingTop+"px;'><img src='http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/assets/images/loader.gif' style='padding-bottom:12px;'><br>"+txt+"</div>";
+                return "<div style='text-align:center;padding-top:"+paddingTop+"px;'><img src='"+AppUrl+"assets/images/loader.gif' style='padding-bottom:12px;'><br>"+txt+"</div>";
                 }
-                return "<div style='text-align:center;line-height:"+paddingTop+"px;'><img src='http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/assets/images/loader.gif'></div>";
+                return "<div style='text-align:center;line-height:"+paddingTop+"px;'><img src='"+AppUrl+"assets/images/loader.gif'></div>";
             }
           var MyFavoritedPage=0;
               function changeMemberStatus(txt) {
