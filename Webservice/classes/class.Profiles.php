@@ -514,7 +514,10 @@
                 }
                 $LastLogin = isset($Profiles[0]['ProfileID'])  ? $mysql->select("select * from `_tbl_logs_logins` where `MemberID`='".$Profiles[0]['MemberID']."' ORDER BY `LoginID` DESC") : array();
             }
+            $Profiless = $mysql->select("select * from `_tbl_profiles` where `MemberID`='".$loginInfo[0]['MemberID']."'");
+            $OurExpectations = $mysql->select("select * from `_tbl_profiles_partnerexpectation` where `ProfileID`='".$Profiless[0]['ProfileID']."'");
             
+            $MyProfileThumb = $mysql->select("select IsApproved, concat('".AppPath."uploads/profiles/".$Profiless[0]['DraftProfileCode']."/thumb/',ProfilePhoto) as ProfilePhoto from `_tbl_profiles_photos` where   `ProfileCode`='".$Profiless[0]['ProfileCode']."' and `IsDelete`='0' and `MemberID`='".$loginInfo[0]['MemberID']."' and `PriorityFirst`='1'");      
             if (sizeof($ProfilePhotos)<4) {
                 for($i=sizeof($ProfilePhotos);$i<4;$i++) {
                     if (isset($Profiles[0]['SexCode']) && $Profiles[0]['SexCode']=="SX002"){
@@ -533,8 +536,21 @@
                 }
             } else { 
                  $ProfileThumbnail =  getDataURI($ProfileThumb[0]['ProfilePhoto']); 
-				 $ProfileThumbnailDetails = $ProfileThumb[0]['IsApproved'];                                              
+                 $ProfileThumbnailDetails = $ProfileThumb[0]['IsApproved'];                                              
+            }
+            
+            if (sizeof($MyProfileThumb)==0) {
+                if (isset($Profiless[0]['SexCode']) && $Profiless[0]['SexCode']=="SX002"){
+                    $MyProfileThumbnail = AppPath."assets/images/noprofile_female.png";
+                } else { 
+                    $MyProfileThumbnail = AppPath."assets/images/noprofile_male.png";
+                }
+            } else { 
+                 $MyProfileThumbnail =  getDataURI($MyProfileThumb[0]['ProfilePhoto']); 
+				 $MyProfileThumbnailDetails = $MyProfileThumb[0]['IsApproved'];                                              
             } 
+            
+            
             
             $Position = "Published";                                             
             $Profiles[0]['LastLogin']    = (isset($LastLogin[0]['LoginOn']) ? $LastLogin[0]['LoginOn'] : 0);
@@ -549,9 +565,15 @@
             $Profiles[0]['isShowPermission'] = (isset($isShowPermission) ? $isShowPermission : 0);
             $Profiles[0]['isFavouriteds'] = (isset($isWhoFavourite[0]['ViewedOn']) ?  1 : 0);
             $Profiles[0]['isWhoShortList'] = (isset($isWhoShortList[0]['ViewedOn']) ?  1 : 0);
+            $Profiles[0]['isWhoShortListOn'] = (isset($isWhoShortList[0]['ViewedOn']) ?  $isWhoShortList[0]['ViewedOn'] : 0);
             $Profiles[0]['isMutured']    = (isset($isMutured[0]['ViewedOn']) ? 1 : 0);
             $Profiles[0]['MuturedOn']    = (isset($isMutured[0]['ViewedOn']) ? $isMutured[0]['ViewedOn'] : "");
             $Profiles[0]['Age']          = isset($Profiles[0]['DateofBirth']) ? date("Y")-date("Y",strtotime($Profiles[0]['DateofBirth'])) : "0";   
+            
+            
+           
+            
+            
             $result = array("ProfileInfo"          => $Profiles[0],
                             "Members"             => $members[0],
                             "IsDownload"           => $IsDownload,
@@ -559,9 +581,11 @@
                             "EducationAttachments" => $Educationattachments,
                             "Documents"            => $Documents,
                             "PartnerExpectation"   => isset($PartnersExpectations[0]) ? $PartnersExpectations[0] : array(),
+                            "OurExpectation"   => isset($OurExpectations[0]) ? $OurExpectations[0] : array(),
                             "ProfilePhotos"        => $ProfilePhotos,  
                             "Plan"                 => $plan,
-                            "ProfileThumb"         => $ProfileThumbnail);
+                            "ProfileThumb"         => $ProfileThumbnail,
+                            "MyProfileThumb"         => $MyProfileThumbnail);
             return  $result;
         }
         

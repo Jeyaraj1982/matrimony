@@ -2293,7 +2293,7 @@
                    
               } 
               
-              $totalFields = 60;
+              $totalFields = 56;
               $completedFields = 0;
               $temp = array();
               if (strlen($Profiles[0]['MaritalStatusCode'])!=0) {
@@ -2531,7 +2531,7 @@
               
               
               $ratio = ($completedFields/$totalFields)*100;
-              $Profiles[0]['Progress']=array("Total"=>$totalFields,"Completed"=>$completedFields,"ratio"=>$ratio,"t"=>$temp,"sql"=>sizeof($ProfilePhotoAddCount));
+              $Profiles[0]['Progress']=array("Total"=>$totalFields,"Completed"=>$completedFields,"ratio"=>$ratio,"t"=>$temp);
              
              return Response::returnSuccess("success",array("ProfileInfo"            => $Profiles[0],
                                                             "ProfilePhotos"          => $ProfilePhoto,
@@ -2792,7 +2792,7 @@
                                                             "RasiName"              => CodeMaster::getData('MONSIGNS'),
                                                             "StarName"              => CodeMaster::getData('STARNAMES'),
                                                             "ChevvaiDhosham"              => CodeMaster::getData('CHEVVAIDHOSHAM'),
-                                                            "EmployedAs"              => CodeMaster::getData('Occupation')));
+                                                            "EmployedAs"              => CodeMaster::getData('OCCUPATIONS')));
          }
          function AddPartnersExpectaion() {
 
@@ -2805,7 +2805,7 @@
              $Religion       = CodeMaster::getData("RELINAMES",explode(",",$_POST['Religion'])); 
              $Caste          = CodeMaster::getData("CASTNAMES",explode(",",$_POST['Caste']));  
              $Education      = CodeMaster::getData("EDUCATETITLES",explode(",",$_POST['Education']));  
-             $EmployedAs     = CodeMaster::getData("Occupation",explode(",",$_POST["EmployedAs"])) ;
+             $EmployedAs     = CodeMaster::getData("OCCUPATIONS",explode(",",$_POST["EmployedAs"])) ;
              $IncomeRange    = CodeMaster::getData("INCOMERANGE",explode(",",$_POST["IncomeRange"])) ;
              $RasiName       = CodeMaster::getData("MONSIGNS",explode(",",$_POST["RasiName"])) ;
              $StarName       = CodeMaster::getData("STARNAMES",explode(",",$_POST["StarName"])) ;
@@ -3414,8 +3414,12 @@
          }
          function AddProfilePhoto() {
              
-             global $mysql,$loginInfo;   
-             
+             global $mysql,$loginInfo; 
+               
+             $txnPwd = $mysql->select("select * from `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
              $ProfileInfo =$mysql->select("select * from `_tbl_draft_profiles` where   `ProfileCode`='".$_POST['Code']."'"); 
              
              $photos = $mysql->select("select * from `_tbl_draft_profiles_photos` where   MemberID='".$ProfileInfo[0]['MemberID']."' and `ProfileCode`='".$ProfileInfo[0]['ProfileCode']."' and `IsDelete`='0'");
@@ -3936,6 +3940,36 @@
                     if (sizeof($DefaultProfilePhoto)==0) {
                         return Response::returnError("You must Select Default Profile photo.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"ProfilePhoto"));    
                 }
+                
+                $PartnerExpect = $mysql->select("Select * form `_tbl_draft_profiles_partnerexpectation` where `ProfileCode`='".$_POST['ProfileID']."'");
+                if($PartnerExpect[0]['MaritalStatus']==""){ 
+                    return Response::returnError("You must Provide Your Expectaion of Marital Status.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PartnersExpectation"));    
+                }
+                if($PartnerExpect[0]['Religion']==""){ 
+                    return Response::returnError("You must Provide Your Expectaion of Religion.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PartnersExpectation"));    
+                }
+                if($PartnerExpect[0]['Caste']==""){ 
+                    return Response::returnError("You must Provide Your Expectaion of Caste.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PartnersExpectation"));    
+                }
+                if($PartnerExpect[0]['Education']==""){ 
+                    return Response::returnError("You must Provide Your Expectaion of Education.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PartnersExpectation"));    
+                }
+                if($PartnerExpect[0]['AnnualIncome']==""){ 
+                    return Response::returnError("You must Provide Your Expectaion of Annual Income.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PartnersExpectation"));    
+                }
+                if($PartnerExpect[0]['EmployedAs']==""){ 
+                    return Response::returnError("You must Provide Your Expectaion of EmployedAs.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PartnersExpectation"));    
+                }
+                if($PartnerExpect[0]['RasiName']==""){ 
+                    return Response::returnError("You must Provide Your Expectaion of Rasi Name.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PartnersExpectation"));    
+                }
+                if($PartnerExpect[0]['StarName']==""){ 
+                    return Response::returnError("You must Provide Your Expectaion of Star Name.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PartnersExpectation"));    
+                }
+                if($PartnerExpect[0]['ChevvaiDhosham']==""){ 
+                    return Response::returnError("You must Provide Your Expectaion of Chevvai Dhosham.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PartnersExpectation"));    
+                }
+                
                 if($data[0]['TimeOfBirth']==""){ 
                     return Response::returnError("You must Provide Your Time Of Birth.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"HoroscopeDetails"));    
                 }
