@@ -3775,7 +3775,7 @@
             $data = $mysql->select("Select * from `_tbl_draft_profiles` where `ProfileCode`='".$_POST['ProfileID']."'");
             $member= $mysql->select("Select * from `_tbl_members` where `MemberID`='".$data[0]['MemberID']."'");   
                 
-             /*   if($data[0]['MaritalStatus']==""){
+                if($data[0]['MaritalStatus']==""){
                     return Response::returnError("You must Provide Your Marital Status.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"GeneralInformation"));    
                 } 
                 if($data[0]['MotherTongue']==""){
@@ -3876,7 +3876,7 @@
                 }
                 if($data[0]['Weight']==""){ 
                     return Response::returnError("You must Provide Your Weight.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
-                }   */
+                }   
                 if($data[0]['BloodGroup']==""){ 
                     return Response::returnError("You must Provide Your BloodGroup.",array("ProfileCode"=>$_POST['ProfileID'],"MemberCode"=>$data[0]['MemberCode'],"EditPage"=>"PhysicalInformation"));    
                 }
