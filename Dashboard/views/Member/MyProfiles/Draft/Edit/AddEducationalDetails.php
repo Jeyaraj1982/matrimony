@@ -35,7 +35,7 @@
             $_POST['File']= $EducationDetails;
             $res =$webservice->getData("Member","AddEducationalDetails",$_POST);
             if ($res['status']=="success") {                
-               echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm'</script>";   
+               echo "<script>location.href='../EducationDetails/".$_GET['Code'].".htm?msg=success'</script>";   
             } else {
                 $errormessage = $res['message']; 
             }
@@ -44,6 +44,34 @@
     include_once("settings_header.php");
 ?>
 <script>
+$(document).ready(function() {
+    $("#Educationdetails").change(function() {
+        if ($("#Educationdetails").val()=="0") {
+            $("#ErrEducationdetails").html("Please select education");  
+        }else{
+            $("#ErrEducationdetails").html("");  
+        }
+    });
+    $("#EducationDegree").change(function() {
+        if ($("#EducationDegree").val()=="0") {
+            $("#ErrEducationDegree").html("Please select education details");  
+        }else{
+            $("#ErrEducationDegree").html("");  
+        }
+    });
+    $("#EducationDegree").change(function() {
+        if ($("#EducationDegree").val()=="0") {
+            $("#ErrEducationDegree").html("Please select education details");  
+        }else{
+            $("#ErrEducationDegree").html("");  
+        }
+    });
+        $("#OtherEducationDegree").change(function() {
+            if(IsNonEmpty("OtherEducationDegree","ErrOtherEducationDegree","Please enter your education details")){
+                     OtherEducationDegree("OtherEducationDegree","ErrOtherEducationDegree","Please enter alphabet characters only");
+                }
+        });
+});
 function submitEducation()  {
             
             $('#ErrEducationdetails').html("");

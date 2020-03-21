@@ -20,6 +20,29 @@
 </style>
 <div class="col-sm-10 rightwidget">
 <script>
+$(document).ready(function () {
+    $("#Documents").change(function() {
+            if ($("#Documents").val()=="0") {
+                $("#ErrDocuments").html("Please select Documents");  
+            }else{
+                $("#ErrDocuments").html("");  
+            }
+    });
+    $("#File").change(function() {
+            if ($("#File").val()=="") {
+                $("#ErrFile").html("Please select File");  
+            }else{
+                $("#ErrFile").html("");  
+            }
+    });
+    $("#check").change(function() {
+            if (document.form1.check.checked == false) {
+                $("#Errcheck").html("Please read the instruction");  
+            }else{
+                $("#Errcheck").html("");  
+            }
+    });
+});
 function submitUpload() {
             $('#ErrDocuments').html("");  
             $('#ErrFile').html("");  
@@ -219,6 +242,7 @@ function showLearnMore() {
 </div>
 <script>
 function ConfirmSaveDoccumentAttachment(){
+    if(submitUpload()) {
             $('#Delete').modal('show'); 
             var content =   '<div class="modal-header">'
                                 + '<h4 class="modal-title">Confirmation for save document attachment</h4>'
@@ -241,6 +265,9 @@ function ConfirmSaveDoccumentAttachment(){
                                 + '<button type="button" class="btn btn-primary" name="BtnSaveProfile" class="btn btn-primary" onclick="GetTxnPasswordSaveDocAttachment()" style="font-family:roboto">Continue</button>'
                             + '</div>';                                                                                               
             $('#model_body').html(content);
+    } else {
+           return false;
+     }
     }
 function GetTxnPasswordSaveDocAttachment () {
         

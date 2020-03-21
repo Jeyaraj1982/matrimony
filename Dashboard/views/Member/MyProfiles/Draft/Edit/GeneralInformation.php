@@ -1,22 +1,75 @@
 <?php
     $page="GeneralInformation";
-
-    if (isset($_POST['BtnSaveProfile'])) {
-        
-        $response = $webservice->getData("Member","EditDraftGeneralInformation",$_POST);
-        if ($response['status']=="success") {  ?>
-         <script> $(document).ready(function() {   $.simplyToast("Success", 'info'); });  </script>
-      <?php  } else {              ?>
-           <script> $(document).ready(function() {   $.simplyToast("failed", 'danger'); });  </script>
-     <?php   }
-    }
-    
     $response    = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo = $response['data']['ProfileInfo'];
     include_once("settings_header.php");
 ?>
+<script>
+        $(document).ready(function() {
+            $("#MaritalStatus").change(function() {
+                if ($("#MaritalStatus").val()=="0") {
+                    $("#ErrMaritalStatus").html("Please select your marital status");  
+                }else{
+                    $("#ErrMaritalStatus").html("");  
+                }
+            });
+            $("#Language").change(function() {
+                if ($("#Language").val()=="0") {
+                    $("#ErrLanguage").html("Please select your mother tongue");  
+                }else{
+                    $("#ErrLanguage").html("");  
+                }
+            });
+            $("#Religion").change(function() {
+                if ($("#Religion").val()=="0") {
+                    $("#ErrReligion").html("Please select your religion");  
+                }else{
+                    $("#ErrReligion").html("");  
+                }
+            });
+            $("#ReligionOthers").change(function() {
+                if (IsNonEmpty("ReligionOthers", "ErrReligionOthers", "Please enter your religion name")) {
+                    IsAlphabet("ReligionOthers", "ErrReligionOthers", "Please enter alphabet characters only");
+                }
+            });
+            $("#Caste").change(function() {
+                if ($("#Caste").val()=="0") {
+                    $("#ErrCaste").html("Please select your caste");  
+                }else{
+                    $("#ErrCaste").html("");  
+                }
+            });
+            $("#OtherCaste").change(function() {
+                if (IsNonEmpty("OtherCaste", "ErrOtherCaste", "Please enter your caste name")) {
+                        IsAlphabet("OtherCaste", "ErrOtherCaste", "Please enter alphabet characters only");
+                    }
+            });
+            $("#Community").change(function() {
+                if ($("#Community").val()=="0") {
+                    $("#ErrCommunity").html("Please select your community");  
+                }else{
+                    $("#ErrCommunity").html("");  
+                }
+            });
+            $("#Nationality").change(function() {
+                if ($("#Nationality").val()=="0") {
+                    $("#ErrNationality").html("Please select your nationality");  
+                }else{
+                    $("#ErrNationality").html("");  
+                }
+            });
+            $("#MainEducation").change(function() {
+                if ($("#MainEducation").val()=="") {
+                    $("#ErrMainEducation").html("Please select your education");  
+                }else{
+                    $("#ErrMainEducation").html("");  
+                }
+            });
+        });
+        </script>
 <div class="col-sm-10 rightwidget">
-    <form method="post" action="" onsubmit="return DraftProfile.SubmitGeneralInformation();">
+    <form method="post" action="" id="frmGI" onsubmit="return DraftProfile.SubmitGeneralInformation();">
+    <input type="hidden" value="<?php echo $_GET['Code'];?>" name="Code" id="Code">
         <h4 class="card-title">General Information</h4>
         <div class="form-group row">
             <label for="ProfileFor" class="col-sm-2 col-form-label" style="padding-right:0px;">Profile create for</label>
@@ -175,7 +228,7 @@
         </div>
 		
         <div class="form-group row" style="margin-bottom:0px;">
-            <label for="AboutMe" class="col-sm-12 col-form-label" id="Aboutlabel"><span id="star">*</span></label>
+            <label for="AboutMe" class="col-sm-12 col-form-label" id="Aboutlabel"></label>
         </div>
         <div class="form-group row">
             <div class="col-sm-12">                                                        
@@ -186,7 +239,7 @@
         <div class="form-group row" style="margin-bottom:0px;">
             <div class="col-sm-6">
 				<!--<a href="javascript:void(0)" onclick="AddGeneralInfo()" class="btn btn-success" name="BtnSaveProfile" style="font-family:roboto">Save</a><br>-->
-				<button type="submit" class="btn btn-success" name="BtnSaveProfile" style="font-family:roboto">Save</button><br>
+                <a href="javascript:void(0)" onclick="ConfirmUpdateGInfo()" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</a>
                 <small style="font-size:11px;">Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
             </div>
             <div class="col-sm-6" style="text-align: right;">
@@ -214,17 +267,75 @@
         DraftProfile.changeAboutLable();
     });
 	
-	/*function AddGeneralInfo() {
-        $('#Publish_body').html(preloading_withText("Loading ...","200"));
-        $('#PubplishNow').modal('show');
-        $.ajax({
-            url: API_URL + "m=Member&a=EditDraftGeneralInformation", 
-            success: function(result){
-               $(document).ready(function() {   $.simplyToast("Success", 'info'); });
-            }else {
-				$(document).ready(function() {   $.simplyToast("failed", 'danger'); });
-			}
-			});
-    }*/
+    function ConfirmUpdateGInfo() {
+    if(DraftProfile.SubmitGeneralInformation()) {
+      $('#PubplishNow').modal('show'); 
+      var content = ''
+                    +''
+                    +'<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for edit general information</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8"><br>'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want edit general information</div>'
+                                + '</div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="EditDraftGeneralInformation()" style="font-family:roboto">Update</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     } else {
+            return false;
+     }
+}   
+function EditDraftGeneralInformation() {
+   var param = $("#frmGI").serialize();
+    $('#Publish_body').html(preloading_withText("Updating general information ...","95"));
+        $.post(API_URL + "m=Member&a=EditDraftGeneralInformation",param,function(result) {
+            
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            
+            if (obj.status == "success") {
+               
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Updated</h3>'             
+                                    + '<h4 style="text-align:center;">General Information</h4>'             
+                                    + '<p style="text-align:center;"><a href="../EducationDetails/'+data.Code+'.htm" style="cursor:pointer;color:#489bae">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Edit General Information</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+}
 </script>    
 <?php include_once("settings_footer.php");?>                

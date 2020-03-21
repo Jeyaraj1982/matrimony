@@ -1,15 +1,5 @@
 <?php
     $page="OccupationDetails";
-  /*  if (isset($_POST['BtnSaveProfile'])) {
-        
-        $response = $webservice->getData("Member","EditDraftOccupationDetails",$_POST);
-        if ($response['status']=="success") {
-             $successmessage = $response['message']; 
-        } else {
-            $errormessage = $response['message']; 
-        }
-    } */   
-    
     $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
     $ProfileInfo          = $response['data']['ProfileInfo'];
    ?>
@@ -50,11 +40,15 @@
                     if ($err==0) {
                         
                         $res =$webservice->getData("Member","EditDraftOccupationDetails",$_POST);   
-                       if ($res['status']=="success") { ?>
-                             <script> $(document).ready(function() {   $.simplyToast("Success", 'info'); });  </script> 
-                       <?php  } else { ?>
+                       if ($res['status']=="success") { 
+                            $successmessage = $res['message']; 
+                        } else {
+                            $errormessage = $res['message']; 
+                        }
+                       /*     <script> $(document).ready(function() {   $.simplyToast("Success", 'info'); });  </script> 
+                       <?php } else { ?>
                             <script> $(document).ready(function() {   $.simplyToast("failed", 'danger'); });  </script>
-                       <?php }
+                       <?php } */ 
                          $response = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
                          $ProfileInfo  = $response['data']['ProfileInfo'];
                     }
@@ -63,6 +57,69 @@
             ?>
 <?php include_once("settings_header.php");?>
 <script>
+$(document).ready(function() {
+    $("#EmployedAs").change(function() {
+        if ($("#EmployedAs").val()=="0") {
+            $("#ErrEmployedAs").html("Please select your employed as");  
+        }else{
+            $("#ErrEmployedAs").html("");  
+        }
+    });
+    $("#OccupationType").change(function() {
+        if ($("#OccupationType").val()=="0") {
+            $("#ErrOccupationType").html("Please select your occupation");  
+        }else{
+            $("#ErrOccupationType").html("");  
+        }
+    });
+    $("#TypeofOccupation").change(function() {
+        if ($("#TypeofOccupation").val()=="0") {
+            $("#ErrTypeofOccupation").html("Please select your occupation type");  
+        }else{
+            $("#ErrTypeofOccupation").html("");  
+        }
+    });
+    $("#TypeofOccupation").change(function() {
+        if ($("#TypeofOccupation").val()=="0") {
+            $("#ErrTypeofOccupation").html("Please select your occupation type");  
+        }else{
+            $("#ErrTypeofOccupation").html("");  
+        }
+    });
+    $("#IncomeRange").change(function() {
+        if ($("#IncomeRange").val()=="0") {
+            $("#ErrIncomeRange").html("Please select your annual income");  
+        }else{
+            $("#ErrIncomeRange").html("");  
+        }
+    });
+    $("#IncomeRange").change(function() {
+        if ($("#IncomeRange").val()=="0") {
+            $("#ErrIncomeRange").html("Please select your annual income");  
+        }else{
+            $("#ErrIncomeRange").html("");  
+        }
+    });
+    $("#WCountry").change(function() {
+        if ($("#WCountry").val()=="0") {
+            $("#ErrWCountry").html("Please select your country");  
+        }else{
+            $("#ErrWCountry").html("");  
+        }
+    });
+    $("#WorkedCityName").change(function() {
+        if ($("#WorkedCityName").val()=="0") {
+            $("#ErrWorkedCityName").html("Please select your worked city");  
+        }else{
+            $("#ErrWorkedCityName").html("");  
+        }
+    });
+    $("#OtherOccupation").change(function() {
+        if(IsNonEmpty("OtherOccupation","ErrOtherOccupation","Please enter your occupation")){
+            IsAlphabet("OtherOccupation","ErrOtherOccupation","Please enter alphabet characters only");
+       }
+    });
+ });
 function submitprofile() {
                          $('#ErrEmployedAs').html("");
                          $('#ErrOccupationType').html("");
@@ -220,7 +277,7 @@ function submitprofile() {
     </div>
     </div>
     <div class="form-group row" style="margin-bottom:0px;">
-        <label for="Details" class="col-sm-12 col-form-label">Additional information<span id="star">*</span></label>
+        <label for="Details" class="col-sm-12 col-form-label">Additional information</label>
         </div>
      <div class="form-group row">
         <div class="col-sm-12">                                                                           
@@ -324,6 +381,37 @@ function DeleteOccupationAttachmentOnly(ProfileID) {
             $('#attachfilediv').hide();
          }
         });
-}  
+} 
+<?php if (isset($errormessage) && strlen($errormessage)>0) { ?>
+        setTimeout(function(){
+            $('#responsemodal').modal("show");
+        },1000);
+    <?php }    ?>
+    <?php if (isset($successmessage) && strlen($successmessage)>0) { ?>
+        setTimeout(function(){
+            $('#responsemodal').modal("show");
+        },1000);
+    <?php }    ?> 
 </script>  
+<div class="modal" id="responsemodal" data-backdrop="static">
+  <div class="modal-dialog">
+        <div class="modal-content" style="max-width:500px;min-height:300px;overflow:hidden">
+            <?php if (isset($errormessage) && strlen($errormessage)>0) { ?>
+                <div class="modal-body" id="response_message" style="min-height:175px;max-height:175px;">'
+                    <p style="text-align:center;margin-top: 40px;"><img src="<?php echo ImageUrl;?>exclamationmark.jpg" width="10%"></p>
+                    <h3 style="text-align:center;"><?php echo $errormessage;?></h3>             
+                    <p style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer;color:#489bae">Continue</a></p>
+                </div>
+            <?php } ?>
+            <?php if (isset($successmessage) && strlen($successmessage)>0) { ?>
+                <div class="modal-body" id="response_message" style="min-height:175px;max-height:175px;">
+                    <p style="text-align:center;margin-top: 40px;"><img src="<?php echo ImageUrl;?>verifiedtickicon.jpg" width="100px"></p>
+                    <h3 style="text-align:center;">Updated</h3>             
+                    <h4 style="text-align:center;">Occupation Details</h4>             
+                    <p style="text-align:center;"><a href="../FamilyInformation/<?php echo $_GET['Code'].".htm";?>" style="cursor:pointer;color:#489bae">Continue</a></p>
+                </div> 
+            <?php } ?>
+      </div>
+  </div>
+</div>
 <?php include_once("settings_footer.php");?>                    

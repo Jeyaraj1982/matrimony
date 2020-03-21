@@ -25,7 +25,76 @@ $(document).ready(function () {
                return false;
     }
    });
+   $("#ContactPersonName").change(function() {
+        if (IsNonEmpty("ContactPersonName","ErrContactPersonName","Please enter your contact person name")) {
+            IsAlphaNumeric("ContactPersonName","ErrContactPersonName","Please enter alphabet charchters only"); 
+         }
    });
+   $("#ContactPersonName").change(function() {
+        if (IsNonEmpty("ContactPersonName","ErrContactPersonName","Please enter your contact person name")) {
+            IsAlphaNumeric("ContactPersonName","ErrContactPersonName","Please enter alphabet charchters only"); 
+         }
+   });
+   $("#Relation").change(function() {
+        if ($("#Relation").val()=="0") {
+            $("#ErrRelation").html("Please select your relation");  
+        }else{
+            $("#ErrRelation").html("");  
+        }
+    });
+    $("#PrimaryPriority").change(function() {
+        if ($("#PrimaryPriority").val()=="0") {
+            $("#ErrPrimaryPriority").html("Please select your Primary Priority");  
+        }else{
+            $("#ErrPrimaryPriority").html("");  
+        }
+    });
+    $("#EmailID").change(function() {
+        if (IsNonEmpty("EmailID","ErrEmailID","Please enter your Email ID")) {
+            IsEmail("EmailID","ErrEmailID","Please enter valid EmailID"); 
+         }
+    });
+    $("#MobileNumber").change(function() {
+        if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please enter your Mobile Number")) {
+            IsMobileNumber("MobileNumber","ErrMobileNumber","Please enter valid Mobile Number"); 
+         }
+    }); 
+    $("#WhatsappNumber").change(function() {
+        if (IsNonEmpty("WhatsappNumber","ErrWhatsappNumber","Please enter your Whatsapp Number")) {
+            IsMobileNumber("WhatsappNumber","ErrWhatsappNumber","Please Enter Valid Whatsapp Number");
+         }
+    });
+    $("#AddressLine1").change(function() {
+        IsNonEmpty("AddressLine1","ErrAddressLine1","Please enter your Address Line1");
+    });
+    $("#City").change(function() {
+        IsNonEmpty("City","ErrCity","Please enter your City");
+    });
+    $("#Pincode").change(function() {
+        IsNonEmpty("Pincode","ErrPincode","Please enter your Pincode");
+    });
+    $("#District").change(function() {
+        if ($("#District").val()=="0") {
+            $("#ErrDistrict").html("Please select your District");  
+        }else{
+            $("#ErrDistrict").html("");  
+        }
+    });
+    $("#StateName").change(function() {
+        if ($("#StateName").val()=="0") {
+            $("#ErrStateName").html("Please select your State Name");  
+        }else{
+            $("#ErrStateName").html("");  
+        }
+    });
+    $("#Country").change(function() {
+        if ($("#Country").val()=="0") {
+            $("#ErrCountry").html("Please select your Country");  
+        }else{
+            $("#ErrCountry").html("");  
+        }
+    });
+});
   
 function submitprofile() {
                          $('#ErrContactPersonName').html("");
@@ -52,8 +121,10 @@ function submitprofile() {
                          if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please enter your Mobile Number")) {
                             IsMobileNumber("MobileNumber","ErrMobileNumber","Please enter valid Mobile Number"); 
                          }
-                         if (IsNonEmpty("WhatsappNumber","ErrWhatsappNumber","Please enter your Whatsapp Number")) {
-                            IsMobileNumber("WhatsappNumber","ErrWhatsappNumber","Please Enter Valid Whatsapp Number");
+                         if($("#PrimaryPriority").val()=="Whatsapp Number"){
+                             if (IsNonEmpty("WhatsappNumber","ErrWhatsappNumber","Please enter your Whatsapp Number")) {
+                                IsMobileNumber("WhatsappNumber","ErrWhatsappNumber","Please Enter Valid Whatsapp Number");
+                             }
                          }
                          IsNonEmpty("AddressLine1","ErrAddressLine1","Please enter your Address Line1");
                          IsNonEmpty("City","ErrCity","Please enter your City");

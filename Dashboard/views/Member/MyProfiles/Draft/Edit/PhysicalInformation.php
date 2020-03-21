@@ -16,6 +16,120 @@
 <?php include_once("settings_header.php");?>
 <div class="col-sm-10 rightwidget">
 <script>
+$(document).ready(function () {
+    $("#PhysicallyImpaired").change(function() {
+            if ($("#PhysicallyImpaired").val()=="0") {
+                $("#ErrPhysicallyImpaired").html("Please select your Physically Impaired");  
+            }else{
+                $("#ErrPhysicallyImpaired").html("");  
+            }
+    });
+    $("#VisuallyImpaired").change(function() {
+        if ($("#VisuallyImpaired").val()=="0") {
+            $("#ErrVisuallyImpaired").html("Please select your Visually Impaired");  
+        }else{
+            $("#ErrVisuallyImpaired").html("");  
+        }
+    });
+    $("#VissionImpaired").change(function() {
+        if ($("#VissionImpaired").val()=="0") {
+            $("#ErrVissionImpaired").html("Please select Vission Impaired");  
+        }else{
+            $("#ErrVissionImpaired").html("");  
+        }
+    });
+    $("#SpeechImpaired").change(function() {
+        if ($("#SpeechImpaired").val()=="0") {
+            $("#ErrSpeechImpaired").html("Please select Speech Impaired");  
+        }else{
+            $("#ErrSpeechImpaired").html("");  
+        }
+    });
+    $("#PhysicallyImpairedDescription").change(function() {
+        if ($("#PhysicallyImpairedDescription").val()=="") {
+            $("#ErrPhysicallyImpairedDescription").html("Please Enter Description");  
+        }else{
+            $("#ErrPhysicallyImpairedDescription").html("");  
+        }
+    });
+    $("#VisuallyImpairedDescription").change(function() {
+        if ($("#VisuallyImpairedDescription").val()=="") {
+            $("#ErrVisuallyImpairedDescription").html("Please Enter Description");  
+        }else{
+            $("#ErrVisuallyImpairedDescription").html("");  
+        }
+    });
+    $("#VissionImpairedDescription").change(function() {
+        if ($("#VissionImpairedDescription").val()=="") {
+            $("#ErrVissionImpairedDescription").html("Please Enter Description");  
+        }else{
+            $("#ErrVissionImpairedDescription").html("");  
+        }
+    });
+    $("#SpeechImpairedDescription").change(function() {
+        if ($("#SpeechImpairedDescription").val()=="") {
+            $("#ErrSpeechImpairedDescription").html("Please Enter Description");  
+        }else{
+            $("#ErrSpeechImpairedDescription").html("");  
+        }
+    });
+    $("#Height").change(function() {
+        if ($("#Height").val()=="0") {
+            $("#ErrHeight").html("Please select Height");  
+        }else{
+            $("#ErrHeight").html("");  
+        }
+    });
+    $("#Weight").change(function() {
+        if ($("#Weight").val()=="0") {
+            $("#ErrWeight").html("Please select Weight");  
+        }else{
+            $("#ErrWeight").html("");  
+        }
+    });
+    $("#BloodGroup").change(function() {
+        if ($("#BloodGroup").val()=="0") {
+            $("#ErrBloodGroup").html("Please select Blood Group");  
+        }else{
+            $("#ErrBloodGroup").html("");  
+        }
+    });
+    $("#Complexation").change(function() {
+        if ($("#Complexation").val()=="0") {
+            $("#ErrComplexation").html("Please select Complexation");  
+        }else{
+            $("#ErrComplexation").html("");  
+        }
+    });
+    $("#BodyType").change(function() {
+        if ($("#BodyType").val()=="0") {
+            $("#ErrBodyType").html("Please select Body Type");  
+        }else{
+            $("#ErrBodyType").html("");  
+        }
+    });
+    $("#Diet").change(function() {
+        if ($("#Diet").val()=="0") {
+            $("#ErrDiet").html("Please select Diet");  
+        }else{
+            $("#ErrDiet").html("");  
+        }
+    }); 
+    $("#SmookingHabit").change(function() {
+        if ($("#SmookingHabit").val()=="0") {
+            $("#ErrSmookingHabit").html("Please select Smoking Habit");  
+        }else{
+            $("#ErrSmookingHabit").html("");  
+        }
+    });
+    $("#DrinkingHabit").change(function() {
+        if ($("#DrinkingHabit").val()=="0") {
+            $("#ErrDrinkingHabit").html("Please select Drinking Habit");  
+        }else{
+            $("#ErrDrinkingHabit").html("");  
+        }
+    });
+});
 function submitprofile() {
                          $('#ErrPhysicallyImpaired').html("");
                          $('#ErrVisuallyImpaired').html("");
@@ -131,13 +245,15 @@ $(document).ready(function() {
     });
 });
 </script>
- <form method="post" action="" onsubmit="return submitprofile();">
+ <form method="post" action=""  id="frmPI" onsubmit="return submitprofile();">
+ <input type="hidden" value="<?php echo $_GET['Code'];?>" name="Code" id="Code">
     <h4 class="card-title">Physical Information</h4>
                     
     <div class="form-group row">
         <label for="PhysicallyImpaired" class="col-sm-3 col-form-label">Physically impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="PhysicallyImpaired" name="PhysicallyImpaired" onchange="getAdditionalPhysicalInfo()">
+                <option value="0">Choose</option>
                 <?php foreach($response['data']['PhysicallyImpaired'] as $PhysicallyImpaired) { ?>
                     <option value="<?php echo $PhysicallyImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'PhysicallyImpaired'])) ? (($_POST[ 'PhysicallyImpaired']==$PhysicallyImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'PhysicallyImpaired']==$PhysicallyImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $PhysicallyImpaired['CodeValue'];?></option>
                 <?php } ?>
@@ -153,6 +269,7 @@ $(document).ready(function() {
         <label for="VisuallyImpaired" class="col-sm-3 col-form-label">Visually impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="VisuallyImpaired" name="VisuallyImpaired" onchange="getAdditionalVisualInfo()">
+                <option value="0">Choose</option>
                 <?php foreach($response['data']['VisuallyImpaired'] as $VisuallyImpaired) { ?>
                     <option value="<?php echo $VisuallyImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'VisuallyImpaired'])) ? (($_POST[ 'VisuallyImpaired']==$VisuallyImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'VisuallyImpaired']==$VisuallyImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $VisuallyImpaired['CodeValue'];?>      </option>
@@ -169,6 +286,7 @@ $(document).ready(function() {
         <label for="VissionImpaired" class="col-sm-3 col-form-label">Vision impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="VissionImpaired" name="VissionImpaired" onchange="getAdditionalVissionInfo()">
+                <option value="0">Choose</option>
                 <?php foreach($response['data']['VissionImpaired'] as $VissionImpaired) { ?>
                     <option value="<?php echo $VissionImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'VissionImpaired'])) ? (($_POST[ 'VissionImpaired']==$VissionImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'VissionImpaired']==$VissionImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $VissionImpaired['CodeValue'];?>      </option>
@@ -185,6 +303,7 @@ $(document).ready(function() {
         <label for="SpeechImpaired" class="col-sm-3 col-form-label">Speech impaired?<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="SpeechImpaired" name="SpeechImpaired" onchange="getAdditionalSpeechInfo()">
+                <option value="0">Choose</option>
                 <?php foreach($response['data']['SpeechImpaired'] as $SpeechImpaired) { ?>
                     <option value="<?php echo $SpeechImpaired['SoftCode'];?>" <?php echo (isset($_POST[ 'SpeechImpaired'])) ? (($_POST[ 'SpeechImpaired']==$SpeechImpaired[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'SpeechImpaired']==$SpeechImpaired[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $SpeechImpaired['CodeValue'];?>    </option>
@@ -273,6 +392,7 @@ $(document).ready(function() {
         <label for="SmookingHabit" class="col-sm-3 col-form-label">Smoking habit<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="SmookingHabit" name="SmookingHabit">
+                <option value="0">Choose Diet Type</option>
                 <?php foreach($response['data']['SmookingHabit'] as $SmookingHabit) { ?>
                     <option value="<?php echo $SmookingHabit['SoftCode'];?>" <?php echo (isset($_POST[ 'SmookingHabit'])) ? (($_POST[ 'SmookingHabit']==$SmookingHabit[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'SmokingHabit']==$SmookingHabit[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $SmookingHabit['CodeValue'];?>  </option>
@@ -283,6 +403,7 @@ $(document).ready(function() {
         <label for="DrinkingHabit" class="col-sm-3 col-form-label">Drinking habit<span id="star">*</span></label>
         <div class="col-sm-3">
             <select class="selectpicker form-control" data-live-search="true" id="DrinkingHabit" name="DrinkingHabit">
+                <option value="0">Choose Diet Type</option>
                 <?php foreach($response['data']['DrinkingHabit'] as $DrinkingHabit) { ?>
                     <option value="<?php echo $DrinkingHabit['SoftCode'];?>" <?php echo (isset($_POST[ 'DrinkingHabit'])) ? (($_POST[ 'DrinkingHabit']==$DrinkingHabit[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'DrinkingHabit']==$DrinkingHabit[ 'CodeValue']) ? " selected='selected' " : "");?>>
                         <?php echo $DrinkingHabit['CodeValue'];?> </option>
@@ -292,7 +413,7 @@ $(document).ready(function() {
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-sm-12 col-form-label">Additional information<span id="star">*</span></label>
+        <label class="col-sm-12 col-form-label">Additional information</label>
         <div class="col-sm-12">                                                        
             <textarea class="form-control" style="margin-bottom:5px;height:75px" maxlength="250" name="PhysicalDescription" id="PhysicalDescription"><?php echo (isset($_POST['PhysicalDescription']) ? $_POST['PhysicalDescription'] : $ProfileInfo['PhysicalDescription']);?></textarea>
             <label class="col-form-label" style="padding-top:0px;">Max 250 characters&nbsp;&nbsp;|&nbsp;&nbsp;<span id="textarea_feedback"></span></label>
@@ -300,7 +421,7 @@ $(document).ready(function() {
     </div>
    <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-6">
-            <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
+            <a href="javascript:void(0)" onclick="ConfirmUpdatePInfo()" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</a>
             <br>
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
@@ -360,5 +481,73 @@ $(document).ready(function() {
         setTimeout(function(){
             getAdditionalSpeechInfo()
         },1000);
+        function ConfirmUpdatePInfo() {
+    if(submitprofile()) {
+      $('#PubplishNow').modal('show'); 
+      var content = '<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for edit physical information</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8"><br>'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want edit physical information</div>'
+                                + '</div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="EditDraftPhysicalInformation()" style="font-family:roboto">Update</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     } else {
+           return false;
+     }
+}
+function EditDraftPhysicalInformation() {
+    var param = $("#frmPI").serialize();
+    $('#Publish_body').html(preloading_withText("Updating physical information ...","95"));
+        $.post(API_URL + "m=Member&a=EditDraftPhysicalInformation",param,function(result) {
+            
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            
+            if (obj.status == "success") {
+               
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Updated</h3>'             
+                                    + '<h4 style="text-align:center;">Physical Information</h4>'             
+                                    + '<p style="text-align:center;"><a href="../DocumentAttachment/'+data.Code+'.htm" style="cursor:pointer;color:#489bae">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Edit physical information</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+}
     </script>
 <?php include_once("settings_footer.php");?>                    

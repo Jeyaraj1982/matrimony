@@ -5,7 +5,7 @@
     $EducationAttachment = $response['data']['EducationAttachments'];
     $PartnerExpectation = $response['data']['PartnerExpectation'];
 ?>
- <style>
+ <style>   
  .table-bordered > tbody > tr > td{
      width: 75px;
 height: 75px;
@@ -77,7 +77,7 @@ legend {
                                 <img src="<?php echo $response['data']['ProfileThumb'];?>" style="height: 100%;width: 100%;">
                             </div>
                         </div> 
-                    </div>
+                    </div>          
                     <div style="padding-left: 10px;padding-right: 10px;">
                       <div class="col-sm-1" style="padding-left: 0px;padding-top: 26px;"><img src="<?php echo SiteUrl?>assets/images/nextarrow.jpg" style="width:30px"></div>
                         <div class="col-sm-10">
@@ -745,7 +745,7 @@ legend {
 
 </form>
  
-
+ 
  <div class="modal" id="PubplishNow" data-backdrop="static" >
             <div class="modal-dialog" >
                 <div class="modal-content" id="Publish_body"  style="max-height: 400px;min-height: 400px;" >

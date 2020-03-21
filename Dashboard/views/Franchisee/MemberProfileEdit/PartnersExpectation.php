@@ -38,8 +38,8 @@ function submitexpectation() {
          //   }
 
            if ($("#_MaritalStatus :selected").length==0) {
-                            document.getElementById("ErrMaritalStatus").innerHTML="Please select marital status"; 
-                             ErrorCount++;
+            document.getElementById("ErrMaritalStatus").innerHTML="Please select marital status"; 
+            ErrorCount++;
            } else {
                 var selected=[];
                 $('#_MaritalStatus :selected').each(function(){

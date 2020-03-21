@@ -26,6 +26,21 @@
                     <div class="form-group-row">
                         <div>
                             <div class="col-sm-2" style="min-width:200px;padding-left:0px;padding-right: 0px;;">
+                            <?php 
+                            $response_profilephoto = $webservice->getData("Member","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
+                            $ProfileInfo          = $response_profilephoto['data']['ProfileInfo'];
+                            ?>
+                                <div style="text-align: center;margin-top:20px"><img src="<?php echo $response_profilephoto['data']['ProfilePhotoFirst']['ProfilePhoto'];?>" style="height:120px;border: 1px solid black;">
+                                    <div style="line-height: 25px;color: #867c7c;font-size:11px;">
+                                        Member ID:&nbsp;<?php echo $ProfileInfo['MemberCode'];?><br>
+                                        Profile ID:&nbsp;<?php echo $ProfileInfo['ProfileCode'];?><br>
+                                    </div>
+                                    <div style="margin-left: 10%;margin-right: 10%;border-radius: 3px !important;background: #f6f6f6;height: 15px;padding: 0px;">
+                                        <div style="width:<?php echo $ProfileInfo['Progress']['ratio'];?>%;background: url('<?php echo ImageUrl;?>pbar-ani.gif');height: 15px;border-radius: 2px 0px 0px 2px;"></div>
+                                    </div>
+                                    <div style="line-height: 25px;color: #867c7c;font-size:11px;"><?php echo $ProfileInfo['Progress']['Completed']."/".$ProfileInfo['Progress']['Total'];?></div>    
+                                </div>                                                  
+                              <br>   
                                 <div class="sidemenu">
                                     <ul class="ft-left-nav fusmyacc_leftnav" style="padding: 0px;list-style: none;">
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="GeneralInformation") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">

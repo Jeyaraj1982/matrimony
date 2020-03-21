@@ -17,6 +17,120 @@
 <?php include_once("settings_header.php");?>
 <div class="col-sm-10 rightwidget">
 <script>
+$(document).ready(function () {
+    $("#PhysicallyImpaired").change(function() {
+            if ($("#PhysicallyImpaired").val()=="0") {
+                $("#ErrPhysicallyImpaired").html("Please select your Physically Impaired");  
+            }else{
+                $("#ErrPhysicallyImpaired").html("");  
+            }
+    });
+    $("#VisuallyImpaired").change(function() {
+        if ($("#VisuallyImpaired").val()=="0") {
+            $("#ErrVisuallyImpaired").html("Please select your Visually Impaired");  
+        }else{
+            $("#ErrVisuallyImpaired").html("");  
+        }
+    });
+    $("#VissionImpaired").change(function() {
+        if ($("#VissionImpaired").val()=="0") {
+            $("#ErrVissionImpaired").html("Please select Vission Impaired");  
+        }else{
+            $("#ErrVissionImpaired").html("");  
+        }
+    });
+    $("#SpeechImpaired").change(function() {
+        if ($("#SpeechImpaired").val()=="0") {
+            $("#ErrSpeechImpaired").html("Please select Speech Impaired");  
+        }else{
+            $("#ErrSpeechImpaired").html("");  
+        }
+    });
+    $("#PhysicallyImpairedDescription").change(function() {
+        if ($("#PhysicallyImpairedDescription").val()=="") {
+            $("#ErrPhysicallyImpairedDescription").html("Please Enter Description");  
+        }else{
+            $("#ErrPhysicallyImpairedDescription").html("");  
+        }
+    });
+    $("#VisuallyImpairedDescription").change(function() {
+        if ($("#VisuallyImpairedDescription").val()=="") {
+            $("#ErrVisuallyImpairedDescription").html("Please Enter Description");  
+        }else{
+            $("#ErrVisuallyImpairedDescription").html("");  
+        }
+    });
+    $("#VissionImpairedDescription").change(function() {
+        if ($("#VissionImpairedDescription").val()=="") {
+            $("#ErrVissionImpairedDescription").html("Please Enter Description");  
+        }else{
+            $("#ErrVissionImpairedDescription").html("");  
+        }
+    });
+    $("#SpeechImpairedDescription").change(function() {
+        if ($("#SpeechImpairedDescription").val()=="") {
+            $("#ErrSpeechImpairedDescription").html("Please Enter Description");  
+        }else{
+            $("#ErrSpeechImpairedDescription").html("");  
+        }
+    });
+    $("#Height").change(function() {
+        if ($("#Height").val()=="0") {
+            $("#ErrHeight").html("Please select Height");  
+        }else{
+            $("#ErrHeight").html("");  
+        }
+    });
+    $("#Weight").change(function() {
+        if ($("#Weight").val()=="0") {
+            $("#ErrWeight").html("Please select Weight");  
+        }else{
+            $("#ErrWeight").html("");  
+        }
+    });
+    $("#BloodGroup").change(function() {
+        if ($("#BloodGroup").val()=="0") {
+            $("#ErrBloodGroup").html("Please select Blood Group");  
+        }else{
+            $("#ErrBloodGroup").html("");  
+        }
+    });
+    $("#Complexation").change(function() {
+        if ($("#Complexation").val()=="0") {
+            $("#ErrComplexation").html("Please select Complexation");  
+        }else{
+            $("#ErrComplexation").html("");  
+        }
+    });
+    $("#BodyType").change(function() {
+        if ($("#BodyType").val()=="0") {
+            $("#ErrBodyType").html("Please select Body Type");  
+        }else{
+            $("#ErrBodyType").html("");  
+        }
+    });
+    $("#Diet").change(function() {
+        if ($("#Diet").val()=="0") {
+            $("#ErrDiet").html("Please select Diet");  
+        }else{
+            $("#ErrDiet").html("");  
+        }
+    }); 
+    $("#SmookingHabit").change(function() {
+        if ($("#SmookingHabit").val()=="0") {
+            $("#ErrSmookingHabit").html("Please select Smoking Habit");  
+        }else{
+            $("#ErrSmookingHabit").html("");  
+        }
+    });
+    $("#DrinkingHabit").change(function() {
+        if ($("#DrinkingHabit").val()=="0") {
+            $("#ErrDrinkingHabit").html("Please select Drinking Habit");  
+        }else{
+            $("#ErrDrinkingHabit").html("");  
+        }
+    });
+});
 function submitprofile() {
                          $('#ErrPhysicallyImpaired').html("");
                          $('#ErrVisuallyImpaired').html("");

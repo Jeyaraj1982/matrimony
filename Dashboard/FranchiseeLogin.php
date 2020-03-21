@@ -2,7 +2,7 @@
 session_start();
         if (isset($_POST['btnsubmit'])) {
             include_once("config.php");
-            $response = $webservice->getData("Franchisee","Login",$_POST); 
+            $response = $webservice->getData("Franchisee","Login",$_POST);     
                         
                      if ($response['status']=="success")  {
                         if (sizeof($response['data']['FranchiseeDetails'])>0) {

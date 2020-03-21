@@ -124,6 +124,7 @@
      $EducationAttachment = $response['data']['EducationAttachments'];
      $PartnerExpectation = $response['data']['PartnerExpectation'];
      $DATSummarys = $response['data']['DATSummary'];
+     
 ?>
 <script>
 //$(window).on("beforeunload", function() { return confirm("Do you really want to close?"); });
@@ -1218,7 +1219,9 @@ legend {
      <?php if($ProfileInfo['IsApproved']==1){?>
          Profile Already Published
      <?php } else {?>
-       <a href="javascript:void(0)" onclick="showConfirmPublishForDAT('<?php echo $_GET['Code'];?>')"  class="btn btn-success" name="Approve" style="font-family:roboto">Approve</a>&nbsp;
+     <?php if($GIVerification['IsVerified']==1 && $ODVerification['IsVerified']==1 && $FIVerification['IsVerified']==1 && $PIVerification['IsVerified']==1 && $HDobVerification['IsVerified']==1 && $HDVerification['IsVerified']==1 && $PEVerification['IsVerified']==1 && $ProfileP['IsApproved']==1 && $Document['IsVerified']==1 && $Doc['IsVerified']==1) {?>
+        <a href="javascript:void(0)" onclick="showConfirmPublishForDAT('<?php echo $_GET['Code'];?>')"  class="btn btn-success" name="Approve" style="font-family:roboto">Approve</a>&nbsp;
+     <?php } else { } ?>
       <!--  <button type="submit" class="btn btn-success" name="Approve" style="font-family:roboto">Approve</button>&nbsp; -->
         <button type="submit" class="btn btn-warning" name="Reject" style="font-family:roboto">Reject</button>
         <button type="submit" class="btn btn-danger" name="Delete" style="font-family:roboto">Delete</button>

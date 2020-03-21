@@ -35,6 +35,75 @@ $(document).ready(function () {
                return false;
     }
    });
+   $("#ContactPersonName").change(function() {
+        if (IsNonEmpty("ContactPersonName","ErrContactPersonName","Please enter your contact person name")) {
+            IsAlphaNumeric("ContactPersonName","ErrContactPersonName","Please enter alphabet charchters only"); 
+         }
+   });
+   $("#ContactPersonName").change(function() {
+        if (IsNonEmpty("ContactPersonName","ErrContactPersonName","Please enter your contact person name")) {
+            IsAlphaNumeric("ContactPersonName","ErrContactPersonName","Please enter alphabet charchters only"); 
+         }
+   });
+   $("#Relation").change(function() {
+        if ($("#Relation").val()=="0") {
+            $("#ErrRelation").html("Please select your relation");  
+        }else{
+            $("#ErrRelation").html("");  
+        }
+    });
+    $("#PrimaryPriority").change(function() {
+        if ($("#PrimaryPriority").val()=="0") {
+            $("#ErrPrimaryPriority").html("Please select your Primary Priority");  
+        }else{
+            $("#ErrPrimaryPriority").html("");  
+        }
+    });
+    $("#EmailID").change(function() {
+        if (IsNonEmpty("EmailID","ErrEmailID","Please enter your Email ID")) {
+            IsEmail("EmailID","ErrEmailID","Please enter valid EmailID"); 
+         }
+    });
+    $("#MobileNumber").change(function() {
+        if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please enter your Mobile Number")) {
+            IsMobileNumber("MobileNumber","ErrMobileNumber","Please enter valid Mobile Number"); 
+         }
+    }); 
+    $("#WhatsappNumber").change(function() {
+        if (IsNonEmpty("WhatsappNumber","ErrWhatsappNumber","Please enter your Whatsapp Number")) {
+            IsMobileNumber("WhatsappNumber","ErrWhatsappNumber","Please Enter Valid Whatsapp Number");
+         }
+    });
+    $("#AddressLine1").change(function() {
+        IsNonEmpty("AddressLine1","ErrAddressLine1","Please enter your Address Line1");
+    });
+    $("#City").change(function() {
+        IsNonEmpty("City","ErrCity","Please enter your City");
+    });
+    $("#Pincode").change(function() {
+        IsNonEmpty("Pincode","ErrPincode","Please enter your Pincode");
+    });
+    $("#District").change(function() {
+        if ($("#District").val()=="0") {
+            $("#ErrDistrict").html("Please select your District");  
+        }else{
+            $("#ErrDistrict").html("");  
+        }
+    });
+    $("#StateName").change(function() {
+        if ($("#StateName").val()=="0") {
+            $("#ErrStateName").html("Please select your State Name");  
+        }else{
+            $("#ErrStateName").html("");  
+        }
+    });
+    $("#Country").change(function() {
+        if ($("#Country").val()=="0") {
+            $("#ErrCountry").html("Please select your Country");  
+        }else{
+            $("#ErrCountry").html("");  
+        }
+    });
    });
   
 function submitprofile() {
@@ -48,7 +117,9 @@ function submitprofile() {
                          $('#ErrCity').html("");
                          $('#ErrStateName').html("");
                          $('#ErrCountry').html("");
+                         $('#ErrErrDistrict').html("");
                          $('#ErrPincode').html("");
+                         
                          
                          ErrorCount=0;
                          
@@ -61,8 +132,10 @@ function submitprofile() {
                          if (IsNonEmpty("MobileNumber","ErrMobileNumber","Please enter your Mobile Number")) {
                             IsMobileNumber("MobileNumber","ErrMobileNumber","Please enter valid Mobile Number"); 
                          }
-                         if (IsNonEmpty("WhatsappNumber","ErrWhatsappNumber","Please enter your Whatsapp Number")) {
-                            IsMobileNumber("WhatsappNumber","ErrWhatsappNumber","Please Enter Valid Whatsapp Number");
+                         if($("#PrimaryPriority").val()=="Whatsapp Number"){
+                             if (IsNonEmpty("WhatsappNumber","ErrWhatsappNumber","Please enter your Whatsapp Number")) {
+                                IsMobileNumber("WhatsappNumber","ErrWhatsappNumber","Please Enter Valid Whatsapp Number");
+                             }
                          }
                             
                          IsNonEmpty("AddressLine1","ErrAddressLine1","Please enter your Address Line1");
@@ -75,6 +148,10 @@ function submitprofile() {
                          }
                          if($("#PrimaryPriority").val()=="0"){
                             document.getElementById("ErrPrimaryPriority").innerHTML="Please select Primary Priority"; 
+                             ErrorCount++;
+                         }
+                         if($("#District").val()=="0"){
+                            document.getElementById("ErrDistrict").innerHTML="Please select your District"; 
                              ErrorCount++;
                          }
                          if($("#StateName").val()=="0"){
@@ -110,7 +187,8 @@ $(document).ready(function() {
 });
 </script>   
 <div class="col-sm-10 rightwidget">
-<form method="post" action="" onsubmit="return submitprofile();">
+<form method="post" action="" id="frmCD" onsubmit="return submitprofile();">
+<input type="hidden" value="<?php echo $_GET['Code'];?>" name="Code" id="Code">
         <h4 class="card-title">Communication Details</h4>
         <div class="form-group row">
             <label for="Email ID" class="col-sm-2 col-form-label">Contact person<span id="star">*</span></label>
@@ -166,7 +244,7 @@ $(document).ready(function() {
                 <span class="errorstring" id="ErrMobileNumber"><?php echo isset($ErrMobileNumber)? $ErrMobileNumber : "";?></span>
             </div>
             
-            <label for="WhatsappNumber" class="col-sm-1 col-form-label" style="margin-left:63px;padding-left:0px;padding-right:0px" >Whatsapp<span id="star">*</span></label>
+            <label for="WhatsappNumber" class="col-sm-1 col-form-label" style="margin-left:63px;padding-left:0px;padding-right:0px" >Whatsapp</label>
             <div class="col-sm-4">
             <div class="col-sm-5"  style="padding-right:0px">
                 <select name="WhatsappCountryCode" class="selectpicker form-control" data-live-search="true" id="WhatsappCountryCode"> 
@@ -204,13 +282,6 @@ $(document).ready(function() {
             </div>
         </div>
         <div class="form-group row">
-            <label for="Pincode" class="col-sm-2 col-form-label">Pin/zip code<span id="star">*</span></label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="Pincode" name="Pincode" maxlength="10" value="<?php echo (isset($_POST['Pincode']) ? $_POST['Pincode'] : $ProfileInfo['Pincode']);?>" placeholder="Pincode">
-                <span class="errorstring" id="ErrPincode"><?php echo isset($ErrPincode)? $ErrPincode : "";?></span>
-            </div>
-        </div>
-        <div class="form-group row">
             <label for="City" class="col-sm-2 col-form-label">City name<span id="star">*</span></label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="City" name="City" Placeholder="City Name" maxlength="50" value="<?php echo (isset($_POST['City']) ? $_POST['City'] : $ProfileInfo['City']);?>">
@@ -219,6 +290,24 @@ $(document).ready(function() {
             <label for="OtherLocation" class="col-sm-2 col-form-label">Landmark</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="OtherLocation" name="OtherLocation" maxlength="50" Placeholder="Landmark" value="<?php echo (isset($_POST['OtherLocation']) ? $_POST['OtherLocation'] : $ProfileInfo['OtherLocation']);?>">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Pincode" class="col-sm-2 col-form-label">Pin/zip code<span id="star">*</span></label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="Pincode" name="Pincode" maxlength="10" value="<?php echo (isset($_POST['Pincode']) ? $_POST['Pincode'] : $ProfileInfo['Pincode']);?>" placeholder="Pincode">
+                <span class="errorstring" id="ErrPincode"><?php echo isset($ErrPincode)? $ErrPincode : "";?></span>
+            </div>
+            <label for="Country" class="col-sm-2 col-form-label">District<span id="star">*</span></label>
+            <div class="col-sm-4">
+                <select class="selectpicker form-control" data-live-search="true" id="District" name="District">
+                    <option value="0">Choose District</option>
+                    <?php foreach($response['data']['DistrictName'] as $District) { ?>
+                        <option value="<?php echo $District['SoftCode'];?>" <?php echo (isset($_POST[ 'District'])) ? (($_POST[ 'District']==$District[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'District']==$District['CodeValue']) ? " selected='selected' " : "");?>>
+                            <?php echo $District['CodeValue'];?>  </option>
+                                <?php } ?>
+                </select>
+                <span class="errorstring" id="ErrDistrict"><?php echo isset($ErrDistrict)? $ErrDistrict : "";?></span>
             </div>
         </div>
         <div class="form-group row">
@@ -246,7 +335,7 @@ $(document).ready(function() {
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px">
-            <label for="CommunicationDescription" class="col-sm-12 col-form-label">Additional information<span id="star">*</span></label>
+            <label for="CommunicationDescription" class="col-sm-12 col-form-label">Additional information</label>
         </div>
         <div class="form-group row">
             <div class="col-sm-12">                                                        
@@ -259,7 +348,7 @@ $(document).ready(function() {
         </div>
        <div class="form-group row" style="margin-bottom:0px;">
         <div class="col-sm-6">
-            <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
+            <a href="javascript:void(0)" onclick="ConfirmUpdateCDnfo()" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</a>
             <br>
             <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
         </div>
@@ -274,5 +363,77 @@ $(document).ready(function() {
     
 </form>
 </div>
+<script>
+function ConfirmUpdateCDnfo() {
+    if(submitprofile()) {
+      $('#PubplishNow').modal('show'); 
+      var content = ''
+                    +''
+                    +'<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for edit communication details</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8"><br>'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want edit communication details</div>'
+                                + '</div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="EditDraftCommunicationDetails()" style="font-family:roboto">Update</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+    } else {
+         return false;
+    }
+}
+function EditDraftCommunicationDetails() {
+    var param = $("#frmCD").serialize();
+    $('#Publish_body').html(preloading_withText("Updating communication details ...","95"));
+        $.post(API_URL + "m=Member&a=EditDraftCommunicationDetails",param,function(result) {
+            
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            
+            if (obj.status == "success") {
+               
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Updated</h3>'             
+                                    + '<h4 style="text-align:center;">Communication Details</h4>'             
+                                    + '<p style="text-align:center;"><a href="../ProfilePhoto/'+data.Code+'.htm" style="cursor:pointer;color:#489bae">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Edit communication details</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+}
+</script>
 <?php include_once("settings_footer.php");?>      
              

@@ -20,6 +20,29 @@
 </style>
 <div class="col-sm-10 rightwidget">
 <script>
+$(document).ready(function () {
+    $("#Documents").change(function() {
+            if ($("#Documents").val()=="0") {
+                $("#ErrDocuments").html("Please select Documents");  
+            }else{
+                $("#ErrDocuments").html("");  
+            }
+    });
+    $("#File").change(function() {
+            if ($("#File").val()=="") {
+                $("#ErrFile").html("Please select File");  
+            }else{
+                $("#ErrFile").html("");  
+            }
+    });
+    $("#check").change(function() {
+            if (document.form1.check.checked == false) {
+                $("#Errcheck").html("Please read the instruction");  
+            }else{
+                $("#Errcheck").html("");  
+            }
+    });
+});
 function submitUpload() {
             $('#ErrDocuments').html("");  
             $('#ErrFile').html("");  
@@ -47,7 +70,8 @@ function submitUpload() {
 
         }
 </script>
-<form method="post" onsubmit="return submitUpload()" name="form1" id="form1" action="" enctype="multipart/form-data">   
+<form method="post" onsubmit="return submitUpload()" name="form1" id="form1" action="" enctype="multipart/form-data"> 
+<input type="hidden" value='<?php echo $_GET['Code'];?>' name="Code">  
     <h4 class="card-title">Document Attachments
     <span style="float:right;color:green">For administrator purpose only</span><br><span style="float:right;color:grey;font-size:12px">Not show to members or others</span></h4>
     
@@ -208,7 +232,7 @@ function submitUpload() {
         </div>
 <script>
  var available = "<?php echo sizeof($res['data']);?>";
- $('#x').html( available + " out 2 photos");
+ $('#x').html( available + " out 2 documents");
                                                                                                                
 function showLearnMore() {
       $('#LearnMore').modal('show'); 
@@ -263,20 +287,29 @@ function showLearnMore() {
 
     function showConfirmDeleteAttachment(AttachmentID,ProfileID) {
         $('#Delete').modal('show'); 
-        var content = '<div class="modal-body" style="padding:20px">'
-                        + '<div  style="height: 315px;">'
-                            + '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
-                                + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
-                                + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
-                                 + '<button type="button" class="close" data-dismiss="modal">&times;</button>'
-                                 + '<h4 class="modal-title">Confirmation For remove</h4><br>'
-                                + '<div>Are you sure want to Delete?  </div><br>'
-                                    + '<div style="text-align:center"><button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+AttachmentID+'\')">Yes</button>&nbsp;&nbsp;'
-                                    + '<button type="button" data-dismiss="modal" class="btn btn-primary">No</button></div>'
-                                + '</div>'
-                            + '</form>'
-                        + '</div>'
-                     +  '</div>';
+        var content =  '<form method="post" id="form_'+AttachmentID+'" name="form_'+AttachmentID+'" > '
+                         + '<input type="hidden" value="'+AttachmentID+'" name="AttachmentID">'
+                         + '<input type="hidden" value="'+ProfileID+'" name="ProfileID">'
+                            +'<div class="modal-header">'
+                                + '<h4 class="modal-title">Confirmation For remove</h4>'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                            + '</div>'
+                            + '<div class="modal-body">'
+                                + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                                    + '<div class="col-sm-4">'
+                                        + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                                    + '</div>'
+                                    + '<div class="col-sm-8"><br>'
+                                        + '<div class="form-group row">'
+                                            +'<div class="col-sm-12">Are you sure want to Delete?</div>'
+                                        + '</div>'
+                                    + '</div>'
+                                +  '</div>'                 
+                            + '</div>' 
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                                + '<button type="button" class="btn btn-primary" name="Delete"  onclick="ConfirmDelete(\''+AttachmentID+'\')">Yes</button>'
+                            + '</div>';
         $('#model_body').html(content);
     }
 function ConfirmDelete(AttachmentID) {
@@ -304,7 +337,7 @@ function ConfirmDelete(AttachmentID) {
               $('#photoview_'+AttachmentID).hide();
                 available--;
                 DisplayDocAttachForm();
-                $('#x').html( available + " out 2 photos");
+                $('#x').html( available + " out 2 documents");
             }
         });
 }

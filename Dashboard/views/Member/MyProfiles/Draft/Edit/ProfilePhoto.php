@@ -11,6 +11,22 @@
 </style>
 <div class="col-sm-10 rightwidget">
 <script>
+$(document).ready(function () {
+     $("#ProfilePhoto").change(function() {
+            if ($("#ProfilePhoto").val()=="") {
+                $("#ErrProfilePhoto").html("Please select Profile Photo");  
+            }else{
+                $("#ErrProfilePhoto").html("");  
+            }
+    });
+    $("#check").change(function() {
+            if (document.form1.check.checked == false) {
+                $("#Errcheck").html("Please read the instruction");  
+            }else{
+                $("#Errcheck").html("");  
+            }
+    });
+});
 function submitUpload() {
             $('#ErrProfilePhoto').html("");
             $('#Errcheck').html("");

@@ -94,7 +94,7 @@
                             <div class="col-sm-12" style="text-align:left">
 								<input type="submit" name="BtnSave" id="BtnSave" style="display:none">
 								<a href="javascript:void(0)" onclick="ConfirmAddEducationalAttachment()" class="btn btn-primary" style="font-family:roboto">Save Education Details</a>
-								<a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>">back</a>
+                                <a href="../EducationDetails/<?php echo $_GET['Code'].".htm";?>" class="btn btn-default" data-dismiss="modal">Cancel</a>
                             </div>
                         </div>
                 </form>

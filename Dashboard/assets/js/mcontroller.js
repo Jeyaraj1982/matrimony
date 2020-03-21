@@ -893,7 +893,7 @@ function RejectInterest(ProfileCode,ImgId) {
 }                                    
 
 var DraftProfile = {
-    
+        
         SubmitGeneralInformation:function() {
             
             $('#ErrMaritalStatus').html("");
@@ -1081,6 +1081,8 @@ var DraftProfile = {
             $('#ErrFamilyType').html("");
             $('#ErrFamilyAffluence').html("");
             $('#ErrFamilyValue').html("");
+            $('#ErrNumberofBrother').html("");
+            $('#ErrNumberofSisters').html("");
             
             ErrorCount=0;
         
@@ -1120,7 +1122,15 @@ var DraftProfile = {
             if($("#FamilyValue").val()=="0"){
                 ErrorCount++;
                 document.getElementById("ErrFamilyValue").innerHTML="Please select family value"; 
-            }                                                                                                    
+            } 
+            if($("#NumberofBrother").val()=="Choose"){
+                ErrorCount++;
+                document.getElementById("ErrNumberofBrother").innerHTML="Please select number of brother"; 
+            }
+            if($("#NumberofSisters").val()=="Choose"){
+                ErrorCount++;
+                document.getElementById("ErrNumberofSisters").innerHTML="Please select number of sister"; 
+            }                                                                                                     
             
         if (ErrorCount==0) {
                             return true;
@@ -1173,31 +1183,31 @@ var DraftProfile = {
         },
         changeAboutLable: function() {
         if ($('#ProfileFor').val()=="Myself") {
-            $('#Aboutlabel').html("About me<span style='color:red'>*</span>");                                                         
+            $('#Aboutlabel').html("About me");                                                         
         }
         if ($('#ProfileFor').val()=="Brother") {
-            $('#Aboutlabel').html("About my brother<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my brother");
         }
         if ($('#ProfileFor').val()=="Sister") {
-            $('#Aboutlabel').html("About my sister<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my sister");
         }
         if ($('#ProfileFor').val()=="Daughter") {
-            $('#Aboutlabel').html("About my daughter<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my daughter");
         }
         if ($('#ProfileFor').val()=="Son") {
-            $('#Aboutlabel').html("About my Son<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my Son");
         }
         if ($('#ProfileFor').val()=="Sister In Law") {
-            $('#Aboutlabel').html("About my sister in law<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my sister in law");
         }
         if ($('#ProfileFor').val()=="Brother In Law") {
-            $('#Aboutlabel').html("About my brother in law<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my brother in law");
         }
         if ($('#ProfileFor').val()=="Son In Law") {
-            $('#Aboutlabel').html("About my son in law<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my son in law");
         }
         if ($('#ProfileFor').val()=="Daughter In Law") {
-            $('#Aboutlabel').html("About my daughter in law<span style='color:red'>*</span>");
+            $('#Aboutlabel').html("About my daughter in law");
         }
     },
         Personal:function() {
@@ -1294,7 +1304,7 @@ function print_sister_counts() {
         
         var n_brothers = $('#NumberofSisters').val();
         
-        if (n_brothers=='NS001') {
+        if (n_brothers=='NS001' || n_brothers=='Choose') {
             $('#div_elderSister').hide();
             $('#div_youngerSister').hide();
             $('#div_marriedSister').hide();
@@ -1357,7 +1367,7 @@ function print_sister_counts() {
     function print_brother_counts() {
         var n_brothers = $('#NumberofBrother').val();
         
-        if (n_brothers=='NOB001') {
+        if (n_brothers=='NOB001' || n_brothers=='Choose') {
             $('#div_elder').hide();
             $('#div_younger').hide();
             $('#div_married').hide();

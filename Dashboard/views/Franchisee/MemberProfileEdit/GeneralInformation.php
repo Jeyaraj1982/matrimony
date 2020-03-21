@@ -1,11 +1,72 @@
-<?php
+ <?php
     $response = $webservice->getData("Franchisee","GetDraftProfileInformation",array("ProfileCode"=>$_GET['Code']));
 	//if (sizeof($response['data'])==0) {
 	 $page="GeneralInformation";
 	$ProfileInfo          = $response['data']['ProfileInfo'];
 ?>
     <?php include_once("settings_header.php");?>
-        <script>
+    <script>
+        $(document).ready(function() {
+            $("#MaritalStatus").change(function() {
+                if ($("#MaritalStatus").val()=="0") {
+                    $("#ErrMaritalStatus").html("Please select your marital status");  
+                }else{
+                    $("#ErrMaritalStatus").html("");  
+                }
+            });
+            $("#Language").change(function() {
+                if ($("#Language").val()=="0") {
+                    $("#ErrLanguage").html("Please select your mother tongue");  
+                }else{
+                    $("#ErrLanguage").html("");  
+                }
+            });
+            $("#Religion").change(function() {
+                if ($("#Religion").val()=="0") {
+                    $("#ErrReligion").html("Please select your religion");  
+                }else{
+                    $("#ErrReligion").html("");  
+                }
+            });
+            $("#ReligionOthers").change(function() {
+                if (IsNonEmpty("ReligionOthers", "ErrReligionOthers", "Please enter your religion name")) {
+                    IsAlphabet("ReligionOthers", "ErrReligionOthers", "Please enter alphabet characters only");
+                }
+            });
+            $("#Caste").change(function() {
+                if ($("#Caste").val()=="0") {
+                    $("#ErrCaste").html("Please select your caste");  
+                }else{
+                    $("#ErrCaste").html("");  
+                }
+            });
+            $("#OtherCaste").change(function() {
+                if (IsNonEmpty("OtherCaste", "ErrOtherCaste", "Please enter your caste name")) {
+                        IsAlphabet("OtherCaste", "ErrOtherCaste", "Please enter alphabet characters only");
+                    }
+            });
+            $("#Community").change(function() {
+                if ($("#Community").val()=="0") {
+                    $("#ErrCommunity").html("Please select your community");  
+                }else{
+                    $("#ErrCommunity").html("");  
+                }
+            });
+            $("#Nationality").change(function() {
+                if ($("#Nationality").val()=="0") {
+                    $("#ErrNationality").html("Please select your nationality");  
+                }else{
+                    $("#ErrNationality").html("");  
+                }
+            });
+            $("#MainEducation").change(function() {
+                if ($("#MainEducation").val()=="") {
+                    $("#ErrMainEducation").html("Please select your education");  
+                }else{
+                    $("#ErrMainEducation").html("");  
+                }
+            });
+        });
             function submitprofile() {
                 $('#ErrMaritalStatus').html("");
                 $('#ErrLanguage').html("");
@@ -13,16 +74,13 @@
                 $('#ErrCaste').html("");
                 $('#ErrCommunity').html("");
                 $('#ErrNationality').html("");
-                $('#Errdate').html("");
-                $('#Errmonth').html("");
-                $('#Erryear').html("");
                 $('#ErrMainEducation').html("");
 
                 ErrorCount = 0;
 
                 if ($("#MaritalStatus").val() == "0") {
                     ErrorCount++;
-                    document.getElementById("ErrMaritalStatus").innerHTML = "Please select marital status";
+                    document.getElementById("ErrMaritalStatus").innerHTML = "Please select your marital status";
                 }
 
                 if ($("#Language").val() == "0") {

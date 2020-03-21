@@ -19,7 +19,78 @@
                 return false;
             }
         });
+        $("#FatherName").change(function() {
+            if (IsNonEmpty("FatherName","ErrFatherName","Please enter your father's name")) {
+                IsAlphabet("FatherName","ErrFatherName","Please enter alpha numeric characters only");
+            }
         });
+        $("#MotherName").change(function() {
+            if (IsNonEmpty("MotherName","ErrMotherName","Please enter your mother's name")) {
+            IsAlphabet("MotherName","ErrMotherName","Please enter alpha numeric characters only");
+            }
+        });
+        if ($('#FathersContact').val().trim().length>0) {
+            $("#FathersContact").change(function() {
+                IsMobileNumber("FathersContact","ErrFathersContact","Please Enter Valid Mobile Number");
+            });
+        }
+        if ($('#MotherContact').val().trim().length>0) {
+            $("#MotherContact").change(function() {
+                IsMobileNumber("MotherContact","ErrMotherContact","Please Enter Valid Mobile Number");
+        });
+        }
+        $("#FatherOtherOccupation").change(function() {
+            if(IsNonEmpty("FatherOtherOccupation","ErrFatherOtherOccupation","Please enter your father other occupation")){
+               IsAlphabet("FatherOtherOccupation","ErrFatherOtherOccupation","Please enter alphabet characters only");
+            }
+        });
+        $("#MotherOtherOccupation").change(function() {
+            if(IsNonEmpty("MotherOtherOccupation","ErrMotherOtherOccupation","Please enter your mother other occupation")){
+                   IsAlphabet("MotherOtherOccupation","ErrMotherOtherOccupation","Please enter alphabet characters only");
+                }
+        });
+        $("#FamilyLocation1").change(function() {
+            IsNonEmpty("FamilyLocation1","ErrFamilyLocation1","Please enter your family location"); 
+        });  
+        $("#Ancestral").change(function() {                                                                                                       
+            IsNonEmpty("Ancestral","ErrAncestral","Please enter your ancestral");  
+        });
+        $("#FamilyType").change(function() {
+            if ($("#FamilyType").val()=="0") {
+                $("#ErrFamilyType").html("Please select your family type");  
+            }else{
+                $("#ErrFamilyType").html("");  
+            }
+        });
+        $("#FamilyValue").change(function() {
+            if ($("#FamilyValue").val()=="0") {
+                $("#ErrFamilyValue").html("Please select your family value");  
+            }else{
+                $("#ErrFamilyValue").html("");  
+            }
+        });
+        $("#FamilyAffluence").change(function() {
+            if ($("#FamilyAffluence").val()=="0") {
+                $("#ErrFamilyAffluence").html("Please select your family affluence");  
+            }else{
+                $("#ErrFamilyAffluence").html("");  
+            }
+        });
+        $("#NumberofBrother").change(function() {
+            if ($("#NumberofBrother").val()=="Choose") {
+                $("#ErrNumberofBrother").html("Please select your number of brother");  
+            }else{
+                $("#ErrNumberofBrother").html("");  
+            }
+        });
+        $("#NumberofSisters").change(function() {
+            if ($("#NumberofSisters").val()=="Choose") {
+                $("#ErrNumberofSisters").html("Please select your number of sister");  
+            }else{
+                $("#ErrNumberofSisters").html("");  
+            }
+        });
+ });
 function submitprofile() {
        $('#ErrFatherName').html("");
        $('#ErrMotherName').html("");
@@ -57,8 +128,6 @@ function submitprofile() {
             }
             IsNonEmpty("FamilyLocation1","ErrFamilyLocation1","Please enter your family location");                                                                                                          
             IsNonEmpty("Ancestral","ErrAncestral","Please enter your ancestral");                                                                                                          
-            IsNonEmpty("FamilyLocation1","ErrFamilyLocation1","Please enter your family location");                                                                                                          
-            IsNonEmpty("Ancestral","ErrAncestral","Please enter your ancestral");       
             if($("#FamilyType").val()=="0"){
                 ErrorCount++;
                 document.getElementById("ErrFamilyType").innerHTML="Please select family type"; 

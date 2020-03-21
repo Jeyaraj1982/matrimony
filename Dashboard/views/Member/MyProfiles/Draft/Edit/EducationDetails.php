@@ -125,6 +125,22 @@ function DeleteEducationAttachmentOnly(AttachmentID) {
         }
         });
 } 
-
-</script>       
+<?php if($_GET['msg']=="success") { ?>
+        setTimeout(function(){
+            $('#responsemodal').modal("show");
+        },1000);
+    <?php }    ?> 
+</script>   
+<div class="modal" id="responsemodal" data-backdrop="static">
+  <div class="modal-dialog">
+        <div class="modal-content" style="max-width:500px;min-height:300px;overflow:hidden">
+            <div class="modal-body" id="response_message" style="min-height:175px;max-height:175px;">
+                <p style="text-align:center;margin-top: 40px;"><img src="<?php echo ImageUrl;?>verifiedtickicon.jpg" width="100px"></p>
+                    <h3 style="text-align:center;">Updated</h3>             
+                    <h4 style="text-align:center;">Education Details</h4>             
+                    <p style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer;color:#489bae">Continue</a></p>
+            </div> 
+        </div>
+  </div>
+</div>    
 <?php include_once("settings_footer.php");?>                    

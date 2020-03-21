@@ -50,6 +50,69 @@
             ?>
 <?php include_once("settings_header.php");?>
 <script>
+ $(document).ready(function() {
+    $("#EmployedAs").change(function() {
+        if ($("#EmployedAs").val()=="0") {
+            $("#ErrEmployedAs").html("Please select your employed as");  
+        }else{
+            $("#ErrEmployedAs").html("");  
+        }
+    });
+    $("#OccupationType").change(function() {
+        if ($("#OccupationType").val()=="0") {
+            $("#ErrOccupationType").html("Please select your occupation");  
+        }else{
+            $("#ErrOccupationType").html("");  
+        }
+    });
+    $("#TypeofOccupation").change(function() {
+        if ($("#TypeofOccupation").val()=="0") {
+            $("#ErrTypeofOccupation").html("Please select your occupation type");  
+        }else{
+            $("#ErrTypeofOccupation").html("");  
+        }
+    });
+    $("#TypeofOccupation").change(function() {
+        if ($("#TypeofOccupation").val()=="0") {
+            $("#ErrTypeofOccupation").html("Please select your occupation type");  
+        }else{
+            $("#ErrTypeofOccupation").html("");  
+        }
+    });
+    $("#IncomeRange").change(function() {
+        if ($("#IncomeRange").val()=="0") {
+            $("#ErrIncomeRange").html("Please select your annual income");  
+        }else{
+            $("#ErrIncomeRange").html("");  
+        }
+    });
+    $("#IncomeRange").change(function() {
+        if ($("#IncomeRange").val()=="0") {
+            $("#ErrIncomeRange").html("Please select your annual income");  
+        }else{
+            $("#ErrIncomeRange").html("");  
+        }
+    });
+    $("#WCountry").change(function() {
+        if ($("#WCountry").val()=="0") {
+            $("#ErrWCountry").html("Please select your country");  
+        }else{
+            $("#ErrWCountry").html("");  
+        }
+    });
+    $("#WorkedCityName").change(function() {
+        if ($("#WorkedCityName").val()=="0") {
+            $("#ErrWorkedCityName").html("Please select your worked city");  
+        }else{
+            $("#ErrWorkedCityName").html("");  
+        }
+    });
+    $("#OtherOccupation").change(function() {
+        if(IsNonEmpty("OtherOccupation","ErrOtherOccupation","Please enter your occupation")){
+            IsAlphabet("OtherOccupation","ErrOtherOccupation","Please enter alphabet characters only");
+       }
+    });
+ });
 function submitprofile() {
                          $('#ErrEmployedAs').html("");
                          $('#ErrOccupationType').html("");

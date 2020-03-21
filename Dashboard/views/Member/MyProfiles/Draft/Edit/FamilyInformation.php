@@ -13,8 +13,95 @@
     $CountryCodes =$response['data']['ContactCountrycode'];
     include_once("settings_header.php");
 ?>
+<script>
+ $(document).ready(function () {
+        $("#FathersContact").keypress(function (e) {
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                $("#ErrFathersContact").html("Digits Only").fadeIn("fast");
+                return false;
+            }
+        });$("#MotherContact").keypress(function (e) {
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                $("#ErrMotherContact").html("Digits Only").fadeIn("fast");
+                return false;
+            }
+        });
+        $("#FatherName").change(function() {
+            if (IsNonEmpty("FatherName","ErrFatherName","Please enter your father's name")) {
+                IsAlphabet("FatherName","ErrFatherName","Please enter alpha numeric characters only");
+            }
+        });
+        $("#MotherName").change(function() {
+            if (IsNonEmpty("MotherName","ErrMotherName","Please enter your mother's name")) {
+            IsAlphabet("MotherName","ErrMotherName","Please enter alpha numeric characters only");
+            }
+        });
+        if ($('#FathersContact').val().trim().length>0) {
+            $("#FathersContact").change(function() {
+                IsMobileNumber("FathersContact","ErrFathersContact","Please Enter Valid Mobile Number");
+            });
+        }
+        if ($('#MotherContact').val().trim().length>0) {
+            $("#MotherContact").change(function() {
+                IsMobileNumber("MotherContact","ErrMotherContact","Please Enter Valid Mobile Number");
+        });
+        }
+        $("#FatherOtherOccupation").change(function() {
+            if(IsNonEmpty("FatherOtherOccupation","ErrFatherOtherOccupation","Please enter your father other occupation")){
+               IsAlphabet("FatherOtherOccupation","ErrFatherOtherOccupation","Please enter alphabet characters only");
+            }
+        });
+        $("#MotherOtherOccupation").change(function() {
+            if(IsNonEmpty("MotherOtherOccupation","ErrMotherOtherOccupation","Please enter your mother other occupation")){
+                   IsAlphabet("MotherOtherOccupation","ErrMotherOtherOccupation","Please enter alphabet characters only");
+                }
+        });
+        $("#FamilyLocation1").change(function() {
+            IsNonEmpty("FamilyLocation1","ErrFamilyLocation1","Please enter your family location"); 
+        });  
+        $("#Ancestral").change(function() {                                                                                                       
+            IsNonEmpty("Ancestral","ErrAncestral","Please enter your ancestral");  
+        });
+        $("#FamilyType").change(function() {
+            if ($("#FamilyType").val()=="0") {
+                $("#ErrFamilyType").html("Please select your family type");  
+            }else{
+                $("#ErrFamilyType").html("");  
+            }
+        });
+        $("#FamilyValue").change(function() {
+            if ($("#FamilyValue").val()=="0") {
+                $("#ErrFamilyValue").html("Please select your family value");  
+            }else{
+                $("#ErrFamilyValue").html("");  
+            }
+        });
+        $("#FamilyAffluence").change(function() {
+            if ($("#FamilyAffluence").val()=="0") {
+                $("#ErrFamilyAffluence").html("Please select your family affluence");  
+            }else{
+                $("#ErrFamilyAffluence").html("");  
+            }
+        });
+        $("#NumberofBrother").change(function() {
+            if ($("#NumberofBrother").val()=="Choose") {
+                $("#ErrNumberofBrother").html("Please select your number of brother");  
+            }else{
+                $("#ErrNumberofBrother").html("");  
+            }
+        });
+        $("#NumberofSisters").change(function() {
+            if ($("#NumberofSisters").val()=="Choose") {
+                $("#ErrNumberofSisters").html("Please select your number of sister");  
+            }else{
+                $("#ErrNumberofSisters").html("");  
+            }
+        });
+ });
+</script>
 <div class="col-sm-10 rightwidget">
-    <form method="post" action="" onsubmit="return DraftProfile.SubmitFamilyInformation();">
+    <form method="post" action="" id="frmFI" onsubmit="return DraftProfile.SubmitFamilyInformation();">
+    <input type="hidden" value="<?php echo $ProfileInfo['ProfileCode'];?>" name="Code" id="Code">
         <h4 class="card-title">Family Information</h4>
         <div class="form-group row">
             <label for="FatherName" class="col-sm-3 col-form-label">Father's name<span id="star">*</span></label>
@@ -179,6 +266,7 @@
                     <div class="col-sm-3">
                        <label class="col-form-label">Total</label><br>
                         <select class=" form-control" id="NumberofBrother" onchange="print_brother_counts()" name="NumberofBrother">
+                            <option value="Choose">Choose</option>
                             <?php foreach($response['data']['NumberofBrother'] as $NumberofBrother) { ?>
                             <option value="<?php echo $NumberofBrother['SoftCode'];?>" <?php echo (isset($_POST[ 'NumberofBrother'])) ? (($_POST[ 'NumberofBrother']==$NumberofBrother[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'NumberofBrothers']==$NumberofBrother[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $NumberofBrother['CodeValue'];?></option>
                             <?php } ?>
@@ -209,6 +297,7 @@
                         </select>
                     </div>
                 </div>
+                <span class="errorstring" id="ErrNumberofBrother"><?php echo isset($ErrNumberofBrother)? $ErrNumberofBrother : "";?>
             </div>  
         </div>
         <div class="form-group row" style="margin-bottom: 0px;">
@@ -218,6 +307,7 @@
                     <div class="col-sm-3" align="left">
                        <label class="col-form-label">Total</label><br>
                         <select class="form-control" id="NumberofSisters" onchange="print_sister_counts()" name="NumberofSisters">
+                        <option value="Choose">Choose</option>
                             <?php foreach($response['data']['NumberofSisters'] as $NumberofSister) { ?>
                             <option value="<?php echo $NumberofSister['SoftCode'];?>" <?php echo (isset($_POST[ 'NumberofSisters'])) ? (($_POST[ 'NumberofSisters']==$NumberofSister[ 'SoftCode']) ? " selected='selected' " : "") : (($ProfileInfo[ 'NumberofSisters']==$NumberofSister[ 'CodeValue']) ? " selected='selected' " : "");?>><?php echo $NumberofSister['CodeValue'];?>  </option>
                             <?php } ?>
@@ -248,10 +338,11 @@
                         </select>
                     </div>
                 </div>
+                <span class="errorstring" id="ErrNumberofSisters"><?php echo isset($ErrNumberofSisters)? $ErrNumberofSisters : "";?>
             </div>
         </div>
         <div class="form-group row" style="margin-bottom:0px">
-            <label for="AboutMe" class="col-sm-4 col-form-label">About my family<span id="star">*</span></label>
+            <label for="AboutMe" class="col-sm-4 col-form-label">About my family</label>
         </div>
         <div class="form-group row">
             <div class="col-sm-12">                                                        
@@ -261,7 +352,7 @@
         </div>
         <div class="form-group row" style="margin-bottom:0px;">
             <div class="col-sm-6">
-                <button type="submit" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</button>
+                <a href="javascript:void(0)" onclick="ConfirmUpdateFInfo()" name="BtnSaveProfile" class="btn btn-primary mr-2" style="font-family:roboto">Save</a>
                 <br>
                 <small style="font-size:11px;"> Last saved:</small><small style="color:#888;font-size:11px;"> <?php echo PutDateTime($ProfileInfo['LastUpdatedOn']);?></small>
             </div>
@@ -305,5 +396,75 @@
         displayFatherIncome();
         displayMotherIncome();
     });
+    function ConfirmUpdateFInfo() {
+    if(DraftProfile.SubmitFamilyInformation()) {
+      $('#PubplishNow').modal('show'); 
+      var content = ''
+                    +''
+                    +'<div class="modal-header">'
+                        + '<h4 class="modal-title">Confirmation for edit family information</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<div class="form-group row" style="margin:0px;padding-top:10px;">'
+                            + '<div class="col-sm-4">'
+                                + '<img src="<?php echo ImageUrl;?>icons/confirmation_profile.png" width="128px">' 
+                            + '</div>'
+                            + '<div class="col-sm-8"><br>'
+                                + '<div class="form-group row">'
+                                    +'<div class="col-sm-12">Are you sure want edit family information</div>'
+                                + '</div>'
+                            + '</div>'
+                        +  '</div>'                    
+                    + '</div>' 
+                    + '<div class="modal-footer">'
+                        + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
+                        + '<button type="button" class="btn btn-primary" name="Update" class="btn btn-primary" onclick="EditDraftFamilyInformation()" style="font-family:roboto">Update</button>'
+                    + '</div>';
+            $('#Publish_body').html(content);
+     } else {
+            return false;
+     }
+}
+function EditDraftFamilyInformation() {
+   var param = $("#frmFI").serialize();
+    $('#Publish_body').html(preloading_withText("Updating family information ...","95"));
+        $.post(API_URL + "m=Member&a=EditDraftFamilyInformation",param,function(result) {
+            
+            if (!(isJson(result.trim()))) {
+                $('#Publish_body').html(result);
+                return ;
+            }  
+            var obj = JSON.parse(result.trim());
+            
+            if (obj.status == "success") {
+               
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
+                                    + '<h3 style="text-align:center;">Updated</h3>'             
+                                    + '<h4 style="text-align:center;">Family Information</h4>'             
+                                    + '<p style="text-align:center;"><a href="../PhysicalInformation/'+data.Code+'.htm" style="cursor:pointer;color:#489bae">Continue</a></p>'
+                                +'</div>' 
+                            +'</div>';
+                $('#Publish_body').html(content);
+            } else {
+                var data = obj.data; 
+                var content = '<div  style="height: 300px;">'                                                                              
+                                +'<div class="modal-header">'
+                                    +'<h4 class="modal-title">Edit Family Information</h4>'
+                                    +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
+                                +'</div>'
+                                +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
+                                    + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/exclamationmark.jpg" width="10%"><p>'
+                                        + '<h5 style="text-align:center;color:#ada9a9">'+ obj.message+'</h5><br><br>'
+                                        +'<div style="text-align:center"><a class="btn btn-primary" data-dismiss="modal" style="padding-top:5pxtext-align:center;color:white">Continue</a></div>'
+                                +'</div>' 
+                            +'</div>';
+            $('#Publish_body').html(content);
+            }
+        });
+}
 </script>              
 <?php include_once("settings_footer.php");?>                     

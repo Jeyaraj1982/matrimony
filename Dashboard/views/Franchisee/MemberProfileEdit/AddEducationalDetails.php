@@ -59,12 +59,39 @@
             ?>
    <?php                 
             $response = $webservice->getData("Franchisee","GetViewAttachments",(array("ProfileCode"=>$_GET['Code'])));
-            print_r($response['data']['EducationDetail']);
 $Education=$response['data']['Attachments'];
              ?>
 <?php include_once("settings_header.php");?>
 
 <script>
+$(document).ready(function() {
+    $("#Educationdetails").change(function() {
+        if ($("#Educationdetails").val()=="0") {
+            $("#ErrEducationdetails").html("Please select education");  
+        }else{
+            $("#ErrEducationdetails").html("");  
+        }
+    });
+    $("#EducationDegree").change(function() {
+        if ($("#EducationDegree").val()=="0") {
+            $("#ErrEducationDegree").html("Please select education details");  
+        }else{
+            $("#ErrEducationDegree").html("");  
+        }
+    });
+    $("#EducationDegree").change(function() {
+        if ($("#EducationDegree").val()=="0") {
+            $("#ErrEducationDegree").html("Please select education details");  
+        }else{
+            $("#ErrEducationDegree").html("");  
+        }
+    });
+        $("#OtherEducationDegree").change(function() {
+            if(IsNonEmpty("OtherEducationDegree","ErrOtherEducationDegree","Please enter your education details")){
+                     OtherEducationDegree("OtherEducationDegree","ErrOtherEducationDegree","Please enter alphabet characters only");
+                }
+        });
+});
 function submitEducation()  {
             
             $('#ErrEducationdetails').html("");
@@ -80,7 +107,7 @@ function submitEducation()  {
             
             if($("#EducationDegree").val()=="0"){
                 ErrorCount++;
-                document.getElementById("ErrEducationDegree").innerHTML="Please select education Details"; 
+                document.getElementById("ErrEducationDegree").innerHTML="Please select education details"; 
             }
             
             if ($('#EducationDegree').val()=="Others") {
