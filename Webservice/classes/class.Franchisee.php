@@ -4536,8 +4536,13 @@
              global $mysql,$loginInfo;
 
              $sql = "SELECT * From `_tbl_franchisees_staffs` where `FranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `IsDeleted`='0'";
+             $sql[0]['LastLogin']= $mysql->select("Select * from _tbl_login_logs where FranchiseeStaffID='".$sql[0]['PersonID']."'");
+          /*   $sql = "SELECT *
+                                    FROM _tbl_franchisees_staffs
+                                    LEFT  JOIN _tbl_login_logs
+                                    ON _tbl_franchisees_staffs.FranchiseeID=_tbl_login_logs.FranchiseeID where _tbl_franchisees_staffs.FranchiseeID='".$loginInfo[0]['FranchiseeID']."' and  _tbl_franchisees_staffs.`IsDeleted`='0'";*/
 
-             if (isset($_POST['Request']) && $_POST['Request']=="All") {
+             if (isset($_POST['Request']) && $_POST['Request']=="All") {  
                 return Response::returnSuccess("success",$mysql->select($sql));    
              }
 
@@ -4578,23 +4583,23 @@
              $FranchiseeWalletRequestCount =  $mysql->select("SELECT COUNT(ReqID) AS cnt FROM _tbl_wallet_bankrequests where IsMember='0'"); 
              $Popup =$mysql->select("select * from `_tbl_franchisee_req_verification` where `ToFranchiseeID`='".$loginInfo[0]['FranchiseeID']."' and `IsRead`='0' order by `ReqID` limit 0,1"); 
              
-             return Response::returnSuccess("success",array("Member"                   =>$Member[0],
-                                                            "DraftedProfiles"          =>$DraftedProfiles[0],
-                                                            "PostedProfiles"           =>$PostedProfiles[0],
-                                                            "PublishedProfiles"        =>$PublishedProfiles[0],
-                                                            "MaleProfileCount"         =>$MaleProfileCount[0],
-                                                            "FemaleProfileCount"       =>$FemaleProfileCount[0],
-                                                            "OnlineMembercount"        =>$OnlineMembercount[0],
-                                                            "FreeMemberCount"          =>$FreeMemberCount[0],
-                                                            "LandingPageProfileCount"  =>$LandingPageProfileCount[0],
-                                                            "FranchiseeStaffCount"     =>$FranchiseeStaffCount[0],
-                                                            "PaidMemberCount"          =>$PaidMemberCount[0],
-                                                            "documentverification"     =>$documentverification[0],
-                                                            "ordercount"               =>$ordercount[0],
-                                                            "invoicecount"             =>$invoicecount[0],
-                                                            "MemberWalletRequestCount" =>$MemberWalletRequestCount[0],
+             return Response::returnSuccess("success",array("Member"                       =>$Member[0],
+                                                            "DraftedProfiles"              =>$DraftedProfiles[0],
+                                                            "PostedProfiles"               =>$PostedProfiles[0],
+                                                            "PublishedProfiles"            =>$PublishedProfiles[0],
+                                                            "MaleProfileCount"             =>$MaleProfileCount[0],
+                                                            "FemaleProfileCount"           =>$FemaleProfileCount[0],
+                                                            "OnlineMembercount"            =>$OnlineMembercount[0],
+                                                            "FreeMemberCount"              =>$FreeMemberCount[0],
+                                                            "LandingPageProfileCount"      =>$LandingPageProfileCount[0],
+                                                            "FranchiseeStaffCount"         =>$FranchiseeStaffCount[0],
+                                                            "PaidMemberCount"              =>$PaidMemberCount[0],
+                                                            "documentverification"         =>$documentverification[0],
+                                                            "ordercount"                   =>$ordercount[0],             
+                                                            "invoicecount"                 =>$invoicecount[0],
+                                                            "MemberWalletRequestCount"     =>$MemberWalletRequestCount[0],
                                                             "FranchiseeWalletRequestCount" =>$FranchiseeWalletRequestCount[0],
-                                                            "Popup"                    =>$Popup[0]));
+                                                            "Popup"                        =>$Popup[0]));
          }
          function GetRecentMembersForDashboard() {    
              global $mysql,$loginInfo;
@@ -4818,6 +4823,24 @@
 
              return Response::returnSuccess("New Password saved successfully",$data[0]);  
          }
+         function ProfilesBrideGroomCount() {
+             global $mysql,$loginInfo;
+             if (isset($_POST['Request']) && $_POST['Request']=="Draft") {   
+                 $GroomCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  `RequestToVerify`='0' and SexCode='SX001'");
+                 $BrideCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  `RequestToVerify`='0' and SexCode='SX002'");
+                return Response::returnSuccess("success",array("Groom" => $GroomCount[0],"Bride" => $BrideCount[0]));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Post") {   
+                 $GroomCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='1' and IsApproved='0' and SexCode='SX001'");
+                 $BrideCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  `RequestToVerify`='1' and IsApproved='0' and SexCode='SX002'");
+                return Response::returnSuccess("success",array("Groom" => $GroomCount[0],"Bride" => $BrideCount[0]));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Publish") {   
+                 $GroomCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='1' and IsApproved='1' and SexCode='SX001'");
+                 $BrideCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  `RequestToVerify`='1' and IsApproved='1' and SexCode='SX002'");
+                return Response::returnSuccess("success",array("Groom" => $GroomCount[0],"Bride" => $BrideCount[0]));    
+             }
+         }
          function GetMyProfiles() {
 
              global $mysql,$loginInfo; 
@@ -4858,17 +4881,47 @@
                      
                  }  
                   return Response::returnSuccess("success",$Profiles);
-             }
+             }                                                                            
              
 
              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Draft") {  /* Profile => Drafted */
+             $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  `RequestToVerify`='0'");
+                 if (sizeof($DraftProfiles)>0) {
+                     foreach($DraftProfiles as $DraftProfile) {
+                        $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
+                        $result['mode']="Draft"; 
+                        $GroomCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and SexCode='SX001' and `RequestToVerify`='0'");      
+                        $result['Groom'] = $GroomCount[0]['cnt'];
+                        $BrideCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and SexCode='SX002' and `RequestToVerify`='0'");      
+                        $result['Bride'] = $BrideCount[0]['cnt'];
+                        $Profiles[]=$result;   
+                     }                                                                    
+                 }
                  
-                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  `RequestToVerify`='0'");
+                 return Response::returnSuccess("success",$Profiles);
+             }
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="DraftBride") {  /* Profile => Drafted */
+                 
+                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  `RequestToVerify`='0' and SexCode='SX002'");
                  
                  if (sizeof($DraftProfiles)>0) {
                      foreach($DraftProfiles as $DraftProfile) {
                         $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
-                        $result['mode']="Draft";
+                        $result['mode']="Draft"; 
+                        $Profiles[]=$result;   
+                     }
+                 }
+                 
+                 return Response::returnSuccess("success",$Profiles);
+             }
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="DraftGroom") {  /* Profile => Drafted */
+                 
+                 $DraftProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and  `RequestToVerify`='0' and SexCode='SX001'");
+                 
+                 if (sizeof($DraftProfiles)>0) {
+                     foreach($DraftProfiles as $DraftProfile) {
+                        $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
+                        $result['mode']="Draft"; 
                         $Profiles[]=$result;   
                      }
                  }
@@ -4889,10 +4942,92 @@
                  
                 return Response::returnSuccess("success",$Profiles);
              }
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="PostedGroom") {    /* Profile => Posted */
+                  $PostProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='1' and IsApproved='0' and SexCode='SX001'");
 
-             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {    /* Profile => Posted */
+                  if (sizeof($PostProfiles)>0) {
+                      foreach($PostProfiles as $PostProfile) {
+                        $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode'],2);
+                        $result['mode']="Posted";
+                        $Profiles[]=$result;  
+                     }
+                 }                                                                          
+                 
+                return Response::returnSuccess("success",$Profiles);
+             }
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="PostedBride") {    /* Profile => Posted */
+                  $PostProfiles = $mysql->select("select * from `_tbl_draft_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and RequestToVerify='1' and IsApproved='0' and SexCode='SX002'");
+
+                  if (sizeof($PostProfiles)>0) {
+                      foreach($PostProfiles as $PostProfile) {
+                        $result = Profiles::getDraftProfileInformation($PostProfile['ProfileCode'],2);
+                        $result['mode']="Posted";
+                        $Profiles[]=$result;  
+                     }
+                 }
+                                                                                                                    
+                return Response::returnSuccess("success",$Profiles);
+             }
+                                                                                 
+              if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="Published") {    /* Profile => Posted */
              
                 $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and IsApproved='1' and RequestToVerify='1'");
+                if (sizeof($PublishedProfiles)>0) {
+                    foreach($PublishedProfiles as $PublishedProfile) {
+                        $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);
+                        $result['mode']="Published"; 
+                        $RecentlyViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['RecentlyViewed']= sizeof($RecentlyViewedcount);
+                        
+                        $MyFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `VisterProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['MyFavorited']= sizeof($MyFavoritedcount);
+                        
+                        $WhoViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `VisterProfileCode` ");
+                        $result['RecentlyWhoViwed']= sizeof($WhoViewedcount);
+                        
+                        $WhoFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['WhoFavorited']= sizeof($WhoFavoritedcount);
+                        
+                        $MutualCount = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' order by FavProfileID DESC)");
+                        $result['MutualCount']= sizeof($WhoFavoritedcount);
+                        
+                        $Profiles[]=$result; 
+                        
+                     }                                                                          
+                }
+                return Response::returnSuccess("success",$Profiles);
+             }
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="PublishedBride") {    /* Profile => Posted */
+             
+                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and SexCode='SX002' and IsApproved='1' and RequestToVerify='1'");
+                if (sizeof($PublishedProfiles)>0) {
+                    foreach($PublishedProfiles as $PublishedProfile) {
+                        $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);
+                        $result['mode']="Published"; 
+                        $RecentlyViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `VisterProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['RecentlyViewed']= sizeof($RecentlyViewedcount);
+                        
+                        $MyFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `VisterProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['MyFavorited']= sizeof($MyFavoritedcount);
+                        
+                        $WhoViewedcount = $mysql->select("select * from `_tbl_profiles_lastseen` where `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `VisterProfileCode` ");
+                        $result['RecentlyWhoViwed']= sizeof($WhoViewedcount);
+                        
+                        $WhoFavoritedcount = $mysql->select("select * from `_tbl_profiles_favourites` where `IsVisible`='1' and `IsFavorite` ='1' and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' group by `ProfileID` ");
+                        $result['WhoFavorited']= sizeof($WhoFavoritedcount);
+                        
+                        $MutualCount = $mysql->select("select * from _tbl_profiles_favourites where `IsFavorite` ='1' and `IsVisible`='1' and  `ProfileCode` in (select `VisterProfileCode` from `_tbl_profiles_favourites` where `IsFavorite` ='1' and `IsVisible`='1'  and `ProfileCode` = '".$PublishedProfile['ProfileCode']."' order by FavProfileID DESC)");
+                        $result['MutualCount']= sizeof($WhoFavoritedcount);
+                        
+                        $Profiles[]=$result; 
+                        
+                     }                                                                          
+                }
+                return Response::returnSuccess("success",$Profiles);
+             }
+             if (isset($_POST['ProfileFrom']) && $_POST['ProfileFrom']=="PublishedGroom") {    /* Profile => Posted */
+             
+                $PublishedProfiles = $mysql->select("select * from `_tbl_profiles` where `CreatedByFranchiseeStaffID`='".$loginInfo[0]['FranchiseeStaffID']."' and SexCode='SX001' and IsApproved='1' and RequestToVerify='1'");
                 if (sizeof($PublishedProfiles)>0) {
                     foreach($PublishedProfiles as $PublishedProfile) {
                         $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);
@@ -5393,7 +5528,7 @@
              return Response::returnSuccess("success",array("MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
                                                             "Religion"      => CodeMaster::getData('RELINAMES'),
                                                             "Caste"      => CodeMaster::getData('CASTNAMES'),
-                                                            ));
+                                                            "Sex"      => CodeMaster::getData('SEX')));
          }
      function AddMemberBasicSearchDetails() {
 
@@ -5402,7 +5537,7 @@
              $MaritalStatus  = CodeMaster::getData("MARTIALSTATUS",explode(",",$_POST['MaritalStatus']));
              $Religion       = CodeMaster::getData("RELINAMES",explode(",",$_POST['Religion'])); 
              $Caste       = CodeMaster::getData("CASTNAMES",explode(",",$_POST['Caste'])); 
-             
+             $Sex = CodeMaster::getData("SEX",$_POST['Sex']);
              $MaritalStatus_CodeValue="";
              foreach($MaritalStatus as $M) {
                $MaritalStatus_CodeValue .= $M['CodeValue'].", ";
@@ -5413,7 +5548,7 @@
                $Religion_CodeValue .= $R['CodeValue'].", ";  
                $Religion_SoftCode .= $R['SoftCode'].", ";  
              }
-             $Caste_CodeValue="";
+             $Caste_CodeValue="";                                                          
              foreach($Caste as $C) {
                $Caste_CodeValue .= $C['CodeValue'].", ";  
                $Caste_SoftCode .= $C['SoftCode'].", ";  
@@ -5424,7 +5559,7 @@
               
                    $id = $mysql->insert("_tbl_member_basic_search",array("MemberID"          => $loginInfo[0]['FranchiseeID'],
                                                                          //"ProfileID"         => $profile[0]['ProfileID'],
-                                                                         "Sex"               => $Franchisee[0]['Sex'],
+                                                                         "Sex"               => $Sex[0]['CodeValue'],
                                                                          "MaritalStatusCode" => substr($MaritalStatus_SoftCode,0,strlen($MaritalStatus_SoftCode)-2),
                                                                          "MaritalStatus"     => substr($MaritalStatus_CodeValue,0,strlen($MaritalStatus_CodeValue)-2),
                                                                          "ReligionCode"      => substr($Religion_SoftCode,0,strlen($Religion_SoftCode)-2),
@@ -5452,6 +5587,7 @@
              return Response::returnSuccess("success",array("SkinType"      => CodeMaster::getData('COMPLEXIONS'),
                                                             "MaritalStatus" => CodeMaster::getData('MARTIALSTATUS'),
                                                             "Religion"      => CodeMaster::getData('RELINAMES'),
+                                                            "Sex"         => CodeMaster::getData('SEX'),
                                                             "Caste"         => CodeMaster::getData('CASTNAMES'),
                                                             "IncomeRange"   => CodeMaster::getData('INCOMERANGE'),
                                                             "Occupation"    => CodeMaster::getData('Occupation'),
@@ -5478,7 +5614,8 @@
              $Smoke          = CodeMaster::getData("SMOKINGHABITS",explode(",",$_POST['Smoke'])); 
              $Drink          = CodeMaster::getData("DRINKINGHABITS",explode(",",$_POST['Drink'])); 
              $BodyType       = CodeMaster::getData("BODYTYPES",explode(",",$_POST['BodyType'])); 
-             $Complexion     = CodeMaster::getData("COMPLEXIONS",explode(",",$_POST['Complexion'])); 
+             $Complexion     = CodeMaster::getData("COMPLEXIONS",explode(",",$_POST['Complexion']));
+             $Sex = CodeMaster::getData("SEX",$_POST['Sex']); 
              
              $MaritalStatus_CodeValue="";
              foreach($MaritalStatus as $M) {
@@ -5543,10 +5680,10 @@
              
              //$profile = $mysql->select("select * from _tbl_profiles where MemberID='".$loginInfo[0]['MemberID']."'"); 
             // $Member = $mysql->select("select * from _tbl_members where MemberID='".$loginInfo[0]['MemberID']."'"); 
-                $Franchisee = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'");               
+                $Franchisee = $mysql->select("select * from _tbl_franchisees_staffs where FranchiseeID='".$loginInfo[0]['FranchiseeID']."'");                
                   $id = $mysql->insert("_tbl_member_advance_search",array("MemberID"         => $loginInfo[0]['FranchiseeID'],
                                                                         // "ProfileID"         => $profile[0]['ProfileID'],
-                                                                         "Sex"               => $Franchisee[0]['Sex'],
+                                                                         "Sex"               => $Sex[0]['CodeValue'],
                                                                          "MaritalStatusCode" => substr($MaritalStatus_SoftCode,0,strlen($MaritalStatus_SoftCode)-2),
                                                                          "MaritalStatus"     => substr($MaritalStatus_CodeValue,0,strlen($MaritalStatus_CodeValue)-2),
                                                                          "ReligionCode"      => substr($Religion_SoftCode,0,strlen($Religion_SoftCode)-2),

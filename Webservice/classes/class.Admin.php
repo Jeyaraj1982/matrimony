@@ -56,12 +56,12 @@
                                                            "DefaultPlanCode"=> $DefaultPlan[0]['PlanCode'],
                                                            "CountryCode"    => CodeMaster::getData('RegisterAllowedCountries'),
                                                            "CountryName"    => CodeMaster::getData('CONTNAMES'),
-                                                           "IDProof"    	=> CodeMaster::getData('DOCTYPES'),
-														   "BankName"       => CodeMaster::getData('BANKNAMES'),
+                                                           "IDProof"        => CodeMaster::getData('DOCTYPES'),
+                                                           "BankName"       => CodeMaster::getData('BANKNAMES'),
                                                            "AccountType"    => CodeMaster::getData('AccountType'),
                                                            "Gender"         => CodeMaster::getData('SEX')));
         }
-		
+        
 		function AddFranchiseeBankDetails() {
 			global $mysql,$loginInfo;
 			
@@ -2996,6 +2996,24 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 return Response::returnSuccess("success",$mysql->select($sql."  WHERE _tbl_profiles.IsApproved='1' and _tbl_profiles.IsPublish='0'"));    
              }
          }
+         function ProfilesBrideGroomCount() {
+             global $mysql,$loginInfo;
+             if (isset($_POST['Request']) && $_POST['Request']=="Draft") {   
+                 $GroomCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `RequestToVerify`='0' and SexCode='SX001'");
+                 $BrideCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `RequestToVerify`='0' and SexCode='SX002'");
+                return Response::returnSuccess("success",array("Groom" => $GroomCount[0],"Bride" => $BrideCount[0]));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Request") {   
+                 $GroomCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where RequestToVerify='1' and IsApproved='0' and SexCode='SX001'");
+                 $BrideCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `RequestToVerify`='1' and IsApproved='0' and SexCode='SX002'");
+                return Response::returnSuccess("success",array("Groom" => $GroomCount[0],"Bride" => $BrideCount[0]));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="Publish") {   
+                 $GroomCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where RequestToVerify='1' and IsApproved='1' and SexCode='SX001'");
+                 $BrideCount = $mysql->select("select count(*) as cnt from `_tbl_draft_profiles` where `RequestToVerify`='1' and IsApproved='1' and SexCode='SX002'");
+                return Response::returnSuccess("success",array("Groom" => $GroomCount[0],"Bride" => $BrideCount[0]));    
+             }
+         }
     function GetProfilesDetatils() {
          global $mysql; 
          if (isset($_POST['Request']) && $_POST['Request']=="Draft") {  
@@ -3004,6 +3022,8 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                     foreach($DraftProfiles as $DraftProfile) {
                         $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
                         $result['mode']="Draft"; 
+                        $Plan =$mysql->select("select * from _tbl_profile_credits where MemberCode='".$DraftProfile['MemberCode']."'");
+                        $result['Plan']=$Plan[0];
                         $Profiles[]=$result;                                                                     
                      }                                                                          
                 }
@@ -3014,7 +3034,9 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 if (sizeof($DraftProfiles)>0) {
                     foreach($DraftProfiles as $DraftProfile) {
                         $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
-                        $result['mode']="Draft"; 
+                        $result['mode']="Draft";
+                        $Plan =$mysql->select("select * from _tbl_profile_credits where MemberCode='".$DraftProfile['MemberCode']."'");
+                        $result['Plan']=$Plan[0]; 
                         $Profiles[]=$result;                                                                     
                      }                                                                          
                 }
@@ -3026,6 +3048,8 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                     foreach($DraftProfiles as $DraftProfile) {
                         $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
                         $result['mode']="Draft"; 
+                        $Plan =$mysql->select("select * from _tbl_profile_credits where MemberCode='".$DraftProfile['MemberCode']."'");
+                        $result['Plan']=$Plan[0];
                         $Profiles[]=$result;                                                                     
                      }                                                                          
                 }
@@ -3036,7 +3060,9 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 if (sizeof($DraftProfiles)>0) {
                     foreach($DraftProfiles as $DraftProfile) {
                         $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
-                        $result['mode']="Draft"; 
+                        $result['mode']="Submitted To review";
+                        $Plan =$mysql->select("select * from _tbl_profile_credits where MemberCode='".$DraftProfile['MemberCode']."'");
+                        $result['Plan']=$Plan[0];  
                         $Profiles[]=$result;                                                                     
                      }                                                                          
                 }
@@ -3047,7 +3073,9 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 if (sizeof($DraftProfiles)>0) {
                     foreach($DraftProfiles as $DraftProfile) {
                         $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
-                        $result['mode']="Draft"; 
+                        $result['mode']="Submitted To Review"; 
+                        $Plan =$mysql->select("select * from _tbl_profile_credits where MemberCode='".$DraftProfile['MemberCode']."'");
+                        $result['Plan']=$Plan[0]; 
                         $Profiles[]=$result;                                                                     
                      }                                                                          
                 }
@@ -3059,6 +3087,8 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                     foreach($DraftProfiles as $DraftProfile) {
                         $result = Profiles::getDraftProfileInformation($DraftProfile['ProfileCode'],2);
                         $result['mode']="Draft"; 
+                        $Plan =$mysql->select("select * from _tbl_profile_credits where MemberCode='".$DraftProfile['MemberCode']."'");
+                        $result['Plan']=$Plan[0]; 
                         $Profiles[]=$result;                                                                     
                      }                                                                          
                 }
@@ -3070,6 +3100,8 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                     foreach($PublishedProfiles as $PublishedProfile) {
                         $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);
                         $result['mode']="Published"; 
+                        $Plan =$mysql->select("select * from _tbl_profile_credits where MemberCode='".$PublishedProfile['MemberCode']."'");
+                        $result['Plan']=$Plan[0]; 
                         $Profiles[]=$result;                                                                     
                      }                                                                          
                 }
@@ -3080,7 +3112,9 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
                 if (sizeof($PublishedProfiles)>0) {
                     foreach($PublishedProfiles as $PublishedProfile) {
                         $result = Profiles::getProfileInfo($PublishedProfile['ProfileCode'],2);
-                        $result['mode']="Published"; 
+                        $result['mode']="Published";                                                                                         
+                        $Plan =$mysql->select("select * from _tbl_profile_credits where MemberCode='".$PublishedProfile['MemberCode']."'");
+                        $result['Plan']=$Plan[0];  
                         $Profiles[]=$result;                                                                     
                      }                                                                          
                 }
@@ -7148,6 +7182,12 @@ function UpdateBusinessConfiguration() {
                     return Response::returnError("Access denied. Please contact support");   
                 }
     }
+    function GetPaymentGatewayDetails(){
+        global $mysql,$loginInfo;
+            $Payu=$mysql->select("select * from  _tbl_pg_vendors where VendorType='Payu' and PaymentGatewayVendorCode='".$_POST['Code']."'"); 
+            return Response::returnSuccess("success",array("Payu" => $Payu[0]));    
+        
+    }
     function CreatePayu(){
         global $mysql,$loginInfo;
 		
@@ -7399,24 +7439,54 @@ function UpdateBusinessConfiguration() {
          }
 	function GetPaymentGatewayMenu() {
         return Response::returnSuccess("success",array("VendorType" => CodeMaster::getData('VENDORTYPE')));
-    }
+    }                                                                                    
 	function GetManagePaymentGateway() {
            global $mysql;    
              $sql = "select * from  _tbl_pg_vendors";
              if (isset($_POST['Request']) && $_POST['Request']=="Payu") {
                 return Response::returnSuccess("success",$mysql->select($sql." where VendorType='Payu'"));    
              }
+             if (isset($_POST['Request']) && $_POST['Request']=="ActivePayu") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='Payu' and VendorStatus='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="DeactivePayu") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='Payu' and VendorStatus='0'"));    
+             }
 			 if (isset($_POST['Request']) && $_POST['Request']=="Instamajo") {
                 return Response::returnSuccess("success",$mysql->select($sql." where VendorType='instamajo'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="ActiveInstamajo") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='instamajo' and VendorStatus='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="DeactiveInstamajo") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='instamajo' and VendorStatus='0'"));    
              }
 			 if (isset($_POST['Request']) && $_POST['Request']=="CCavenue") {
                 return Response::returnSuccess("success",$mysql->select($sql." where VendorType='ccavenue'"));    
              }
+             if (isset($_POST['Request']) && $_POST['Request']=="ActiveCCavenue") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='ccavenue' and VendorStatus='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="DeactiveCCavenue") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='ccavenue' and VendorStatus='0'"));    
+             }
 			 if (isset($_POST['Request']) && $_POST['Request']=="Paytm") {
                 return Response::returnSuccess("success",$mysql->select($sql." where VendorType='paytm'"));    
              }
+             if (isset($_POST['Request']) && $_POST['Request']=="ActivePaytm") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='paytm' and VendorStatus='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="DeactivePaytm") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='paytm' and VendorStatus='0'"));    
+             }
 			 if (isset($_POST['Request']) && $_POST['Request']=="Paypal") {
                 return Response::returnSuccess("success",$mysql->select($sql." where VendorType='Paypal'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="ActivePaypal") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='Paypal' and VendorStatus='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="DeactivePaypal") {
+                return Response::returnSuccess("success",$mysql->select($sql." where VendorType='Paypal' and VendorStatus='0'"));    
              }                                                                                                                                                                            
              
          }
@@ -8716,6 +8786,41 @@ function UpdateBusinessConfiguration() {
                                                             
                  }
             return Response::returnSuccess("success",$Profiles);
+    }
+    function GetImageOnProfilePhotoInformation() {
+        global $mysql,$loginInfo;
+        $ImageOnProfilePhoto = $mysql->select("select * from _tbl_master_codemaster where IsActive='1' and SoftCode='IMAGEONPROFILEPHOTO'");
+        return Response::returnSuccess("success",array("ImageOnProfilePhoto" => $ImageOnProfilePhoto[0]));
+    }
+    function UpdateImageOnProfilePhoto(){
+        global $mysql,$loginInfo;
+        $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+            $ImageOnProfilePhoto = $mysql->select("select * from _tbl_master_codemaster where IsActive='1' and SoftCode='IMAGEONPROFILEPHOTO'");
+            if($ImageOnProfilePhoto[0]['ParamA']==""){
+               if (!(strlen(trim($_POST['File']))>0)) {
+                    return Response::returnError("Please Select Image ");
+               } 
+            }
+            
+            if (isset($_POST['File'])) {
+            $mysql->execute("update _tbl_master_codemaster set ParamA='".$_POST['File']."',
+                                                               ParamB='".$_POST['HorizontalAlign']."',
+                                                               ParamC='".$_POST['VerticalAlign']."',
+                                                               ParamD='".$_POST['Padding']."',
+                                                               ParamE='".(($_POST['IsActive']=="on") ? '1' : '0')."'
+                                                               where `SoftCode`='IMAGEONPROFILEPHOTO'");                     
+            }else{
+              $mysql->execute("update _tbl_master_codemaster set ParamB='".$_POST['HorizontalAlign']."',
+                                                               ParamC='".$_POST['VerticalAlign']."',
+                                                               ParamD='".$_POST['Padding']."',
+                                                               ParamE='".(($_POST['IsActive']=="on") ? '1' : '0')."'
+                                                               where `SoftCode`='IMAGEONPROFILEPHOTO'");  
+            }
+        
+        return Response::returnSuccess("success",array());
     }
 
 }
