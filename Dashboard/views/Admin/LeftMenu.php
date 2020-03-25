@@ -34,8 +34,8 @@
                 <div class="collapse" id="manageprofiles">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/AdminRequested");?>">Admin Requested</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Drafted");?>">Drafted</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/Published");?>">Published</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php  echo GetUrl("Profiles/List?Filter=Drafted&View=Grid&Gender=All");?>">Draft Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php  echo GetUrl("Profiles/List?Filter=Published&View=Grid&Gender=All");?>">Published Profiles</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/PublishedGroom");?>">Published Groom</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/PublishedBride");?>">Published Bride</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Profiles/UnPublished");?>">UnPublished</a></li>
@@ -181,9 +181,10 @@
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/ManageStaffs");?>">Manage Staffs</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/Backup");?>">Backup</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/TextOnImage");?>">Text On Image</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/LogoOnImage");?>">Logo On Image</a></li>
-                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/BusinessSettings/BusinessSettings");?>">Business Settings</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/TextOnImage");?>">Text On Image</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/LogoOnImage");?>">Logo On Image</a></li>-->
+                        
+                         <!-- <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/BusinessSettings/BusinessSettings");?>">Business Settings</a></li>-->
                     </ul>
                 </div>
             </li>

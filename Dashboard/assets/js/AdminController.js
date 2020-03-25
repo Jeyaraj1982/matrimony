@@ -7375,12 +7375,12 @@ var AppSettings = {
 };
 var PaymentGateway = {    
    
- ConfirmCreatePayu:function() {
+    ConfirmEditPayu:function() {
      
     if(SubmitPayu()) {
             $('#PubplishNow').modal('show'); 
             var content = '<div class="modal-header">'
-                                + '<h4 class="modal-title">Confirmation of create payu</h4>'
+                                + '<h4 class="modal-title">Confirmation of edit payu</h4>'
                                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                            + '</div>'
                            + '<div class="modal-body">'
@@ -7398,16 +7398,16 @@ var PaymentGateway = {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" onclick="PaymentGateway.GetTxnPasswordFrCreatePayu()" style="font-family:roboto">Create</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="PaymentGateway.GetTxnPasswordFrEditPayu()" style="font-family:roboto">Create</button>'
                            + '</div>';
             $('#Publish_body').html(content);
        } else {
           return false;
        }
      } ,
-	 GetTxnPasswordFrCreatePayu:function() {
+     GetTxnPasswordFrEditPayu:function() {
         var content =  '<div class="modal-header">'
-                            + '<h4 class="modal-title">Confirmation for create payu</h4>'
+                            + '<h4 class="modal-title">Confirmation for edit payu</h4>'
                             + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                       + '</div>'
                       + '<div class="modal-body">'
@@ -7428,20 +7428,20 @@ var PaymentGateway = {
                     + '</div>'
                         + '<div class="modal-footer">'
                             + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                            + '<button type="button" onclick="PaymentGateway.CreatePayu()" class="btn btn-primary" >Continue</button>'
+                            + '<button type="button" onclick="PaymentGateway.EditPayu()" class="btn btn-primary" >Continue</button>'
                         + '</div>';
         $('#Publish_body').html(content);            
     },
 
-    CreatePayu:function() {
+    EditPayu:function() {
         if ($("#TransactionPassword").val().trim()=="") {
              $("#frmTxnPass_error").html("Please enter transaction password");
              return false;
          }    
         $("#txnPassword").val($("#TransactionPassword").val());   
-		var param = $("#frmfrPaymentGateway").serialize();
+        var param = $("#frmfrPaymentGateway").serialize();
         $('#Publish_body').html(preloading_withText("Loading ...","123"));
-        $.post(getAppUrl() + "m=Admin&a=CreatePayu",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=EditPayu",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -7452,7 +7452,7 @@ var PaymentGateway = {
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
                                     + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
-                                    + '<h3 style="text-align:center;">Payu created</h3>'
+                                    + '<h3 style="text-align:center;">Updated Payu</h3>'
                                     + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/PaymentGateway/ManagePayu" style="cursor:pointer">Continue</a></p>'
                                 +'</div>' 
                             +'</div>';
@@ -7461,7 +7461,7 @@ var PaymentGateway = {
                 var data = obj.data; 
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-header">'
-                                    +'<h4 class="modal-title">Create payu</h4>'
+                                    +'<h4 class="modal-title">Edit payu</h4>'
                                     +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
                                 +'</div>'
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'

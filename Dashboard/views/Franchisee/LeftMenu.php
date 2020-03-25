@@ -44,7 +44,7 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#manageprofiles" aria-expanded="false" aria-controls="ui-basic">
                     <i class="menu-icon mdi mdi-content-copy "></i>
-                    <span class="menu-title">Manage Profiles</span>
+                    <span class="menu-title">Manage My Profiles</span>
                     <i class="menu-arrow"></i>
                 </a>
                 <div class="collapse" id="manageprofiles">
@@ -53,13 +53,13 @@
                             <a class="nav-link" href="<?php echo GetUrl("NewProfile");?>">Create Profile</a>
                         </li> 
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("DraftedProfiles");?>">Drafted Profile</a>
+                            <a class="nav-link" href="<?php echo GetUrl("DraftedProfiles");?>">Draft Profiles</a>
                         </li> 
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("PostedProfiles");?>">Submitted to Review</a>
                         </li> 
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("PublishedProfiles");?>">Published Profile</a>
+                            <a class="nav-link" href="<?php echo GetUrl("PublishedProfiles");?>">Published Profiles</a>
                         </li> 
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("SearchProfile");?>" >Add Profile to Home Page</a>

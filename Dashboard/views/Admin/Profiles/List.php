@@ -2,10 +2,17 @@
 <?php   
     if($_GET['Filter']=="Drafted"){ 
         $response = $webservice->getData("Admin","GetProfilesDetatils",array("Request"=>"Draft"));
+        $res = $webservice->getData("Admin","ProfilesBrideGroomCount",array("Request"=>"Draft"));
+        $Filter = "Drafted";
+    }
+    if($_GET['Filter']=="Requested"){ 
+        $response = $webservice->getData("Admin","GetProfilesDetatils",array("Request"=>"Request"));
+        $res = $webservice->getData("Admin","ProfilesBrideGroomCount",array("Request"=>"Request"));
         $Filter = "Drafted";
     }
     if($_GET['Filter']=="Published"){ 
         $response = $webservice->getData("Admin","GetProfilesDetatils",array("Request"=>"Publish"));
+        $res = $webservice->getData("Admin","ProfilesBrideGroomCount",array("Request"=>"Publish"));
         $Filter = "Published";
     }
 ?>    
@@ -13,17 +20,40 @@
         <div class="card">
             <div class="card-body">
                 <div class="form-group row">
-                        <div class="col-sm-6">
-                        <h4 class="card-title">Profiles</h4>
-                        </div>
-                        <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                            <a href="<?php  echo GetUrl("Profiles/List?Filter=Drafted&View=Grid&Gender=All");?>"><?php if($_GET['Filter']=="Drafted") { ?><small style="font-weight:bold;text-decoration:underline"><?php } else{ ?><small><?php } ?>Drafted</small></a>&nbsp;|&nbsp;
-                            <a href="<?php  echo GetUrl("Profiles/List?Filter=Requested&View=Grid&Gender=All");?>"><?php if($_GET['Filter']=="Requested") { ?><small style="font-weight:bold;text-decoration:underline"><?php } else{ ?><small><?php } ?>Requested</small></a>&nbsp;|&nbsp;
-                            <a href="<?php  echo GetUrl("Profiles/List?Filter=Published&View=Grid&Gender=All");?>"><?php if($_GET['Filter']=="Published") { ?><small style="font-weight:bold;text-decoration:underline"><?php } else{ ?><small><?php } ?>Published</small></a>&nbsp;|&nbsp;
-                            <a href="<?php  echo GetUrl("Profiles/List?Filter=UnPublished&View=Grid&Gender=All");?>"><?php if($_GET['Filter']=="UnPublished") { ?> <small style="font-weight:bold;text-decoration:underline"><?php } else{ ?><small><?php } ?>UnPublished</small></a>&nbsp;|&nbsp;
-                            <a href="<?php  echo GetUrl("Profiles/List?Filter=Rejected&View=Grid&Gender=All");?>"><?php if($_GET['Filter']=="Rejected") { ?><small style="font-weight:bold;text-decoration:underline"><?php } else{ ?><small><?php } ?>Rejected</small></a>
+                    <div class="col-sm-6"><h4 class="card-title">Profiles</h4></div>
+                    <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
+                        <a href="<?php  echo GetUrl("Profiles/List?Filter=Drafted&View=Grid&Gender=All");?>"><?php if($_GET['Filter']=="Drafted") { ?><small style="font-weight:bold;text-decoration:underline"><?php } else{ ?><small><?php } ?>Drafted</small></a>&nbsp;|&nbsp;
+                        <a href="<?php  echo GetUrl("Profiles/List?Filter=Requested&View=Grid&Gender=All");?>"><?php if($_GET['Filter']=="Requested") { ?><small style="font-weight:bold;text-decoration:underline"><?php } else{ ?><small><?php } ?>Submitted to review</small></a>&nbsp;|&nbsp;
+                        <a href="<?php  echo GetUrl("Profiles/List?Filter=Published&View=Grid&Gender=All");?>"><?php if($_GET['Filter']=="Published") { ?><small style="font-weight:bold;text-decoration:underline"><?php } else{ ?><small><?php } ?>Published</small></a>&nbsp;|&nbsp;
+                        <a href="<?php  echo GetUrl("Profiles/List?Filter=UnPublished&View=Grid&Gender=All");?>"><?php if($_GET['Filter']=="UnPublished") { ?> <small style="font-weight:bold;text-decoration:underline"><?php } else{ ?><small><?php } ?>UnPublished</small></a>&nbsp;|&nbsp;
+                        <a href="<?php  echo GetUrl("Profiles/List?Filter=Rejected&View=Grid&Gender=All");?>"><?php if($_GET['Filter']=="Rejected") { ?><small style="font-weight:bold;text-decoration:underline"><?php } else{ ?><small><?php } ?>Rejected</small></a>
+                    </div>
+                </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6" style="padding-top:5px;">
+                        <?php if($_GET['Filter']=="Drafted"){  ?>
+                            <a href="<?php  echo GetUrl("Profiles/List?Filter=Drafted&View=Grid&Gender=Bride");?>"><?php if($_GET['Gender']=="Bride") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Brides (<?php echo $res['data']['Bride']['cnt'];?>)</small></a>&nbsp;|&nbsp;
+                            <a href="<?php  echo GetUrl("Profiles/List?Filter=Drafted&View=Grid&Gender=Groom");?>"><?php if($_GET['Gender']=="Groom") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Grooms (<?php echo $res['data']['Groom']['cnt'];?>)</small></a>
+                        <?php } ?>
+                        <?php if($_GET['Filter']=="Requested"){  ?>
+                            <a href="<?php  echo GetUrl("Profiles/List?Filter=Requested&View=Grid&Gender=Bride");?>"><?php if($_GET['Gender']=="Bride") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Brides (<?php echo $res['data']['Bride']['cnt'];?>)</small></a>&nbsp;|&nbsp;
+                            <a href="<?php  echo GetUrl("Profiles/List?Filter=Requested&View=Grid&Gender=Groom");?>"><?php if($_GET['Gender']=="Groom") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Grooms (<?php echo $res['data']['Groom']['cnt'];?>)</small></a>
+                        <?php } ?>
+                        <?php if($_GET['Filter']=="Published"){  ?>
+                            <a href="<?php  echo GetUrl("Profiles/List?Filter=Published&View=Grid&Gender=Bride");?>"><?php if($_GET['Gender']=="Bride") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Brides (<?php echo $res['data']['Bride']['cnt'];?>)</small></a>&nbsp;|&nbsp;
+                            <a href="<?php  echo GetUrl("Profiles/List?Filter=Published&View=Grid&Gender=Groom");?>"><?php if($_GET['Gender']=="Groom") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Grooms (<?php echo $res['data']['Groom']['cnt'];?>)</small></a>
+                        <?php } ?>
+                        <?php if($_GET['Filter']=="UnPublished"){  ?>
+                            <a href="<?php  echo GetUrl("Profiles/List?Filter=UnPublished&View=Grid&Gender=Bride");?>"><?php if($_GET['Gender']=="Bride") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Brides (<?php echo $res['data']['Bride']['cnt'];?>)</small></a>&nbsp;|&nbsp;
+                            <a href="<?php  echo GetUrl("Profiles/List?Filter=UnPublished&View=Grid&Gender=Groom");?>"><?php if($_GET['Gender']=="Groom") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Grooms (<?php echo $res['data']['Groom']['cnt'];?>)</small></a>
+                        <?php } ?>
+                        <?php if($_GET['Filter']=="Rejected"){  ?>
+                            <a href="<?php  echo GetUrl("Profiles/List?Filter=Rejected&View=Grid&Gender=Bride");?>"><?php if($_GET['Gender']=="Bride") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Brides (<?php echo $res['data']['Bride']['cnt'];?>)</small></a>&nbsp;|&nbsp;
+                            <a href="<?php  echo GetUrl("Profiles/List?Filter=Rejected&View=Grid&Gender=Groom");?>"><?php if($_GET['Gender']=="Groom") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Grooms (<?php echo $res['data']['Groom']['cnt'];?>)</small></a>
+                        <?php } ?>
                         </div>
                     </div>
+                
                     <?php   
                         if($_GET['Filter']=="Drafted"){ 
                             if( $_GET['Gender']=="All"){
@@ -135,12 +165,22 @@
                                 <td><?php echo $Profile['ProfileName'];?></td> 
                                 <td><?php echo $Profile['CreatedOn'];?></td>
                                 <?php if($Filter=="Published"){ ?><td><?php echo $Profile['IsApprovedOn'];?></td><?php } ?>
-								<td><?php echo $P['Plan'][0]['PlanName'];?></td>								
-                                <td><?php echo putDate($P['Plan'][0]['EndingDate']);?></td>
-                                <td><a href="<?php echo GetUrl("Profiles/ViewPublishProfile/". $Profile['ProfileCode'].".htm");?>"><span>View</span></a></td>
+								<td><?php echo $P['Plan']['PlanName'];?></td>								
+                                <td><?php echo putDate($P['Plan']['EndingDate']);?></td>
+                                <td>
+                                    <?php if($_GET['Filter']=="Drafted"){ ?>
+                                    <a href="<?php echo GetUrl("Profiles/ViewDraftProfile/". $Profile['ProfileCode'].".htm");?>"><span>View</span></a>
+                                    <?php } ?>
+                                    <?php if($_GET['Filter']=="Requested"){ ?>
+                                    <a href="<?php echo GetUrl("Profiles/ViewRequestProfile/". $Profile['ProfileCode'].".htm");?>"><span>View</span></a>
+                                    <?php } ?>
+                                    <?php if($_GET['Filter']=="Published"){ ?>
+                                    <a href="<?php echo GetUrl("Profiles/ViewPublishProfile/". $Profile['ProfileCode'].".htm");?>"><span>View</span></a>
+                                    <?php } ?>
+                                </td>
                                 </tr>
                         <?php }} ?>                                                                                    
-                      </tbody>                        
+                      </tbody>                                                                                                    
                      </table>
                   </div>  
                     <?php } ?> 
@@ -156,7 +196,7 @@
                     <div class="col-sm-3" style="text-align:center;max-width: 182px;">
                     <div style="line-height: 25px;color: #867c7c;font-size:14px;font-weight:bold;">Profile ID:&nbsp;&nbsp;<?php echo $Profile['ProfileCode'];?></div>
                         <img src="<?php echo $P['ProfileThumb'];?>" style="height: 200px;width:150px;border:1px solid #ccc;background:#fff;padding:6px">
-                    <div style="line-height: 25px;color: #867c7c;font-size:14px;"><?php echo $P['Position'];?></div>    
+                    <div style="line-height: 25px;color: #867c7c;font-size:11px;">Member ID:&nbsp;<?php echo $P['Members']['MemberCode'];?></div>    
                     </div>
                     <div class="col-sm-9">
                         <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;width:105%;height: 80px;font-size: 21px;color: #514444cc;">
@@ -193,12 +233,15 @@
                                             <?php echo $Profile['MaritalStatus'];?>
                                         </div>
                                         <div>
-                                            <?php echo $Profile['OccupationType'];?>
+                                            <?php echo $Profile['OccupationType'];?>                                               
                                         </div>
                                         <div>
                                             <?php echo $Profile['AnnualIncome'];?>
                                         </div>
                                     </div>
+                                    <div class="col-sm-4" style="line-height: 25px;color: #867c7c;color: #867c7c;margin-top: 10px;margin-bottom:15px;">
+                                        <div><?php echo $P['Plan']['PlanName'];?>&nbsp;<span data-toggle="popover" data-content="<?php echo "Plan Name :". $P['Plan']['PlanName']; echo"<br>"; echo " Starting Date :". putDate($P['Plan']['StartingDate']); echo"<br>"; echo " Ending Date :". putDate($P['Plan']['EndingDate']);?>"><i class="fa fa-question-circle" aria-hidden="true"></i></span></div>
+                                    </div> 
                                     <div class="col-sm-12" style="border-bottom:1px solid #d7d7d7;color: #867c7c;padding-bottom: 5px;">
                                         <?php echo $Profile['AboutMe'];?>
                                     </div>
@@ -216,7 +259,15 @@
                                 </div>
                                 <div class="col-sm-1">
                                     <div style="float:right;line-height: 1px;">
-                                        <a href="<?php echo GetUrl("Profiles/ViewPublishProfile/". $Profile['ProfileCode'].".htm");?>">View</a>
+                                        <?php if($_GET['Filter']=="Drafted"){ ?>
+                                    <a href="<?php echo GetUrl("Profiles/ViewDraftProfile/". $Profile['ProfileCode'].".htm");?>"><span>View</span></a>
+                                    <?php } ?>
+                                    <?php if($_GET['Filter']=="Requested"){ ?>
+                                    <a href="<?php echo GetUrl("Profiles/ViewRequestProfile/". $Profile['ProfileCode'].".htm");?>"><span>View</span></a>
+                                    <?php } ?>
+                                    <?php if($_GET['Filter']=="Published"){ ?>
+                                    <a href="<?php echo GetUrl("Profiles/ViewPublishProfile/". $Profile['ProfileCode'].".htm");?>"><span>View</span></a>
+                                    <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -248,4 +299,11 @@ $(document).ready(function(){
     $('#myTable_length select').addClass('form-control'); 
     setTimeout("DataTableStyleUpdate()",500);
 });
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+        placement : 'top',
+        trigger : 'hover'
+    });
+});
+// title="Popover title"
 </script>

@@ -3,8 +3,8 @@
 if (file_exists("Dashboard/includes/class.WebConfig.php"))    {
   //  echo "Done";
 } 
-    define("SiteUrl","http://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/");
-    define("DomainUrl","http://www.matrimony.dev.j2jsoftwaresolutions.com/");
+    define("SiteUrl","https://www.matrimony.dev.j2jsoftwaresolutions.com/Dashboard/");
+    define("DomainUrl","https://www.matrimony.dev.j2jsoftwaresolutions.com/");
     define("SITE_TITLE","Matrimony") ;
   
     $__Global = $_SERVER;
@@ -29,7 +29,7 @@ if (file_exists("Dashboard/includes/class.WebConfig.php"))    {
             return json_decode($this->_callUrl("m=".$method."&a=".$action,$param),true);
         }
         
-        function _callUrl($method,$param) {
+        function _callUrl($method,$param) {                                  
             global $__Global;
             $postvars = '';
             foreach($param as $key=>$value) {

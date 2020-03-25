@@ -42,9 +42,9 @@
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="Notification") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/Notification");?>" class="Notification" style="text-decoration:none"><span>Notifications & actions</span></a>
                                         </li>
-                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="KYC") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                        <!--<li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="KYC") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/KYC");?>" class="Notification" style="text-decoration:none"><span>KYC Process</span></a>
-                                        </li>
+                                        </li>-->
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="LoginHistory") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("MySettings/LoginHistory");?>" class="Notification" style="text-decoration:none"><span>Login History</span></a>
                                         </li>

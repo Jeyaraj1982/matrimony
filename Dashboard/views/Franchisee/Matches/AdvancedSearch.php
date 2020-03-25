@@ -159,6 +159,17 @@ function submitSearch() {
              </div>
             </div>
             <div class="form-group row">
+             <label for="Sex" class="col-sm-3 col-form-label">Gender</label>
+             <div class="col-sm-9" align="left">
+                <select class="form-control" id="Sex" name="Sex"> 
+                    <?php foreach($Info['data']['Sex'] as $Sex) { ?>
+                    <option value="<?php echo $Sex['SoftCode'];?>" <?php echo ($_POST['Sex']==$Sex['SoftCode']) ? " selected='selected' " : "";?>> <?php echo $Sex['CodeValue'];?></option>
+                    <?php } ?>
+                </select>
+                <span class="errorstring" id="ErrSex"><?php echo isset($ErrSex)? $ErrSex : "";?></span>        
+             </div>
+            </div>
+            <div class="form-group row">
              <label for="MaritalStatus" class="col-sm-3 col-form-label">Marital Status</label>
              <div class="col-sm-9" align="left">
                 <select class="form-control" id="MaritalStatus" name="MaritalStatus[]" style="display: none;" multiple="multiple">

@@ -233,8 +233,19 @@ RewriteRule ^Logs/ViewIndividualSMS/(.*)\.htm$ ./index.php?Code=$1&p=Logs/ViewIn
 RewriteRule ^Logs/ViewIndividualEmail/(.*)\.htm$ ./index.php?Code=$1&p=Logs/ViewIndividualEmail
 RewriteRule ^Logs/ViewIndividualMessage/(.*)\.htm$ ./index.php?Code=$1&p=Logs/ViewIndividualMessage
 
+RewriteRule ^Settings/PaymentGateway/EditPayu/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/EditPayu
+RewriteRule ^Settings/PaymentGateway/ViewPayu/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/ViewPayu
+RewriteRule ^Settings/PaymentGateway/EditInstamajo/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/EditInstamajo
+RewriteRule ^Settings/PaymentGateway/ViewInstamajo/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/ViewInstamajo
+RewriteRule ^Settings/PaymentGateway/EditCcavenue/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/EditCcavenue
+RewriteRule ^Settings/PaymentGateway/ViewCcavenue/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/ViewCcavenue
+RewriteRule ^Settings/PaymentGateway/EditPaytm/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/EditPaytm
+RewriteRule ^Settings/PaymentGateway/ViewPaytm/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/ViewPaytm
+RewriteRule ^Settings/PaymentGateway/EditPaypal/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/EditPaypal
+RewriteRule ^Settings/PaymentGateway/ViewPaypal/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/ViewPaypal
+
 RewriteRule ^([a-zA-Z0-9-/+]+)([0-9]+)$ index.php?p=$1&pn=$2 [L]
-RewriteRule ^([a-zA-Z0-9-/+]+)$ index.php?p=$1 [QSA]
+RewriteRule ^([a-zA-Z0-9-/+]+)$ index.php?p=$1 [QSA]  
 RewriteRule ^([a-zA-Z0-9-/+]+)([a-zA-Z/]+)([0-9]+)$ index.php?p=/$1&t=$2&pn=$3/ [L]
 RewriteRule ^([a-zA-Z0-9-/+]+)([a-zA-Z/]+)([0-9]+)$ index.php?p=/$1&q=$2&pn=$3/ [L]
 

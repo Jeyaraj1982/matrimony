@@ -8,18 +8,36 @@
             <div class="card-body">
                 <div class="form-group row">
                         <div class="col-sm-6">
-                        <h4 class="card-title">Drafted</h4>
-                        </div>
+                        <h4 class="card-title">Submitted To Review</h4>
+                        </div>                                                    
                         <div class="col-sm-6" style="text-align:right;padding-top:5px;color:skyblue;">
-                            <a href="DraftedProfiles"><small>Drafted</small></a>&nbsp;|&nbsp;
-                            <a href="PostedProfiles"><small style="font-weight:bold;text-decoration:underline">Requested</small></a>&nbsp;|&nbsp;
-                            <a href="PublishedProfiles"><small>Published</small></a>&nbsp;|&nbsp;
-                            <a href="Rejected"><small>Rejected</small></a>
+                            <a href="<?php  echo GetUrl("DraftedProfiles?Filter=Draft&Gender=All");?>"><small >Drafted</small></a>&nbsp;|&nbsp;
+                            <a href="<?php  echo GetUrl("PostedProfiles?Filter=Post&Gender=All");?>"><small style="font-weight:bold;text-decoration:underline">Submitted to review</small></a>&nbsp;|&nbsp;
+                            <a href="<?php  echo GetUrl("PublishedProfiles?Filter=Publish&Gender=All");?>"><small>Published</small></a>&nbsp;|&nbsp;
+                            <a href="<?php  echo GetUrl("PublishedProfiles?Filter=Rejected&Gender=All");?>"><small>Rejected</small></a>
                         </div>
                     </div>
-             
+                    <?php $res = $webservice->getData("Franchisee","ProfilesBrideGroomCount",array("Request"=>"Post"));   ?>
+                    <div class="form-group row">
+                        <div class="col-sm-6" style="padding-top:5px;">
+                            <a href="<?php  echo GetUrl("PostedProfiles?Filter=Post&Gender=Bride");?>"><?php if($_GET['Gender']=="Bride") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Brides (<?php echo $res['data']['Bride']['cnt'];?>)</small></a>&nbsp;|&nbsp;
+                            <a href="<?php  echo GetUrl("PostedProfiles?Filter=Post&Gender=Groom");?>"><?php if($_GET['Gender']=="Groom") { ?><small style="font-weight:bold;text-decoration:underline;color:#3da4ce;"><?php } else{ ?><small style="color:#9b9b9b;"><?php } ?>Grooms (<?php echo $res['data']['Groom']['cnt'];?>)</small></a>
+                        </div>
+                    </div>
+                    <?php 
+    if($_GET['Filter']=="Post"){ 
+        if( $_GET['Gender']=="All"){
+            $response = $webservice->getData("Franchisee","GetMyProfiles",array("ProfileFrom"=>"Posted"));
+        }
+        if( $_GET['Gender']=="Bride"){
+           $response = $webservice->getData("Franchisee","GetMyProfiles",array("ProfileFrom"=>"PostedBride")); 
+        }
+        if( $_GET['Gender']=="Groom"){
+           $response = $webservice->getData("Franchisee","GetMyProfiles",array("ProfileFrom"=>"PostedGroom")); 
+        }                                                                                                      
+    }
+?>
                   <?php 
-                         $response = $webservice->getData("Franchisee","GetMyProfiles",array("ProfileFrom"=>"Posted"));   
                          if (sizeof($response['data'])>0) {                                                                 
                          ?>
                         <?php foreach($response['data']as $P) { 
@@ -77,7 +95,7 @@
                   <?php }} else {?>   
                   <div class="card-body" style="padding:80px;text-align:center;color:#aaa">
                         <img src="<?php echo ImageUrl;?>noprofile.svg" style="height:128px">
-                        <Br> No profiles found in your account
+                        <Br> No profiles found
                         <br>
                         <Br>
                         <br>
