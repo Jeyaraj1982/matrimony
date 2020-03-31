@@ -36,6 +36,9 @@
                                         <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="LogoOnProfilePhoto") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
                                             <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/ApplicationSettings/ImageOnProfilePhoto");?>" class="Notification" style="text-decoration:none"><span>Logo On Profile Photo</span></a>
                                         </li>
+                                        <li class="ft-left-nav-list fusmyacc_leftnavicon2 <?php echo ($page=="BlurOnProfilePhoto") ? ' linkactive1 ':'';?>"style="padding: 8px 0px 8px 14px;border-bottom:1px solid #eee;">
+                                            <a id="myaccount_leftnav_a_6" href="<?php echo GetUrl("Settings/ApplicationSettings/BlurOnProfilePhoto");?>" class="Notification" style="text-decoration:none"><span>Blur On Profile Photo</span></a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

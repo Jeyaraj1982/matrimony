@@ -1,6 +1,10 @@
+<?php $page="Bank Details";?>
+<?php include_once("settings_header.php");?>
 <?php 
-$page="Bank Details";
-include_once("settings_header.php");?>
+ $response = $webservice->getData("Admin","BankDetailsForView");
+    $BankName = $response['data']['BankName'];
+     $Bank    = $response['data']['ViewBankDetails'];
+?>
 <script>
 $(document).ready(function () {
     $("#AccountName").blur(function () {
@@ -44,49 +48,59 @@ function SubmitNewBank() {
                             return false;
                         }
                  }
-</script>  
+</script>
 <div class="col-sm-10 rightwidget">
 <form method="post" id="frmfrPaymentGateway">
     <input type="hidden" value="" name="txnPassword" id="txnPassword">
-    <h4 class="card-title">Bank Account Detailsl</h4>                    
-       <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Bank Name<span id="star">*</span></label>
-              <div class="col-sm-9">
-                  <select class="form-control" id="BankName"  name="BankName" >
-                  <?php $Bank = $webservice->getData("Admin","GetBank"); 
-                  foreach($Bank['data']['BankName'] as $BankName) { ?>
-                        <option value="<?php echo $BankName['SoftCode'];?>" <?php echo ($BankName[ 'SoftCode']==$_POST[ 'BankName']) ? ' selected="selected" ' : '';?>>
-                            <?php echo $BankName['CodeValue'];?>
-                        </option>
-                        <?php } ?>
-                  </select>
-              </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-3 col-form-label">Account Name<span id="star">*</span></label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" id="AccountName" name="AccountName" Placeholder="Account Name" value="<?php echo (isset($_POST['AccountName']) ? $_POST['AccountName'] : "");?>">
-                <span class="errorstring" id="ErrAccountName"><?php echo isset($ErrAccountName)? $ErrAccountName : "";?></span>
-            </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-3 col-form-label">Account Number<span id="star">*</span></label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" id="AccountNumber" name="AccountNumber" Placeholder="Account Number" value="<?php echo (isset($_POST['AccountNumber']) ? $_POST['AccountNumber'] : "");?>">
+    <input type="hidden" value="<?php echo $Bank['BankID'];?>" name="Code" id="Code">
+    <h4 class="card-title">Bank Account Details</h4>
+    <h4 class="card-title">Edit Bank Account Details</h4>                   
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Bank Name<span id="star">*</span></label>
+        <div class="col-sm-9">
+            <select class="form-control" id="BankName"  name="BankName" >
+                <?php foreach($BankName as $BankName) { ?>
+                <option value="<?php echo $BankName['CodeValue'];?>" <?php echo (isset($_POST[ 'BankName'])) ? (($_POST[ 'BankName']==$BankName[ 'CodeValue']) ? " selected='selected' " : "") : (($Bank[ 'BankName']==$BankName[ 'CodeValue']) ? " selected='selected' " : "");?> >
+                    <?php echo $BankName['CodeValue'];?>
+                </option>
+                <?php } ?>
+            </select>
+        </div>                                                                 
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Account Name<span id="star">*</span></label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="AccountName" name="AccountName" Placeholder="Account Name" value="<?php echo (isset($_POST['AccountName']) ? $_POST['AccountName'] : $Bank['AccountName']);?>">
+        <span class="errorstring" id="ErrAccountName"><?php echo isset($ErrAccountName)? $ErrAccountName : "";?></span>
+      </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Account Number<span id="star">*</span></label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="AccountNumber" name="AccountNumber" Placeholder="Account Number" value="<?php echo (isset($_POST['AccountNumber']) ? $_POST['AccountNumber'] : $Bank['AccountNumber']);?>">
             <span class="errorstring" id="ErrAccountNumber"><?php echo isset($ErrAccountNumber)? $ErrAccountNumber : "";?></span>
-          </div>
         </div>
-        <div class="form-group row">
-          <label class="col-sm-3 col-form-label">IFS Code<span id="star">*</span></label>
-          <div class="col-sm-9">
-            <input type="text" maxlength="15" class="form-control" id="IFSCode" name="IFSCode" Placeholder="IFS Code" value="<?php echo (isset($_POST['IFSCode']) ? $_POST['IFSCode'] : "");?>">
-            <span class="errorstring" id="ErrIFSCode"><?php echo isset($ErrIFSCode)? $ErrIFSCode : "";?></span>
-          </div>
-        </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">IFS Code<span id="star">*</span></label>
+      <div class="col-sm-9">
+        <input type="text" maxlength="15" class="form-control" id="IFSCode" name="IFSCode" Placeholder="IFS Code" value="<?php echo (isset($_POST['IFSCode']) ? $_POST['IFSCode'] : $Bank['IFSCode']);?>">
+        <span class="errorstring" id="ErrIFSCode"><?php echo isset($ErrIFSCode)? $ErrIFSCode : "";?></span>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Status<span id="star">*</span></label>
+      <div class="col-sm-3">
+            <select name="Status" class="form-control" style="width: 140px;" >
+                <option value="1" <?php echo ($Bank['IsActive']==1) ? " selected='selected' " : "";?>>Active</option>
+                <option value="0" <?php echo ($Bank['IsActive']==0) ? " selected='selected' " : "";?>>Deactive</option>
+            </select>
+      </div>
+    </div>
         <div class="form-group row" >
             <div class="col-sm-12" style="text-align:right">
-                &nbsp;<a href="<?php  echo GetUrl("Settings/PaymentGateway/ListofBanks?Filter=Banks&Status=All");?>" class="btn btn-default" style="padding:7px 20px" >Cancel</a>&nbsp;
-                <a href="javascript:void(0)" onclick="ConfirmAddBankDetails()" class="btn btn-primary">Create</a>
+                &nbsp;<a href="<?php  echo GetUrl("Settings/PaymentGateway/ListofBanks?Filter=Banks&Status=All");?>" class="btn btn-default" style="padding:7px 20px">Cancel</a>&nbsp;
+                <a href="javascript:void(0)" onclick="ConfirmEditBankDetails()" class="btn btn-primary">Update</a>
             </div>
         </div>
     
@@ -99,12 +113,12 @@ function SubmitNewBank() {
         </div>
     </div>
 </div>
- <script>
-  function ConfirmAddBankDetails() {
+<script>
+function ConfirmEditBankDetails() {
     if(SubmitNewBank()) {
             $('#PubplishNow').modal('show'); 
             var content = '<div class="modal-header">'
-                                + '<h4 class="modal-title">Confirmation of add bank details</h4>'
+                                + '<h4 class="modal-title">Confirmation of edit bank details</h4>'
                                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                            + '</div>'
                            + '<div class="modal-body">'
@@ -114,7 +128,7 @@ function SubmitNewBank() {
                                     + '</div>'
                                     + '<div class="col-sm-8"><br>'
                                         + '<div class="form-group row">'
-                                            +'<div class="col-sm-12">Are you sure want to add bank details<br>'
+                                            +'<div class="col-sm-12">Are you sure want to edit bank details<br>'
                                             +'</div>'
                                         +'</div>'
                                     + '</div>'
@@ -122,16 +136,16 @@ function SubmitNewBank() {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" onclick="GetTxnPasswordFrAddBankDetails()" style="font-family:roboto">Create</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="GetTxnPasswordFrEditBankDetails()" style="font-family:roboto">Update</button>'
                            + '</div>';
             $('#Publish_body').html(content);
        } else {
           return false;
        }
      } 
-     function GetTxnPasswordFrAddBankDetails() {
+     function GetTxnPasswordFrEditBankDetails () {
         var content =  '<div class="modal-header">'
-                            + '<h4 class="modal-title">Confirmation for add bank details</h4>'
+                            + '<h4 class="modal-title">Confirmation for edit bank details</h4>'
                             + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                       + '</div>'
                       + '<div class="modal-body">'
@@ -152,11 +166,11 @@ function SubmitNewBank() {
                     + '</div>'
                         + '<div class="modal-footer">'
                             + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                            + '<button type="button" onclick="AddBankDetails()" class="btn btn-primary" >Continue</button>'
+                            + '<button type="button" onclick="EditBankDetails()" class="btn btn-primary" >Continue</button>'
                         + '</div>';
         $('#Publish_body').html(content);            
     }
-    function AddBankDetails() {
+    function EditBankDetails() {
         if ($("#TransactionPassword").val().trim()=="") {
              $("#frmTxnPass_error").html("Please enter transaction password");
              return false;
@@ -164,7 +178,7 @@ function SubmitNewBank() {
         $("#txnPassword").val($("#TransactionPassword").val());
         var param = $("#frmfrPaymentGateway").serialize();
         $('#Publish_body').html(preloading_withText("Loading ...","123"));
-        $.post(getAppUrl() + "m=Admin&a=CreateBank",param,function(result) {
+        $.post(getAppUrl() + "m=Admin&a=EditBankDetails",param,function(result) {
             if (!(isJson(result.trim()))) {
                 $('#Publish_body').html(result);
                 return ;
@@ -175,7 +189,7 @@ function SubmitNewBank() {
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
                                     + '<p style="text-align:center;margin-top: 40px;"><img src="'+AppUrl+'assets/images/verifiedtickicon.jpg" width="100px"></p>'
-                                    + '<h3 style="text-align:center;">Bank details added</h3>'
+                                    + '<h3 style="text-align:center;">Bank details Updated</h3>'
                                     + '<p style="text-align:center;"><a href="'+AppUrl+'Settings/PaymentGateway/ListofBanks?Filter=Banks&Status=All" style="cursor:pointer">Continue</a></p>'
                                 +'</div>' 
                             +'</div>';
@@ -184,7 +198,7 @@ function SubmitNewBank() {
                 var data = obj.data; 
                 var content = '<div  style="height: 300px;">'                                                                              
                                 +'<div class="modal-header">'
-                                    +'<h4 class="modal-title">Add Bank Details</h4>'
+                                    +'<h4 class="modal-title">Edit bank details</h4>'
                                     +'<button type="button" class="close" data-dismiss="modal" style="padding-top:5px;">&times;</button>'
                                 +'</div>'
                                 +'<div class="modal-body" style="min-height:175px;max-height:175px;">'
@@ -197,5 +211,5 @@ function SubmitNewBank() {
             }
         });
     }
- </script>
+</script>
 <?php include_once("settings_footer.php");?>                    

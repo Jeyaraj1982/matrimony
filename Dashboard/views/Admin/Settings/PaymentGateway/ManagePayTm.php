@@ -19,10 +19,6 @@
 				<tr> 
 				<th>Payu Biz Name</th>
 				<th>Marchant ID</th>
-				<th>Website</th>
-				<th>Identity</th>
-				<th>Channel</th>
-				<th>Secret Key</th>                   
 				<th>Mode</th> 
 				<th>CreatedOn</th>
 				<th></th>
@@ -46,16 +42,12 @@
 						<tr>
 						<td><span class="<?php echo ($Paytm['VendorStatus']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Paytm['VenderName'];?></td>
 						<td><?php echo $Paytm['MarchantID'];?></td>
-						<td><?php echo $Paytm['WebsiteName'];?></td>
-						<td><?php echo $Paytm['Identity'];?></td>
-						<td><?php echo $Paytm['Channel'];?></td>
-						<td><?php echo $Paytm['Secretky'];?></td>
 						<td><?php echo $Paytm['VendorMode'];?></td>
 						<td><?php echo  putDateTime($Paytm['CreatedOn']);?></td>
 						<td style="text-align:right">
-                            <a href="<?php echo GetUrl("Settings/PaymentGateway/EditPaytm/". $Payu['PaymentGatewayVendorCode'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                            <a href="<?php echo GetUrl("Settings/PaymentGateway/ViewPaytm/". $Payu['PaymentGatewayVendorCode'].".htm");?>"><span>View</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                            <a href="<?php echo GetUrl("Settings/PaymentGateway/PaytmTransactions/". $Payu['PaymentGatewayVendorCode'].".htm");?>"><span>Transactions</span></a>
+                            <a href="<?php echo GetUrl("Settings/PaymentGateway/EditPaytm/". $Paytm['PaymentGatewayVendorCode'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a href="<?php echo GetUrl("Settings/PaymentGateway/ViewPaytm/". $Paytm['PaymentGatewayVendorCode'].".htm");?>"><span>View</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a href="<?php echo GetUrl("Settings/PaymentGateway/PaytmTransactions/". $Paytm['PaymentGatewayVendorCode'].".htm");?>"><span>Transactions</span></a>
                         </td>
                         </tr>
 				<?php } ?>            

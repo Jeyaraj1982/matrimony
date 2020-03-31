@@ -19,8 +19,6 @@
 				<tr> 
 				<th>Payu Biz Name</th>
 				<th>Marchant ID</th>
-				<th>Secret Key</th>                   
-				<th>Salt ID</th>
 				<th>Mode</th> 
 				<th>CreatedOn</th>
 				<th></th>
@@ -44,8 +42,6 @@
 						<tr>
 						<td><span class="<?php echo ($Payu['VendorStatus']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Payu['VenderName'];?></td>
 						<td><?php echo $Payu['MarchantID'];?></td>
-						<td><?php echo $Payu['Secretky'];?></td>
-						<td><?php echo $Payu['SaltID'];?></td>
 						<td><?php echo $Payu['VendorMode'];?></td>
 						<td><?php echo  putDateTime($Payu['CreatedOn']);?></td>
 						<td style="text-align:right">

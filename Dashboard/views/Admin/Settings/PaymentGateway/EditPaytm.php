@@ -1,6 +1,9 @@
-<?php $page="ccavenue";?>
+<?php $page="paytm";?>
 <?php include_once("settings_header.php");?>
-
+<?php 
+    $res =$webservice->getData("Admin","GetPaymentGatewayDetails");
+    $Paytm = $res['data']['Paytm'];
+?>
 <script>
 $(document).ready(function () {
    $("#Name").blur(function () {
@@ -8,12 +11,25 @@ $(document).ready(function () {
    });
    $("#MarchantID").blur(function () {
         if(IsNonEmpty("MarchantID","ErrMarchantID","Please Enter Marchant ID")){
-            IsAlphaNumeric("MarchantID","ErrMarchantID","Please Enter Alpha Numeic Chaacters Only");
+           IsAlphaNumeric("MarchantID","ErrMarchantID","Please Enter Alpha Numeric Characters Only");
+        }
+   }); 
+   $("#Website").blur(function () {
+        IsNonEmpty("Website","ErrWebsite","Please Enter Website");
+   });
+   $("#Identity").blur(function () {
+        if(IsNonEmpty("Identity","ErrIdentity","Please Enter Identity")){
+           IsAlphaNumeric("Identity","ErrIdentity","Please Enter Alpha Numeric Characters Only");
+        }
+   }); 
+   $("#Channel").blur(function () {
+        if(IsNonEmpty("Channel","ErrChannel","Please Enter Channel")){
+           IsAlphaNumeric("Channel","ErrChannel","Please Enter Alpha Numeric Characters Only");
         }
    }); 
    $("#SecretKey").blur(function () {
-         if(IsNonEmpty("SecretKey","ErrSecretKey","Please Enter Secret Key")){
-            IsAlphaNumeric("SecretKey","ErrSecretKey","Please Enter Alpha Numeic Chaacters Only");
+       if(IsNonEmpty("SecretKey","ErrSecretKey","Please Enter SecretKey")){
+           IsAlphaNumeric("SecretKey","ErrSecretKey","Please Enter Alpha Numeric Characters Only");
         }
    });
    $("#SuccessUrl").blur(function () {
@@ -22,11 +38,14 @@ $(document).ready(function () {
    $("#FailureUrl").blur(function () {
         IsNonEmpty("FailureUrl","ErrFailureUrl","Please Enter Failure Url");
    });
-   
+  
 });       
-function SubmitCCavenue() {
+function SubmitPaytm() {
                          $('#ErrName').html("");
                          $('#ErrMatchantID').html("");
+                         $('#ErrWebsite').html("");
+                         $('#ErrIdentity').html("");
+                         $('#ErrChannel').html("");
                          $('#ErrSecretKey').html("");
                          $('#ErrSuccessUrl').html("");
                          $('#ErrFailureUrl').html("");
@@ -35,10 +54,17 @@ function SubmitCCavenue() {
         
                         IsNonEmpty("Name","ErrName","Please Enter Name");
                         if(IsNonEmpty("MarchantID","ErrMarchantID","Please Enter Marchant ID")){
-                            IsAlphaNumeric("MarchantID","ErrMarchantID","Please Enter Alpha Numeic Chaacters Only");
+                           IsAlphaNumeric("MarchantID","ErrMarchantID","Please Enter Alpha Numeric Characters Only");
                         }
-                        if(IsNonEmpty("SecretKey","ErrSecretKey","Please Enter Secret Key")){
-                            IsAlphaNumeric("SecretKey","ErrSecretKey","Please Enter Alpha Numeic Chaacters Only");
+                        IsNonEmpty("Website","ErrWebsite","Please Enter Website");
+                        if(IsNonEmpty("Identity","ErrIdentity","Please Enter Identity")){
+                            IsAlphaNumeric("Identity","ErrIdentity","Please Enter Alpha Numeric Characters Only");
+                        }
+                        if(IsNonEmpty("Channel","ErrChannel","Please Enter Channel")){
+                           IsAlphaNumeric("Channel","ErrChannel","Please Enter Alpha Numeric Characters Only");
+                        }
+                        if(IsNonEmpty("SecretKey","ErrSecretKey","Please Enter SecretKey")){
+                           IsAlphaNumeric("SecretKey","ErrSecretKey","Please Enter Alpha Numeric Characters Only");
                         }
                         IsNonEmpty("SuccessUrl","ErrSuccessUrl","Please Enter Success Url");
                         IsNonEmpty("FailureUrl","ErrFailureUrl","Please Enter Failure Url");
@@ -52,80 +78,105 @@ function SubmitCCavenue() {
 }
 </script>
 <?php
-                if (isset($_POST['CreateCCavenuee'])) {
-                    $target_dir = "uploads/CCavenue";
-                    if (!is_dir('uploads/CCavenue')) {
-                        mkdir('uploads/CCavenue', 0777, true);
+                if (isset($_POST['UpdatePaytm'])) {
+                    $target_dir = "uploads/Paytm";
+                    if (!is_dir('uploads/Paytm')) {
+                        mkdir('uploads/Paytm', 0777, true);
                     }
                     $err=0;
                     $acceptable = array('image/jpeg','image/jpg','image/png');
                     
-                    if (isset($_FILES['CCavenueLogo']['name']) && strlen(trim($_FILES['CCavenueLogo']['name']))>0) {
+                    if (isset($_FILES['PaytmLogo']['name']) && strlen(trim($_FILES['PaytmLogo']['name']))>0) {
                         
-                        if(($_FILES['CCavenueLogo']['size'] >= 5000000)) {
+                        if(($_FILES['PaytmLogo']['size'] >= 5000000)) {
                             $err++;
                             echo "Please upload file. File must be less than 5 megabytes.";
                         }
                             
-                        if((!in_array($_FILES['CCavenueLogo']['type'], $acceptable)) && (!empty($_FILES["CCavenueLogo"]["type"]))) {
+                        if((!in_array($_FILES['PaytmLogo']['type'], $acceptable)) && (!empty($_FILES["PaytmLogo"]["type"]))) {
                             $err++;
                             echo "Invalid file type. Only JPG,PNG,JPEG types are accepted.";
                         }
                         
-                        $CCavenueLogo = time().$_FILES["CCavenueLogo"]["name"];
-                        if (!(move_uploaded_file($_FILES["CCavenueLogo"]["tmp_name"],'uploads/CCavenue/' . $CCavenueLogo))) {
+                        $Paytm = time().$_FILES["PaytmLogo"]["name"];
+                        if (!(move_uploaded_file($_FILES["PaytmLogo"]["tmp_name"],'uploads/Paytm/' . $Paytm))) {
                             $err++;
                             echo "Sorry, there was an error uploading your file.";
                         } else {
-                            $_POST['CCavenueLogo']= $CCavenueLogo;
+                            $_POST['PaytmLogo']= $Paytm;
                         }
                         
                     }
                     if ($err==0) {
                        
-                        $res =$webservice->getData("Admin","CreateCCavenue",$_POST);   
+                        $res =$webservice->getData("Admin","EditPaytm",$_POST);   
                        if ($res['status']=="success") {
-                           unset($_POST);
                              $successmessage = $res['message']; 
                         } else {
                             $errormessage = $res['message']; 
                         }
-                       
                     }
+                    $res =$webservice->getData("Admin","GetPaymentGatewayDetails");
+                    $Paytm = $res['data']['Paytm'];
                 }
               
             ?>
 <div class="col-sm-10 rightwidget">
 <form method="post" id="frmfrPaymentGateway" enctype="multipart/form-data">
     <input type="hidden" value="" name="txnPassword" id="txnPassword">
-    <input type="hidden" value="VT0003" name="CcavenueSoftCode" id="CcavenueSoftCode">
-    <input type="hidden" value="ccavenue" name="CcavenueCodeValue" id="CcavenueCodeValue">
-    <h4 class="card-title">Create CCavenue</h4>                    
+    <input type="hidden" value="VT0004" name="PaytmSoftCode" id="PaytmSoftCode">
+    <input type="hidden" value="paytm" name="PaytmCodeValue" id="PaytmCodeValue">
+    <input type="hidden" value="<?php echo $Paytm['PaymentGatewayVendorCode'];?>" name="PaymentGatewayVendorCode" id="PaymentGatewayVendorCode">
+    <h4 class="card-title">Create Paytm</h4>                    
 						<div class="form-group row">
                             <label class="col-sm-3 col-form-label">Name<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="Name" name="Name" Placeholder="Name" value="<?php echo isset($_POST['Name']) ? $_POST['Name'] : "";?>">
+                                <input type="text" class="form-control" id="Name" name="Name" value="<?php echo isset($_POST['Name']) ? $_POST['Name'] : $Paytm['VenderName'];?>" Placeholder="Name">
                                 <span class="errorstring" id="ErrName"><?php echo isset($ErrName)? $ErrName : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Logo<span id="star">*</span></label>
                           <div class="col-sm-9">
-                            <input type="file" id="CCavenueLogo" name="CCavenueLogo">
-                            <span class="errorstring" id="ErrCCavenueLogo"><?php echo isset($ErrCCavenueLogo)? $ErrCCavenueLogo : "";?></span>
+                            <?php if(isset($Paytm['VendorLogo'])){?>
+                                <img src="<?php echo AppUrl;?>uploads/Paytm/<?php echo $Paytm['VendorLogo'];?>" style="height:200px;width:150px">
+                              <?php } ?>
+                            <input type="file" id="PaytmLogo" name="PaytmLogo">
+                            <span class="errorstring" id="ErrPaytmLogo"><?php echo isset($ErrPaytmLogo)? $ErrPaytmLogo : "";?></span>
                           </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Marchant ID<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="MarchantID" name="MarchantID" Placeholder="Marchant ID" value="<?php echo isset($_POST['MarchantID']) ? $_POST['MarchantID'] : "";?>">
+                                <input type="text" class="form-control" id="MarchantID" name="MarchantID" Placeholder="Marchant ID" value="<?php echo isset($_POST['MarchantID']) ? $_POST['MarchantID'] : $Paytm['MarchantID'];?>">
                                 <span class="errorstring" id="ErrMarchantID"><?php echo isset($ErrMarchantID)? $ErrMarchantID : "";?></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Website<span id="star">*</span></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="Website" name="Website" Placeholder="Website" value="<?php echo isset($_POST['Website']) ? $_POST['Website'] : $Paytm['WebsiteName'];?>">
+                                <span class="errorstring" id="ErrWebsite"><?php echo isset($ErrWebsite)? $ErrWebsite : "";?></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Identity<span id="star">*</span></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="Identity" name="Identity" Placeholder="Identity" value="<?php echo isset($_POST['Identity']) ? $_POST['Identity'] : $Paytm['Identity'];?>">
+                                <span class="errorstring" id="ErrIdentity"><?php echo isset($ErrIdentity)? $ErrIdentity : "";?></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Channel<span id="star">*</span></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="Channel" name="Channel" Placeholder="Channel" value="<?php echo isset($_POST['Channel']) ? $_POST['Channel'] : $Paytm['Channel'];?>">
+                                <span class="errorstring" id="ErrChannel"><?php echo isset($ErrChannel)? $ErrChannel : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Secret Key<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="SecretKey" name="SecretKey" Placeholder="Secret Key" value="<?php echo isset($_POST['SecretKey']) ? $_POST['SecretKey'] : "";?>">
+                                <input type="text" class="form-control" id="SecretKey" name="SecretKey" Placeholder="SecretKey" value="<?php echo isset($_POST['SecretKey']) ? $_POST['SecretKey'] : $Paytm['Secretky'];?>">
                                 <span class="errorstring" id="ErrSecretKey"><?php echo isset($ErrSecretKey)? $ErrSecretKey : "";?></span>
                             </div>
                         </div>
@@ -133,49 +184,48 @@ function SubmitCCavenue() {
                             <label class="col-sm-3 col-form-label">Mode<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="form-control" id="Mode"  name="Mode" >
-                                    <option value="Live" <?php echo ($_POST['Mode']=="Live") ? " selected='selected' " : "";?>>Live</option>
-                                    <option value="Test" <?php echo ($_POST['Mode']=="Test") ? " selected='selected' " : "";?>>Test</option>
+                                    <option value="Live" <?php echo (isset($_POST[ 'Mode'])) ? (($_POST[ 'Mode']=="Live") ? " selected='selected' " : "") : (($Paytm[ 'VendorMode']=="Live") ? " selected='selected' " : "");?>>Live</option>
+                                    <option value="Test" <?php echo (isset($_POST[ 'Mode'])) ? (($_POST[ 'Mode']=="Test") ? " selected='selected' " : "") : (($Paytm[ 'VendorMode']=="Live") ? " selected='selected' " : "");?>>Test</option>
                                 </select>
                               <span class="errorstring" id="ErrMode"><?php echo isset($ErrMode)? $ErrMode : "";?></span>
                             </div>
 							<label class="col-sm-2 col-form-label">Status<span id="star">*</span></label>
 							<div class="col-sm-3">
 							    <select class="form-control" id="Status"  name="Status" >
-                                    <option value="1" <?php echo ($_POST['Status']=="1") ? " selected='selected' " : "";?>>Active</option>
-							        <option value="0" <?php echo ($_POST['Status']=="0") ? " selected='selected' " : "";?>>Deactive</option>
-						        </select>
+                                    <option value="1" <?php echo (isset($_POST[ 'Status'])) ? (($_POST[ 'Status']=="1") ? " selected='selected' " : "") : (($Paytm[ 'VendorStatus']==1) ? " selected='selected' " : "");?>>Active</option>
+                                    <option value="0" <?php echo (isset($_POST[ 'Status'])) ? (($_POST[ 'Status']=="0") ? " selected='selected' " : "") : (($Paytm[ 'VendorStatus']==0) ? " selected='selected' " : "");?>>Deactive</option>
+                                </select>   
 							</div>
 						</div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Success Url<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="SuccessUrl" name="SuccessUrl" Placeholder="Success Url" value="<?php echo isset($_POST['SuccessUrl']) ? $_POST['SuccessUrl'] : "";?>">
+                                <input type="text" class="form-control" id="SuccessUrl" name="SuccessUrl" Placeholder="SuccessUrl" value="<?php echo isset($_POST['SuccessUrl']) ? $_POST['SuccessUrl'] : $Paytm['SuccessUrl'];?>">
                                 <span class="errorstring" id="ErrSuccessUrl"><?php echo isset($ErrSuccessUrl)? $ErrSuccessUrl : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Failure Url<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="FailureUrl" name="FailureUrl" Placeholder="Failure Url" value="<?php echo isset($_POST['FailureUrl']) ? $_POST['FailureUrl'] : "";?>">
+                                <input type="text" class="form-control" id="FailureUrl" name="FailureUrl" Placeholder="FailureUrl" value="<?php echo isset($_POST['FailureUrl']) ? $_POST['FailureUrl'] : $Paytm['FailureUrl'];?>">
                                 <span class="errorstring" id="ErrFailureUrl"><?php echo isset($ErrFailureUrl)? $ErrFailureUrl : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Remarks</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" id="CCAvenueRemarks" name="CCAvenueRemarks" Placeholder="Remarks"><?php echo isset($_POST['CCAvenueRemarks']) ? $_POST['CCAvenueRemarks'] : "";?></textarea>
-                                <span class="errorstring" id="ErrCCAvenueRemarks"><?php echo isset($ErrCCAvenueRemarks)? $ErrCCAvenueRemarks : "";?></span>
+                                <textarea class="form-control" id="PaytmRemarks" name="PaytmRemarks" Placeholder="Remarks"><?php echo isset($_POST['PaytmRemarks']) ? $_POST['PaytmRemarks'] : $Paytm['Remarks'];?></textarea>
+                                <span class="errorstring" id="ErrPaytmRemarks"><?php echo isset($ErrPaytmRemarks)? $ErrPaytmRemarks : "";?></span>
                             </div>
                         </div>
-                       <div class="form-group row" >
+		                <div class="form-group row" >
                             <div class="col-sm-12" style="text-align:right">
-                                &nbsp;<a href="<?php  echo GetUrl("Settings/PaymentGateway/ManageCCavenue?Filter=CCavenue&Status=All");?>" class="btn btn-default" style="padding:7px 20px">Cancel</a>&nbsp;
-                                <a href="javascript:void(0)" onclick="ConfirmCreateCcavenue()" class="btn btn-primary mr-2" style="font-family:roboto">Create </a>
-                                <input type="submit" name="CreateCCavenuee" id="CreateCCavenuee" style="display: none;">
+                                &nbsp;<a href="<?php  echo GetUrl("Settings/PaymentGateway/ManagePayTm?Filter=Paytm&Status=All");?>" class="btn btn-default" style="padding:7px 20px">Cancel</a>&nbsp;
+                                <a href="javascript:void(0)" onclick="ConfirmEditPaytm()" class="btn btn-primary mr-2" style="font-family:roboto">Update </a>
+                                <input type="submit" name="UpdatePaytm" id="UpdatePaytm" style="display: none;">
                             </div>
                         </div>
 </form>
-
 <div class="modal" id="PubplishNow" data-backdrop="static" >
 		<div class="modal-dialog" >
 			<div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
@@ -185,11 +235,11 @@ function SubmitCCavenue() {
 	</div>
 </div>
 <script>
-function ConfirmCreateCcavenue() {
-    if(SubmitCCavenue()) {
+function ConfirmEditPaytm() {
+    if(SubmitPaytm()) {
             $('#PubplishNow').modal('show'); 
             var content = '<div class="modal-header">'
-                                + '<h4 class="modal-title">Confirmation of create ccavenue</h4>'
+                                + '<h4 class="modal-title">Confirmation of edit paytm</h4>'
                                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                            + '</div>'
                            + '<div class="modal-body">'
@@ -199,7 +249,7 @@ function ConfirmCreateCcavenue() {
                                     + '</div>'
                                     + '<div class="col-sm-8"><br>'
                                         + '<div class="form-group row">'
-                                            +'<div class="col-sm-12">Are you sure want to create ccavenue<br>'
+                                            +'<div class="col-sm-12">Are you sure want to edit paytm<br>'
                                             +'</div>'
                                         +'</div>'
                                     + '</div>'
@@ -207,16 +257,16 @@ function ConfirmCreateCcavenue() {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" onclick="GetTxnPasswordFrCreateCcavenue()" style="font-family:roboto">Create</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="GetTxnPasswordFrEditPaytm()" style="font-family:roboto">Update</button>'
                            + '</div>';
             $('#Publish_body').html(content);
        } else {
           return false;
        }
-     }
-     function GetTxnPasswordFrCreateCcavenue() {
+     } 
+function GetTxnPasswordFrEditPaytm() {
         var content =  '<div class="modal-header">'
-                            + '<h4 class="modal-title">Confirmation for create ccavenue</h4>'
+                            + '<h4 class="modal-title">Confirmation for edit paytm</h4>'
                             + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                       + '</div>'
                       + '<div class="modal-body">'
@@ -237,19 +287,19 @@ function ConfirmCreateCcavenue() {
                     + '</div>'
                         + '<div class="modal-footer">'
                             + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                            + '<button type="button" onclick="CreateCcavenue()" class="btn btn-primary" >Continue</button>'
+                            + '<button type="button" onclick="EditPaytm()" class="btn btn-primary" >Continue</button>'
                         + '</div>';
         $('#Publish_body').html(content);            
     }
-    function CreateCcavenue() {
+function EditPaytm() {
         if ($("#TransactionPassword").val().trim()=="") {
              $("#frmTxnPass_error").html("Please enter transaction password");
              return false;
          }    
         $("#txnPassword").val($("#TransactionPassword").val());
-        $( "#CreateCCavenuee" ).trigger( "click");
-    } 
-    <?php if (isset($errormessage) && strlen($errormessage)>0) { ?>
+        $( "#UpdatePaytm" ).trigger( "click");
+    }
+ <?php if (isset($errormessage) && strlen($errormessage)>0) { ?>
         setTimeout(function(){
             $('#responsemodal').modal("show");
         },1000);
@@ -259,7 +309,10 @@ function ConfirmCreateCcavenue() {
             $('#responsemodal').modal("show");
         },1000);
     <?php }    ?>
+    
 </script>
+<!-- Modal -->
+
 <div class="modal" id="responsemodal" data-backdrop="static">
   <div class="modal-dialog">
         <div class="modal-content" style="max-width:500px;min-height:300px;overflow:hidden">
@@ -273,9 +326,9 @@ function ConfirmCreateCcavenue() {
             <?php if (isset($successmessage) && strlen($successmessage)>0) { ?>
                 <div class="modal-body" id="response_message" style="min-height:175px;max-height:175px;">
                     <p style="text-align:center;margin-top: 40px;"><img src="<?php echo ImageUrl;?>verifiedtickicon.jpg" width="100px"></p>
-                    <h3 style="text-align:center;">Created</h3>             
-                    <h4 style="text-align:center;">CCavenue</h4>             
-                    <p style="text-align:center;"><a href="<?php  echo GetUrl("Settings/PaymentGateway/ManageCCavenue?Filter=CCavenue&Status=All");?>" style="cursor:pointer;color:#489bae">Continue</a></p>
+                    <h3 style="text-align:center;">Updated</h3>             
+                    <h4 style="text-align:center;">Paytm</h4>             
+                    <p style="text-align:center;"><a href="<?php  echo GetUrl("Settings/PaymentGateway/ManagePayTm?Filter=Paytm&Status=All");?>" style="cursor:pointer;color:#489bae">Continue</a></p>
                 </div> 
             <?php } ?>
       </div>

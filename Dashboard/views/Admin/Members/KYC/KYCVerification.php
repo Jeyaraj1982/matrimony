@@ -45,7 +45,7 @@
 									} if($KYC['IsVerified']==0 && $KYC['IsRejected']==1) {
 										echo "Rejected";
 									} ?></td>
-                                <td style="text-align:right"><a href="<?php echo GetUrl("Members/ViewMember/".$KYC['MemberID'].".htm"); ?>"><span>View</span></a></td>
+                                <td style="text-align:right"><a href="<?php echo GetUrl("Members/ViewMember/".$KYC['MemberCode'].".htm"); ?>"><span>View</span></a></td>
                                 </tr>
                         <?php } } else {?>            
                         

@@ -20,7 +20,6 @@
 				<th>Name</th>
 				<th>Email ID</th>
 				<th>Marchant ID</th>
-				<th>Secret Key</th>                   
 				<th>CreatedOn</th>
 				<th></th>
 				</tr>  
@@ -44,12 +43,11 @@
 						<td><span class="<?php echo ($Paypal['VendorStatus']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Paypal['VenderName'];?></td>
 						<td><?php echo $Paypal['EmailID'];?></td>
 						<td><?php echo $Paypal['MarchantID'];?></td>
-						<td><?php echo $Paypal['Secretky'];?></td>
 						<td><?php echo  putDateTime($Paypal['CreatedOn']);?></td>
 						<td style="text-align:right">
-                            <a href="<?php echo GetUrl("Settings/PaymentGateway/EditPaypal/". $Payu['PaymentGatewayVendorCode'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                            <a href="<?php echo GetUrl("Settings/PaymentGateway/ViewPaypal/". $Payu['PaymentGatewayVendorCode'].".htm");?>"><span>View</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                            <a href="<?php echo GetUrl("Settings/PaymentGateway/PaypalTransactions/". $Payu['PaymentGatewayVendorCode'].".htm");?>"><span>Transactions</span></a>
+                            <a href="<?php echo GetUrl("Settings/PaymentGateway/EditPaypal/". $Paypal['PaymentGatewayVendorCode'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a href="<?php echo GetUrl("Settings/PaymentGateway/ViewPaypal/". $Paypal['PaymentGatewayVendorCode'].".htm");?>"><span>View</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a href="<?php echo GetUrl("Settings/PaymentGateway/PaypalTransactions/". $Paypal['PaymentGatewayVendorCode'].".htm");?>"><span>Transactions</span></a>
                         </td>
                         </tr>
 				<?php } ?>            

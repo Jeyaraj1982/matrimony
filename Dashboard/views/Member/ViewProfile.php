@@ -707,9 +707,12 @@ legend {
                                    if (in_array($t,$p_maritalstatus)) {
                                        $_maritalstats++;
                                    }
-                               }
-                               echo $_maritalstats==0 ? "Not match" :"Matched";
-                            ?>
+                               }   
+                                if($_maritalstats==0){ ?>
+                                     <img src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } else {?>
+                                    <img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } ?>
                         </label>
                     </div>
                     <div class="form-group row">
@@ -722,8 +725,11 @@ legend {
                                        $_religion++;
                                    }
                                }
-                               echo $_religion==0 ? "Not match" :"Matched";
-                            ?>
+                            if($_religion==0){ ?>
+                                     <img src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } else {?>
+                                    <img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } ?>
                         </label>
                     </div>
                     <div class="form-group row">
@@ -736,8 +742,11 @@ legend {
                                        $_Caste++;
                                    }
                                }
-                               echo $_Caste==0 ? "Not match" :"Matched";
-                            ?>
+                                if($_Caste==0){ ?>
+                                     <img src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } else {?>
+                                    <img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } ?>
                         </label>
                     </div>
                     <div class="form-group row">
@@ -750,8 +759,11 @@ legend {
                                        $_Education++;
                                    }
                                }
-                               echo $_Education==0 ? "Not match" :"Matched";
-                            ?>
+                            if($_Education==0){ ?>
+                                     <img src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } else {?>
+                                    <img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } ?>
                         </label>
                     </div>
                     <div class="form-group row">
@@ -764,8 +776,11 @@ legend {
                                        $_EmployedAs++;
                                    }
                                }
-                               echo $_EmployedAs==0 ? "Not match" :"Matched";
-                            ?>
+                            if($_EmployedAs==0){ ?>
+                                     <img src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } else {?>
+                                    <img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } ?>
                         </label>
                     </div>
                     <div class="form-group row">
@@ -778,8 +793,11 @@ legend {
                                        $_AnnualIncome++;
                                    }
                                }
-                               echo $_AnnualIncome==0 ? "Not match" :"Matched";
-                            ?>
+                            if($_AnnualIncome==0){ ?>
+                                     <img src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } else {?>
+                                    <img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } ?>
                         </label>
                     </div>
                      <div class="form-group row">
@@ -792,8 +810,11 @@ legend {
                                        $_RasiName++;
                                    }
                                }
-                               echo $_RasiName==0 ? "Not match" :"Matched";
-                            ?>
+                            if($_RasiName==0){ ?>
+                                     <img src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } else {?>
+                                    <img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } ?>
                         </label>
                     </div>
                      <div class="form-group row">
@@ -806,8 +827,11 @@ legend {
                                        $_StarName++;
                                    }
                                }
-                               echo $_StarName==0 ? "Not match" :"Matched";
-                            ?>
+                                if($_StarName==0){ ?>
+                                     <img src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } else {?>
+                                    <img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } ?>
                         </label>                                                        
                     </div>
                      <div class="form-group row">
@@ -820,8 +844,11 @@ legend {
                                        $_ChevvaiDhosham++;
                                    }
                                }
-                               echo $_ChevvaiDhosham==0 ? "Not match" :"Matched";
-                            ?>
+                                if($_ChevvaiDhosham==0){ ?>
+                                     <img src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } else {?>
+                                    <img class="imageGrey" src="<?php echo SiteUrl?>assets/images/icon_verified.png">
+                                <?php } ?>
                         </label>
                     </div>
                      <?php if(strlen(trim($PartnerExpectation['Details']))> 0){ ?>

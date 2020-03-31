@@ -12,7 +12,7 @@ $(document).ready(function () {
         }
    });
    $("#PayuKey").blur(function () {
-        if(IsNonEmpty("PayuKey","ErrMPayuKey","Please Enter Key")){
+        if(IsNonEmpty("PayuKey","ErrPayuKey","Please Enter Key")){
            IsAlphaNumeric("PayuKey","ErrPayuKey","Please Enter Key"); 
         }
    }); 
@@ -44,7 +44,7 @@ function SubmitPayu() {
                         if(IsNonEmpty("MarchantID","ErrMarchantID","Please Enter Marchant ID")){
                            IsAlphaNumeric("MarchantID","ErrMarchantID","Please Enter Marchant ID"); 
                         }
-                        if(IsNonEmpty("PayuKey","ErrMPayuKey","Please Enter Key")){
+                        if(IsNonEmpty("PayuKey","ErrPayuKey","Please Enter Key")){
                            IsAlphaNumeric("PayuKey","ErrPayuKey","Please Enter Key"); 
                         }
                         if(IsNonEmpty("SaltID","ErrSaltID","Please Enter Salt ID")){
@@ -117,7 +117,7 @@ function SubmitPayu() {
     <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Payu Biz Name<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="PayBi2Name" name="PayBi2Name" value="<?php echo isset($_POST['PayBi2Name']) ? $_POST['PayBi2Name'] : "";?>">
+                                <input type="text" class="form-control" id="PayBi2Name" name="PayBi2Name" value="<?php echo isset($_POST['PayBi2Name']) ? $_POST['PayBi2Name'] : "";?>" Placeholder="Payu Biz Name">
                                 <span class="errorstring" id="ErrPayBi2Name"><?php echo isset($ErrPayBi2Name)? $ErrPayBi2Name : "";?></span>
                             </div>
                         </div>
@@ -131,21 +131,21 @@ function SubmitPayu() {
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Marchant ID<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="MarchantID" name="MarchantID" value="<?php echo isset($_POST['MarchantID']) ? $_POST['MarchantID'] : "";?>">
+                                <input type="text" class="form-control" id="MarchantID" name="MarchantID" value="<?php echo isset($_POST['MarchantID']) ? $_POST['MarchantID'] : "";?>" Placeholder="Marchant ID">
                                 <span class="errorstring" id="ErrMarchantID"><?php echo isset($ErrMarchantID)? $ErrMarchantID : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Key<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="PayuKey" name="PayuKey" value="<?php echo isset($_POST['PayuKey']) ? $_POST['PayuKey'] : "";?>">
+                                <input type="text" class="form-control" id="PayuKey" name="PayuKey" value="<?php echo isset($_POST['PayuKey']) ? $_POST['PayuKey'] : "";?>" Placeholder="Key">
                                 <span class="errorstring" id="ErrPayuKey"><?php echo isset($ErrPayuKey)? $ErrPayuKey : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Salt ID<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="SaltID" name="SaltID" value="<?php echo isset($_POST['SaltID']) ? $_POST['SaltID'] : "";?>">
+                                <input type="text" class="form-control" id="SaltID" name="SaltID" value="<?php echo isset($_POST['SaltID']) ? $_POST['SaltID'] : "";?>" Placeholder="Salt ID">
                                 <span class="errorstring" id="ErrSaltID"><?php echo isset($ErrSaltID)? $ErrSaltID : "";?></span>
                             </div>
                         </div>
@@ -169,33 +169,32 @@ function SubmitPayu() {
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Success Url<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="SuccessUrl" name="SuccessUrl" value="<?php echo isset($_POST['SuccessUrl']) ? $_POST['SuccessUrl'] : "";?>">
+                                <input type="text" class="form-control" id="SuccessUrl" name="SuccessUrl" value="<?php echo isset($_POST['SuccessUrl']) ? $_POST['SuccessUrl'] : "";?>" Placeholder="Success Url">
                                 <span class="errorstring" id="ErrSuccessUrl"><?php echo isset($ErrSuccessUrl)? $ErrSuccessUrl : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Failure Url<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="FailureUrl" name="FailureUrl" value="<?php echo isset($_POST['FailureUrl']) ? $_POST['FailureUrl'] : "";?>">
+                                <input type="text" class="form-control" id="FailureUrl" name="FailureUrl" value="<?php echo isset($_POST['FailureUrl']) ? $_POST['FailureUrl'] : "";?>" Placeholder="Failure Url">
                                 <span class="errorstring" id="ErrFailureUrl"><?php echo isset($ErrFailureUrl)? $ErrFailureUrl : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Remarks</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" id="PayuRemarks" name="PayuRemarks"><?php echo isset($_POST['PayuRemarks']) ? $_POST['PayuRemarks'] : "";?></textarea>
+                                <textarea class="form-control" id="PayuRemarks" name="PayuRemarks" Placeholder="Remarks"><?php echo isset($_POST['PayuRemarks']) ? $_POST['PayuRemarks'] : "";?></textarea>
                                 <span class="errorstring" id="ErrPayuRemarks"><?php echo isset($ErrPayuRemarks)? $ErrPayuRemarks : "";?></span>
                             </div>
                         </div> 
 		           
 		<div class="form-group row" >
 			<div class="col-sm-12" style="text-align:right">
-				&nbsp;<a href="javascript:void(0)" class="btn btn-default" style="padding:7px 20px" onclick="AppSettings.ConfirmGotoBackFromCreatePayu()">Cancel</a>&nbsp;
+				&nbsp;<a href="<?php  echo GetUrl("Settings/PaymentGateway/ManagePayu?Filter=Payu&Status=All");?>" class="btn btn-default" style="padding:7px 20px">Cancel</a>&nbsp;
                 <a href="javascript:void(0)" onclick="ConfirmCreatePayu()" class="btn btn-primary mr-2" style="font-family:roboto">Create </a>
                 <input type="submit" name="CreatePayu" id="CreatePayu" style="display: none;">
 			</div>
 		</div>
-        <!--href="javascript:void(0)" onclick="PaymentGateway.ConfirmCreatePayu()" -->
 </form>
 
 <div class="modal" id="PubplishNow" data-backdrop="static" >
@@ -299,9 +298,9 @@ function CreatePayu() {
             <?php if (isset($successmessage) && strlen($successmessage)>0) { ?>
                 <div class="modal-body" id="response_message" style="min-height:175px;max-height:175px;">
                     <p style="text-align:center;margin-top: 40px;"><img src="<?php echo ImageUrl;?>verifiedtickicon.jpg" width="100px"></p>
-                    <h3 style="text-align:center;">Updated</h3>             
-                    <h4 style="text-align:center;">Occupation Details</h4>             
-                    <p style="text-align:center;"><a data-dismiss="modal" style="cursor:pointer;color:#489bae">Continue</a></p>
+                    <h3 style="text-align:center;">Created</h3>             
+                    <h4 style="text-align:center;">Payu</h4>             
+                    <p style="text-align:center;"><a href="<?php  echo GetUrl("Settings/PaymentGateway/ManagePayu?Filter=Payu&Status=All");?>" style="cursor:pointer;color:#489bae">Continue</a></p>
                 </div> 
             <?php } ?>
       </div>

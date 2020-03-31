@@ -136,6 +136,8 @@ RewriteRule ^MyProfiles/Published/Edit/PartnersExpectation/(.*)\.htm$ ./index.ph
 RewriteRule ^MyProfiles/Published/Edit/HoroscopeDetails/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/HoroscopeDetails
 RewriteRule ^MyProfiles/Published/Edit/ProfilePhoto/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/Edit/ProfilePhoto
 
+RewriteRule ^MyProfiles/Draft/View1/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/View1
+
 RewriteRule ^MyProfiles/Draft/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Draft/View
 RewriteRule ^MyProfiles/Posted/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Posted/View
 RewriteRule ^MyProfiles/Published/View/(.*)\.htm$ ./index.php?Code=$1&p=MyProfiles/Published/View
@@ -243,6 +245,8 @@ RewriteRule ^Settings/PaymentGateway/EditPaytm/(.*)\.htm$ ./index.php?Code=$1&p=
 RewriteRule ^Settings/PaymentGateway/ViewPaytm/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/ViewPaytm
 RewriteRule ^Settings/PaymentGateway/EditPaypal/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/EditPaypal
 RewriteRule ^Settings/PaymentGateway/ViewPaypal/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/ViewPaypal
+RewriteRule ^Settings/PaymentGateway/EditBank/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/EditBank
+RewriteRule ^Settings/PaymentGateway/ViewBank/(.*)\.htm$ ./index.php?Code=$1&p=Settings/PaymentGateway/ViewBank
 
 RewriteRule ^([a-zA-Z0-9-/+]+)([0-9]+)$ index.php?p=$1&pn=$2 [L]
 RewriteRule ^([a-zA-Z0-9-/+]+)$ index.php?p=$1 [QSA]  

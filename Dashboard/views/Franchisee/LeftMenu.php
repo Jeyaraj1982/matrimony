@@ -53,13 +53,13 @@
                             <a class="nav-link" href="<?php echo GetUrl("NewProfile");?>">Create Profile</a>
                         </li> 
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("DraftedProfiles");?>">Draft Profiles</a>
+                            <a class="nav-link" href="<?php echo GetUrl("DraftedProfiles?Filter=Draft&Gender=All");?>">Draft Profiles</a>
                         </li> 
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("PostedProfiles");?>">Submitted to Review</a>
+                            <a class="nav-link" href="<?php echo GetUrl("PostedProfiles?Filter=Post&Gender=All");?>">Submitted to Review</a>
                         </li> 
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo GetUrl("PublishedProfiles");?>">Published Profiles</a>
+                            <a class="nav-link" href="<?php echo GetUrl("PublishedProfiles?Filter=Publish&Gender=All");?>">Published Profiles</a>
                         </li> 
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo GetUrl("SearchProfile");?>" >Add Profile to Home Page</a>

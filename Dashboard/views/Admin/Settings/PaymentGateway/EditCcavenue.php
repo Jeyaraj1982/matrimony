@@ -1,6 +1,9 @@
 <?php $page="ccavenue";?>
 <?php include_once("settings_header.php");?>
-
+<?php 
+    $res =$webservice->getData("Admin","GetPaymentGatewayDetails");
+    $Ccavenue = $res['data']['CCavenue']; 
+?>
 <script>
 $(document).ready(function () {
    $("#Name").blur(function () {
@@ -52,7 +55,7 @@ function SubmitCCavenue() {
 }
 </script>
 <?php
-                if (isset($_POST['CreateCCavenuee'])) {
+                if (isset($_POST['UpdateCCavenuee'])) {
                     $target_dir = "uploads/CCavenue";
                     if (!is_dir('uploads/CCavenue')) {
                         mkdir('uploads/CCavenue', 0777, true);
@@ -83,15 +86,16 @@ function SubmitCCavenue() {
                     }
                     if ($err==0) {
                        
-                        $res =$webservice->getData("Admin","CreateCCavenue",$_POST);   
+                        $res =$webservice->getData("Admin","EditCCavenue",$_POST);   
                        if ($res['status']=="success") {
-                           unset($_POST);
                              $successmessage = $res['message']; 
                         } else {
                             $errormessage = $res['message']; 
                         }
                        
                     }
+                    $res =$webservice->getData("Admin","GetPaymentGatewayDetails");
+                    $Ccavenue = $res['data']['CCavenue']; 
                 }
               
             ?>
@@ -100,17 +104,21 @@ function SubmitCCavenue() {
     <input type="hidden" value="" name="txnPassword" id="txnPassword">
     <input type="hidden" value="VT0003" name="CcavenueSoftCode" id="CcavenueSoftCode">
     <input type="hidden" value="ccavenue" name="CcavenueCodeValue" id="CcavenueCodeValue">
-    <h4 class="card-title">Create CCavenue</h4>                    
-						<div class="form-group row">
+    <input type="hidden" value="<?php echo $Ccavenue['PaymentGatewayVendorCode'];?>" name="PaymentGatewayVendorCode" id="PaymentGatewayVendorCode">
+    <h4 class="card-title">Edit CCavenue</h4>                    
+                        <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Name<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="Name" name="Name" Placeholder="Name" value="<?php echo isset($_POST['Name']) ? $_POST['Name'] : "";?>">
+                                <input type="text" class="form-control" id="Name" name="Name" Placeholder="Name" value="<?php echo isset($_POST['Name']) ? $_POST['Name'] : $Ccavenue['VenderName'];?>" >
                                 <span class="errorstring" id="ErrName"><?php echo isset($ErrName)? $ErrName : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Logo<span id="star">*</span></label>
                           <div class="col-sm-9">
+                          <?php if(isset($Ccavenue['VendorLogo'])){?>
+                            <img src="<?php echo AppUrl;?>uploads/CCavenue/<?php echo $Ccavenue['VendorLogo'];?>" style="height:200px;width:150px">
+                          <?php } ?>
                             <input type="file" id="CCavenueLogo" name="CCavenueLogo">
                             <span class="errorstring" id="ErrCCavenueLogo"><?php echo isset($ErrCCavenueLogo)? $ErrCCavenueLogo : "";?></span>
                           </div>
@@ -118,14 +126,14 @@ function SubmitCCavenue() {
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Marchant ID<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="MarchantID" name="MarchantID" Placeholder="Marchant ID" value="<?php echo isset($_POST['MarchantID']) ? $_POST['MarchantID'] : "";?>">
+                                <input type="text" class="form-control" id="MarchantID" name="MarchantID" Placeholder="Marchant ID" value="<?php echo isset($_POST['MarchantID']) ? $_POST['MarchantID'] : $Ccavenue['MarchantID'];?>">
                                 <span class="errorstring" id="ErrMarchantID"><?php echo isset($ErrMarchantID)? $ErrMarchantID : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Secret Key<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="SecretKey" name="SecretKey" Placeholder="Secret Key" value="<?php echo isset($_POST['SecretKey']) ? $_POST['SecretKey'] : "";?>">
+                                <input type="text" class="form-control" id="SecretKey" name="SecretKey" Placeholder="Secret Key" value="<?php echo isset($_POST['SecretKey']) ? $_POST['SecretKey'] : $Ccavenue['Secretky'];?>">
                                 <span class="errorstring" id="ErrSecretKey"><?php echo isset($ErrSecretKey)? $ErrSecretKey : "";?></span>
                             </div>
                         </div>
@@ -133,63 +141,63 @@ function SubmitCCavenue() {
                             <label class="col-sm-3 col-form-label">Mode<span id="star">*</span></label>
                             <div class="col-sm-4">
                                 <select class="form-control" id="Mode"  name="Mode" >
-                                    <option value="Live" <?php echo ($_POST['Mode']=="Live") ? " selected='selected' " : "";?>>Live</option>
-                                    <option value="Test" <?php echo ($_POST['Mode']=="Test") ? " selected='selected' " : "";?>>Test</option>
+                                    <option value="Live" <?php echo (isset($_POST[ 'Mode'])) ? (($_POST[ 'Mode']=="Live") ? " selected='selected' " : "") : (($Ccavenue[ 'VendorMode']=="Live") ? " selected='selected' " : "");?>>Live</option>
+                                    <option value="Test" <?php echo (isset($_POST[ 'Mode'])) ? (($_POST[ 'Mode']=="Test") ? " selected='selected' " : "") : (($Ccavenue[ 'VendorMode']=="Live") ? " selected='selected' " : "");?>>Test</option>
                                 </select>
                               <span class="errorstring" id="ErrMode"><?php echo isset($ErrMode)? $ErrMode : "";?></span>
                             </div>
-							<label class="col-sm-2 col-form-label">Status<span id="star">*</span></label>
-							<div class="col-sm-3">
-							    <select class="form-control" id="Status"  name="Status" >
-                                    <option value="1" <?php echo ($_POST['Status']=="1") ? " selected='selected' " : "";?>>Active</option>
-							        <option value="0" <?php echo ($_POST['Status']=="0") ? " selected='selected' " : "";?>>Deactive</option>
-						        </select>
-							</div>
-						</div>
+                            <label class="col-sm-2 col-form-label">Status<span id="star">*</span></label>
+                            <div class="col-sm-3">
+                                <select class="form-control" id="Status"  name="Status" >
+                                    <option value="1" <?php echo (isset($_POST[ 'Status'])) ? (($_POST[ 'Status']=="1") ? " selected='selected' " : "") : (($Ccavenue[ 'VendorStatus']==1) ? " selected='selected' " : "");?>>Active</option>
+                                    <option value="0" <?php echo (isset($_POST[ 'Status'])) ? (($_POST[ 'Status']=="0") ? " selected='selected' " : "") : (($Ccavenue[ 'VendorStatus']==0) ? " selected='selected' " : "");?>>Deactive</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Success Url<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="SuccessUrl" name="SuccessUrl" Placeholder="Success Url" value="<?php echo isset($_POST['SuccessUrl']) ? $_POST['SuccessUrl'] : "";?>">
+                                <input type="text" class="form-control" id="SuccessUrl" name="SuccessUrl" Placeholder="Success Url" value="<?php echo isset($_POST['SuccessUrl']) ? $_POST['SuccessUrl'] : $Ccavenue['SuccessUrl'];?>">
                                 <span class="errorstring" id="ErrSuccessUrl"><?php echo isset($ErrSuccessUrl)? $ErrSuccessUrl : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Failure Url<span id="star">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="FailureUrl" name="FailureUrl" Placeholder="Failure Url" value="<?php echo isset($_POST['FailureUrl']) ? $_POST['FailureUrl'] : "";?>">
+                                <input type="text" class="form-control" id="FailureUrl" name="FailureUrl" Placeholder="Failure Url" value="<?php echo isset($_POST['FailureUrl']) ? $_POST['FailureUrl'] : $Ccavenue['FailureUrl'];?>">
                                 <span class="errorstring" id="ErrFailureUrl"><?php echo isset($ErrFailureUrl)? $ErrFailureUrl : "";?></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Remarks</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" id="CCAvenueRemarks" name="CCAvenueRemarks" Placeholder="Remarks"><?php echo isset($_POST['CCAvenueRemarks']) ? $_POST['CCAvenueRemarks'] : "";?></textarea>
+                                <textarea class="form-control" id="CCAvenueRemarks" name="CCAvenueRemarks" Placeholder="Remarks"><?php echo isset($_POST['CCAvenueRemarks']) ? $_POST['CCAvenueRemarks'] : $Ccavenue['Remarks'];?></textarea>
                                 <span class="errorstring" id="ErrCCAvenueRemarks"><?php echo isset($ErrCCAvenueRemarks)? $ErrCCAvenueRemarks : "";?></span>
                             </div>
                         </div>
                        <div class="form-group row" >
                             <div class="col-sm-12" style="text-align:right">
                                 &nbsp;<a href="<?php  echo GetUrl("Settings/PaymentGateway/ManageCCavenue?Filter=CCavenue&Status=All");?>" class="btn btn-default" style="padding:7px 20px">Cancel</a>&nbsp;
-                                <a href="javascript:void(0)" onclick="ConfirmCreateCcavenue()" class="btn btn-primary mr-2" style="font-family:roboto">Create </a>
-                                <input type="submit" name="CreateCCavenuee" id="CreateCCavenuee" style="display: none;">
+                                <a href="javascript:void(0)" onclick="ConfirmEditCcavenue()" class="btn btn-primary mr-2" style="font-family:roboto">Update </a>
+                                <input type="submit" name="UpdateCCavenuee" id="UpdateCCavenuee" style="display: none;">
                             </div>
                         </div>
 </form>
 
 <div class="modal" id="PubplishNow" data-backdrop="static" >
-		<div class="modal-dialog" >
-			<div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
-		
-			</div>
-		</div>
-	</div>
+        <div class="modal-dialog" >
+            <div class="modal-content" id="Publish_body"  style="max-height: 360px;min-height: 360px;" >
+        
+            </div>
+        </div>
+    </div>
 </div>
 <script>
-function ConfirmCreateCcavenue() {
+function ConfirmEditCcavenue() {
     if(SubmitCCavenue()) {
             $('#PubplishNow').modal('show'); 
             var content = '<div class="modal-header">'
-                                + '<h4 class="modal-title">Confirmation of create ccavenue</h4>'
+                                + '<h4 class="modal-title">Confirmation of edit ccavenue</h4>'
                                 + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                            + '</div>'
                            + '<div class="modal-body">'
@@ -207,16 +215,16 @@ function ConfirmCreateCcavenue() {
                             +'</div>'                                                                                                                                                                             
                            + '<div class="modal-footer">'
                                 + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                                + '<button type="button" class="btn btn-primary" name="Create" onclick="GetTxnPasswordFrCreateCcavenue()" style="font-family:roboto">Create</button>'
+                                + '<button type="button" class="btn btn-primary" name="Create" onclick="GetTxnPasswordFrEditCcavenue()" style="font-family:roboto">Update</button>'
                            + '</div>';
             $('#Publish_body').html(content);
        } else {
           return false;
        }
      }
-     function GetTxnPasswordFrCreateCcavenue() {
+     function GetTxnPasswordFrEditCcavenue() {
         var content =  '<div class="modal-header">'
-                            + '<h4 class="modal-title">Confirmation for create ccavenue</h4>'
+                            + '<h4 class="modal-title">Confirmation for edit ccavenue</h4>'
                             + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top:5px;"><span aria-hidden="true"></span></button>'
                       + '</div>'
                       + '<div class="modal-body">'
@@ -237,17 +245,17 @@ function ConfirmCreateCcavenue() {
                     + '</div>'
                         + '<div class="modal-footer">'
                             + '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;'
-                            + '<button type="button" onclick="CreateCcavenue()" class="btn btn-primary" >Continue</button>'
+                            + '<button type="button" onclick="EditCcavenue()" class="btn btn-primary" >Continue</button>'
                         + '</div>';
         $('#Publish_body').html(content);            
     }
-    function CreateCcavenue() {
+    function EditCcavenue() {
         if ($("#TransactionPassword").val().trim()=="") {
              $("#frmTxnPass_error").html("Please enter transaction password");
              return false;
          }    
         $("#txnPassword").val($("#TransactionPassword").val());
-        $( "#CreateCCavenuee" ).trigger( "click");
+        $( "#UpdateCCavenuee" ).trigger( "click");
     } 
     <?php if (isset($errormessage) && strlen($errormessage)>0) { ?>
         setTimeout(function(){
@@ -273,7 +281,7 @@ function ConfirmCreateCcavenue() {
             <?php if (isset($successmessage) && strlen($successmessage)>0) { ?>
                 <div class="modal-body" id="response_message" style="min-height:175px;max-height:175px;">
                     <p style="text-align:center;margin-top: 40px;"><img src="<?php echo ImageUrl;?>verifiedtickicon.jpg" width="100px"></p>
-                    <h3 style="text-align:center;">Created</h3>             
+                    <h3 style="text-align:center;">Upadted</h3>             
                     <h4 style="text-align:center;">CCavenue</h4>             
                     <p style="text-align:center;"><a href="<?php  echo GetUrl("Settings/PaymentGateway/ManageCCavenue?Filter=CCavenue&Status=All");?>" style="cursor:pointer;color:#489bae">Continue</a></p>
                 </div> 

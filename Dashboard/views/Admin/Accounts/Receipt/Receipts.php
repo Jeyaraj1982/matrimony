@@ -11,6 +11,8 @@
             <thead>  
                 <tr>
                     <th>Receipt Number</th> 
+                    <th>Member Code</th> 
+                    <th>Member Name</th> 
                     <th>Receipt Date</th> 
                     <th>Invoice Number</th> 
                     <th style="text-align:right">Receipt Value</th> 
@@ -22,6 +24,8 @@
             ?>
                 <tr>
                     <td><?php echo $Receipt['ReceiptNumber'];?></td>
+                    <td><?php echo $Receipt['MemberCode'];?></td>
+                    <td><?php echo $Receipt['MemberName'];?></td>
                     <td><?php echo PutDateTime($Receipt['ReceiptDate']);?></td>
                     <td><?php echo $Receipt['InvoiceNumber'];?></td>
                     <td style="text-align:right"><?php echo number_format($Receipt['ReceiptAmount'],2);?></td>

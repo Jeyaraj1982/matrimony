@@ -19,7 +19,6 @@
 				<tr> 
 				<th>Name</th>
 				<th>Marchant ID</th>
-				<th>Secret Key</th>                   
 				<th>Mode</th> 
 				<th>CreatedOn</th>
 				<th></th>
@@ -43,13 +42,12 @@
 						<tr>
 						<td><span class="<?php echo ($CCavenue['VendorStatus']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $CCavenue['VenderName'];?></td>
 						<td><?php echo $CCavenue['MarchantID'];?></td>
-						<td><?php echo $CCavenue['Secretky'];?></td>
 						<td><?php echo $CCavenue['VendorMode'];?></td>
 						<td><?php echo  putDateTime($CCavenue['CreatedOn']);?></td>
 						<td style="text-align:right">
-                            <a href="<?php echo GetUrl("Settings/PaymentGateway/EditCcavenue/". $Payu['PaymentGatewayVendorCode'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                            <a href="<?php echo GetUrl("Settings/PaymentGateway/ViewCcavenue/". $Payu['PaymentGatewayVendorCode'].".htm");?>"><span>View</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                            <a href="<?php echo GetUrl("Settings/PaymentGateway/CcavenueTransactions/". $Payu['PaymentGatewayVendorCode'].".htm");?>"><span>Transactions</span></a>
+                            <a href="<?php echo GetUrl("Settings/PaymentGateway/EditCcavenue/". $CCavenue['PaymentGatewayVendorCode'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a href="<?php echo GetUrl("Settings/PaymentGateway/ViewCcavenue/". $CCavenue['PaymentGatewayVendorCode'].".htm");?>"><span>View</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a href="<?php echo GetUrl("Settings/PaymentGateway/CcavenueTransactions/". $CCavenue['PaymentGatewayVendorCode'].".htm");?>"><span>Transactions</span></a>
                         </td>
 						</tr>
 				<?php } ?>            

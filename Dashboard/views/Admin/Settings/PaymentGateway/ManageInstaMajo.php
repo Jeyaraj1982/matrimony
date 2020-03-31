@@ -18,9 +18,7 @@
 			<thead>  
 				<tr> 
 				<th>Name</th>
-				<th>Action Url</th>
 				<th>Client ID</th>
-				<th>Secret Key</th>                   
 				<th>Mode</th> 
 				<th>CreatedOn</th>
 				<th></th>
@@ -43,15 +41,13 @@
 				<?php foreach($response['data'] as $Instamajo) { ?>
 						<tr>
 						<td><span class="<?php echo ($Instamajo['VendorStatus']==1) ? 'Activedot' : 'Deactivedot';?>"></span>&nbsp;&nbsp;&nbsp;<?php echo $Instamajo['VenderName'];?></td>
-						<td><?php echo $Instamajo['ActionUrl'];?></td>
 						<td><?php echo $Instamajo['ClientID'];?></td>
-						<td><?php echo $Instamajo['Secretky'];?></td>
 						<td><?php echo $Instamajo['VendorMode'];?></td>
 						<td><?php echo  putDateTime($Instamajo['CreatedOn']);?></td>
                         <td style="text-align:right">
-                            <a href="<?php echo GetUrl("Settings/PaymentGateway/EditInstamajo/". $Payu['PaymentGatewayVendorCode'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                            <a href="<?php echo GetUrl("Settings/PaymentGateway/ViewInstamajo/". $Payu['PaymentGatewayVendorCode'].".htm");?>"><span>View</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                            <a href="<?php echo GetUrl("Settings/PaymentGateway/InstamajoTransactions/". $Payu['PaymentGatewayVendorCode'].".htm");?>"><span>Transactions</span></a>
+                            <a href="<?php echo GetUrl("Settings/PaymentGateway/EditInstamajo/". $Instamajo['PaymentGatewayVendorCode'].".htm");?>"><span>Edit</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a href="<?php echo GetUrl("Settings/PaymentGateway/ViewInstamajo/". $Instamajo['PaymentGatewayVendorCode'].".htm");?>"><span>View</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a href="<?php echo GetUrl("Settings/PaymentGateway/InstamajoTransactions/". $Instamajo['PaymentGatewayVendorCode'].".htm");?>"><span>Transactions</span></a>
                         </td>
 						</tr>
 				<?php } ?>            

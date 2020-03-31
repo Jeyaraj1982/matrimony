@@ -88,7 +88,7 @@
                 <div class="collapse" id="manageaccount">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Accounts/WalletTransaction");?>">Wallet Transactions</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Accounts/ManageOrder");?>">Manage Orders</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Accounts/ManageOrder?Filter=Order&Status=All");?>">Manage Orders</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Accounts/Invoice/Invoices");?>">Manage Invoices</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Accounts/Receipt/Receipts");?>">Manage Receipts</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Accounts/ManagePGTransaction");?>">Manage PG Txns</a></li>
@@ -164,9 +164,9 @@
                         <!-- <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Invoice/Invoice");?>">Invoice</a></li> -->
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Masters/ReligionNames/ManageReligion");?>">Masters</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/Template/OrderHeaderFooter");?>">Templates</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/PaymentGateway/ManagePayu");?>">Payment Gateway</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/PaymentGateway/ListofBanks?Filter=Banks&Status=All");?>">Payment Gateway</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/ApplicationSettings/ConfigurationSettings");?>">Application Settings</a></li>
-                       
+                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Settings/ListofBackup");?>">Backup</a></li>
                         
                     </ul>                                                                                          
                 </div>
@@ -180,7 +180,6 @@
                 <div class="collapse" id="staffs">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/ManageStaffs");?>">Manage Staffs</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/Backup");?>">Backup</a></li>
                         <!--<li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/TextOnImage");?>">Text On Image</a></li>
                         <li class="nav-item"><a class="nav-link" href="<?php echo GetUrl("Staffs/LogoOnImage");?>">Logo On Image</a></li>-->
                         
