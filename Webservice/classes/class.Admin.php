@@ -1719,6 +1719,11 @@
     function CreateBank() {
 
         global $mysql,$loginInfo;
+        
+        $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
         if (!(strlen(trim($_POST['AccountName']))>0)) {
             return Response::returnError("Please enter your account name");
         }
@@ -1729,10 +1734,6 @@
             return Response::returnError("Please enter IFSCode");
         }
 
-        $data = $mysql->select("select * from  _tbl_settings_bankdetails where AccountName='".trim($_POST['AccountName'])."'");
-        if (sizeof($data)>0) {
-            return Response::returnError("Account Name Already Exists");
-        }
         $data = $mysql->select("select * from  _tbl_settings_bankdetails where AccountNumber='".trim($_POST['AccountNumber'])."'");
         if (sizeof($data)>0) {
             return Response::returnError("Account Number Already Exists");
@@ -1762,6 +1763,10 @@
     }
     function EditBankDetails(){
               global $mysql,$loginInfo;
+    $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
        if (!(strlen(trim($_POST['AccountName']))>0)) {
             return Response::returnError("Please enter your account name");
         }
@@ -2700,8 +2705,10 @@ ON _tbl_franchisees.FranchiseeID = _tbl_franchisees.FranchiseeID*/
              $FemaleProfileCount =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM `_tbl_draft_profiles` where SexCode='SX002' ORDER BY `ProfileID` DESC LIMIT 3");
              $profileverification =  $mysql->select("SELECT COUNT(ProfileID) AS cnt FROM _tbl_draft_profiles where RequestToVerify='1' and IsApproved='0'");
              $documentverification =  $mysql->select("SELECT COUNT(DocID) AS cnt FROM _tbl_member_documents");
-             $ordercount =  $mysql->select("SELECT COUNT(OrderID) AS cnt FROM _tbl_orders");
-             $invoicecount =  $mysql->select("SELECT COUNT(InvoiceID) AS cnt FROM _tbl_invoices");
+            // $ordercount =  $mysql->select("SELECT COUNT(OrderID) AS cnt FROM _tbl_orders");
+             $ordercount =  $mysql->select("SELECT SUM(OrderValue) AS cnt FROM _tbl_orders");
+            // $invoicecount =  $mysql->select("SELECT COUNT(InvoiceID) AS cnt FROM _tbl_invoices");
+             $invoicecount =  $mysql->select("SELECT SUM(InvoiceValue) AS cnt FROM _tbl_invoices");
              $paypalcount =  $mysql->select("SELECT COUNT(PaypalID) AS cnt FROM _tbl_settings_paypal");
              $OnlineMembercount =  $mysql->select("SELECT COUNT(LoginID) AS cnt FROM _tbl_logs_logins where FranchiseeID='0' and FranchiseeStaffID='0' and AdminID='0' and AdminStaffID='0' and date(LoginOn)=date('".date("Y-m-d")."')");
              
@@ -4332,6 +4339,15 @@ function UpdateBusinessConfiguration() {
              
              if (isset($_POST['Request']) && $_POST['Request']=="Order") {
                 return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_orders` order by `OrderID` DESC"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="PaidOrder") {
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_orders` where `IsPaid`='1' order by `OrderID` DESC"));    
+             } 
+             if (isset($_POST['Request']) && $_POST['Request']=="UnpaidOrder") {
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_orders` where `IsPaid`='0' order by `OrderID` DESC"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="CancellOrder") {
+                return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_orders` where `Iscancelled`='1' order by `OrderID` DESC"));    
              }
              if (isset($_POST['Request']) && $_POST['Request']=="Invoice") {
                 return Response::returnSuccess("success",$mysql->select("SELECT * From `_tbl_invoices` order by `InvoiceID` DESC"));    
@@ -7185,7 +7201,15 @@ function UpdateBusinessConfiguration() {
     function GetPaymentGatewayDetails(){
         global $mysql,$loginInfo;
             $Payu=$mysql->select("select * from  _tbl_pg_vendors where VendorType='Payu' and PaymentGatewayVendorCode='".$_POST['Code']."'"); 
-            return Response::returnSuccess("success",array("Payu" => $Payu[0]));    
+            $instamajo=$mysql->select("select * from  _tbl_pg_vendors where VendorType='instamajo' and PaymentGatewayVendorCode='".$_POST['Code']."'"); 
+            $ccavenue=$mysql->select("select * from  _tbl_pg_vendors where VendorType='ccavenue' and PaymentGatewayVendorCode='".$_POST['Code']."'"); 
+            $Paytm=$mysql->select("select * from  _tbl_pg_vendors where VendorType='paytm' and PaymentGatewayVendorCode='".$_POST['Code']."'"); 
+            $Paypal=$mysql->select("select * from  _tbl_pg_vendors where VendorType='Paypal' and PaymentGatewayVendorCode='".$_POST['Code']."'"); 
+            return Response::returnSuccess("success",array("Payu"      => $Payu[0],
+                                                           "InstaMajo" => $instamajo[0],   
+                                                           "CCavenue"  => $ccavenue[0],
+                                                           "Paytm"     => $Paytm[0],    
+                                                           "Paypal"    => $Paypal[0]));    
         
     }
     function CreatePayu(){
@@ -7232,6 +7256,60 @@ function UpdateBusinessConfiguration() {
                     return Response::returnError("Access denied. Please contact support");   
                 }
     }
+    function EditPayu(){
+        global $mysql,$loginInfo;
+        
+        $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }  
+        $data = $mysql->select("select * from  _tbl_pg_vendors where MarchantID='".trim($_POST['MarchantID'])."' and VendorTypeCode='VT0001' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Marchant ID Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where Secretky='".trim($_POST['PayuKey'])."' and VendorTypeCode='VT0001' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Key Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where SaltID='".trim($_POST['SaltID'])."' and VendorTypeCode='VT0001' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Salt ID Already Exists");
+            }
+            
+            if(isset($_POST['File'])){
+            $id =  $mysql->execute("update _tbl_pg_vendors set VendorTypeCode ='".$_POST['PayuSoftCode']."',
+                                                               VendorType     ='".$_POST['PayuCodeValue']."',                             
+                                                               VenderName     ='".$_POST['PayBi2Name']."',                             
+                                                               VendorLogo     ='".$_POST['File']."',                             
+                                                               MarchantID     ='".$_POST['MarchantID']."',
+                                                               Secretky       ='".$_POST['PayuKey']."',
+                                                               SaltID         ='".$_POST['SaltID']."',
+                                                               VendorMode     ='".$_POST['Mode']."',
+                                                               VendorStatus   ='".$_POST['Status']."',
+                                                               SuccessUrl      ='".$_POST['SuccessUrl']."',
+                                                               FailureUrl     ='".$_POST['FailureUrl']."',
+                                                               Remarks        ='".$_POST['PayuRemarks']."'
+                                                               where PaymentGatewayVendorCode ='".$_POST['PaymentGatewayVendorCode']."'");
+            }else{
+              $id =  $mysql->execute("update _tbl_pg_vendors set VendorTypeCode ='".$_POST['PayuSoftCode']."',
+                                                               VendorType     ='".$_POST['PayuCodeValue']."',                             
+                                                               VenderName     ='".$_POST['PayBi2Name']."',                             
+                                                               MarchantID     ='".$_POST['MarchantID']."',
+                                                               Secretky       ='".$_POST['PayuKey']."',
+                                                               SaltID         ='".$_POST['SaltID']."',
+                                                               VendorMode     ='".$_POST['Mode']."',
+                                                               VendorStatus   ='".$_POST['Status']."',
+                                                               SuccessUrl      ='".$_POST['SuccessUrl']."',
+                                                               FailureUrl     ='".$_POST['FailureUrl']."',
+                                                               Remarks        ='".$_POST['PayuRemarks']."'
+                                                               where PaymentGatewayVendorCode ='".$_POST['PaymentGatewayVendorCode']."'");  
+            }
+            if (sizeof($id)>0) {
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
     function CreatePaytm(){
         global $mysql,$loginInfo;
 		
@@ -7252,8 +7330,12 @@ function UpdateBusinessConfiguration() {
 				return Response::returnError("Secret Key Already Exists");
 			}
 		$data = $mysql->select("select * from  _tbl_pg_vendors where Identity='".trim($_POST['Identity'])."' and VendorTypeCode='VT0004'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Identity Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where Channel='".trim($_POST['Channel'])."' and VendorTypeCode='VT0004'");
 			if (sizeof($data)>0) {
-				return Response::returnError("Identity Already Exists");
+				return Response::returnError("Channel Already Exists");
 			}		
 			$PaymentGatewayVendorCode = SeqMaster::GetNextPaymentGatewayVendorCode();
                
@@ -7281,43 +7363,163 @@ function UpdateBusinessConfiguration() {
                     return Response::returnError("Access denied. Please contact support");   
                 }
     }
+    function EditPaytm(){
+        global $mysql,$loginInfo;
+        
+        $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            } 
+        $data = $mysql->select("select * from  _tbl_pg_vendors where VenderName='".trim($_POST['Name'])."' and VendorTypeCode='VT0004' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Name Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where MarchantID='".trim($_POST['MarchantID'])."' and VendorTypeCode='VT0004' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Marchant ID Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where Secretky='".trim($_POST['SecretKey'])."' and VendorTypeCode='VT0004' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Secret Key Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where Identity='".trim($_POST['Identity'])."' and VendorTypeCode='VT0004' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Identity Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where Channel='".trim($_POST['Channel'])."' and VendorTypeCode='VT0004' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Channel Already Exists");
+            }        
+               
+            
+             if(isset($_POST['PaytmLogo'])){
+            $id =  $mysql->execute("update _tbl_pg_vendors set VendorTypeCode ='".$_POST['PaytmSoftCode']."',
+                                                               VendorType     ='".$_POST['PaytmCodeValue']."',                             
+                                                               VenderName     ='".$_POST['Name']."',                             
+                                                               VendorLogo     ='".$_POST['PaytmLogo']."',                             
+                                                               MarchantID     ='".$_POST['MarchantID']."',
+                                                               WebsiteName    ='".$_POST['Website']."',
+                                                               Identity       ='".$_POST['Identity']."',
+                                                               Channel        ='".$_POST['Channel']."',
+                                                               Secretky       ='".$_POST['SecretKey']."',
+                                                               VendorMode     ='".$_POST['Mode']."',
+                                                               VendorStatus   ='".$_POST['Status']."',
+                                                               SuccessUrl      ='".$_POST['SuccessUrl']."',
+                                                               FailureUrl     ='".$_POST['FailureUrl']."',
+                                                               Remarks        ='".$_POST['PaytmRemarks']."'
+                                                               where PaymentGatewayVendorCode ='".$_POST['PaymentGatewayVendorCode']."'");
+            }else{
+              $id =  $mysql->execute("update _tbl_pg_vendors set VendorTypeCode ='".$_POST['PaytmSoftCode']."',
+                                                               VendorType     ='".$_POST['PaytmCodeValue']."',                             
+                                                               VenderName     ='".$_POST['Name']."',                             
+                                                               MarchantID     ='".$_POST['MarchantID']."',
+                                                               WebsiteName    ='".$_POST['Website']."',
+                                                               Identity       ='".$_POST['Identity']."',
+                                                               Channel        ='".$_POST['Channel']."',
+                                                               Secretky       ='".$_POST['SecretKey']."',
+                                                               VendorMode     ='".$_POST['Mode']."',
+                                                               VendorStatus   ='".$_POST['Status']."',
+                                                               SuccessUrl      ='".$_POST['SuccessUrl']."',
+                                                               FailureUrl     ='".$_POST['FailureUrl']."',
+                                                               Remarks        ='".$_POST['PaytmRemarks']."'
+                                                               where PaymentGatewayVendorCode ='".$_POST['PaymentGatewayVendorCode']."'");
+            }
+            
+            if (sizeof($id)>0) {
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
 	function CreateCcavenue(){
+        global $mysql,$loginInfo;
+        
+        $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            } 
+        $data = $mysql->select("select * from  _tbl_pg_vendors where VenderName='".trim($_POST['Name'])."' and VendorTypeCode='VT0003'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Name Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where MarchantID='".trim($_POST['MarchantID'])."' and VendorTypeCode='VT0003'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Marchant ID Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where Secretky='".trim($_POST['SecretKey'])."' and VendorTypeCode='VT0003'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Secret Key Already Exists");
+            }
+        $PaymentGatewayVendorCode = SeqMaster::GetNextPaymentGatewayVendorCode();
+               
+             $id =  $mysql->insert("_tbl_pg_vendors",array("PaymentGatewayVendorCode"   => $PaymentGatewayVendorCode,                    
+                                                           "VendorTypeCode"               => $_POST['CcavenueSoftCode'],                    
+                                                           "VendorType"                   => $_POST['CcavenueCodeValue'], 
+                                                           "VenderName"                   => $_POST['Name'],
+                                                           "VendorLogo"                   => $_POST['CCavenueLogo'],
+                                                           "MarchantID"                   => $_POST['MarchantID'],
+                                                           "Secretky"                     => $_POST['SecretKey'],
+                                                           "VendorMode"                   => $_POST['Mode'],
+                                                           "VendorStatus"                 => $_POST['Status'],
+                                                           "SuccessUrl"                   => $_POST['SuccessUrl'],
+                                                           "FailureUrl"                   => $_POST['FailureUrl'],
+                                                           "Remarks"                      => $_POST['CCAvenueRemarks'],
+                                                           "CreatedOn"                    => date("Y-m-d H:i:s")));
+            
+            if (sizeof($id)>0) {
+                    $mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='PaymentGatewayVendorCode'");  
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+    function EditCCavenue(){
         global $mysql,$loginInfo;
 		
 		$txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
 			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
 				return Response::returnError("Invalid transaction password");   
 			} 
-		$data = $mysql->select("select * from  _tbl_pg_vendors where VenderName='".trim($_POST['Name'])."' and VendorTypeCode='VT0003'");
+		$data = $mysql->select("select * from  _tbl_pg_vendors where VenderName='".trim($_POST['Name'])."' and VendorTypeCode='VT0003' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
 			if (sizeof($data)>0) {
 				return Response::returnError("Name Already Exists");
 			}
-		$data = $mysql->select("select * from  _tbl_pg_vendors where MarchantID='".trim($_POST['MarchantID'])."' and VendorTypeCode='VT0003'");
+		$data = $mysql->select("select * from  _tbl_pg_vendors where MarchantID='".trim($_POST['MarchantID'])."' and VendorTypeCode='VT0003' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
 			if (sizeof($data)>0) {
 				return Response::returnError("Marchant ID Already Exists");
 			}
-		$data = $mysql->select("select * from  _tbl_pg_vendors where Secretky='".trim($_POST['SecretKey'])."' and VendorTypeCode='VT0003'");
+		$data = $mysql->select("select * from  _tbl_pg_vendors where Secretky='".trim($_POST['SecretKey'])."' and VendorTypeCode='VT0003' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
 			if (sizeof($data)>0) {
 				return Response::returnError("Secret Key Already Exists");
 			}
-		$PaymentGatewayVendorCode = SeqMaster::GetNextPaymentGatewayVendorCode();
-               
-             $id =  $mysql->insert("_tbl_pg_vendors",array("PaymentGatewayVendorCode"   => $PaymentGatewayVendorCode,                    
-                                                           "VendorTypeCode"   			=> $_POST['CcavenueSoftCode'],                    
-                                                           "VendorType"       			=> $_POST['CcavenueCodeValue'], 
-                                                           "VenderName"       			=> $_POST['Name'],
-                                                           "VendorLogo"       			=> $_POST['CCavenueLogo'],
-                                                           "MarchantID"       			=> $_POST['MarchantID'],
-                                                           "Secretky"         			=> $_POST['SecretKey'],
-                                                           "VendorMode"       			=> $_POST['Mode'],
-                                                           "VendorStatus"     			=> $_POST['Status'],
-                                                           "SuccessUrl"       			=> $_POST['SuccessUrl'],
-                                                           "FailureUrl"       			=> $_POST['FailureUrl'],
-                                                           "Remarks"          			=> $_POST['CCAvenueRemarks'],
-                                                           "CreatedOn"        			=> date("Y-m-d H:i:s")));
+             if(isset($_POST['CCavenueLogo'])){
+            $id =  $mysql->execute("update _tbl_pg_vendors set VendorTypeCode ='".$_POST['CcavenueSoftCode']."',
+                                                               VendorType     ='".$_POST['CcavenueCodeValue']."',                             
+                                                               VenderName     ='".$_POST['Name']."',                             
+                                                               VendorLogo     ='".$_POST['CCavenueLogo']."',                             
+                                                               MarchantID     ='".$_POST['MarchantID']."',
+                                                               Secretky       ='".$_POST['SecretKey']."',
+                                                               VendorMode     ='".$_POST['Mode']."',
+                                                               VendorStatus   ='".$_POST['Status']."',
+                                                               SuccessUrl      ='".$_POST['SuccessUrl']."',
+                                                               FailureUrl     ='".$_POST['FailureUrl']."',
+                                                               Remarks        ='".$_POST['CCAvenueRemarks']."'
+                                                               where PaymentGatewayVendorCode ='".$_POST['PaymentGatewayVendorCode']."'");
+            }else{
+              $id =  $mysql->execute("update _tbl_pg_vendors set VendorTypeCode ='".$_POST['CcavenueSoftCode']."',
+                                                               VendorType     ='".$_POST['CcavenueCodeValue']."',                             
+                                                               VenderName     ='".$_POST['Name']."',                             
+                                                               MarchantID     ='".$_POST['MarchantID']."',
+                                                               Secretky       ='".$_POST['SecretKey']."',
+                                                               VendorMode     ='".$_POST['Mode']."',
+                                                               VendorStatus   ='".$_POST['Status']."',
+                                                               SuccessUrl      ='".$_POST['SuccessUrl']."',
+                                                               FailureUrl     ='".$_POST['FailureUrl']."',
+                                                               Remarks        ='".$_POST['CCAvenueRemarks']."'
+                                                               where PaymentGatewayVendorCode ='".$_POST['PaymentGatewayVendorCode']."'");
+            }
 			
             if (sizeof($id)>0) {
-					$mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='PaymentGatewayVendorCode'");  
                  return Response::returnSuccess("success");
                 } else{
                     return Response::returnError("Access denied. Please contact support");   
@@ -7330,10 +7532,6 @@ function UpdateBusinessConfiguration() {
 			if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
 				return Response::returnError("Invalid transaction password");   
 			} 
-		$data = $mysql->select("select * from  _tbl_pg_vendors where VenderName='".trim($_POST['InstamajoName'])."' and VendorTypeCode='VT0002'");
-			if (sizeof($data)>0) {
-				return Response::returnError("Name Already Exists");
-			}
 		$data = $mysql->select("select * from  _tbl_pg_vendors where ClientID='".trim($_POST['ClientID'])."' and VendorTypeCode='VT0002'");
 			if (sizeof($data)>0) {
 				return Response::returnError("Client ID Already Exists");
@@ -7361,6 +7559,58 @@ function UpdateBusinessConfiguration() {
 			
             if (sizeof($id)>0) {
 					$mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='PaymentGatewayVendorCode'");  
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+    function EditInstamajo(){
+        global $mysql,$loginInfo;
+        
+        $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            } 
+        $data = $mysql->select("select * from  _tbl_pg_vendors where ClientID='".trim($_POST['ClientID'])."' and VendorTypeCode='VT0002' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Client ID Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where Secretky='".trim($_POST['SecretKey'])."' and VendorTypeCode='VT0002' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Secret Key Already Exists");
+            }
+               
+             
+            if(isset($_POST['InstamajoLogo'])){
+            $id =  $mysql->execute("update _tbl_pg_vendors set VendorTypeCode ='".$_POST['InstamajoSoftCode']."',
+                                                               VendorType     ='".$_POST['InstamajoCodeValue']."',                             
+                                                               VenderName     ='".$_POST['InstamajoName']."',                             
+                                                               VendorLogo     ='".$_POST['InstamajoLogo']."',                             
+                                                               ActionUrl     ='".$_POST['ActionUrl']."',
+                                                               ClientID       ='".$_POST['ClientID']."',
+                                                               Secretky     ='".$_POST['SecretKey']."',
+                                                               VendorMode   ='".$_POST['Mode']."',
+                                                               VendorStatus   ='".$_POST['Status']."',
+                                                               SuccessUrl      ='".$_POST['SuccessUrl']."',
+                                                               FailureUrl     ='".$_POST['FailureUrl']."',
+                                                               Remarks        ='".$_POST['InstaRemarks']."'
+                                                               where PaymentGatewayVendorCode ='".$_POST['PaymentGatewayVendorCode']."'");
+            }else{
+             $id =  $mysql->execute("update _tbl_pg_vendors set VendorTypeCode ='".$_POST['InstamajoSoftCode']."',
+                                                               VendorType     ='".$_POST['InstamajoCodeValue']."',                             
+                                                               VenderName     ='".$_POST['InstamajoName']."',                             
+                                                               ActionUrl     ='".$_POST['ActionUrl']."',
+                                                               ClientID       ='".$_POST['ClientID']."',
+                                                               Secretky     ='".$_POST['SecretKey']."',
+                                                               VendorMode   ='".$_POST['Mode']."',
+                                                               VendorStatus   ='".$_POST['Status']."',
+                                                               SuccessUrl      ='".$_POST['SuccessUrl']."',
+                                                               FailureUrl     ='".$_POST['FailureUrl']."',
+                                                               Remarks        ='".$_POST['InstaRemarks']."'
+                                                               where PaymentGatewayVendorCode ='".$_POST['PaymentGatewayVendorCode']."'");
+            }
+            
+            if (sizeof($id)>0) {
                  return Response::returnSuccess("success");
                 } else{
                     return Response::returnError("Access denied. Please contact support");   
@@ -7412,6 +7662,52 @@ function UpdateBusinessConfiguration() {
 			
             if (sizeof($id)>0) {
 					$mysql->execute("update _tbl_sequence set LastNumber=LastNumber+1 where SequenceFor='PaymentGatewayVendorCode'");  
+                 return Response::returnSuccess("success");
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+    function UpdatePaypal(){
+        global $mysql,$loginInfo;
+        
+        $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            } 
+        $data = $mysql->select("select * from  _tbl_pg_vendors where VenderName='".trim($_POST['PaypalName'])."' and VendorTypeCode='VT0005' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Name Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where EmailID='".trim($_POST['PaypalEmailID'])."' and VendorTypeCode='VT0005' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Email ID Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where MarchantID='".trim($_POST['MarchantID'])."' and VendorTypeCode='VT0005' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Marchant ID Already Exists");
+            }
+        $data = $mysql->select("select * from  _tbl_pg_vendors where Secretky='".trim($_POST['SecretKey'])."' and VendorTypeCode='VT0005' and PaymentGatewayVendorCode<>'".$_POST['PaymentGatewayVendorCode']."'");
+            if (sizeof($data)>0) {
+                return Response::returnError("Secret Key Already Exists");
+            }
+            $Currency = CodeMaster::getData("PAYPALCURRENCY",$_POST['Currency']);  
+           
+              $id =  $mysql->execute("update _tbl_pg_vendors set VendorTypeCode     ='".$_POST['PaypalSoftCode']."',
+                                                               VendorType           ='".$_POST['PaypalCodeValue']."',                             
+                                                               VenderName           ='".$_POST['PaypalName']."',                             
+                                                               VendorLogo           ='".$_POST['PaytmLogo']."',                             
+                                                               EmailID              ='".$_POST['PaypalEmailID']."',
+                                                               MarchantID           ='".$_POST['MarchantID']."',
+                                                               Secretky             ='".$_POST['SecretKey']."',
+                                                               PaypalCurrencyCode   ='". $Currency[0]['SoftCode']."',
+                                                               PaypalCurrency       ='". $Currency[0]['CodeValue']."',
+                                                               VendorStatus         ='".$_POST['Status']."',
+                                                               SuccessUrl           ='".$_POST['SuccessUrl']."',
+                                                               FailureUrl           ='".$_POST['FailureUrl']."',
+                                                               Remarks              ='".$_POST['PaytmRemarks']."'
+                                                               where PaymentGatewayVendorCode ='".$_POST['PaymentGatewayVendorCode']."'");
+            
+            if (sizeof($id)>0) {
                  return Response::returnSuccess("success");
                 } else{
                     return Response::returnError("Access denied. Please contact support");   
@@ -7487,6 +7783,15 @@ function UpdateBusinessConfiguration() {
              }
              if (isset($_POST['Request']) && $_POST['Request']=="DeactivePaypal") {
                 return Response::returnSuccess("success",$mysql->select($sql." where VendorType='Paypal' and VendorStatus='0'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="BankDetails") {
+                return Response::returnSuccess("success",$mysql->select("select * from _tbl_settings_bankdetails"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="ActiveBankDetails") {
+                return Response::returnSuccess("success",$mysql->select("select * from _tbl_settings_bankdetails where IsActive='1'"));    
+             }
+             if (isset($_POST['Request']) && $_POST['Request']=="DeactiveBankDetails") {
+                return Response::returnSuccess("success",$mysql->select("select * from _tbl_settings_bankdetails where IsActive='0'"));    
              }                                                                                                                                                                            
              
          }
@@ -8790,7 +9095,9 @@ function UpdateBusinessConfiguration() {
     function GetImageOnProfilePhotoInformation() {
         global $mysql,$loginInfo;
         $ImageOnProfilePhoto = $mysql->select("select * from _tbl_master_codemaster where IsActive='1' and SoftCode='IMAGEONPROFILEPHOTO'");
-        return Response::returnSuccess("success",array("ImageOnProfilePhoto" => $ImageOnProfilePhoto[0]));
+        $BlurOnProfilePhoto = $mysql->select("select * from _tbl_master_codemaster where IsActive='1' and SoftCode='BLURONPROFILEPHOTO'");
+        return Response::returnSuccess("success",array("ImageOnProfilePhoto" => $ImageOnProfilePhoto[0],
+                                                       "BlurOnProfilePhoto"  => $BlurOnProfilePhoto[0]));
     }
     function UpdateImageOnProfilePhoto(){
         global $mysql,$loginInfo;
@@ -8821,6 +9128,68 @@ function UpdateBusinessConfiguration() {
             }
         
         return Response::returnSuccess("success",array());
+    }
+    function UpdateBlurOnProfilePhoto(){
+        global $mysql,$loginInfo;
+        $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+            $ImageOnProfilePhoto = $mysql->select("select * from _tbl_master_codemaster where IsActive='1' and SoftCode='BLURONPROFILEPHOTO'");
+            if($ImageOnProfilePhoto[0]['ParamA']==""){
+               if (!(strlen(trim($_POST['File']))>0)) {
+                    return Response::returnError("Please Select Image ");
+               } 
+            }
+            
+            if (isset($_POST['File'])) {
+            $mysql->execute("update _tbl_master_codemaster set ParamA='".$_POST['File']."',
+                                                               ParamB='".$_POST['HorizontalAlign']."',
+                                                               ParamC='".$_POST['VerticalAlign']."',
+                                                               ParamD='".$_POST['Padding']."',
+                                                               CodeDescription='".$_POST['Blur']."',
+                                                               ParamE='".(($_POST['IsActive']=="on") ? '1' : '0')."'
+                                                               where `SoftCode`='BLURONPROFILEPHOTO'");                     
+            }else{
+              $mysql->execute("update _tbl_master_codemaster set ParamB='".$_POST['HorizontalAlign']."',
+                                                               ParamC='".$_POST['VerticalAlign']."',
+                                                               ParamD='".$_POST['Padding']."',
+                                                               CodeDescription='".$_POST['Blur']."',
+                                                               ParamE='".(($_POST['IsActive']=="on") ? '1' : '0')."'
+                                                               where `SoftCode`='BLURONPROFILEPHOTO'");  
+            }
+        
+        return Response::returnSuccess("success",array());
+    }
+    function Backup() {
+            
+            global $mysql,$loginInfo;
+            
+            $txnPwd = $mysql->select("select * from `_tbl_admin` where `AdminID`='".$loginInfo[0]['AdminID']."'");
+            if (!(isset($txnPwd) && trim($txnPwd[0]['TransactionPassword'])==($_POST['txnPassword'])))  {
+                return Response::returnError("Invalid transaction password");   
+            }
+            
+            if (!(strlen(trim($_POST['BackupTitle']))>0)) {
+                return Response::returnError("Please enter backup title");                                          
+            }
+            
+                  $id = $mysql->insert("_tbl_backup",array("BackupTitle"     => $_POST['BackupTitle'],   
+                                                           "BackupFor"       => $_POST['BackupFor'], 
+                                                           "EmailID"         => $_POST['EmailID'], 
+                                                           "Status"          => "Processing", 
+                                                           "BackupOn"        => date("Y-m-d H:i:s")));
+              
+            if (sizeof($id)>0) {
+               return Response::returnSuccess("success",array("EmailID" => $_POST['EmailID']));
+                } else{
+                    return Response::returnError("Access denied. Please contact support");   
+                }
+    }
+    function GetManageBackup(){
+        global $mysql,$loginInfo;   
+        $Backup = $mysql->select("select * from _tbl_backup order by BackupOn Desc");
+        return Response::returnSuccess("success",$Backup);
     }
 
 }

@@ -2124,6 +2124,7 @@
                                                      "AddressLine3"         => $Profiles[0]['AddressLine3'],
                                                      "Pincode"              => $Profiles[0]['Pincode'],
                                                      "OrderValue"           => $plan[0]['Amount'],
+                                                     "OrderName"           => $plan[0]['PlanName'],
                                                      "Description"          => "Days :" .$plan[0]['Decreation'] .","."Free Profiles :" .$plan[0]['FreeProfiles'],
                                                      "Createdon"            => DATE("Y-m-d H:i:s"),
                                                      "OrderByMemberID"      => $loginInfo[0]['MemberID'],
